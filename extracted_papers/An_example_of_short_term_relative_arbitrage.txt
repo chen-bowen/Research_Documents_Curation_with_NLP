@@ -1,0 +1,435 @@
+5
+1
+0
+2
+
+ 
+t
+c
+O
+8
+
+ 
+
+.
+
+ 
+ 
+]
+F
+M
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+2
+9
+2
+2
+0
+
+.
+
+0
+1
+5
+1
+:
+v
+i
+X
+r
+a
+
+An example of short-term relative arbitrage
+
+Robert Fernholz1
+
+July 4, 2018
+
+Abstract
+
+Long-term relative arbitrage exists in markets where the excess growth rate of the market portfolio
+is bounded away from zero. Here it is shown that under a time-homogeneity hypothesis this condition
+will also imply the existence of relative arbitrage over arbitrarily short intervals.
+
+Suppose we have a market of stocks X1, . . . , Xn represented by positive continuous semimartingales that
+
+satisfy
+
+d log Xi(t) = γi(t) dt +
+
+ξiν(t) dWν(t),
+
+for i = 1, . . . , n, where d ≥ n ≥ 2, (W1, . . . , Wd) is a d-dimensional Brownian motion, and the processes
+γi and ξiν are progressively measurable with respect to the underlying ﬁltration with γi locally integrable
+and ξiν locally square-integrable. The process Xi represents the total capitalization of the ith company, so
+the total capitalization of the market is X(t) = X1(t) + ··· + Xn(t) and the market weight processes µi are
+deﬁned by µi(t) = Xi(t)/X(t), for i = 1, . . . , n. The ijth covariance process σij is deﬁned by
+
+d(cid:88)
+
+ν=1
+
+σij(t) (cid:44) d(cid:88)
+
+ξiν(t)ξjν(t),
+
+for i, j = 1, . . . , n.
+
+ν=1
+
+A portfolio π is deﬁned by its weights π1, . . . , πn, which are bounded processes that are progressively
+measurable with respect to the Brownian ﬁltration and add up to one. The portfolio value process Zπ for π
+satisﬁes
+
+d log Zπ(t) =
+
+πi(t) d log Xi(t) + γ∗
+
+π(t) dt,
+
+a.s.,
+
+where the process γ∗
+
+π deﬁned by
+
+γ∗
+π(t) (cid:44) 1
+2
+
+n(cid:88)
+(cid:16) n(cid:88)
+πi(t)σii(t) − n(cid:88)
+
+i=1
+
+i=1
+
+i,j=1
+
+(cid:17)
+
+πi(t)πj(t)σij(t)
+
+It can be shown that if πi(t) ≥ 0, for i = 1, . . . , n, then
+is called the excess growth rate process for π.
+π(t) ≥ 0, a.s. The market weights µi deﬁne the market portfolio µ, and if the market portfolio value process
+γ∗
+Zµ is initialized so that Zµ(0) = X(0), then Zµ(t) = X(t) for all t ≥ 0, a.s. Since the market weights are all
+positive, γ∗
+
+µ(t) ≥ 0, a.s. This introductory material can be found in Fernholz (2002).
+
+Let S be the entropy function deﬁned by
+
+S(x) = − n(cid:88)
+
+xi log xi,
+
+for x ∈ ∆n, the unit simplex in Rn. We see that 0 ≤ S(x) ≤ log n, where the minimum value occurs only at
+the corners of the simplex, and the maximum value occurs only at the point where xi = 1/n for all i. For a
+constant c ≥ 0, the generalized entropy function Sc is deﬁned by
+
+i=1
+
+1INTECH, One Palmer Square, Princeton, NJ 08542. bob@bobfernholz.com. The author thanks Christa Cuchiero, Ioannis
+Karatzas, Constantinos Kardaras, Johannes Ruf, and Walter Schachermayer for their invaluable comments and suggestions
+regarding this research.
+
+Sc(x) = S(x) + c,
+
+1
+
+for x ∈ ∆n. It can be shown that Sc generates a portfolio π with weights
+
+πi(t) =
+
+c − log µi(t)
+Sc(µ(t))
+
+µi(t),
+
+for i = 1, . . . , n, and the portfolio value process Zπ will satisfy
+
+d log(cid:0)Zπ(t)/Zµ(t)(cid:1) = d log Sc(µ(t)) +
+
+γ∗
+µ(t)
+Sc(µ(t))
+
+dt,
+
+a.s.
+
+(1)
+
+(see Fernholz (1999), Fernholz (2002), and Fernholz and Karatzas (2005)).
+
+Deﬁnition 1. For T > 0, there is relative arbitrage versus the market on [0, T ] if there exists a portfolio π
+such that
+
+P(cid:2)Zπ(T )/Zµ(T ) ≥ Zπ(0)/Zµ(0)(cid:3) = 1,
+P(cid:2)Zπ(T )/Zµ(T ) > Zπ(0)/Zµ(0)(cid:3) > 0.
+
+If P(cid:2)Zπ(T )/Zµ(T ) > Zπ(0)/Zµ(0)(cid:3) = 1, then this relative arbitrage is strong.
+
+Proposition 1. For T > 0, suppose that for the market X1, . . . , Xn there exists a constant ε > 0 such that
+
+γ∗
+µ(t) > ε,
+for all t ∈ [0, T ], and for the entropy function S
+
+ess inf(cid:8)S(µ(t)) : t ∈ [0, T /2](cid:9) ≤ ess inf(cid:8)S(µ(t)) : t ∈ [T /2, T ](cid:9).
+
+a.s.,
+
+Then there is relative arbitrage versus the market on [0, T ].
+
+(2)
+
+(3)
+
+Proof. Let
+
+Since γ∗
+
+µ(t) ≥ ε > 0 on [0, T ], a.s., not all the µi can be constantly equal to 1/n, so
+
+Hence, we can choose δ > 0 such that A + 2δ < log n and
+
+A = ess inf(cid:8)S(µ(t)) : t ∈ [0, T /2](cid:9).
+
+0 ≤ A < log n.
+
+S(µ(t)) < A + δ(cid:3) > 0,
+
+P(cid:2)
+
+inf
+
+t∈[0,T /2]
+
+τ1 = inf(cid:8)t ∈ [0, T /2] : S(µ(t)) ≤ A + δ(cid:9) ∧ T,
+
+P(cid:2)τ1 ≤ T /2(cid:3) > 0.
+
+so if we deﬁne the stopping time
+
+then
+
+We can now deﬁne a second stopping time
+
+τ2 = inf(cid:8)t ∈ [τ1, T ] : S(µ(t)) = A + 2δ(cid:9) ∧ T,
+
+and we have τ1 ≤ τ2, a.s.
+
+Now consider the generalized entropy function
+
+Sδ(x) (cid:44) S(x) + δ,
+
+for the same δ > 0 as we chose above, so Sδ(x) ≥ δ. It follows from (1) that
+
+log(cid:0)Zπ(τ2)/Zµ(τ2)(cid:1) − log(cid:0)Zπ(τ1)/Zµ(τ1)(cid:1) = log Sδ(µ(τ2)) − log Sδ(µ(τ1)) +
+
+(4)
+for the times τ1 and τ2. Suppose we are on the set where τ1 ≤ T /2, so τ1 < τ2, a.s., and consider two cases:
+
+a.s.,
+
+dt,
+
+τ1
+
+γ∗
+µ(t)
+Sδ(µ(t))
+
+(cid:90) τ2
+
+2
+
+1. If τ2 < T , then
+
+log Sδ(µ(τ2)) − log Sδ(µ(τ1)) ≥ log(A + 3δ) − log(A + 2δ) > 0,
+
+a.s.,
+
+and since the integral in (4) is positive, a.s., we have
+
+log(cid:0)Zπ(τ2)/Zµ(τ2)(cid:1) − log(cid:0)Zπ(τ1)/Zµ(τ1)(cid:1) > 0,
+
+a.s.
+
+(5)
+
+2. If τ2 = T , then A + δ ≤ Sδ(µ(t)) < A + 3δ for t ∈ [τ1, T ], a.s., so
+
+(cid:90) τ2
+
+log Sδ(µ(τ2)) − log Sδ(µ(τ1)) +
+
+Again there are two cases:
+
+(a) If A = 0, let
+
+τ1
+
+γ∗
+µ(t)
+Sδ(µ(t))
+
+dt > log
+
+A + δ
+A + 2δ
+
++
+
+εT
+
+2(A + 3δ)
+
+,
+
+a.s.
+
+(6)
+
+so the left-hand side of the inequality in (6) will be positive, a.s., and (4) implies that
+
+log(cid:0)Zπ(τ2)/Zµ(τ2)(cid:1) − log(cid:0)Zπ(τ1)/Zµ(τ1)(cid:1) > 0,
+
+a.s.
+
+δ =
+
+εT
+
+,
+
+6 log 2
+
+(b) If A > 0, then
+
+(cid:20)
+
+(cid:21)
+
+lim
+δ↓0
+
+log
+
+A + δ
+A + 2δ
+
++
+
+εT
+
+2(A + 3δ)
+
+=
+
+εT
+2A
+
+> 0,
+
+(7)
+
+(8)
+
+(9)
+
+so for small enough δ > 0, (6) will be positive, and (8) will be valid.
+
+Now consider the portfolio η deﬁned by:
+1. For t ∈ [0, τ1), η(t) = µ(t), the market portfolio.
+2. For t ∈ [τ1, τ2), η(t) = π(t), the portfolio generated by Sδ with δ chosen according to (7) or (9), as the
+
+case may be.
+
+3. For t ∈ [τ2, T ], η(t) = µ(t).
+
+If τ1 = T , then η(t) = µ(t) for all t ∈ [0, T ], so
+
+log(cid:0)Zη(T )/Zµ(T )(cid:1) = log(cid:0)Zη(0)/Zµ(0)(cid:1),
+
+a.s.
+If τ1 (cid:54)= T , then τ1 ≤ T /2 and τ1 < τ2, a.s. By the construction of η, we have
+
+log(cid:0)Zη(T )/Zµ(T )(cid:1) − log(cid:0)Zη(0)/Zµ(0)(cid:1) = log(cid:0)Zπ(τ2)/Zµ(τ2)(cid:1) − log(cid:0)Zπ(τ1)/Zµ(τ1)(cid:1)
+
+> 0,
+
+a.s.,
+
+with the inequality following from (5) or (8), as the case may be. Since P[τ1 (cid:54)= T ] > 0,
+
+P(cid:2) log(cid:0)Zη(T )/Zµ(T )(cid:1) ≥ log(cid:0)Zη(0)/Zµ(0)(cid:1)(cid:3) = 1,
+P(cid:2) log(cid:0)Zη(T )/Zµ(T )(cid:1) > log(cid:0)Zη(0)/Zµ(0)(cid:1)(cid:3) > 0,
+
+so there is relative arbitrage versus the market on [0, T ].
+
+Let us recall that the market is diverse over the interval [0, T ] if there exists a δ > 0 such that
+
+µi(t) < 1 − δ,
+
+a.s.,
+
+3
+
+for i = 1, . . . , n and all t ∈ [0, T ] (see, e.g., Fernholz (2002)).
+Corollary 1. Let T > 0 and suppose that the market is not diverse over [0, T /2] and that γ∗
+t ∈ [0, T ]. Then there is relative arbitrage versus the market on [0, T ].
+
+µ(t) > ε > 0 for
+
+Proof. In this case A = 0 in (3).
+
+Remark 1. Corollary 1 can be applied to volatility-stabilized markets, for which Banner and Fernholz (2008)
+have previously shown the existence of short-term strong relative arbitrage.
+
+Remark 2. The condition (2) can be generalized to a function A deﬁned on [0, T ] by
+
+A(t) = ess inf(cid:8)S(µ(t))(cid:9).
+
+If A increases over any subinterval of [0, T ], then an argument similar to that of case 1 in Proposition 1 will
+establish relative arbitrage. Moreover, Johannes Ruf has pointed out that the proof of Proposition 1 can
+be extended to establish relative arbitrage in the case where A is slowly (enough) decreasing on [0, T ]. By
+means of a remarkable construction, Karatzas and Ruf (2015) have shown that short-term relative arbitrage
+does not exist for arbitrary A.
+
+References
+
+Banner, A. and D. Fernholz (2008). Short-term arbitrage in volatility-stabilized markets. Annals of Fi-
+
+nance 4, 445–454.
+
+Fernholz, R. (1999). Portfolio generating functions. In M. Avellaneda (Ed.), Quantitative Analysis in
+
+Financial Markets, River Edge, NJ. World Scientiﬁc.
+
+Fernholz, R. (2002). Stochastic Portfolio Theory. New York: Springer-Verlag.
+
+Fernholz, R. and I. Karatzas (2005). Relative arbitrage in volatility-stabilized markets. Annals of Fi-
+
+nance 1, 149–177.
+
+Karatzas, I. and J. Ruf (2015). Lyapunov functions as portfolio generators. Technical report, Columbia
+
+University and University College London.
+
+4
+
+

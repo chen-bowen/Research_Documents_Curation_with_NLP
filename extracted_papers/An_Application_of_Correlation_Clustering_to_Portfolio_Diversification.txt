@@ -1,0 +1,1594 @@
+5
+1
+0
+2
+
+ 
+
+v
+o
+N
+5
+2
+
+ 
+
+.
+
+ 
+ 
+]
+T
+S
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+5
+4
+9
+7
+0
+
+.
+
+1
+1
+5
+1
+:
+v
+i
+X
+r
+a
+
+An Application of Correlation Clustering to
+
+Portfolio Diversiﬁcation
+
+Hannah Cheng Juan Zhan1, William Rea1, and Alethea Rea2,
+
+1. Department of Economics and Finance, University of Canterbury,
+
+New Zealand
+
+2. Data Analysis Australia, Perth, Australia
+
+December 11, 2015
+
+Abstract
+
+This paper presents a novel application of a clustering algorithm
+developed for constructing a phylogenetic network to the correlation
+matrix for 126 stocks listed on the Shanghai A Stock Market. We
+show that by visualizing the correlation matrix using a Neighbor-Net
+network and using the circular ordering produced during the construc-
+tion of the network we can reduce the risk of a diversiﬁed portfolio
+compared with random or industry group based selection methods in
+times of market increase.
+
+Keywords: Visualization, Neighbour-Nets, Correlation Matrix, Diversiﬁ-
+
+cation, Stock Market
+
+JEL Codes: G11
+
+1
+
+Introduction
+
+Portfolio diversiﬁcation is critical for risk management because it aims to
+reduce the variance in returns compared with a portfolio of a single stock or
+similarly undiversiﬁed portfolio. The academic literature on diversiﬁcation is
+
+1
+
+vast, stretching back at least as far as Lowenfeld (1909). The modern science
+of diversiﬁcation is usually traced to Markowtiz (1952) which is expanded
+upon in great detail in Markowitz (1991).
+
+The literature covers a wide range of approaches to portfolio diversiﬁcation,
+such as; the number of stocks required to form a well diversiﬁed portfolio,
+which has increased from eight stocks in the late 1960’s (Evans and Archer,
+1968) to over 100 stocks in the late 2000’s (Domian et al., 2007), what types
+of risks should be considered, (Cont, 2001; Goyal and Santa-Clara, 2003; Bali
+et al., 2005), factors intrinsic to each stock (Fama and French, 1992; French
+and Fama, 1993), the age of the investor, (Benzoni et al., 2007), and whether
+international diversiﬁcation is beneﬁcial, (Jorion, 1985; Bai and Green, 2010),
+among others.
+
+Despite the recommendation of authorities like Domian et al. (2007), Bar-
+ber and Odean (2008) reported that in a large sample of American private
+investors the average portfolio size of individual stocks was only 4.3. While
+comparable data does not appear to be available for private Chinese investors,
+it seems unlikely that they hold substantially larger portfolios.
+
+The mean returns and variances of the individual contributing stocks are
+insuﬃcient for making an informed decision on selecting a suite of stocks
+because selecting a portfolio requires an understanding of the correlations
+between each of the stocks being considered for the portfolio. The number of
+correlations between stocks rises in proportion to the square of the number of
+stocks meaning that for all but the smallest of stock markets the very large
+number of correlations is beyond the human ability to comprehend them.
+Rea and Rea (2014) presented a method to visualise the correlation matrix
+using neighbor-Net networks (Bryant and Moulton, 2004), yielding insights
+into the relationships between the stocks.
+
+Neighbor-Net networks are widely used in other ﬁelds, for example document
+source critical analysis (Tehrani, 2013), understanding the cultural geogra-
+phy of folktales (Ross et al., 2013), understanding human history through
+language (Gray et al. (2010); Heggarty et al. (2010); Knooihuizen and Dediu
+(2012) among others), understanding human history through housing tra-
+ditions (Jordan and O’Neil, 2010) and to study the evolution of the skate-
+board deck (Prentiss et al., 2011). Its main application area is biology where
+neighbor-Net networks have appeared in hundreds of refereed papers. Re-
+cently these networks have been used to assist in understanding cancer (see
+Schwarz et al. (2015) for an example), investigate the evolution of high moun-
+tain buttercups (Emadzade et al., 2015) and study mosquito borne viruses
+
+2
+
+(Bergqvist et al., 2015).
+
+Traditional investing wisdom has suggested that investors should select in-
+vestment opportunities from a range of industries because returns within
+an industry would be more highly correlated than those between industries.
+While that may hold true, there are some instances (such as companies with
+operations in several industries) in which a stock exchange industry clas-
+siﬁcation alone is insuﬃcient. Furthermore with some authors (including
+Domian et al. (2007)) recommending over 100 investments, the number of
+investments may exceed the number of industries meaning there is a need to
+select a diverse range of stocks even within industries.
+
+Another key aspect of stock correlation is the potential change in the corre-
+lations with a signiﬁcant change in market conditions (say comparing times
+of general market increase with recession and post-recession periods).
+
+In this paper we explore investment opportunities in China using data from
+the Shanghai Stock Exchange. We compare the correlation structure re-
+ported in four periods (a period of market calm 2005/2006, a boom period
+of 2006/2007, market decline (2008), and a post crash period 2009/2010).
+
+Our primary motivation is to investigate four portfolio selection strategies.
+The four strategies are;
+
+1. picking stocks at random;
+
+2. forming portfolios by picking stocks from diﬀerent industry groups;
+
+3. forming portfolios by picking stocks from diﬀerent correlation clusters;
+
+and
+
+4. forming portfolios by picking stocks from industry groups within cor-
+
+relation clusters.
+
+Our results show that knowledge of correlations clusters can reduce the port-
+folio risk.
+
+The outline of this paper is as follows; Section (2) discusses the data, Section
+(3) discusses the methods used in this paper, Section (4) discusses identi-
+fying the correlation clusters, Section (5) discusses the movement of stocks
+in the neighbor-Net splits graphs between study periods, Section (6) applies
+
+3
+
+the results of the previous two sections to the problem of forming a diver-
+siﬁed portfolio of stocks, and Section (7) contains the discussion and our
+conclusions.
+
+2 Data
+
+The data used in this study was downloaded from Datastream. We obtained
+daily closing prices and dividend data for 126 stocks from the Shanghai A
+Index. The data listed the stock name, a six digit identiﬁcation number,
+and assigned the stock to one of ﬁve industry groups. These groups were (1)
+Energy (12 stocks), (2) Finance (17 stocks), (3) Health Care (18 stocks), (4)
+Industrial (33 stocks), and (5) Materials (36 stocks). To make the identiﬁ-
+cation of the stocks and their exchange-assigned industry groups simpler we
+generated four letter stock codes and to this code appended a single letter
+indicating its industry group. A list of these can be found in Table (5) in A.
+To estimate stock return correlations we calculated weekly returns from the
+daily price and dividend data. To obtain the period returns we calculated
+the total return for each period and treated the dividends as being reinvested
+into the stock that issued them.
+
+A graph of the index and the boundaries of our study periods can be found in
+Figure (1). We deﬁned the study periods so that they represented as diﬀerent
+market conditons as we could make them, though it could be argued that
+our study periods one and four are similar.
+
+Study period one was 13 May 2005 until 13 June 2006 and was a period in
+which the market underwent a slow rise. Study period two was 13 June 2006
+until 16 October 2007 and is a considered a boom or market bubble period.
+Study period three was 16 October 2007 until 28 October 2008 representing
+a sharp decline or crash. The ﬁnal study period was from 29 October 2008
+until 19 October 2010 was a time of initial market recovery and then a largely
+ﬂat returns.
+
+With four study periods, for the portfolio selection methods which require
+a model building, or estimation, period we can form models in periods one
+through three and use the periods two through four for out-of-sample test-
+ing. Such extremely diﬀerent market conditions represents a very severe test
+of portfolio diversiﬁcation strategies, especially forming portfolios based on
+period two and testing them against period three data.
+
+4
+
+Figure 1: A plot of the Shanghai Stock Exchange A Index with the bound-
+aries of the four study periods marked. The dates are 13-May-2005, 13-June-
+2006, 16-Oct-2007, 28-Oct-2008, and 19-Oct-2010 respectively.
+
+3 Methods
+
+3.1 Neighbor-Net Splits Graphs
+
+A typical stock market correlation matrix for n stocks is of full rank which
+means that it can only be represented fully in an (n − 1)-dimensional space.
+Some basic statistics on the correlations are presented in Table (1). In vi-
+sualization, the high dimensional data space is collapsed to a much lower
+dimensional space so that the data can be represented on 2-dimensional sur-
+face such as a page or computer screen.
+
+5
+
+20052006200720082009201020110100020003000400050006000Shanghai A IndexDateIndex Value11223344We need to convert the numerical values in the correlation matrix to a mea-
+sure which can be construed to be a distance.
+In the literature the most
+common way to do the conversion is by using the so-called ultra-metric,
+
+(cid:113)
+
+dij =
+
+2(1 − ρij)
+
+(1)
+
+where dij is the estimated distance and ρij is the estimated correlation be-
+tween stocks i and j, see Mantegna (1999) for details.
+
+Using the conversion in Equation (1) we formatted the converted correlation
+matrix and augmented it with the appropriate stock codes for reading into the
+Neighbor-Net software, SplitsTree (Huson and Bryant, 2006), available from
+http://www.splitstree.org. Using the SplitsTree software we generated
+the Neighbor-Nets splits graphs. Because the splits graphs are intended
+to be used for visualization we defer the discussion of the identiﬁcation of
+correlation clusters and their uses to Sections (4) and (5) below.
+
+3.2 Simulated Portfolios
+
+Recently Lee (2011) discussed so-called risk-based asset allocation. In con-
+trast to strategies which require both expected risk and expected returns
+for each investment opportunity as inputs to the portfolio selection process,
+risk-based allocation considers only expected risk. The four methods of port-
+folio selection we present below can be considered to be risk-based allocation
+methods. This probably reﬂects private investor behaviour in that often they
+have nothing more than broker buy, hold, or sell recommendations to assess
+likely returns.
+
+The four portfolio methods were compared using simulations. For each of
+1,000 iterations a portfolio was sampled based on the rules governing the
+portfolio type. We recorded the mean and standard deviation of the returns
+for the 1,000 portfolios.
+
+As mentioned in the introduction the primary motivation is to investigate
+four portfolio strategies. These are:
+
+1. Selecting stocks at random;
+
+2. Selecting stocks based on industry groupings;
+
+3. Selecting stocks based on correlation clusters; and
+
+6
+
+4. Selecting stocks based on industry groups within correlation clusters.
+
+We describe each of these in turn.
+
+Random Selection: The stocks were selected at random using a uniform
+distribution without replacement. In other words each stock was given
+equal chance of being selected according but with no stock being se-
+lected twice within a single portfolio.
+
+By Industry Groups: There were ﬁve industry groups. If the portfolio
+size was ﬁve or less, the industries were chosen at random using a
+uniform distribution without replacement. From each of the selected
+industry groups one stock was selected.
+If the desired portfolio size
+was more than ﬁve then each group had at least s stocks selected,
+where s is the quotient of the portfolio size divided by ﬁve. Some (the
+remainder of the portfolio size divided by ﬁve) industry groups will
+have s + 1 stocks selected and the industry groups this applied to were
+chosen using a uniform distribution without replacement. Within each
+industry group stocks were selected using a uniform distribution, again
+without replacement.
+
+By Correlation Clusters: The correlation clusters were determined by
+examining the Neighbor-Net network for the relevant periods (period
+one, two and three). Each stock was assigned to exactly one cluster
+and each cluster can be deﬁned by a single split (or bipartition) of
+the circular ordering of the Neighbor-Net of the relevant period. The
+clusters determined in periods one, two and three were used to generate
+the portfolios for out-of-sample testing in periods two, three and four
+respectively. Because the goal of portfolio building is to reduce risk
+each cluster was paired with another cluster which was considered most
+distant from it. This method is discussed in detail below.
+
+As with the industry groups, if there were fewer clusters than the de-
+sired portfolio size, cluster pairs were selected at random and a stock
+selected from within each correlation cluster pair. If the desired portfo-
+lio size was larger than the number of correlation cluster then we apply
+the method described above for the industry clusters.
+
+As indicated above each cluster was paired with the one most distant
+from it. Because we identiﬁed an even number of clusters in period
+two, cluster one was paired with cluster ﬁve, two with six and so on.
+In periods with an odd number of clusters the pairing may not be so
+
+7
+
+straight-forward. For example, in period two (see Figure 2) we iden-
+tiﬁed ﬁve clusters and cluster one was paired with four, both clusters
+two and three were paired with ﬁve, four was paired with one and ﬁve
+with two.
+
+Figure 2: SplitsTree network for 126 stocks from the Shanghai A Stock Ex-
+change for period two using ﬁve trading day returns to estimate correlations
+and hence distances with the stocks in cluster one colour coded. The ﬁve
+correlation clusters each have diﬀerent colours. In the discussion the clus-
+ters are coded anti-clockwise as follows; Cluster 1 – Black, Cluster 2 – Blue,
+Cluster 3 – Purple, Cluster 4 – Green, Cluster 5 – Red.
+
+By Industry Group within Correlation Clusters: The ﬁnal method
+was selecting stocks from industry groups within correlation clusters.
+Each stock within each cluster has an associated industry group. There-
+fore each correlation cluster can be subdivided into up to ﬁve sub-
+
+8
+
+HJTG_EHBYH_MCATL_ITSLP_HHRBP_HLXVC_ISNCH_IHNAL_ICHEA_IXCMG_ICRDP_HBDTW_ISXCI_IZJNH_HZJMC_HGZPJ_ESHDT_EJZER_EYQCI_ESXXS_ESXLH_EYZCM_EHNSH_MHBIS_MCSGH_MIMBT_MGJHX_MTSJD_MXXDI_MSHCT_FTYCG_EZJJH_MCAAE_INCPH_HPGGS_MJSZN_IHYPC_MGHEG_FJXHD_INESC_FXAAI_IRSNM_MGFSC_FSWSC_FCJSC_FSDDE_HXAAE_IGYSC_FSNLS_FCSSC_IDFET_IJLAD_HLNCD_IHYSC_FCTSC_FHXBK_FCMSB_FSHPD_FCMBK_FSZBK_FTBEA_ICSAL_ICHPC_EWHIS_MBSIS_MAGST_MQHSL_MCIMC_ISXTG_MOFFS_EYTWH_MYNBY_HBJTR_HSHIA_IJSHM_HSHIT_IZLHS_IAHCC_MGXLG_ISHZH_IHLBE_HSTCM_IBSRE_MBJTN_MSDNS_MYNAL_MTLNM_MYNCP_MJCPR_MSZLN_MSCHD_MYTIN_MXMTS_MCCFM_MMMTL_IYYTH_MCGZB_IBJSL_HHNZF_MSNUS_FHTSC_FFCNM_MCHRW_IXMCD_IBJCT_FOWRG_FCHMT_FGMDL_FCHVK_FFCSH_FXHZB_FBEJU_FSHZJ_FCHBA_FCHSS_ISHFS_HZJHS_HGXWZ_HNRTE_ITYHI_IIMPZ_ECRSJ_HKMPH_HADTM_MSHCG_IJLYT_M0.1clusters based on industry.
+
+As indicated above each cluster was paired with the one most distant
+from it. Once a cluster was selected for inclusion, so was the paired
+cluster, however this time we did not allow any of the paired stocks to
+be from the same industry. This was the method used for determining
+the set of stocks for the fourth portfolio strategy.
+
+4
+
+Identifying Correlation Clusters
+
+As Bryant and Moulton (2004) point out “the splits graphs generated by
+Neighbor-Net are always planar, an important advantage over other net-
+work methods when it comes to visualization” (emphasis original). Thus one
+method of identifying a group of stocks clustered by correlation is to exam-
+ine the splits graph for the stocks (see, for example, Figure 3) and look for
+natural breaks in the structure of the network.
+
+The neighbor-Net splits graph is a type of map. All readers of a topographic
+map read the map in the same way. The information they extract depends
+on their needs. One person may read a map to extract information about
+mountain ranges, another for information on river catchments, and still an-
+other on the distribution of human settlements. But in all cases all map
+readers agree which features are mountains, which are rivers and which are
+towns and cities, no confusion arises because the map is read visually.
+
+Because this is a visual approach, the information extracted from reading
+a neighbor-Net splits graph depends on the researcher or ﬁnancial analyst
+balancing whatever competing requirements they may have. Here we know
+that in the simulations to follow the sizes of the portfolios we will generate
+will be two, four, eight or 16 stocks. Consequently we do not need large num-
+bers of clusters and we would like them to have a suﬃciently large number
+of stocks that when selecting stocks at random from within the cluster that
+there are a suﬃciently large number of combinations available to make the
+simulations meaningful. These requirements guide us when identifying clus-
+ters in the neighbor-Net splits graphs. The numbers of clusters and cluster
+membership is determined visually and it is important not to confuse visual
+with subjective. For period one we chose eight clusters, which was the maxi-
+mum number of clusters in any period. The smallest cluster had nine stocks
+
+(cid:1) = 36 distinct ways of choosing two stocks from this cluster in the
+
+16 stock portfolio simulation.
+
+giving(cid:0)9
+
+2
+
+9
+
+Figure (3) shows the clusters we identiﬁed for period one. The stocks in
+each cluster are listed in B.1. Cluster one is at the bottom in black and
+the clusters are sequentially numbered moving counter-clockwise around the
+splits graph. Cluster one can be recognised by the small, but clear, gaps in
+the network structure between it and clusters two and eight. Similar small
+gaps can be seen between the other clusters.
+
+This grouping of eight clusters is not the only division of the stocks into
+clusters which could have been made. If the researcher or ﬁnancial analyst
+had other requirements some of the clusters could be further subdivided or
+combined. For example if small clusters were acceptable then Cluster 2 could
+be further split into two clusters, as could Cluster 8. In both cases there is a
+clear gap in the network structure where the split could be made. Conversely,
+if the number of clusters desired was reduced then there are some reasonably
+clear combinations which could be made. For example, if only two clusters
+were required, then, perhaps, Clusters 1, 2, 7, and 8 could be combined to
+form one cluster while Clusters 3, 4, 5, and 6 would form the other.
+
+5 Movements of Stocks in the Splits Graphs
+
+between Periods
+
+In Figures (4) through (11) we show the movement of industry groups both
+within a cluster and between study periods. We compare this with the move-
+ments of the materials industry group in the splits graph.
+
+In Figure (4) we have selected Cluster 1 in study period 1 and assigned a
+colour to each industry group within the cluster. While all ﬁve industry
+groups are represented in the cluster it is clear that the materials group of
+stocks represent the largest such group within this correlation cluster. Figures
+(5) through (7) shows locations in the splits graph of the stocks from Cluster
+1 of Period 1 in Periods 2 through 4. As can be seen the stocks in this initial
+cluster do not remain clustered together in subsequent periods.
+
+However, the materials group has remained together as a block not only in
+study period two but also in study periods three and four. During period two
+(Figure 5) the materials group from Cluster 1 is now in what we identiﬁed
+as Cluster 3.
+In study period three (Figure 6) they have split into two
+groups and are in what we identiﬁed as Clusters 1 and 6, which are adjacent
+clusters in that study period. Finally in study period four they are in what
+
+10
+
+we identiﬁed as Clusters 1 and 2, again, these are adjacent clusters in that
+study period.
+
+In diversiﬁcation one seeks groups of stocks which will tend to move together
+in the future but relatively independently of other so-identiﬁed groups of
+stocks. Then an investors spreads their investments across these groups.
+This is the basis for previous studies which have grouped stocks by industry
+assuming that stocks in the same industry will tend to have price movements
+more similar than stocks in diﬀerent industries, see Section (5.1) below. Thus
+the evidence presented here is that the stocks within Cluster one Period one
+from the materials group form a ﬁnancially useful grouping when forming a
+diversiﬁed portfolio for out-of-sample testing.
+
+Because of this we would not expect portfolios selected from stocks within
+correlation clusters alone to be signiﬁcantly less risky than those chosen from
+industry groups. However, considering both a stock’s industry group and its
+correlation cluster has potential to result in greater risk reduction than either
+method on its own.
+
+5.1 Clustering by Industry Group
+
+In previous studies a number of authors have included in their studies of
+forming diversiﬁed stock portfolios at least one method in which they dividied
+the stocks into industry groups and then selected portfolios by spreading
+the investments across the groups, see Domian et al. (2007) for example.
+Neighbor-Nets splits graphs give us a direct method of assessing the likely
+success of such a strategy. To illustrate this we have selected the energy
+and materials groups because they had the smallest and largest number of
+stocks, 12 and 36 respectively. Figures (8) through (11) show the locations
+of the materials stocks. Similar diagrams for the other industry groups are
+available from the authors on request.
+
+Clustering of the materials stocks is clearly visible in each of the four study
+periods. This gives a direct visual conﬁrmation of previous studies which have
+reported that selecting stocks by spreading them across industry groups gives
+a greater reduction in portfolio risk than randomly selecting stocks.
+
+11
+
+6 Example
+
+This examples uses 126 stocks from the Shanghai exchange, for which we
+calculated the weekly returns from price and dividend data and we divided
+the data into four periods based on market behaviour as discussed in Section
+(2) above. Some basic statistics on the correlations are presented in Table
+(1). As can be seen the highest average correlation occurred in period 3, a
+time of a sharp market decline or crash.
+
+For all the periods, as the portfolio size was increased the standard deviation
+of the returns decreased across all four portfolio selection methods. Early
+empirical studies of portfolio diversiﬁcation focused on the number of stocks
+in a portfolio, see Evans and Archer (1968). A larger portfolio was reported
+to be less risky with the lower risk being a result of the lower level of variation
+in the returns. However, the beneﬁt of reduced risk rapidly diminished with
+increasing portfolio size.
+
+An ANOVA test was used to compare the means, because the variances were
+within a small range the ANOVA test remains valid even though the Levene
+test detects statistically signiﬁcant diﬀerences. The Levene test was applied
+using the lawstat package in R (Gastwirth et al., 2013).
+
+Period Mean Std. Dev. Min Max Negative
+438/7875
+480/7875
+132/7875
+143/7875
+
+-0.642
+-0.413
+-0.168
+-0.158
+
+0.864
+0.855
+0.908
+0.906
+
+1
+2
+3
+4
+
+0.266
+0.328
+0.441
+0.437
+
+0.170
+0.196
+0.191
+0.192
+
+Table 1: Basic statistics on the correlations. There are n(n − 1)/2 = (126 ×
+125)/2 = 7875 correlations between the 126 stocks. The ﬁnal column gives
+the count of the number of correlations which were estimated to be negative.
+The highest proportion of negative correlations occurred in period 2 when
+approximately 6% of estimated correlations were negative.
+
+Period two was a period of general market increase and the returns were good
+during this period. Table (2) presents the mean and standard deviations of
+returns together with some statistical testing of the results. The returns
+were statistically signiﬁcantly diﬀerent for portfolios of size 16 and weakly
+signiﬁcant for portfolios of size 2. For the smallest portfolios the correlation
+cluster method performed best and for portfolios of size 4 and 16 the industry
+and correlation clusters method performed best.
+
+12
+
+Number of
+
+Stocks
+
+Industry and
+Random Industry Correlation Correlation
+
+ANOVA
+
+(Levene) Test
+
+in Portfolios Selection Grouping
+
+Clusters
+
+Clusters
+
+2
+
+4
+
+8
+
+16
+
+464
+(234)
+468
+(169)
+466
+(119)
+466
+(78)
+
+449
+(227)
+459
+(161)
+459
+(115)
+462
+(78)
+
+467
+(220)
+463
+(154)
+454
+(102)
+463
+(68)
+
+457
+(2.8)
+4.71
+(158)
+4.64
+(105)
+466
+(50)
+
+p-value
+0.0783
+(0.281)
+0.248
+(0.041)
+0.484
+
+(<0.001)
+
+0.023
+
+(<0.001)
+
+Table 2: Returns in percent under the four diﬀerent portfolio selection meth-
+ods for period two using period one data for the estimation of the correlations.
+Underneath each set of returns, in brackets, is the standard deviation of the
+returns. The ﬁnal column reports the p-value of the ANOVA analysis which
+tests for diﬀerences in the means or the Levene test which tests whether the
+standard deviations of all four methods are equal as appropriate for each line.
+
+For all the portfolios the variation in the returns decreased as the portfolio
+size increased. The Levene test showed that there was statistically signiﬁcant
+diﬀerences in the standard deviations for portfolios of size 4, 8 and 16. For
+portfolios of size 4 and 8 the correlation cluster method produced the lowest
+variation in the returns. For portfolios of size 16 it was the industry and cor-
+relation cluster method that produces the lowest variation, by a substantial
+margin.
+
+Table (3) presents the mean and standard deviations of returns together with
+some statistical testing of the results for period three. This was a period
+of general market decline. In these circumstances a widely used risk/return
+measure such as the Sharpe ratio is negative. In such circumstances a private
+investor would regard a portfolio which minimised the losses as be the most
+desirable. While we should not over interpret the results, the correlation
+clusters have slightly better returns for portfolios of sizes 2, 4 and 8. The
+industry and correlation clusters and industry based groupings have slightly
+better returns for portfolios of size 16.
+
+As with period two out of sample testing, the variation decreased as the port-
+folio size was increased, regardless of the method used to select the portfolio.
+The Levene test showed that there was statistically signiﬁcant diﬀerences
+in the variances in the standard deviations for portfolios of size 4, 8, and
+
+13
+
+Number of
+
+Stocks
+
+Industry and
+Random Industry Correlation Correlation
+
+ANOVA
+
+(Levene) Test
+
+in Portfolios Selection Grouping
+
+Clusters
+
+Clusters
+
+2
+
+4
+
+8
+
+16
+
+-57
+(25)
+-58
+
+(0.16)
+
+-57
+
+(0.11)
+
+-57
+(8)
+
+-54
+(27)
+-56
+(17)
+-55
+(12)
+-54
+(8)
+
+-52
+(29)
+-53
+(19)
+-53
+(14)
+-55
+(8)
+
+-53
+(27)
+-54
+(18)
+-54
+(13)
+-54
+(7)
+
+p-value
+0.007
+(0.265)
+0.001
+(0.001)
+<0.001
+(0.004)
+<0.001
+(<0.001)
+
+Table 3: Returns in percent under the four diﬀerent portfolio selection meth-
+ods for period three using period two data for the estimation of the correla-
+tions. Underneath each set of returns, in brackets, is the standard deviation
+of the returns. The ﬁnal column reports the p-value of the ANOVA anal-
+ysis which tests for diﬀerences in the means or the Levene test which tests
+whether the standard deviations of all four methods are equal as appropriate.
+
+16. Typically the correlation cluster method showed the largest standard
+deviations and random selection method the lowest standard deviations. For
+portfolios of size 16 the industry and correlation clusters method reported
+the smallest variation.
+
+Table (4) presents the mean and standard deviations of returns together with
+some statistical testing of the results for period four. This period showed
+modest returns. While, again, we should not over-interpret the results, the
+returns were lower for random and industry grouping selection methods for
+all four portfolios sizes tested. The highest returns were for the correla-
+tion clusters portfolio selection method for the two smaller portfolios, and
+for portfolios of size 8 and 16 the industry and correlation clusters method
+reports slightly higher returns.
+
+As with period two and three out of sample testing, the variation decreased
+as the portfolio size was increased, regardless of the method used to select
+the portfolio. The Levene test showed that there was statistically signiﬁcant
+diﬀerences in the variances for the portfolios of sizes 4, 8 and 16. The industry
+based selection method oﬀered the greatest reduction in the variation in the
+returns for portfolios of size 4 and 8. For the largest portfolio size (portfolios
+of size 16) the industry and correlation clusters had the lowest standard
+deviations (the same outcome as periods two and three).
+
+14
+
+Number of
+
+Stocks
+
+Industry and
+Random Industry Correlation Correlation
+
+ANOVA
+
+(Levene) test
+
+in Portfolios Selection Grouping
+
+Clusters
+
+Clusters
+
+2
+
+4
+
+8
+
+16
+
+2.2
+(154)
+229
+(118)
+218
+(75)
+219
+(53)
+
+211
+(164)
+200
+(105)
+210
+(74)
+207
+(50)
+
+241
+(173)
+235
+(113)
+233
+(82)
+232
+(53)
+
+237
+(166)
+233
+(118)
+234
+(84)
+234
+(41)
+
+p-value
+<0.001
+(0.227)
+<0.001
+(<0.001)
+<0.001
+(0.003)
+<0.001
+(<0.001)
+
+Table 4: Returns in percent under the four diﬀerent portfolio selection meth-
+ods for period four using period three data for the estimation of the correla-
+tions. Underneath each set of returns, in brackets, is the standard deviation
+of the returns. The ﬁnal column reports the p-value of the ANOVA anal-
+ysis which tests for diﬀerences in the means or the Levene test which tests
+whether the standard deviations of all four methods are equal as appropriate.
+
+Therefore this suggests that the correlation clusters (or industry and corre-
+lation clusters) are particularly eﬀective in times of general market increase,
+with the beneﬁt being either a reduction in the variation or an increase in
+the return.
+
+This study shows that combining industry and correlation clusters is par-
+ticularly eﬀective at lowering the variation for the larger portfolios, with all
+three periods showing a much lower variation for portfolios of size 16, as well
+as reasonable returns. This is in line with general advice to investors to hold
+larger portfolios and to ensure the holdings are diversiﬁed.
+
+7 Discussion
+
+An earlier paper (Rea and Rea, 2014) introduced Neighbor-Net networks as
+a method for visualising correlations in stock markets. The method has the
+advantage of being able to represent a lot of the key features of the correlation
+matrix in a planar graphic. The paper noted that such a diagram could
+assist with creating diversiﬁed portfolios. This paper has highlighted the
+eﬀectiveness of using correlation clusters to investigate diversiﬁed portfolios.
+
+15
+
+In this paper four risk budgeting methods of portfolio selection were com-
+pared; randomly selected portfolios, industry clusters, correlation clusters
+and industry and correlation clusters. Traditionally selecting stocks by in-
+dustry was considered an appropriate method to diversify a portfolio. While
+this may be the case in some markets and under some market conditions, this
+investigation demonstrated that industry based clusters was generally out-
+performed by portfolios selected at random, however the portfolios selected
+using industry grouping may have lower variance in times of market increase
+compared with random selection.
+
+Of the four, the most restrictive method of selecting portfolios was the in-
+dustry and correlation cluster selection method. With the random selection
+method all possible combinations of n stocks from the 126 stocks are allow-
+able but for the industry and correlation cluster selection method, there are
+many portfolios that are not admissible because they do not meet the rules of
+this portfolio selection method. The industry grouping and correlation clus-
+ter methods are also restrictive but less so than the industry and correlation
+clusters method.
+
+The main concern was whether the rules of portfolio selection presented here
+oﬀer signiﬁcant beneﬁts.
+If a diﬀerence in mean was detected, the corre-
+lation clusters or industry and correlation clusters method may outperform
+the other methods on mean return. This eﬀect was most pronounced in the
+period four out of sample testing where the returns for the correlations clus-
+ters and industry and correlation clusters method always exceeded random
+portfolio selection. Therefore the knowledge of the circular ordering can be
+used to enhance portfolio returns.
+
+The variation in the returns for portfolios of size 16 was always lowest if the
+method of portfolio selection was Industry and Correlation Cluster selection.
+For the other portfolio sizes the variation with a method decreases as the
+portfolio size increases, but no one method consistently outperforms the oth-
+ers. This suggests portfolio size has a greater impact on the variation of the
+returns than the method used to select of the portfolio.
+
+Rea and Rea (2014) discussed how stocks from the opposite side of the
+Neighbor-Net network did not necessarily create a portfolio with high re-
+turns because some stocks maybe giving negative returns while one on the
+opposite side of the network may be giving positive returns. Dividing the
+data into four periods in the manner we did, represents a particularly severe
+test of diversiﬁcation, particularly since no account was taken of either his-
+torical or expected returns of the stocks. It is our expectation that investor
+
+16
+
+knowledge and analysis alongside correlation cluster based portfolio selection
+has the potential to improve the return of the portfolio, as well as reduce the
+variance (or equivalently, the standard deviation). But this awaits further
+research.
+
+We note that the correlation clusters were determined by eye in this analysis.
+This is a valid method of determining clusters, exploiting both the structure
+of the network and the circular ordering of stocks the neighbor-Net algorithm
+produces. Future work could focus on methods to automate the selection of
+the correlation clusters to see if this further enhances the portfolio perfor-
+mance.
+
+References
+
+Bai, Y. and C. J. Green (2010). International Diversiﬁcation Strategies: Re-
+visited from the Risk Perspective. The Journal of Banking and Finance 34,
+236–245.
+
+Bali, T. G., N. Cakici, X. Yan, and Z. Zhang (2005). Does Idiosyncratic Risk
+
+Really Matter? The Journal of Finance 60 (2), 905–929.
+
+Barber, B. M. and T. Odean (2008). All That Glitters: The Eﬀect of At-
+tention and News on the Buying Behaviour of Individual and Institutional
+Investors. The Review of Financial Studies 21 (2), 785–818.
+
+Benzoni, L., P. Collin-Dufresne, and R. S. Goldstein (2007). Portfolio Choice
+over the Life-Cycle when the Stock and Labor Markets are Cointegrated.
+The Journal of Finance 62 (5), 2123–2167.
+
+Bergqvist, J., O. Forsman, P. L. andJ. Naslund, T. Lilga, C. Engdahl,
+A. Lindstrom, A. Gylfe, C. Ahlm, M. Evanders, and G. Bucht (2015).
+Detection and isolation of sindbis virus from mosquitoes captured during
+an outbreak in sweded. Vector-borne and Zoonotic Diseases 15 (2), 133–
+140.
+
+Bryant, D. and V. Moulton (2004). Neighbor-net: An agglomerative method
+for the construction of phylogenetic networks. Molecular Biology and Evo-
+lution 21 (2), 255–265.
+
+Cont, R. (2001). Empirical properties of asset returns: stylized facts and
+
+statistical issues. Quantitative Finance 1:2, 223–236.
+
+17
+
+Domian, D. L., D. A. Louton, and M. D. Racine (2007). Diversiﬁcation in
+Portfolios of Individual Stocks: 100 Stocks Are Not Enough. The Financial
+Review 42, 557–570.
+
+Emadzade, K., M. J. Lebmann, M. H. Hoﬀmann, N. Tkach, F. A. Lone,
+and E. Horandi (2015). Phylogenetic relationships and evolution of high
+mountain buttercups (ranunculus) in north america and central asia. Per-
+spectives in Plant Ecology, Evolution and Systematics 17, 131–141.
+
+Evans, J. L. and S. H. Archer (1968). Diversiﬁcation and the Reduction
+of Dispersion: An Empirical Analysis. The Journal of Finance 23 (5),
+761–767.
+
+Fama, E. F. and K. R. French (1992). The Cross-Section of Expected Stock
+
+Returns. The Journal of Finance 47 (2), 427–465.
+
+French, K. R. and E. F. Fama (1993). Common Risk Factors in the Returns
+
+on Stocks and Bonds. Journal of Financal Economics 33, 3–56.
+
+Gastwirth, J. L., Y. R. Gel, W. L. W. Hui, V. Lyubchich, W. Miao, and
+K. Noguchi (2013). lawstat: An R package for biostatistics, public policy,
+and law. R package version 2.4.1.
+
+Goyal, A. and P. Santa-Clara (2003).
+Journal of Finance 58 (3), 975–1007.
+
+Idiosyncratic Risk Matters! The
+
+Gray, R., D. Bryant, and S. J. Greenhill. (2010). On the shape and fabric
+of human history. Philosophical Transactions of the Royal Society B 365,
+3923–3933.
+
+Heggarty, P., W. Maguire, and A. McMahon (2010). Splits or waves? trees
+or webs? how convergence measures and network analysis can unravel
+language histories. Philosophical Transactions of the Royal Society B 365,
+3829–3843.
+
+Huson, D. H. and D. Bryant (2006). Application of phylogenetic networks in
+
+evolutionary studies. Molecular Biology and Evolution 23 (2), 254–267.
+
+Jordan, P. and S. O’Neil (2010). Untangling cultural inheritance: language
+diversity and long-house architecture on the paciﬁc northwest coast. Philo-
+sophical Transactions of the Royal Society B 365, 3875–3888.
+
+Jorion, P. (1985).
+
+International Portfolio Diversiﬁcation with Estimation
+
+Risk. The Journal of Business 58 (3), 259–278.
+
+18
+
+Knooihuizen, R. and D. Dediu (2012). Historical demography and historical
+sociolinguistics: The role of migrant integration in the development of
+dunkirk french in the 17th century. Language Dynamics and Change 2 (1),
+1–33.
+
+Lee, W. (2011). Risk-Based Asset Allocation: A New Answer to an Old
+
+Question? Journal of Portfolio Management 37 (4), 11–28.
+
+Lowenfeld, H. (1909). Investment, an Exact Science. Financial Review of
+
+Reviews.
+
+Mantegna, R. N. (1999). Hierarchical structure in ﬁnancial markets. The
+
+European Physical Journal B 11, 193–197.
+
+Markowitz, H. M. (1991). Portfolio Selection: Eﬃcient Diversiﬁcation of
+
+Investments 2nd Edition. Wiley.
+
+Markowtiz, H. (1952). Portfolio Selection. The Journal of Finance 7 (1),
+
+77–91.
+
+Prentiss, A. M., R. R. Skelton, N. Eldredge, and C. Quinn (2011). Get rad!
+
+the evolution of the skateboard deck. Evo Edu Outreach 4, 379–389.
+
+Rea, A. and W. Rea (2014). Visualization of a stock market correlation
+
+matrix. Physica A 400, 109–123.
+
+Ross, R. M., S. J. Greenhill, and Q. D. Atkinson (2013). Population structure
+and cultural geography of a folktale in europe. Proceedings of the Royal
+Society B (280), 1756.
+
+Schwarz, R. F., C. K. Y. Ng, S. L. Cooke, S. Newman, J. Temple, A. M.
+Piskorz, D. Gale, K. Sayal, M. Murtaza, P. J. Baldwin, N. Rosenfeld,
+H. M. Earl, E. Sala, M. Jimenez-Linan, C. A. Parkinson, F. Markowetz,
+and J. D. Brenton (2015). Spatial and temporal heterogeneity in high-
+grade serous ovarian cancer: A phylogenetic analysis. PLoS Med 12 (2),
+e1001789.
+
+Tehrani, J. J. (2013). The phylogeny of little red riding hood. PLoS
+
+ONE 8 (11), e78871.
+
+19
+
+Figure 3: SplitsTree network for 126 stocks from the Shanghai A Stock Ex-
+change for period one using ﬁve trading day returns to estimate correlations
+and hence distances with the stocks in cluster one colour coded. The eight
+correlation clusters each have diﬀerent colours. In the discussion the clusters
+are coded as follows; Cluster 1 – Black, Cluster 2 – Blue, Cluster 3 – Purple,
+Cluster 4 – Red, Cluster 5 - Khaki, Cluster 6 – Green, Cluster 7 – Aqua,
+Cluster 8 – Yellow.
+
+20
+
+HJTG_ESHZJ_FKMPH_HBJSL_HHLBE_HCHRW_IBJTR_HCSSC_IADTM_MTYCG_EZJJH_MCSGH_MBDTW_IXAAE_ICMSB_FTLNM_MSDDE_HSXCI_ISHZH_ISCHD_MSZLN_MJCPR_MBJTN_MSDNS_MXMTS_MYTIN_MYNCP_MOFFS_ENRTE_ITSLP_HJXHD_IGXWZ_HSNCH_IJLAD_HLNCD_ICTSC_FSHDT_EHNZF_MYZCM_ECCFM_MHNSH_MJZER_ESXXS_ESXLH_EYQCI_EGZPJ_EGHEG_FYNAL_MBSRE_MCHSS_ISTCM_IMMTL_IXMCD_ISHIT_IGXLG_ISHCT_FGJHX_MJSZN_IIMPZ_EYYTH_MXXDI_MTBEA_IYTWH_MQHSL_MHBIS_MIMBT_MBSIS_MZJNH_HPGGS_MSHCG_IHTSC_FCRDP_HZJHS_HJSHM_HZLHS_IHYSC_FBJCT_FSHFS_HSWSC_FCIMC_ISNUS_FYNBY_HAHCC_MSHIA_ISXTG_MCGZB_IAGST_MWHIS_MLXVC_ITSJD_MCHBA_FJLYT_MNESC_FFCNM_MSNLS_FHYPC_MCAAE_IRSNM_MHNAL_ICHEA_ICSAL_INCPH_HGYSC_FXCMG_ISZBK_FCMBK_FSHPD_FHXBK_FFCSH_FCHMT_FCHVK_FGMDL_FCHPC_ECJSC_FOWRG_FHRBP_HCATL_ITYHI_ICRSJ_HHBYH_MDFET_IXAAI_IGFSC_FZJMC_HXHZB_FBEJU_F0.1Figure 4: The SplitsTree network for the Shanghai A Stock Exchange for
+period one with the stocks in cluster one colour coded by industry group. The
+colours are Energy - Black, Finance – Blue, Health Care – Red, Industrials
+– Khaki, Materials – Green.
+
+21
+
+HJTG_ESHZJ_FKMPH_HBJSL_HHLBE_HCHRW_IBJTR_HCSSC_IADTM_MTYCG_EZJJH_MCSGH_MBDTW_IXAAE_ICMSB_FTLNM_MSDDE_HSXCI_ISHZH_ISCHD_MSZLN_MJCPR_MBJTN_MSDNS_MXMTS_MYTIN_MYNCP_MOFFS_ENRTE_ITSLP_HJXHD_IGXWZ_HSNCH_IJLAD_HLNCD_ICTSC_FSHDT_EHNZF_MYZCM_ECCFM_MHNSH_MJZER_ESXXS_ESXLH_EYQCI_EGZPJ_EGHEG_FYNAL_MBSRE_MCHSS_ISTCM_IMMTL_IXMCD_ISHIT_IGXLG_ISHCT_FGJHX_MJSZN_IIMPZ_EYYTH_MXXDI_MTBEA_IYTWH_MQHSL_MHBIS_MIMBT_MBSIS_MZJNH_HPGGS_MSHCG_IHTSC_FCRDP_HZJHS_HJSHM_HZLHS_IHYSC_FBJCT_FSHFS_HSWSC_FCIMC_ISNUS_FYNBY_HAHCC_MSHIA_ISXTG_MCGZB_IAGST_MWHIS_MLXVC_ITSJD_MCHBA_FJLYT_MNESC_FFCNM_MSNLS_FHYPC_MCAAE_IRSNM_MHNAL_ICHEA_ICSAL_INCPH_HGYSC_FXCMG_ISZBK_FCMBK_FSHPD_FHXBK_FFCSH_FCHMT_FCHVK_FGMDL_FCHPC_ECJSC_FOWRG_FHRBP_HCATL_ITYHI_ICRSJ_HHBYH_MDFET_IXAAI_IGFSC_FZJMC_HXHZB_FBEJU_F0.1Figure 5: SplitsTree network for study period two with the stocks from cluster
+one, period one coloured. The colours are Energy - Black, Finance – Blue,
+Health Care – Red, Industrials – Khaki, Materials – Green.
+
+22
+
+HJTG_EHBYH_MCATL_ITSLP_HHRBP_HLXVC_ISNCH_IHNAL_ICHEA_IXCMG_ICRDP_HBDTW_ISXCI_IZJNH_HZJMC_HGZPJ_ESHDT_EJZER_EYQCI_ESXXS_ESXLH_EYZCM_EHNSH_MHBIS_MCSGH_MIMBT_MGJHX_MTSJD_MXXDI_MSHCT_FTYCG_EZJJH_MCAAE_INCPH_HPGGS_MJSZN_IHYPC_MGHEG_FJXHD_INESC_FXAAI_IRSNM_MGFSC_FSWSC_FCJSC_FSDDE_HXAAE_IGYSC_FSNLS_FCSSC_IDFET_IJLAD_HLNCD_IHYSC_FCTSC_FHXBK_FCMSB_FSHPD_FCMBK_FSZBK_FTBEA_ICSAL_ICHPC_EWHIS_MBSIS_MAGST_MQHSL_MCIMC_ISXTG_MOFFS_EYTWH_MYNBY_HBJTR_HSHIA_IJSHM_HSHIT_IZLHS_IAHCC_MGXLG_ISHZH_IHLBE_HSTCM_IBSRE_MBJTN_MSDNS_MYNAL_MTLNM_MYNCP_MJCPR_MSZLN_MSCHD_MYTIN_MXMTS_MCCFM_MMMTL_IYYTH_MCGZB_IBJSL_HHNZF_MSNUS_FHTSC_FFCNM_MCHRW_IXMCD_IBJCT_FOWRG_FCHMT_FGMDL_FCHVK_FFCSH_FXHZB_FBEJU_FSHZJ_FCHBA_FCHSS_ISHFS_HZJHS_HGXWZ_HNRTE_ITYHI_IIMPZ_ECRSJ_HKMPH_HADTM_MSHCG_IJLYT_M0.1Figure 6: SplitsTree network for study period three with the stocks in cluster
+one, period one coloured. The colours are Energy - Black, Finance – Blue,
+Health Care – Red, Industrials – Khaki, Materials – Green.
+
+23
+
+HJTG_EXAAE_IYYTH_MQHSL_MRSNM_MPGGS_MCAAE_IGFSC_FHYPC_MNCPH_HBJTR_HSDDE_HZJHS_HHLBE_HTSLP_HBJSL_HHRBP_HYNBY_HJSHM_HCRSJ_HCRDP_HKMPH_HSHFS_HGXWZ_HZJMC_HZJNH_HADTM_MMMTL_ICCFM_MXMTS_MBSRE_MBJTN_MFCNM_MHBYH_MYTWH_MSHIA_IOFFS_ESNCH_IIMPZ_ESXLH_EYQCI_ESXXS_EYZCM_ESHDT_EHNSH_MTYCG_EGZPJ_EJZER_ESXCI_ISCHD_MYNCP_MTLNM_MJCPR_MSZLN_MYTIN_MSDNS_MYNAL_MHNZF_MXXDI_MCSSC_ICIMC_ICHPC_EIMBT_MWHIS_MBSIS_MAGST_MGJHX_MSXTG_MHBIS_MSZBK_FCMSB_FCMBK_FSHPD_FHXBK_FCHRW_ISHZH_ISWSC_FHTSC_FCJSC_FHYSC_FGYSC_FNESC_FSNLS_FCTSC_FJLAD_HLNCD_ICHBA_FTYHI_IJLYT_MXCMG_ISHIT_IZLHS_IGXLG_ISTCM_ITSJD_MAHCC_MCATL_ISHCG_ICGZB_ISHCT_FSHZJ_FXMCD_IXHZB_FJSZN_IFCSH_FCHVK_FOWRG_FGMDL_FCHMT_FBJCT_FSNUS_FBEJU_FHNAL_ICSAL_ICHEA_ILXVC_INRTE_ITBEA_IDFET_IBDTW_ICSGH_MZJJH_MXAAI_IJXHD_IGHEG_FCHSS_I0.1Figure 7: SplitsTree network for study period four with the stocks in cluster
+one, period one coloured. The colours are Energy - Black, Finance – Blue,
+Health Care – Red, Industrials – Khaki, Materials – Green.
+
+24
+
+HJTG_EXAAI_IJXHD_IRSNM_MCCFM_MMMTL_IXMTS_MBSRE_MADTM_MBJTN_MFCNM_MHBYH_MXXDI_MHNZF_MYNAL_MSDNS_MYTIN_MSZLN_MJCPR_MTLNM_MYNCP_MSCHD_MYQCI_EYZCM_ESHDT_ESXLH_EHNSH_MTYCG_ESXXS_EGZPJ_EJZER_ESXCI_IIMPZ_ESNCH_ISHIA_ILNCD_IJLAD_HCTSC_FSNLS_FNESC_FGYSC_FHYSC_FCJSC_FHTSC_FSWSC_FSHZH_ISZBK_FCMSB_FCMBK_FSHPD_FHXBK_FCHRW_IHBIS_MSXTG_MGJHX_MAGST_MBSIS_MWHIS_MIMBT_MCHPC_ECIMC_ICSSC_IOFFS_EBEJU_FBJCT_FCHMT_FGMDL_FOWRG_FCHVK_FFCSH_FSNUS_FJSZN_IXHZB_FXMCD_ISHZJ_FSHCT_FCGZB_ISHCG_IXCMG_IGXLG_ISHIT_IZLHS_ISTCM_ITSJD_MAHCC_MCATL_IJLYT_MCHBA_FTYHI_IZJJH_MBDTW_ICSGH_MYTWH_MHNAL_ICSAL_ICHEA_IDFET_ITBEA_INRTE_ILXVC_IZJNH_HZJMC_HGXWZ_HSHFS_HBJSL_HHRBP_HTSLP_HYNBY_HJSHM_HCRSJ_HCRDP_HKMPH_HHLBE_HZJHS_HSDDE_HBJTR_HNCPH_HHYPC_MQHSL_MGFSC_FCAAE_IPGGS_MYYTH_MXAAE_IGHEG_FCHSS_I0.1Figure 8: SplitsTree network for study period one with the stocks in the
+materials sector coloured green.
+
+25
+
+HJTG_ESHZJ_FKMPH_HBJSL_HHLBE_HCHRW_IBJTR_HCSSC_IADTM_MTYCG_EZJJH_MCSGH_MBDTW_IXAAE_ICMSB_FTLNM_MSDDE_HSXCI_ISHZH_ISCHD_MSZLN_MJCPR_MBJTN_MSDNS_MXMTS_MYTIN_MYNCP_MOFFS_ENRTE_ITSLP_HJXHD_IGXWZ_HSNCH_IJLAD_HLNCD_ICTSC_FSHDT_EHNZF_MYZCM_ECCFM_MHNSH_MJZER_ESXXS_ESXLH_EYQCI_EGZPJ_EGHEG_FYNAL_MBSRE_MCHSS_ISTCM_IMMTL_IXMCD_ISHIT_IGXLG_ISHCT_FGJHX_MJSZN_IIMPZ_EYYTH_MXXDI_MTBEA_IYTWH_MQHSL_MHBIS_MIMBT_MBSIS_MZJNH_HPGGS_MSHCG_IHTSC_FCRDP_HZJHS_HJSHM_HZLHS_IHYSC_FBJCT_FSHFS_HSWSC_FCIMC_ISNUS_FYNBY_HAHCC_MSHIA_ISXTG_MCGZB_IAGST_MWHIS_MLXVC_ITSJD_MCHBA_FJLYT_MNESC_FFCNM_MSNLS_FHYPC_MCAAE_IRSNM_MHNAL_ICHEA_ICSAL_INCPH_HGYSC_FXCMG_ISZBK_FCMBK_FSHPD_FHXBK_FFCSH_FCHMT_FCHVK_FGMDL_FCHPC_ECJSC_FOWRG_FHRBP_HCATL_ITYHI_ICRSJ_HHBYH_MDFET_IXAAI_IGFSC_FZJMC_HXHZB_FBEJU_F0.1Figure 9: SplitsTree network for study period two with the stocks in the
+materials sector coloured green.
+
+26
+
+HJTG_EHBYH_MCATL_ITSLP_HHRBP_HLXVC_ISNCH_IHNAL_ICHEA_IXCMG_ICRDP_HBDTW_ISXCI_IZJNH_HZJMC_HGZPJ_ESHDT_EJZER_EYQCI_ESXXS_ESXLH_EYZCM_EHNSH_MHBIS_MCSGH_MIMBT_MGJHX_MTSJD_MXXDI_MSHCT_FTYCG_EZJJH_MCAAE_INCPH_HPGGS_MJSZN_IHYPC_MGHEG_FJXHD_INESC_FXAAI_IRSNM_MGFSC_FSWSC_FCJSC_FSDDE_HXAAE_IGYSC_FSNLS_FCSSC_IDFET_IJLAD_HLNCD_IHYSC_FCTSC_FHXBK_FCMSB_FSHPD_FCMBK_FSZBK_FTBEA_ICSAL_ICHPC_EWHIS_MBSIS_MAGST_MQHSL_MCIMC_ISXTG_MOFFS_EYTWH_MYNBY_HBJTR_HSHIA_IJSHM_HSHIT_IZLHS_IAHCC_MGXLG_ISHZH_IHLBE_HSTCM_IBSRE_MBJTN_MSDNS_MYNAL_MTLNM_MYNCP_MJCPR_MSZLN_MSCHD_MYTIN_MXMTS_MCCFM_MMMTL_IYYTH_MCGZB_IBJSL_HHNZF_MSNUS_FHTSC_FFCNM_MCHRW_IXMCD_IBJCT_FOWRG_FCHMT_FGMDL_FCHVK_FFCSH_FXHZB_FBEJU_FSHZJ_FCHBA_FCHSS_ISHFS_HZJHS_HGXWZ_HNRTE_ITYHI_IIMPZ_ECRSJ_HKMPH_HADTM_MSHCG_IJLYT_M0.1Figure 10: SplitsTree network for study period three with the stocks in the
+materials sector coloured green.
+
+27
+
+HJTG_EXAAE_IYYTH_MQHSL_MRSNM_MPGGS_MCAAE_IGFSC_FHYPC_MNCPH_HBJTR_HSDDE_HZJHS_HHLBE_HTSLP_HBJSL_HHRBP_HYNBY_HJSHM_HCRSJ_HCRDP_HKMPH_HSHFS_HGXWZ_HZJMC_HZJNH_HADTM_MMMTL_ICCFM_MXMTS_MBSRE_MBJTN_MFCNM_MHBYH_MYTWH_MSHIA_IOFFS_ESNCH_IIMPZ_ESXLH_EYQCI_ESXXS_EYZCM_ESHDT_EHNSH_MTYCG_EGZPJ_EJZER_ESXCI_ISCHD_MYNCP_MTLNM_MJCPR_MSZLN_MYTIN_MSDNS_MYNAL_MHNZF_MXXDI_MCSSC_ICIMC_ICHPC_EIMBT_MWHIS_MBSIS_MAGST_MGJHX_MSXTG_MHBIS_MSZBK_FCMSB_FCMBK_FSHPD_FHXBK_FCHRW_ISHZH_ISWSC_FHTSC_FCJSC_FHYSC_FGYSC_FNESC_FSNLS_FCTSC_FJLAD_HLNCD_ICHBA_FTYHI_IJLYT_MXCMG_ISHIT_IZLHS_IGXLG_ISTCM_ITSJD_MAHCC_MCATL_ISHCG_ICGZB_ISHCT_FSHZJ_FXMCD_IXHZB_FJSZN_IFCSH_FCHVK_FOWRG_FGMDL_FCHMT_FBJCT_FSNUS_FBEJU_FHNAL_ICSAL_ICHEA_ILXVC_INRTE_ITBEA_IDFET_IBDTW_ICSGH_MZJJH_MXAAI_IJXHD_IGHEG_FCHSS_I0.1Figure 11: SplitsTree network for study period four with the stocks in the
+materials sector coloured green.
+
+28
+
+HJTG_EXAAI_IJXHD_IRSNM_MCCFM_MMMTL_IXMTS_MBSRE_MADTM_MBJTN_MFCNM_MHBYH_MXXDI_MHNZF_MYNAL_MSDNS_MYTIN_MSZLN_MJCPR_MTLNM_MYNCP_MSCHD_MYQCI_EYZCM_ESHDT_ESXLH_EHNSH_MTYCG_ESXXS_EGZPJ_EJZER_ESXCI_IIMPZ_ESNCH_ISHIA_ILNCD_IJLAD_HCTSC_FSNLS_FNESC_FGYSC_FHYSC_FCJSC_FHTSC_FSWSC_FSHZH_ISZBK_FCMSB_FCMBK_FSHPD_FHXBK_FCHRW_IHBIS_MSXTG_MGJHX_MAGST_MBSIS_MWHIS_MIMBT_MCHPC_ECIMC_ICSSC_IOFFS_EBEJU_FBJCT_FCHMT_FGMDL_FOWRG_FCHVK_FFCSH_FSNUS_FJSZN_IXHZB_FXMCD_ISHZJ_FSHCT_FCGZB_ISHCG_IXCMG_IGXLG_ISHIT_IZLHS_ISTCM_ITSJD_MAHCC_MCATL_IJLYT_MCHBA_FTYHI_IZJJH_MBDTW_ICSGH_MYTWH_MHNAL_ICSAL_ICHEA_IDFET_ITBEA_INRTE_ILXVC_IZJNH_HZJMC_HGXWZ_HSHFS_HBJSL_HHRBP_HTSLP_HYNBY_HJSHM_HCRSJ_HCRDP_HKMPH_HHLBE_HZJHS_HSDDE_HBJTR_HNCPH_HHYPC_MQHSL_MGFSC_FCAAE_IPGGS_MYYTH_MXAAE_IGHEG_FCHSS_I0.1A Stock Codes and Industry Segments
+
+Table 5: Stock market codes and company names and
+Industrial sector of stocks in the study.
+
+Company Name
+China Ptl. & Chm.
+Guizhou Panjiang Coal
+Inner Mongolia Pingzhuang En. Rso.
+Jizhong Energy Res.
+Liaoning Hjtg. Chems.
+Oﬀs. Oil Engr.
+Shai Datun Energy Res.
+Shanxi Lanhua Sci-Tech Venture
+Shanxi Xishan
+Taiyuan Coal Gasiﬁcation
+Yangquan Coal
+Yanzhou Coal Mining
+Beijing Capital Dev.
+Bej. Urban Con. Inv. Dev.
+Changjiang Securities
+China Baoan Gp.
+China Merchants Bank
+China Merchants Pr. Dev.
+China Minsheng Banking
+China Vanke
+Citic Securities
+Financial Str. Sldg.
+Gemdale
+GF Securities
+Guanghui Energy
+Guoyuan Securities
+Haitong Securities
+Hong Yuan Secs.
+Huaxia Bank
+Northeast Securities
+Oceanwide Rlst. Group
+Shai. Chengtou Hldg.
+Shai. Pudong Dev. Bk.
+Shai. Zhangjiang
+
+29
+
+Company Code
+CHPC-E
+GZPJ-E
+IMPZ-E
+JZER-E
+HJTG-E
+OFFS-E
+SHDT-E
+SXLH-E
+SXXS-E
+TYCG-E
+YQCI-E
+YZCM-E
+BJCT-F
+BEJU-F
+CJSC-F
+CHBA-F
+CMBK-F
+CHMT-F
+CMSB-F
+CHVK-F
+CTSC-F
+FCSH-F
+GMDL-F
+GFSC-F
+GHEG-F
+GYSC-F
+HTSC-F
+HYSC-F
+HXBK-F
+NESC-F
+OWRG-F
+SHCT-F
+SHPD-F
+SHZJ-F
+
+Industry Group
+Energy
+Energy
+Energy
+Energy
+Energy
+Energy
+Energy
+Energy
+Energy
+Energy
+Energy
+Energy
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+Finance
+
+Table 5: Stock market codes and company names and
+Industrial sector of stocks in the study.
+
+Company Code
+Company Name
+SZBK-F
+Shenzhen Dev. Bank
+SNLS-F
+Sinolink Securities
+SWSC-F
+Southwest Securities
+SNUS-F
+Suning Universal
+XHZB-F
+Xinhu Zhongbao
+BJSL-H
+Beijing Sl Pharmaceutical
+BJTR-H
+Beijing Tongrentang
+CRDP-H
+China Res. Dble. Crane Pharm.
+CRSJ-H
+China Res. Sanjiu Med.& pharm.
+GXWZ-H
+Guangxi Wuzhou Zhongheng
+HRBP-H
+Harbin Pharms. Gp.
+HLBE-H
+Hualan Biological Engr.
+JSHM-H
+Jiangsu Hengrui Medicine
+JLAD-H
+Jilin Aodong Pharm. Gp.
+KMPH-H
+Kangmei Pharm.
+NCPH-H
+North China Pharm.
+SHFS-H
+Shai. Fosun Pharm. Group
+SDDE-H
+Shan Dong Dong E-Jiao
+TSLP-H
+Tasly Pharmaceutical
+YNBY-H
+Yunnan Baiyao Gp.
+ZJHS-H
+Zhejiang Hisun Pharm.
+ZJMC-H
+Zhejiang Medicine
+ZJNH-H
+Zhejiang Nhu
+BDTW-I
+Baoding Tianwei Baobian Elec.
+CAAE-I
+China Avic Avionics Equ.
+CSSC-I
+China Cssc Hdg.
+CHEA-I
+China Eastern Airl.
+CGZB-I
+China Gezhouba Group
+CIMC-I
+China Intl.Mar.Ctrs.
+China Railway Erju
+CHRW-I
+China Railway Tielong Container Logistic CATL-I
+CSAL-I
+China Southern Airlines
+CHAA-I
+China Spacesat
+DFET-I
+Dongfang Electric
+Guangxi Liugong Mch
+GXLG-I
+HNAL-I
+Hainan Airlines
+Jiangsu Zhongnan Con.
+JSZN-I
+
+Industry Group
+Finance
+Finance
+Finance
+Finance
+Finance
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Health Care
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+
+30
+
+Table 5: Stock market codes and company names and
+Industrial sector of stocks in the study.
+
+Company Name
+Jiangxi Hongdu Aviation
+Liaoning Chengda
+Luxin Venture Cap. Gp.
+Minmetals Dev.
+Nari Tech. Dev.
+Sany Heavy Industry
+Shai. Shenhua Heavy Ind.
+Shanghai Con. Group
+Shanghai Intl. Arpt.
+Shantui Con. Mch.
+Shanxi Coal Intl.
+Sinochem Intl.
+Taiyuan Hvy. Ind.
+Tbea
+Xcmg Con. Machinery
+Xi’an Aero-Engine
+Xi’an Air.Intl.
+Xiamen C & D
+Zoomlion Hdy. Sctc.
+Advd. Tech.& Mats.
+Angang Steel
+Anhui Conch Cmt.
+Baoji Titanium Ind.
+Baoshan Iron & Stl.
+China Nonferrous Mtl.
+Csg Holding
+Fangda Cbn. New Mra.
+Gan Jiu Stl. Gp. Hongxing
+Ginghai Salt Lake Ind.
+Industrial Sichuan Hongda
+Inmong. Baotou Stl. Rare Earth
+Hebei Iron & Steel
+Henan Shenhuo Caa. & Pwr.
+Henan Zhongfu Indl.
+Hengyi Petrochemical
+Hubei Yihua Chm. Ind.
+Inner Mongolia Baotou Steel Union
+
+31
+
+Company Code
+JXHD-I
+LNCD-I
+LXVC-I
+MMTL-I
+NRTE-I
+SHIT-I
+SHZH-I
+SHCG-I
+SHIA-I
+STCM-I
+SXCI-I
+SNCH-I
+TYHI-I
+TBEA-I
+XCMG-I
+XAAE-I
+XAAI-I
+XCMD-I
+ZLHS-I
+ADTM-M
+AGST-M
+AHCC-M
+BJTN-M
+BSIS-M
+CCFM-M
+CSGH-M
+FCNM=M
+GJHX-M
+QHSL-M
+SCHD-M
+BSRE-M
+HBIS-M
+HNSH-M
+HNZF-M
+HYPC-M
+HBYH-M
+IMBT-M
+
+Industry Group
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Industrial
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+
+Table 5: Stock market codes and company names and
+Industrial sector of stocks in the study.
+
+Company Name
+Jiangxi Cpr.
+Jilin Yatai Group
+Pangang Gp. Stl. Vmtm.
+Rising Nonfr. Mtls
+Shandong Nanshan Almn.
+Shanxi Taigang Stl.
+Shn. Zhongjin Lingnan Nonfemet
+Tangshan Jidong Cmt.
+Tongling Nonfr. Mtls. Gp.
+Xiamen Tungsten
+Xinxing Ductile Iron
+Yantai Wanhua Polyuretha
+Yunnan Alum.
+Yunnan Copper
+Yunnan Tin
+Yunnan Yuntianhua
+Wuhan Iron and Steel
+Zhejiang Juhua
+
+Company Code
+JCPR-M
+JLYT-M
+PGGS-M
+RSNM-M
+SDNS-M
+SXTG-M
+SZLN-M
+TSJD-M
+TLNM-M
+XMTS-M
+XXDI-M
+YTWH-M
+YNAL-M
+YNCP-M
+YTIN-M
+YYTH-M
+WHIS-M
+ZJJH-M
+
+Industry Group
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+Materials
+
+B Stocks in Each Cluster
+
+B.1 Period 1
+
+Cluster1: YZCM E, SXCI I, OFFS E, SCHD M, JCPR M, SHZH I, YNCP M,
+
+JXHD I, CCFM M, BJTN M, GXWZ H, SNCH I, XMTS M, YTIN M,
+HNZF M, JLAD H, TSLP H, LNCD I, NRTE I, CTSC F, SZLN M,
+SHDT E, SDNS M
+
+Cluster2: XAAE I, CSSC I, TYCG E, CSGH M, ADTM M, SDDE H, CMSB F,
+
+BDTW I, CHRW I, BJTR H, TLNM M, ZJJH M
+
+Cluster3: BEJU F, KMPH H, ZJMC H, HJTG E, SHZJ F, XAAI I, TYHI I,
+
+CATL I, BJSL H, CRSJ H, DFET I, HLBE H, XHZB F, HBYH M,
+HRBP H, GFSC F
+
+32
+
+Cluster4: CMBK F, CJSC F, OWRG F, HXBK F, CHMT F, FCSH F, SZBK F,
+
+GMDL F, CHPC E, SHPD F, CHVK F
+
+Cluster5: JLYT M, CSAL I, SNUS F, NESC F, AHCC M, ZLHS I, HNAL I,
+
+XCMG I, GYSC F, SXTG M, BJCT F, ZJHS H, JSHM H, CRDP H,
+CGZB I, FCNM M, SNLS F, TSJD M, YNBY H, WHIS M, SHFS H,
+CHEA I, CAAE I, HYPC M, CHBA F, SWSC F, HYSC F, CIMC I,
+AGST M, RSNM M, SHIA I, NCPH H, LXVC I
+
+Cluster6: BSIS M, HTSC F, HBIS M, SHCG I, PGGS M, IMBT M, TBEA I,
+
+QHSL M, ZJNH H, YTWH M
+
+Cluster7: YYTH M, XMCD I, CHSS I, JSZN I, XXDI M, GXLG I, SHIT I,
+
+SHCT F, STCM I, GJHX M, IMPZ E, MMTL I
+
+Cluster8: YNAL M, SXLH E, BSRE M, JZER E, SXXS E, YQCI E, GHEG F,
+
+HNSH M, GZPJ E
+
+33
+
+

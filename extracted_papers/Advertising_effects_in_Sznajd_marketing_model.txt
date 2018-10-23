@@ -1,0 +1,297 @@
+2
+0
+0
+2
+
+ 
+l
+u
+J
+ 
+
+6
+
+ 
+ 
+]
+h
+c
+e
+m
+
+-
+t
+a
+t
+s
+.
+t
+a
+m
+-
+d
+n
+o
+c
+[
+ 
+ 
+
+1
+v
+1
+8
+1
+7
+0
+2
+0
+/
+t
+a
+m
+-
+d
+n
+o
+c
+:
+v
+i
+X
+r
+a
+
+Advertising eﬀects in Sznajd marketing model
+
+Institute for Theoretical Physics, Cologne University
+
+Christian Schulze
+
+D-50923 K¨oln, Euroland
+
+June 24, 2018
+
+e-mail: ab127@uni-koeln.de
+
+Abstract: The traditional Sznajd model, as well as its Ochrombel sim-
+pliﬁcation for opinion spreading, are applied to marketing with the help of
+advertising. The larger the lattice is the smaller is the amount of advertising
+needed to convince the whole market.
+
+Keywords: Econophysics, sociophysics, marketing, advertising
+
+Science models like percolation have been applied to marketing by word-
+of-mouth [1] as well as advertising through mass media [2]. The present work
+applies the Sznajd model of consensus building [3] (see [4] for a review) to
+the same problem. How strong has the advertising to be in order to help one
+of two products to win the whole market even though initially this product
+is in the minority ?
+
+In the Sznajd model as used here, initially a random fraction p of the sites
+of a square lattice are customers of product A, while the remaining fraction
+1 − p of customers buy product B. At every iteration (random sequential
+updating) two neighbouring A sites convince their six neighbours to become
+also A sites. In the Ochrombel simpliﬁcation, one A site suﬃces to convince
+its four neighbours [5]. After suﬃciently many iterations in a ﬁnite lattice, all
+customers have settled onto one product. In the Sznajd model this product
+is the one which initially had a slight majority of customers, i.e. product A
+for p > 1/2 and product B for p < 1/2; for the Ochrombel modiﬁcation a
+fraction p of lattices end up with only A sites, the others with only B sites.
+
+1
+
+Figure 1: Number of successes, if advertising is switched on only after t1
+iterations, for 8 iterations. The diﬀerent crosses refer to t2 − t1 = 2, 4, 8, 16
+and 32, which hardly seems to matter.
+
+Advertising is now included by assuming that at each iteration every site
+becomes an A site with probability ǫ. We deﬁne a success as meaning that
+all sites buy A, and a failure as meaning that inspite of the advertising all
+sites buy B for at least one iteration.
+
+Figure 2: Number of successes in Ochrombel simpliﬁcation with diﬀusion.
+From left to right the system size increases.
+
+Diﬀusion makes the model more realistic by assuming [6] that only half
+of the sites are occupied; at each iteration each agent (= occupied site)
+moves into a randomly selected neighbour site if that neighbour is empty.
+(“Diﬀusion” is used here in the physics sense, not in that of Bass marketing
+theory [1]).
+
+Feedback takes into account that advertising is diminished for already
+successful products. The fraction of A customers is called x, that of B cus-
+tomers is y = 1 − x. Then advertising produces an A site no longer with
+probability ǫ but with probability
+
+at iteration t.
+
+ǫy(t)/y(t = 0)
+
+Figure 3: Log-log plot of the level of advertising needed to convert half the
+failures to successes, versus linear lattice dimension L. The line has the slope
+-2.3.
+
+This deﬁnes our advertising model which we now simulate with and with-
+out feedback, using the original Sznajd version, the Ochrombel simpliﬁcation,
+and for Ochrombel also with diﬀusion. We used 1000 diﬀerent samples for
+
+2
+
+each lattice size L × L, L = 31, 53, 71, 101, 301. The initial fraction of A
+agents was always p = 0.4.
+
+For the Sznajd model we found that without advertising nearly all samples
+ended with product B. With ǫ ∼ 0.1 and larger, all samples were successes, i.e.
+the advertising convinced everybody even though initially only a 40 percent
+minority was convinced. Equal numbers of failures and successes were found
+for ǫ ∼ 0.04 and 0.025 for L = 31 and 53 (not shown). Thus already a small
+fraction of advertising is suﬃcient to change nearly all samples from product
+B to product A.
+
+We also simulated “ageing” by having advertising only for t1 < t < t2
+Strong advertising ǫ = 0.5 produced nearly always a success for t1 up to
+10 and was quite useless for t1 > 100 at L = 31, Fig.1; for larger lattices
+the characteristic times are larger. The diﬀerence t2 − t1 ∼ 10 was less
+important. In short, if a mass media campaign starts too late, then word-of-
+mouth propaganda through the standard Sznajd process has already cornered
+the market.
+
+The Ochrombel simpliﬁcation, that already a single site convinces its
+neighbours, is numerically much easier since no critical point at p = 1/2
+occurs without advertising. Thus far less iterations are needed when failures
+and successes are nearly balanced. Without advertising we have 400 A ﬁxed
+points and 600 B ﬁxed points, and thus we ask how much advertising is
+needed to reduce the number of failures from 600 to 300. Fig.2 includes
+diﬀusion and shows that the needed ǫ increases from 0.0001 to 0.001 if L
+decreases from 101 to 31; the transition curves all have roughly the same
+shape. Without diﬀusion the needed advertising is slightly larger. Fig.3
+shows that the needed advertising decreases roughly as 1/L2.3.
+
+Quite similar results are obtained also with feedback (for both Sznajd
+and Ochrombel version), i.e. the model’s results are quite robust. Again, the
+Ochrombel version requires less advertising than the original Sznajd version.
+In summary, the Sznajd model and in particular its Ochrombel simpliﬁ-
+cation are suitable to show successes and failures of advertising to convince
+a market.
+
+We thank Deutsche Forschungsgemeinschaft for support, W. Selke for
+
+suggesting this work, and D. Stauﬀer for help.
+
+References
+
+3
+
+[1] J. Goldenberg, B. Libai, S. Solomon, N. Jan, and D. Stauﬀer, Physica
+A 284, 335 (2000); J. Goldenberg, B. Libai, E. Muller, Marketing Lett.
+12, 2111 (2001) and J. of Marketing 66, 1 (2002)
+
+[2] A. Proykova and D. Stauﬀer, Physica A 312, 300 (2002)
+
+[3] K. Sznajd-Weron and J. Sznajd, Int. J. Mod. Phys. C 11, 1157 (2000)
+
+[4] D. Stauﬀer, Journal of Artiﬁcial Societies and Social Simulation 5, No.1,
+
+paper 4 (2002) (jasss.soc.surrey.ac.uk)
+
+[5] R. Ochrombel, Int. J. Mod. Phys. C 12, 1091 (2001)
+
+[6] T.C. Schelling, J. Mathematical Sociology 1, 143 (1971)
+
+4
+
+1000 ageing runs, t2-t1 = 8, p=0.4, epsilon=0.5, L = 31 (+), 101 (left line), 301 (right line)
+
+1000
+
+800
+
+600
+
+400
+
+200
+
+p
+u
+
+ 
+l
+l
+
+a
+
+0
+
+1
+
+10
+
+100
+
+t1
+
+1000
+
+Single site convincing, diffusion, no feedback, 1000 samples at p=0.4, L = 31, 53, 71, 101
+
+s
+e
+r
+u
+
+l
+i
+
+a
+
+f
+
+700
+
+600
+
+500
+
+400
+
+300
+
+200
+
+100
+
+0
+
+1e-05
+
+0.0001
+
+advertising
+
+0.001
+
+300 failures of 100; no diffusion (+,x), with diffusion (*,sq.), no feedback (+,*), with feedback (x,sq.)
+
+0.001
+
+n
+o
+
+l
+i
+
+s
+p
+e
+
+0.0001
+
+10
+
+L
+
+100
+
+

@@ -1,0 +1,1404 @@
+A compartmental model of the cAMP/PKA/MAPK pathway
+
+in Bio-PEPA
+
+Federica Ciocchetta
+
+The Microsoft Research - University of Trento Centre
+for Computational and Systems Biology, Trento, Italy
+
+ciocchetta@cosbi.eu
+
+Adam Duguid
+
+Maria Luisa Guerriero
+
+University of Edinburgh, UK
+
+University of Edinburgh, UK
+
+a.j.duguid@sms.ed.ac.uk
+
+mguerrie@inf.ed.ac.uk
+
+The vast majority of biochemical systems involve the exchange of information between diﬀerent
+compartments, either in the form of transportation or via the intervention of membrane proteins
+which are able to transmit stimuli between bordering compartments.
+
+The correct quantitative handling of compartments is, therefore, extremely important when mod-
+elling real biochemical systems. The Bio-PEPA process algebra is equipped with the capability of
+explicitly deﬁning quantitative information such as compartment volumes and membrane surface ar-
+eas. Furthermore, the recent development of the Bio-PEPA Eclipse Plug-in allows us to perform a
+correct stochastic simulation of multi-compartmental models.
+
+Here we present a Bio-PEPA compartmental model of the cAMP/PKA/MAPK pathway. We
+analyse the system using the Bio-PEPA Eclipse Plug-in and we show the correctness of our model by
+comparison with an existing ODE model. Furthermore, we perform computational experiments in
+order to investigate certain properties of the pathway. Speciﬁcally, we focus on the system response
+to the inhibition and strengthening of feedback loops and to the variation in the activity of key path-
+way reactions and we observe how these modiﬁcations aﬀect the behaviour of the pathway. These
+experiments are useful to understand the control and regulatory mechanisms of the system.
+
+1 Introduction
+
+Compartments are widely present in biological systems and play a major role in a lot of biological
+processes [1]; they are enclosed by membranes, which isolate biological species from the external en-
+vironment. Biological species can be either located inside a compartment or reside on a membrane;
+in the latter case they can be attached to a side of the membrane (receptors, for instance) or span the
+entire membrane (i.e. transmembrane proteins). Species located in the same compartment can interact
+with each other through biochemical reactions; species can also move from one compartment to another
+via diﬀusion or through membrane channels, thus allowing the passing of information between adjacent
+compartments. Alternatively, the transmission of signals between compartments can involve receptors,
+which respond to the input of signalling molecules on one side of the membrane by triggering a cascade
+of events on the other side.
+
+Due to the fundamental importance of compartments, their correct handling is often essential when
+studying biological systems, and an increasing number of modelling languages support their explicit
+deﬁnition [29, 5, 33, 31, 6, 41]. These languages diﬀer from each other in the kind of abstraction, the
+assumptions made (for instance, static or dynamic compartments) and the features they are designed to
+represent. Most of them are supported by analysis tools [40, 28, 39, 13].
+
+In this work we consider Bio-PEPA with locations as our modelling language [11]. Bio-PEPA loca-
+tions abstract both biological compartments and membranes: they are deﬁned by names, enriched with
+additional information allowing the modeller to express their kind (i.e. compartment or membrane), their
+size, and their position with respect to the other locations of the system.
+
+Gabriel Ciobanu (Ed.): Membrane Computing
+and Biologically Inspired Process Calculi 2009
+EPTCS 11, 2009, pp. 71–90, doi:10.4204/EPTCS.11.5
+
+c(cid:13) F. Ciocchetta & A. Duguid & M.L. Guerriero
+This work is licensed under the Creative Commons
+Attribution-Noncommercial-No Derivative Works License.
+
+72
+
+A compartmental model of the cAMP/PKA/MAPK pathway in Bio-PEPA
+
+Bio-PEPA oﬀers a high level of abstraction, similar to that used to describe biochemical networks
+in the literature and in biological databases (see, for instance, models in the BioModels database [25]).
+Only static locations can be represented (i.e. compartments cannot merge, split, or undergo any structural
+change); nevertheless, their size can vary with respect to time.
+
+The main aim of this work is to demonstrate the power of Bio-PEPA with locations as a modelling
+language for multi-compartmental biochemical networks. Thus, we consider a moderately sized sig-
+nalling pathway describing the cAMP/PKA/MAPK activity [27] with the explicit deﬁnition of compart-
+ments and membranes and we translate it into Bio-PEPA. In this pathway the spatial aspects are partic-
+ularly relevant, since it involves interaction between molecular species residing in diﬀerent biological
+compartments with diﬀerent volume sizes.
+
+The analysis of the model is performed using the Bio-PEPA Eclipse Plug-in [10], a novel simulation
+tool for the construction and analysis of Bio-PEPA models. The Bio-PEPA Eclipse Plug-in oﬀers meth-
+ods for numerical integration of Ordinary Diﬀerential Equations (ODEs) and stochastic simulation. We
+present here the latest version of the tool, which supports the deﬁnition of multi-compartmental models
+deﬁned using the Bio-PEPA extension with locations and is able to handle multiple compartments with
+diﬀerent sizes in the appropriate way.
+
+Using the Bio-PEPA Eclipse Plug-in, we validate the model against the expected results in the lit-
+erature and we perform in-silico experiments in order to investigate some properties of the pathway.
+Speciﬁcally, we study how the behaviour of the pathway is aﬀected by varying the enzymatic activity of
+three key molecular species and by the removal of feedback loops with an important regulatory eﬀect
+over particular species. These experiments are useful for a better understanding of the regulatory and
+control mechanisms of the system.
+
+The structure of the paper is as follows. Section 2 reports a brief introduction of the Bio-PEPA
+language, while Section 3 is devoted to the description of the tool. In Section 4 we present a model of the
+cAMP/PKA/MAPK signalling pathway, and in Section 5 we show the validation of the model and some
+analysis results. Section 6 concerns some related work, whereas the last section reports some conclusive
+remarks. The full Bio-PEPA model of the pathway is reported in Appendix A.
+
+2 Bio-PEPA with locations
+
+In this section we describe the main features of the extension of Bio-PEPA [12] with locations [11], the
+modelling language used in this work.
+
+A Bio-PEPA system representing a biochemical network consists of a context, deﬁning information
+such as locations, kinetic rates, parameters and auxiliary information, a set of species components and a
+model component.
+
+Locations represent biological compartments and membranes. They are described by names, en-
+riched with additional information allowing the modeller to express their position with respect to the
+other locations of the system, their kind (i.e. compartment or membrane), and their size (i.e. volume or
+surface area). The structure of the biological system is modelled as a static hierarchy, represented as a
+tree whose nodes represent locations; each node has one child for each of its sub-locations. The location
+tree allows us to keep track of the relative positions of locations and must be associated with the location
+deﬁnition.
+
+The locations are deﬁned as follows.
+
+Deﬁnition 1 Each location is described by “L : size unit, kind”, where L is the (unique) location name,
+“size” expresses the size and can be either a positive real number or a more complex mathematical
+
+F. Ciocchetta & A. Duguid & M.L. Guerriero
+
+73
+
+expression depending on time t; the (optional) “unit” denotes the unit of measure associated with the
+location size, and “kind” ∈ {M,C} expresses if it is a membrane or a compartment, respectively. The set
+of locations is denoted by L.
+
+Functional rates are used to describe kinetic laws associated with a reaction. They have the form
+“ f α = expr”, where α is the action type abstracting the reaction and expr is a mathematical expres-
+sion describing the law. The kinetic parameters used in the mathematical expressions are deﬁned by
+parameters in Bio-PEPA.
+
+Species components describe the behaviour of the individual biological species, whereas the model
+component deﬁnes the interactions between the various species and the amount of them present in the
+system. The syntax of the Bio-PEPA components is deﬁned as:
+
+S ::= (α, κ) op S | S + S | C | S @location with op = ↓ | ↑ | ⊕ | (cid:9) | (cid:12)
+
+P ::= S (x) | P (cid:66)(cid:67)
+I P
+
+where S is the species component and P is the model component. In the preﬁx term (α, κ) op S , κ is
+the stoichiometry coeﬃcient of species S in reaction α, and the preﬁx combinator “op” represents the
+role of S in the reaction. Speciﬁcally, ↓ indicates a reactant, ↑ a product, ⊕ an activator, (cid:9) an inhibitor,
+and (cid:12) a generic modiﬁer. We can use “α op S ” as an abbreviation for “(α,1) op S ”. The operator “+”
+expresses the choice between possible actions, and the constant C is deﬁned by an equation C def= S . The
+term S @location indicates that the species represented by the process S is the location location. The
+parameter x ∈ R+ in S (x) represents the number of molecules, which can be abstracted to a level [9] for
+I Q denotes the cooperation between components: the set I
+analysis as a CTMC. Finally, the process P (cid:66)(cid:67)
+determines those activities on which the operands are forced to synchronise. The notation (cid:66)(cid:67)∗ means that
+the species components are obliged to synchronize on the common action types.
+Note that the same species in diﬀerent locations is represented by distinct species components. There-
+fore, in order to avoid the possible duplication of actions in the model, we propose a notation to represent
+a species in multiple locations in a compact way. Given a species S which can be in L1, . . . , Ln, one sin-
+gle component S is deﬁned. This is simply a shorthand for a set of deﬁnitions S @L1, . . . ,S @Ln, each
+of which contains only those actions which can occur in the respective location. A reaction α1 occur-
+ring only in Li is deﬁned as (α1, κ) op S @Li, while α2 occurring in all locations L1, . . . , Ln is deﬁned as
+(α2, κ) op S .
+
+No constraint is imposed on the location of interacting species. This implies that it is possible to
+describe reactions involving species located in non-adjacent locations. The reason behind this choice
+is that, even though interactions are generally local (i.e. involve molecules in the same or adjacent lo-
+cations), imposing constraints on the relative position of species locations could prevent the modellers
+from deﬁning some reactions (e.g. a reaction abstracting a sequence of reaction steps involving various
+locations).
+
+The formal deﬁnition of the Bio-PEPA system is the following.
+
+Deﬁnition 2 A Bio-PEPA system P is a 6-tuple (cid:104)L,N,K,FR,Comp, P(cid:105), where: L is the set of locations,
+N is the set of (auxiliary) information for the species, K is the set of parameters, FR is the set of
+functional rates, Comp is the set of species components and P is the model component.
+
+A main feature of Bio-PEPA is that it can be seen as a formal, intermediate representation of bio-
+chemical systems, on which diﬀerent kinds of analysis can be carried out, through the deﬁned mappings
+into continuous-deterministic and discrete-stochastic modelling languages and CTMC with levels.
+
+Bio-PEPA is given an operational semantics, which is used for the derivation of the stochastic la-
+belled transition system and the associated CTMC with levels. We do not report here the details on
+
+74
+
+A compartmental model of the cAMP/PKA/MAPK pathway in Bio-PEPA
+
+the operational semantics since they are not needed for the kinds of analysis on which we focus in this
+work (continuous-deterministic and discrete-stochastic). For details, see [11, 12].
+
+Finally, it is important to remember that Bio-PEPA (and, in general, process algebras) oﬀers a com-
+positional approach for the deﬁnition of models: it is possible to build the full model starting from the
+deﬁnition of its subcomponents. This approach is particularly useful for biological systems, as they are
+generally large and complex. For these systems, a compositional deﬁnition of the model is desirable
+since it makes the construction of the full model easier and it helps in understanding the relationships be-
+tween its various subcomponents and the structure of the network. The compositional approach has been
+used in the deﬁnition of the Bio-PEPA model for the cAMP/PKA/MAPK pathway. The compositional
+rules for Bio-PEPA models are standard and not reported here.
+
+3 The Bio-PEPA Eclipse Plug-in
+
+The Bio-PEPA Eclipse Plug-in [2] is one of two tools developed at Edinburgh University for the Bio-
+PEPA language. Built on top of the Eclipse platform [16], the plug-in oﬀers an operating system agnostic
+editor and suite of time-series solvers for the construction and analysis of Bio-PEPA models. It provides
+the modeller with a rich modelling environment for Bio-PEPA, from the initial creation of the model
+through to the analysis and inspection of the results.
+
+The features currently supported in the plug-in can be roughly grouped into those assisting the mod-
+eller in the writing of their models and features for the analysis of the model. Examples of the former
+include an editor (with Bio-PEPA-aware syntax highlighting) and static analysis of the model for detect-
+ing various syntactic errors. For the latter, the plug-in is capable of generating and displaying time-series
+results, from ODE numerical integration or stochastic simulation algorithms, with the option to export
+these results in both graphical and textual formats. Many of these features can be seen in Figure 1.
+
+As with all previous releases of the plug-in, the language is augmented with keywords for particular
+deﬁnitions. These keywords increase the readability of the model, clearly signposting those deﬁnitions
+pertaining to locations, species and kinetic laws. These indicators are then emphasised further by the
+syntax highlighting built into the developing environment. Together they assist the modeller in recog-
+nising the purpose of various deﬁnitions found within any given model. As of version 0.1.0, the Eclipse
+Plug-in will contain initial support for multi-compartmental models as deﬁned by the Bio-PEPA exten-
+sion with locations. The following description details both this support along with several reﬁnements
+to the implemented language. For the sake of brevity the description does not cover the entire language,
+instead concentrating on those required to model the system of interest.
+
+Units of measures are currently unsupported, all values must be deﬁned with respect to the same
+generic unit, with compartments referring to volumes (unit3) and membranes as surface area (unit2). Fi-
+nally, the initial values for species are assumed to be in terms of molecular counts. With the introduction
+of locations with diﬀerent sizes, concentrations become an inappropriate form of measurement and must
+be translated into molecular counts.
+
+3.1 Supported Language
+
+Bio-PEPA does not impose a strict ordering on the deﬁnitions of context and species components, but
+these must all precede the model component. This ﬁnal statement provides the structure of the system as
+well as the initial conditions. Since the modeller is relatively unconstrained with respect to the ordering
+we shall present the syntax for diﬀerent deﬁnitions in the order that they are parsed within the plug-in.
+
+F. Ciocchetta & A. Duguid & M.L. Guerriero
+
+75
+
+Figure 1: Screen shot of the Bio-PEPA Eclipse Plug-in. The editor can be seen in the top left corner, with
+the outline view in the top right. The problems tab (bottom right) displays warnings and errors associated
+with the open models and the ability to plot results can be seen in the bottom left.
+
+The ﬁrst is the location deﬁnition, an example of which can be seen below:
+
+location cyto in cyto mem :
+location cyto mem :
+
+size = 1, kind = compartment;
+size = 0.2, kind = membrane;
+
+The required keyword location identiﬁes this as a location statement and the optional keyword in
+is used for deﬁning the position of the given location in the location tree. In the example above we
+have deﬁned a compartment cyto to exist within a second location known as cyto mem. Allowable
+parameters for these locations include the size and kind, both of which can be seen. For reasons of
+legibility acceptable kinds are compartment and membrane rather than M and C. Based on the kinds
+in the example and the spatial hierarchy we can clearly see that cyto mem is the membrane to the cyto
+compartment.
+
+The next required deﬁnition in a Bio-PEPA model describes the kinetic rates of the reactions, with
+
+an example below:
+
+kineticLawOf v1f
+
+:
+
+k f activate Gs∗ iso BAR G@cyto mem;
+
+where k f activate Gs is the constant rate of the reaction v1f and iso BAR G@cyto mem is the reactant
+of the reaction (the species amount is given in number of molecules). Like location deﬁnitions, this def-
+inition is easily identiﬁable by the required keyword kineticLawOf, followed by its label for reference
+within the species component deﬁnitions. The deﬁned rate can either be a custom rate, as seen in the
+
+76
+
+A compartmental model of the cAMP/PKA/MAPK pathway in Bio-PEPA
+
+example, or make use of predeﬁned laws such as mass-action or Michaelis-Menten. For example, if
+we know that the only reactant in the reaction associated with v1f is iso BAR G@cyto mem, then this
+custom rate describes mass-action. This could then be re-written as:
+
+kineticLawOf v1f
+
+:
+
+fMA(k f activate Gs);
+
+where fMA(r) stands for mass-action kinetic law with constant parameter r. The inclusion of predeﬁned
+laws oﬀers two clear beneﬁts to the modeller. Mistakes in inputting rates can be reduced by removing
+the need to input the laws manually. Secondly, the use of predeﬁned kinetic laws allows for additional
+static analysis of the model. If a reaction is deﬁned as using Michaelis-Menten (fMM(vM,kM), where
+vM, kM are the two constants in Michaelis-Menten kinetic law1), then the reaction must have a single
+species acting as a reactant or substrate, another species performing the role of the catalyst or enzyme
+and a third as the product of the reaction. If the list of species involved in this reaction diﬀers from those
+expected for the kinetic law stated the tool will ﬂag this as an error for the modeller.
+
+For the species component deﬁnitions, acceptable symbols for the diﬀerent possible behaviours are
+required. Below is the list of Bio-PEPA operators along with their ASCII equivalent for creating Bio-
+PEPA models.
+
+Bio-PEPA symbol ASCII representation
+
+<<
+>>
+(+)
+(−)
+(.)
+− >
+< − >
+< I >
+
+Behaviour
+reactant
+product
+activator
+inhibitor
+modiﬁer
+uni-directional transportation
+bi-directional transportation
+cooperation
+
+↓
+↑
+⊕
+(cid:9)
+(cid:12)
+→
+↔
+(cid:66)(cid:67)
+I
+
+These operators are used within the species component deﬁnitions, an example of which can be seen
+
+below.
+
+PDE4 = v27 >> PDE4@cyto + v20 << PDE4@cyto + v5 (+) PDE4@cyto;
+
+The species PDE4 is involved in three interactions with diﬀerent roles: it is a product in the reaction
+v27, a reactant in v20 and an enzyme in v5. In the example above all three reactions are only possible
+when the species PDE4 is in the location cyto. From this example we can see shorthand notations for
+when the stoichiometric coeﬃcient is one. As with all deﬁned shorthands, their purpose is to keep the
+deﬁnitions free of superﬂuous details. This is not to suggest that stoichiometric information in general is
+unnecessary, but that through the use of this shorthand we can emphasise the less common instances (a
+stoichiometry of one being the majority of observed values) where this is not the case.
+
+The ﬁnal deﬁnition in a Bio-PEPA system is that of the model component (see Section 2). The
+model component describes the initial amount of each species in the system and the possible interactions
+involving these species. The plug-in however oﬀers true compositionality. It does this by ﬁrst augmenting
+the model component syntax to accept names and also allowing deﬁnitions written in the syntax of the
+1Given an enzymatic reaction S + E → P + E, where S is the substrate, P is the product and E is the enzyme, the Michaelis-
+
+Menten kinetic law is vM · E · S /(KM + S ), where vM is the maximum rate constant and KM is the Michaelis constant.
+
+F. Ciocchetta & A. Duguid & M.L. Guerriero
+
+77
+
+model component to be assigned names. These additional labelled compositional deﬁnitions can then be
+referred to in either the model component or other labelled compositional deﬁnitions. This allows the
+modeller to describe a complex system in terms of smaller pathways, or indeed any logical grouping that
+they wish to enforce.
+
+MAPK Pathway
+
+::= B Ra f @cyto[120] < ∗ > B Ra f active@cyto[0] < ∗ > . . .
+< ∗ > MAPK@cyto[217] < ∗ > MAPK active@cyto[0]
+< ∗ > ··· < ∗ > PT P PP@cyto[60];
+
+Here we have a labelled composition deﬁnition for the MAPK pathway. It should be noted that la-
+belled compositional deﬁnitions use a diﬀerent assignment operator to other deﬁnitions, using ::= instead
+of =. As stated earlier, and as can be seen in the example above, labelled compositions also use the deﬁ-
+nition terminator. This leaves the model component as the ﬁnal deﬁnition to present, which an example
+of can be seen below:
+
+G Pathway < v09,v17 > cAMP Pathway < v08,v15 > MAPK Pathway
+
+The beneﬁts gained through compositional deﬁnitions are highlighted in this model component def-
+inition. Not only does the model component make it clear that the system is compromised of three
+pathways, but can also serve to highlight important reactions. We can see that interaction between the
+cAMP and MAPK pathways is limited to reactions v08 and v15. If the MAPK pathway is reliant on the
+cAMP pathway, rather than any interaction being redundancy in the system, then the rates for these reac-
+tions are likely candidates for perturbation. This of course is not guaranteed, merely that the cooperation
+sets can be used to highlight limited interactions between groups of species. The compositional approach
+also makes it very easy to enable or disable entire pathways.
+
+Once the model has been built, the plug-in parses the model and performs static analysis to detect a
+variety of modelling errors, an example of which was given earlier in regards to kinetic rate laws. Once
+the model is free of these errors the modeller has access to ODE solvers in the form of a Runge-Kutta
+implicit-explicit solver and a Dormand-Prince adaptive step-size solver [38], these being made available
+through the odeToJava library. The plug-in also supports analysis through stochastic simulators, with
+implementations of Gillespie’s Stochastic Simulation Algorithm (SSA) [19], Gibson-Bruck [17] and
+the Tau-Leap algorithms [18] available. The ability to use diﬀerent types of solvers has allowed us to
+discover errors in published modelling studies in computational biology [4].
+
+4 The cAMP/PKA/MAPK pathway
+
+The cAMP/PKA/MAPK network is a ubiquitous signalling pathway. In this work we consider the system
+as modelled in [27] and in particular the ODE model described by the authors and available in SBML
+format from [3].
+
+The cAMP-dependent protein kinase (PKA) is responsible for performing several functions in the
+cell, such as regulation of glycogen, sugar, and lipid metabolism. Among the downstream targets of
+PKA there are mitogen-activated protein kinases (MAPKs), which are essential in regulating various
+cellular activities, including gene expression, mitosis, diﬀerentiation, and cell survival/apoptosis.
+
+The major role of this pathway in various cellular processes, together with the availability of quan-
+titative data such as the sizes of the involved compartments, make it an interesting case study for our
+purposes.
+
+78
+
+A compartmental model of the cAMP/PKA/MAPK pathway in Bio-PEPA
+
+As is common in signalling pathways, spatial aspects are particularly relevant in this system, since
+it involves interaction between molecular species residing in diﬀerent biological compartments. We
+consider molecules lying inside the cell (i.e. in the cytoplasm), and outside it (i.e. in the extra-cellular
+environment), speciﬁcally the receptor agonist which triggers the signalling cascade. These two com-
+partments are separated by a membrane (i.e. the cytoplasmic membrane) where receptors and speciﬁc
+membrane-proteins are located.
+
+The compartments have diﬀerent sizes and this exercises a direct impact on the quantitative behaviour
+of the system. As in the original ODE model [27, 3], we consider the cell to be a sphere with a surface-
+to-volume ratio equal to 0.2. The kinetic parameters we use are taken from the original paper, which
+have been derived from the biochemical literature.
+
+Before presenting the Bio-PEPA model in the following Section 4.1, we brieﬂy describe the biologi-
+cal system. Figure 2 shows a schematic representation of the pathway, and the full model is reported in
+Appendix A.
+
+Figure 2: Schematic representation of the pathway. The coloured boxes represent a decomposition of the
+pathway into three subnetworks: the G-protein mediated activation of AC, the activation of PKA, and
+the MAPK signalling cascade. Arrows represent reactions, and lines terminating with circles represent
+enzymes participating in reactions.
+
+The cAMP/PKA/MAPK network we consider is in neurons, and its biological action is initiated
+by isoproterenol (ISO) binding to speciﬁc cell-surface receptors called β-adrenergic receptors (BARs),
+which are a class of G-protein coupled receptors (GPCRs).
+
+GPCRs reside in the cytoplasmic membrane and respond to a wide range of extracellular stimuli,
+
+F. Ciocchetta & A. Duguid & M.L. Guerriero
+
+79
+
+in our case to the synthetic drug isoproterenol. When GPCRs bind an extracellular ligand, they interact
+with G-proteins and propagate the signal across the membrane into the cytoplasm.
+
+G-proteins are heterotrimeric complexes bound to the inside surface of the cell membrane, and con-
+sist of an active subunit Gα and two tightly associated Gβ and Gγ subunits. Gα subunits alternate between
+an inactive guanosine diphosphate (GDP) and an active guanosine triphosphate (GTP) bound state. The
+transition from the inactive to the active state of Gα and its simultaneous dissociation from the Gγβ
+subunit and the GPCR are stimulated by the binding of GPCRs with the ligand.
+
+Gs subunits are a subclass of Gα subunits, and they stimulate the production of cyclic-AMP (cAMP)
+from ATP, by activating (by binding to it) the membrane-associated enzyme adenylate cyclase (AC)
+which, in turn, produces cAMP.
+
+cAMP is a key signalling molecule which acts as a second messenger, activating the cAMP-dependent
+protein kinase A (PKA). PKA is a tetrameric holoenzyme, consisting of two regulatory and two catalytic
+subunits (R2C2). Under low levels of cAMP, PKA is inactive; when the concentration of cAMP rises,
+cAMP molecules bind to each of the two binding sites on the two regulatory subunits, which leads to
+the dissociation and activation of the catalytic subunits (i.e. four cAMP molecules are needed to activate
+one PKA molecule). Upon activation, the catalytic subunits can phosphorylate a number of downstream
+targets.
+
+PKA is an enzyme which participates in several metabolic and signalling pathways, leading to a wide
+range of biological responses. Here we focus on its ability to initiate the pathway leading the activation
+of the Mitogen-Activated Protein Kinase (MAPK).
+
+The downstream pathway in our network represents an instance of the common MAPK signalling
+chain. It starts with the phosphorylation of the MAPKKK B-Raf, which phosphorylates (i.e. activates)
+the MAPKK MEK, which in turn phosphorylates MAPK.
+
+The amounts of PKA and MAPK in cells are important elements to monitor when analysing the
+behaviour of the system, because of their essential role in several signalling pathways and other cellular
+processes.
+
+An interesting aspect of this pathway is the presence of numerous feedback mechanisms, which are
+
+carried out mainly by kinases and phosphatases, regulating the amount of the involved proteins.
+
+Two kinds of phosphatases are involved: ﬁrst, the serine/threonine protein phosphatase 2 (PP-2A),
+which is a ubiquitous enzyme able to dephosphorylate a wide range of proteins among which there are
+the components of the MAPK signalling cascade (B-Raf, MEK and MAPK); second, protein tyrosine
+phosphatases (PTPs), which are also involved in the dephosphorylation of MAPK.
+
+In addition to its positive role carried out by activating B-Raf, PKA is further involved in the reg-
+ulation of the pathway, by exercising both a positive and a negative regulatory role: respectively, it
+phosphorylates PTPs (in the phosphorylated form, PTPs are less eﬀective in dephosphorylating MAPK)
+and PDE4 (in the phosphorylated form, PDE4 enhances the transformation of cAMP into AMP, making
+it unavailable for activating PKA).
+
+The relative strength of the diﬀerent PKA enzymatic activities, and particularly the opposed positive
+and negative feedbacks, is therefore an interesting issue to be considered when studying PKA regulatory
+role.
+
+4.1 A Bio-PEPA Model of the Network
+In the schematic representation of the pathway in Figure 2 we have subdivided the system into three
+diﬀerent subnetworks:
+
+• upstream pathway: G-protein mediated activation of AC
+
+80
+
+A compartmental model of the cAMP/PKA/MAPK pathway in Bio-PEPA
+
+• intermediate pathway: activation of cAMP-dependent PKA
+• downstream pathway: MAPK signalling cascade
+The Bio-PEPA language allows the deﬁnition of compositional models and, therefore, the above sub-
+division can be straightforwardly employed in the model itself. This helps in improving the readability
+of the model. The full Bio-PEPA model (using the syntax and the shorthand notation supported by the
+Bio-PEPA Eclipse plug-in) is reported in Appendix A.
+
+Three locations are deﬁned in the Bio-PEPA model: cyto, cyto mem, and extra. Each of them
+represents one of the involved biological compartments, and is assigned a size expressing its volume (3D
+compartments) or its surface area (2D membranes).
+
+Kinetic parameters and rate laws are speciﬁed. Some of the reaction rates follow the mass-action
+law, while others are based on the Michaelis-Menten kinetics. The quantitative data we adopt are those
+deﬁned in the original ODE model [3]. The reversible reactions are decomposed into two irreversible
+(mass-action) reactions describing the forward and the backward directions, respectively. The full set of
+parameters used is reported in the supplementary material.
+
+Each molecular species in the pathway is abstracted by a species component describing the reactions
+in which it is involved and its role in each of them (i.e. whether it is a reactant, a product, or an enzyme).
+The Bio-PEPA model component describes how the species components interact with each other, and
+deﬁnes the initial amounts for each species.
+
+There are two noteworthy diﬀerences with respect to the original model. These are related to the
+conversions needed to switch to molecular counts as units of measure for the species amount. In the
+ODE model the species amounts are speciﬁed in terms of concentrations (numbers of molecules over
+volume/area), while in our Bio-PEPA model they must be speciﬁed in terms of numbers of molecules.
+Consequently, the rate laws must be rescaled accordingly to take into account the sizes of the compart-
+ments in which the species involved in the reactions are located.
+
+In this deﬁnition of the model, compartment volumes and membrane surface areas are assumed to
+be constant. This constraint is not present in Bio-PEPA, which allows location sizes to be deﬁned as
+arbitrary functions (e.g., they can change over time or depend on the amount of given species). Here
+we do not consider generic location sizes in order to be able to compare our results with the original
+model. With this assumption, the system could be modelled using languages which are not equipped
+with a notion of location (provided reaction rates are carefully computed taking into account volumes).
+However, using a language, such as Bio-PEPA, which is equipped with a notion of location, has also the
+obvious advantage that the explicit deﬁnition of information such as locations of species, volumes and
+areas brings a greater clarity of the model.
+
+5 Model Analysis
+
+5.1 Validation
+
+In order to verify that the Bio-PEPA model is a faithful representation of the original ODE model [3], we
+compared the results we have obtained from the Bio-PEPA model with the results obtained through the
+BioModels online simulator on the original model.
+
+Figure 3(a) reports the comparison of the results for the ratio of active MAPK (i.e. phosphorylated
+over total MAPK). We show both the time series obtained using one of the stochastic simulators and the
+one obtained using one of the ODE solvers available within the Bio-PEPA Eclipse Plug-in. We observe
+a good agreement between the results from the Bio-PEPA model and the ones from the original ODE
+
+F. Ciocchetta & A. Duguid & M.L. Guerriero
+
+81
+
+model. In particular, the two ODE-based analyses produce coincident results. The SSA plot, obtained as
+the average over 500 individual stochastic simulation runs, is in good agreement with the deterministic
+analysis and also shows the variability of the system due to the presence of some stochastic noise.
+
+(a) Ratio of active MAPK
+
+(b) Active AC, PKA and MAPK
+
+Figure 3: Comparison between the simulation results obtained by the Bio-PEPA Eclipse Plug-in and the
+results of the original ODE model. SSA results are the average over 500 simulation runs.
+
+A similar agreement was also found for all the other molecular species involved in the pathway. In
+Figure 3(b) we report the results for three of the key molecular species involved in the pathway (AC,
+PKA, and MAPK), each of which is the ﬁnal product of one of the three subnetworks. For each of these
+proteins, we compare the amount of its active form in our SSA results (solid lines) with the results from
+the original model (dashed lines).
+
+Note that, in the SBML model, the amounts of species are given in terms of numbers of molecules
+over compartment sizes and, hence, the amounts must be rescaled by multiplying by the compartment
+sizes in order to be comparable with our results, which are expressed in terms of molecular counts. AC is
+located on the cell membrane and, therefore, it must be multiplied by the area of the membrane (0.2 µm2);
+in the case of PKA and MAPK the amounts result the same, since the volume of the cytoplasm is 1 µm3.
+
+5.2 Experimentation
+In this section we report some of the computational experiments we have performed on the model. First,
+we have studied the eﬀect, on the ﬁnal product of the pathway (MAPK-P, i.e. phosphorylated MAPK),
+of changes in the network structure: we have removed some of the feedback loops, in particular the ones
+involving PKA, which is one of the proteins mostly responsible for both positive and negative regulation
+of various pathway components.
+
+Figure 4 shows the eﬀect of inhibiting some important steps on the behaviour of the system. In Fig-
+ure 4(a) we compare the behaviour of the original system (blue line) with the behaviour of three modiﬁed
+systems: one with weaker enzymatic activity of PKA (10-fold increase of Km v08) in the phosphoryla-
+tion of B-Raf (red line), one with slower activation of AC (10-fold decrease of K f AC activation in
+the binding reaction between AC and Gαs : GT P) (green line), and one with slower cAMP/R2C2 bind-
+ing (10-fold decrease of K f v13, K f v18, K f v23, K f v32) (black line). Each of these modiﬁed systems
+corresponds to slowing down one reaction rate in each of the subnetworks; Figure 4(a) shows that a re-
+duction in the rate of cAMP binding has the strongest eﬀect: an expected result, since the cAMP binding
+
+010020030040050060070000.020.040.060.080.10.120.14TimeMAPK active ratioMAPK−P / (MAPK + MAPK−P)  ODEs SBMLODEs Bio−PEPASSA Bio−PEPA0100200300400500600700050100150200250TimeSpecies amountIntermediate products  AC activePKA activeMAPK active82
+
+A compartmental model of the cAMP/PKA/MAPK pathway in Bio-PEPA
+
+reaction must occur four times for a single molecule of PKA to become active.
+
+(a) Reduction of some reactions rates
+
+(b) Inhibition/strengthening of PKA feedbacks
+
+Figure 4: Experimenting on reaction rates and feedback loops (each line is the average behaviour over
+500 independent stochastic simulation runs).
+
+In Figure 4(b), instead, we experiment with the model by changing the parameters relative to the
+enzymatic activity of PKA and studying their eﬀect on the system behaviour. As described in Section 4,
+PKA takes part in a positive feedback loop by phosphorylating PTPs, and in a negative feedback loop by
+phosphorylating PDE4.
+
+The results shown in Figure 4(b) conﬁrm the presence of these feedback loops: a weaker enzymatic
+activity of PKA (100-fold increase of Km v15) in the phosphorylation of PTP (red line) leads to a de-
+crease of MAPK-P (due to the lower presence of phosphorylated PTP, which is less eﬀective than its
+unphosphorylated form in dephosphorylating MAPK), while a stronger enzymatic activity of PKA (100-
+fold decrease of Km v15) (green line) leads to an increase of MAPK-P. The opposite occurs for the
+phosphorylation of PDE4: a weaker enzymatic activity of PKA (100-fold increase of Km v20) in the
+phosphorylation of PDE4 (black line) leads to an increase of MAPK-P (due to the lower presence of
+phosphorylated PDE4, which is more eﬀective than its unphosphorylated form in transforming cAMP
+into AMP), while a stronger enzymatic activity of PKA (100-fold decrease of Km v20) (cyan line) leads
+to a decrease (though smaller) of MAPK-P.
+
+6 Related work
+
+Several languages have been deﬁned to model biological systems with compartments and membranes [29,
+5, 33, 31, 6, 41, 24]. In the following we report a brief overview of the most well-known languages and
+the associated analysis tools.
+
+Membrane systems or P systems [29, 8] are computational models that are based on a notion of
+membrane structure. In particular, multisets of objects are enclosed in a nested hierarchy of membranes
+and their behaviour is described by local rewriting rules.
+
+The analysis of P systems is supported by the P System Modelling Framework [28]. This framework
+provides stochastic simulation based on the multi-compartmental Gillespie algorithm [30] and oﬀers the
+mapping to PRISM [22, 32] for model checking. Furthermore, translations to SBML [35] and CellDe-
+signer [7] have been implemented in order to export P system models into other formats for further kinds
+
+010020030040050060070000.020.040.060.080.10.120.14TimeMAPK active ratioMAPK−P / (MAPK + MAPK−P)  originalinhibition v8inhibition v16inhibition v13,18,23,32010020030040050060070000.020.040.060.080.10.120.140.16TimeMAPK active ratioMAPK−P / (MAPK + MAPK−P)  originalinhibition v15stronger v15inhibition v20stronger v20F. Ciocchetta & A. Duguid & M.L. Guerriero
+
+83
+
+of analysis and for graphical representation.
+
+The variant of membrane systems with peripheral and integral membrane proteins deﬁned by Cava-
+liere and Sedwards [6] is at the basis of Cyto-Sim [36, 13]. The analysis is limited to stochastic simulation
+by Gillespie’s algorithm [19], but it is possible to export the corresponding ODE model into MATLAB
+format [26] for further analyses. In addition to mass-action kinetics, the simulator supports chemical
+reactions with arbitrary kinetic laws based on functions of the reactants.
+
+One of the ﬁrst process calculi with an explicit notion of compartments is BioAmbients calculus [33].
+A BioAmbient system is seen as a hierarchy of nested ambients, generally abstracting compartments,
+containing communicating processes whose actions specify the evolution of the system. Various kinds
+of action involving compartments can be easily represented, such as transport of small molecules across
+compartments. BioAmbients models are supported by two tools: Bio-SPI [37], a stochastic simulator
+based on Gillespie’s algorithm and originally implemented for models in stochastic π-calculus, and the
+BioAmbient machine (BAM) [43, 40], a more eﬃcient and user-friendly simulator written in Java. BAM
+is based on the stochastic version of BioAmbients, deﬁned by Vigliotti and Harrison [42] and can be used
+to simulate bio-regulatory pathways as well as membrane interaction. BAM automatically produces both
+a simulation graph and a debugging trace of the program. Furthermore, it oﬀers a graphical user interface
+for entering program code and visualising simulation results.
+
+A more active role for membranes can be described using Brane calculi [5]. In Brane calculi, a
+system is represented as a set of nested membranes, and a membrane is represented as a set of actions.
+Membranes can move, merge, split, enter into and exit from other membranes.
+
+The bioκ-calculus [24] is a language for describing proteins and cells based on Brane calculi and
+κ-calculus [14]. The atomic elements of the calculus are proteins and two constructors for representing
+solutions and cells. Proteins are characterised by sites, that can be in diﬀerent states: bound to another
+site of a protein, visible (i.e not connected to other sites) and hidden (i.e not connected to other sites
+but not available for other interactions). Cells abstract compartments and consist of a membrane and a
+cytoplasm. Reactions can be interactions between two proteins or between two membranes.
+
+In Beta-binders [31] and the associated BlenX language [15], systems are modelled as a composition
+of boxes representing biological entities. In the original version of the language compartments are not
+deﬁned explicitly, but a virtual form of nesting is rendered by appropriate typing for sites. Explicit static
+compartments and transport of biological across them have been added to Beta-binders in [21]. The
+analysis of BlenX models is possible in the Beta Workbench (BetaWB) [39]. The BetaWB is composed
+of a stochastic simulator based on an eﬃcient variant of Gillespie’s algorithm, the BetaWB designer, a
+graphical editor for developing models and the BetaWB plotter, a tool to analyse the results of a stochastic
+simulation run. Furthermore, BlenX models can be exported in SBML.
+
+Finally, there are some variants of the stochastic π-calculus enriched with the notion of locations
+(see [41, 23], for instance). Sπ@ calculus [41] extends the stochastic π-calculus syntax with the ex-
+plicit addition of compartments. This language handles varying volumes and dynamic compartments by
+deﬁning the compartment volume as the sum of the volumes occupied by all the molecules it contains.
+
+Another extension of the π-calculus with compartments is SpacePi [23]. Pi processes are embedded
+into a vector space and move individually. Only processes that are suﬃciently close can communicate.
+The operational semantics of SpacePi deﬁnes the interplay between movement, communication, and
+time-triggered events.
+
+All the languages listed above diﬀer from Bio-PEPA in various aspects: they are based on diﬀer-
+ent levels of abstraction or focus on dynamical compartments or handle volumes in a distinct way. In
+Bio-PEPA, locations have a ﬁxed structure and compartments are essentially containers for biological
+species: interactions between molecules in diﬀerent compartments is allowed, but the main evolution is
+
+84
+
+A compartmental model of the cAMP/PKA/MAPK pathway in Bio-PEPA
+
+given by interactions of molecular species within compartments. This concept of location is that usu-
+ally considered in biochemical networks in databases and in the literature. For these systems Bio-PEPA
+oﬀers a direct and formal representation, allowing an intuitive representation of both intra-compartment
+and inter-compartment reactions.
+
+Concerning the Bio-PEPA Eclipse Plug-in, a prominent feature of the tool is its support of both
+stochastic simulators and ODE numerical solvers. The ability to utilise diﬀerent analysis techniques is
+very important; this can aid in understanding diﬀerent behavioural aspects of the system and discovering
+possible errors due to the use of a speciﬁc solver/simulator [4]. Furthermore, the user can select the most
+appropriate analysis method based on the model under study. Most of the other tools support stochastic
+simulation by Gillespie’s algorithm only and in a few cases mappings to other languages or tools, such
+as SBML or PRISM.
+
+7 Conclusions
+
+Interactions of molecular species located in compartments with diﬀerent sizes occur typically in biolog-
+ical systems. In signalling pathways, for instance, a biochemical signal is transferred from the extra-
+cellular environment into the cell through the intervention of membrane receptors and other membrane-
+bound proteins.
+
+In this work we have presented a Bio-PEPA compartmental model of the cAMP/PKA/MAPK path-
+way. Our main aim was to demonstrate, on a real case study, the eﬀectiveness and the correctness of the
+representation of multi-compartment models in Bio-PEPA.
+
+The Bio-PEPA language allows us to explicitly deﬁne locations representing compartments and
+membranes, to express the location of each species and to indicate the relative position of a location
+with respect to the others. Furthermore, Bio-PEPA correctly deals with the location sizes (volumes and
+surface areas). It is generally useful to collect these kinds of information, in order to have a better view
+of the system under consideration. Moreover, the information about the size of locations is necessary to
+compare the results obtained in Bio-PEPA with the ones in the literature and experiments, when given in
+concentrations instead of number of molecules. Another beneﬁt is although the system in question can
+be written as a set of ODEs, high-level languages like Bio-PEPA can oﬀer a cleaner view of the model
+through a more restricted (but focussed) number of operators. Through these operators the modeller must
+explicitly state any behaviours he or she wishes the components of the system to exhibit. A restricted set
+of operators also allows the tool to perform more extensive checking over any legal Bio-PEPA model,
+something not possible if manually coding a set of ODEs in a general tool such as MATLAB.
+
+In order to be able to validate our results, we developed our Bio-PEPA model as a faithful represen-
+
+tation of an existing ODE model.
+
+The analysis of the pathway was performed using the stochastic simulator available within the Bio-
+PEPA Eclipse Plug-in, which is able to handle multi-compartmental models. The comparison of our
+results with the ones obtained from the original ODE model demonstrate the correctness of our ap-
+proach. We also perform a number of simulation experiments in order to investigate speciﬁc properties
+of the system such as its response to the inhibition of feedback mechanisms and to the variation of key
+molecular species.
+
+In this model we have found it convenient to describe the behaviour of the pathway in terms of three
+functional elements, a feature supported by the tool. Currently such modularisation is supported only
+at the level of model deﬁnition as a convenience for the modeller. However it is an interesting area for
+future work to explore the extent to which such structuring might be exploited during model analysis.
+
+F. Ciocchetta & A. Duguid & M.L. Guerriero
+
+85
+
+While the locations extension for Bio-PEPA does not restrict species interaction by location, future
+improvements within the tool will ﬂag such reactions. Once implemented this will allow the modeller
+to clearly see which reactions involve species not existing in adjacent locations. Other future work
+in the Bio-PEPA Eclipse Plug-in includes improved support for locations as well as the implementa-
+tion for automatic import/export of existing speciﬁcation languages supporting multi-compartment mod-
+els (e.g. [35, 34, 20]).
+
+Finally, we would like to extend the analysis of this model (and of multi-compartmental models
+in general) by applying some of the CTMC-based analysis methods (e.g. model-checking) which are
+supported by the Bio-PEPA language.
+
+Acknowledgements
+
+The authors thank Jane Hillston for her helpful comments. At the time of writing this paper, Feder-
+ica Ciocchetta was a research fellow at the University of Edinburgh, supported by the EPSRC grant
+EP/C543696/1 “Process Algebra Approaches to Collective Dynamics”. Adam Duguid is supported by
+the EPSRC Doctoral Training Grant EP/P501407/1. Maria Luisa Guerriero is supported by the EPSRC
+grant EP/E031439/1 “Stochastic Process Algebra for Biochemical Signalling Pathway Analysis”.
+
+References
+
+[1] B. Alberts, A. Johnson, J. Lewis, M. Raﬀ, K. Roberts & P. Walter (2002): Molecular biology of the cell (IV
+
+ed.). Garland Science.
+
+[2] Bio-PEPA Home Page. http://www.biopepa.org/.
+[3] BioModels Database. Model 182: http://www.ebi.ac.uk/biomodels-main/BIOMD0000000182.
+[4] M. Calder, A. Duguid, S. Gilmore & J. Hillston (2006): Stronger computational modelling of signalling
+pathways using both continuous and discrete-state methods. In: Proc. of CMSB’06, LNCS 4210. pp. 63–77.
+[5] L. Cardelli (2005): Brane Calculi - Interactions of Biological Membranes. In: Proc. of CMSB’04, LNCS
+3082. pp. 257–278. Available at http://lucacardelli.name/Papers/Brane%20Calculi%20CMSB
+%20LNCS.pdf.
+
+[6] M. Cavaliere & S. Sedwards (2006): Modelling Cellular Processes Using Membrane Systems with Peripheral
+
+and Integral Proteins. In: Proc. of CMSB’06, LNCS 194. pp. 108–126.
+
+[7] Cell Designer Home Page. http://celldesigner.org.
+[8] G. Ciobanu, M.J. P´erez-Jim´enez & G. P˘aun, editors (2006): Applications of Membrane Computing. Natural
+
+Computing Series. Springer.
+
+[9] F. Ciocchetta, A. Degasperi, J. Hillston & M. Calder (2009): Some Investigations Concerning the CTMC and
+
+the ODE Model Derived from Bio-PEPA. In: Proc. of FBTC’08, ENTCS 229. pp. 145–163.
+
+[10] F. Ciocchetta, A. Duguid, S. Gilmore, M.L. Guerriero & J. Hillston (2009, to appear): The Bio-PEPA Tool
+
+Suite. In: Proc. of QEST’09.
+
+[11] F. Ciocchetta & M.L. Guerriero (2009): Modelling Biological Compartments in Bio-PEPA.
+
+MeCBIC’08, ENTCS 227. pp. 77–95.
+
+In: Proc. of
+
+[12] F. Ciocchetta & J. Hillston (2009): Bio-PEPA: a Framework for the Modelling and Analysis of Biological
+
+Systems. Theoretical Computer Science 410(33-34), pp. 3065–3084.
+
+[13] Cyto-Sim. http://www.cosbi.eu/index.php/prototypes/cyto-sim.
+[14] V. Danos & C. Laneve (2004): Formal molecular biology. Theoretical Computer Science 325(1), pp. 69–110.
+[15] L. Dematt´e, C. Priami & A. Romanel (2008): Modelling and simulation of biological processes in BlenX.
+
+SIGMETRICS Performance Evaluation Review 35(4), pp. 32–39.
+
+86
+
+A compartmental model of the cAMP/PKA/MAPK pathway in Bio-PEPA
+
+[16] Eclipse Home Page. http://www.eclipse.org/.
+[17] M.A. Gibson & J. Bruck (2000): Eﬃcient Exact Stochastic Simulation of Chemical Systems with Many
+
+Species and Many Channels. The Journal of Chemical Physics 104, pp. 1876–1889.
+
+[18] Daniel T. Gillespie & Linda R. Petzold (2003): Improved leap-size selection for accelerated stochastic sim-
+ulation. The Journal of Chemical Physics 119(16), pp. 8229–8234. Available at http://link.aip.org/
+link/?JCP/119/8229/1.
+
+[19] D.T. Gillespie (1977): Exact stochastic simulation of coupled chemical reactions. J Phys Chem 81(25), pp.
+
+2340–2361.
+
+[20] M.L. Guerriero, J.K. Heath & C. Priami (2007): An Automated Translation from a Narrative Language for
+
+Biological Modelling into Process Algebra. In: Proc. of CMSB’07, LNCS 4695. pp. 136–151.
+
+[21] M.L. Guerriero, C. Priami & A. Romanel (2007): Modeling Static Biological Compartments with Beta-
+
+binders. In: Proc. of AB 2007, LNCS 4545. pp. 247–261.
+
+[22] A. Hinton, M. Kwiatkowska, G. Norman & D. Parker (2006): PRISM: A tool for automatic veriﬁcation of
+
+probabilistic systems. In: Proc. of TACAS’06, LNCS 3920. pp. 441–444.
+
+[23] M. John, R. Ewald & A.M. Uhrmacher (2008): A Spatial Extension to the π Calculus. In: Proc. of QAPL
+
+2006, ENTCS 194. pp. 133–148.
+
+[24] C. Laneve & F. Tarissan (2008): A simple calculus for proteins and cells. Theoretical Computer Science
+
+404(1-2), pp. 127–141.
+
+[25] N. Le Nov´ere, B. Bornstein, A. Broicher, M. Courtot, M. Donizelli, H. Dharuri, L. Li, H. Sauro, M. Schilstra,
+B. Shapiro, J.L. Snoep & M. Hucka (2006): BioModels Database: a free, centralized database of cu-
+rated, published, quantitative kinetic models of biochemical and cellular systems. Nucleic Acids Research
+34(Database issue), pp. D689–D691.
+
+[26] MATLAB. http://www.mathworks.it/.
+[27] S.R. Neves, P. Tsokas, A. Sarkar, E.A. Grace, P. Rangamani, S. Taubenfeld, C.M. Alberini, J.C. Schaﬀ,
+R.D. Blitzer, I.I. Moraru & R. Iyengar (2008): Cell Shape and Negative Links in Regulatory Motifs Together
+Control Spatial Information Flow in Signaling Networks. Cell 133, pp. 666–680.
+
+[28] P systems Modelling Framework. http://www.dcs.shef.ac.uk/˜marian/PSimulatorWeb/Tools.
+
+htm.
+
+[29] G. P˘aun & G. Rozenberg (2002): A guide to membrane computing. Theoretical Computer Science 287(1),
+
+pp. 73–100. Available at http://scienceserver.cilea.it/pdflinks/06090213054602466.pdf.
+
+[30] M.J. P´erez-Jim´enez & F.J. Romero-Campero (2006): P Systems, a New Computational Modelling Tool for
+
+Systems Biology. Transactions on Computational Systems Biology 6, pp. 176–197.
+
+[31] C. Priami & P. Quaglia (2005): Beta binders for biological interactions. In: Proceedings of Computational
+Methods in Systems Biology (CMSB’04), LNCS 3082. pp. 20–33. Available at http://springerlink.
+metapress.com/openurl.asp?genre=article&issn=0302-9743&volume=3082&spage=20.
+
+[32] PRISM Home Page. http://www.prismmodelchecker.org.
+[33] A. Regev, E.M. Panina, W. Silverman, L. Cardelli & E.Y. Shapiro (2004):
+
+BioAmbients:
+an Abstraction for Biological Compartments.
+Theoretical Computer Science 325(1), pp. 141–
+167. Available at http://lucacardelli.name/Papers/BioAmbients%20An%20Abstraction%20for
+%20Biological%20Compartments.pdf.
+
+[34] SBGN Home Page. http://www.sbgn.org.
+[35] SBML Home Page. http://www.sbml.org.
+[36] S. Sedwards & T. Mazza (2007): Cyto-Sim: A formal language model and stochastic simulator of membrane-
+
+enclosed biochemical processes. Bioinformatics 23(20), pp. 2800–2802.
+
+[37] W. Silverman. BioSpi home page. http://www.wisdom.weizmann.ac.il/˜biopsi.
+[38] J. Stoer & R. Bulirsch (1993): Introduction to Numerical Analysis. New York: Springer-Verlag.
+[39] The BetaWB Home Page. http://www.cosbi.eu/index.php/research/prototypes/beta-wb.
+[40] The BioAmbients Machine Home Page. http://aesop.doc.ic.ac.uk/tools/bam/.
+
+F. Ciocchetta & A. Duguid & M.L. Guerriero
+
+87
+
+[41] C. Versari & N. Busi (2008): Eﬃcient Stochastic Simulation of Biological Systems with Multiple Variable
+
+Volumes. In: Proc. of FBTC’07, ENTCS 194. pp. 165–180.
+
+[42] M.G. Vigliotti & P.G. Harrison (2007): Stochastic Ambient Calculus. In: Proc. of QAPL 2006, ENTCS 164.
+
+pp. 169–186.
+
+[43] A.M. Vinod, A. Phillips & M.G. Vigliotti (2008): BAM: BioAmbient Machine. In: Proc. of ACSD 08, IEEE
+
+Computer Society. pp. 45–49.
+
+A Bio-PEPA Model
+
+In this appendix we report the full Bio-PEPA model, speciﬁed in the tool syntax, corresponding to the
+cAMP/PKA/B-Raf/MAPK1,2 pathway. The abbreviations described in the paper are used. The measure
+unit for the volume size is µm3 and the unit for the area is µm2. The units of parameters are deﬁned
+accordingly.
+
+In the deﬁnition of parameters, the constants omega cyto and omega extra are the scaling fac-
+tors used for converting parameters involving concentrations (expressed in µ M) in the correct unit in
+terms of number of molecules. omega cyto is for parameters of reactions in the cytoplasm whereas
+omega extra is for parameters of reactions in the extracellular space. omega cyto is deﬁned as 10−6· NA·
+size(cyto), where 10−6 is to convert µ M into M, NA = 6.022· 1023 is the Avogadro number (i.e. the num-
+ber of molecules in a mole of substance) and size(cyto) is the volume size of the cytoplasm. Similarly,
+omega extra = 10−6 · NA · size(extra), where size(extra) is the volume size for the extracellular space.
+location cyto in cyto mem : size = 1,
+location extra
+location cyto mem in extra
+
+kind = compartment;
+kind = compartment;
+kind = membrane;
+
+: size = 0.111,
+: size = 0.2,
+
+omega cyto
+
+= 602;
+
+omega extra
+
+= 66.82;
+
+= 20;
+= 8;
+= 10;
+= 8;
+
+kcat pde4 p pde4 p
+kcat PDE4 PDE4
+kcat PKA activates Raf
+kcat highKM PDE
+kcat AC basal AC basal = 0.2;
+= 10;
+kcat PKA P PDE
+kcat PTP PKA
+= 0.1;
+kcat PPase MAPK
+= 0.636;
+= 5;
+kcat pp ptp pp ptp
+kcat PPase mek
+= 5;
+
+= 5;
+
+kcat PPase Raf
+kcat MEK activates MAPK = 0.15;
+= 8.5;
+kcat AC active AC active
+kcat PKA P PTP
+= 0.2;
+= 0.104;
+kcat grk GRK
+= 0.105;
+kcat Raf activates MEK
+= 1.06;
+kcat PTP
+kcat pp2a 4 pp2a 4
+= 5;
+= 1.34;
+kcat GRK bg GRK bg
+
+Kf activate Gs
+Km pde4 p
+Kf v4
+Km PDE4
+Kr bg binds GRK
+Km v08
+Kf GTPase
+Kf trimer
+Kf G binds iso BAR
+Kf v13
+
+= 0.025;
+= 1.3;
+= 1;
+= 1.3;
+= 0.5;
+= 0.5;
+= 0.067;
+= 6;
+= 10;
+= 8.35;
+
+Kr activate Gs
+Km v3
+Kr v4
+Kf bg binds GRK
+Km v07
+Km AC active
+Kr GTPase
+Kr trimer
+Kr G binds iso BAR
+Kr v13
+
+= 0;
+= 15.7;
+= 0.2;
+= 1;
+= 0.046;
+= 32;
+= 0;
+= 0;
+= 0.1;
+= 0.017;
+
+88
+
+A compartmental model of the cAMP/PKA/MAPK pathway in Bio-PEPA
+
+Km v14
+Kf AC activation
+Km AC basal
+Kr v18
+Km v20
+Km v22
+Kr v23
+Kf v25
+Km v26
+Km v28
+Kf G binds BAR
+Km v31
+Kr v32
+
+Km v15
+= 15;
+Kr AC activation
+= 500;
+= 1030;
+Kf v18
+= 0.00028; Km grk
+= 0.5;
+Km v21
+Kf v23
+= 9;
+Km v24
+= 2.8e-4;
+Kr v25
+= 1;
+Km pp2a 4
+= 0.77;
+= 6;
+Km GRK bg
+Kr G binds BAR
+= 0.3;
+= 15.7;
+Kf v32
+= 0.017;
+
+= 0.1;
+= 1;
+= 0.006;
+= 15;
+= 0.159;
+= 0.006;
+= 0.46;
+= 0.062;
+= 8;
+= 4;
+= 0.1;
+= 8.350;
+
+: fMA(Kf activate Gs);
+
+: fMA(Kf trimer / omega cyto);
+: fMA(Kr trimer);
+: fMA(Kf G binds iso BAR/omega cyto);
+
+kineticLawOf v01f
+kineticLawOf v01b : fMA(Kr activate Gs /(omega cyto * omega cyto));
+: fMM(kcat pde4 p pde4 p, Km pde4 p * omega cyto);
+kineticLawOf v02
+: fMM(kcat PPase Raf, Km v3 * omega cyto);
+kineticLawOf v03
+: fMA(Kf v4 /omega extra);
+kineticLawOf v04f
+: fMA(Kr v4);
+kineticLawOf v04b
+: fMM(kcat PDE4 PDE4, Km PDE4 * omega cyto);
+kineticLawOf v05
+: fMA(Kf bg binds GRK / omega cyto);
+kineticLawOf v06f
+: fMA(Kr bg binds GRK);
+kineticLawOf v06b
+: fMM(kcat MEK activates MAPK, Km v07 * omega cyto);
+kineticLawOf v07
+: fMM(kcat PKA activates Raf, Km v08 * omega cyto);
+kineticLawOf v08
+: fMM(kcat AC active AC active, Km AC active * omega cyto);
+kineticLawOf v09
+kineticLawOf v10f
+: fMA(Kf GTPase);
+kineticLawOf v10b : fMA(Kr GTPase);
+kineticLawOf v11f
+kineticLawOf v11b
+kineticLawOf v12f
+kineticLawOf v12b : fMA(Kr G binds iso BAR);
+kineticLawOf v13f
+: fMA(Kf v13 / omega cyto);
+kineticLawOf v13b : fMA(Kr v13);
+kineticLawOf v14
+kineticLawOf v15
+kineticLawOf v16f
+kineticLawOf v16b
+kineticLawOf v17
+kineticLawOf v18f
+kineticLawOf v18b : fMA(Kr v18);
+kineticLawOf v19
+kineticLawOf v20
+kineticLawOf v21
+kineticLawOf v22
+kineticLawOf v23f
+kineticLawOf v23b : fMA(Kr v23);
+kineticLawOf v24
+kineticLawOf v25f
+kineticLawOf v25b
+kineticLawOf v26
+
+: fMM(kcat highKM PDE, Km v14 * omega cyto) ;
+: fMM(kcat PKA P PTP, Km v15 * omega cyto);
+: fMA(Kf AC activation/omega cyto);
+: fMA(Kr AC activation);
+: fMM(kcat AC basal AC basal, Km AC basal*omega cyto);
+: fMA(Kf v18 /omega cyto);
+
+: fMM(kcat grk GRK * cyto mem / omega cyto, Km grk * cyto mem);
+: fMM(kcat PKA P PDE, Km v20*omega cyto);
+: fMM(kcat Raf activates MEK, Km v21 * omega cyto);
+: fMM(kcat PTP PKA, Km v22 * omega cyto);
+: fMA(Kf v23 /omega cyto) ;
+
+: fMM(kcat PTP, Km v24 *omega cyto);
+: fMA(Kf v25/omega extra);
+: fMA(Kr v25);
+: fMM(kcat PPase MAPK, Km v26 * omega cyto);
+
+F. Ciocchetta & A. Duguid & M.L. Guerriero
+
+89
+
+kineticLawOf v27
+kineticLawOf v28
+kineticLawOf v29
+kineticLawOf v30f
+kineticLawOf v30b
+kineticLawOf v31
+kineticLawOf v32f
+kineticLawOf v32b : fMA(Kr v32);
+
+: fMM(kcat pp2a 4 pp2a 4, Km pp2a 4 *omega cyto);
+: fMM(kcat pp ptp pp ptp, Km v28 * omega cyto);
+: fMM(kcat GRK bg GRK bg * cyto mem /omega cyto, Km GRK bg * cyto mem);
+: fMA(Kf G binds BAR/omega cyto);
+: fMA(Kr G binds BAR);
+: fMM(kcat PPase mek, Km v31 * omega cyto);
+: fMA(Kf v32 /omega cyto);
+
+= v16f >> AC active@cyto mem + v16b << AC active@cyto mem +
+
+v09 (+) AC active@cyto mem;
+
+= v10f >> G GDP@cyto + v10b << G GDP@cyto +
+
+v11f << G GDP@cyto + v11b >> G GDP@cyto;
+
+= v11f >> G protein@cyto + v11b << G protein@cyto +
+v12f << G protein@cyto + v12b >> G protein@cyto +
+v30f << G protein@cyto + v30b >> G protein@cyto;
+
+= v01f >> G a s@cyto + v01b << G a s@cyto + v10f << G a s@cyto +
+v10b >> G a s@cyto + v16f << G a s@cyto + v16b >> G a s@cyto;
+
+= v06f >> GRK bg@cyto + v06b << GRK bg@cyto +
+
+v29 (+) GRK bg@cyto;
+
+= v19 >> iso BAR p@cyto mem + v29 >> iso BAR p@cyto mem;
+= v27 >> PDE4@cyto + v20 << PDE4@cyto + v05 (+) PDE4@cyto;
+= v09 << ATP@cyto + v17 << ATP@cyto;
+= v18f << R2C2@cyto + v18b >> R2C2@cyto;
+= v27 (+) PP PDE@cyto;
+= v04f << BAR@cyto mem + v04b >> BAR@cyto mem +
+
+v30f << BAR@cyto mem + v30b >> BAR@cyto mem;
+
+= v30f >> BAR G@cyto mem + v30b << BAR G@cyto mem +
+
+v25f << BAR G@cyto mem + v25b >> BAR G@cyto mem;
+
+= v04f << iso@extra + v04b >> iso@extra + v25f << iso@extra +
+
+AC active
+
+G GDP
+
+G protein
+
+G a s
+
+GRK bg
+
+iso BAR p
+PDE4
+ATP
+R2C2
+PP PDE
+BAR
+
+BAR G
+
+iso
+
+v25b >> iso@extra;
+
+iso BAR
+
+= v01f >> iso BAR@cyto mem + v01b << iso BAR@cyto mem +
+v04f >> iso BAR@cyto mem + v04b << iso BAR@cyto mem +
+v12f << iso BAR@cyto mem + v12b >> iso BAR@cyto mem +
+v19 << iso BAR@cyto mem + v29 << iso BAR@cyto mem;
+MAPK active = v07 >> MAPK active@cyto + v22 << MAPK active@cyto +
+
+MEK
+MEK active
+
+B Raf active
+
+bg
+
+B Raf
+PKA
+
+AC
+
+AMP
+GRK
+
+v24 << MAPK active@cyto + v26 << MAPK active@cyto;
+
+= v31 >> MEK@cyto + v21 << MEK@cyto;
+= v21 >> MEK active@cyto + v31 << MEK active@cyto +
+
+= v08 >> B Raf active@cyto + v03 << B Raf active@cyto +
+
+v07 (+) MEK active@cyto;
+
+v21 (+) B Raf active@cyto;
+
+= v01f >> bg@cyto + v01b << bg@cyto + v06f << bg@cyto +
+v06b >> bg@cyto + v11f << bg@cyto + v11b >> bg@cyto;
+
+= v03 >> B Raf@cyto + v08 << B Raf@cyto;
+= v13f >> PKA@cyto + v13b << PKA@cyto + v08 (+) PKA@cyto +
+
+v15 (+) PKA@cyto + v20 (+) PKA@cyto;
+
+= v16f << AC@cyto mem + v16b >> AC@cyto mem +
+
+v17 (+) AC@cyto mem;
+
+= v02 >> AMP@cyto + v05 >> AMP@cyto + v14 >> AMP@cyto;
+= v06f << GRK@cyto + v06b >> GRK@cyto + v19 (+) GRK@cyto;
+
+90
+
+A compartmental model of the cAMP/PKA/MAPK pathway in Bio-PEPA
+
+= v03 (+) PP2A@cyto + v26 (+) PP2A@cyto + v31 (+) PP2A@cyto;
+= v22 >> MAPK@cyto + v24 >> MAPK@cyto + v26 >> MAPK@cyto +
+
+v07 << MAPK@cyto;
+
+= v28 >> PTP@cyto + v15 << PTP@cyto + v24 (+) PTP@cyto;
+= v15 >> PTP PKA@cyto + v28 << PTP PKA@cyto +
+
+v22 (+) PTP PKA@cyto;
+
+= v18f >> c R2C2@cyto + v18b << c R2C2@cyto +
+
+v23f << c R2C2@cyto + v23b >> c R2C2@cyto;
+
+= v23f >> c2 R2C2@cyto + v23b << c2 R2C2@cyto +
+
+v32f << c2 R2C2@cyto + v32b >> c2 R2C2@cyto;
+
+= v32f >> c3 R2C2@cyto + v32b << c3 R2C2@cyto +
+
+PDE high km = v14 (+) PDE high km@cyto;
+cAMP
+
+v13f << c3 R2C2@cyto + v13b >> c3 R2C2@cyto;
+
+= v12f >> iso BAR G@cyto mem + v12b << iso BAR G@cyto mem +
+v25f >> iso BAR G@cyto mem + v25b << iso BAR G@cyto mem +
+v01f << iso BAR G@cyto mem +v01b >> iso BAR G@cyto mem;
+
+= v09 >> cAMP@cyto + v17 >> cAMP@cyto + v02 << cAMP@cyto +
+
+v05 << cAMP@cyto + v13f << cAMP@cyto + v13b >> cAMP@cyto +
+v14 << cAMP@cyto + v18f << cAMP@cyto + v18b >> cAMP@cyto +
+v23f << cAMP@cyto + v23b >> cAMP@cyto + v32f << cAMP@cyto +
+v32b >> cAMP@cyto;
+= v28 (+) PTP PP@cyto;
+= v20 >> PDE4 P@cyto + v27 << PDE4 P@cyto + v02 (+) PDE4 P;
+
+PP2A
+MAPK
+
+PTP
+PTP PKA
+
+c R2C2
+
+c2 R2C2
+
+c3 R2C2
+
+iso BAR G
+
+PTP PP
+PDE4 P
+
+MAPK active fraction = MAPK active@cyto / (MAPK@cyto + MAPK active@cyto);
+
+MAPK Pathway
+
+cAMP Pathway
+
+G Pathway
+
+::= B Raf@cyto[120] < ∗ > B Raf active@cyto[0] < ∗ > MEK@cyto[108] < ∗ >
+MEK active@cyto[0] < ∗ > MAPK@cyto[217] < ∗ >
+MAPK active@cyto[0] < ∗ > PP2A@cyto[60] < ∗ > PTP@cyto[120] < ∗ >
+PTP PKA@cyto[0] < ∗ > PTP PP@cyto[60];
+
+::= cAMP@cyto[0] < ∗ > ATP@cyto[3010000] < ∗ > PKA@cyto[0] < ∗ >
+
+PDE4 P@cyto[0] < ∗ > PDE4@cyto[241] < ∗ > PP PDE@cyto[120] < ∗ >
+PDE high km@cyto[301] < ∗ > AMP@cyto[3010000] < ∗ >
+R2C2@cyto[120] < ∗ > c R2C2@cyto[0] < ∗ > c2 R2C2@cyto[0] < ∗ >
+c3 R2C2@cyto[0];
+
+::= iso@extra[668] < ∗ > BAR@cyto mem[19] < ∗ > G protein@cyto[2167] < ∗ >
+iso BAR@cyto mem[0] < ∗ > iso BAR p@cyto mem[0] < ∗ >
+iso BAR G@cyto mem[0] < ∗ > G a s@cyto[0] < ∗ > AC@cyto mem[60] < ∗ >
+AC active@cyto mem[0] < ∗ > G GDP@cyto[0] < ∗ > GRK bg@cyto[0] < ∗ >
+BAR G@cyto mem[0] < ∗ > bg@cyto[0] < ∗ > GRK@cyto[1];
+
+G Pathway <v09, v17> cAMP Pathway <v08, v15> MAPK Pathway
+
+

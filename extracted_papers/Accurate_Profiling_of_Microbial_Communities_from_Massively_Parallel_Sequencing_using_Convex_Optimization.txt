@@ -1,0 +1,1106 @@
+Accurate Proﬁling of Microbial Communities from Massively
+
+Parallel Sequencing using Convex Optimization
+
+Or Zuk1,2, Amnon Amir3, Amit Zeisel3, Ohad Shamir4, and Noam Shental5
+
+1 Broad Institute of MIT and Harvard;
+
+2 Toyota Technological Institute at Chicago
+
+3 Department of Physics of Complex Systems, Weizmann Institute of Science
+
+4 Microsoft Research, New England
+
+5 Department of Computer Science, The Open University of Israel
+
+Abstract. We describe the Microbial Community Reconstruction (MCR) Problem, which is funda-
+mental for microbiome analysis. In this problem, the goal is to reconstruct the identity and frequency of
+species comprising a microbial community, using short sequence reads from Massively Parallel Sequenc-
+ing (MPS) data obtained for speciﬁed genomic regions. We formulate the problem mathematically as
+a convex optimization problem and provide suﬃcient conditions for identiﬁability, namely the ability
+to reconstruct species identity and frequency correctly when the data size (number of reads) grows to
+inﬁnity. We discuss diﬀerent metrics for assessing the quality of the reconstructed solution, including
+a novel phylogenetically-aware metric based on the Mahalanobis distance, and give upper-bounds on
+the reconstruction error for a ﬁnite number of reads under diﬀerent metrics. We propose a scalable
+divide-and-conquer algorithm for the problem using convex optimization, which enables us to handle
+large problems (with ∼ 106 species). We show using numerical simulations that for realistic scenarios,
+where the microbial communities are sparse, our algorithm gives solutions with high accuracy, both in
+terms of obtaining accurate frequency, and in terms of species phylogenetic resolution.
+
+Keywords: Microbial Community Reconstruction, Massively Parallel Sequencing, Short Reads, Convex
+Optimization
+
+Introduction
+
+1
+Characterization of the micro-organisms present in a microbial community is of major biological and clinical
+importance. Since diﬀerent micro-organisms have diﬀerent genomes, it is possible to identify species based on
+their DNA sequences, using either whole-genome sequencing, or sequencing of pre-speciﬁed regions. The 16S
+ribosomal RNA gene (16S rRNA) is of particular interest for identifying microbial communities via sequencing.
+It has both highly conserved regions, present in almost all microbial species, together with variable regions.
+The conserved regions allow sequence ampliﬁcation using universal PCR primers, while the variable regions
+provide information used to distinguish between diﬀerent species. Large databases [3, 4] with millions of 16S
+rRNA sequences may enable species identiﬁcation by querying sequencing results in a database.
+
+Previous methods aiming to characterize microbial communities using microarrays [7] and Sanger sequenc-
+ing [2] have shown that, in principle, it is possible to identify species present in a sample, yet it is not clear how
+to get accurate estimation of species frequencies from the analog measurements provided by these technolo-
+gies. Massively Parallel Sequencing (MPS) [16], also known as Next-Generation Sequencing (NGS), provides
+high-throughput digital sequence data and can allow a more detailed and accurate picture of the species in
+the mixture. In this method, one obtains a large number of short sequence reads from the mixture, and the
+goal is to reconstruct the identities and quantities of the species present. Many studies have used short reads
+to characterize microbial communities [10], yet they did not demonstrate an ability to identify the speciﬁc
+species present and quantify their abundance in the mixture - reliable recognition was typically achieved only
+at coarse genus level [12]. The main drawback of MPS is the relatively short read length (typically around
+50-400 base-pairs in current technologies), which poses a problem for species reconstruction; short reads do
+not provide unambiguous evidence in support of the presence of a speciﬁc species, as typically the same read
+may originate from multiple diﬀerent species, and cannot be uniquely aligned to the reference database.
+
+3
+1
+0
+2
+
+ 
+
+p
+e
+S
+6
+2
+
+ 
+
+ 
+ 
+]
+E
+C
+.
+s
+c
+[
+ 
+ 
+
+1
+v
+9
+1
+9
+6
+
+.
+
+9
+0
+3
+1
+:
+v
+i
+X
+r
+a
+
+2
+
+Accurate Identiﬁcation and Proﬁling of Microbial Communities
+
+Recently, more sophisticated methods for quantifying species abundance were developed, for 16S rRNA
+[6,17] and whole metagenome shot-gun sequencing data [25]. These methods take into account read-assignment
+ambiguity and enable increased species resolution, but the question of maximal reconstruction resolution
+achieved was not systematically studied.
+
+In this paper, we study mathematically the Microbial Community Reconstruction problem (MCR ) -
+in which we use MPS data to characterize a microbial community. In a nutshell, the computational and
+statistical problem we face is as follows: given a large collection of short MPS reads (strings) sampled from a
+known database of species’ sequences (longer strings) according to a certain unknown distribution, our goal is
+to estimate the sampling frequencies for each species in the database, and speciﬁcally recover the support of
+the distribution, i.e. the list of species with non-zero sampling probabilities. We model the sequencing process
+statistically, providing a probabilistic generative model for the short read data at hand. We prove conditions
+for identiﬁability - namely the ability to reconstruct precisely the identity and frequency of species present
+in the mixture from the short read data as the number of reads is increased. We prove upper-bounds on
+reconstruction errors for a ﬁnite number of reads. We propose a divide-and-conquer algorithm, handling large
+scale problems with hundreds of thousands of species, which is particularly appealing for sparse microbial
+communities - that is, realistic scenarios where only hundreds or a few thousands of species are present in the
+mixture, out of the possible millions of species in the database (see e.g. [5, 18]). We study the reconstruction
+performance in these realistic settings by simulating reads from the Greengenes 16S rRNA database [4].
+
+Our goal here is to formulate and study the problem mathematically. Practical considerations (e.g. ampli-
+ﬁcation and sequencing biases, restrictions on primers, paired-end reads) together with experimental results
+for real sequencing data are described in a separate publication [1].
+
+In the spirit of reproducible research, we have implemented all of our algorithms in the Matlab package
+COMPASS (Convex Optimization for Microbial Proﬁling by Aggregating Short Sequence reads), which is
+freely available at github:
+
+https://github.com/NoamShental/COMPASS.
+
+2 The MCR Problem Formulation
+
+We describe informally and brieﬂy the biological settings. Our goal is to identify the species present in a
+given sample. We extract DNA, use 16S rRNA universal primes and amplify the DNA in this region. We then
+assume that DNA is sheared randomly and sequence it using MPS. We assume that the sequences database
+contains 16S rRNA sequences for all species present in the mixture, and reconstruct the species in the mixture
+in silico. A schematic representation of the MCR method is shown in Figure 1.
+
+We denote by N the number of species in the database. The species’ 16S rRNA sequences are marked
+S1, .., SN , represented as strings over the alphabet Υ = {‘A’, ‘C’, ‘G’, ‘T’}. We assume that the Si’s are
+distinct sequences. The sequences may have diﬀerent lengths n1, .., nN , with ni the length of the i-th species’
+sequence, i.e. Si ∈ Υ ni. For the 16S rRNA gene, the lengths ni are roughly 1500 base-pairs. We deﬁne the
+maximum sequence length as nM AX ≡ maxi ni. We denote by si,j the j-th nucleotide in the i-th species’
+sequence Si, and by si,j:k the substring containing nucleotides j, j + 1, .., k in the sequence Si.
+We represent the proportion of each species in the mixture using a vector x of length N , with xi the
+frequency of species i. We have x ∈ ∆N , where ∆N is the N -dimensional simplex, ∆N = {x : xi ≥
+0, PN
+i=1 xi = 1}. We represent the interior of a set A as int(A). In particular, int(∆N ) is the subset of ∆N
+containing vectors with positive entries, int(∆N ) = {x : xi > 0, PN
+We observe data in the form of R reads of length L, r1, .., rR ∈ Υ L, with L typically around ∼ 50−400,
+as in the Illumina and 454 sequencing technologies. We represent the data by a vector of read frequencies,
+y ∈ ∆4L , with the j-th coordinate given by yj = 1
+∀j = 1, .., 4L. Here lex(r) is the index
+of r in the lexicographic ordering of all 4L possible reads (i.e. lex(’AAA ... A’) = 1, .., lex(’TTT ... T’) = 4L).
+We also deﬁne the inverse lexicographic ordering transformation, lex−1, which for a given index j gives the
+corresponding sequence (e.g. lex−1(18) = ’AAA ... ATC’).
+
+i=1 xi = 1}.
+
+i=1 1{lex(ri)=j},
+
+R PR
+
+Accurate Proﬁling of Microbial Communities
+
+3
+
+Unknown Mixture 
+
+Massively Parallel  
+   Sequencing 
+
+Extract DNA, 
+PCR Amplify 
+
+Sequence Database 
+
+S1 $*&*&**$*$*&$*7$*$*$*$*$**$&$*$&&*&*« 
+
+S2 $*7*&***$*&$*7$*$*77$*$*$**$*$&*&7« 
+
+ 
+
+Y
+
+SN &$*7*&***$*&$&&$*$*$*$*$7*$*$&*&&7*$*$7*« 
+
+Short Reads 
+
+r1=GAGCGCGGAT 
+
+r2=GGAGACGCTC 
+
+ 
+
+Y
+
+rN=AGAGAGATGT 
+
+In-Silico  
+Reconstruction 
+
+Estimated Species Abundances: 
+
+ (cid:220) (cid:218) L (cid:217)(cid:228) (cid:218)Æ  (cid:220) (cid:219) L (cid:217)(cid:228) (cid:217)(cid:219)Æ  (cid:220) (cid:220) L (cid:217)Æ (cid:228) (cid:228) Æ  (cid:220) (cid:252) L (cid:217)(cid:228) (cid:218)(cid:222)  
+
+Fig. 1. The steps performed for species reconstruction using the MCR method. First, DNA is extracted and ampliﬁed
+using PCR with universal primers matching the 16S rRNA gene. The DNA is then sheared and sequenced using MPS,
+producing millions of short sequence reads. The sequencing data (reads), together with a database of 16S rRNA
+sequences, are entered into the computational pipeline providing estimated species abundances as output.
+
+In the MCR problem, the data vector y and the database sequences S1, .., SN are given as input. Our goal
+is to reconstruct the species frequencies vector x from this information. The vector y is of exponential length
+(4L) but very sparse, with only M ≤ R non-zero coordinates, where M is the number of unique sequence
+reads. We store and manipulate only the non-zero part of y - therefore the computational complexity of all
+of our algorithms will depend on M , and not the exponentially large 4L (see Section 5). In typical MPS
+experiments with current technologies R may be on the order of ∼ 105 − 108.
+
+2.1 Probabilistic Model
+
+We formulate a probabilistic generative model capturing the sequencing process. We assume that the R reads
+are sampled identically and independently (i.i.d.) from the set of ampliﬁed regions in two steps,
+
+1. First, sample a microbial species b from the set of possible species {1, .., N}, with the probability of species
+
+j being sampled proportional to the amount of DNA from this species, x′
+
+.
+
+j ≡ P r(b = j) = xj nj
+
+PN
+
+i=1 xini
+
+2. Next, sample a read r from a distribution given by the species b. We represent sampling probabilities using
+a 4L × N read-sampling matrix A = A(S, L) whose (i, j)-th entry is the probability to observe read i given
+that we know it came from species j, Aij = P r(r = i|b = j).
+
+Remark 1. The vector of sampling probabilities x′ from step 1 is obtained by re-weighting the frequency
+vector x according to the sequence lengths. For ease of notation, we disregard this re-weighting, and denote
+both vectors as x. When all sequences lengths nj are identical we have indeed x′ = x. More generally, the
+vectors are diﬀerent but we can easily convert x to x′ or x′ to x using the above relation x′
+
+j = xj nj
+
+PN
+
+i=1 xini
+
+The sampling process deﬁnes a probability distribution Px = Px(y; A, L) on the space of possible frequencies
+∆4L ,
+
+Px(y; A, L) = (cid:26)PN
+
+0
+
+j=1 Aijxj
+
+y = e(i)
+otherwise
+
+(1)
+
+where e(i) ∈ ∆4L is the i-th vector in the standard basis, e(i)
+j = 0 ∀j 6= i. The data can be
+represented as R i.i.d. random variables, y(1), .., y(R) ∼ Px(y; A, L), with the sample frequency y represented
+
+i = 1, e(i)
+
+4
+
+Accurate Identiﬁcation and Proﬁling of Microbial Communities
+
+as, y = 1
+simplest form, A can be constructed as follows,
+
+R PR
+
+i=1 y(i). We denote the MCR problem with read sampling matrix A by MCR(L, A). In its
+
+Aij = Pnj −L+1
+
+k=1
+
+1{lex−1(i)=sj,k:k+L−1}
+nj − L + 1
+
+(2)
+
+This matrix represents uniform sampling of error-free reads along the sequence of the chosen species j,
+assuming L ≤ nj ∀j. A non-zero element Aij means that read i appears in the sequence of species j. If L > ni
+we assume that the ‘tail’ of each read is sampled uniformly from Υ (see Appendix Section A.1).
+
+Remark 2. The above construction of A assumes no read errors and no biases. Incorporating more realistic
+sequencing models with non-uniform read density due to ampliﬁcation biases, read errors (substitutions and
+indels), alignments errors etc. can be done by changing the deﬁnition of A from eq. (2). The same database S
+may thus yield diﬀerent matrices A, and the statistical and algorithmic properties of a certain MCR problem
+depend on the database S only through the matrix A. The assumption in step 1 is that species DNA fragments
+are sampled according to their DNA frequencies out of the total DNA present in a sample. The model cannot
+accommodate deviations from this assumption which may arise from ampliﬁcation biases and limited library
+complexity, which may distort the species frequencies - that is, the fraction of reads originating from a certain
+species may not represent the species’ true frequency in the mixture. Accounting and correcting for such
+biases require analyzing multiple samples together.
+
+In similar to the read frequencies vector y, the matrix A is also huge (4L×N ) but very sparse. In particular,
+the number of non-zero rows in A, denoted K, is much smaller than 4L, as most of the rows in A are zero
+j=1(nj − L + 1), which is roughly equal to the
+database size in nucleotides. In more complicated models involving read error, K will be larger, but still much
+smaller than 4L. The computational complexity of our algorithms depends on K (see Section 5).
+
+and need not be stored. In the simple model above, K ≤ PN
+
+An estimator ˆx of the frequency vector x is simply a function from the set of all reads and database,
+to the n-dimensional simplex, ˆx : ∆4L × S → ∆N , ˆx = ˆx(y, S) (here S is the set of all possible sequences
+databases, i.e. the space of all ordered ﬁnite collections of strings over Υ ).
+We can solve the MCR problem by ﬁnding an estimator ˆx minimizing an empirical loss function. That
+is, deﬁne ˆy = Aˆx, the empirical reads distribution given the estimator ˆx. We would like to minimize the loss
+l(ˆy, y), and deﬁne the following estimator,
+
+ˆx = argminx∈∆N l(Ax, y)
+
+(3)
+A natural loss function is the Kullback-Leibler divergence lKL(y, ˆy) = D(Py||Pˆy). This formulation is equiv-
+alent to maximizing the likelihood of the data y, according to the probabilistic model in eq. (1). Maximizing
+the likelihood using the EM algorithm was proposed in [13] for a very similar likelihood formulation - this
+approach, however, is currently not scalable to a large number of species. We choose instead the l2 loss
+l2(y, ˆy) = ||y − ˆy||2, mainly for computational considerations. The l2 loss leads to a standard optimization
+problem and many oﬀ-the-shelf solvers can be used.
+We expect real mixtures to be sparse, with only a few hundreds to a few thousands species present (out
+of hundreds of thousands). it is therefore appealing to use a sparsity-promoting loss in the cost function
+in eq. (3), for example by penalizing l0 norm of x. This is especially important when the number of reads
+is limited, to avoid over-ﬁtting of the solution to the randomly sampled reads. The l0 norm is not convex,
+leading to an intractable computational problem. The most common remedy of replacing the l0 norm by
+the convex l1 norm does not work in our problem since for probability vectors in the simplex x ∈ ∆N the
+constraint ||x||1 = 1 trivially holds. Promoting sparsity for probability distributions in the simplex by convex
+relaxation was recently proposed [20], but the approach does not scale to our problem’s size. Instead, we
+developed a scalable divide-and-conquer thresholding algorithm (see Section 5) which minimizes the l2 error,
+while enforcing sparsity implicitly, by a repeated truncation of non-zero frequencies. The resulting solution is
+guaranteed to be sparse, while still keeping the l2 error low as desired.
+
+Accurate Proﬁling of Microbial Communities
+
+5
+
+2.2 Evaluating the Solution: Metrics
+
+To evaluate reconstruction accuracy, we need a measure comparing the reconstructed solution ˆx with the
+correct solution x. Diﬀerent applications may require diﬀerent metrics - for example, in some applications we
+may be interested only in the identity of the species, while in other applications one would want to detect
+changes in frequencies. It may be important to identify the particular species or strain, or one may be satisﬁed
+with coarser reconstruction at the genus or family level. There are two major groups of performance metrics:
+
+1. Phylogenetically-Unaware criteria: These metrics take into account only the species identities and frequen-
+cies. Examples include the lp norm between the two vectors, recall-precision and Jaccard index. We use the
+simple l2 norm as a representative of this group. This metric measures the deviation in species frequencies
+
+between the true and reconstructed solutions, Dl2(x, ˆx) = qPM
+
+2. Phylogenetically-Aware criteria: These metrics take into account the phylogenetic relationship between
+species. The main intuition here is that identifying a species close to the true species is in fact almost
+as good as reconstructing the correct species. Examples include unifrac [14], weighted unifrac [15], and
+DPCoA [19]. We propose a novel Phylogenetically-aware criterion, using a Mahalanobis distance,
+
+i=1(xi − ˆxi)2.
+
+DM A(x, ˆx; D) = p(x − ˆx)⊤D(x − ˆx) = qPi,j Dij(xi − ˆxi)(xj − ˆxj ).
+
+The matrix D is constructed to capture the phylogenetic distance between species (for example, from the
+species 16S rRNA sequences themselves). High (low) values of Dij correspond to pairs of species (i, j)
+which are closely-related (remote). For concreteness, we choose speciﬁcally D = A⊤A, which represent the
+similarity between species based on their 16S rRNA sequences. The resulting Mahalanobis distance measures
+the agreement between the true and reconstructed solutions, in terms of both the species identities and
+their frequencies, while taking into account the similarities between closely related species.
+
+3 Species Identiﬁability
+
+In this section we study species identiﬁability - that is, the ability to correctly identify the species and their
+frequencies as the number of reads, R, goes to inﬁnity.
+Deﬁnition 1. We say that the problem MCR(L, A) is identiﬁable, if for every x(1) 6= x(2) ∈ ∆N , there
+exists y ∈ ∆4L such that Px(1) (y; A; L) 6= Px(2) (y; A; L).
+
+Species identiﬁability captures fundamental limits of our ability to reconstruct the species frequency vec-
+tor from the observed reads data. If the problem MCR(L, A) is identiﬁable, then in principle it is possible
+to correctly reconstruct the species frequencies vector x, since diﬀerent vectors will generate diﬀerent distri-
+butions on the observed reads. If the problem is not identiﬁable, recovering the correct frequencies vector x
+may not be possible, regardless of the data size and computational resources available, since other (incorrect)
+frequency vectors give rise to an identical distribution on the observed reads data.
+
+The identiﬁability question is not unique to the MCR problem, and arises more generally when recon-
+structing the identity of long sequences in a mixture using short reads. For example, conditions for the
+identiﬁcation of isoforms from RNA-seq data were given in [11]. The diﬀerent Isoforms in [11] are analogous
+to the diﬀerent species in our problem, yet the precise modeling assumptions and identiﬁability criteria are
+diﬀerent in the two problems. Identiﬁability is determined by both the similarity between the sequences of
+diﬀerent species, and the read length. Longer and more diverse sequenced regions provide more information
+on the DNA sequence of diﬀerent species in the mixture, and allow to distinguish between the underlying
+species more easily. However, even when the sequenced regions are informative enough, short sequenced reads
+obtained from these region may map to multiple species, thus species identiﬁcation can be hard when reads
+are too short. We next formalize this intuition mathematically, showing how identiﬁability is determined by
+the input sequence database (and the read length L) through the matrix A, which represents the relation
+between the unknown vector x and the observed data y (see Appendix for proofs of all Propositions),
+
+6
+
+Accurate Identiﬁcation and Proﬁling of Microbial Communities
+
+Proposition 1. Let A(1) be the matrix constructed from A, concatenated with an all 1’s row vector 1N ,
+
+A(1) ≡ (cid:18) A
+
+1N (cid:19). The reconstruction problem MCR(L, A) is identiﬁable if and only if rank(A(1)) = N .
+
+As the read length increases, it becomes increasingly easier to distinguish between species,
+
+Proposition 2. Assume N > 4. Suppose that the database S is composed of N distinct sequences such that
+no sequence is a substring of another sequence, i.e. si,j:k 6= si′ ∀i 6= i′ ∈ {1, .., N},∀j, k ∈ {1, .., ni}. Let A(u,L)
+be the sampling matrix obtained by uniform sampling of reads with read length L, according to eq. (2). Then
+there is a critical read length Lc, 1 < Lc ≤ maxi ni such that the problem MCR(L, A(u,L)) is identiﬁable if
+and only if L ≥ Lc.
+Remark 3. We assume that no sequence in the database is a substring of another database sequence for
+mathematical convenience. This assumption usually holds in practice provided a long enough region is se-
+quenced, and can be relaxed while still obtaining similar identiﬁability results. In addition, we demonstrated
+identiﬁability for a uniform read sampling distribution, but a similar result can be obtained for other read
+sampling distributions.
+
+Species identiﬁability is a worst-case measure, as it requires all species to be identiﬁed correctly. In
+practice, we may settle for a weaker notion - for example we would still consider a reconstruction as successful
+if all species except a small minority were identiﬁed correctly. We next deﬁne partial identiﬁability, which
+is a weaker property characterizing our ability to correctly reconstruct identities and frequencies of speciﬁc
+species, while for other species the reconstruction may remain ambiguous.
+
+Deﬁnition 2. We say that the problem MCR(L, A) is partially identiﬁable for species j, if for any x(1), x(2) ∈
+∆N such that Px(1) (y; A, L) = Px(2) (y; A, L) ∀y ∈ ∆4L , we have x(1)
+
+j = x(2)
+
+.
+
+j
+
+We can check partial identiﬁability using the following proposition,
+
+Proposition 3. The problem MCR(L, A) is partially identiﬁable for species j, if and only if the standard
+basis vector e(j) ∈ ∆N is orthogonal to the null-space of A(1), that is A(1)x = 0 ⇒ xj = 0 ∀x ∈ RN .
+
+We present the identiﬁability properties achieved for real 16S rRNA data in the Appendix (Section A.5).
+
+4 Reconstruction Error
+
+While identiﬁability ensures that one can in principle reconstruct correctly the species vector x, it essentially
+assumes an unlimited number of reads and computational power. Here we study the reconstruction error in
+more realistic scenarios, with a ﬁnite number of reads. We prove general rigorous upper-bounds on reconstruc-
+tion error, in terms of the matrix A and the number of reads R. In the Appendix (Section A.8) we examine
+the actual error achieved in practice using simulations.
+
+The next proposition gives bounds on the approximation error of the true frequency vector x∗ by the
+
+estimator ˆx, which we obtain using the empirically-observed frequencies y,
+
+Proposition 4. Consider the problem MCR(L, A) with R sequence reads, and let ˆx be the estimator mini-
+mizing the l2 loss, ˆx = argminx∈∆N l2(Ax, y). Then,
+
+1. Let λmin(A⊤A) be the smallest eigenvalue of A⊤A. The Euclidian l2 distance satisﬁes:
+
+P r(cid:16)Dl2 (ˆx, x∗) ≤
+
+2 +plog(1/δ)
+pRλmin(A⊤A)(cid:17) ≥ 1 − δ,
+
+∀δ ∈ (0, 1).
+
+(4)
+
+2. The Mahalanobis distance with weight matrix A⊤A satisﬁes:
+
+Accurate Proﬁling of Microbial Communities
+
+7
+
+P r(cid:16)DM A(ˆx, x∗; A⊤A) ≤
+
+(5)
+The bound on the convergence rate of the Dl2 error depends on spectral properties of the matrix A⊤A. This
+is related to the database coherence, or similarity between the sequences Si, encoded as similarity between
+the rows of A. In particular, when the problem is non-identiﬁable, the matrix A⊤A has a zero eigenvalue and
+the reconstruction error may be arbitrarily large.
+
+∀δ ∈ (0, 1).
+
+2 +plog(1/δ)
+
+√R
+
+(cid:17) ≥ 1 − δ,
+
+In contrast, the Mahalanobis bound does not depend on the matrix A or even the dimension N . Even if
+the problem is non-identiﬁable, we still achieve convergence under the Mahalanobis distance - yet the entries
+in the solution vector will not converge to the corresponding entries in the true frequencies vector x, i.e. the
+reconstruction may assign (part of) the abundance of a speciﬁc species to diﬀerent, yet highly similar species.
+
+5 Divide-and-Conquer Algorithm
+
+Solving a large scale MCR problem with hundreds of thousands of species is computationally challenging.
+Even computing and storing the matrix A is not trivial, let alone minimizing the loss l(Ax, y) in eq. (3). We
+developed a scalable divide-and-conquer thresholding approach to cope with large problems. In a nutshell,
+the algorithm divides the species into distinct blocks, solves a reduced-size problem within each block, setting
+species with low frequency in the solution for each block to zero, merges solutions from diﬀerent blocks and
+iterates to reduce problem size. For the reduced size sub-problems we minimize the l2 loss, resulting in a
+convex optimization problem in each block which we solve (exactly) using the CVX convex optimization
+software package [8, 21]. We describe the algorithm in more details in the Appendix (Section A.7).
+
+We implemented the divide-and-conquer algorithm in the COMPASS Matlab package (with some com-
+putationally demanding parts implemented in C). For a problem of size N ∼ 5 × 105, running time is a few
+hours on a standard PC. The algorithm showed accurate reconstruction performance on simulated and real
+sequence data (see Section A.8 and [1]).
+
+6 Discussion
+
+We formulated the MCR problem mathematically, proposed an algorithm for solving large scale problems,
+and obtained results on reconstruction performance.
+
+We applied our approach on the 16S rRNA gene. However, the approach is generic and could be applied
+to other genes or regions. The reconstruction performance is determined by properties of the genomic region
+used (in our case, 16S rRNA). Diﬀerent genes or regions will provide diﬀerent information allowing us to
+distinguish between diﬀerent species or strains, for example using clade-speciﬁc markers [23].
+
+Extending our method to genome-wide metagenomics sequencing is possible, although computationally
+challenging. Our approach relies on the presence of a database of reference sequences, and cannot be used
+as is for de novo discovery of new species. Currently there are ∼ 3000 whole-genome sequences in the NCBI
+database [9], compared to ∼ 106 16S rRNA sequences in the Greengenes database, thus the current utility of
+the whole-genome approach is limited, although it can be useful as a ﬁrst ﬁlter before the remaining reads
+can be used for de novo discovery (assembly). More importantly, as these database are likely to grow in the
+near future, it will become increasingly appealing to use whole-genome sequencing, especially for identifying
+small variations in very close strains, or newly born alleles in present strains (where the 16S rRNA sequences
+may be identical and not allow identiﬁcation).
+
+Providing eﬃcient algorithms for the MCR problem is important - solving the MCR problem directly
+for N in the order of hundreds of thousands is currently infeasible due to memory and time issues. We
+used a feasible divide-and-conquer approach to cope with this problem yet there is still room for algorithmic
+improvements, especially when coping with read errors, which increase the size of the matrix A. Designing
+faster algorithms for handling larger databases will become crucial in light of the expected growth of microbial
+databases, in terms of both the number species and the regions (including whole-genomes) covered.
+
+8
+
+Accurate Identiﬁcation and Proﬁling of Microbial Communities
+
+References
+
+1. A. Amir, A. Zeisel, O. Zuk, M. Elgart, S. Stern, O. Shamir, P.J. Turnbaugh, Y. Soen, and N. Shental. High
+resolution microbial community reconstruction by integrating short reads from multiple 16S rRNA regions. In
+Revision, 2013.
+
+2. A. Amir and O. Zuk. Bacterial community reconstruction using compressed sensing. Journal of Computational
+
+Biology, 18(11):1723–1741, 2011.
+
+3. J.R. Cole, Q. Wang, E. Cardenas, J. Fish, B. Chai, R.J. Farris, A.S. Kulam-Syed-Mohideen, D.M. McGarrell,
+T. Marsh, G.M. Garrity, et al. The ribosomal database project: improved alignments and new tools for rrna
+analysis. Nucleic Acids Research, 37(suppl 1):D141–D145, 2009.
+
+4. T.Z. DeSantis, P. Hugenholtz, N. Larsen, M. Rojas, E.L. Brodie, K. Keller, T. Huber, D. Dalevi, P. Hu, and G.L.
+Andersen. Greengenes, a chimera-checked 16S rRNA gene database and workbench compatible with arb. Applied
+and environmental microbiology, 72(7):5069–5072, 2006.
+
+5. P.B. Eckburg, E.M. Bik, C.N. Bernstein, E. Purdom, L. Dethlefsen, M. Sargent, S.R. Gill, K.E. Nelson, and D.A.
+
+Relman. Diversity of the human intestinal microbial ﬂora. Science, 308(5728):1635–1638, 2005.
+
+6. I. Eskin, F. Hormozdiari, L. Conde, J. Riby, C. Skibola, E. Eskin, and E. Halperin. eALPS: Estimating abundance
+
+levels in pooled sequencing using available genotyping data. In Recomb, pages 32–44. Springer, 2013.
+
+7. T.J. Gentry, G.S. Wickham, C.W. Schadt, Z. He, and J. Zhou. Microarray applications in microbial ecology
+
+research. Microbial Ecology, 52(2):159–175, 2006.
+
+8. M. Grant and S. Boyd. Graph implementations for nonsmooth convex programs. In V. Blondel, S. Boyd, and
+H. Kimura, editors, Recent Advances in Learning and Control, Lecture Notes in Control and Information Sciences,
+pages 95–110. Springer-Verlag Limited, 2008. http://stanford.edu/~boyd/graph_dcp.html.
+
+9. D.H. Haft and A. Tovchigrechko. High-speed microbial community proﬁling. Nature Methods, 9(8):793–794, 2012.
+10. M. Hamady and R. Knight. Microbial community proﬁling for human microbiome projects: Tools, techniques,
+
+and challenges. Genome Research, 19(7):1141–1152, 2009.
+
+11. D. Hiller, H. Jiang, W. Xu, and W.H. Wong. Identiﬁability of isoform deconvolution from junction arrays and
+
+rna-seq. Bioinformatics, 25(23):3056–3059, 2009.
+
+12. S.M. Huse, L. Dethlefsen, J.A. Huber, D.M. Welch, D.A. Relman, and M.L. Sogin. Exploring microbial diversity
+
+and taxonomy using SSU rRNA hypervariable tag sequencing. PLoS Genetics, 4(11):e1000255, 2008.
+
+13. D. Kessner, T. Turner, and J. Novembre. Maximum likelihood estimation of frequencies of known haplotypes from
+
+pooled sequence data. Molecular Biology and Evolution, 30(5):1145–1158, 2013.
+
+14. C. Lozupone and R. Knight. UniFrac: a new phylogenetic method for comparing microbial communities. Applied
+
+and Environmental Microbiology, 71(12):8228–8235, 2005.
+
+15. C.A. Lozupone, M. Hamady, S.T. Kelley, and R. Knight. Quantitative and qualitative β diversity measures lead
+to diﬀerent insights into factors that structure microbial communities. Applied and Environmental Microbiology,
+73(5):1576–1585, 2007.
+
+16. E.R. Mardis. The impact of next-generation sequencing technology on genetics. Trends in Genetics, 24(3):133–141,
+
+2008.
+
+17. P. Meinicke, K.P. Aßhauer, and T. Lingner. Mixture models for analysis of the taxonomic composition of
+
+metagenomes. Bioinformatics, 27(12):1618–1624, 2011.
+
+18. B.J. Paster, S.K. Boches, J.L. Galvin, R.E. Ericson, C.N. Lau, V.A. Levanos, A. Sahasrabudhe, and F.E. Dewhirst.
+
+Bacterial diversity in human subgingival plaque. Journal of Bacteriology, 183(12):3770–3783, 2001.
+
+19. S. Pavoine, A.B. Dufour, and D. Chessel. From dissimilarities among species to dissimilarities among communities:
+
+a double principal coordinate analysis. Journal of Theoretical Biology, 228(4):523–537, 2004.
+
+20. M. Pilanci, L. El Ghaoui, and V. Chandrasekaran. Recovery of sparse probability measures via convex program-
+
+ming. In NIPS, 2012.
+
+21. CVX Research. CVX: Matlab software for disciplined convex programming, ver. 2.0. http://cvxr.com/cvx, 2012.
+22. R.T. Rockafellar. Convex Analysis, volume 28 of Princeton Mathematics Series. Princeton University Press, 1970.
+23. N. Segata, L. Waldron, A. Ballarini, V. Narasimhan, O. Jousson, and C. Huttenhower. Metagenomic microbial
+
+community proﬁling using unique clade-speciﬁc marker genes. Nature Methods, 9(8):811–814, 2012.
+
+24. J. Shawe-Taylor and N. Cristianini. Kernel methods for pattern analysis. Cambridge University Press, 2004.
+25. L.C. Xia, J.A. Cram, T. Chen, J.A. Fuhrman, and F. Sun. Accurate genome relative abundance estimation based
+
+on shotgun metagenomic reads. PloS One, 6(12):e27992, 2011.
+
+Accurate Proﬁling of Microbial Communities
+
+9
+
+Appendix
+
+A.1 Dealing with Sequences Shorter than the Read Length
+
+In rare cases the read length L might be larger than the sequence length nj for a particular species j. For
+completeness, we adopt a convention of a read having it’s ﬁrst ni nucleotides matching the sequence, and the
+next ni − L nucleotides distributed uniformly in Υ L−ni. In this case eq. (2) generalizes to,
+
+Aij =
+
+4min(0,nj −L)Pmax(1,nj −L+1)
+
+k=1
+
+1{lex−1(i)1:min(nj ,L)=sj,k:k+L−1}
+
+max(1, nj − L + 1)
+
+(6)
+
+where lex−1(i)1:k denotes the ﬁrst k nucleotides in the i-th read (in lexicographic ordering). One can adopt
+diﬀerent conventions for this case, for example obtaining a shorter read (of length nj), or using a ‘joker’
+symbol for the tail (i.e. for example when sequencing the molecule ‘AACGCT ′ a read of length 10 will be
+‘AACGCT N N N N ′). The choice of diﬀerent conventions does not change our result signiﬁcantly - we chose
+the above for mathematical convenience.
+
+A.2 Proof of Proposition 1
+
+Proof. From eq. (1), we have Px(e(i); A, L) = [Ax]i, ∀i = 1, .., 4L. Therefore identiﬁability holds if and only
+if Ax(1) = Ax(2) ⇒ x(1) = x(2), ∀x(1), x(2) ∈ ∆N .
+The vector A(1)x is of size 4L+1, obtained as a concatenation of Ax with one additional entry, [A(1)x]4L+1 =
+PN
+j=1 xj. For any x ∈ ∆N the last entry [A(1)x]4L+1 is equal to 1. Therefore A(1)x(1) = A(1)x(2) ⇐⇒ Ax(1) =
+Ax(2), ∀x(1), x(2) ∈ ∆N .
+If rank(A(1)) = N , we have A(1)x(1) = A(1)x(2) ⇒ x(1) = x(2), ∀x(1), x(2) ∈ RN . Therefore in particular
+the relation is true for any x(1), x(2) ∈ ∆N ⊂ RN and identiﬁability holds.
+Conversely, if rank(A(1)) < N then there exists a non-zero vector x ∈ RN , x 6= 0N in the null-space of
+A(1). Thus A(1)x = 0 and in particular [A(1)x]4L+1 = PN
+j=1 xj = 0. Take a vector x(1) ∈ int(∆N ). Then
+there exists ǫ > 0 such that x(2) ≡ x(1) + ǫx ∈ ∆N . But Ax(1) = Ax(2) and x(1) 6= x(2), therefore the problem
+MCR(L, S, A) is not identiﬁable.
+
+A.3 Proof of Proposition 2
+
+Proof. Take L = 1. Then the vector y simply measures the fraction of ‘A’s, ‘C’s, ‘G’s and ‘T’s in the sample,
+and is of length 4. The matrix A(u,1) is of size 4× N , and rank(A(u,1)) ≤ 4. Therefore, there exists a non-zero
+vector x in the null-space of A(u,L), A(u,L)x = 0. Let x(1) ∈ int(∆N ). Then there exists ǫ > 0 such that
+x(2) ≡ x(1) + x ∈ ∆N . But Px(x(1)) = Px(x(2)) for x(1), x(2) ∈ ∆N . Hence the problem MCR(1, A(u,1)) is
+not identiﬁable.
+Take L = nM AX (= maxi ni). For each species j deﬁne the read r(j) ≡ [Sj : ′A′(L−nj )] where ′A′(k) is
+a string of k consecutive ′A′s, and [a : b] denotes the concatenation of the two strings a and b. The read
+r(j) contains the sequence Sj, followed by a string of ‘A’s. Since Sj ′
+is not a subsequence of Sj for any
+j 6= j′, the read r(j) cannot appear when sequencing any other sequence j′ 6= j, so Alex(r(j))j ′ = 0 ∀j′ 6= j,
+and the lex(r(j))-th row of A is all zeros except for the j-th term. This means that A has N independent
+rows, indexed by lex(r(1)), .., lex(r(N )) and rank(A) = N . Therefore rank(A(1)) = N and the problem
+MCR(nM AX , A(u,nM AX )) is identiﬁable.
+
+Suppose that the problem is MCR(L, A(u,L)) is identiﬁable, and let L′ > L. By deﬁnition, for every
+x(1) 6= x(2) ∈ ∆N , there exists y ∈ ∆4L such that Px(1) (y; A; L) 6= Px(2) (y; A; L). But the distribution
+
+10
+
+Accurate Identiﬁcation and Proﬁling of Microbial Communities
+
+Px(i) (·; A; L) is obtained by a projection of the distribution Px(i) (·; A; L′) (for i = 1, 2), with Px(i) (·; A; L) =
+Px(i) (·; A; L′). Therefore, there must exist y ∈ ∆4L′ with Px(1) (y′; A; L′) 6= Px(2) (y′; A; L′) and the
+Py ′,y=y ′
+problem MCR(L′, A(u,L′)) is also identiﬁable for L′.
+
+1:L
+
+A.4 Proof of Proposition 3
+
+Proof. In similar to Proposition 1, since Px(e(i); A, L) = [Ax]i, ∀i = 1, .., 4L we have partial identiﬁability if
+and only if Ax(1) = Ax(2) ⇒ x(1)
+, ∀x(1), x(2) ∈ ∆N , which holds if and only if A(1)x(1) = A(1)x(2) ⇒
+j = x(2)
+x(1)
+Assume that A(1)x = 0 ⇒ xj = 0∀x ∈ RN . Then, for any two vectors x(1), x(2) ∈ ∆N take x = x(1) − x(2)
+
+, ∀x(1), x(2) ∈ ∆N .
+
+j
+
+j = x(2)
+
+j
+
+to get,
+
+A(1)x(1) = A(1)x(2) ⇒ A(1)(x(1) − x(2)) = 0 ⇒ [x(1) − x(2)]j = 0 ⇒ x(1)
+
+j = x(2)
+
+j
+
+.
+
+(7)
+
+Therefore, MCR(L, A) is partially identiﬁable for species j. For the other direction, assume that MCR(L, A)
+is partially identiﬁable for species j. Let x ∈ RN . Take some x(1) ∈ int(∆N ) and set x(2) = x(1) + αx with
+α > 0 small enough such that x(2) ∈ ∆N . Then,
+
+A(1)x = 0 ⇒ A(1)x(1) = A(1)x(2) = 0 ⇒ x(1)
+
+j = x(2)
+
+j ⇒ xj = 0.
+
+(8)
+
+A.5 Identiﬁability in the 16S rRNA Database
+
+We checked the ability to identify species based on their 16S rRNA sequences. We downloaded the 16S rRNA
+Greengenes database from greengenes.lbl.gov [4] (ﬁle ‘current prokMSA unaligned.fasta.gz’, version dated
+2010). After clustering together species with identical 16S rRNA sequences, we were left with N = 455, 055
+unique sequences of the 16S rRNA gene, with mean sequence length 1401 - we refer to these N unique
+sequences as the species. We assume that the entire 16S rRNA gene is available - this can be achieved for
+example by shot-gun or RNA sequencing (In practice, the choice of primers used when performing targeted
+DNA sequencing may be restricted due to biochemical considerations. This will aﬀect the region sequenced
+and therefore all aspects of the reconstruction performance including identiﬁability - see [1]). Although the
+sequences are all distinct when considering the entire 16S rRNA sequences, identiﬁability is not guaranteed
+since we only observe short reads covering possibly non-unique portions of the 16S rRNA gene, which may
+cause ambiguities. We plot in Figure 2 the number of uniquely identiﬁable species as a function of the read
+length L. Even for very short L, we can identify most species, since the short reads aggregate information
+from the entire 16S rRNA gene. However, even when L is long (L = 100), there is still a small subset of
+species which are not identiﬁable.
+
+1
+
+0.9
+
+0.8
+
+0.7
+
+0.6
+
+0.5
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+0
+
+ 
+
+Accurate Proﬁling of Microbial Communities
+
+11
+
+ 
+
+1
+
+0.995
+
+0.99
+
+0.985
+
+0.98
+
+0.975
+
+0.97
+
+0.965
+
+0.96
+
+10
+
+20
+
+30
+
+40
+
+50
+
+60
+
+70
+
+80
+
+90
+
+100
+
+10
+
+20
+
+30
+
+40
+
+50
+
+60
+
+70
+
+80
+
+90
+
+100
+
+Read Length
+
+16s
+rand.
+
+i
+
+s
+e
+c
+e
+p
+S
+e
+b
+a
+
+ 
+
+l
+
+i
+f
+i
+t
+
+n
+e
+d
+
+I
+ 
+.
+c
+a
+r
+F
+
+Fig. 2. Partial identiﬁability as a function of the read length. The red line shows results for a set of N = 10, 000
+similar species from the Greengenes database. For comparison, the blue line shows results for N = 10, 000 sequences of
+the same length, with uniformly drawn i.i.d. characters. (i.e. P r(′A′) = P r(′C ′) = P r(′G′) = P r(′T ) = 0.25 for each
+base). The X-axis is read length used. The y-axis shows the fraction of identiﬁable species. At L = 7 we see a big jump
+in identiﬁability, as expected, since this is the point at which the number of equations 4L exceeds the number of species
+N . For random sequences the problem is identiﬁable for L ≥ 7 (i.e., 100% of species are partially identiﬁable). For the
+sequences from the 16S rRNA database, the vast majority (∼ 96.5%) of species are partially identiﬁable for L = 7.
+The number of partially identiﬁable species then increases slowly with read length (see inset). Even at L = 100 the
+problem is still not identiﬁable, but ∼ 98.5% of species can be identiﬁed. The remaining un-identiﬁed species contain
+groups of species with very close sequences, which can be distinguished only by increasing read length even further.
+
+A.6 Proof of Proposition 4
+
+Proof. Eq. (3) with a l2 loss implies that Ax is the Euclidean projection of y on the convex set A(∆N ) ≡ {z :
+∃x ∈ ∆N , z = Ax} (namely, it is the closest point to y in A(∆N )). Similarly, Ax∗ is the Euclidean projection
+of y∗ on A(∆N ). Since projections on convex sets can only reduce distances [22], we have,
+
+The left hand side above is equal to the Mahalanobis distance, since
+
+kAx − Ax∗k2 = kAx − y∗k2 ≤ ky − y∗k2 .
+
+DM A(x, x∗; A⊤A) = q(x − x∗)⊤(A⊤A)(x − x∗) = kAx − Ax∗k2 .
+
+Therefore we get
+
+DM A(x, x∗; A⊤A) ≤ ky − y∗k2 .
+
+(9)
+
+(10)
+
+(11)
+
+Recall that y = 1
+
+i=1 y(i) where the y(i) are i.i.d. vectors with E[y(i)] = y∗. Using large-deviation
+
+bounds on vectors [24] we get,
+
+R PR
+
+P r(cid:16) ky − y∗k2 ≤
+
+2
+√R
+
++r log(1/δ)
+
+R (cid:17) ≥ 1 − δ,
+
+∀0 < δ < 1
+
+(12)
+
+12
+
+Accurate Identiﬁcation and Proﬁling of Microbial Communities
+
+Combining eqs. (11,12), we get part 2 of the proposition.
+To prove part 1, we need to convert this result to a bound on the Euclidian distance between x and x∗.
+The conversion is performed by ﬁrst writing an eigen-decomposition of A⊤A, A⊤A = U ΛU ⊤ where U is an
+orthogonal matrix and Λ a diagonal matrix with the eigenvalues of A⊤A. This gives,
+
+DM A(x, x∗; A⊤A)2 = (x − x∗)⊤(U ΛU ⊤)(x − x∗)
+2λmin(A⊤A)
+
+≥ ||U ⊤(x − x∗)||2
+= ||(x − x∗)||2
+2λmin(A⊤A)
+= Dl2(x, x∗)2λmin(A⊤A)
+
+(13)
+
+Dividing both sides by λmin(A⊤A), taking the square root and substituting in eq. (5) gives immediately
+
+part 1.
+
+A.7 Details of Divide-and-Conqour Algorithm
+
+Box 1: Divide-and-Conquer Reconstruction Algorithm
+Input: S - Set of Sequences, y - read measurements, Probabilistic model
+Output: x - vector of species frequencies
+Parameters: B - block size. τB - frequency threshold for each block. kB,j - number of
+
+partitions into blocks in j-th iteration, kF - ﬁnal number of species allowed
+
+1. Partition to blocks: Set v as a binary vector with one entry per species. If this is the ﬁrst partitioning,
+
+set iteration number j = 1. Repeat kB,j times:
+
+(a) Partition species randomly into non-overlapping blocks of size B.
+(b) In each block (B) compute the matrix A(B), (where (B) denotes the restriction of a vector or a matrix
+
+to a block B), and solve (exactly) the convex optimization problem (using CVX),
+
+x(B) ||A(B)x(B) − y||2 s.t., x(B)
+(c) Collect all species with frequency above the threshold: if x(B)
+(d) Collect all linearly dependent species: For each i which is non-identiﬁable in the block (i.e. species i
+
+i ≥ τB, set vi = 1. Set j = j + 1.
+
+i ≥ 0
+
+min
+
+(14)
+
+is orthogonal to the null space of A(B)) set vi = 1.
+
+2. Collect results from blocks: Keep only indices i with vi = 1, i.e. species with high enough frequency in
+
+at least one block reconstruction.
+
+3. Reduce problem size: Keep only species i with vi = 1. Set V = {i, vi = 1} and set A = A(V ), x = x(V ).
+4. Solve for the last time the l2 minimization problem for the reduced matrix,
+
+If |V | > kF , go back to step 1.
+
+Normalize x(V ) to sum to one, and output the normalized vector as the solution
+
+min
+
+x(V ) ||A(V )x(V ) − y||2 s.t., x(V )
+
+i ≥ 0
+
+(15)
+
+A.8 Simulation Results
+
+Accurate Proﬁling of Microbial Communities
+
+13
+
+ 
+
+L2 (simulations)
+L2 (upper−bound)
+MA (simulations)
+MA (upper−bound)
+
+100
+
+10−1
+
+r
+o
+r
+r
+
+E
+
+10−2
+
+10−3
+
+10−4
+
+ 
+
+104
+
+105
+
+# Reads
+
+106
+
+Fig. 3. The curves show the l2 (blue) and Mahalanobis (red) errors in reconstruction for the example described in the
+text as function of sample size (number of reads used). Error-bars show mean and 1 standard deviation of error over
+100 simulations. Solid curves show the theoretical upper-bounds, taken with δ = 1/2, giving a bound on the median
+error. For both metrics, the performance achieved in practice is signiﬁcantly better than the upper bound.
+
+To evaluate the actual reconstruction performance in practice, we have performed a simulation study. In
+Figure 3 we compare the actual reconstruction performance using simulations to the general rigorous bounds
+obtained in Section 4.
+
+In our simulations, we studied the performance as a function of the number of reads using the Greengenes
+16S rRNA database, with N = 455, 055 unique 16S rRNA sequences. In each simulation we sampled at
+random k = 200 species out of the total N . We sampled the species frequencies from a power-law distribution
+with parameter α = 1, with frequencies normalized to sum to one. We then sampled sequence read according
+to the model in eq. (1). Read length was L = 100. The number of reads R was varied from 104 to 106.
+
+We performed reconstruction using Algorithm 1, with the following parameters: block size B = 1000,
+threshold frequency τB = 10−3. The parameter kB,j represents a trade-oﬀ between time complexity and
+accuracy, and was initialized to 1 at j = 1, then set to 10 when total size |V | was below 150, 000. Then, set
+to 20 below 20, 000. The ﬁnal block size used was kF = 1000.
+Very low error (∼ 2%) is achieved for R > 500, 000, showing that accurate reconstruction is possible for
+a feasible number of reads. The error rate achieved in practice is much lower than the theoretical bounds,
+indicating that tighter bounds might be achieved. There are many reasons for the gap between our bounds
+and simulation results: the concentration inequalities we have used may not be tight, the particular frequency
+distribution chosen may perform better than the worst-case distribution, and most importantly, the small
+number of species present in the simulated mixture may enable accurate detection with a smaller sample size.
+Proving improved bounds on reconstruction performance which consider all these issues including the sparsity
+of the solution is interesting yet challenging. Standard techniques (e.g. from compressed sensing) would need
+to be modiﬁed to achieve improved bounds since they assume incoherence of the matrix A which does not
+hold in our case, and do not consider the poisson sampling model we use for the reads.
+
+

@@ -1,0 +1,1479 @@
+ARBITRAGE–FREE INTERPOLATION IN MODELS OF MARKET OBSERVABLE
+
+INTEREST RATES
+
+ERIK SCHL ¨OGL
+
+ABSTRACT. Models which postulate lognormal dynamics for interest rates which are compounded
+according to market conventions, such as forward LIBOR or forward swap rates, can be con-
+structed initially in a discrete tenor framework. Interpolating interest rates between maturities in
+the discrete tenor structure is equivalent to extending the model to continuous tenor. The present
+paper sets forth an alternative way of performing this extension; one which preserves the Mar-
+kovian properties of the discrete tenor models and guarantees the positivity of all interpolated
+rates.
+
+Practitioners have long priced caps, ﬂoors and other interest rate derivative contracts by Black/
+Scholes–like1 formulae, a practice usually attributed to the work of Black (1976). Initially, this
+approach was very much focused on the pricing of individual contracts, without regard to the
+arbitrage relationships between different ﬁxed income instruments. The seminal paper of Ho
+and Lee (1986) instigated further research into models of the entire yield curve and ﬁtting initial
+data, where the yield curve was given either terms of zero coupon bond prices2 or continuously
+compounded short or forward rates. The latter approach was taken by Heath, Jarrow and Morton
+(1992) (HJM), who developed a general framework for models of the term structure of interest
+rates, deriving drift conditions for instantaneous forward rates which must be satisﬁed in any
+arbitrage–free model. Thus the fundamental objects of these models were mainly mathemati-
+cal constructs, not market observables. The ﬁrst work to move away from this paradigm was
+Sandmann and Sondermann (1989, 1994), who construct a binomial term structure model with
+the short rate compounded according to market conventions (e.g. three–month LIBOR) as the
+fundamental model variable. Taking the modelling of market observable interest rates to contin-
+uous time and bringing theoretical developments back into line with widespread market practice,
+Miltersen, Sandmann and Sondermann (1997)3 (MSS) embedded the pricing of caps and ﬂoors
+by Black/Scholes–like formulae in a consistent HJM framework. The critical assumption for this
+result is that relative volatility4 of observable market forward rates such as LIBOR is determin-
+istic.5
+
+Brace, Gatarek and Musiela (1997) (BGM) resolved key questions in the construction of such
+a model, in particular concerning existence and measure relationships. Given the deterministic
+volatility assumption, they explicitly identiﬁed forward LIBOR as lognormal martingales under
+the forward measure to the end of the respective accrual periods. Their label Market Models
+
+Date: November 22, 2001. School of Finance and Economics, University of Technology, Sydney, PO Box 123,
+
+8
+1
+0
+2
+
+ 
+
+n
+u
+J
+ 
+1
+2
+
+.
+
+ 
+ 
+]
+F
+M
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+7
+0
+1
+8
+0
+
+.
+
+6
+0
+8
+1
+:
+v
+i
+X
+r
+a
+
+Broadway, NSW 2007, Australia. E-mail: Erik.Schlogl@uts.edu.au.
+
+The author would like to thank Marek Musiela for helpful discussions, but claims responsibility for any remaining
+errors. This is an older, working paper version of the paper published as Schl¨ogl (2002a) (see references at the end
+of the paper).
+
+1cf. Black and Scholes (1973).
+2cf. such papers as Ho and Lee (1986) or El Karoui, Lepage, Myneni, Roseau and Viswanathan (1991).
+3See also Sandmann and Sondermann (1994) and Sandmann, Sondermann and Miltersen (1995).
+4The relative volatility of a diffusion process X(t) is σ if its quadratic variation is given by X(t)2σ2dt.
+5For a succinct treatment of the signiﬁcance of this assumption, see Rady (1997).
+
+1
+
+2
+
+ERIK SCHL ¨OGL
+
+seems to have become the generally accepted descriptor for models which postulate lognormal-
+ity (under the appropriate probability measure) for market observable interest rates. The same
+methodology can be applied to forward swap rates to derive a model which supports the market
+practice of pricing swaptions by a Black/Scholes–type formula, as demonstrated by Jamshidian
+(1997). Miltersen, Nielsen and Sandmann (2001) use a similar approach to construct a model of
+lognormal futures rates (implied by the prices of interest rate futures), which nests the lognormal
+forward LIBOR model.
+
+Starting point of our discussion is the work of Musiela and Rutkowski (1997), who bring
+important clarity into the construction of lognormal market models. Besides explicitly deriving
+the relationships between forward measures of different maturities, they set up the model of
+lognormal forward LIBORs for a discrete set of maturities (the tenor structure) ﬁrst and then
+extend it to a continuum of maturities by applying the assumptions of BGM, i.e. lognormality
+of all forward rates with compounding period δ and zero volatility for all zero coupon bonds
+with time to maturity less than δ. This makes transparent the fact that extending the model to
+continuous tenor in effect stipulates how the model will interpolate between a discrete set of
+maturities. Note that in all cases considered in the present paper the stochastic dynamics of
+interest rates are modelled in continuous time. Interpolation occurs in the maturity dimension
+only. Furthermore, the rates modelled have a ﬁxed maturity (as opposed to a ﬁxed time–to–
+maturity).
+In simple terms, the question addressed is how to determine the continuous time
+dynamics of, say, the yield for an investment maturing next August given the continuous time
+dynamics of three–month forward rates for accrual periods starting in March, June, September
+and December of every year.
+
+Specifying lognormal dynamics for all δ–compounded forward rates, as MSS and BGM do,
+has the obvious advantage that all caplets and ﬂoorlets on such rates are valued by Black/Scholes–
+like formulae. However, this elegance comes at a price. For one, the no–arbitrage with cash
+property cannot be guaranteed, i.e. although the forward LIBORs modelled as lognormal will
+always be positive, other rates may not be.6 Second, the Markovian properties of the discrete
+tenor model are lost; this is a fact which can cause considerable problems in numerical imple-
+mentations, including Monte Carlo simulation, as we will discuss below. Third, one may take
+the pragmatic point of view that in reality one observes only a discrete number of rates on the
+market, with the rest determined by some interpolation method of choice. Thus one may prefer
+a version of the model which implies an interpolation method for future dates that is transparent
+and tractable. As the approach of Musiela and Rutkowski (1997) to the construction of a con-
+tinuous tenor model makes clear, once volatilities are speciﬁed for continuous tenor, one has the
+freedom to arbitrarily interpolate initial observed market rates. Thereafter, interpolation is ﬁxed
+by no arbitrage conditions and must be evaluated numerically.
+
+The alternative way of extending a lognormal market model from discrete to continuous tenor
+proposed here addresses each of these points. It is also worthy to note that while the practical
+relevance of the lognormal market models makes the deterministic volatility case a natural focus
+of attention, Musiela and Rutkowski’s forward measure approach to term structure modelling
+is valid for much more general volatility speciﬁcations, and this generality carries over to a
+large part of the results presented here. In particular, this is true for other models constructed in
+discrete tenor, such as the lognormal forward swap rate model of Jamshidian (1997).
+
+In the present paper, the extension to continuous tenor is initially performed by deterministi-
+cally interpolating zero coupon bond prices maturing before the earliest (future) date in the tenor
+structure (the “short bonds”), not only for the initial term structure, but at any future time as
+
+6Musiela and Rutkowski (1997) give an example of this.
+
+ARBITRAGE FREE TERM STRUCTURE INTERPOLATION
+
+3
+
+well (section 1). At any point in time, interpolation of longer–dated bonds is determined by no
+arbitrage conditions (section 2). Interpolating short bond prices from the two adjacent discrete
+tenor LIBORs introduces volatility for the short bonds and the associated interest rates (section
+3). The dynamics of all interpolated rates remain Markovian in the state vector of discrete tenor
+forward LIBORs (section 4). The properties of the interpolated rates are discussed in section 5.
+Section 6 analyses the implications for the pricing of cap/ﬂoor contacts which do not ﬁt into the
+discrete tenor structure and section 7 concludes.
+
+1. INTERPOLATION OF SHORT–DATED BONDS
+
+Given a ﬁltered probability space (Ω,{Ft}t∈[0,T ∗], IPT ∗) satisfying the usual conditions, let
+{WT ∗(t)}t∈[0,T ∗] denote a d–dimensional standard Wiener process and assume that the ﬁltration
+{Ft}t∈[0,T ∗] is the usual IPT ∗–augmentation of the ﬁltration generated by {WT ∗(t)}t∈[0,T ∗].
+
+The model is set up on the basis of assumptions (BP.1) and (BP.2) of Musiela and Rutkowski
+(1997):
+(BP.1) For any date T ∈ [0, T ∗], the price process of a zero coupon bond B(t, T ), t ∈ [0, T ] is a
+strictly positive special martingale under IPT ∗.
+(BP.2) For any ﬁxed T ∈ [0, T ∗], the forward process
+
+FB(t, T, T ∗) =
+
+B(t, T )
+B(t, T ∗)
+
+,
+
+∀ t ∈ [0, T ]
+
+follows a martingale under IPT ∗.
+
+Note that assumption (BP.2) means that IPT ∗ can be interpreted as the time T ∗ forward measure
+and implies that the bond price dynamics are arbitrage–free.
+
+The objects to be modelled on the ﬁxed income markets are the δ-compounded forward rates
+
+deﬁned by
+
+(1)
+
+L(t, T ) = δ−1
+
+(cid:18) B(t, T )
+
+B(t, T + δ)
+
+(cid:19)
+
+− 1
+
+Since the compounding matches the market convention for rates such as the London Interbank
+Offer Rate, L(t, T ) is also referred to as forward LIBOR.
+Consider a discrete tenor structure T = {T0, . . . , TN}. For notational simplicity, let T0 = 0
+also be the time origin and Ti+1 − Ti = δ ∀ i < N. The dynamics of the rates L(·, Ti), 1 ≤ i <
+N, are given as in the discrete tenor version of the lognormal forward rate model put forth by
+Musiela and Rutkowski (1997):7
+(2)
+where WTi+1 is a d-dimensional standard Brownian motion under the time Ti+1 forward measure
+IPTi+1 and λ : IR × T → IRd is a deterministic function of its arguments, i.e. each L(t, Ti) is a
+lognormal martingale under IPTi+1.8
+
+dL(t, Ti) = L(t, Ti)λ(t, Ti)dWTi+1(t)
+
+Deﬁne the function
+
+η(t) : [T0, TN [→ {0, . . . , N}
+
+7Note that the focus here is on lognormal forward LIBOR models for expositional purposes only, because this
+represents the mainstream of the literature. The results presented here apply equally well to the discrete tenor
+versions of other models of market observable rates, such as the lognormal forward swap rate model of Jamshidian
+(1997) or extensions such models to more general volatility functions, such as the model of level–dependent LIBOR
+volatilities proposed by Andersen and Andreasen (1998).
+
+8For details of the model construction, see Musiela and Rutkowski (1997).
+
+4
+
+as
+
+ERIK SCHL ¨OGL
+
+η(t) = max{i ∈ {1, . . . , N}|Ti−1 < t}
+
+Similarly to the extensions to continuous tenor proposed in Brace, Gatarek and Musiela (1997)
+and Musiela and Rutkowski (1997), we initially make the following
+
+1.1. ASSUMPTION. Let volatility be zero for all zero coupon bonds B(t1, t2) maturing by the
+next (future) date in the tenor structure T, i.e. t1 ≤ t2 ≤ Tη(t1).
+Consequently, at time Ti the price of the zero coupon bond maturing in Ti+1 is given by
+
+B(Ti, Ti+1) = (1 + δL(Ti, Ti))−1
+
+and its dynamics are deterministic thereafter. Since they are deterministic, interpolation of in-
+terest rates with time to maturity less than δ is the same as specifying the evolution of the bond
+price, and arbitrary deterministic dynamics can be speciﬁed for B(t, Ti+1), Ti < t < Ti+1, with
+B(Ti+1, Ti+1) = 1. For obvious reasons, these dynamics should be monotonically increasing
+and continuous, which means deﬁning the continuously compounded short rate as some positive
+function9 r(s, L(Tη(s)−1, Tη(s)−1)), such that10
+
+(cid:26)(cid:90) Ti+1
+
+exp
+
+(3)
+Thus r(t) is an Fη(t)−1–measurable random variable. Consequently,
+
+r(s, L(Tη(s)−1, Tη(s)−1))ds
+
+= 1 + δL(Ti, Ti)
+
+Ti
+
+(cid:27)
+
+(cid:90) Tη(t)
+
+(cid:26)
+
+−
+
+∀ i < N
+
+(cid:27)
+
+B(t, Tη(t)) = exp
+
+r(s, L(Tη(s)−1, Tη(s)−1))ds
+
+t
+
+Note that while the dynamics of the abstract variable r are in general discontinuous at each Ti,
+any rate associated with a compounding period greater than length zero will have continuous
+dynamics.
+
+1.2. REMARK. In a term structure model with zero volatility for zero coupon bonds B(t, Tη(t))
+for all T0 ≤ t ≤ TN, the risk neutral and rolling spot LIBOR measures are identical and the
+short rate interpolation (3) is arbitrage free.
+
+PROOF: The risk neutral equivalent martingale measure is conventionally deﬁned as the measure
+associated with taking the (continuously compounded) savings account as the numeraire asset,
+i.e. under this measure all assets discounted by the savings account are martingales. The savings
+account β(t) deﬁned by the interpolation is
+
+(cid:26)(cid:90) t
+η(t)−2(cid:89)
+
+0
+
+i=0
+
+(cid:27)
+
+ exp
+
+(cid:40)(cid:90) t
+
+Tη(t)−1
+
+(cid:41)
+
+r(s, L(Tη(s)−1, Tη(s)−1))ds
+
+(4)
+
+=
+
+(1 + δL(Ti, Ti))
+
+β(t) = exp
+
+r(s, L(Tη(s)−1, Tη(s)−1))ds
+
+For the rolling spot LIBOR measure as introduced by Jamshidian (1997), the numeraire is a roll–
+over strategy in which money is invested and subsequently reinvested at spot LIBOR. Investing
+one monetary unit in Ti at the spot LIBOR L(Ti, Ti) is the same as buying k zero coupon bonds
+
+9Note that this immediately implies that all interest rates generated by the model will be positive.
+10Given Assumption 1.1, (3) is simply a restatement of the identity (23) in Miltersen, Sandmann and Sondermann
+
+(1997).
+
+ARBITRAGE FREE TERM STRUCTURE INTERPOLATION
+
+5
+
+B(Ti, Ti+1), where k = B(Ti, Ti+1). Thus in continuous tenor the value at time t of the roll–over
+strategy is
+
+η(t)−2(cid:89)
+
+i=0
+
+ B(t, Ti+1)
+
+B(Ti, Ti+1)
+
+(5)
+
+(1 + δL(Ti, Ti))
+
+Since r(s, L(Tη(s)−1, Tη(s)−1)) is FTi–measurable for Ti ≤ s < Ti+1, we have by construction
+that
+
+(cid:41)
+
+(cid:40)(cid:90) t
+
+B(t, Ti+1)
+B(Ti, Ti+1)
+
+= exp
+
+Tη(t)−1
+
+r(s, L(Tη(s)−1, Tη(s)−1))ds
+
+for Ti ≤ t ≤ Ti+1. Thus the numeraire processes are identical, which means that the associated
+martingale measures must be11.
+
+The interpolation deﬁned by (3) is consistent with no arbitrage if the savings account given
+by (4) discounted by a numeraire asset is a martingale under the martingale measure associated
+with this numeraire. It is sufﬁcient to verify this for one measure and by the above argument,
+this condition is trivially fulﬁlled since the value of the savings account is identically equal to
+the value of the spot LIBOR roll–over strategy.
+
+2
+
+In other words, since at any time t the dynamics of the shortest remaining bond to a discrete
+tenor date B(t, Tη(t)) are consistent with the deterministic interpolation for the continuously
+compounded short rate, all martingale properties (and thus no arbitrage) are preserved.
+
+The observation that the roll–over strategy in spot LIBOR corresponds to a roll-over strategy
+
+in the shortest remaining bond to a discrete tenor date also leads us to the following
+1.3. REMARK. Conditional on the information at time Ti, for all FTi+1–measurable events, the
+rolling spot LIBOR measure IP0 is identical to the forward measure of maturity Ti+1, i.e.
+
+IP0{A|FTi} = IPTi+1{A|FTi}
+
+∀ A ∈ FTi+1
+
+Thus IP0 can be interpreted as “pasting together” a sequence of conditional forward measures.
+This is valid for any arbitrage free term structure model.
+
+PROOF: This is an immediate consequence of the fact that the time t value of the spot LIBOR
+roll–over strategy (5) can be written, independently of how the discrete tenor model is extended
+to continuous tenor, as a Tη(t)−1–measurable factor times B(t, Tη(t)), the numeraire of the time
+Tη(t) forward measure.12
+
+2
+
+2. INTERPOLATION OF LONGER–DATED BONDS
+
+2.1. REMARK. Given a discrete tenor model and the interpolation of the short–dated zero
+coupon bonds B(t, Tη(t)), the continuous tenor model is completely speciﬁed.
+
+11In a continuous tenor model, the market is (dynamically) complete, therefore the martingale measure for a
+
+given numeraire is unique. For an alternative proof, cf. Lemma 3.3 in Schl¨ogl (2002b).
+
+12For a more formal statement of this proof, see Schl¨ogl (2002b).
+
+6
+
+ERIK SCHL ¨OGL
+
+PROOF: Consider a completely arbitrary pair of time points t1, t2, 0 ≤ t1 < t2 ≤ TN. The time
+t1 price of a zero coupon bond maturing in t2 is given by
+
+(6)
+
+B(t1, t2) = B(t1, Tη(t1))
+
+(1 + δL(t1, Ti))−1
+
+η(t2)−1(cid:89)
+
+i=η(t1)
+
+ B(t1, t2)
+
+B(t1, Tη(t2))
+
+where the short–dated bond B(t1, Tη(t1)) is given by the interpolation and the bond price quotient
+on the far right by the no–arbitrage requirement that
+
+B(t1, t2)
+
+B(t1, Tη(t2))
+
+= ETη(t2)[B(t2, Tη(t2))−1|Ft1]
+
+Given a choice of interpolation (3), we can determine a function g such that
+= ETη(t2)[g(L(Tη(t2)−1, Tη(t2)−1))|Ft1]
+
+B(t1, t2)
+
+(7)
+
+B(t1, Tη(t2))
+
+In the lognormal case, the right hand side can easily be evaluated numerically and depends only
+on L(t1, Tη(t2)−1) and deterministic volatilities.
+
+2
+
+When intermediate rates with LIBOR–type compounding are linearly interpolated by day–
+count fractions, (7) becomes very tractable for any model satisfying the assumptions (BP.1) and
+(BP.2). Deﬁne r(s, L(Tη(s)−1, Tη(s)−1)) implicitly by setting
+
+(cid:26)(cid:90) Ti+1
+
+(cid:27)
+
+r(s, L(Tη(s)−1, Tη(s)−1))ds
+
+= 1 + (Ti+1 − t)L(Ti, Ti)
+
+∀ Ti ≤ t < Ti+1
+
+(8) exp
+
+i.e.
+
+Then
+
+and
+
+t
+
+r(s, L(Ti, Ti)) =
+
+L(Ti, Ti)
+
+1 + (Ti+1 − s)L(Ti, Ti)
+
+B(t1, Tη(t1)) = (1 + (Tη(t1) − t1)L(Tη(t1)−1, Tη(t1)−1))−1
+
+B(t1, t2)
+
+B(t1, Tη(t2))
+
+= ETη(t2)[B(t2, Tη(t2))−1|Ft1]
+= 1 + (Tη(t2) − t2)ETη(t2)[L(Tη(t2)−1, Tη(t2)−1)|Ft1]
+= 1 + (Tη(t2) − t2)L(t1, Tη(t2)−1)
+
+Note that by remark 2.1, if interpolation of short–dated bonds is speciﬁed for all times, there is no
+modelling freedom to interpolate longer–dated bonds, including initial model inputs. In addition
+to being intuitively appealing, linear interpolation by day–count fractions has the added attraction
+of providing one consistent interpolation method for all times and all maturities. Other popular
+interpolation methods, such as loglinear interpolation of discount factors or linear interpolation
+of continuously compounded yields, do not have this property.
+
+ARBITRAGE FREE TERM STRUCTURE INTERPOLATION
+
+7
+
+3. INTRODUCING VOLATILITY FOR THE SHORT BONDS
+
+In some applications, setting short bond volatilities to zero may be unsatisfactory. Assumption
+1.1 can certainly be relaxed in any way which satisﬁes the arbitrage constraints. Remark 2.1
+remains valid, i.e. to extend the model to continuous tenor it is sufﬁcient to specify the dynamics
+of the short bonds. However, when the short bond dynamics are stochastic, the constraint given
+by equation (3) is replaced by the more general formulation given in terms of instantaneous
+forward rates in equation (23) of Miltersen, Sandmann and Sondermann (1997):
+
+(cid:26)(cid:90) Ti+1
+
+(cid:27)
+
+(9)
+
+exp
+
+f (Ti, s)ds
+
+= 1 + δL(Ti, Ti)
+
+∀ i < N
+
+Ti
+
+where f (Ti, s) is the instantaneous forward rate at time Ti for maturity s.
+
+One tractable and intuitively appealing way to introduce volatility for the interpolated short
+bonds is to make the interpolated rates dependent on the closest remaining forward LIBOR
+L(t1, Tη(t1)). Set
+
+B(t1, Tη(t1))−1 = 1 + (Tη(t1) − t1)(α(t1)L(Tη(t1)−1, Tη(t1)−1) + (1 − α(t1))L(t1, Tη(t1)))
+
+where
+
+e.g.
+
+lim
+∆(cid:38)0
+
+α(Ti + ∆) = 1
+
+lim
+
+∆(cid:37)Ti+1−Ti
+
+α(Ti + ∆) = 0
+
+∀ i = 0, . . . , N − 1
+
+As in section 2, the prices of bonds with longer maturities must satisfy
+
+B(t1, t2)
+
+B(t1, Tη(t2))
+
+Tη(t) − t
+
+Tη(t) − Tη(t)−1
+
+α(t) =
+
+(cid:20) B(t2, t2)
+(cid:16)
+
+B(t2, Tη(t2))
+
+= ETη(t2)
+= 1 + (Tη(t2) − t2)
+
++(1 − α(t2))ETη(t2)
+
+(cid:12)(cid:12)(cid:12)(cid:12)Ft1
+(cid:21)
+(cid:2)L(Tη(t2)−1, Tη(t2)−1)|Ft1
+(cid:2)L(t2, Tη(t2))|Ft1
+
+(cid:3)(cid:17)
+
+(cid:3)
+
+α(t2)ETη(t2)
+
+Using the expected value of L(t, Tj) under IPTj given in Rutkowski (1997):
+
+(cid:32)
+α(t2)L(t1, Tη(t2)−1) + (1 − α(t2))L(t1, Tη(t2))
+= 1 + (Tη(t2) − t2)
+
+1 +
+(cid:124)
+
+(cid:16)
+(Tη(t2)+1 − Tη(t2))L(t1, Tη(t2))
+(cid:123)(cid:122)
+
+“correction factor”
+
+(cid:110)(cid:82) t2
+
+t1
+
+exp
+
+λ2(s, Tη(t2))ds
+
+1 + (Tη(t2)+1 − Tη(t2))L(t1, Tη(t2))
+
+(cid:111) − 1
+(cid:17)
+
+(cid:33)
+
+
+(cid:125)
+
+(10)
+
+·
+
+The “correction factor” will usually be quite close to one, unless volatility λ is very high or time
+to maturity t2 − t1 is very long. Thus interpolation remains essentially linear.
+
+8
+
+ERIK SCHL ¨OGL
+
+Note that since the short bonds are no longer deterministic, we also need to evaluate the
+
+appropriate expectation to derive B(t, T ) for t < T < Tη(t):
+
+B(t, T )
+B(t, Tη(t))
+
+= ETη(t)
+
+(cid:21)
+
+(cid:12)(cid:12)(cid:12)(cid:12)Ft
+
+B(T, Tη(t))
+
+(cid:20) B(T, T )
+(cid:32)
+1 +
+
+·
+
+= 1 + (Tη(t) − T )
+
+α(T )L(t, Tη(t)−1) + (1 − α(T ))L(t, Tη(t))
+
+(cid:16)
+
+(cid:110)(cid:82) T
+
+(Tη(t)+1 − Tη(t))L(t, Tη(t))
+
+exp
+
+t λ2(s, Tη(t))ds
+
+1 + (Tη(t)+1 − Tη(t))L(t, Tη(t))
+
+(cid:111) − 1
+(cid:17)
+
+(cid:33)
+
+4. FORWARD MEASURES AND THE MARKOV PROPERTY
+
+Both Miltersen, Sandmann and Sondermann (1997) and Brace, Gatarek and Musiela (1997)
+set up the model of lognormal forward LIBORs in continuous tenor, i.e. equation (2) applies to
+all maturities T ∈ (0, T ∗ − δ]:
+
+dL(t, T ) = L(t, T )λ(t, T )dWT +δ(t)
+
+with λ : IR × (0, T ∗] → IRd a deterministic function of its arguments, i.e. each L(t, T ) is
+a lognormal martingale under IPT +δ for a continuum of maturities up to the time horizon T ∗.
+This has the advantage that all caps and ﬂoors on δ–compounded rates will be priced by the
+Black/Scholes–type formulae favoured by market practitioners.
+
+The main disadvantage of this approach is revealed when one attempts to price instruments for
+which closed form solutions are unavailable. This is already the case if the cashﬂow underlying
+a derivative does not ﬁt neatly into a tenor structure of δ–compounded rates and even more so for
+many popular interest rate exotics. The problem is that the continuous tenor model is inﬁnite–
+dimensional even if the driving Brownian motion is one–dimensional. That is, the Markovian
+state variable for such a model is the entire yield curve.13 This causes considerable difﬁculties for
+all types of numerical methods. Even the method of last resort for high–dimensional problems,
+Monte Carlo simulation, cannot handle inﬁnite–dimensional state variables.
+
+From the start, it has been part of the “folk wisdom” on these models that they do not per-
+mit a ﬁnite dimensional representation. Brace, Gatarek and Musiela (1997) derive the dynamics
+of the continuously compounded short rate under a given set of assumptions on the volatility
+structure and show that they are highly path–dependent and thus not Markovian in any ﬁnite
+set of state variables. Recently, Corr (2000) formalised this conjecture and showed that when
+the model is driven by a one–dimensional Brownian motion, a ﬁnite–dimensional representation
+can only exist in the trivial case of zero volatility. He also derives similarly restrictive condi-
+tions on the ﬁnite–dimensional representability of continuous tenor LIBOR models driven by
+a multidimensional Brownian motion. These conditions, though stopping short of precluding
+ﬁnite–dimensional cases, indicate that such cases are not likely to be practically useful if they do
+exist.
+
+13The term “yield curve” generally denotes the term structure interest rates for a continuum of maturities up to
+the time horizon. It can be represented in several equivalent ways, for example by the curve of all continuously
+compounded yields at time t, yt : (t, T ∗] → IR with yt(T ) deﬁned by
+
+B(t, T ) = exp{−yt(T ) · T}
+
+(cid:12)(cid:12)(cid:12)(cid:12)Ft
+
+(cid:26)(cid:90) t
+
+0
+
+(cid:90) t
+
+0
+
+(cid:27)
+
+ARBITRAGE FREE TERM STRUCTURE INTERPOLATION
+
+9
+
+The extensions of the discrete tenor model to continuous tenor proposed in the previous sec-
+tions provide a way around this problem. Since the interpolated rates are speciﬁed as functions
+of the discrete tenor rates, the Markovian structure of the discrete tenor model is preserved. This
+structure can be characterised as follows:
+
+4.1. REMARK. In the discrete tenor lognormal forward LIBOR model, consider the dynamics
+of a rate L(·, Ti) under some forward measure14IPTj. These dynamics are Markovian in a state
+variable vector consisting of n = |j − 1 − i| + 1 rates L(·, Tk) with min(i, j − 1) ≤ k ≤
+max(i, j − 1).
+PROOF: Musiela and Rutkowski (1997) show that the relationship between forward measures
+IPTk and IPTk+1 is given by the Radon/Nikodym derivative
+
+dIPTk
+dIPTk+1
+
+= exp
+
+γ(u, Tk, Tk+1)dWTk+1(u) − 1
+2
+
+γ2(u, Tk, Tk+1)du
+
+where WTk+1 is a Brownian motion under IPTk+1 and
+
+γ(t, Tk, Tk+1) =
+
+δL(t, Tk)
+
+λ(t, Tk)
+
+1 + δL(t, Tk)
+with λ(t, Tk) the (deterministic) volatility of L(t, Tk). Thus
+dWTk(t) = dWTk+1(t) − δL(t, Tk)
+1 + δL(t, Tk)
+
+Since the dynamics of L(·, Tk) are given by
+
+λ(t, Tk)dt
+
+dL(t, Tk) = L(t, Tk)λ(t, Tk)dWTk+1(t)
+
+the joint dynamics of all rates L(·, Tk) with min(i, j − 1) ≤ k ≤ max(i, j − 1) under IPTmax(i+1,j)
+are
+(11)
+where
+
+dL(t) = Λ(t, L(t))dWTmax(i+1,j)(t) − Ψ(L(t))(cid:96)(L(t))dt
+
+ L(t, Tmin(i,j−1))
+
+L(t, Tmin(i,j−1)+1)
+
+...
+
+
+
+L(t) =
+
+If d is the dimension of the driving Brownian motion, Λ(t, L(t)) is an n × d matrix with
+
+L(t, Tmax(i,j−1))
+
+Λhk(t, L(t)) = L(t, Tmin(i,j−1)−1+h)λk(t, Tmin(i,j−1)−1+h)
+
+(cid:26) L(t, Tmin(i,j−1)−1+h)λ(t, Tmin(i,j−1)−1+h)λ(t, Tmin(i,j−1)−1+k)
+
+Ψ(t, L(t)) is an n × n matrix with
+Ψhk(t, L(t)) =
+Finally, (cid:96)(L(t)) is an n–dimensional vector with
+
+0
+
+(cid:96)k(L(t)) =
+
+δL(t, Tmin(i,j−1)−1+k)
+
+1 + δL(t, Tmin(i,j−1)−1+k)
+
+14Note that the Markov property depends on the probability measure under consideration.
+
+if k > h
+otherwise
+
+10
+
+ERIK SCHL ¨OGL
+
+FIGURE 1
+
+FIGURE 2
+
+Interpolation by daycount fractions vs. interpolation with short bond volatility
+
+dL(t) = Λ(t, L(t))dWTmin(i+1,j)(t) + Ψ(cid:48)(L(t))(cid:96)(L(t))dt
+
+Conversely, under IPTmin(i+1,j) we have
+(12)
+with
+Ψ(cid:48)
+hk(t, L(t)) =
+By the Markov property of Ito diffusions, the dynamics given by (11) resp. (12) are Markov in
+L(t).
+
+(cid:26) L(t, Tmin(i,j−1)−1+h)λ(t, Tmin(i,j−1)−1+h)λ(t, Tmin(i,j−1)−1+k)
+
+if 1 < k ≤ h
+otherwise
+
+0
+
+2
+
+This result does not rely on the assumption that the LIBOR volatilities λ(t, Tk) are deterministic
+functions of their arguments. Rather, if the λ(t, Tk) are level dependent on some or all rates
+in L(t), the Markov property still holds. Also, by remark 1.3, the above result implies that
+under the rolling spot LIBOR measure, any rate L(·, Ti) is Markov in the state variable vector
+{L(t, Tk)|0 ≤ k ≤ i}.
+
+5. A LOOK AT THE INTERPOLATED INTEREST RATES
+
+This section illustrates some of the properties of the interpolated interest rates and contrasts the
+two interpolation methods proposed in the previous sections. The method described in section
+2 will be referred to as method 1 or interpolation by daycount fractions; the one introduced in
+section 3 will be labelled method 2 or interpolation with short bond volatility. For the inputs
+used to produce each of the plots, please refer to table 1 in the appendix. The algorithm from
+Brace, Musiela and Schl¨ogl (1998b) was used to generate sample paths for the evolution of the
+term structure.
+5.1. Term Structures. Figures 1 and 2 show how the two methods interpolate instantaneous
+forward rates. For reference, the stepwise constant rates resulting from loglinear interpolation of
+zero coupon bond prices are included in each plot. The instantaneous forward rates jump when
+one moves from one δ–compounding period to the next. From equations (8) and (9), this is to
+be expected, as the maturities of the LIBORs underlying the interpolation are different on each
+interval. Instantaneous forward rates on f (0, T ) are determined on each interval T ∈ (Ti, Ti+1)
+by calculating
+
+−∂T ln
+
+B(0, T )
+
+B(0, Tη(T ))
+
+ARBITRAGEFREETERMSTRUCTUREINTERPOLATION100.0550.0560.0570.0580.0590.0644.054.14.164.214.264.314.364.424.474.524.574.624.684.734.784.834.884.944.995.045.095.145.25.255.35.355.45.465.515.565.615.665.725.775.825.875.925.98MaturityInstantaneous fwd ratesFigure10.0550.0560.0570.0580.0590.0644.054.14.164.214.264.314.364.424.474.524.574.624.684.734.784.834.884.944.995.045.095.145.25.255.35.355.45.465.515.565.615.665.725.775.825.875.925.98MaturityInstantaneous fwd ratesFigure2Interpolationbydaycountfractionsvs.interpolationwithshortbondvolatilityConversely,underIPTmin(i+1,j)wehave(12)dL(t)=Λ(t,L(t))dWTmin(i+1,j)(t)+Ψ0(L(t))`(L(t))dtwithΨ0hk(t,L(t))=½L(t,Tmin(i,j−1)−1+h)λ(t,Tmin(i,j−1)−1+h)λ(t,Tmin(i,j−1)−1+k)if1<k≤h0otherwiseBytheMarkovpropertyofItodiﬀusions,thedynamicsgivenby(11)resp.(12)areMarkovinL(t).2ThisresultdoesnotrelyontheassumptionthattheLIBORvolatilitiesλ(t,Tk)arede-terministicfunctionsoftheirarguments.Rather,iftheλ(t,Tk)areleveldependentonsomeorallratesinL(t),theMarkovpropertystillholds.Also,byremark1.3,theaboveresultimpliesthatundertherollingspotLIBORmeasure,anyrateL(·,Ti)isMarkovinthestatevariablevector{L(t,Tk)|0≤k≤i}.5.ALookattheInterpolatedInterestRatesThissectionillustratessomeofthepropertiesoftheinterpolatedinterestratesandcontraststhetwointerpolationmethodsproposedintheprevioussections.Themethoddescribedinsection2willbereferredtoasmethod1orinterpolationbydaycountfractions;theoneintroducedinsection3willbelabelledmethod2orinterpolationwithshortbondvolatility.Fortheinputsusedtoproduceeachoftheplots,pleaserefertotable1intheappendix.ThealgorithmfromBrace,MusielaandSchl¨ogl(1998)wasusedtogeneratesamplepathsfortheevolutionofthetermstructure.5.1.TermStructures.Figures1and2showhowthetwomethodsinterpolateinstan-taneousforwardrates.Forreference,thestepwiseconstantratesresultingfromloglinearinterpolationofzerocouponbondpricesareincludedineachplot.Theinstantaneousforwardratesjumpwhenonemovesfromoneδ–compoundingperiodtothenext.Fromequations(8)and(9),thisistobeexpected,asthematuritiesoftheLIBORsunderlyingtheinterpolationarediﬀerentoneachinterval.Instantaneousforwardratesonf(0,T)aredeterminedoneachintervalT∈(Ti,Ti+1)bycalculating−∂TlnB(0,T)B(0,Tη(T))ARBITRAGEFREETERMSTRUCTUREINTERPOLATION100.0550.0560.0570.0580.0590.0644.054.14.164.214.264.314.364.424.474.524.574.624.684.734.784.834.884.944.995.045.095.145.25.255.35.355.45.465.515.565.615.665.725.775.825.875.925.98MaturityInstantaneous fwd ratesFigure10.0550.0560.0570.0580.0590.0644.054.14.164.214.264.314.364.424.474.524.574.624.684.734.784.834.884.944.995.045.095.145.25.255.35.355.45.465.515.565.615.665.725.775.825.875.925.98MaturityInstantaneous fwd ratesFigure2Interpolationbydaycountfractionsvs.interpolationwithshortbondvolatilityConversely,underIPTmin(i+1,j)wehave(12)dL(t)=Λ(t,L(t))dWTmin(i+1,j)(t)+Ψ0(L(t))`(L(t))dtwithΨ0hk(t,L(t))=½L(t,Tmin(i,j−1)−1+h)λ(t,Tmin(i,j−1)−1+h)λ(t,Tmin(i,j−1)−1+k)if1<k≤h0otherwiseBytheMarkovpropertyofItodiﬀusions,thedynamicsgivenby(11)resp.(12)areMarkovinL(t).2ThisresultdoesnotrelyontheassumptionthattheLIBORvolatilitiesλ(t,Tk)arede-terministicfunctionsoftheirarguments.Rather,iftheλ(t,Tk)areleveldependentonsomeorallratesinL(t),theMarkovpropertystillholds.Also,byremark1.3,theaboveresultimpliesthatundertherollingspotLIBORmeasure,anyrateL(·,Ti)isMarkovinthestatevariablevector{L(t,Tk)|0≤k≤i}.5.ALookattheInterpolatedInterestRatesThissectionillustratessomeofthepropertiesoftheinterpolatedinterestratesandcontraststhetwointerpolationmethodsproposedintheprevioussections.Themethoddescribedinsection2willbereferredtoasmethod1orinterpolationbydaycountfractions;theoneintroducedinsection3willbelabelledmethod2orinterpolationwithshortbondvolatility.Fortheinputsusedtoproduceeachoftheplots,pleaserefertotable1intheappendix.ThealgorithmfromBrace,MusielaandSchl¨ogl(1998)wasusedtogeneratesamplepathsfortheevolutionofthetermstructure.5.1.TermStructures.Figures1and2showhowthetwomethodsinterpolateinstan-taneousforwardrates.Forreference,thestepwiseconstantratesresultingfromloglinearinterpolationofzerocouponbondpricesareincludedineachplot.Theinstantaneousforwardratesjumpwhenonemovesfromoneδ–compoundingperiodtothenext.Fromequations(8)and(9),thisistobeexpected,asthematuritiesoftheLIBORsunderlyingtheinterpolationarediﬀerentoneachinterval.Instantaneousforwardratesonf(0,T)aredeterminedoneachintervalT∈(Ti,Ti+1)bycalculating−∂TlnB(0,T)B(0,Tη(T))ARBITRAGE FREE TERM STRUCTURE INTERPOLATION
+
+11
+
+FIGURE 3. Interpolated forward LIBORs
+
+using (9) for method 1 and (10) for method 2.
+
+Instantaneous forward rates give the most disaggregate representation of the term structure
+and therefore effectively demonstrate the implications of the choice of interpolation method.
+However, one should not judge the usefulness of a particular method from this perspective alone.
+At ﬁrst glance the “sawtooth” patterns of the interpolated rates for falling term structures in
+method 1 and rising term structures in method 2 seem to represent serious drawbacks to using
+either method, but one should keep in mind that the instantaneous forward rates are also purely
+mathematical artifacts, while the objects being modelled are market observable rates such as
+LIBOR. Forward LIBORs are interpolated by
+
+L(t, T ) =
+
+=
+
+=
+
+1
+δ
+1
+δ
+1
+δ
+
+(13)
+
+For method 1 this becomes
+
+L(t, T ) =
+
+B(t, T + δ)
+
+B(t, Tη(T ))
+
+B(t, Tη(T ))
+
+(cid:19)
+
+− 1
+
+B(t, Tη(T ))
+B(t, Tη(T )+1)
+
+(cid:18) B(t, T )
+(cid:18) B(t, T )
+(cid:18) B(t, T )
+(cid:19)
+(cid:0)(1 + (Tη(T ) − T )L(t, Tη(T )−1))(1 + δL(t, Tη(T )))
+·(1 + (Tη(T )+1 − (T + δ))L(t, Tη(T )))−1 − 1(cid:1)
+
+B(t, Tη(T )+1)
+B(t, T + δ)
+
+B(t, Tη(T )+1)
+B(t, T + δ)
+
+− 1
+
+(1 + δL(t, Tη(T )))
+
+(cid:19)
+
+− 1
+
+1
+δ
+
+Figure 3 shows interpolated forward three–month LIBORs for a continuum of start dates between
+four and six years forward. The piecewise linear graph is actually two plots so close as to be
+
+ARBITRAGEFREETERMSTRUCTUREINTERPOLATION110.0630.0640.0650.0660.0670.0680.06944.054.14.164.214.264.314.364.424.474.524.574.624.684.734.784.834.884.944.995.045.095.145.25.255.35.355.45.465.515.565.615.665.725.775.825.875.925.98Figure3.InterpolatedforwardLIBORsusing(9)formethod1and(10)formethod2.Instantaneousforwardratesgivethemostdisaggregaterepresentationofthetermstruc-tureandthereforeeﬀectivelydemonstratetheimplicationsofthechoiceofinterpolationmethod.However,oneshouldnotjudgetheusefulnessofaparticularmethodfromthisperspectivealone.Atﬁrstglancethe“sawtooth”patternsoftheinterpolatedratesforfallingtermstructuresinmethod1andrisingtermstructuresinmethod2seemtorep-resentseriousdrawbackstousingeithermethod,butoneshouldkeepinmindthattheinstantaneousforwardratesarealsopurelymathematicalartifacts,whiletheobjectsbeingmodelledaremarketobservableratessuchasLIBOR.ForwardLIBORsareinterpolatedbyL(t,T)=1δµB(t,T)B(t,T+δ)−1¶=1δµB(t,T)B(t,Tη(T))B(t,Tη(T))B(t,Tη(T)+1)B(t,Tη(T)+1)B(t,T+δ)−1¶=1δµB(t,T)B(t,Tη(T))(1+δL(t,Tη(T)))B(t,Tη(T)+1)B(t,T+δ)−1¶(13)Formethod1thisbecomesL(t,T)=1δ¡(1+(Tη(T)−T)L(t,Tη(T)−1))(1+δL(t,Tη(T)))·(1+(Tη(T)+1−(T+δ))L(t,Tη(T)))−1−1¢Figure3showsinterpolatedforwardthree–monthLIBORsforacontinuumofstartdatesbetweenfourandsixyearsforward.Thepiecewiselineargraphisactuallytwoplotssoclose12
+
+ERIK SCHL ¨OGL
+
+FIGURE 4. Rate dynamics under interpolation by daycount fractions
+
+indistinguishable: Interpolation by daycount fractions and loglinear interpolation of zero coupon
+bond prices results in nearly identical forward three–month LIBORs, even though the resulting
+instantaneous forward rates are very different. This also implies that if one is only concerned
+with rates such as forward three–month LIBORs, using loglinear interpolation of zero coupon
+bond prices is for all intents and purposes arbitrage free.
+
+Introducing short bond volatility as per method 2 makes a difference for the interpolated LI-
+BORs only when the interest rate term structure changes slope. The vertical gridlines in ﬁgure 3
+represent boundaries between the accrual periods in the original discrete tenor. Interpolated for-
+ward LIBORs with start date in an accrual period immediately preceding a change in the slope of
+the term structure depart from the linearly interpolated plots and curve “outward”. This is due to
+the fact that a forward LIBOR for a given start date T is interpolated using the forward LIBOR
+for the preceding and the two following discrete tenor start dates Tη(T )−1, Tη(T ) and Tη(T )+1, as
+can easily be seen by appropriately inserting (10) into (13).
+
+5.2. Rate Dynamics. The dynamics which the two methods imply for interpolated rates are il-
+lustrated in Figures 4 and 5. Not only, as in the previous section, do equations (8) and (9) imply
+discontinuities in the instantaneous rates in the maturity dimension, but also in the time dimen-
+sion. This becomes particularly clear in the dynamics of the continuously compounded short
+rate under interpolation by daycount fractions: This rate evolves deterministically within each
+accrual period of the discrete tenor structure and jumps at the accrual period boundaries. For
+instantaneous forward rates f (t, T ) the dynamics are stochastic as long as the time to maturity
+T − t is greater than the accrual period length δ. The maturity T of the forward rate determines
+
+ARBITRAGEFREETERMSTRUCTUREINTERPOLATION12Short Rate Dynamics0.030.040.050.060.070.080.090.10.1100.060.110.170.220.280.330.390.440.50.550.60.660.710.770.820.880.930.991.041.11.151.211.261.321.371.431.481.541.591.651.71.761.811.871.921.98Time in yearsFixed Maturity Instantaneous Fwd Rate0.040.050.060.070.080.090.10.110.120.1300.050.10.140.190.240.290.330.380.430.480.520.570.620.660.710.760.810.850.90.9511.041.091.141.191.231.281.331.381.421.471.521.571.611.661.71Time in yearsFixed Time to Maturity Instantaneous Fwd Rates0.030.040.050.060.070.080.090.10.110.120.1300.050.110.160.210.260.320.370.420.470.530.580.630.680.730.790.840.890.9411.051.11.151.211.261.311.361.421.471.521.571.631.681.731.781.841.89Time in yearsShort Rate vs. Fixed TTM Fwd Rate0.040.0450.050.0550.060.0650.070.0750.080.08500.060.130.190.250.310.380.440.50.560.620.690.750.810.870.9411.061.121.191.251.311.371.441.51.561.621.691.751.811.871.94Time in yearsFigure4.Ratedynamicsunderinterpolationbydaycountfractionsastobeindistinguishable:Interpolationbydaycountfractionsandloglinearinterpolationofzerocouponbondpricesresultsinnearlyidenticalforwardthree–monthLIBORs,eventhoughtheresultinginstantaneousforwardratesareverydiﬀerent.Thisalsoimpliesthatifoneisonlyconcernedwithratessuchasforwardthree–monthLIBORs,usingloglinearinterpolationofzerocouponbondpricesisforallintentsandpurposesarbitragefree.Introducingshortbondvolatilityaspermethod2makesadiﬀerencefortheinterpolatedLIBORsonlywhentheinterestratetermstructurechangesslope.Theverticalgridlinesinﬁgure3representboundariesbetweentheaccrualperiodsintheoriginaldiscretetenor.InterpolatedforwardLIBORswithstartdateinanaccrualperiodimmediatelyprecedingachangeintheslopeofthetermstructuredepartfromthelinearlyinterpolatedplotsandcurve“outward”.ThisisduetothefactthataforwardLIBORforagivenstartdateTisinterpolatedusingtheforwardLIBORfortheprecedingandthetwofollowingdiscretetenorstartdatesTη(T)−1,Tη(T)andTη(T)+1,ascaneasilybeseenbyappropriatelyinserting(10)into(13).5.2.RateDynamics.ThedynamicswhichthetwomethodsimplyforinterpolatedratesareillustratedinFigures4and5.Notonly,asintheprevioussection,doequations(8)and(9)implydiscontinuitiesintheinstantaneousratesinthematuritydimension,butalsointhetimedimension.Thisbecomesparticularlyclearinthedynamicsofthecontinu-ouslycompoundedshortrateunderinterpolationbydaycountfractions:Thisrateevolvesdeterministicallywithineachaccrualperiodofthediscretetenorstructureandjumpsattheaccrualperiodboundaries.Forinstantaneousforwardratesf(t,T)thedynamicsarestochasticaslongasthetimetomaturityT−tisgreaterthantheaccrualperiodlengthδ.ThematurityToftheforwardratedetermineswhichforwardLIBORsareusedintheARBITRAGE FREE TERM STRUCTURE INTERPOLATION
+
+13
+
+FIGURE 5. Rate dynamics under interpolation with short bond volatility
+
+which forward LIBORs are used in the interpolation, so if one considers an instantaneous for-
+ward rate for a ﬁxed maturity, this rate will be interpolated from the same forward LIBORs at all
+times. Since the LIBOR dynamics are modelled to be continuous, the interpolated rate will not
+jump (cf. plot in upper right of Figure 4). On the other hand, holding time to maturity (TTM)
+ﬁxed means that there will be jumps when the maturity T moves across a boundary between ac-
+crual periods in the original discrete tenor structure. The bottom two plots in Figure 4) illustrate
+this. The time to maturity of the instantaneous forward rate shown here is 1.25δ, resulting in
+a jump at three–quarters of every δ–interval of the tenor structure; these points are marked by
+vertical gridlines in the plot. Thus different points on the forward rate curve jump at different
+times.
+
+The same observations can be made for the dynamics of instantaneous rates under interpola-
+tion with short bond volatility, as shown in Figure 5. The only qualitative difference is that now
+rates with times to maturity less than δ, including the continuously compounded short rate, also
+have stochastic dynamics (cf. the upper left plot of Figure 5).
+
+As in the previous section, the observed discontinuities apply only to instantaneous rates.
+Of more practical relevance is the fact that interpolated rates for accrual periods of any arbi-
+trary length, for example a δ–compounded forward LIBOR L(t, T ) for a “broken date” maturity
+T (cid:54)= Tη(T ), will have continuous dynamics: The instantaneous rates are continuous almost ev-
+erywhere under the Lebesgue measure on the time line, thus any jumps are integrated out once
+one considers accrual periods of greater than inﬁnitesimal length.
+
+ARBITRAGEFREETERMSTRUCTUREINTERPOLATION13Short Rate Dynamics0.040.050.060.070.080.090.10.110.1200.060.110.170.220.280.330.390.440.50.550.60.660.710.770.820.880.930.991.041.11.151.211.261.321.371.431.481.541.591.651.71.761.811.871.921.98Time in yearsFixed Maturity Instantaneous Fwd Rate0.040.050.060.070.080.090.10.110.120.1300.050.10.140.190.240.290.330.380.430.480.520.570.620.660.710.760.810.850.90.9511.041.091.141.191.231.281.331.381.421.471.521.571.611.661.71Time in yearsFixed Time to Maturity Instantaneous Fwd Rates00.020.040.060.080.10.120.1400.050.090.140.180.230.270.320.360.410.450.50.540.580.630.670.720.760.810.850.90.940.991.031.081.121.171.211.261.31.351.391.441.481.531.571.621.66Time in yearsShort Rate vs. Fixed TTM Fwd Rate0.040.0450.050.0550.060.0650.070.0750.080.08500.060.130.190.250.310.380.440.50.560.620.690.750.810.870.9411.061.121.191.251.311.371.441.51.561.621.691.751.811.871.94Time in yearsFigure5.Ratedynamicsunderinterpolationwithshortbondvolatilityinterpolation,soifoneconsidersaninstantaneousforwardrateforaﬁxedmaturity,thisratewillbeinterpolatedfromthesameforwardLIBORsatalltimes.SincetheLIBORdynamicsaremodelledtobecontinuous,theinterpolatedratewillnotjump(cf.plotinupperrightofFigure4).Ontheotherhand,holdingtimetomaturity(TTM)ﬁxedmeansthattherewillbejumpswhenthematurityTmovesacrossaboundarybetweenaccrualperiodsintheoriginaldiscretetenorstructure.ThebottomtwoplotsinFigure4)illustratethis.Thetimetomaturityoftheinstantaneousforwardrateshownhereis1.25δ,resultinginajumpatthree–quartersofeveryδ–intervalofthetenorstructure;thesepointsaremarkedbyverticalgridlinesintheplot.Thusdiﬀerentpointsontheforwardratecurvejumpatdiﬀerenttimes.Thesameobservationscanbemadeforthedynamicsofinstantaneousratesunderinter-polationwithshortbondvolatility,asshowninFigure5.Theonlyqualitativediﬀerenceisthatnowrateswithtimestomaturitylessthanδ,includingthecontinuouslycompoundedshortrate,alsohavestochasticdynamics(cf.theupperleftplotofFigure5).Asintheprevioussection,theobserveddiscontinuitiesapplyonlytoinstantaneousrates.Ofmorepracticalrelevanceisthefactthatinterpolatedratesforaccrualperiodsofanyarbitrarylength,forexampleaδ–compoundedforwardLIBORL(t,T)fora“brokendate”maturityT6=Tη(T),willhavecontinuousdynamics:TheinstantaneousratesarecontinuousalmosteverywhereundertheLebesguemeasureonthetimeline,thusanyjumpsareintegratedoutonceoneconsidersaccrualperiodsofgreaterthaninﬁnitesimallength.14
+
+ERIK SCHL ¨OGL
+
+FIGURE 6
+
+FIGURE 7
+
+interpolation by daycount fractions vs. interpolation with short bond volatility
+
+Implied volatilities resulting from
+
+6. BROKEN DATE CAPLETS: A COMPARISON
+
+Another point of interest is how the choice of interpolation method affects the pricing of
+derivatives. In this context, the volatility of interpolated rates is of key importance. When ex-
+tending the discrete tenor model to continuous tenor, one is faced with a tradeoff of completing
+the model via volatilities or interest rate interpolation. By ﬁxing the volatilities of rates for all
+maturities, say all δ–compounded forward LIBORs L(·, T ), T ∈ [0, T ∗−δ] as in MSS and BGM,
+the model is completely speciﬁed and there is no need to interpolate interest rates. On the other
+hand, when the interpolated rates are given as functions of the discrete tenor forward LIBORs,
+their volatilities can be calculated by an application of Ito’s Lemma. The former approach has
+the disadvantage of rather intractable dynamics for rates other the δ–compounded forward LI-
+BORs, while latter implies that the “broken date” forward LIBORs L(t, T ), T (cid:54)= Tη(T ) are not
+lognormal. Applying Ito’s Lemma to (13), the relative volatility of L(t, T ) is
+
+vol[L(t, T )] = L(t, T )−1
+
+(cid:18)1
+
+(cid:18) B(t, T )
+
+δ
+
+B(t, Tη(T ))
+
+· N−1(cid:88)
+
+i=0
+
+∂L(t,Ti)
+
+(1 + δL(t, Tη(T )))
+
+B(t, Tη(T )+1)
+B(t, T + δ)
+
+− 1
+
+L(t, Ti)λ(t, Ti)
+
+(cid:19)(cid:19)
+
+For method 1 this becomes
+
+vol[L(t, T )] =
+
+L(t, T )−1
+
+1
+δ
+
+(cid:18)
+
+1 + δL(t, Tη(T ))
+
+(Tη(T ) − T )
++ (1 + (Tη(T ) − T )L(t, Tη(T )−1))
+
+1 + (Tη(T ) − T )L(t, Tη(T ))
+
+· δ(1 + (Tη(T ) − T )L(t, Tη(T ))) − (Tη(T ) − T )(1 + δL(t, Tη(T )))
+
+(1 + (Tη(T ) − T )L(t, Tη(T )))2
+
+λ(t, Tη(T )−1)L(t, Tη(T )−1)
+
+(cid:19)
+
+λ(t, Tη(T ))L(t, Tη(T ))
+
+Figures 6 and 7 illustrate how the two interpolation methods presented in the previous sections
+affect the prices for “broken date” caplets. In each plot, we vary the maturity T of the forward
+LIBOR L(t, T ) underlying the caplet within one δ–accrual period of the discrete tenor structure
+(i.e. the caplets on the two endpoints of each plot are based on non-interpolated rates). The strike
+
+ARBITRAGEFREETERMSTRUCTUREINTERPOLATION140.260.2650.270.2750.280.2850.2933.013.023.033.043.053.063.073.083.093.13.113.123.133.143.153.163.173.183.193.23.213.223.233.243.25MaturityFigure60.260.2650.270.2750.280.2850.2933.013.023.033.043.053.063.073.083.093.13.113.123.133.143.153.163.173.183.193.23.213.223.233.243.25MaturityFigure7Impliedvolatilitiesresultingfrominterpolationbydaycountfractionsvs.interpolationwithshortbondvolatility6.BrokenDateCaplets:AComparisonAnotherpointofinterestishowthechoiceofinterpolationmethodaﬀectsthepricingofderivatives.Inthiscontext,thevolatilityofinterpolatedratesisofkeyimportance.Whenextendingthediscretetenormodeltocontinuoustenor,oneisfacedwithatradeoﬀofcompletingthemodelviavolatilitiesorinterestrateinterpolation.Byﬁxingthevolatilitiesofratesforallmaturities,sayallδ–compoundedforwardLIBORsL(·,T),T∈[0,T∗−δ]asinMSSandBGM,themodeliscompletelyspeciﬁedandthereisnoneedtointerpolateinterestrates.Ontheotherhand,whentheinterpolatedratesaregivenasfunctionsofthediscretetenorforwardLIBORs,theirvolatilitiescanbecalculatedbyanapplicationofIto’sLemma.Theformerapproachhasthedisadvantageofratherintractabledynamicsforratesothertheδ–compoundedforwardLIBORs,whilelatterimpliesthatthe“brokendate”forwardLIBORsL(t,T),T6=Tη(T)arenotlognormal.ApplyingIto’sLemmato(13),therelativevolatilityofL(t,T)isvol[L(t,T)]=L(t,T)−1·N−1Xi=0∂L(t,Ti)µ1δµB(t,T)B(t,Tη(T))(1+δL(t,Tη(T)))B(t,Tη(T)+1)B(t,T+δ)−1¶¶L(t,Ti)λ(t,Ti)Formethod1thisbecomesvol[L(t,T)]=1δL(t,T)−1µ(Tη(T)−T)1+δL(t,Tη(T))1+(Tη(T)−T)L(t,Tη(T))λ(t,Tη(T)−1)L(t,Tη(T)−1)+(1+(Tη(T)−T)L(t,Tη(T)−1))·δ(1+(Tη(T)−T)L(t,Tη(T)))−(Tη(T)−T)(1+δL(t,Tη(T)))(1+(Tη(T)−T)L(t,Tη(T)))2λ(t,Tη(T))L(t,Tη(T))¶Figures6and7illustratehowthetwointerpolationmethodspresentedintheprevioussectionsaﬀectthepricesfor“brokendate”caplets.Ineachplot,wevarythematurityToftheforwardLIBORL(t,T)underlyingthecapletwithinoneδ–accrualperiodofthediscretetenorstructure(i.e.thecapletsonthetwoendpointsofeachplotarebasedonARBITRAGEFREETERMSTRUCTUREINTERPOLATION140.260.2650.270.2750.280.2850.2933.013.023.033.043.053.063.073.083.093.13.113.123.133.143.153.163.173.183.193.23.213.223.233.243.25MaturityFigure60.260.2650.270.2750.280.2850.2933.013.023.033.043.053.063.073.083.093.13.113.123.133.143.153.163.173.183.193.23.213.223.233.243.25MaturityFigure7Impliedvolatilitiesresultingfrominterpolationbydaycountfractionsvs.interpolationwithshortbondvolatility6.BrokenDateCaplets:AComparisonAnotherpointofinterestishowthechoiceofinterpolationmethodaﬀectsthepricingofderivatives.Inthiscontext,thevolatilityofinterpolatedratesisofkeyimportance.Whenextendingthediscretetenormodeltocontinuoustenor,oneisfacedwithatradeoﬀofcompletingthemodelviavolatilitiesorinterestrateinterpolation.Byﬁxingthevolatilitiesofratesforallmaturities,sayallδ–compoundedforwardLIBORsL(·,T),T∈[0,T∗−δ]asinMSSandBGM,themodeliscompletelyspeciﬁedandthereisnoneedtointerpolateinterestrates.Ontheotherhand,whentheinterpolatedratesaregivenasfunctionsofthediscretetenorforwardLIBORs,theirvolatilitiescanbecalculatedbyanapplicationofIto’sLemma.Theformerapproachhasthedisadvantageofratherintractabledynamicsforratesothertheδ–compoundedforwardLIBORs,whilelatterimpliesthatthe“brokendate”forwardLIBORsL(t,T),T6=Tη(T)arenotlognormal.ApplyingIto’sLemmato(13),therelativevolatilityofL(t,T)isvol[L(t,T)]=L(t,T)−1·N−1Xi=0∂L(t,Ti)µ1δµB(t,T)B(t,Tη(T))(1+δL(t,Tη(T)))B(t,Tη(T)+1)B(t,T+δ)−1¶¶L(t,Ti)λ(t,Ti)Formethod1thisbecomesvol[L(t,T)]=1δL(t,T)−1µ(Tη(T)−T)1+δL(t,Tη(T))1+(Tη(T)−T)L(t,Tη(T))λ(t,Tη(T)−1)L(t,Tη(T)−1)+(1+(Tη(T)−T)L(t,Tη(T)−1))·δ(1+(Tη(T)−T)L(t,Tη(T)))−(Tη(T)−T)(1+δL(t,Tη(T)))(1+(Tη(T)−T)L(t,Tη(T)))2λ(t,Tη(T))L(t,Tη(T))¶Figures6and7illustratehowthetwointerpolationmethodspresentedintheprevioussectionsaﬀectthepricesfor“brokendate”caplets.Ineachplot,wevarythematurityToftheforwardLIBORL(t,T)underlyingthecapletwithinoneδ–accrualperiodofthediscretetenorstructure(i.e.thecapletsonthetwoendpointsofeachplotarebasedonARBITRAGE FREE TERM STRUCTURE INTERPOLATION
+
+15
+
+is chosen at 1.25 times the at–the–money level and the volatility function is two–dimensional ex-
+ponentially decaying.15 This choice should provide a representative example well away from the
+trivial at–the–money, one–dimensional constant volatility case. The caplet prices were generated
+by Monte Carlo simulation; the middle line in each plot give the Monte Carlo estimate, while
+the outside lines are the conﬁdence interval boundaries two standard deviations to either side of
+the Monte Carlo estimate. One million MC runs make these conﬁdence bounds reasonably tight.
+We represent the caplet prices in terms of their Black/Scholes implied volatility, i.e. in terms of
+the one–dimensional constant relative volatility of the underlying rate which would result in the
+same caplet price. The dip in the implied volatilities is due to the fact that the interpolation of
+L(T, T ) at maturity of the caplet is in part based on L(Tη(T )−1, Tη(T )−1), i.e. a rate which evolves
+stochastically only until Tη(T )−1 < T . This effect is less pronounced under interpolation with
+short bond volatility, as in this case L(Tη(T )−1, Tη(T )−1) plays a lesser role.
+
+The disadvantage that the “broken date” forward LIBORs are not lognormal is greatly al-
+leviated by the fact that their distribution is actually very close to lognormal. One can apply
+the argument which was ﬁrst used to derive an approximate swaption formula in a lognormal
+forward LIBOR model.16 Noting that the level dependence of the volatility of the interpolated
+forward LIBORs varies slowly compared to the rates themselves, one can derive an approxi-
+mate closed–form solution for the “broken date” caplet by calculating the level dependence with
+respect to the initial rates, e.g. for method 1 by setting
+
+vol[L(t, T )] = L(0, T )−1
+
+·
+
+(cid:18) ∂L(0, T )
+(cid:32)
+
+∂L(0, Tη(T )−1)
+L(0, T )−1
+
+L(0, Tη(T )−1)λ(t, Tη(T )−1) +
+
+∂L(0, T )
+
+∂L(0, Tη(T ))
+
+(cid:19)
+
+L(0, Tη(T ))λ(t, Tη(T ))
+
+=
+
+(Tη(T ) − T )
+
+1
+δ
++ (1 + (Tη(T ) − T )L(0, Tη(T )−1))
+
+1 + δL(0, Tη(T ))
+
+1 + (Tη(T ) − T )L(0, Tη(T ))
+
+λ(t, Tη(T )−1)L(0, Tη(T )−1)
+
+·δ(1 + (Tη(T ) − T )L(0, Tη(T ))) − (Tη(T ) − T )(1 + δL(0, Tη(T )))
+
+(1 + (Tη(T ) − T )L(0, Tη(T )))2
+
+(cid:33)
+
+·λ(t, Tη(T ))L(0, Tη(T ))
+
+The Black/Scholes implied volatility is then given by
+
+(cid:115)(cid:90) T
+
+0
+
+1√
+T
+
+(vol[L(s, T )])2ds
+
+15For details see appendix.
+16This argument ﬁrst appears in Brace, Gatarek and Musiela (1997). It was developed further in Brace, Dun
+and Barton (1998a) and formalized by Brace and Womersley (2000). This approximation works well not only for
+pricing, but also for hedging, as demonstrated in Dun, Barton and Schl¨ogl (2001).
+
+L(0, Tη(T )−1)
+
+L(0, Tη(T ))cov(Tη(T )−1, Tη(T ))
+
+1√
+T
+
+∂L(0, T )
+
+∂L(0, Tη(T )−1)
+
+2
+
+(cid:32)
+(cid:18) ∂L(0, T )
+(cid:18) ∂L(0, T )
+
+∂L(0, Tη(T ))
+
+∂L(0, Tη(T )−1)
+
+16
+
+=
+
++
+
++
+
+with
+
+ERIK SCHL ¨OGL
+
+∂L(0, T )
+
+∂L(0, Tη(T ))
+
+(cid:19)2
+
+(cid:19)2(cid:33) 1
+
+2
+
+L(0, Tη(T )−1)λ(0, Tη(T )−1)
+
+L(0, Tη(T ))λ(0, Tη(T ))
+
+(cid:90) Tη(T )−1
+(cid:115)(cid:90) Tη(T )−1
+(cid:115)(cid:90) Tη(T )
+
+0
+
+0
+
+λ(s, Tη(T )−1)λ(s, Tη(T ))ds
+
+λ2(s, Tη(T )−1)ds
+
+λ2(s, Tη(T ))ds
+
+cov(Tη(T )−1, Tη(T )) =
+
+λ(0, Tη(T )−1) =
+
+λ(0, Tη(T )) =
+
+As illustrated by Figure 6, the resulting approximation of Black/Scholes implied volatilities is
+very accurate.
+
+0
+
+7. CONCLUSION
+
+Extending the models of market observable interest rates from discrete to continuous tenor by
+interpolation is particularly useful in implementations where there are some ﬁnancial products
+which must be priced numerically, as the Markovian structure of the discrete tenor model is
+preserved. It is important to note that the interpolation method cannot be chosen arbitrarily for
+all maturities. Rather, it must take into account the relevant no–arbitrage conditions.
+
+Shifting the focus from instantaneous forward rates to market observables such as forward
+LIBOR, the rate dynamics implied by the proposed interpolation methods are reasonable. These
+methods supply alternatives to the continuous tenor versions of the lognormal forward rate Mar-
+ket Models proposed in the literature and in those cases where moving to continuous tenor by
+interpolation entails a loss of tractability, for example for “broken date” caplets, very accurate
+approximations exist.
+
+APPENDIX: MODEL PARAMETERS
+
+To generate the plots, two volatility speciﬁcations λ1 and λ2 were used:
+∀ t < T < T ∗
+∀ t < T < T ∗
+
+(cid:18) 0.6e−0.8(T−t)
+
+λ1(t, T ) = 0.3
+
+λ2(t, T ) =
+
+(cid:19)
+
+0.1e−0.01(T−t)
+
+The length δ of the discrete tenor accrual period is in all cases 0.25.
+
+Three initial term structures of discrete tenor forward LIBORs are considered:
+(1) Linearly increasing from 4% at 0 years up to 6% at 5 years and then linearly decreasing
+
+down to 4% at 10 years.
+
+ARBITRAGE FREE TERM STRUCTURE INTERPOLATION
+
+17
+
+Initial
+Term
+
+Structure
+
+1
+1
+2
+3
+3
+3
+3
+
+Figure
+
+1
+2
+3
+4
+5
+6
+7
+
+TABLE 1
+
+Volatility
+
+λ1
+λ1
+λ1
+λ1
+λ1
+λ2
+λ2
+
+T ∗
+
+10
+10
+10
+2.25
+2.25
+4.25
+4.25
+
+Fixed
+Time to
+Maturity Maturity
+
+Fixed
+
+NA
+NA
+NA
+
+1.8125
+1.8125
+
+NA
+NA
+
+NA
+NA
+NA
+
+0.3125
+0.3125
+
+NA
+NA
+
+(2) Linearly increasing from 5% at 0 years up to 6.7% at 4.25 years, then linearly decreasing
+to 6.5% at 4.75 years, then linearly increasing to 6.8% at 5.5 years, and then linearly
+decreasing down to 5% at 10 years.
+
+(3) Linearly increasing from 5% at 0 years up to 10% at T ∗ − δ.
+
+REFERENCES
+
+Andersen, L. and Andreasen, J. (1998), Volatility Skews and Extensions of the LIBOR Market Model, General
+
+Re Financial Products, working paper .
+
+Black, F. (1976), The Pricing of Commodity Contracts, Journal of Financial Economics 3, 167–79.
+Black, F. and Scholes, M. (1973), The Pricing of Options and Corporate Liabilities, Journal of Political Economy
+
+Brace, A. and Womersley, R. S. (2000), Exact Fit to the Swaption Volatility Matrix Using Semideﬁnite Program-
+
+ming, ICBI Global Derivatives Conference, working paper .
+
+Brace, A., Dun, T. and Barton, G. (1998a), Towards a Central Interest Rate Model, Conference Global Derivatives
+
+Brace, A., Gatarek, D. and Musiela, M. (1997), The Market Model of Interest Rate Dynamics, Mathematical
+
+Brace, A., Musiela, M. and Schl¨ogl, E. (1998b), A Simulation Algorithm for Lognormal Market Models, FMMA,
+
+pp. 637–654.
+
+’98, working paper .
+
+Finance 7(2), 127–155.
+
+working paper .
+
+Corr, A. (2000), Finite Dimensional Representability of Forward Rate and LIBOR Models, PhD thesis, School of
+
+Mathematics, University of New South Wales.
+
+Dun, T., Barton, G. and Schl¨ogl, E. (2001), Simulated Swaption Delta–Hedging in the Lognormal Forward
+
+LIBOR Model, International Journal of Theoretical and Applied Finance 4(4), 677–709.
+
+El Karoui, N., Lepage, C., Myneni, R., Roseau, N. and Viswanathan, R. (1991), The Valuation and Hedging
+
+of Contingent Claims with Markovian Interest Rates, Universit´e de Paris 6, working paper .
+
+Heath, D., Jarrow, R. and Morton, A. (1992), Bond Pricing and the Term Structure of Interest Rates: A New
+
+Methodology for Contingent Claims Valuation, Econometrica 60(1), 77–105.
+
+Ho, T. S. and Lee, S.-B. (1986), Term Structure Movements and Pricing Interest Rate Contingent Claims, Journal
+
+Jamshidian, F. (1997), LIBOR and Swap Market Models and Measures, Finance and Stochastics 1(4), 293–330.
+Miltersen, K. R., Nielsen, J. A. and Sandmann, K. (2001), The Market Model of Future Rates, University of
+
+of Finance XLI(5), 1011–1029.
+
+Mainz, working paper .
+
+Miltersen, K. R., Sandmann, K. and Sondermann, D. (1997), Closed Form Solutions for Term Structure
+
+Derivatives with Log-Normal Interest Rates, The Journal of Finance 52(1), 409–430.
+
+Musiela, M. and Rutkowski, M. (1997), Continuous–Time Term Structure Models: A Forward Measure Ap-
+
+Rady, S. (1997), Option Pricing in the Presence of Natural Boundaries and a Quadratic Diffusion Term, Finance
+
+proach, Finance and Stochastics.
+
+and Stochastics 1(4), 331–344.
+
+18
+
+ERIK SCHL ¨OGL
+
+Rutkowski, M. (1997), Spot, Forward, and Futures LIBOR Rates, Institute of Mathematics, Politechnika Warsza-
+
+wska, working paper .
+
+Sandmann, K. and Sondermann, D. (1989), A Term Structure Model and the Pricing of Interest Rate Options,
+
+Sandmann, K. and Sondermann, D. (1994), A Term Structure Model and the Pricing of Interest Rate Options,
+
+SFB 303, Universit¨at Bonn, working paper B–129.
+
+The Review of Futures Markets 12(2), 391–423.
+
+Sandmann, K., Sondermann, D. and Miltersen, K. (1995), Closed Form Term Structure Derivatives in a Heath–
+Jarrow–Morton Model with Log–normal Annually Compounded Interest Rates, Research Symposium Pro-
+ceedings CBOT pp. 145–164.
+
+Schl¨ogl, E. (2002a), Arbitrage–Free Interpolation in Models of Market Observable Interest Rates, in K. Sandmann
+
+and P. Sch¨onbucher (eds), Advances in Finance and Stochastics, Springer-Verlag.
+
+Schl¨ogl, E. (2002b), A Multicurrency Extension of the Lognormal Interest Rate Market Models, Finance and
+
+Stochastics 6(2), 173–196.
+
+

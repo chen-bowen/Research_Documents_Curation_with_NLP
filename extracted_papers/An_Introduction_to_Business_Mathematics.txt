@@ -1,0 +1,7313 @@
+5
+1
+0
+2
+
+ 
+
+p
+e
+S
+6
+1
+
+ 
+
+ 
+ 
+]
+
+.
+
+N
+G
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+2
+v
+3
+3
+3
+4
+0
+
+.
+
+9
+0
+5
+1
+:
+v
+i
+X
+r
+a
+
+AN INTRODUCTION TO
+
+BUSINESS MATHEMATICS
+
+Lecture notes for the Bachelor degree programmes
+
+IB/IMC/IMA/ITM/IEVM/ACM/IEM/IMM
+at Karlshochschule International University
+
+Module
+
+0.1.1 IMQM: Introduction to Management and its Quantitative Methods
+
+HENK VAN ELST
+
+August 30, 2015
+
+Fakult¨at I: Betriebswirtschaft und Management
+
+Karlshochschule
+
+International University
+
+Karlstraße 36–38
+76133 Karlsruhe
+
+Germany
+
+E–mail: hvanelst@karlshochschule.de
+
+E–Print: arXiv:1509.04333v2 [q-ﬁn.GN]
+
+c(cid:13) 2009–2015 Karlshochschule International University and Henk van Elst
+
+Abstract
+
+These lecture notes provide a self-contained introduction to the mathematical methods required in a Bachelor
+degree programme in Business, Economics, or Management. In particular, the topics covered comprise real-
+valued vector and matrix algebra, systems of linear algebraic equations, Leontief’s stationary input–output
+matrix model, linear programming, elementary ﬁnancial mathematics, as well as differential and integral
+calculus of real-valued functions of one real variable. A special focus is set on applications in quantitative
+economical modelling.
+
+Cite as: arXiv:1509.04333v2 [q-ﬁn.GN]
+
+These lecture notes were typeset in LATEX 2ε.
+
+Contents
+
+Abstract
+
+Qualiﬁcation objectives of the module (excerpt)
+
+Introduction
+
+1 Vector algebra in Euclidian space Rn
+. .
+. .
+. .
+
+1.1 Basic concepts
+. .
+1.2 Dimension and basis of Rn .
+1.3 Euclidian scalar product
+. .
+
+. .
+
+.
+.
+.
+
+.
+
+.
+
+.
+
+2 Matrices
+
+2.1 Matrices as linear mappings
+. .
+2.2 Basic concepts
+.
+2.3 Matrix multiplication .
+. .
+
+. .
+
+.
+.
+
+.
+
+.
+.
+.
+
+. .
+. .
+. .
+
+.
+.
+.
+
+.
+.
+.
+
+.
+
+3 Systems of linear algebraic equations
+. .
+.
+. .
+.
+. .
+.
+. .
+.
+Inverse of a regular (n × n)-matrix .
+.
+. .
+
+3.1 Basic concepts
+. .
+3.2 Gaußian elimination .
+3.3 Rank of a matrix . .
+3.4 Solution criteria .
+. .
+3.5
+3.6 Outlook .
+
+. .
+. .
+. .
+. .
+
+.
+.
+.
+.
+
+.
+.
+.
+.
+
+.
+.
+.
+.
+
+. .
+
+. .
+
+. .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+
+4 Leontief’s input–output matrix model
+. .
+
+4.1 General considerations .
+4.2
+
+. .
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+. .
+
+. .
+
+Input–output matrix .
+
+. .
+Input–output matrix and resource consumption matrix .
+. .
+4.2.1
+. .
+. .
+4.2.2 Resource consumption matrix . .
+. .
+. .
+
+.
+.
+.
+.
+.
+Flows of goods: endogenous INPUT to total OUTPUT .
+.
+Flows of goods: exogenous INPUT to total OUTPUT .
+. .
+.
+
+. .
+. .
+. .
+. .
+. .
+
+4.3.1
+4.3.2
+
+. .
+. .
+. .
+
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+4.3 Stationary linear ﬂows of goods
+
+.
+
+4.4 Outlook .
+
+.
+
+.
+
+.
+
+1
+
+2
+
+5
+5
+7
+8
+
+. .
+. .
+. .
+
+.
+.
+.
+
+11
+. 11
+. 13
+. 14
+
+17
+. 17
+. 18
+. 19
+. 20
+. 21
+. 22
+
+25
+. 25
+. 26
+. 26
+. 28
+. 29
+. 29
+. 30
+. 30
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+
+5 Linear programming
+
+5.1 Exposition of a quantitative problem .
+.
+5.2 Graphical solution method .
+.
+.
+5.3 Dantzig’s simplex algorithm .
+
+. .
+. .
+
+.
+.
+
+. .
+. .
+. .
+
+.
+.
+.
+
+. .
+. .
+. .
+
+.
+.
+.
+
+.
+.
+.
+
+. .
+. .
+. .
+
+6 Elementary ﬁnancial mathematics
+
+6.1.1 Arithmetical sequence and series .
+6.1.2 Geometrical sequence and series .
+Interest and compound interest
+. .
+
+6.1 Arithmetical and geometrical sequences and series
+.
+.
+.
+.
+.
+
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+6.2
+. .
+6.3 Redemption payments in constant annuities . .
+6.4 Pension calculations .
+. .
+. .
+6.5 Linear and declining-balance depreciation methods . .
+. .
+. .
+. .
+
+6.5.1 Linear depreciation method .
+.
+6.5.2 Declining-balance depreciation method .
+.
+
+6.6 Summarising formula .
+
+.
+.
+.
+.
+.
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+.
+.
+.
+
+.
+.
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+
+.
+
+.
+
+.
+
+. .
+
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+
+. .
+. .
+. .
+. .
+. .
+. .
+
+7.1 Real-valued functions .
+
+. .
+Polynomials of degree n .
+. .
+. .
+. .
+. .
+
+7 Differential calculus of real-valued functions
+. .
+. .
+. .
+. .
+. .
+. .
+
+.
+.
+7.1.1
+.
+.
+7.1.2 Rational functions
+.
+7.1.3
+Power-law functions .
+.
+7.1.4 Exponential functions
+.
+7.1.5 Logarithmic functions
+7.1.6 Concatenations of real-valued functions .
+7.2 Derivation of differentiable real-valued functions
+7.3 Common functions in economic theory . .
+. .
+7.4 Curve sketching .
+. .
+. .
+7.5 Analytic investigations of economic functions .
+
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+7.5.1 Total cost functions according to Turgot and von Th¨unen . .
+7.5.2
+. .
+. .
+7.5.3 Extremal values of rational economic functions .
+.
+. .
+
+Proﬁt functions in the diminishing returns picture .
+.
+.
+
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+
+7.6 Elasticities .
+
+. .
+. .
+. .
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+. .
+
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+8 Integral calculus of real-valued functions
+.
+.
+.
+
+. .
+8.1
+8.2 Deﬁnite integrals
+. .
+8.3 Applications in economic theory .
+
+Indeﬁnite integrals
+
+. .
+. .
+
+.
+. .
+
+.
+.
+
+.
+.
+
+.
+.
+
+.
+.
+.
+
+. .
+. .
+. .
+
+.
+.
+.
+
+. .
+. .
+. .
+
+.
+.
+.
+
+.
+.
+.
+
+. .
+. .
+. .
+
+.
+.
+.
+
+.
+.
+.
+
+. .
+. .
+. .
+
+.
+.
+.
+
+. .
+. .
+. .
+
+A Glossary of technical terms (GB – D)
+
+Bibliography
+
+CONTENTS
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+
+. .
+. .
+. .
+
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+. .
+
+. .
+. .
+. .
+
+33
+. 33
+. 35
+. 36
+
+39
+. 39
+. 39
+. 40
+. 41
+. 43
+. 46
+. 48
+. 48
+. 48
+. 49
+
+51
+. 51
+. 52
+. 53
+. 53
+. 53
+. 54
+. 54
+. 55
+. 57
+. 58
+. 59
+. 59
+. 62
+. 64
+. 65
+
+71
+. 71
+. 72
+. 73
+
+75
+
+81
+
+Qualiﬁcation objectives of the module
+(excerpt)
+
+The qualiﬁcation objectives shall be reached by an integrative approach.
+
+A broad instructive range is aspired. The students shall acquire a 360 degree orientation concerning
+the task- and personnel-related tasks and roles of a manager and supporting tools and methods and
+be able to describe the coherence in an integrative way. The knowledge concerning the tasks and
+the understanding of methods and tools shall be strengthened by a constructivist approach based
+on case studies and exercises.
+
+Students who have successfully participated in this module will be able to
+
+• . . . ,
+• solve problems in Linear Algebra and Analysis and apply such mathematical methods to
+
+quantitative problems in management.
+
+• apply and challenge the knowledge critically on current issues and selected case studies.
+
+1
+
+2
+
+CONTENTS
+
+Introduction
+
+These lecture notes contain the entire material of the quantitative methods part of the ﬁrst semester
+module 0.1.1 IMQM: Introduction to Management and its Quantitative Methods at Karl-
+shochschule International University. The aim is to provide a selection of tried-and-tested math-
+ematical tools that proved efﬁcient in actual practical problems of Economics and Management.
+These tools constitute the foundation for a systematic treatment of the typical kinds of quantita-
+tive problems one is confronted with in a Bachelor degree programme. Nevertheless, they provide
+a sufﬁcient amount of points of contact with a quantitatively oriented subsequent Master degree
+programme in Economics, Management, or the Social Sciences.
+
+The prerequisites for a proper understanding of these lecture notes are modest, as they do not go
+much beyond the basic A-levels standards in Mathematics. Besides the four fundamental arith-
+metical operations of addition, subtraction, multiplication and division of real numbers, you should
+be familiar, e.g., with manipulating fractions, dealing with powers of real numbers, the binomial
+formulae, determining the point of intersection for two straight lines in the Euclidian plane, solv-
+ing a quadratic algebraic equation, and the rules of differentiation of real-valued functions of one
+variable.
+It might be useful for the reader to have available a modern graphic display calculator (GDC) for
+dealing with some of the calculations that necessarily arise along the way, when confronted with
+speciﬁc quantitative problems. Some current models used in public schools and in undergraduate
+studies are, amongst others,
+
+• Texas Instruments TI–84 plus,
+• Casio CFX–9850GB PLUS.
+
+However, the reader is strongly encouraged to think about resorting, as an alternative, to a spread-
+sheet programme such as EXCEL or OpenOfﬁce to handle the calculations one encounters in
+one’s quantitative work.
+
+The central theme of these lecture notes is the acquisition and application of a number of effec-
+tive mathematical methods in a business oriented environment. In particular, we hereby focus on
+quantitative processes of the sort
+
+for which different kinds of functional relationships between some numerical INPUT quantities
+and some numerical OUTPUT quantities are being considered. Of special interest in this context
+
+INPUT → OUTPUT ,
+
+3
+
+4
+
+will be ratios of the structure
+
+OUTPUT
+INPUT
+
+.
+
+CONTENTS
+
+In this respect, it is a general objective in Economics to look for ways to optimise the value of
+such ratios (in favour of some economic agent), either by seeking to increase the OUTPUT when
+the INPUT is conﬁned to be ﬁxed, or by seeking to decrease the INPUT when the OUTPUT is
+conﬁned to be ﬁxed. Consequently, most of the subsequent considerations in these lecture notes
+will therefore deal with issues of optimisation of given functional relationships between some
+variables, which manifest themselves either in minimisation or in maximisation procedures.
+
+The structure of these lecture notes is the following. Part I presents selected mathematical methods
+from Linear Algebra, which are discussed in Chs. 1 to 5. Applications of these methods focus on
+the quantitative aspects of ﬂows of goods in simple economic models, as well as on problems in
+linear programming. In Part II, which is limited to Ch. 6, we turn to discuss elementary aspects
+of Financial Mathematics. Fundamental principles of Analysis, comprising differential and in-
+tegral calculus for real-valued functions of one real variable, and their application to quantitative
+economic problems, are reviewed in Part III; this extends across Chs. 7 and 8.
+
+We emphasise the fact that there are no explicit examples nor exercises included in these lecture
+notes. These are reserved exclusively for the lectures given throughout term time.
+
+Recommended textbooks accompanying the lectures are the works by Asano (2013) [2], Dowl-
+ing (2009) [11], Dowling (1990) [10], Bauer et al (2008) [3], Bosch (2003) [6], and H¨ulsmann
+et al (2005) [16]. Some standard references of Applied Mathematics are, e.g., Bronstein et al
+(2005) [7] and Arens et al (2008) [1]. Should the reader feel inspired by the aesthetics, beauty,
+ellegance and efﬁciency of the mathematical methods presented, and, hence, would like to know
+more about their background and relevance, as well as being introduced to further mathematical
+techniques of interest, she/he is recommended to take a look at the brilliant books by Penrose
+(2004) [21], Singh (1997) [23], Gleick(1987) [13] and Smith (2007) [24]. Note that most of the
+textbooks and monographs mentioned in this Introduction are available from the library at Karl-
+shochschule International University.
+
+Finally, we draw the reader’s attention to the fact that the *.pdf version of these lecture notes con-
+tains interactive features such as fully hyperlinked references to original publications at the web-
+sites dx.doi.org and jstor.org, as well as active links to biographical information on sci-
+entists that have been inﬂuential in the historical development of Mathematics, hosted by the web-
+sites The MacTutor History of Mathematics archive (www-history.mcs.st-and.ac.uk)
+and en.wikipedia.org.
+
+Chapter 1
+
+Vector algebra in Euclidian space Rn
+
+Let us begin our elementary considerations of vector algebra with the introduction of a special
+class of mathematical objects. These will be useful at a later stage, when we turn to formulate
+certain problems of a quantitative nature in a compact and elegant way. Besides introducing these
+mathematical objects, we also need to deﬁne which kinds of mathematical operations they can be
+subjected to, and what computational rules we have to take care of.
+
+1.1 Basic concepts
+
+Given be a set V of mathematical objects a which, for now, we want to consider merely as a
+collection of n arbitrary real numbers a1, . . . , ai, . . . , an. In explicit terms,
+
+
+
+
+a1
+...
+ai
+...
+an
+
+
+
+
+
+
+
+
+
+
+V =
+
+a =
+
+| ai ∈ R, i = 1, . . . , n
+
+.
+
+(1.1)
+
+Formally the n real numbers considered can either be assembled in an ordered pattern as a column
+or a row. We deﬁne
+Def.: Real-valued column vector with n components
+
+a :=
+
+a1
+...
+ai
+...
+an
+
+
+
+
+
+
+
+,
+
+ai ∈ R,
+
+i = 1, . . . , n ,
+
+(1.2)
+
+Notation: a ∈ Rn×1,
+and
+
+5
+
+6
+
+CHAPTER1. VECTORALGEBRAINEUCLIDIANSPACE RN
+
+Def.: Real-valued row vector with n components
+
+aT := (a1, . . . , ai, . . . , an) ,
+
+ai ∈ R,
+
+i = 1, . . . , n ,
+
+(1.3)
+
+Notation: aT ∈ R1×n.
+Correspondingly, we deﬁne the n-component objects
+
+0 :=
+
+and
+
+0T := (0, . . . , 0, . . . , 0)
+
+(1.4)
+
+
+
+
+0
+...
+0
+...
+0
+
+
+
+
+to constitute related zero vectors.
+
+Next we deﬁne for like objects in the set V , i.e., either for n-component column vectors or for
+n-component row vectors, two simple computational operations. These are
+
+Def.: Addition of vectors
+
+a + b :=
+
+a1
+...
+ai
+...
+an
+
+
+
+
+
+
+
++
+
+b1
+...
+bi
+...
+bn
+
+
+
+
+
+
+
+=
+
+a1 + b1
+
+...
+
+ai + bi
+
+...
+
+an + bn
+
+
+
+
+
+
+
+,
+
+ai, bi ∈ R ,
+
+(1.5)
+
+and
+
+Def.: Rescaling of vectors
+
+λa :=
+
+λa1
+...
+λai
+...
+λan
+
+
+
+
+
+
+
+,
+
+λ, ai ∈ R .
+
+(1.6)
+
+The rescaling of a vector a with an arbitrary non-zero real number λ has the following effects:
+
+• |λ| > 1 — stretching of the length of a
+• 0 < |λ| < 1 — shrinking of the length of a
+• λ < 0 — directional reversal of a.
+
+1.2. DIMENSIONANDBASISOF RN
+
+7
+
+The notion of the length of a vector a will be made precise shortly.
+
+The addition and the rescaling of n-component vectors satisfy the following addition and multipli-
+cation laws:
+Computational rules for addition and rescaling of vectors
+For vectors a, b, c ∈ Rn:
+
+1. a + b = b + a
+
+2. a + (b + c) = (a + b) + c
+
+(commutative addition)
+
+(associative addition)
+
+3. a + 0 = a
+4. For every a, b ∈ Rn, there exists exactly one x ∈ Rn such that a + x = b
+
+(addition identity element)
+
+(invertibility of addition)
+
+5. (λµ)a = λ(µa) with λ ∈ R
+6. 1a = a
+
+7. λ(a + b) = λa + λb;
+
+(λ + µ)a = λa + µa with λ, µ ∈ R
+
+(associative rescaling)
+
+(rescaling identity element)
+
+(distributive rescaling).
+
+In conclusion of this section, we remark that every set of mathematical objects V constructed in
+line with Eq. (1.1), with an addition and a rescaling deﬁned according to Eqs. (1.5) and (1.6), and
+satisfying the laws stated above, constitutes a linear vector space over Euclidian space Rn.1
+
+1.2 Dimension and basis of Rn
+
+Let there be given m n-component vectors2 a1, . . . , ai, . . . , am ∈ Rn, as well as m real numbers
+λ1, . . . , λi, . . . , λm ∈ R. The new n-component vector b resulting from the addition of arbitrarily
+rescaled versions of these m vectors according to
+
+b = λ1a1 + . . . + λiai + . . . + λmam =:
+
+m
+
+Xi=1
+
+λiai ∈ Rn
+
+(1.7)
+
+is referred to as a linear combination of the m vectors ai, i = 1, . . . , m.
+Def.: A set of m vectors a1, . . . , ai, . . . , am ∈ Rn is called linearly independent when the condi-
+tion
+
+0 != λ1a1 + . . . + λiai + . . . + λmam =
+
+λiai ,
+
+(1.8)
+
+m
+
+Xi=1
+
+1This is named after the ancient greek mathematician Euclid of Alexandria (about 325 BC–265 BC).
+2A slightly s horter notation for n-component column vectors a ∈ Rn×1 is given by a ∈ Rn; likewise aT ∈ Rn
+
+for n-component row vectors aT ∈ R1×n.
+
+8
+CHAPTER1. VECTORALGEBRAINEUCLIDIANSPACE RN
+i.e., the problem of forming the zero vector 0 ∈ Rn from a linear combination of the m vectors
+a1, . . . , ai, . . . , am ∈ Rn, can only be solved trivially, namely by 0 = λ1 = . . . = λi = . . . = λm.
+When, however, this condition can be solved non-trivially, with some λi 6= 0, then the set of m
+vectors a1, . . . , ai, . . . , am ∈ Rn is called linearly dependent.
+In Euclidian space Rn, there is a maximum number n (!) of vectors which can be linearly indepen-
+dent. This maximum number is referred to as the dimension of Euclidian space Rn. Every set
+of n linearly independent vectors in Euclidian space Rn constitutes a possible basis of Euclidian
+space Rn. If the set {a1, . . . , ai, . . . , an} constitutes a basis of Rn, then every other vector b ∈ Rn
+can be expressed in terms of these basis vectors by
+
+b = β1a1 + . . . + βiai + . . . + βnan =
+
+βiai .
+
+(1.9)
+
+n
+
+Xi=1
+
+The rescaling factors βi ∈ R of the ai ∈ Rn are called the components of vector b with respect
+to the basis {a1, . . . , ai, . . . , an}.
+Remark: The n unit vectors
+
+e2 :=
+
+
+0
+1
+...
+0
+
+
+
+
+en :=
+
+
+0
+0
+...
+1
+
+
+
+
+,
+
+. . . ,
+
+,
+
+(1.10)
+
+,
+
+1
+0
+...
+0
+
+e1 :=
+
+
+
+b =
+
+
+b1
+b2
+...
+bn
+
+
+
+
+constitute the so-called canonical basis of Euclidian space Rn. With respect to this basis, all
+vectors b ∈ Rn can be represented as a linear combinationen
+
+= b1e1 + b2e2 + · · · + bnen =
+
+biei .
+
+n
+
+Xi=1
+
+(1.11)
+
+1.3 Euclidian scalar product
+
+Finally, to conclude this section, we introduce a third mathematical operation deﬁned for vectors
+on Rn.
+Def.: For an n-component row vector aT ∈ R1×n and an n-component column vector b ∈ Rn×1,
+the Euclidian scalar product
+
+aT · b := (a1, . . . , ai, . . . an)
+
+b1
+...
+bi
+...
+bn
+
+
+
+
+
+
+
+= a1b1 + . . . + aibi . . . + anbn =:
+
+aibi
+
+(1.12)
+
+n
+
+Xi=1
+
+9
+1.3. EUCLIDIANSCALARPRODUCT
+deﬁnes a mapping f : R1×n × Rn×1 → R from the product set of n-component row and column
+vectors to the set of real numbers. Note that, in contrast to the addition and the rescaling of n-
+component vectors, the outcome of forming a Euclidian scalar product between two n-component
+vectors is a single real number.
+In the context of the Euclidian scalar product, two non-zero vectors a, b ∈ Rn (wit a 6= 0 6= b)
+are referred to as mutually orthogonal when they exhibit the property that 0 = aT · b = bT · a.
+Computational rules for Euclidian scalar product of vectors
+For vectors a, b, c ∈ Rn:
+
+1. (a + b)T · c = aT · c + bT · c
+2. aT · b = bT · a
+3. (λaT ) · b = λ(aT · b) with λ ∈ R
+4. aT · a > 0 for all a 6= 0
+
+(distributive scalar product)
+
+(commutative scalar product)
+
+(homogeneous scalar product)
+
+(positive deﬁnite scalar product).
+
+Now we turn to introduce the notion of the length of an n-component vector.
+Def.: The length of a vector a ∈ Rn is deﬁned via the Euclidian scalar product as
+
+|a| := √aT · a =qa2
+
+1 + . . . + a2
+
+i + . . . + a2
+
+n
+
+n =:vuut
+Xi=1
+
+a2
+i .
+
+(1.13)
+
+Technically one refers to the non-negative real number |a| as the absolute value or the Euclidian
+norm of the vector a ∈ Rn. The length of a ∈ Rn has the following properties:
+
+• |a| ≥ 0, and |a| = 0 ⇔ a = 0;
+• |λa| = |λ||a| for λ ∈ R;
+• |a + b| ≤ |a| + |b|
+
+(triangle inequality).
+
+Every non-zero vector a ∈ Rn, i.e., |a| > 0, can be rescaled by the reciprocal of its length. This
+procedure deﬁnes the
+Def.: Normalisation of a vector a ∈ Rn;
+
+ˆa :=
+
+a
+|a|
+
+⇒
+
+|ˆa| = 1 .
+
+(1.14)
+
+By this method one generates a vector of length 1, i.e., a unit vector ˆa. To denote unit vectors we
+will employ the “hat” symbol.
+
+Lastly, also by means of the Euclidian scalar product, we introduce the angle enclosed between
+two non-zero vectors.
+
+10
+Def.: Angle enclosed between a, b 6= 0 ∈ Rn
+
+CHAPTER1. VECTORALGEBRAINEUCLIDIANSPACE RN
+
+cos[ϕ(a, b)] =
+
+aT
+
+|a| ·
+
+b
+|b|
+
+= ˆaT · ˆb ⇒ ϕ(a, b) = cos−1(ˆaT · ˆb) .
+
+(1.15)
+
+Remark: The inverse cosine function3 cos−1(. . .) is available on every standard GDC or spread-
+sheet.
+
+3The notion of on inverse function will be discussed later in Ch. 7.
+
+Chapter 2
+
+Matrices
+
+In this chapter, we introduce a second class of mathematical objects that are more general than
+vectors. For these objects, we will also deﬁne certain mathematical operations, and a set of com-
+putational rules that apply in this context.
+
+2.1 Matrices as linear mappings
+
+Consider given a collection of m × n arbitrary real numbers a11, a12 . . . , aij, . . . , amn, which we
+arrange systematically in a particular kind of array.
+
+Def.: A real-valued (m × n)-matrix is formally deﬁned to constitute an array of real numbers
+according to
+
+
+
+
+
+A :=
+
+a11
+a12
+a21
+a22
+...
+...
+ai1
+ai2
+...
+...
+am1 am2
+where aij ∈ R, i = 1, . . . , m; j = 1, . . . , n.
+Notation: A ∈ Rm×n.
+Characteristic features of this array of real numbers are:
+
+. . . a1j
+. . . a2j
+...
+...
+. . . aij
+...
+...
+. . . amj
+
+. . . a1n
+. . . a2n
+...
+...
+. . . ain
+...
+...
+. . . amn
+
+,
+
+
+
+
+
+(2.1)
+
+• m denotes the number of rows of A, n the number of columns of A.
+• aij represents the elements of A; aij is located at the point of intersection of the ith row and
+
+the jth column of A.
+
+• elements of the ith row constitute the row vector (ai1, ai2, . . . , aij, . . . , ain), elements of the
+
+11
+
+12
+
+CHAPTER2. MATRICES
+
+jth column the column vector
+
+a1j
+a2j
+...
+aij
+...
+amj
+
+
+
+
+
+.
+
+
+
+
+
+Formally column vectors need to be viewed as (n × 1)-matrices, row vectors as (1 × n)-matrices.
+An (m × n)-zero matrix, denoted by 0, has all its elements equal to zero, i.e.,
+
+.
+
+(2.2)
+
+Matrices which have an equal number of rows and columns, i.e. m = n, are referred to as
+quadratic matrices. In particular, the (n × n)-unit matrix (or identity matrix)
+
+0 :=
+
+
+0 0 . . . 0
+0 0 . . . 0
+...
+...
+0 0 . . . 0
+
+...
+
+...
+
+
+
+
+1 :=
+
+...
+
+...
+
+...
+
+1 0 . . . 0 . . . 0
+0 1 . . . 0 . . . 0
+...
+...
+0 0 . . . 1 . . . 0
+...
+...
+0 0 . . . 0 . . . 1
+
+...
+
+...
+
+...
+
+...
+
+...
+
+
+
+
+
+
+
+
+
+(2.3)
+
+holds a special status in the family of (n × n)-matrices.
+Now we make explicit in what sense we will comprehend (m × n)-matrices as mathematical
+objects.
+Def.: A real-valued matrix A ∈ Rm×n deﬁnes by the computational operation
+
+Ax :=
+
+:=
+
+
+
+
+
+
+
+
+a12
+a11
+a22
+a21
+...
+...
+ai2
+ai1
+...
+...
+am1 am2
+
+. . . a1j
+. . . a2j
+...
+...
+. . . aij
+...
+...
+. . . amj
+
+. . . a1n
+. . . a2n
+...
+...
+. . . ain
+...
+...
+. . . amn
+
+x1
+x2
+...
+xj
+...
+xn
+
+
+
+
+
+
+
+
+
+
+
+
+
+a11x1 + a12x2 + . . . + a1jxj + . . . + a1nxn
+a21x1 + a22x2 + . . . + a2jxj + . . . + a2nxn
+
+...
+
+ai1x1 + ai2x2 + . . . + aijxj + . . . + ainxn
+
+...
+
+am1x1 + am2x2 + . . . + amjxj + . . . + amnxn
+
+=:
+
+
+
+
+
+y1
+y2
+...
+yi
+...
+ym
+
+
+
+
+
+
+
+
+
+= y
+
+(2.4)
+
+13
+2.2. BASICCONCEPTS
+a mapping A : Rn×1 → Rm×1, i.e. a mapping from the set of real-valued n-component column
+vectors (here: x) to the set of real-valued m-component column vectors (here: y).
+In loose analogy to the photographic process, x can be viewed as representing an “object,” A a
+“camera,” and y the resultant “image.”
+Since for real-valued vectors x1, x2 ∈ Rn×1 and real numbers λ ∈ R, mappings deﬁned by real-
+valued matrices A ∈ Rm×n exhibit the two special properties
+
+A(x1 + x2) = (Ax1) + (Ax2)
+
+A(λx1) = λ(Ax1) ,
+
+(2.5)
+
+they constitute linear mappings.1
+We now turn to discuss the most important mathematical operations deﬁned for (m× n)-matrices,
+as well as the computational rules that obtain.
+
+2.2 Basic concepts
+
+Def.: Transpose of a matrix
+For A ∈ Rm×n, we deﬁne the process of transposing A by
+aT
+ij := aji ,
+
+AT :
+
+(2.6)
+
+where i = 1, . . . , m und j = 1, . . . , n. Note that it holds that AT ∈ Rn×m.
+When transposing an (m×n)-matrix, one simply has to exchange the matrix’ rows with its columns
+(and vice versa): the elements of the ﬁrst row become the elements of the ﬁrst column, etc. It
+follows that, in particular,
+
+(AT )T = A
+
+(2.7)
+
+applies.
+Two special cases may occur for quadratic matrices (where m = n):
+
+• When AT = A, one refers to A as a symmetric matrix.
+• When AT = −A, one refers to A as an antisymmetric matrix.
+
+Def.: Addition of matrices
+For A, B ∈ Rm×n, the sum is given by
+
+A + B =: C :
+
+aij + bij =: cij ,
+
+(2.8)
+
+with i = 1, . . . , m and j = 1, . . . , n.
+Note that an addition can be performed meaningfully only for matrices of the same format.
+
+1It is important to note at this point that many advanced mathematical models designed to describe quantitative
+aspects of some natural and economic phenomena do not satisfy the conditions (2.5), as they employ non-linear
+mappings for this purpose. However, in such contexts, linear mappings often provide useful ﬁrst approximations.
+
+14
+
+Def.: Rescaling of matrices
+For A ∈ Rm×n and λ ∈ R\{0}, let
+
+CHAPTER2. MATRICES
+
+λA =: C :
+
+λaij =: cij ,
+
+(2.9)
+
+where i = 1, . . . , m and j = 1, . . . , n.
+
+When rescaling a matrix, all its elements simply have to be multiplied by the same non-zero real
+number λ.
+
+Computational rules for addition and rescaling of matrices
+For matrices A, B, C ∈ Rm×n:
+
+1. A + B = B + A
+
+2. A + (B + C) = (A + B) + C
+
+3. A + 0 = A
+
+(commutative addition)
+
+(associative addition)
+
+(addition identity element)
+
+4. For every A and B, there exists exactly one Z such that A + Z = B.
+
+5. (λµ)A = λ(µA) with λ, µ ∈ R\{0}
+6. 1A = A
+
+7. λ(A + B) = λA + λB;
+
+(λ + µ)A = λA + µA with λ, µ ∈ R\{0}
+
+8. (A + B)T = AT + BT
+
+9. (λA)T = λAT with λ ∈ R\{0}.
+
+(invertibility of addition)
+
+(associative rescaling)
+
+(rescaling identity element)
+
+(distributive rescaling)
+
+(transposition rule 1)
+
+(transposition rule 2)
+
+Next we introduce a particularly useful mathematical operation for matrices.
+
+2.3 Matrix multiplication
+
+Def.: For a real-valued (m × n)-matrix A and a real-valued (n × r)-matrix B, a matrix multipli-
+cation is deﬁned by
+
+AB =: C
+
+(2.10)
+
+ai1b1j + . . . + aikbkj + . . . + ainbnj =:Pn
+
+k=1 aikbkj =: cij ,
+
+with i = 1, . . . , m and j = 1, . . . , r, thus yielding as an outcome a real-valued (m × r)-matrix C.
+
+2.3. MATRIXMULTIPLICATION
+
+15
+
+The element of C at the intersection of the ith row and the jth column is determined by the
+computational rule
+
+cij = Euclidian scalar product of ith row vector of A and jth column vector of B .
+
+(2.11)
+
+It is important to realise that the deﬁnition of a matrix multiplication just provided depends in
+an essential way on the fact that matrix A on the left in the product needs to have as many (!)
+columns as matrix B on the right rows. Otherwise, a matrix multiplication cannot be deﬁned in a
+meaningful way.
+GDC: For matrices [A] and [B] edited beforehand, of matching formats, their matrix multiplication
+can be evaluated in mode MATRIX → NAMES by [A] ∗ [B].
+Computational rules for matrix multiplication
+For A, B, C real-valued matrices of correspondingly matching formats we have:
+
+1. AB = 0 is possible with A 6= 0, B 6= 0.
+2. A(BC) = (AB)C
+
+3. A 1
+
+= 1
+
+A = A
+
+∈Rn×n
+
+|{z}
+
+∈Rm×m
+
+|{z}
+
+4. (A + B)C = AC + BC
+
+(zero divisor)
+
+(associative matrix multiplication)
+
+(multiplicative identity element)
+
+C(A + B) = CA + CB
+
+5. A(λB) = (λA)B = λ(AB) with λ ∈ R
+6. (AB)T = BT AT
+
+(distributive matrix multiplication)
+
+(homogeneous matrix multiplication)
+
+(transposition rule).
+
+16
+
+CHAPTER2. MATRICES
+
+Chapter 3
+
+Systems of linear algebraic equations
+
+In this chapter, we turn to address a particular ﬁeld of application of the notions of matrices and
+vectors, or of linear mappings in general.
+
+3.1 Basic concepts
+
+Let us begin with a system of m ∈ N linear algebraic equations, wherein every single equation can
+be understood to constitute a constraint on the range of values of n ∈ N variables x1, . . . , xn ∈ R.
+The objective is to determine all possible values of x1, . . . , xn ∈ R which satisfy these constraints
+simultaneously. Problems of this kind, namely systems of linear algebraic equations, are often
+represented in the form
+• Representation 1:
+
+a11x1 + . . . + a1jxj + . . . + a1nxn = b1
+
+...
+
+ai1x1 + . . . + aijxj + . . . + ainxn = bi
+
+...
+
+am1x1 + . . . + amjxj + . . . + amnxn = bm .
+
+(3.1)
+
+Depending on how the natural numbers m and n relate to one another, systems of linear algebraic
+equations can be classiﬁed as follows:
+
+• m < n: fewer equations than variables; the linear system is under-determined,
+• m = n: same number of equations as variables; the linear system is well-determined,
+• m > n: more equations than variables; the linear system is over-determined.
+
+A more compact representation of a linear system of format (m × n) is given by
+
+17
+
+18
+• Representation 2:
+
+CHAPTER3. SYSTEMSOFLINEARALGEBRAICEQUATIONS
+
+Ax =
+
+a11
+...
+ai1
+...
+am1
+
+
+
+
+. . . a1j
+...
+...
+. . . aij
+...
+...
+. . . amj
+
+. . . a1n
+...
+...
+. . . ain
+...
+...
+. . . amn
+
+x1
+...
+xj
+...
+xn
+
+
+
+
+
+
+
+
+
+
+=
+
+b1
+...
+bi
+...
+bm
+
+
+
+
+
+
+
+= b .
+
+(3.2)
+
+The mathematical objects employed in this variant of a linear system are as follows: A takes the
+central role of the coefﬁcient matrix of the linear system, of format (m × n), x is its variable
+vector, of format (n × 1), and, lastly, b is its image vector, of format (m × 1).
+When dealing with systems of linear algebraic equations in the form of Representation 2, i.e.
+Ax = b, the main question to be answered is:
+
+Question: For given coefﬁcient matrix A and image vector b, can we ﬁnd a variable vector x
+that A maps onto b?
+
+In a sense this describes the inversion of the photographic process we had previously referred to:
+we have given the camera and we already know the image, but we have yet to ﬁnd a matching
+object. Remarkably, to address this issue, we can fall back on a simple algorithmic method due to
+the German mathematician and astronomer Carl Friedrich Gauß (1777–1855).
+
+3.2 Gaußian elimination
+
+The algorithmic solution technique developed by Gauß is based on the insight that the solution set
+of a linear system of m algebraic equations for n real-valued variables, i.e.
+
+remains unchanged under the following algebraic equivalence transformations of the linear sys-
+tem:
+
+Ax = b ,
+
+(3.3)
+
+1. changing the order amongst the equations,
+
+2. multiplication of any equation by a non-zero real number c 6= 0,
+3. addition of a multiple of one equation to another equation,
+
+4. changing the order amongst the equations.
+
+Speciﬁcally, this implies that we may manipulate a given linear system by means of these four
+different kinds of equivalence transformations without ever changing its identity. In concrete cases,
+however, one should not apply these equivalence transformations at random but rather follow a
+target oriented strategy. This is what Gaußian elimination can provide.
+
+3.3. RANKOFAMATRIX
+Target: To cast the augmented coefﬁcient matrix (A|b), i.e., the array
+
+a11
+...
+ai1
+...
+am1
+
+. . . a1j
+...
+...
+. . . aij
+...
+...
+. . . amj
+
+. . . a1n
+...
+...
+. . . ain
+...
+...
+. . . amn
+
+b1
+...
+bi
+...
+bm
+
+,
+
+when possible, into upper triangular form
+
+...
+
+1 . . . ˜a1j
+...
+...
+0 . . . ˜aij
+...
+...
+...
+0
+0 . . .
+
+˜b1
+. . . ˜a1n
+...
+...
+...
+˜bi
+˜ain
+. . .
+...
+...
+...
+. . . ˜amn ˜bm
+
+,
+
+19
+
+(3.4)
+
+(3.5)
+
+by means of the four kinds of equivalence transformations such that the resultant simpler ﬁnal
+linear system may easily be solved using backward substitution.
+Three exclusive cases of possible solution content for a given system of linear algebraic equations
+do exist. The linear system may possess either
+
+1. no solution at all, or
+
+2. a unique solution, or
+
+3. multiple solutions.
+
+Remark: Linear systems that are under-determined, i.e., when m < n, can never be solved
+uniquely due to the fact that in such a case there not exist enough equations to constrain the values
+of all of the n variables.
+GDC: For a stored augmented coefﬁcient matrix [A] of format (m× n + 1), associated with a given
+(m × n) linear system, select mode MATRIX → MATH and then call the function rref([A]). It is
+possible that backward substitution needs to be employed to obtain the ﬁnal solution.
+For completeness, we want to turn brieﬂy to the issue of solvability of a system of linear algebraic
+equations. To this end, we need to introduce the notion of the rank of a matrix.
+
+3.3 Rank of a matrix
+
+Def.: A real-valued matrix A ∈ Rm×n possesses the rank
+
+rank(A) = r ,
+
+r ≤ min{m, n}
+
+(3.6)
+
+if and only if r is the maximum number of row resp. column vectors of A which are linearly
+independent. Clearly, r can only be as large as the smaller of the numbers m and n that determine
+the format of A.
+
+20
+CHAPTER3. SYSTEMSOFLINEARALGEBRAICEQUATIONS
+For quadratic matrices A ∈ Rn×n, there is available a more elegant measure to determine its
+rank. This (in the present case real-valued) measure is referred to as the determinant of matrix A,
+det(A), and is deﬁned as follows.
+
+Def.:
+
+(i) When A ∈ R2×2, its determinant is given by
+a11 a12
+
+det(A) :=(cid:12)(cid:12)(cid:12)(cid:12)
+
+a21 a22 (cid:12)(cid:12)(cid:12)(cid:12)
+
+i.e. the difference between the products of A’s on-diagonal elements and A’s off-diagonal
+elements.
+
+:= a11a22 − a12a21 ,
+
+(3.7)
+
+(ii) When A ∈ R3×3, the deﬁnition of A’s determinant is more complex. In that case it is
+
+given by
+
+det(A)
+
+a11 a12 a13
+a21 a22 a23
+a31 a32 a33
+
+:= (cid:12)(cid:12)(cid:12)(cid:12)(cid:12)(cid:12)
+
+(cid:12)(cid:12)(cid:12)(cid:12)(cid:12)(cid:12)
+
+:= a11(a22a33 − a32a23) + a21(a32a13 − a12a33) + a31(a12a23 − a22a13) .(3.8)
+Observe, term by term, the cyclic permutation of the ﬁrst index of the elements aij according
+to the rule 1 → 2 → 3 → 1.
+
+(iii) Finally, for the (slightly involved) deﬁnition of the determinant of a higher-dimensional
+
+matrix A ∈ Rn×n, please refer to the literature; e.g. Bronstein et al (2005) [7, p 267].
+
+To determine the rank of a given quadtratic matrix A ∈ Rn×n, one now installs the following
+criteria: rank(A) = r = n, if det(A) 6= 0, and rank(A) = r < n, if det(A) = 0. In the ﬁrst case,
+A is referred to as regular, in the second as singular. For quadratic matrices A that are singular,
+rank(A) = r (with r < n) is given by the number r of rows (or columns) of the largest possible
+non-zero subdeterminant of A.
+GDC: For a stored quadratic matrix [A], select mode MATRIX → MATH and obtain its determinant
+by calling the function det([A]).
+
+3.4 Criteria for solving systems of linear algebraic equations
+
+Making use of the concept of the rank of a real-valued matrix A ∈ Rm×n, we can now summarise
+the solution content of a speciﬁc system of linear algebraic equations of format (m× n) in a table.
+For given linear system
+
+Ax = b ,
+
+with coefﬁcient matrix A ∈ Rm×n, variable vector x ∈ Rn×1 and image vector b ∈ Rm×1, there
+exist(s)
+
+3.5. INVERSEOFAREGULAR(N × N)-MATRIX
+
+21
+
+b 6= 0
+
+b = 0
+
+1. rank(A) 6= rank(A|b)
+
+no solution ——–
+
+2. rank(A) = rank(A|b) = r
+
+(a)
+
+r = n
+
+(b)
+
+r < n
+
+a unique
+solution
+
+x = 0
+
+multiple
+solutions:
+n − r free
+parameters
+
+multiple
+solutions:
+n − r free
+parameters
+
+(A|b) here denotes the augmented coefﬁcient matrix.
+Next we discuss a particularly useful property of regular quadratic matrices.
+
+3.5 Inverse of a regular (n × n)-matrix
+Def.: Let a real-valued quadratic matrix A ∈ Rn×n be regular, i.e., det(A) ∈ R\{0}. Then there
+exists an inverse matrix A−1 to A deﬁned by the characterising properties
+
+A−1A = AA−1 = 1 .
+
+(3.9)
+
+Here 1 denotes the (n × n)-unit matrix [cf. Eq. (2.3)].
+
+When a computational device is not at hand, the inverse matrix A−1 of a regular quadratic matrix
+A can be obtained by solving the matrix-valued linear system
+
+AX != 1
+
+(3.10)
+
+for the unknown matrix X by means of simultaneous Gaußian elimination.
+
+GDC: For a stored quadratic matrix [A], its inverse matrix can be simply obtained as [A]−1, where
+the x−1 function key needs to be used.
+
+22
+
+CHAPTER3. SYSTEMSOFLINEARALGEBRAICEQUATIONS
+
+Computational rules for the inverse operation
+For A, B ∈ Rn×n, with det(A) 6= 0 6= det(B), it holds that
+
+1. (A−1)−1 = A
+
+2. (AB)−1 = B−1A−1
+
+3. (AT )−1 = (A−1)T
+
+4. (λA)−1 =
+
+1
+λ
+
+A−1.
+
+The special interest in applications in the concept of inverse matrices arises for the following
+reason. Consider given a well-determined linear system
+
+Ax = b ,
+
+with regular quadratic coefﬁcient matrix A ∈ Rn×n, i.e., det(A) 6= 0. Then, for A, there exists an
+inverse matrix A−1. Matrix-multiplying both sides of the equation above from the left (!) by the
+inverse A−1, results in
+
+A−1(Ax) = (A−1A)x = 1x = x
+
+= A−1b
+
+.
+
+(3.11)
+
+|
+
+}
+
+right-hand side
+
+|{z}
+
+left-hand side
+
+{z
+
+In this case, the unique solution (!) x = A−1b of the linear system arises simply from matrix
+multiplication of the image vector b by the inverse matrix of A. (Of course, it might actually
+require a bit of computational work to determine A−1.)
+
+3.6 Outlook
+
+There are a number of exciting advanced topics in Linear Algebra. Amongst them one ﬁnds
+the concept of the characteristic eigenvalues and associated eigenvectors of quadratic matrices,
+which has particularly high relevance in practical applications. The question to be answered here
+is the following: for given real-valued quadratic matrix A ∈ Rn×n, do there exist real numbers
+λn ∈ R and real-valued vectors vn ∈ Rn×1 which satisfy the condition
+
+Avn
+
+!= λnvn ?
+
+(3.12)
+
+Put differently: for which vectors vn ∈ Rn×1 does their mapping by a quadratic matrix A ∈ Rn×n
+amount to simple rescalings by real numbers λn ∈ R?
+By re-arranging, Eq. (3.12) can be recast into the form
+
+0 != (A − λn1) vn ,
+
+(3.13)
+
+23
+3.6. OUTLOOK
+with 1 an (n × n)-unit matrix [cf. Eq. (2.3)] and 0 an n-component zero vector. This condition
+corresponds to a homogeneous system of linear algebraic equations of format (n× n). Non-trivial
+solutions vn 6= 0 to this system exist provided that the so-called characteristic equation
+
+0 != det (A − λn1) ,
+
+(3.14)
+
+a polynomial of degree n (cf. Sec. 7.1.1), allows for real-valued roots λn ∈ R. Note that symmetric
+quadratic matrices (cf. Sec. 2.2) possess exclusively real-valued eigenvalues λn. When these
+eigenvalues turn out to be all different, then the associated eigenvectors vn prove to be mutually
+orthogonal.
+Knowledge of the spectrum of eigenvalues λn ∈ R and associated eigenvectors vn ∈ Rn×1
+of a real-valued matrix A ∈ Rn×n provides the basis of a transformation of A to its diagonal
+form Aλn, thus yielding a diagonal matrix which features the eigenvalues λn as its on-diagonal
+elements; cf. Leon (2009) [19].
+
+Amongst other examples, the concept of eigenvalues and eigenvectors of quadratic real-valued
+matrices plays a special role in Statistics, in the context of exploratory principal component
+analyses of multivariate data sets, where the objective is to identify dominant intrinsic structures;
+cf. Hair et al (2010) [14, Ch. 3] and Ref. [12, App. A].
+
+24
+
+CHAPTER3. SYSTEMSOFLINEARALGEBRAICEQUATIONS
+
+Chapter 4
+
+Leontief’s stationary input–output matrix
+model
+
+We now turn to discuss some speciﬁc applications of Linear Algebra in economic theory. To
+begin with, let us consider quantitative aspects of the exchange of goods between a certain number
+of economic agents. We here aim at a simpliﬁed abstract description of real economic processes.
+
+4.1 General considerations
+
+cf.
+
+Leontief
+
+he was
+
+awarded
+
+important
+
+contributions,
+
+besides
+
+other
+
+to be described in the
+
+following is due
+
+(1936)
+the
+
+to the Russian
+[20],
+1973
+
+The quantitative model
+economist Wassily Wassilyovich Leontief (1905–1999),
+for which,
+Sveriges Riksbank Prize in Economic Sciences in Memory of Alfred Nobel.
+Suppose given an economic system consisting of n ∈ N interdependent economic agents ex-
+changing between them the goods they produce. For simplicity we want to assume that every one
+of these economic agents represents the production of a single good only. Presently we intend
+to monitor the ﬂow of goods in this simple economic system during a speciﬁed reference period
+of time. The total numbers of the n goods leaving the production sector of this model constitute
+the OUTPUT quantities. The INPUT quantities to the production sector are twofold. On the
+one hand, there are exogenous INPUT quantities which we take to be given by m ∈ N different
+kinds of external resources needed in differing proportions to produce the n goods. On the other
+hand, due to their mutual interdependence, some of the economic agents require goods made by
+their neighbours to be able to produce their own goods; these constitute the endogenous INPUT
+quantities of the system. Likewise, the production sector’s total OUTPUT during the chosen ref-
+erence period of the n goods can be viewed to ﬂow through one of two separate channels: (i) the
+exogenous channel linking the production sector to external consumers representing an open
+market, and (ii) the endogenous channel linking the economic agents to their neighbours (thus
+respresenting their interdependencies). It is supposed that momentum is injected into the economic
+system, triggering the ﬂow of goods between the different actors, by the prospect of increasing
+
+25
+
+26
+
+CHAPTER4. LEONTIEF’SINPUT–OUTPUTMATRIXMODEL
+
+the value of the INPUT quantities, in line with the notion of the economic value chain.
+
+Leontief’s model is based on the following three elementary
+Assumptions:
+
+1. For all goods involved the functional relationship between INPUT and OUTPUT quantities
+
+be of a linear nature [cf. Eq. (2.5)].
+
+2. The proportions of “INPUT quantities to OUTPUT quantities” be constant over the refer-
+
+ence period of time considered; the ﬂows of goods are thus considered to be stationary.
+
+3. Economic equilibrium obtains during the reference period of time: the numbers of goods
+
+then supplied equal the numbers of goods then demanded.
+
+The mathematical formulation of Leontief’s quantitative model employs the following
+Vector- and matrix-valued quantities:
+
+1. q — total output vector ∈ Rn×1, components qi ≥ 0 units
+2. y — ﬁnal demand vector ∈ Rn×1, components yi ≥ 0 units
+3. P — input–output matrix ∈ Rn×n, components Pij ≥ 0
+4. (1 − P) — technology matrix ∈ Rn×n, regular, hence, invertible
+5. (1 − P)−1 — total demand matrix ∈ Rn×n
+6. v — resource vector ∈ Rm×1, components vi ≥ 0 units
+7. R — resource consumption matrix ∈ Rm×n, components Rij ≥ 0,
+
+(dim: units)
+
+(dim: units)
+
+(dim: 1)
+
+(dim: 1)
+
+(dim: 1)
+
+(dim: units)
+
+(dim: 1)
+
+where 1 denotes the (n × n)-unit matrix [cf. Eq. (2.3)]. Note that the components of all the
+vectors involved, as well as of the input–output matrix and of the resource consumption matrix,
+can assume non-negative values (!) only.
+
+4.2 Input–output matrix and resource consumption matrix
+
+We now turn to provide the deﬁnition of the two central matrix-valued quantities in Leontief’s
+model. We will also highlight their main characteristic features.
+
+4.2.1 Input–output matrix
+Suppose the reference period of time has ended for the economic system in question, i.e.
+the
+stationary ﬂows of goods have stopped eventually. We now want to take stock of the numbers of
+goods that have been delivered by each of the n economic agents in the system. Say that during
+the reference period considered, agent 1 delivered of their good the number n11 to themselves, the
+number n12 to agent 2, the number n13 to agent 3, and so on, and, lastly, the number n1n to agent n.
+
+4.2. INPUT–OUTPUTMATRIXANDRESOURCECONSUMPTIONMATRIX
+
+27
+
+The number delivered by agent 1 to external consumers shall be denoted by y1. Since in this model
+a good produced cannot all of a sudden disappear again, and since by Assumption 3 above the
+number of goods supplied must be equal to the number of goods demanded, we ﬁnd that for the
+total output of agent 1 it holds that q1 := n11 + . . . + n1j + . . . + n1n + y1. Analogous relations
+hold for the total output q2, q3, . . . , qn of each of the remaining n − 1 agents. We thus obtain the
+intermediate result
+
+q1 = n11 + . . . + n1j + . . . + n1n + y1 > 0
+
+...
+
+qi = ni1 + . . . + nij + . . . + nin + yi > 0
+
+...
+
+qn = nn1 + . . . + nnj + . . . + nnn + yn > 0 .
+
+(4.1)
+
+(4.2)
+
+(4.3)
+
+This simple system of balance equations can be summarised in terms of a standard input–output
+table as follows:
+
+[Values in units]
+
+agent 1
+
+agent 1
+
+...
+
+agent i
+
+...
+
+agent n
+
+n11
+...
+ni1
+...
+nn1
+
+· · ·
+. . .
+...
+. . .
+...
+. . .
+
+agent j
+
+n1j
+...
+nij
+...
+nnj
+
+· · ·
+. . .
+...
+. . .
+...
+. . .
+
+agent n external consumers Σ: total output
+
+n1n
+...
+nin
+...
+nnn
+
+y1
+...
+yi
+...
+yn
+
+q1
+...
+qi
+...
+qn
+
+The ﬁrst column of this table lists all the n different sources of ﬂows of goods (or suppliers of
+goods), while its ﬁrst row shows the n + 1 different sinks of ﬂows of goods (or consumers of
+goods). The last column contains the total output of each of the n agents in the reference period
+of time.
+
+Next we compute for each of the n agents the respective values of the non-negative ratios
+
+Pij :=
+
+INPUT (in units) of agent i for agent j (during reference period)
+
+OUTPUT (in units) of agent j (during reference period)
+
+,
+
+(4.4)
+
+or, employing a compact and economical index notation,1
+
+Pij :=
+
+nij
+qj
+
+,
+
+(4.5)
+
+1Note that the normalisation quantities in these ratios Pij are given by the total output qj of the receiving agent j
+and not by the total output qi of the supplying agent i. In the latter case the Pij would represent percentages of the
+total output qi.
+
+28
+CHAPTER4. LEONTIEF’SINPUT–OUTPUTMATRIXMODEL
+with i, j = 1, . . . , n. These n× n = n2 different ratios may be naturally viewed as the elements of
+a quadratic matrix P of format (n × n). In general, this matrix is given by
+
+P =
+
+
+
+
+
+n11
+
+n11+...+n1j +...+n1n+y1
+
+...
+
+ni1
+
+n11+...+n1j +...+n1n+y1
+
+...
+
+nn1
+
+n11+...+n1j +...+n1n+y1
+
+. . .
+...
+. . .
+...
+. . .
+
+nj1+...+njj+...+njn+yj
+
+nj1+...+njj+...+njn+yj
+
+n1j
+
+nij
+
+...
+
+...
+
+nnj
+
+nj1+...+njj+...+njn+yj
+
+. . .
+...
+. . .
+...
+. . .
+
+n1n
+
+nn1+...+nnj+...+nnn+yn
+
+...
+
+nin
+
+nn1+...+nnj+...+nnn+yn
+
+...
+
+nnn
+
+nn1+...+nnj+...+nnn+yn
+
+,
+
+
+
+
+
+(4.6)
+and is referred to as Leontief’s input–output matrix of the stationary economic system under
+investigation.
+For the very simple case with just n = 3 producing agents, the input–output matrix reduces to
+
+P =
+
+
+n11
+
+n12
+
+n13
+
+n11+n12+n13+y1
+
+n21
+
+n11+n12+n13+y1
+
+n31
+
+n21+n22+n23+y2
+
+n22
+
+n21+n22+n23+y2
+
+n32
+
+n31+n32+n33+y3
+
+n23
+
+n31+n32+n33+y3
+
+n33
+
+n11+n12+n13+y1
+
+n21+n22+n23+y2
+
+n31+n32+n33+y3
+
+
+ .
+
+It is important to realise that for an actual economic system the input–output matrix P can be
+determined only once the reference period of time chosen has come to an end.
+The utility of Leontief’s stationary input–output matrix model is in its application for the purpose
+of forecasting. This is done on the basis of an extrapolation, namely by assuming that an input–
+output matrix Preference period obtained from data taken during a speciﬁc reference period also is valid
+(to an acceptable degree of accuracy) during a subsequent period, i.e.,
+
+Psubsequent period ≈ Preference period ,
+
+or, in component form,
+
+Pij|subsequent period =
+
+nij
+
+qj (cid:12)(cid:12)(cid:12)(cid:12)subsequent period ≈ Pij|reference period =
+
+nij
+
+qj (cid:12)(cid:12)(cid:12)(cid:12)reference period
+
+In this way it becomes possible to compute for a given (idealised) economic system approximate
+numbers of INPUT quantities required during a near future production period from the known
+numbers of OUTPUT quantities of the most recent production period. Long-term empirical ex-
+perience has shown that this method generally leads to useful results to a reasonable approximation.
+All of these calculations are grounded on linear relationships describing the quantitative aspects of
+stationary ﬂows of goods, as we will soon elucidate.
+
+(4.7)
+
+.
+
+(4.8)
+
+4.2.2 Resource consumption matrix
+The second matrix-valued quantity central to Leontief’s stationary model is the resource con-
+sumption matrix R. This may be interpreted as providing a recipe for the amounts of the m dif-
+ferent kinds of external resources (the exogenous INPUT quantities) that are needed in the pro-
+duction of the n goods (the OUTPUT quantities). Its elements are deﬁned as the ratios
+
+Rij := amounts (in units) required of resource i for the production of one unit of good j ,
+
+(4.9)
+
+4.3. STATIONARYLINEARFLOWSOFGOODS
+
+29
+
+with i = 1, . . . , m und j = 1, . . . , n. The rows of matrix R thus contain information concerning the
+m resources, the columns information concerning the n goods. Note that in general the (m × n)
+resource consumption matrix R is not (!) a quadratic matrix and, therefore, in general not
+invertible.
+
+4.3 Stationary linear ﬂows of goods
+
+4.3.1 Flows of goods: endogenous INPUT to total OUTPUT
+We now turn to a quantitative description of the stationary ﬂows of goods that are associated
+with the total output q during a speciﬁc period of time considered. According to Leontief’s
+Assumption 1, there exists a linear functional relationship between the endogenous vector-valued
+INPUT quantity q − y and the vector-valued OUTPUT quantity q. This may be represented in
+terms of a matrix-valued relationship as
+
+q − y = Pq ⇔ qi − yi =
+
+Pijqj ,
+
+n
+
+Xj=1
+
+(4.10)
+
+with i = 1, . . . , n, in which the input–output matrix P takes the role of mediating a mapping
+between either of these vector-valued quantities. According to Assumption 2, the elements of the
+input–output matrix P remain constant for the period of time considered, i.e. the corresponding
+ﬂows of goods are assumed to be stationary.
+Relation (4.10) may also be motivated from an alternative perspective that takes the physical sci-
+ences as a guidline. Namely, the total numbers q of the n goods produced during the period of
+time considered which, by Assumption 3, are equal to the numbers supplied of the n goods satisfy
+a conservation law: “whatever has been produced of the n goods during the period of time con-
+sidered cannot get lost in this period.” In quantitative terms this simple relationship may be cast
+into the form
+
+=
+
++
+
+.
+
+total output
+
+ﬁnal demand (exogenous)
+
+deliveries to production sector (endogenous)
+
+q
+
+|{z}
+
+y
+
+|{z}
+
+Pq
+
+|{z}
+
+For computational purposes this central stationary ﬂow of goods relation (4.10) may be rearranged
+as is convenient. In this context it is helpful to make use of the matrix identity q = 1q, where 1
+denotes the (n × n)-unit matrix [cf. Eq. (2.3)].
+Examples:
+
+(i) given/known: P, q
+
+Then it applies that
+
+y = (1 − P)q ⇔ yi =
+
+with i = 1, . . . , n; (1 − P) represents the invertible technology matrix of the economic
+system regarded.
+
+n
+
+Xj=1
+
+(δij − Pij)qj ,
+
+(4.11)
+
+30
+
+CHAPTER4. LEONTIEF’SINPUT–OUTPUTMATRIXMODEL
+
+(ii) given/known: P, y
+
+Then it holds that
+
+q = (1 − P)−1y ⇔ qi =
+
+n
+
+Xj=1
+
+(δij − Pij)−1yj ,
+
+(4.12)
+
+with i = 1, . . . , n; (1 − P)−1 here denotes the total demand matrix, i.e., the inverse of the
+technology matrix.
+
+4.3.2 Flows of goods: exogenous INPUT to total OUTPUT
+
+Likewise, by Assumption 1, a linear functional relationship is supposed to exist between the ex-
+ogenous vector-valued INPUT quantity v and the vector-valued OUTPUT quantity q. In matrix
+language this can be expressed by
+
+v = Rq ⇔ vi =
+
+Rijqj ,
+
+n
+
+Xj=1
+
+(4.13)
+
+with i = 1, . . . , m. By Assumption 2, the elements of the resource consumption matrix R remain
+constant during the period of time considered, i.e., the corresponding resource ﬂows are supposed
+to be stationary.
+
+By combination of Eqs. (4.13) and (4.12), it is possible to compute the numbers v of resources
+required (during the period of time considered) for the production of the n goods for given ﬁnal
+demand y. It applies that
+
+v = Rq = R(1 − P)−1y ⇔ vi =
+
+n
+
+Xj=1
+
+n
+
+Xk=1
+
+Rij(δjk − Pjk)−1yk ,
+
+(4.14)
+
+with i = 1, . . . , m.
+GDC: For problems with n ≤ 5, and known matrices P and R, Eqs. (4.11), (4.12) and (4.14) can
+be immediately used to calculate the quantities q from given quantities y, or vice versa.
+
+4.4 Outlook
+
+Leontief’s input–output matrix model may be extended in a straightforward fashion to include
+more advanced considerations of economic theory. Supposing a closed though not necessarily
+stationary economic system G comprising n interdependent economic agents producing n differ-
+ent goods, one may assign monetary values to the INPUT quantity v as well as to the OUTPUT
+quantities q and y of the system. Besides the numbers of goods produced and the associated
+ﬂows of goods one may monitor with respect to G for a given period of time, one can in addition
+analyse in time and space the amount of money coupled to the different goods, and the corre-
+sponding ﬂows of money. However, contrary to the number of goods, in general there does not
+
+4.4. OUTLOOK
+
+31
+
+exist a conservation law for the amount of money with respect to G. This may render the analysis
+of ﬂows of money more difﬁcult, because, in the sense of an increase in value, money can either
+be generated inside G during the period of time considered or it can likewise be annihilated; it is
+not just limited to either ﬂowing into respectively ﬂowing out of G. Central to considerations of
+this kind is a balance equation for the amount of money contained in G during a given period of
+time, which is an additive quantity. Such balance equations constitute familiar tools in Physics (cf.
+Herrmann (2003) [15, p 7ff]). Its structure in the present case is given by2
+
+
+
+
+rate of change in time
+of the amount of money
+
+in G [in CU/TU]
+
+
+ =(cid:18) ﬂux of money
+
+into G [in CU/TU] (cid:19)+(cid:18) rate of generation of money
+
+in G [in CU/TU]
+
+(cid:19) .
+
+Note that, with respect to G, both ﬂuxes of money and rates of generation of money can in prin-
+ciple possess either sign, positive or negative. To deal with these quantitative issues properly,
+one requires the technical tools of the differential and integral calculus which we will discuss
+at an elementary level in Chs. 7 and 8. We make contact here with the interdisciplinary science
+of Econophysics (cf., e.g., Bouchaud and Potters (2003) [5]), a very interesting and challenging
+subject which, however, is beyond the scope of these lecture notes.
+
+Leontief’s input–output matrix model, and its possible extension as outlined here, provide the
+quantitative basis for considerations of economical ratios of the kind
+
+OUTPUT [in units]
+INPUT [in units]
+
+,
+
+as mentioned in the Introduction. In addition, dimensionless (scale-invariant) ratios of the form
+
+REVENUE [in CU]
+
+COSTS [in CU]
+
+,
+
+referred to as economic efﬁciency, can be computed for and compared between different economic
+systems and their underlying production sectors. In Ch. 7 we will brieﬂy reconsider this issue.
+
+2Here the symbols CU and TU denote “currency units” and “time units,” respectively.
+
+32
+
+CHAPTER4. LEONTIEF’SINPUT–OUTPUTMATRIXMODEL
+
+Chapter 5
+
+Linear programming
+
+On the backdrop of the economic principle, we discuss in this chapter a special class of quanti-
+tative problems that frequently arise in speciﬁc practical applications in Business and Manage-
+ment. Generally one distinguishes between two variants of the economic principle: either (i) to
+draw maximum utility from limited resources, or (ii) to reach a speciﬁc target with minimum ef-
+fort (costs). With regard to the ratio (OUTPUT)/(INPUT) put into focus in the Introduction, the
+issue is to ﬁnd an optimal value for this ratio under given boundary conditions. This aim can be
+realised either (i) by increasing the (positive) value of the numerator for ﬁxed (positive) value of
+the denominator, or (ii) by decreasing the (positive) value of the denominator for ﬁxed (positive)
+value of the numerator. The class of quantitative problems to be looked at in some detail in this
+chapter typically relate to boundary conditions according to case (i).
+
+5.1 Exposition of a quantitative problem
+
+To be maximised is a (non-negative) real-valued quantity z, which depends in a linear functional
+fashion on a ﬁxed number of n (non-negative) real-valued variables x1, . . . , xn. We suppose that
+the n variables x1, . . . , xn in turn are constrained by a ﬁxed number m of algebraic conditions,
+which also are assumed to depend on x1, . . . , xn in a linear fashion. These m constraints, or
+restrictions, shall have the character of imposing upper limits on m different kinds of resources.
+
+Def.: Consider a matrix A ∈ Rm×n, a vector b ∈ Rm×1, two vectors c, x ∈ Rn×1, and a constant
+d ∈ R. A quantitative problem of the form
+
+max(cid:8)z = cT · x + d |Ax ≤ b, x ≥ 0(cid:9) ,
+
+33
+
+(5.1)
+
+34
+
+CHAPTER5. LINEARPROGRAMMING
+
+or, expressed in terms of a component notation,
+
+max z(x1, . . . , xn) = c1x1 + . . . + cnxn + d
+
+a11x1 + . . . + a1nxn ≤ b1
+
+...
+
+am1x1 + . . . + amnxn ≤ bm
+x1 ≥ 0
+
+...
+
+xn ≥ 0 ,
+
+(5.2)
+(5.3)
+
+(5.4)
+(5.5)
+
+(5.6)
+
+is referred to as a standard maximum problem of linear programming with n real-valued vari-
+ables. The different quantities and relations appearing in this deﬁnition are called
+
+• z(x1, . . . , xn) — linear objective function, the dependent variable,
+• x1, . . . , xn — n independent variables,
+• Ax ≤ b — m restrictions,
+• x ≥ 0 — n non-negativity constraints.
+
+Remark: In an analogous fashion one may also formulate a standard minimum problem of
+linear programming, which can be cast into the form
+
+min(cid:8)z = cT · x + d |Ax ≥ b, x ≥ 0(cid:9) .
+
+In this case, the components of the vector b need to be interpreted as lower limits on certain
+capacities.
+
+For given linear objective function z(x1, . . . , xn), the set of points x = (x1, . . . , xn)T satisfying
+the condition
+
+z(x1, . . . , xn) = C = constant ∈ R ,
+
+(5.7)
+
+for ﬁxed value of C, is referred to as an isoquant of z. Isoquants of linear objective functions
+of n = 2 independent variables constitute straight lines, of n = 3 independent variables Euclid-
+ian planes, of n = 4 independent variables Euclidian 3-spaces (or hyperplanes), and of n ≥ 5
+independent variables Euclidian (n − 1)-spaces (or hyperplanes).
+In the simplest cases of linear programming, the linear objective function z depends on n = 2
+variables x1 and x2 only. An illustrative and efﬁcient method of solving problems of this kind will
+be looked at in the following section.
+
+35
+5.2. GRAPHICALSOLUTIONMETHOD
+5.2 Graphical method for solving problems with two indepen-
+
+dent variables
+
+The systematic graphical solution method of standard maximum problems of linear programming
+with n = 2 independent variables comprises the following steps:
+
+1. Derivation of the linear objective function
+
+in dependence on the variables x1 and x2.
+
+z(x1, x2) = c1x1 + c2x2 + d
+
+2. Identiﬁcation in the x1, x2–plane of the feasible region D of z which is determined by the
+m restrictions imposed on x1 and x2. Speciﬁcally, D constitutes the domain of z (cf. Ch. 7).
+
+3. Plotting in the x1, x2–plane of the projection of the isoquant of the linear objective function z
+which intersects the origin (0 = x1 = x2). When c2 6= 0, this projection is described by the
+equation
+
+4. Erecting in the origin of the x1, x2–plane the direction of optimisation for z which is deter-
+
+mined by the constant z-gradient
+
+x2 = −(c1/c2)x1 .
+
+(∇z)T =(cid:18) ∂z
+
+∂x2 (cid:19) =(cid:18) c1
+
+∂x1
+∂z
+
+c2 (cid:19) .
+
+5. Parallel displacement in the x1, x2–plane of the projection of the (0, 0)-isoquant of z along
+the direction of optimisation (∇z)T across the feasible region D out to a distance where the
+projected isoquant just about touches D.
+
+6. Determination of the optimal solution (x1O, x2O) as the point resp. set of points of inter-
+section between the displaced projection of the (0, 0)-isoquant of z and the far boundary
+of D.
+
+7. Computation of the optimal value of the linear objective function zO = z(x1O, x2O) from
+
+the optimal solution (x1O, x2O).
+
+8. Speciﬁcation of potential remaining resources by substitution of the optimal solution
+
+(x1O, x2O) into the m restrictions.
+
+In general one ﬁnds that for a linear objective function z with n = 2 independent variables x1
+and x2, the feasible region D, when non-empty and bounded, constitutes an area in the x1, x2–
+plane with straight edges and a certain number of vertices. In these cases, the optimal values of
+the linear objective function z are always to be found either at the vertices or on the edges of the
+feasible region D. When D is an empty set, then there exists no solution to the corresponding
+linear programming problem. When D is unbounded, again there may not exist a solution to the
+linear programming problem, but this then depends on the speciﬁc circumstances that apply.
+
+36
+
+CHAPTER5. LINEARPROGRAMMING
+
+Remark: To solve a standard minimum problem of linear programming with n = 2 indepen-
+dent variables by means of the graphical method, one needs to parallelly displace in the x1, x2–
+plane the projection of the (0, 0)-isoquant of z along the direction of optimisation (∇z)T until
+contact is made with the feasible region D for the ﬁrst time. The optimal solution is then given by
+the point resp. set of points of intersection between the displaced projection of the (0, 0)-isoquant
+of z and the near boundary of D.
+
+5.3 Dantzig’s simplex algorithm
+
+The main disadvantage of the graphical solution method is its limitation to problems with
+only n = 2 independent variables.
+In actual practice, however, one is often concerned with
+linear programming problems that depend on more than two independent variables. To
+deal with these more complex problems in a systematic fashion, the US-American mathemati-
+cian George Bernard Dantzig (1914–2005) has devised during the 1940ies an efﬁcient algorithm
+which can be programmed on a computer in a fairly straightforward fashion; cf. Dantzig
+(1949,1955) [8, 9].
+
+In mathematics, simplex is an alternative name used to refer to a convex polyhedron, i.e., a body of
+ﬁnite (hyper-)volume in two or more dimensions bounded by linear (hyper-)surfaces which inter-
+sect in linear edges and vertices. In general the feasible regions of linear programming problems
+constitute such simplexes. Since the optimal solutions for the independent variables of linear
+programming problems, when they exist, are always to be found at a vertex or along an edge of
+simplex feasible regions, Dantzig developed his so-called simplex algorithm such that it system-
+atically scans the edges and vertices of a feasible region to identify the optimal solution (when it
+exists) in as few steps as possible.
+
+The starting point be a standard maximum problem of linear programming with n indepen-
+dent variables in the form of relations (5.2)–(5.6). First, by introducing m non-negative slack
+variables s1, . . . , sm, one transforms the m linear restrictions (inequalities) into an equivalent set
+of m linear equations. In this way, potential differences between the left-hand and the right-hand
+sides of the m inequalities are represented by the slack variables. In combination with the deﬁning
+equation of the linear objective function z, one thus is confronted with a system of 1 + m linear
+algebraic equations for the 1 + n + m variables z, x1, . . . , xn, s1, . . . , sm, given by
+Maximum problem of linear programming in canonical form
+
+z − c1x1 − c2x2 − . . . − cnxn = d
+a11x1 + a12x2 + . . . + a1nxn + s1 = b1
+a21x1 + a22x2 + . . . + a2nxn + s2 = b2
+
+...
+
+am1x1 + am2x2 + . . . + amnxn + sm = bm .
+
+(5.8)
+(5.9)
+(5.10)
+
+(5.11)
+
+As discussed previously in Ch. 3, a system of linear algebraic equations of format (1 + m) ×
+(1 + n + m) is under-determined and so, at most, allows for multiple solutions. The general
+
+5.3. DANTZIG’SSIMPLEXALGORITHM
+
+(1 + n + m)-dimensional solution vector
+
+xL = (zL, x1,L, . . . , xn,L, s1,L, . . . , sm,L)T
+
+37
+
+(5.12)
+
+thus contains n variables the values of which can be chosen arbitrarily. It is very important to be
+aware of this fact. It implies that, given the linear system is solvable in the ﬁrst place, one has a
+choice amongst different solutions, and so one can pick the solution which proves optimal for the
+given problem at hand. Dantzig’s simplex algorithm constitues a tool for determining such an
+optimal solution in a systematic way.
+Let us begin by transferring the coefﬁcients and right-hand sides (RHS) of the under-determined
+linear system introduced above into a particular kind of simplex tableau.
+Initial simplex tableau
+
+x1
+
+x2
+z
+1 −c1 −c2
+a12
+0
+0
+a22
+...
+...
+0 am1 am2
+
+a11
+a21
+...
+
+. . .
+. . . −cn
+a1n
+. . .
+. . .
+a2n
+...
+...
+. . . amn
+
+xn s1 s2
+0
+0
+1
+...
+0
+
+0
+1
+0
+...
+0
+
+. . . sm RHS
+d
+. . .
+b1
+. . .
+b2
+. . .
+...
+...
+bm
+. . .
+
+0
+0
+0
+...
+1
+
+(5.13)
+
+In such a simplex tableau one distinguishes so-called basis variables from non-basis variables.
+Basis variables are those that contain in their respective columns in the number tableau a (1 + m)-
+component canonical unit vector [cf. Eq. (1.10)]; in total the simplex tableau contains 1 + m of
+these. Non-basis variables are the remaining ones that do not contain a canonical basis vector
+in their respective columns; there exist n of this kind. The complete basis can thus be perceived
+as spanning a (1 + m)-dimensional Euclidian space R1+m. Initially, always z and the m slack
+variables s1, . . . , sm constitute the basis variables, while the n independent variables x1, . . . , xn
+classify as non-basis variables [cf. the initial tableau (5.13)]. The corresponding so-called (ﬁrst)
+basis solution has the general appearance
+
+xB1 = (zB1, x1,B1, . . . , xn,B1, s1,B1, . . . , sm,B1)T = (d, 0, . . . , 0, b1, . . . , bm)T ,
+
+since, for simplicity, each of the n arbitrarily speciﬁable non-basis variables may be assigned the
+special value zero. In this respect basis solutions will always be special solutions (as opposed
+to general ones) of the under-determined system (5.8)–(5.11) — the maximum problem of linear
+programming in canonical form.
+Central aim of the simplex algorithm is to bring as many of the n independent vari-
+ables x1, . . . , xn as possible into the (1 + m)-dimensional basis, at the expense of one of the
+m slack variables s1, . . . , sm, one at a time, in order to construct successively more favourable
+special vector-valued solutions to the optimisation problem at hand. Ultimately, the simplex algo-
+rithm needs to be viewed as a special variant of Gaußian elimination as discussed in Ch. 3, with a
+set of systematic instructions concerning allowable equivalence transformations of the underlying
+under-determined linear system (5.8)–(5.11), resp. the initial simplex tableau (5.13). This set of
+systematic algebraic simplex operations can be summarised as follows:
+Simplex operations
+
+38
+CHAPTER5. LINEARPROGRAMMING
+S1: Does the current simplex tableau show −cj ≥ 0 for all j ∈ {1, . . . , n}? If so, then the
+
+corresponding basis solution is optimal. END. Otherwise goto S2.
+
+S2: Choose a pivot column index j ∗ ∈ {1, . . . , n} such that −cj ∗
+
+{1, . . . , n}} < 0.
+
+:= min{−cj|j ∈
+
+S3: Is there a row index i∗ ∈ {1, . . . , m} such that ai∗j ∗ > 0? If not, the objective function z is
+
+unbounded from above. END. Otherwise goto S4.
+
+S4: Choose a pivot row index i∗ such that ai∗j ∗ > 0 and bi∗/ai∗j ∗ := min{bi/ai∗j ∗|ai∗j ∗ > 0, i ∈
+
+{1, . . . , m}}. Perform a pivot operation with the pivot element ai∗j ∗. Goto S1.
+
+When the ﬁnal simplex tableau has been arrived at, one again assigns the non-basis variables the
+value zero. The values of the ﬁnal basis variables corresponding to the optimal solution of the
+given linear programming problem are then to be determined from the ﬁnal simplex tableau by
+backward substitution, beginning at the bottom row. Note that slack variables with positive values
+belonging to the basis variables in the optimal solution provide immediate information on existing
+remaining capacities in the problem at hand.
+
+Chapter 6
+
+Elementary ﬁnancial mathematics
+
+In this chapter we want to provide a brief introduction into some basic concepts of ﬁnancial math-
+ematics. As we will try to emphasise, many applications of these concepts (that have immediate
+practical relevance) are founded on only two simple and easily accessible mathematical structures:
+the so-called arithmetical and geometrical real-valued sequences and their associated ﬁnite series.
+
+6.1 Arithmetical and geometrical sequences and series
+
+6.1.1 Arithmetical sequence and series
+An arithmetical sequence of n ∈ N real numbers an ∈ R,
+
+(an)n∈N ,
+
+is deﬁned by the property that the difference d between neighbouring elements in the sequence be
+constant, i.e., for n > 1
+
+(6.1)
+with an, an−1, d ∈ R. Given this recursive formation rule, one may infer the explicit representa-
+tion of an arithmetical sequence as
+
+an − an−1 =: d = constant 6= 0 ,
+
+an = a1 + (n − 1)d with n ∈ N .
+
+(6.2)
+
+Note that any arithmetical sequence is uniquely determined by the two free parameters a1 and d,
+the starting value of the sequence and the constant difference between neighbours in the sequence,
+respectively. Equation (6.2) shows that the elements an in a non-trivial arithmetical sequence
+exhibit either linear growth or linear decay with n.
+When one calculates for an arithmetical sequence of n + 1 real numbers the arithmetical mean
+of the immediate neighbours of any particular element an (with n ≥ 2), one ﬁnds that
+(a1 + (n − 2)d + a1 + nd) = a1 + (n − 1)d = an .
+
+(an−1 + an+1) =
+
+(6.3)
+
+1
+2
+
+1
+2
+
+39
+
+40
+
+CHAPTER6. ELEMENTARYFINANCIALMATHEMATICS
+
+Summation of the ﬁrst n elements of an arbitrary arithmetical sequence of real numbers leads to
+a ﬁnite arithmetical series,
+
+Sn := a1 + a2 + . . . + an =
+
+ak =
+
+[a1 + (k − 1)d] = na1 +
+
+d
+2
+
+(n − 1)n .
+
+(6.4)
+
+n
+
+Xk=1
+
+n
+
+Xk=1
+
+In the last algebraic step use was made of the Gaußian identity1 (cf., e.g., Bosch (2003) [6, p 21])
+
+1
+2
+
+k ≡
+
+(n − 1)n .
+
+n−1
+
+Xk=1
+
+(6.5)
+
+6.1.2 Geometrical sequence and series
+A geometrical sequence of n ∈ N real numbers an ∈ R,
+
+(an)n∈N ,
+
+is deﬁned by the property that the quotient q between neighbouring elements in the sequence be
+constant, i.e., for n > 1
+
+an
+an−1
+
+=: q = constant 6= 0 ,
+
+(6.6)
+
+with an, an−1 ∈ R and q ∈ R\{0, 1}. Given this recursive formation rule, one may infer the
+explicit representation of a geometrical sequence as
+
+an = a1qn−1 with n ∈ N.
+
+(6.7)
+Note that any geometrical sequence is uniquely determined by the two free parameters a1 and q,
+the starting value of the sequence and the constant quotient between neighbours in the sequence,
+respectively. Equation (6.7) shows that the elements an in a non-trivial geometrical sequence
+exhibit either exponential growth or exponential decay with n (cf. Sec. 7.1.4).
+When one calculates for a geometrical sequence of n + 1 real numbers the geometrical mean of
+the immediate neighbours of any particular element an (with n ≥ 2), one ﬁnds that
+
+√an−1 · an+1 =pa1qn−2 · a1qn = a1qn−1 = an .
+
+Summation of the ﬁrst n elements of an arbitrary geometrical sequence of real numbers leads to
+a ﬁnite geometrical series,
+
+Sn := a1 + a2 + . . . + an =
+
+qn − 1
+q − 1
+In the last algebraic step use was made of the identity (cf., e.g., Bosch (2003) [6, p 27])
+
+Xk=1(cid:2)a1qk−1(cid:3) = a1
+
+Xk=1
+
+Xk=0
+
+qk = a1
+
+ak =
+
+.
+
+n
+
+n
+
+n−1
+
+1Analogously, the modiﬁed Gaußian identity
+
+n−1
+
+Xk=0
+
+qk ≡
+
+q ∈ R\{0, 1} .
+
+for
+
+qn − 1
+q − 1
+Xk=1
+(2k − 1) ≡ n2 applies.
+
+n
+
+(6.8)
+
+(6.9)
+
+(6.10)
+
+6.2. INTERESTANDCOMPOUNDINTEREST
+6.2 Interest and compound interest
+
+41
+
+Let us consider a ﬁrst rather simple interest model. Suppose given an initial capital of positive
+value K0 > 0 CU paid into a bank account at some initial instant, and a time interval consisting
+of n ∈ N periods of equal lengths. At the end of each period, the money in this bank account
+shall earn a service fee corresponding to an interest rate of p > 0 percent.
+Introducing the
+dimensionless interest factor2
+
+q := 1 +
+
+> 1 ,
+
+(6.11)
+
+p
+100
+
+one ﬁnds that by the end of the ﬁrst interest period a total capital of value (in CU)
+
+K1 = K0 + K0 ·
+
+p
+100
+
+= K0(cid:16)1 +
+
+p
+
+100(cid:17) = K0q
+
+will have accumulated. When the entire time interval of n interest periods has ended, a ﬁnal
+capital worth of (in CU)
+
+recursively: Kn = Kn−1q ,
+
+n ∈ N ,
+
+(6.12)
+
+will have accumulated, where Kn−1 denotes the capital (in CU) accumulated by the end of n − 1
+interest periods. This recursive representation of the growth of the initial capital K0 due to a total
+of n interest payments and the effect of compound interest makes explicit the direct link with the
+mathematical structure of a geometrical sequence of real numbers (6.6).
+It is a straightforward exercise to show that in this simple interest model the ﬁnal capital Kn is
+related to the initial capital K0 by
+
+explicitly: Kn = K0qn , n ∈ N .
+
+(6.13)
+
+Note that this equation links the four non-negative quantities Kn, K0, q and n to one another.
+Hence, knowing the values of three of these quantities, one may solve Eq. (6.13) to obtain the
+value of the fourth. For example, solving Eq. (6.13) for K0 yields
+
+K0 =
+
+Kn
+qn =: B0 .
+
+(6.14)
+
+In this particular variant, K0 is referred to as the present value B0 of the ﬁnal capital Kn; this is
+obtained from Kn by an n-fold division with the interest factor q.
+Further possibilities of re-arranging Eq. (6.13) are:
+
+(i) Solving for the interest factor q:
+
+(ii) Solving for the contract period n:
+
+q = nr Kn
+
+K0
+
+,
+
+ln(q)
+2Inverting this deﬁning relation for q leads to p = 100 · (q − 1).
+
+ln (Kn/K0)
+
+n =
+
+(6.15)
+
+(6.16)
+
+.
+
+42
+CHAPTER6. ELEMENTARYFINANCIALMATHEMATICS
+From now on, n ∈ N shall denote the number of full years that have passed in a speciﬁc interest
+model.
+Now we turn to discuss a second, more reﬁned interest model. Let us suppose that an initial
+capital K0 > 0 CU earns interest during one full year m ∈ N times at the mth part of a nominal
+annual interest rate pnom > 0. At the end of the ﬁrst out of m periods of equal length 1/m, the
+initial capital K0 will thus have increased to an amount
+
+K1/m = K0 + K0 ·
+
+pnom
+m · 100
+
+= K0(cid:16)1 +
+
+pnom
+
+m · 100(cid:17) .
+
+By the end of the kth (k ≤ m) out of m periods the account balance will have become
+
+Kk/m = K0(cid:16)1 +
+
+pnom
+
+m · 100(cid:17)k
+
+;
+
+the interest factor(cid:16)1 +
+
+year, K0 in this interest model will have increased to
+
+pnom
+
+m · 100(cid:17) will then have been applied k times to K0. At the end of the full
+K1 = Km/m = K0(cid:16)1 +
+qeﬀ :=(cid:16)1 +
+
+m · 100(cid:17)m
+m · 100(cid:17)m
+
+, m ∈ N .
+
+(6.17)
+
+pnom
+
+pnom
+
+,
+
+This relation deﬁnes an effective interest factor
+
+with associated effective annual interest rate
+
+peﬀ = 100 ·h(cid:16)1 +
+
+pnom
+
+m · 100(cid:17)m
+
+− 1i , m ∈ N ,
+
+(6.18)
+
+obtained from re-arranging qeﬀ = 1 +
+When, ultimately, n ∈ N full years will have passed in the second interest model, the initial
+capital K0 will have been transformed into a ﬁnal capital of value
+
+.
+
+peﬀ
+100
+
+Kn = K0(cid:16)1 +
+
+pnom
+
+m · 100(cid:17)n·m
+
+The present value B0 of Kn is thus given by
+
+= K0qn
+
+eﬀ , n, m ∈ N .
+
+B0 =
+
+Kn
+qn
+eﬀ
+
+= K0 .
+
+(6.19)
+
+(6.20)
+
+Finally, as a third interest model relevant to applications in Finance, we turn to consider the con-
+cept of installment savings. For simplicity, let us restrict our discussion to the case when n ∈ N
+equal installments of constant value E > 0 CU are paid into an account that earns p > 0 percent
+annual interest (i.e., q > 1) at the beginning of each of n full years. The initial account balance
+
+6.3. REDEMPTIONPAYMENTSINCONSTANTANNUITIES
+
+43
+
+be K0 = 0 CU. At the end of a ﬁrst full year in this interest model, the account balance will have
+increased to
+
+At the end of two full years one ﬁnds, substituting for K1,
+
+K1 = E + E ·
+
+p
+100
+
+= E(cid:16)1 +
+
+p
+
+100(cid:17) = Eq .
+
+K2 = (K1 + E)q = (Eq + E)q = E(q2 + q) = Eq(q + 1) .
+
+At the end of n full years we have, recursively substituting for Kn−1, Kn−2, etc.,
+
+Kn = (Kn−1 + E)q = · · · = E(qn + . . . + q2 + q) = Eq(qn−1 + . . . + q + 1) = Eq
+
+qk .
+
+n−1
+
+Xk=0
+
+Using the identity (6.10), since presently q > 1, the account balance at the end of n full years can
+be reduced to the expression
+
+Kn = Eq
+
+qn − 1
+q − 1
+
+,
+
+q ∈ R>1 , n ∈ N .
+
+(6.21)
+
+The present value B0 associated with Kn is obtained by n-fold division of Kn with the interest
+factor q:
+
+B0 :=
+
+Kn
+qn
+
+Eq. 6.21
+
+z}|{= =
+
+E(qn − 1)
+qn−1(q − 1)
+
+.
+
+(6.22)
+
+This gives the value of an initial capital B0 which will grow to the same ﬁnal value Kn after n
+annual interest periods with constant interest factor q > 1.
+Lastly, re-arranging Eq. (6.21) to solve for the contract period n yields.
+
+n =
+
+ln [1 + (q − 1)(Kn/Eq)]
+
+ln(q)
+
+.
+
+(6.23)
+
+6.3 Redemption payments in constant annuities
+
+The starting point of the next discussion be a mortgage loan of amount R0 > 0 CU that an
+economic agent borrowed from a bank at the obligation of annual service payments of p > 0
+percent (i.e., q > 1) on the remaining debt. We suppose that the contract between the agent and
+the bank ﬁxes the following conditions:
+
+(i)
+
+the ﬁrst redemption payment T1 amount to t > 0 percent of the mortgage R0,
+
+(ii)
+
+the remaining debt shall be paid back to the bank in constant annuities of value A > 0 CU
+at the end of each full year that has passed.
+
+The annuity A is deﬁned as the sum of the variable nth interest payment Zn > 0 CU and the
+variable nth redemption payment Tn > 0 CU. In the present model we impose on the annuity
+the condition that it be constant across full years,
+
+A = Zn + Tn
+
+!= constant .
+
+(6.24)
+
+44
+
+CHAPTER6. ELEMENTARYFINANCIALMATHEMATICS
+
+For n = 1, for example, we thus obtain
+
+A = Z1 + T1 = R0 ·
+For the ﬁrst full year of a running mortgage contract, the interest payment, the redemption payment,
+and, following the payment of a ﬁrst annuity, the remaining debt take the values
+
++ R0 ·
+
+= R0(cid:18) p + t
+
+100 (cid:19) = R0(cid:20)(q − 1) +
+
+t
+
+100(cid:21) != constant . (6.25)
+
+p
+100
+
+t
+
+100
+
+p
+Z1 = R0 ·
+100
+T1 = A − Z1
+R1 = R0 + Z1 − A
+
+= R0(q − 1)
+
+substitute for Z1
+
+z}|{=
+
+By the end of a second full year, these become
+
+R0 + R0 ·
+
+p
+100 − A = R0q − A .
+
+substitute for Z2
+
+substitute for R1
+
+z}|{=
+
+R1q − A
+
+R0q2 − A(q + 1) .
+
+z}|{=
+
+Z2 = R1(q − 1)
+T2 = A − Z2
+R2 = R1 + Z2 − A
+
+At this stage, it has become clear according to which patterns the different quantities involved in
+the redemption payment model need to be formed. The interest payment for the nth full year in a
+mortgage contract of constant anuities amounts to (recursively)
+
+Zn = Rn−1(q − 1) ,
+
+n ∈ N ,
+
+(6.26)
+
+where Rn−1 denotes the remaining debt at the end of the previous full year. The redemption
+payment for full year n is then given by (recursively)
+
+The remaining debt at the end of the nth full year then is (in CU)
+
+Tn = A − Zn , n ∈ N .
+
+recursively: Rn = Rn−1 + Zn − A = Rn−1q − A , n ∈ N .
+
+By successive backward substitution for Rn−1, Rn−2, etc., Rn can be re-expressed as
+
+Rn = R0qn − A(qn−1 + . . . + q + 1) = R0qn − A
+
+qk .
+
+n−1
+
+Xk=0
+
+Now employing the identity (6.10), we ﬁnally obtain (since q > 1)
+
+explicitly: Rn = R0qn − A
+
+qn − 1
+q − 1
+
+, n ∈ N .
+
+(6.27)
+
+(6.28)
+
+(6.29)
+
+All the formulae we have now derived for computing the values of the quantities {n, Zn, Tn, Rn}
+form the basis of a formal redemption payment plan, given by
+
+6.3. REDEMPTIONPAYMENTSINCONSTANTANNUITIES
+
+45
+
+n Zn [CU] Tn [CU] Rn [CU]
+0
+1
+2
+...
+
+R0
+R1
+R2
+...
+
+–
+Z1
+Z2
+...
+
+–
+T1
+T2
+...
+
+,
+
+a standard scheme that banks must make available to their mortgage customers for the purpose of
+ﬁnancial orientation.
+
+Remark: For known values of the free parameters R0 > 0 CU, q > 1 and A > 0 CU, the simple
+recursive formulae (6.26), (6.27) and (6.28) can be used to implement a redemption payment plan
+in a modern spreadsheet programme such as EXCEL or OpenOfﬁce.
+
+We emphasise the following observation concerning Eq. (6.29): since the constant annuity A con-
+tains implicitly a factor (q − 1) [cf. Eq. (6.25)], the two competing terms in this relation each grow
+exponentially with n. For the redemption payments to eventually terminate, it is thus essential to
+ﬁx the free parameter t (for known p > 0 ⇔ q > 1) in such a way that the second term on the
+right-hand side of Eq. (6.29) is given the possibility to catch up with the ﬁrst as n progresses (the
+latter of which has a head start of R0 > 0 CU at n = 0). The necessary condition following from
+the requirement that Rn
+
+!
+
+≤ Rn−1 is thus t > 0.
+
+Equation (6.29) links the ﬁve non-negative quantities Rn, R0, q, n and A to one another. Given
+one knows the values of four of these, one can solve for the ﬁfth. For example:
+
+(i) Calculation of the contract period n of a mortgage contract, knowing the mortgage R0, the
+!= 0 imposed on Rn for n
+
+interest factor q and the annuity A. Solving the condition Rn
+yields (after a few algebraic steps)
+
+n =
+
+ln(cid:0)1 + p
+t(cid:1)
+
+ln(q)
+
+;
+
+(6.30)
+
+the contract period is thus independent of the value of the mortgage loan, R0.
+
+(ii) Evaluation of the annuity A, knowing the contract period n, the mortgage loan R0, and the
+
+interest factor q. Solving the condition Rn
+
+!= 0 imposed on Rn for A immediately yields
+
+A =
+
+qn(q − 1)
+qn − 1
+
+R0 .
+
+(6.31)
+
+Now equating the two expressions (6.31) and (6.25) for the annuity A, one ﬁnds in addition
+that
+
+t
+
+100
+
+=
+
+q − 1
+qn − 1
+
+.
+
+(6.32)
+
+46
+6.4 Pension calculations
+
+CHAPTER6. ELEMENTARYFINANCIALMATHEMATICS
+
+Quantitative models for pension calculations assume given an initial capital K0 > 0 CU that
+was paid into a bank account at a particular moment in time. The issue is to monitor the subse-
+quent evolution in discrete time n of the account balance Kn (in CU), which is subjected to two
+competing inﬂuences: on the one-hand side, the bank account earns interest at an annual interest
+rate of p > 0 percent (i.e., q > 1), on the other, it is supposed that throughout one full year a total
+of m ∈ N pension payments of the constant amount a are made from this bank account, always
+at the beginning of each of m intervals of equal duration per year.
+Let us begin by evaluating the amount of interest earned per year by the bank account. An impor-
+tant point in this respect is the fact that throughout one full year there is a total of m deductions of
+value a from the bank account, i.e., in general the account balance does not stay constant through-
+out that year but rather decreases in discrete steps. For this reason, the account is credited by the
+bank with interest only at the mth part of p > 0 percent for each interval (out of the total of m)
+that has passed, with no compound interest effect. Hence, at the end of the ﬁrst out of m intervals
+per year the bank account has earned interest worth of (in CU)
+
+Z1/m = (K0 − a) ·
+
+p
+
+m · 100
+
+= (K0 − a)
+
+(q − 1)
+
+m
+
+.
+
+The interest earned for the kth interval (out of m; k ≤ m) is then given by
+
+Zk/m = (K0 − ka)
+
+(q − 1)
+
+m
+
+.
+
+Summation over the contributions of each of the m intervals to the interest earned then yields for
+the entire interest earned during the ﬁrst full year (in CU)
+
+Z1 =
+
+m
+
+Xk=1
+
+Zk/m =
+
+m
+
+Xk=1
+(K0 − ka)
+
+(q − 1)
+
+m
+
+=
+
+m "mK0 − a
+(q − 1)
+
+k# .
+
+m
+
+Xk=1
+
+By means of substitution from the identity (6.5), this result can be recast into the equivalent form
+
+Z1 =(cid:20)K0 −
+
+1
+2
+
+(m + 1)a(cid:21) (q − 1) .
+
+(6.33)
+
+Note that this quantity decreases linearly with the number of deductions m made per year resp. with
+the pension payment amount a.
+One now ﬁnds that the account balance at the end of the ﬁrst full year that has passed is given by
+
+K1 = K0 − ma + Z1
+
+Eq. (6.33)
+
+z}|{= K0q −(cid:20)m +
+
+1
+2
+
+(m + 1)(q − 1)(cid:21) a .
+
+At the end of a second full year of the pension payment contract the interest earned is
+
+Z2 =(cid:20)K1 −
+
+1
+2
+
+(m + 1)a(cid:21) (q − 1) ,
+
+6.4. PENSIONCALCULATIONS
+
+while the account balance amounts to
+
+substitute for K1 and Z2
+
+K2 = K1 − ma + Z2
+
+z}|{=
+
+At this stage, certain fairly simple patterns for the interest earned during full year n, and the
+account balance after n full years, reveal themselves. For Zn we have
+
+K0q2 −(cid:20)m +
+
+1
+2
+
+(m + 1)(q − 1)(cid:21) a(q + 1) .
+
+Zn =(cid:20)Rn−1 −
+
+1
+2
+
+(m + 1)a(cid:21) (q − 1) ,
+
+47
+
+(6.34)
+
+qk .
+
+and for Kn one obtains
+
+Kn = Kn−1 − ma + Zn
+
+substitute for Kn−1 and Zn
+
+z}|{=
+
+K0qn −(cid:20)m +
+
+1
+2
+
+(m + 1)(q − 1)(cid:21) a
+
+n−1
+
+Xk=0
+
+The latter result can be re-expressed upon substitution from the identity (6.10). Thus, Kn can
+ﬁnally be given by
+
+explicitly: Kn = K0qn −(cid:20)m +
+
+1
+2
+
+(m + 1)(q − 1)(cid:21) a
+
+qn − 1
+q − 1
+
+, n, m ∈ N .
+
+(6.35)
+
+In a fashion practically identical to our discussion of the redemption payment model in Sec. 6.3,
+the two competing terms on the right-hand side of Eq. (6.35) likewise exhibit exponential growth
+with the number n of full years passed. Speciﬁcally, it depends on the values of the parameters
+K0 > 0 CU, q > 1, a > 0 CU, as well as m ≥ 1, whether the second term eventually manages to
+catch up with the ﬁrst as n progresses (the latter of which, in this model, is given a head start of
+value K0 > 0 CU at n = 0).
+We remark that Eq. (6.35), again, may be algebraically re-arranged at one’s convenience (as long
+as division by zero is avoided). For example:
+
+(i) The duration n (in full years) of a particular pension contract is obtained from solving the
+
+condition Kn
+
+!= 0 accordingly. Given that [. . .]a − K0(q − 1) > 0, one thus ﬁnds3
+
+ln(cid:16)
+
+[...]a
+
+[...]a−K0(q−1)(cid:17)
+
+ln(q)
+
+n =
+
+.
+
+(6.36)
+
+(ii) The present value B0 of a pension scheme results from the following consideration: for
+ﬁxed interest factor q > 1, which initial capital K0 > 0 CU must be paid into a bank account
+such that for a duration of n full years one can receive payments of constant amount a at the
+beginning of each of m intervals (of equal length) per year? The value of B0 = K0 is again
+!= 0 and solving for K0. This yields
+obtained from imposing on Eq. (6.35) the condition Kn
+
+(m + 1)(q − 1)(cid:21) a
+3To avoid notational overload, the brackets [. . .] here represent the term(cid:2)m + 1
+
+B0 = K0 =(cid:20)m +
+
+qn − 1
+qn(q − 1)
+2 (m + 1)(q − 1)(cid:3).
+
+1
+2
+
+.
+
+(6.37)
+
+48
+
+CHAPTER6. ELEMENTARYFINANCIALMATHEMATICS
+
+(iii) The idea of so-called everlasting pension payments of amount aever > 0 CU is based on the
+strategy to consume only the annual interest earned by an initial capital K0 > 0 CU residing
+in a bank account with interest factor q > 1. Imposing now on Eq. (6.35) the condition
+Kn
+
+!= K0 to hold for all values of n, and then solving for a, yields the result
+
+aever =
+
+q − 1
+
+m + 1
+
+2 (m + 1)(q + 1)
+
+K0 ;
+
+(6.38)
+
+Note that, naturally, aever is directly proportional to the initial capital K0!
+
+6.5 Linear and declining-balance depreciation methods
+
+Attempts at the quantitative description of the process of declining material value of industrial
+goods, properties or other assets, of initial value K0 > 0 CU, are referred to as depreciation. In-
+ternational tax laws generally provide investors with a choice between two particular mathematical
+methods of calculating depreciation. We will discuss these options in turn.
+
+6.5.1 Linear depreciation method
+When the initial value K0 > 0 CU is supposed to decline to 0 CU in the space of N full years by
+equal annual amounts, the remaining value Rn (in CU) at the end of n full years is described by
+
+Rn = K0 − n(cid:18)K0
+
+N (cid:19) , n = 1, . . . , N .
+
+(6.39)
+
+Note that for the difference of remaining values for years adjacent one obtains Rn − Rn−1 =
+N (cid:19) =: d < 0. The underlying mathematical structure of the straight line depreciation
+−(cid:18)K0
+
+method is thus an arithmetical sequence of real numbers, with constant negative difference d
+between neighbouring elements (cf. Sec. 6.1.1).
+
+6.5.2 Declining-balance depreciation method
+
+The foundation of the second depreciation method to be described here, for an industrial good of
+initial value K0 > 0 CU, is the idea that per year the value declines by a certain percentage rate
+p > 0 of the value of the good during the previous year. Introducing a dimensionless depreciation
+factor by
+
+q := 1 −
+
+p
+100
+
+< 1 ,
+
+the remaining value Rn (in CU) after n full years amounts to
+
+recursively: Rn = Rn−1q , R0 ≡ K0 , n ∈ N .
+
+The underlying mathematical structure of the declining balance depreciation method is thus a
+geometrical sequence of real numbers, with constant ratio 0 < q < 1 between neighbouring
+
+(6.40)
+
+(6.41)
+
+6.6. SUMMARISINGFORMULA
+
+49
+
+elements (cf. Sec. 6.1.2). With increasing n the values of these elements become ever smaller. By
+means of successive backward substitution expression (6.41) can be transformed to
+
+explicitly: Rn = K0qn ,
+
+0 < q < 1 , n ∈ N .
+
+(6.42)
+
+From Eq. (6.42), one may derive results concerning the following questions of a quantitative na-
+ture:
+
+(i) Suppose given a depreciation factor q and a projected remaining value Rn for some industrial
+
+good. After which depreciation period n will this value be attained? One ﬁnds
+
+n =
+
+ln (Rn/K0)
+
+ln(q)
+
+.
+
+(6.43)
+
+(ii) Knowing a projected depreciation period n and corresponding remaining value Rn, at which
+
+percentage rate p > 0 must the depreciation method be operated? This yields
+
+q = nr Rn
+6.6 Summarising formula
+
+K0 ⇒ p = 100 · 1 − nr Rn
+K0! .
+
+(6.44)
+
+To conclude this chapter, let us summarise the results on elementary ﬁnancial mathematics that
+we derived along the way. Remarkably, these can be condensed in a single formula which contains
+the different concepts discussed as special cases. This formula, in which n represents the number
+of full years that have passed, is given by (cf. Zeh–Marschke (2010) [26]):
+
+Kn = K0qn + R
+
+qn − 1
+q − 1
+
+,
+
+q ∈ R>0\{1} , n ∈ N .
+
+(6.45)
+
+The different special cases contained therein are:
+
+(i) Compound interest for an initial capital K0 > 0 CU: with R = 0 and q > 1, Eq. (6.45)
+
+reduces to Eq. (6.13).
+
+(ii) Installment savings with constant installments E > 0 CU: with K0 = 0 CU, q > 1 and
+
+R = Eq, Eq. (6.45) reduces to Eq. (6.19).
+
+(iii) Redemption payments in constant annuities: with K0 = −R0 < 0 CU, q > 1 and
+R = A > 0 CU, Eq. (6.45) reduces to the negative (!) of Eq. (6.29). In this dual formulation,
+remaining debt Kn = −Rn is (meaningfully) expressed as a negative account balance.
+−(cid:20)m +
+
+(m + 1)(q − 1)(cid:21) a, Eq. (6.45) transforms to Eq. (6.35).
+
+(iv) Pension payments of constant amount a > 0 CU: with q > 1 and R =
+
+1
+2
+
+(v) Declining balance depreciation of an asset of initial value K0 > 0 CU: with R = 0 and
+
+0 < q < 1, Eq. (6.45) converts to Eq. (6.42) for the remaining value Kn = Rn.
+
+50
+
+CHAPTER6. ELEMENTARYFINANCIALMATHEMATICS
+
+Chapter 7
+
+Differential calculus of real-valued
+functions of one real variable
+
+In Chs. 1 to 5 of these lecture notes, we conﬁned our considerations to functional relationships
+between INPUT quantities and OUTPUT quantities of a linear nature. In this chapter now, we
+turn to discuss characteristic properties of truly non-linear functional relationships between one
+INPUT quantity and one OUTPUT quantity.
+
+7.1 Real-valued functions of one real variable
+
+Let us begin by introducing the concept of a real-valued function of one real variable. This
+constitutes a special kind of a mapping1 that needs to satisfy the following simple but very strict
+rule:
+
+a mapping f that assigns to every element x from a subset D of the real numbers R (i.e.,
+D ⊆ R) one and only one element y from a second subset W of the real numbers R (i.e., W ⊆ R).
+Def.: A unique mapping f of a subset D ⊆ R of the real numbers onto a subset W ⊆ R of the
+real numbers,
+(7.1)
+
+is referred to as a real-valued function of one real variable.
+
+f : D → W ,
+
+x 7→ y = f (x)
+
+We now ﬁx some terminology concerning the concept of a real-valued function of one real variable:
+
+• D: domain of f,
+• W : target space of f,
+• x ∈ D: independent variable of f, also referred to as the argument of f,
+• y ∈ W : dependent variable of f,
+1Cf. our introduction in Ch. 2 of matrices as a particular class of mathematical objects.
+
+51
+
+52
+
+CHAPTER7. DIFFERENTIALCALCULUSOFREAL-VALUEDFUNCTIONS
+
+• f (x): mapping prescription,
+• graph of f: the set of pairs of values G = {(x, f (x))|x ∈ D} ⊆ R2.
+
+For later analysis of the mathematical properties of real-valued functions of one real variable, we
+need to address a few more technical issues.
+Def.: Given a mapping f that is one-to-one and onto, with domain D(f ) ⊆ R and target space
+W (f ) ⊆ R, not only is every x ∈ D(f ) assigned to one and only one y ∈ W (f ), but also every
+y ∈ W (f ) is assigned to one and only one x ∈ D(f ). In this case, there exists an associated
+mapping f −1, with D(f −1) = W (f ) and W (f −1) = D(f ), which is referred to as the inverse
+function of f.
+Def.: A real-valued function f of one real variable x is continuous at some value x ∈ D(f ) when
+for ∆x ∈ R>0 the condition
+
+lim
+∆x→0
+
+f (x − ∆x) = lim
+
+∆x→0
+
+f (x + ∆x) = f (x)
+
+(7.2)
+
+obtains, i.e., when at x the left and right limits of the function f coincide and are equal to the value
+f (x). A real-valued function f as such is continuous when f is continuous for all x ∈ D(f ).
+Def.: When a real-valued function f of one real variable x satisﬁes the condition
+
+f (a) < f (b)
+
+for all a, b ∈ D(f ) with a < b ,
+
+then f is called strictly monotonously increasing. When, however, f satisﬁes the condition
+
+f (a) > f (b)
+
+for all a, b ∈ D(f ) with a < b ,
+
+(7.3)
+
+(7.4)
+
+then f is called strictly monotonously decreasing.
+Note, in particular, that real-valued functions of one real variable that are strictly monotonous and
+continous are always one-to-one and onto and, therefore, are invertible.
+
+In the following, we brieﬂy review ﬁve elementary classes of real-valued functions of one real vari-
+able that ﬁnd frequent application in the modelling of quantitative problems in economic theory.
+
+7.1.1 Polynomials of degree n
+Polynomials of degree n are real-valued functions of one real variable of the form
+
+y = f (x) = anxn + an−1xn−1 + . . . + aixi + . . . + a2x2 + a1x + a0
+
+(7.5)
+
+with ai ∈ R, i = 1, . . . , n, n ∈ N, an 6= 0 .
+
+Their domain comprises the entire set of real numbers, i.e., D(f ) = R. The extent of their target
+space depends speciﬁcally on the values of the real constant coefﬁcients ai ∈ R. Functions in this
+class possess a maximum of n real roots.
+
+7.1. REAL-VALUEDFUNCTIONS
+7.1.2 Rational functions
+Rational functions are constructed by forming the ratio of two polynomials of degrees m resp. n,
+i.e.,
+
+53
+
+y = f (x) =
+
+pm(x)
+qn(x)
+
+=
+
+amxm + . . . + a1x + a0
+bnxn + . . . + b1x + b0
+
+(7.6)
+
+with ai, bj ∈ R, i = 1, . . . , m, j = 1, . . . , n, m, n ∈ N, am, bn 6= 0 .
+
+Their domain is given by D(f ) = R\{x|qn(x) = 0}. When for the degrees m and n of the
+polynomials pm(x) and qn(x) we have
+
+(i) m < n, then f is referred to as a proper rational function, or
+(ii) m ≥ n, then f is referred to as an improper rational function.
+In the latter case, application of polynomial division leads to a separation of f into a purely poly-
+nomial part and a proper rational part. The roots of f always correspond to those roots of the
+numerator polynomial pm(x) for which simultaneously qn(x) 6= 0 applies. The roots of the de-
+nominator polynomial qn(x) constitute poles of f. Proper rational functions always tend for very
+small (i.e., x → −∞) and for very large (i.e., x → +∞) values of their argument to zero.
+7.1.3 Power-law functions
+
+Power-law functions exhibit the speciﬁc structure given by
+
+y = f (x) = xα with α ∈ R .
+
+(7.7)
+
+We here conﬁne ourselves to cases with domains D(f ) = R>0, such that for the coresponding
+target spaces we have W (f ) = R>0. Under these conditions, power-law functions are strictly
+monotonously increasing when α > 0, and strictly monotonously decreasing when α < 0. Hence,
+they are inverted by y = α√x = x1/α. There do not exist any roots under the conditions stated here.
+
+7.1.4 Exponential functions
+
+Exponential functions have the general form
+
+y = f (x) = ax with a ∈ R>0\{1} .
+
+(7.8)
+
+Their domain is D(f ) = R, while their target space is W (f ) = R>0. They exhibit strict
+monotonous increase for a > 1, and strict monotonous decrease for 0 < a < 1. Hence, they
+too are invertible. Their y-intercept is generally located at y = 1. For a > 1, exponential functions
+are also known as growth functions.
+Special case: When the constant (!) base number is chosen to be a = e, where e denotes the
+irrational Euler’s number (according to the Swiss mathematician Leonhard Euler, 1707–1783)
+deﬁned by the inﬁnite series
+
+e :=
+
+∞
+
+Xk=0
+
+1
+k!
+
+=
+
+1
+0!
+
++
+
+1
+1!
+
++
+
+1
+2!
+
++
+
+1
+3!
+
++ . . . ,
+
+54
+
+CHAPTER7. DIFFERENTIALCALCULUSOFREAL-VALUEDFUNCTIONS
+
+one obtains the natural exponential function
+
+y = f (x) = ex =: exp(x) .
+
+(7.9)
+
+In analogy to the deﬁnition of e, the relation
+
+ex = exp(x) =
+
+∞
+
+Xk=0
+
+xk
+k!
+
+=
+
+x0
+0!
+
++
+
+x1
+1!
+
++
+
+x2
+2!
+
++
+
+x3
+3!
+
++ . . .
+
+applies.
+
+7.1.5 Logarithmic functions
+
+Logarithmic functions, denoted by
+
+y = f (x) = loga(x) with a ∈ R>0\{1} ,
+
+(7.10)
+
+are deﬁned as inverse functions of the strictly monotonous exponential functions y = f (x) = ax
+— and vice versa. Correspondingly, D(f ) = R>0 and W (f ) = R apply. Strictly monotonously
+increasing behaviour is given when a > 1, strictly monotonously decreasing behaviour when
+0 < a < 1. In general, the x-intercept is located at x = 1.
+
+Special case: The natural logarithmic function (lat.:
+constant basis number is set to a = e. This yields
+
+logarithmus naturalis) obtains when the
+
+y = f (x) = loge(x) := ln(x) .
+
+(7.11)
+
+7.1.6 Concatenations of real-valued functions
+
+Real-valued functions from all ﬁve categories considered in the previous sections may be combined
+arbitrarily (respecting relevant computational rules), either via the four fundamental arithmetical
+operations, or via concatenations.
+
+Theorem: Let real-valued functions f and g be continuous on domains D(f ) resp. D(g). Then
+the combined real-valued functions
+
+1. sum/difference f ± g, where (f ± g)(x) := f (x) ± g(x) with D(f ) ∩ D(g),
+2. product f · g, where (f · g)(x) := f (x)g(x) with D(f ) ∩ D(g),
+3. quotient f
+g
+
+with g(x) 6= 0 and D(f ) ∩ D(g)\{x|g(x) = 0},
+
+f (x)
+g(x)
+
+, where(cid:18)f
+
+g(cid:19) (x) :=
+
+4. concatenation f ◦ g, where (f ◦ g)(x) := f (g(x)) mit {x ∈ D(g)|g(x) ∈ D(f )},
+
+are also continuous on the respective domains.
+
+7.2. DERIVATIONOFDIFFERENTIABLEREAL-VALUEDFUNCTIONS
+7.2 Derivation of differentiable real-valued functions
+
+55
+
+The central theme of this chapter is the mathematical description of the local variability of con-
+tinuous real-valued function of one real variable, f : D ⊆ R → W ⊆ R. To this end, let
+us consider the effect on f of a small change of its argument x. Supposing we affect a change
+x → x + ∆x, with ∆x ∈ R, what are the resultant consequences for f? We immediately ﬁnd that
+y → y + ∆y = f (x + ∆x), with ∆y ∈ R, obtains. Hence, a prescribed change of the argument x
+by a (small) value ∆x triggers in f a change by the amount ∆y = f (x + ∆x) − f (x). It is of
+general quantitative interest to compare the sizes of these two changes. This is accomplished by
+forming the respective difference quotient
+
+∆y
+∆x
+
+=
+
+f (x + ∆x) − f (x)
+
+∆x
+
+.
+
+It is then natural, for given f, to investigate the limit behaviour of this difference quotient as the
+change ∆x of the argument of f is made successively smaller.
+Def.: A continuous real-valued function f of one real variable is called differentiable at
+x ∈ D(f ), when for arbitrary ∆x ∈ R the limit
+
+f ′(x) := lim
+∆x→0
+
+∆y
+∆x
+
+= lim
+∆x→0
+
+f (x + ∆x) − f (x)
+
+∆x
+
+(7.12)
+
+exists and is unique. When f is differentiable for all x ∈ D(f ), then f as such is referred to as
+being differentiable.
+The existence of this limit in a point (x, f (x)) for a real-valued function f requires that the latter
+exhibits neither “jumps” nor “kinks,” i.e., that at (x, f (x)) the function is sufﬁciently “smooth.”
+The quantity f ′(x) is referred to as the ﬁrst derivative of the (differentiable) function f at posi-
+tion x. It provides a quantitative measure for the local rate of change of the function f in the
+point (x, f (x)). In general one interprets the ﬁrst derivative f ′(x) as follows: an increase of the
+argument x of a differentiable real-valued function f by 1 (one) unit leads to a change in the value
+of f by approximately f ′(x) · 1 units.
+Alternative notation for the ﬁrst derivative of f:
+
+f ′(x) ≡
+
+df (x)
+
+dx
+
+.
+
+The differential calculus was developed in parallel with the integral calculus (see Ch. 7) during the
+second half of the 17th Century, independent of one another by the English physicist, mathemat-
+iccian, astronomer and philosopher Sir Isaac Newton (1643–1727) and the German philosopher,
+mathematician and physicist Gottfried Wilhelm Leibniz (1646–1716).
+Via the ﬁrst derivative of a differentiable function f at an argument x0 ∈ D(f ), i.e., f ′(x0), one
+deﬁnes the so-called linearisation of f in a neighbourhood of x0. The equation describing the
+associated tangent to f in the point (x0, f (x0)) is given by
+
+y = f (x0) + f ′ (x0)(x − x0) .
+
+(7.13)
+
+56
+
+CHAPTER7. DIFFERENTIALCALCULUSOFREAL-VALUEDFUNCTIONS
+
+GDC: Local values f ′(x0) of ﬁrst derivatives can be computed for given function f in mode CALC
+using the interactive routine dy/dx.
+
+The following rules of differentiation apply for the ﬁve families of elementary real-valued functions
+discussed in Sec. 7.1, as well as concatenations thereof:
+Rules of differentiation
+
+1. (c)′ = 0 for c = constant ∈ R
+2. (x)′ = 1
+3. (xn)′ = nxn−1 for n ∈ N
+4. (xα)′ = αxα−1 for α ∈ R and x ∈ R>0
+5. (ax)′ = ln(a)ax for a ∈ R>0\{1}
+6. (eax)′ = aeax for a ∈ R
+7. (loga(x))′ =
+
+1
+
+x ln(a)
+
+for a ∈ R>0\{1} and x ∈ R>0
+
+8. (ln(x))′ =
+
+1
+x
+
+for x ∈ R>0
+
+For differentiable real-valued functions f and g it holds that:
+
+1. (cf (x))′ = cf ′(x) for c = constant ∈ R
+2. (f (x) ± g(x))′ = f ′(x) ± g′(x)
+3. (f (x)g(x))′ = f ′(x)g(x) + f (x)g′(x)
+
+=
+
+f ′(x)g(x) − f (x)g′(x)
+
+4. (cid:18)f (x)
+g(x)(cid:19)′
+5. ((f ◦ g)(x))′ = f ′(g)|g=g(x) · g′(x)
+
+(g(x))2
+
+(constants)
+
+(linear function)
+
+(natural power-law functions)
+
+(general power-law functions)
+
+(exponential functions)
+
+(natural exponential functions)
+
+(logarithmic functions)
+
+(natural logarithmic function).
+
+(summation rule)
+
+(product rule)
+
+(quotient rule)
+
+(chain rule)
+
+6. (ln(f (x)))′ =
+
+f ′(x)
+f (x)
+
+for f (x) > 0
+
+(logarithmic differentiation)
+
+7. (f −1(x))′ =
+
+1
+
+f ′(y)(cid:12)(cid:12)(cid:12)(cid:12)y=f −1(x)
+
+, if f is one-to-one and onto.
+
+(differentiation of inverse functions).
+
+The methods of differential calculus just introduced shall now be employed to describe the local
+change behaviour of a few simple examples of functions in economic theory, and also to deter-
+mine their local extremal values. The following section provides an overview of such frequently
+occurring economic functions.
+
+7.3. COMMONFUNCTIONSINECONOMICTHEORY
+7.3 Common functions in economic theory
+
+1. total cost function K(x) ≥ 0
+
+argument: level of physical output x ≥ 0 (dim: units)
+
+2. marginal cost function K ′(x) > 0
+
+argument: level of physical output x ≥ 0 (dim: units)
+
+3. average cost function K(x)/x > 0
+
+argument: level of physical output x > 0 (dim: units)
+
+4. unit price function p(x) ≥ 0
+
+argument: level of physical output x > 0 (dim: units)
+
+5. total revenue function E(x) := xp(x) ≥ 0
+
+argument: level of physical output x > 0 (dim: units)
+
+6. marginal revenue function E ′(x) = xp′(x) + p(x)
+argument: level of physical output x > 0 (dim: units)
+
+7. proﬁt function G(x) := E(x) − K(x)
+
+argument: level of physical output x > 0 (dim: units)
+
+57
+
+(dim: CU)
+
+(dim: CU/unit)
+
+(dim: CU/unit)
+
+(dim: CU/unit)
+
+(dim: CU)
+
+(dim: CU/unit)
+
+(dim: CU)
+
+(dim:
+
+8. marginal proﬁt function G′(x) := E ′(x) − K ′(x) = xp′(x) + p(x) − K ′(x)
+
+CU/unit)
+argument: level of physical output x > 0 (dim: units)
+
+9. utility function U(x)
+
+(dim: case dependent)
+
+argument: material wealth, opportunity, action x (dim: case dependent)
+The fundamental concept of a utility function as a means to capture in quantitative terms
+the psychological value (happiness) assigned by an economic agent to a certain amount
+of money, or to owning a speciﬁc good, was introduced to economic theory in 1738 by
+the Swiss mathematician and physicist Daniel Bernoulli FRS (1700–1782); cf. Bernoulli
+(1738) [4]. The utility function is part of the folklore of the theory, and often taken to be
+a piecewise differentiable, right-handedly curved (concave) function, i.e., U ′′(x) < 0, on
+the grounds of the assumption of diminishing marginal utility (happiness) with increasing
+material wealth.
+
+10. economic efﬁciency W (x) := E(x)/K(x) ≥ 0
+
+argument: level of physical output x > 0 (dim: units)
+
+11. demand function N(p) ≥ 0, monotonously decreasing
+argument: unit price p, (0 ≤ p ≤ pmax) (dim: CU/unit)
+12. supply function A(p) ≥ 0, monotonously increasing
+argument: unit price p, (pmin ≤ p) (dim: CU/units).
+
+(dim: 1)
+
+(dim: units)
+
+(dim: units)
+
+58
+
+CHAPTER7. DIFFERENTIALCALCULUSOFREAL-VALUEDFUNCTIONS
+
+A particularly prominent example of a real-valued economic function of one real variable
+constitutes the psychological value function, devised by the Israeli–US-American experi-
+mental psychologists Daniel Kahneman and Amos Tversky (1937–1996) in the context of
+their Prospect Theory (a pillar of Behavioural Economics), which was later awarded a
+Sveriges Riksbank Prize in Economic Sciences in Memory of Alfred Nobel in 2002 (cf. Kahne-
+man and Tversky (1979) [18, p 279], and Kahneman (2011) [17, p 282f]). A possible representa-
+tion of this function is given by the piecewise description
+
+a log10 (1 + x)
+
+−2a log10 (1 − x)
+
+for x ∈ R≥0
+
+,
+
+for x ∈ R<0
+
+(7.14)
+
+v(x) =
+
+
+with parameter a ∈ R>0. Overcoming a conceptual problem of Bernoulli’s utility function, here,
+in contrast, the argument x quantiﬁes a change in wealth (or welfare) with respect to some given
+reference point (rather than a speciﬁc value of wealth itself).
+
+7.4 Curve sketching
+
+Before we turn to discuss applications of differential calculus to simple quantitative problems
+in economic theory, we brieﬂy summarize the main steps of curve sketching for a real-valued
+function of one real variable, also referred to as analysis of the properties of differentiability of a
+real-valued function.
+
+1. domain: D(f ) = {x ∈ R|f (x) is regular}
+2. symmetries: for all x ∈ D(f ), is
+
+(i) f (−x) = f (x), i.e., is f even, or
+(ii) f (−x) = −f (x), i.e., is f odd, or
+(iii) f (−x) 6= f (x) 6= −f (x), i.e., f exhibits no symmetries?
+
+3. roots: identify all xN ∈ D(f ) that satisfy the condition f (x) != 0.
+4. local extremal values:
+
+(i) local minima of f exist at all xE ∈ D(f ), for which the
+
+necessary condition f ′(x) != 0, and the
+
+sufﬁcient condition f ′′(x)
+
+!
+> 0 are satisﬁed simultaneously.
+
+(ii) local maxima of f exist at all xE ∈ D(f ), for which the
+
+necessary condition f ′(x) != 0, and the
+
+sufﬁcient condition f ′′(x)
+
+!
+< 0 are satisﬁed simultaneously.
+
+7.5. ANALYTICINVESTIGATIONSOFECONOMICFUNCTIONS
+
+59
+
+5. points of inﬂection: ﬁnd all xW ∈ D(f ), for which the
+
+necessary condition f ′′(x) != 0, and the
+
+sufﬁcient condition f ′′′(x)
+
+6. monotonous behaviour:
+
+!
+
+6= 0 are satisﬁed simultaneously.
+
+(i) f is monotonously increasing for all x ∈ D(f ) with f ′(x) > 0
+(ii) f is monotonously decreasing for all x ∈ D(f ) with f ′(x) < 0
+
+7. local curvature:
+
+(i) f behaves left-handedly curved for x ∈ D(f ) with f ′′(x) > 0
+(ii) f behaves right-handedly curved for x ∈ D(f ) with f ′′(x) < 0
+
+8. asymptotic behaviour:
+
+asymptotes to f are constituted by
+(i) straight lines y = ax + b with the property limx→+∞[f (x) − ax − b] = 0 or
+
+limx→−∞[f (x) − ax − b] = 0
+
+(ii) straight lines x = x0 at poles x0 /∈ D(f )
+
+9. range: W (f ) = {y ∈ R|y = f (x)}.
+
+7.5 Analytic investigations of economic functions
+
+7.5.1 Total cost functions according to Turgot and von Th¨unen
+According to the law of diminishing returns, which was introduced to economic theory by the
+French economist and statesman Anne Robert Jacques Turgot (1727–1781) and also by the Ger-
+man economist Johann Heinrich von Th¨unen (1783–1850), it is meaningful to model non-negative
+total cost functions K(x) (in CU) relating to typical production processes, with argument level
+of physical output x ≥ 0 units, as a mathematical mapping in terms of a special polynomial of
+degree 3 [cf. Eq. (7.5)], which is given by
+
+K(x) = a3x3 + a2x2 + a1x
+
++ a0
+
+|{z}=Kf
+}
+with a3, a1 > 0, a2 < 0, a0 ≥ 0, a2
+2 − 3a3a1 < 0 .
+
+{z
+
+=Kv(x)
+
+|
+
+(7.15)
+
+The model thus contains a total of four free parameters. It is the outcome of a systematic regres-
+sion analysis of agricultural quantitative–empirical data with the aim to describe an inherently
+non-linear functional relationship between a few economic variables. As such, the functional
+relationship for K(x) expressed in Eq. (7.15) was derived from a practical consideration. It is a
+reﬂection of the following observed features:
+
+60
+
+(i)
+
+CHAPTER7. DIFFERENTIALCALCULUSOFREAL-VALUEDFUNCTIONS
+for levels of physical output x ≥ 0 units, the total costs relating to typical production
+processes exhibit strictly monotonously increasing behaviour; thus
+
+(ii)
+
+for the total costs there do not exist neither roots nor local extremal values;2 however,
+
+(iii)
+
+the total costs display exactly one point of inﬂection.
+
+The continuous curve for K(x) resulting from these considerations exhibits the characteristic shape
+of an inverted capital letter “S”: beginning at a positive value corresponding to ﬁxed costs, the total
+costs ﬁrst increase degressively up to a point of inﬂection, whereafter they continue to increase,
+but in a progressive fashion.
+
+In broad terms, the functional expression given in Eq. (7.15) to model totals costs in dependence
+of the level of physical output is the sum of two contributions, the variable costs Kv(x) and the
+ﬁxed costs Kf = a0, viz.
+
+K(x) = Kv(x) + Kf .
+
+(7.16)
+
+In economic theory, it is commonplace to partition total cost functions in the diminishing returns
+picture into four phases, the boundaries of which are designated by special values of the level of
+physical output of a production process:
+
+• phase I (interval 0 units ≤ x ≤ xW ):
+
+the total costs K(x) possess at a level of physical output xW = −a2/(3a3) > 0 units a
+point of inﬂection. For values of x smaller than xW , one obtains K ′′(x) < 0 CU/unit2, i.e.,
+K(x) increases in a degressive fashion. For values of x larger than xW , the opposite applies,
+K ′′(x) > 0 CU/unit2, i.e., K(x) increases in a progressive fashion. The marginal costs,
+given by
+
+K ′(x) = 3a3x2 + 2a2x + a1 > 0 CU/unit
+
+for all x ≥ 0 units ,
+
+(7.17)
+
+attain a minimum at the same level of physical output, xW = −a2/(3a3).
+
+• phase II (interval xW < x ≤ xg1):
+
+the variable average costs
+
+Kv(x)
+
+x
+
+= a3x2 + a2x + a1 ,
+
+x > 0 units
+
+(7.18)
+
+become minimal at a level of physical output xg1 = −a2/(2a3) > 0 units. At this value
+of x, equality of variable average costs and marginal costs applies, i.e.,
+
+Kv(x)
+
+x
+
+= K ′(x) ,
+
+(7.19)
+
+2The last condition in Eq. (7.15) ensures a ﬁrst derivative of K(x) that does not possess any roots; cf. the case of
+
+a quadratic algebraic equation 0
+
+!
+
+= ax2 + bx + c, with discriminant b2 − 4ac < 0.
+
+7.5. ANALYTICINVESTIGATIONSOFECONOMICFUNCTIONS
+
+61
+
+which follows by the quotient rule of differentiation from the necessary condition for an
+extremum of the variable average costs,
+
+0 !=(cid:18)Kv(x)
+x (cid:19)′
+
+=
+
+(K(x) − Kf )′ · x − Kv(x) · 1
+
+x2
+
+,
+
+and the fact that K ′
+to K(x) in the point (xg1, K(xg1)) the equation [cf. Eq. (7.13)]
+
+f = 0 CU/unit. Taking care of the equality (7.19), one ﬁnds for the tangent
+
+T (x) = K(xg1)+K ′(xg1)(x−xg1) = Kv(xg1)+Kf +
+Its intercept with the K-axis is at Kf .
+• phase III (interval xg1 < x ≤ xg2):
+
+The average costs
+
+Kv(xg1)
+
+xg1
+
+(x−xg1) = Kf +
+
+Kv(xg1)
+
+xg1
+
+x .
+
+K(x)
+
+x
+
+= a3x2 + a2x + a1 +
+
+a0
+x
+
+,
+
+x > 0 units
+
+(7.20)
+
+attain a minimum at a level of physical output xg2 > 0 units, the deﬁning equation of which
+is given by 0 CU != 2a3x3
+g2 − a0. At this value of x, equality of average costs and
+marginal costs obtains, viz.
+
+g2 + a2x2
+
+K(x)
+
+x
+
+= K ′(x) ,
+
+(7.21)
+
+which follows by the quotient rule of differentiation from the necessary condition for an
+extremum of the average costs,
+
+0 !=(cid:18) K(x)
+x (cid:19)′
+
+=
+
+K ′(x) · x − K(x) · 1
+
+x2
+
+.
+
+Since a quotient can be zero only when its numerator vanishes (and its denominator remains
+non-zero), one ﬁnds from re-arranging the numerator expression equated to zero the property
+
+K ′(x)
+K(x)/x
+
+= x
+
+K ′(x)
+K(x)
+
+= 1
+
+for x = xg2 .
+
+(7.22)
+
+The corresponding extremal value pair (xg2, K(xg2)) is referred to in economic theory as the
+minimum efﬁcient scale (MES). From a business economics perspective, at a level of phys-
+ical output x = xg2 the (compared to our remarks in the Introduction inverted) ratio “INPUT
+over OUTPUT,” i.e.,
+, becomes most favourable. By respecting the property (7.21),
+the equation for the tangent to K(x) in this point [cf. Eq. (7.13)] becomes
+
+K(x)
+
+x
+
+T (x) = K(xg2) + K ′(xg2)(x − xg2) = K(xg2) +
+
+K(xg2)
+
+xg2
+
+(x − xg2) =
+
+K(xg2)
+
+xg2
+
+x .
+
+Its intercept with the K-axis is thus at 0 CU.
+
+62
+
+CHAPTER7. DIFFERENTIALCALCULUSOFREAL-VALUEDFUNCTIONS
+
+• phase IV (half-interval x > xg2):
+
+In this phase K ′(x)/K(x)/x > 1 obtains; the costs associated with the production of one
+additional unit of a good, approximately the marginal costs K ′(x), now exceed the aver-
+age costs, K(x)/x. This situation is considered unfavourable from a business economics
+perspective.
+
+7.5.2 Proﬁt functions in the diminishing returns picture
+
+In this section, we conﬁne our considerations, for reasons of simplicity, to a market sitution with
+only a single supplier of a good in demand. The price policy that this single supplier may thus
+inact deﬁnes a state of monopoly. Moreover, in addition we want to assume that for the market
+situation considered economic equilibrium obtains. This manifests itself in equality of supply
+and demand, viz.
+
+x(p) = N(p) ,
+
+(7.23)
+
+wherein x denotes a non-negative supply function (in units) (which is synonymous with the sup-
+plier’s level of physical output) and N a non-negative demand function (in units), both of which
+are taken to depend on the positive unit price p (in CU/unit) of the good in question. The supply
+function, and with it the unit price, can, of course, be prescribed by the monopolistic supplier in
+an arbitrary fashion. In a speciﬁc quantitative economic model, for instance, the demand func-
+tion x(p) (recall that by Eq. (7.23) x(p) = N(p) obtains) could be assumed to be either a linear or
+a quadratic function of p. In any case, in order for x(p) to realistically describe an actual demand–
+unit price relationship, it should be chosen as a strictly monotonously decreasing function, and as
+such it is invertible. The non-negative demand function x(p) features two characteristic points,
+signiﬁed by its intercepts with the x- and the p-axes. The prohibitive price pproh is to be deter-
+mined from the condition x(pproh) != 0 units; therefore, it constitutes a root of x(p). The saturation
+quantity xsat, on the other hand, is deﬁned by xsat := x(0 CU/unit).
+
+The inverse function associated with the strictly monotonously decreasing non-negative demand
+function x(p), the unit price function p(x) (in CU/unit), is likewise strictly monotonously
+decreasing. Via p(x), one calculates,
+in dependence on a known amount x of units sup-
+plied/demanded (i.e., sold), the total revenue (in CU) made by a monopolist according to (cf.
+Sec. 7.3)
+
+E(x) = xp(x) .
+
+(7.24)
+
+Under the assumption that the non-negative total costs K(x) (in CU) underlying the production
+process of the good in demand can be modelled according to the diminishing returns picture of
+Turgot and von Th¨unen, the proﬁt function (in CU) of the monopolist in dependence on the level
+of physical output takes the form
+
+unit price
+
+G(x) = E(x) − K(x) = x
+
+z}|{p(x)
+| {z }
+
+total revenue
+
+−(cid:2)a3x3 + a2x2 + a1x + a0(cid:3)
+|
+}
+
+{z
+
+total costs
+
+.
+
+(7.25)
+
+7.5. ANALYTICINVESTIGATIONSOFECONOMICFUNCTIONS
+
+The ﬁrst two derivatives of G(x) with respect to its argument x are given by
+
+G′(x) = E ′(x) − K ′(x) = xp′(x) + p(x) −(cid:2)3a3x2 + 2a2x + a1(cid:3)
+G′′(x) = E ′′(x) − K ′′(x) = xp′′(x) + 2p′(x) − [6a3x + 2a2] .
+
+63
+
+(7.26)
+(7.27)
+
+Employing the principles of curve sketching set out in Sec. 7.4, the following characteristic values
+of G(x) can thus be identiﬁed:
+
+• break-even point
+
+xS > 0 units, as the unique solution to the conditions
+
+G(x) != 0 CU
+
+(necessary condition)
+
+and
+
+G′(x)
+
+!
+> 0 CU/unit
+
+(sufﬁcient condition) ,
+
+• end of the proﬁtable zone
+
+xG > 0 units, as the unique solution to the conditions
+
+G(x) != 0 CU
+
+(necessary condition)
+
+and
+
+G′(x)
+
+!
+< 0 CU/unit
+
+(sufﬁcient condition) ,
+
+• maximum proﬁt
+
+xM > 0 CU, as the unique solution to the conditions
+
+G′(x) != 0 CU/unit
+
+(necessary condition)
+
+and
+
+G′′(x)
+
+!
+< 0 CU/unit2
+
+(sufﬁcient condition) .
+
+(7.28)
+
+(7.29)
+
+(7.30)
+
+(7.31)
+
+(7.32)
+
+(7.33)
+
+At this point, we like to draw the reader’s attention to a special geometric property of the quan-
+titative model for proﬁt that we just have outlined: at maximum proﬁt, the total revenue func-
+tion E(x) and the total cost function K(x) always possess parallel tangents. This is due to the
+fact that by the necessary condition for an extremum to exist, one ﬁnds that
+
+0 CU/unit != G′(x) = E ′(x) − K ′(x)
+
+⇔
+
+E ′(x) != K ′(x) .
+
+(7.34)
+
+GDC: Roots and local maxima resp. minima can be easily determined for a given stored function
+in mode CALC by employing the interactive routines zero and maximum resp. minimum.
+To conclude these considerations, we brieﬂy turn to elucidate the technical term Cournot’s point,
+which frequently arises in quantitative discussions in economic theory; this is named after the
+French mathematician and economist Antoine–Augustin Cournot (1801–1877). Cournot’s point
+
+64
+
+CHAPTER7. DIFFERENTIALCALCULUSOFREAL-VALUEDFUNCTIONS
+
+simply labels the proﬁt-optimal combination of the level of physical output and the associated unit
+price, (xM , p(xM )), for the unit price function p(x) of a good in a monopolistic market situation.
+Note that for this speciﬁc combination of optimal values the Amoroso–Robinson formula applies,
+which was developed by the Italian mathematician and economist Luigi Amoroso (1886–1965)
+and the British economist Joan Violet Robinson (1903–1983). This states that
+
+p(xM ) =
+
+K ′(xM )
+
+1 + εp(xM )
+
+,
+
+(7.35)
+
+with K ′(xM ) the value of the marginal costs at xM , and εp(xM ) the value of the elasticity of the
+unit price function at xM (see the following Sec. 7.6). Starting from the deﬁning equation of the
+total revenue E(x) = xp(x), the Amoroso–Robinson formula is derived by evaluating the ﬁrst
+derivative of E(x) at xM , so
+
+E ′(xM ) = p(xM ) + xM p′(xM ) = p(xM )(cid:20)1 + xM
+
+p′(xM )
+
+p(xM )(cid:21) Sec. 7.6
+
+z}|{= = p(xM ) [1 + εp(xM )] ,
+
+and then re-arranging to solve for p(xM ), using the fact that E ′(xM ) = K ′(xM ).
+Remark: In a market situation where perfect competition applies, one assumes that the unit
+price function has settled to a constant value p(x) = p = constant > 0 CU/unit (and, hence,
+p′(x) = 0 CU/unit2 obtains).
+
+7.5.3 Extremal values of rational economic functions
+
+Now we want to address the determination of extremal values of economic functions that constitute
+ratios in the sense of the construction
+
+OUTPUT
+INPUT
+
+,
+
+a topic raised in the Introduction.
+Let us consider two examples for determining local maxima of ratios of this kind.
+
+(i) We begin with the average proﬁt in dependence on the level of physical output x ≥ 0 units,
+(7.36)
+
+G(x)
+
+.
+
+x
+
+The conditions that determine a local maximum are [G(x)/x]′
+[G(x)/x]′′
+the ﬁrst condition yields
+
+!= 0 CU/unit2 and
+!
+< 0 CU/unit3. Respecting the quotient rule of differentiation (cf. Sec. 7.2),
+
+G′(x)x − G(x)
+
+x2
+
+= 0 GE/ME2 .
+
+(7.37)
+
+Since a quotient can only be zero when its numerator vanishes while its denominator remains
+non-zero, it immediately follows that
+
+G′(x)x − G(x) = 0 CU ⇒ x
+
+G′(x)
+G(x)
+
+= 1 .
+
+(7.38)
+
+7.6. ELASTICITIES
+
+65
+
+The task at hand now is to ﬁnd a (unique) value of the level of physical output x which
+satisﬁes this last condition, and for which the second derivative of the average proﬁt becomes
+negative.
+
+(ii) To compare the performance of two companies over a given period of time in a meaningful
+way, it is recommended to adhere only to measures that are dimensionless ratios, and so
+independent of scale. An example of such a dimensionless ratio is the measure referred to
+as economic efﬁciency,
+
+W (x) =
+
+E(x)
+K(x)
+
+,
+
+(7.39)
+
+which expresses the total revenue (in CU) of a company for a given period as a multiple of
+the total costs (in CU) it had to endure during this period, both as functions of the level of
+physical output. In analogy to our discussion in (i), the conditions for the existence of a
+< 0 × 1/unit2.
+local maximum amount to [E(x)/K(x)]′
+By the quotient rule of differentiation (see Sec. 7.2), the ﬁrst condition leads to
+
+!= 0 × 1/unit and [E(x)/K(x)]′′
+
+!
+
+i.e., for K(x) > 0 CU,
+
+E ′(x)K(x) − E(x)K ′(x)
+
+K 2(x)
+
+= 0 × 1/unit ,
+
+E ′(x)K(x) − E(x)K ′(x) = 0 CU2/unit .
+
+(7.40)
+
+(7.41)
+
+By re-arranging and multiplication with x > 0 unit, this can be cast into the particular form
+
+x
+
+E ′(x)
+E(x)
+
+= x
+
+K ′(x)
+K(x)
+
+.
+
+(7.42)
+
+The reason for this special kind of representation of the necessary condition for a local
+maximum to exist [and also for Eq. (7.38)] will be clariﬁed in the subsequent section. Again,
+a value of the level of physical output which satisﬁes Eq. (7.42) must in addition lead to
+a negative second derivative of the economic efﬁciency in order to satisfy the sufﬁcient
+condition for a local maximum to exist.
+
+7.6 Elasticities
+
+Finally, we pick up once more the discussion on quantifying the local variability of differentiable
+real-valued functions of one real variable, f : D ⊆ R → W ⊆ R, though from a slightly different
+perspective. For reasons to be elucidated shortly, we conﬁne ourselves to considerations of regimes
+of f with positive values of the argument x and also positive values y = f (x) > 0 of the function
+itself.
+As before in Sec. 7.2, we want to assume a small change of the value of the argument x and
+evaluate its resultant effect on the value y = f (x). This yields
+
+x ∆x∈R
+
+−→ x + ∆x
+
+=⇒
+
+y = f (x)
+
+∆y∈R
+
+−→ y + ∆y = f (x + ∆x) .
+
+(7.43)
+
+66
+
+CHAPTER7. DIFFERENTIALCALCULUSOFREAL-VALUEDFUNCTIONS
+
+We remark in passing that relative changes of non-negative quantities are deﬁned by the quotient
+
+new value − old value
+
+old value
+
+under the prerequisite that “old value > 0” applies. It follows from this speciﬁc construction that
+the minimum value a relative change can possibly attain amounts to “−1” (corresponding to a
+decrease of the “old value” by 100%).
+
+Related to this consideration we identify the following terms:
+
+• a prescribed absolute change of the independent variable x:
+• the resultant absolute change of the function f:
+• the associated relative change of the independent variable x:
+
+∆y = f (x + ∆x) − f (x) ,
+
+∆x ,
+
+∆x
+x
+
+,
+
+• the associated resultant relative change of the function f:
+
+∆y
+y
+
+=
+
+f (x + ∆x) − f (x)
+
+f (x)
+
+.
+
+Now let us compare the order-of-magnitudes of the two relative changes just envisaged,
+∆y
+y
+divided by the prescribed relative change of x”’:
+
+. This is realised by considering the value of their quotient, “resultant relative change of f
+
+∆x
+x
+
+and
+
+∆y
+y
+∆x
+x
+
+=
+
+f (x + ∆x) − f (x)
+
+f (x)
+∆x
+x
+
+.
+
+Since we assumed f to be differentiable, it is possible to investigate the behaviour of this quotient
+∆x
+of relative changes in the limit of increasingly smaller prescribed relative changes
+x → 0 ⇒
+∆x → 0 near some x > 0. One thus deﬁnes:
+Def.: For a differentiable real-valued function f of one real variable x, the dimensionless (i.e.,
+units-independent) quantity
+
+εf (x) := lim
+∆x→0
+
+∆y
+y
+∆x
+x
+
+= lim
+∆x→0
+
+f (x + ∆x) − f (x)
+
+f (x)
+∆x
+x
+
+= x
+
+f ′(x)
+f (x)
+
+(7.44)
+
+is referred to as the elasticity of the function f at position x.
+The elasticity of f quantiﬁes its resultant relative change in response to a prescribed inﬁnitesimally
+small relative change of its argument x, starting from some positive initial value x > 0. As such it
+constitutes a measure for the relative local rate of change of a function f in a point (x, f (x)). In
+
+7.6. ELASTICITIES
+
+67
+
+economic theory, in particular, one adheres to the following interpretation of the elasticity εf (x):
+when the postive argument x of some positive differentiable real-valued function f is increased by
+1 %, then in consequence f will change approximately by εf (x) × 1 %.
+In the scientiﬁc literature one often ﬁnds the elasticity of a positive differentiable function f of a
+positive argument x expressed in terms of logarithmic differentiation. That is,
+
+εf (x) :=
+
+d ln[f (x)]
+
+d ln(x)
+
+for x > 0 and f (x) > 0 ,
+
+since by the chain rule of differentiation it holds that
+
+d ln[f (x)]
+
+d ln(x)
+
+=
+
+df (x)
+f (x)
+dx
+x
+
+df (x)
+
+dx
+f (x)
+
+= x
+
+= x
+
+f ′(x)
+f (x)
+
+.
+
+The logarithmic representation of the elasticity of a differentiable function f immediately explains
+why, at the beginning, we conﬁned our considerations to positive differentiable functions of posi-
+tive arguments only.3 A brief look at the list of standard economic functions provided in Sec. 7.3
+reveals that most of these (though not all) are positive functions of non-negative arguments.
+
+For the elementary classes of real-valued functions of one real variable discussed in Sec. 7.1 one
+ﬁnds:
+Standard elasticities
+
+1. f (x) = xn for n ∈ N and x ∈ R>0 ⇒ εf (x) = n
+2. f (x) = xα for α ∈ R and x ∈ R>0 ⇒ εf (x) = α
+3. f (x) = ax for a ∈ R>0\{1} and x ∈ R>0 ⇒ εf (x) = ln(a)x
+4. f (x) = eax for a ∈ R and x ∈ R>0 ⇒ εf (x) = ax
+5. f (x) = loga(x) for a ∈ R>0\{1} and x ∈ R>0
+
+(natural power-law functions)
+
+(general power-law functions)
+
+(exponential functions)
+
+(natural exponential functions)
+
+⇒ εf (x) =
+
+ln(a) loga(x)
+
+1
+
+(logarithmic functions)
+
+6. f (x) = ln(x) for x ∈ R>0 ⇒ εf (x) =
+
+1
+
+ln(x)
+
+(natural logarithmic function).
+
+In view of these results, we would like to emphasise the fact that for the entire family of gen-
+eral power-law functions the elasticity εf (x) has a constant value, independent of the value of
+the argument x. It is this very property which classiﬁes general power-law functions as scale-
+invariant. When scale-invariance obtains, dimensionless ratios, i.e., quotients of variables of the
+3To extend the regime of applicability of the measure εf , one may consider working in terms of absolute values |x|
+and |f (x)|. Then one has to distinguish between four cases, which need to be looked at separately: (i) x > 0, f (x) > 0,
+(ii) x < 0, f (x) > 0, (iii) x < 0, f (x) < 0 and (iv) x > 0, f (x) < 0.
+
+68
+
+CHAPTER7. DIFFERENTIALCALCULUSOFREAL-VALUEDFUNCTIONS
+
+same physical dimension, reduce to constants. In this context, we would like to remark that scale-
+invariant (fractal) power-law functions of the form f (x) = Kxα, with K > 0 and α ∈ R<0\{−1},
+are frequently employed in Economics and the Social Sciences for modelling uncertainty of eco-
+nomic agents in decision-making processes, or for describing probability distributions of rare
+event phenomena; see, e.g., Taleb (2007) [25, p 326ff] or Gleick (1987) [13, Chs. 5 and 6]. This
+is due, in part, to the curious property that for certain values of the exponent α general power-law
+probability distributions attain unbounded variance; cf. Ref. [12, Sec. 8.9].
+Practical applications in economic theory of the concept of an elasticty as a measure of relative
+change of a differentiable real-valued function f of one real variable x are generally based on the
+following linear (!) approximation: beginning at x0 > 0, for small prescribed percentage changes
+∆x
+of the argument x in the interval 0 % <
+x0 ≤ 5 %, the resultant percentage changes of f amount
+approximately to
+
+(percentage change of f ) ≈ (elasticity of f at x0) × (percentage change of x) ,
+
+(7.45)
+
+or, in terms of a mathematical formula, to
+
+f (x0 + ∆x) − f (x0)
+
+f (x0)
+
+≈ εf (x0)
+
+∆x
+x0
+
+.
+
+(7.46)
+
+We now draw the reader’s attention to a special kind of terminology developed in economic theory
+to describe the relative local change behaviour of economic functions in qualitative terms. For
+x ∈ D(f ), the relative local change behaviour of a function f is called
+
+• inelastic, whenever |εf (x)| < 1,
+• unit elastic, when |εf (x)| = 1, and
+• elastic, whenever |εf (x)| > 1.
+
+For example, a total cost function K(x) in the diminishing returns picture exhibits unit elastic
+behaviour at the minimum efﬁcient scale x = xg2 where, by Eq. (7.22), εK(xg2) = 1. Also, at
+the local maximum of an average proﬁt function G(x)/x, the property εG(x) = 1 applies; cf.
+Eq. (7.38).
+
+Next, we review the computational rules one needs to adhere to when calculating elasticities for
+combinations of two real-valued functions of one real variable in the sense of Sec. 7.1.6:
+Computational rules for elasticities
+If f and g are differentiable real-valued functions of one real variable, with elasticities εf and εg,
+it holds that:
+
+1. product f · g:
+2. quotient f
+g
+
+, g 6= 0:
+3. concatenation f ◦ g:
+
+εf ·g(x) = εf (x) + εg(x),
+
+εf /g(x) = εf (x) − εg(x),
+εf ◦g(x) = εf (g(x)) · εg(x),
+
+7.6. ELASTICITIES
+
+4. inverse function f −1:
+
+εf −1(x) =
+
+1
+
+.
+
+εf (y)(cid:12)(cid:12)(cid:12)(cid:12)y=f −1(x)
+dx (cid:21) .
+dx(cid:20) x
+
+df (x)
+
+f (x)
+
+69
+
+(7.47)
+
+To end this chapter, we remark that for a positive differentiable real-valued function f of one
+positive real variable x, a second elasticity may be deﬁned according to
+
+εf [εf (x)] := x
+
+d
+
+Of course, by analogy this procedure may be generalised to higher derivatives of f still.
+
+70
+
+CHAPTER7. DIFFERENTIALCALCULUSOFREAL-VALUEDFUNCTIONS
+
+Chapter 8
+
+Integral calculus of real-valued functions of
+one real variable
+
+In the ﬁnal chapter of these lecture notes we give a brief overview of the main deﬁnitions and
+laws of the integral calculus of real-valued functions of one variable. Subsequently we consider
+a simple application of this tool in economic theory.
+
+8.1 Indeﬁnite integrals
+
+Def.: Let f be a continuous real-valued function of one real variable and F a differentiable real-
+valued function of the same real variable, with D(f ) = D(F ). Given that f and F are related
+according to
+
+F ′(x) = f (x)
+
+for all x ∈ D(f ) ,
+
+(8.1)
+
+then F is referred to as a primitive of f.
+Remark: The primitive of a given continuous real-valued function f cannot be unique. By the
+rules of differentiation discussed in Sec. 7.2, besides F also F + c, with c ∈ R a real-valued
+constant, constitutes a primitive of f since (c)′ = 0.
+Def.: If F is a primitive of a continuous real-valued function f of one real variable, then
+
+Z f (x) dx = F (x) + c ,
+
+c = constant ∈ R , with F ′(x) = f (x)
+
+(8.2)
+
+deﬁnes the indeﬁnite integral of the function f. The following names are used to refer to the
+different ingredients in this expression:
+• x — the integration variable,
+• f (x) — the integrand,
+• dx — the differential, and, lastly,
+
+71
+
+72
+
+CHAPTER8. INTEGRALCALCULUSOFREAL-VALUEDFUNCTIONS
+
+• c — the constant of integration.
+
+For the elementary, continuous real-valued functions of one variable introduced in Sec. 7.1, the
+following rules of indeﬁnite integration apply:
+Rules of indeﬁnite integration
+
++ c
+
++ c for α ∈ R\{−1} and x ∈ R>0
+
+x2
+2
+
+xn+1
+n + 1
+
++ c for n ∈ N
+
+1. R α dx = αx + c with α = constant ∈ R
+2. Z x dx =
+3. Z xn dx =
+4. Z xα dx =
+5. Z ax dx =
+6. Z eax dx =
++ c for a ∈ R\{0}
+7. R x−1 dx = ln|x| + c for x ∈ R\{0}.
+
++ c for a ∈ R>0\{1}
+
+xα+1
+α + 1
+ax
+
+eax
+a
+
+ln(a)
+
+(constants)
+
+(linear functions)
+
+(natural power-law functions)
+
+(general power-law functions)
+
+(exponential functions)
+
+(natural exponential functions)
+
+Special methods of integration need to be employed when the integrand consists of a concatanation
+of elementary real-valued functions. Here we provide a list with the main tools for this purpose.
+For differentiable real-valued functions f and g, it holds that
+
+1. R (αf (x) ± βg(x)) dx = αR f (x) dx ± βR g(x) dx
+with α, β = constant ∈ R
+2. R f (x)g′(x) dx = f (x)g(x) −R f ′(x)g(x) dx
+3. R f (g(x))g′(x) dx
+4. Z f ′(x)
+8.2 Deﬁnite integrals
+
+dx = ln|f (x)| + c for f (x) 6= 0
+
+z}|{=
+
+u=g(x) and du=g′(x)dx
+
+f (x)
+
+R f (u) du = F (g(x)) + c
+
+(summation rule)
+
+(integration by parts)
+
+(substitution method)
+
+(logarithmic integration).
+
+Def.: Let f be a real-valued function of one variable which is continuous on an interval [a, b] ⊂
+D(f ), and let F be a primitive of f. Then the expression
+
+x=a = F (b) − F (a)
+deﬁnes the deﬁnite integral of f in the limits of integration a and b.
+For deﬁnite integrals the following general rules apply:
+
+f (x) dx = F (x)|x=b
+
+Z b
+
+a
+
+(8.3)
+
+8.3. APPLICATIONSINECONOMICTHEORY
+
+73
+
+f (x) dx = 0
+
+(identical limits of integration)
+
+f (x) dx
+
+(interchange of limits of integration)
+
+a
+
+1. Z a
+2. Z a
+3. Z b
+
+a
+
+b
+
+f (x) dx = −Z b
+f (x) dx =Z c
+
+a
+
+a
+
+f (x) dx +Z b
+
+c
+
+f (x) dx for c ∈ [a, b]
+
+(split of integration interval).
+
+Remark: The main qualitative difference between an (i) indeﬁnite integral and a (ii) deﬁnite in-
+tegral of a continuous real-valued function of one variable reveals intself in the different kinds of
+outcome: while (i) yields as a result a real-valued (primitive) function, (ii) simply yields a single
+real number.
+GDC: For a stored real-valued function, the evaluation of a deﬁnite integral can be performed in
+
+mode CALC with the pre-programmed functionR f(x)dx. The corresponding limits of integration
+need to be speciﬁed interactively.
+As indicated in Sec. 7.6, the scale-invariant power-law functions f (x) = xα for α ∈ R and
+x ∈ R>0 play a special role in practical applications. For x ∈ [a, b] ⊂ R>0 and α 6= −1 it holds
+that
+
+xα dx =
+
+=
+
+Z b
+
+a
+
+1
+
+α + 1(cid:0)bα+1 − aα+1(cid:1) .
+
+(8.4)
+
+Problematic in this context can be considerations of taking limits of the form a → 0 resp. b → ∞,
+since for either of the two cases
+
+x=b
+
+x=a
+
+xα+1
+
+α + 1(cid:12)(cid:12)(cid:12)(cid:12)
+a→0Z b
+b→∞Z b
+
+lim
+
+lim
+
+a
+
+a
+
+(i) case α < −1:
+
+(ii) case α > −1:
+
+xα dx → ∞ ,
+
+xα dx → ∞ ,
+
+(8.5)
+
+(8.6)
+
+one ends up with divergent mathematical expressions.
+
+8.3 Applications in economic theory
+
+The starting point shall be a simple market situation for a single product. For this product, on the
+one-hand side, there be a demand function N(p) (in units) which is monotonously decreasing on
+the price interval [pu, po]; the limit values pu and po denote the minimum and maximum prices per
+unit (in CU/u) acceptable for the product. On the other hand, the market situation be described by
+a supply function A(p) (in units) which is monotonously increasing on [pu, po].
+The equilibrium unit price pM (in CU/unit) for this product is deﬁned by assuming a state of
+economic equilibrium of the market, quantitatively expressed by the condition
+
+A(pM ) = N(pM ) .
+
+(8.7)
+
+74
+
+CHAPTER8. INTEGRALCALCULUSOFREAL-VALUEDFUNCTIONS
+
+Geometrically, this condition deﬁnes common points of intersection for the functions A(p) and
+N(p) (when they exist).
+GDC: Common points of intersection for stored functions f and g can be easily determined inter-
+actively in mode CALC employing the routine intersect.
+
+In a drastically simpliﬁed fashion, we now turn to compute the revenue made on the market by the
+suppliers of a new product for either of three possible strategies of market entry.
+
+1. Strategy 1: The revenue obtained by the suppliers when the new product is being sold
+
+straight at the equilibrium unit price pM , in an amount N(pM ), is simply given by
+
+U1 = U(pM ) = pM N(pM )
+
+(in CU) .
+
+(8.8)
+
+2. Strategy 2: Some consumers would be willing to purchase the product intially also at a unit
+price which is higher than pM . If, hence, the suppliers decide to offer the product initially
+at a unit price po > pM , and then, in order to generate further demand, to continuously1 (!)
+reduce the unit price to the lower pM , the revenue obtained yields the larger value
+
+Since the amount of money
+
+U2 = U(pM ) +Z po
+
+pM
+
+N(p) dp .
+
+K :=Z po
+
+pM
+
+N(p) dp
+
+(in CU)
+
+(8.9)
+
+(8.10)
+
+is (theoretically) safed by the consumers when the product is introduced to the market ac-
+cording to strategy 1, this amount is referred to in the economic literature as consumer
+surplus.
+
+3. Strategy 3: Some suppliers would be willing to introduce the product to the market initially
+at a unit price which is lower than pM . If, hence, the suppliers decide to offer the product
+initially at a unit price pu < pM , and then to continuously2 (!) raise it to the higher pM , the
+revenue obtaines amounts to the smaller value
+
+U3 = U(pM ) −Z pM
+
+pu
+
+A(p) dp .
+
+Since the suppliers (theoretically) earn the extra amount
+
+P :=Z pM
+
+pu
+
+A(p) dp
+
+(in CU)
+
+(8.11)
+
+(8.12)
+
+when the product is introduced to the market according to strategy 1, this amount is referred
+to in the economic literature as producer surplus.
+
+1This is a strong mathematical assumption aimed at facilitating the actual calculation to follow.
+2See previous footnote.
+
+Appendix A
+
+Glossary of technical terms (GB – D)
+
+A
+absolute change: absolute ¨Anderung
+absolute value: Betrag
+account balance: Kontostand
+addition: Addition
+analysis: Analysis, Untersuchung auf Differenzierbarkeitseigenschaften
+arithmetical mean: arithmetischer Mittelwert
+arithmetical sequence: arithmetische Zahlenfolge
+arithmetical series: arithmetische Reihe
+augmented coefﬁcient matrix: erweiterte Koefﬁzientenmatrix
+average costs: St¨uckkosten
+average proﬁt: Durchschnittsgewinn, Gewinn pro St¨uck
+B
+backward substitution: r¨uckwertige Substitution
+balance equation: Bilanzgleichung
+basis: Basis
+basis solution: Basisl¨osung
+basis variable: Basisvariable
+Behavioural Economics: Verhaltens¨okonomik
+boundary condition: Randbedingung
+break-even point: Gewinnschwelle
+C
+chain rule: Kettenregel
+characteristic equation: charakteristische Gleichung
+coefﬁcient matrix: Koefﬁzientenmatrix
+column: Spalte
+column vector: Spaltenvektor
+component: Komponente
+compound interest: Zinseszins
+concatenation: Verschachtelung, Verkn¨upfung
+conservation law: Erhaltungssatz
+
+75
+
+76
+
+APPENDIXA. GLOSSARYOFTECHNICALTERMS(GB–D)
+
+constant of integration: Integrationskonstante
+constraint: Zwangsbedingung
+cost function: Kostenfunktion
+consumer surplus: Konsumentenrente
+continuity: Stetigkeit
+contract period: Laufzeit
+Cournot’s point: Cournotscher Punkt
+curve sketching: Kurvendiskussion
+
+D
+decision-making: Entscheidungsﬁndung
+declining-balance depreciation method: geometrisch–degressive Abschreibung
+deﬁnite integral: bestimmtes Integral
+demand function: Nachfragefunktion
+dependent variable: abh¨angige Variable
+depreciation: Abschreibung
+depreciation factor: Abschreibungsfaktor
+derivative: Ableitung
+determinant: Determinante
+difference: Differenz
+difference quotient: Differenzenquotient
+differentiable: differenzierbar
+differential: Integrationsdifferenzial
+differential calculus: Differenzialrechnung
+dimension: Dimension
+direction of optimisation: Optimierungsrichtung
+divergent: divergent, unbeschr”ankt
+domain: Deﬁnitionsbereich
+
+E
+economic agent: Wirtschaftstreibende(r) (meistens ein homo oeconomicus)
+economic efﬁciency: Wirtschaftlichkeit
+economic equilibrium: ¨okonomisches Gleichgewicht
+economic principle: ¨okonomisches Prinzip
+economic theory: Wirtschaftstheorie
+Econophysics: ¨Okonophysik
+eigenvalue: Eigenwert
+eigenvector: Eigenvektor
+elastic: elastisch
+elasticity: Elastizit¨at
+element: Element
+end of proﬁtable zone: Gewinngrenze
+endogenous: endogen
+equilibrium price: Marktpreis
+equivalence transformation: ¨Aquivalenztransformation
+
+exogenous: exogen
+exponential function: Exponentialfunktion
+extrapolation: Extrapolation, ¨uber bekannten G¨utigkeitsbereich hinaus verallgemeinern
+
+77
+
+F
+feasible region: zul¨assiger Bereich
+ﬁnal capital: Endkapital
+ﬁxed costs: Fixkosten
+forecasting: Vorhersagen erstellen
+function: Funktion
+
+G
+Gaußian elimination: Gauß’scher Algorithmus
+GDC: GTR, graﬁkf¨ahiger Taschenrechner
+geometrical mean: geometrischer Mittelwert
+geometrical sequence: geometrische Zahlenfolge
+geometrical series: geometrische Reihe
+growth function: Wachstumsfunktion
+
+H
+
+I
+identity: Identit¨at
+image vector: Absolutgliedvektor
+indeﬁnite integral: unbestimmtes Integral
+independent variable: unabh¨angige Variable
+inelastic: unelastisch
+initial capital: Anfangskapital
+installment: Ratenzahlung
+installment savings: Ratensparen
+integral calculus: Integralrechnung
+integrand: Integrand
+integration variable: Integrationsvariable
+interest factor: Aufzinsfaktor
+interest rate: Zinsfuß
+inverse function: Inversfunktion, Umkehrfunktion
+inverse matrix: inverse Matrix, Umkehrmatrix
+isoquant: Isoquante
+
+J
+
+K
+
+L
+law of diminishing returns: Ertragsgesetz
+
+78
+
+APPENDIXA. GLOSSARYOFTECHNICALTERMS(GB–D)
+
+length: L¨ange
+level of physical output: Ausbringungsmenge
+limits of integration: Integrationsgrenzen
+linear combination: Linearkombination
+linearisation: Linearisierung
+linear programming: lineare Optimierung
+local rate of change: lokale ¨Anderungsrate
+logarithmic function: Logarithmusfunktion
+M
+mapping: Abbildung
+marginal costs: Grenzkosten
+maximisation: Maximierung
+minimisation: Minimierung
+minimum efﬁcient scale: Betriebsoptimum
+monetary value: Geldwert
+monopoly: Monopol
+monotonicity: Monotonie
+mortgage loan: Darlehen
+N
+non-basis variable: Nichtbasisvariable
+non-negativity constraints: Nichtnegativit¨atsbedingungen
+non-linear functional relationship: nichtlineare Funktionalbeziehung
+O
+objective function: Zielfunktion
+one-to-one and onto: eineindeutig
+optimal solution: optimalen L¨osung
+optimal value: optimaler Wert
+optimisation: Optimierung
+order-of-magnitude: Gr¨oßenordnung
+orthogonal: orthogonal
+over-determined: ¨uberbestimmt
+P
+parallel displacement: Parallelverschiebung
+pension calculations: Rentenrechnung
+percentage rate: Prozentsatz
+perfect competition: totale Konkurrenz
+period: Periode
+pivot column index: Pivotspaltenindex
+pivot element: Pivotelement
+pivot operation: Pivotschritt
+pivot row index: Pivotzeilenindex
+pole: Polstelle, Singularit¨at
+polynomial division: Polynomdivision
+
+79
+
+polynomial of degree n: Polynom vom Grad n
+power-law function: Potenzfunktion
+present value: Barwert
+primitive: Stammfunktion
+principal component analysis: Hauptkomponentenanalyse
+producer surplus: Produzentenrente
+product rule: Produktregel
+proﬁt function: Gewinnfunktion
+prohibitive price: Pohibitivpreis
+Prospect Theory: Neue Erwartungstheorie
+psychological value function: psychologische Wertfunktion
+
+Q
+quadratic matrix: quadratische Matrix
+quotient: Quotient
+quotient rule: Quotientenregel
+
+R
+range: Wertespektrum
+rank: Rang
+rare event: seltenes Ereignis
+rational function: gebrochen rationale Funktion
+real-valued function: reellwertige Funktion
+reference period: Referenzzeitraum
+regression analysis: Regressionsanalyse
+regular: regul¨ar
+relative change: relative ¨Anderung
+remaining debt: Restschuld
+remaining resources: Restkapazit¨aten
+remaining value: Restwert
+rescaling: Skalierung
+resources: Rohstoffe
+resource consumption matrix: Rohstoffverbrauchsmatrix
+restrictions: Restriktionen
+root: Nullstelle
+row: Reihe
+row vector: Zeilenvektor
+
+S
+saturation quantity: S¨attigungsmenge
+scale: Skala, Gr¨oßenordnung
+scale-invariant: skaleninvariant
+simplex: Simplex, konvexer Polyeder
+simplex tableau: Simplextabelle
+singular: singul¨ar
+sink: Senke
+
+80
+
+APPENDIXA. GLOSSARYOFTECHNICALTERMS(GB–D)
+
+slack variable: Schlupfvariable
+source: Quelle
+stationary: station¨ar, konstant in der Zeit
+straight line depreciation method: lineare Abschreibung
+strictly monotonously decreasing: streng monoton fallend
+strictly monotonously increasing: streng monoton steigend
+summation rule: Summationsregel
+supply function: Angebotsfunktion
+T
+tangent: Tangente
+target space: Wertebereich
+technology matrix: Technologiematrix
+total demand matrix: Gesamtbedarfsmatrix
+total revenue: Ertrag
+transpose: Transponierte
+U
+uncertainty: Unsicherheit
+under-determined: unterbestimmt
+uniqueness: Eindeutigkeit
+unit elastic: proportional elastisch
+unit matrix: Einheitsmatrix
+unit price: St¨uckpreis
+unit vector: Einheitsvektor
+utility function: Nutzenfunktion
+V
+value chain: Wertsch¨opfungskette
+variability: ¨Anderungsverhalten, Variabilit¨at
+variable average costs: variable St¨uckkosten
+variable costs: variable Kosten
+variable vector: Variablenvektor
+vector: Vektor
+vector algebra: Vektoralgebra
+W
+well-determined: wohlbestimmt
+Z
+zero matrix: Nullmatrix
+zero vector: Nullvektor
+
+Bibliography
+
+[1] T Arens, F Hettlich, C Karpﬁnger, U Kockelkorn, K Lichtenegger and H Stachel (2008)
+
+Mathematik 1st Edition (Heidelberg: Spektrum) ISBN–13: 9783827417589
+
+[2] A Asano (2013) An Introduction to Mathematics for Economics (Cambridge: Cambridge
+
+University Press) ISBN–13: 9780521189460
+
+[3] C Bauer, M Clausen, A Kerber and H Meier–Reinhold (2008) Mathematik f¨ur Wirtschaftswis-
+
+senschaftler 5th Edition (Stuttgart: Sch¨affer–Poeschel) ISBN–13: 9783791027487
+
+[4] Bernoulli D (1738) Specimen theoriae novae de mensura sortis Papers of the Imperial
+
+Academy of Sciences in St. Petersburg
+English translation:
+Econometrica 22 23–36
+
+(1954) Exposition of a new theory on the measurement of risk
+
+[5] J–P Bouchaud and M Potters (2003) Theory of Financial Risk and Derivative Pricing 2nd
+
+Edition (Cambridge: Cambridge University Press) ISBN–13: 9780521741866
+
+[6] K Bosch (2003) Mathematik f¨ur Wirtschaftswissenschaftler 14th Edition (M¨unchen: Olden-
+
+bourg) ISBN–10: 3486273094
+
+[7] I N Bronstein, K A Semedjajew, G Musiol and H M¨uhlig (2005) Taschenbuch der Mathematik
+
+6th Edition (Frankfurt (Main): Harri Deutsch) ISBN–10: 3817120060
+
+[8] G B Dantzig (1949) Programming of interdependent activities:
+
+II mathematical model
+
+Econometrica 17 200–211
+
+[9] G B Dantzig (1955) Linear programming under uncertainty Management Science 1 197–206
+
+[10] E T Dowling (1990) Schaum’s Outline of Calculus for Business, Economics, and the Social
+
+Sciences (New York: McGraw–Hill) ISBN–13: 9780070176737
+
+[11] E T Dowling (2009) Schaum’s Outline of Mathematical Methods for Business and Economics
+
+(New York: McGraw–Hill) ISBN–13: 9780071635325
+
+[12] H van Elst
+
+(2015) Foundations of descriptive and inferential
+
+statistics Preprint
+
+arXiv:1302.2525v3 [stat.AP]
+
+[13] J Gleick (1987) Chaos — Making a New Science nth Edition 1998 (London: Vintage) ISBN–
+
+13: 9780749386061
+
+81
+
+82
+
+BIBLIOGRAPHY
+
+[14] J F Hair jr, W C Black, B J Babin and R E Anderson (2010) Multivariate Data Analysis 7th
+
+Edition (Upper Saddle River (NJ): Pearson) ISBN–13: 9780135153093
+
+[15] F Herrmann (2003) Physik III: Thermodynamik — Skripten zur Experimentalphysik Univer-
+
+sit¨at Karlsruhe (TH) URL (cited on August 30, 2015):
+www.physikdidaktik.uni-karlsruhe.de/skripten/thermod.pdf
+
+[16] J H¨ulsmann, W Gamerith, U Leopold–Wildburger and W Steindl (2005) Einf¨uhrung in die
+
+Wirtschaftsmathematik 4th Edition (Berlin: Springer) ISBN–10: 3540244093
+
+[17] D Kahneman (2011) Thinking, Fast and Slow (London: Penguin) ISBN–13: 9780141033570
+
+[18] D Kahneman and A Tversky (1979) Prospect theory: an analysis of decision under risk
+
+Econometrica 47 263–292
+
+[19] S J Leon (2009) Linear Algebra with Applications 8th Edition (London: Pearson) ISBN–13:
+
+9780136009290
+
+[20] W W Leontief (1936) Quantitative input and output relations in the economic systems of the
+
+United States The Review of Economics and Statistics 18 105–125
+
+[21] R Penrose (2004) The Road to Reality — A Complete Guide to the Laws of the Universe 1st
+
+Edition (London: Jonathan Cape) ISBN–10: 0224044478
+
+[22] H Rinne (2008) Taschenbuch der Statistik 4th Edition (Frankfurt Main): Harri Deutsch)
+
+ISBN–13: 9783817118274
+
+[23] S Singh (1997) Fermat’s Last Theorem (London: Fouth Estate) ISBN–13: 9781857025217
+
+[24] L Smith (2007) Chaos — A Very Short Introduction (Oxford: Oxford University Press)
+
+ISBN–13: 9780192853783
+
+[25] N N Taleb (2007) The Black Swan — The Impact of the Highly Improbable (London: Pen-
+
+guin) ISBN–13: 9780141034591
+
+[26] A Zeh–Marschke (2010) Finanzmathematik — Zins und Zinseszins, Tilgungs- und Renten-
+
+rechnung, Investitionsrechnung, Abschreibungen private lecture notes
+
+

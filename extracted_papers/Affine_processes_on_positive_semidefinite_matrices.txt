@@ -1,0 +1,6247 @@
+1
+1
+0
+2
+
+ 
+r
+p
+A
+1
+1
+
+ 
+
+ 
+ 
+]
+
+.
+
+R
+P
+h
+t
+a
+m
+
+[
+ 
+ 
+
+3
+v
+7
+3
+1
+0
+
+.
+
+0
+1
+9
+0
+:
+v
+i
+X
+r
+a
+
+The Annals of Applied Probability
+2011, Vol. 21, No. 2, 397–463
+DOI: 10.1214/10-AAP710
+c(cid:13) Institute of Mathematical Statistics, 2011
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+By Christa Cuchiero1, Damir Filipovi´c2, Eberhard Mayerhofer2
+
+and Josef Teichmann1
+
+ETH Z¨urich, ´Ecole Polytechnique F´ed´erale de Lausanne, Vienna Institute
+
+of Finance and ETH Z¨urich
+
+This article provides the mathematical foundation for stochasti-
+cally continuous aﬃne processes on the cone of positive semideﬁnite
+symmetric matrices. This analysis has been motivated by a large and
+growing use of matrix-valued aﬃne processes in ﬁnance, including
+multi-asset option pricing with stochastic volatility and correlation
+structures, and ﬁxed-income models with stochastically correlated
+risk factors and default intensities.
+
+CONTENTS
+
+1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2. Deﬁnition and characterization of aﬃne processes . . . . . . . . . . . . . . . . . .
+3. Aﬃne processes are regular and Feller
+. . . . . . . . . . . . . . . . . . . . . . . .
+4. Necessary parameter restrictions . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5. Suﬃcient conditions for the existence and uniqueness of aﬃne processes . . . . .
+6. Proof of the main results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+Existence and viability of a class of jump-diﬀusions
+. . . . . . . . . . . . . . . . . .
+An approximation lemma on the cone of positive semideﬁnite matrices . . . . . . .
+Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+References
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1
+7
+15
+18
+37
+52
+56
+65
+67
+68
+
+1. Introduction. This paper provides the mathematical foundation for
+stochastically continuous aﬃne processes on the cone of positive semideﬁ-
+nite symmetric d× d-matrices S+
+d . These matrix-valued aﬃne processes have
+arisen from a large and growing range of useful applications in ﬁnance, in-
+cluding multi-asset option pricing with stochastic volatility and correlation
+
+Received October 2009; revised April 2010.
+1Supported by FWF-Grant Y328 (START prize from the Austrian Science Fund).
+2Supported by WWTF (Vienna Science and Technology Fund) and Swissquote.
+AMS 2000 subject classiﬁcations. Primary 60J25; secondary 91B70.
+Key words and phrases. Aﬃne processes, Wishart processes,
+
+stochastic volatility,
+
+stochastic invariance.
+
+This is an electronic reprint of the original article published by the
+Institute of Mathematical Statistics in The Annals of Applied Probability,
+2011, Vol. 21, No. 2, 397–463. This reprint diﬀers from the original in pagination
+and typographic detail.
+
+1
+
+2
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+structures, and ﬁxed-income models with stochastically correlated risk fac-
+tors and default intensities.
+
+For illustration, let us consider a multi-variate stochastic volatility model
+consisting of a d-dimensional logarithmic price process with risk-neutral dy-
+namics
+
+(1.1)
+
+dYt = (r1 − 1
+
+2 X diag
+
+t
+
+) dt +pXt dBt,
+
+Y0 = y,
+
+and stochastic covariation process X = hY, Y i, which is a proxy for the in-
+stantaneous covariance of the price returns. Here B denotes a standard d-
+dimensional Brownian motion, r the constant interest rate, 1 the vector
+whose entries are all equal to one and X diag the vector containing the diag-
+onal entries of X.
+
+The necessity to specify X as a process in S+
+
+d such that it qualiﬁes as
+covariation process is one of the mathematically interesting and demanding
+aspects of such models. Beyond that, the modeling of X must allow for
+enough ﬂexibility in order to reﬂect the stylized facts of ﬁnancial data and
+to adequately capture the dependence structure of the diﬀerent assets. If
+these requirements are met, the model can be used as a basis for ﬁnancial
+decision-making in the area of portfolio optimization, pricing of multi-asset
+options and hedging of correlation risk.
+
+The tractability of such a model crucially depends on the dynamics of X.
+A large part of the literature in the area of multivariate stochastic volatility
+modeling has proposed the following aﬃne dynamics for X:
+
+(1.2)
+
+dXt = (b + HXt + XtH⊤) dt +pXt dWt Σ + Σ⊤ dW ⊤t pXt + dJt,
+X0 = x ∈ S+
+d ,
+
+where b is some suitably chosen matrix in S+
+d , H, Σ some invertible matrices,
+W a standard d × d-matrix of Brownian motions possibly correlated with
+B, and J a pure jump process whose compensator is an aﬃne function of
+X.3
+
+The main reason for the analytic tractability of this model is that, under
+
+some technical conditions, the following aﬃne transform formula holds:
+
+Ex,y[e− Tr(zXt)+v⊤Yt] = eΦ(t,z,v)+Tr(Ψ(t,z,v)x)+v⊤ y
+
+for appropriate arguments z ∈ Sd × iSd and v ∈ Cd. The functions Φ and Ψ
+solve a system of nonlinear ordinary diﬀerential equations (ODEs), which
+
+3This aﬃne multi-variate stochastic volatility model generalizes the well-known one-
+dimensional models of Heston [27], for the diﬀusion case, or the Barndorﬀ-Nielsen Shepard
+model [2], for the pure jump case.
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+3
+
+are determined by the model parameters. Setting v = 0, φ(t, z) = −Φ(t, z, 0)
+and ψ(t, z) = −Ψ(t, z, 0) and taking z = u ∈ S+
+Ex[e− Tr(uXt)] = e−φ(t,u)−Tr(ψ(t,u)x),
+(1.3)
+
+d , we arrive at
+u ∈ S+
+d .
+
+In this paper, we characterize the class of all stochastically continuous
+time-homogeneous Markov processes with the key property (1.3)—henceforth
+called aﬃne processes—on S+
+d . Our main result shows that an aﬃne pro-
+cess is necessarily a Feller process whose generator has aﬃne coeﬃcients
+in the state variables. The parameters of the generator satisfy some well-
+determined admissibility conditions, and are in a one-to-one relation with
+those of the corresponding ODEs for φ and ψ. Conversely, and more impor-
+tantly for applications, we show that for any admissible parameter set there
+exists a unique well-behaved aﬃne process on S+
+d . Furthermore, we prove
+that any stochastically continuous inﬁnitely decomposable Markov process
+on S+
+
+d is aﬃne with zero diﬀusion, and vice versa.
+
+On the one hand, our ﬁndings extend the model class (1.2), since a
+more general drift and jumps are possible. Indeed, we allow for full gen-
+erality in b, as long as b − (d − 1)ΣT Σ ∈ S+
+d , for a general linear drift part
+B(x) =Pij xijβij and for an inclusion of (inﬁnite activity) jumps. This of
+course enables more ﬂexibility in ﬁnancial modeling. For example, due to
+the general linear drift part, the volatility of one asset can generally de-
+pend on the other ones, which is not possible for B(x) = Hx + xH⊤. On
+the other hand, we now know the exact assumptions under which aﬃne pro-
+d actually exist. Our characterization of aﬃne processes on S+
+cesses on S+
+d
+is thus exhaustive. Beyond that, the equivalence of inﬁnitely decomposable
+Markov processes with state space S+
+d and aﬃne processes without diﬀusion
+is interesting in its own right.
+
+This paper complements Duﬃe, Filipovi´c and Schachermayer [16], who
+analyzed time-homogeneous aﬃne processes on the state space Rm
++ × Rn.4
+Matrix-valued aﬃne processes seem to have been studied systematically for
+the ﬁrst time in the literature by Bru [5, 6], who introduced the so called
+Wishart processes. These are generalizations of squares of matrix Ornstein–
+Uhlenbeck processes, that is, of the form (1.2) for J = 0 and b = kΣ⊤Σ, for
+some real parameter k > d− 1. Note that k > d− 1 is a stronger assumption
+than what we require on b and Σ⊤Σ. Bru [6] then establishes existence
+and uniqueness of a local5 S+
+d -valued solution to (1.2) under the additional
+assumptions that X0 has distinct eigenvalues, −H ∈ S+
+d , and that H and Σ
+commute (see [6], Theorem 2′′). In the more special case where H = 0 and
+
+4For the diﬀusion case see also [20] or [19], Chapter 10. Time-inhomogeneous aﬃne
+
+processes on Rm
+
++ × Rn have been explored in [18].
+
+5Up to the ﬁrst collision time of the eigenvalues.
+
+4
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+k > d− 1, Bru [6] shows global existence and uniqueness for (1.2) for any X0
+with distinct eigenvalues (see [6], Theorem 2 and last part of Section 3).6
+Bru’s results concerning strong solutions have recently been extended to the
+case of matrix valued jump-diﬀusions; see [40].
+
+Wishart processes have subsequently been introduced in the ﬁnancial lit-
+erature by Gourieroux and Sufana [24, 25] and Gourieroux et al. [23]. Fi-
+nancial applications thereof have then been taken up and carried further by
+various authors, including Da Fonseca et al. [9–12] and Buraschi, Cieslak
+and Trojani [7, 8]. Grasselli and Tebaldi [26] give some general results on
+the solvability of the corresponding Riccati ODEs. Barndorﬀ-Nielsen and
+Stelzer [3] provide a theory for a certain class of matrix-valued L´evy driven
+Ornstein–Uhlenbeck processes of ﬁnite variation. Leippold and Trojani [38]
+introduce S+
+d -valued aﬃne jump diﬀusions and provide ﬁnancial examples,
+including multi-variate option pricing, ﬁxed-income models and dynamic
+portfolio choice. All of these models are contained in our framework.
+
+We want to point out that the full characterization of positive semideﬁ-
+nite matrix-valued aﬃne processes needs a multitude of methods. In order
+to prove the fundamental property of regularity of aﬃne processes another
+adaption of the famous analysis of Montgommery and Zippin is necessary,
++ × Rn. For
+which has been worked out in [34] and [35] for the state space Rm
+the necessary conditions on drift, diﬀusion and jump parameters we need
+the theory of inﬁnitely divisible distributions on S+
+d . Most interestingly, the
+constant drift part b must satisfy a condition depending on the magnitude
+of the diﬀusion component (see Proposition 4.18), which is in accordance
+with the choice of the drift in Bru’s work [6] on Wishart processes, as ex-
+plained above. This enigmatic additional condition on the drift b is derived
+by studying the process with respect to well chosen test functions, including
+in our case the determinant of the process. It is worth noting, as already
+visible in dimension one, that a naive application of classical geometric in-
+variance conditions does not bring the correct necessary result on the drift
+but a stronger one. Indeed, take a one-dimensional aﬃne diﬀusion process
+X solving
+
+dXt = b dt +pXt dWt.
+
+Then a back-of-the-envelope calculation would yield the Stratonovich drift at
+the boundary point x = 0 of value b− 1
+4 , leading to the necessary parameter
+restriction b ≥ 1
+4 , which is indeed too strong. It is well known that the correct
+parameter restriction is b ≥ 0. We see two reasons why geometric conditions
+
+6Actually, Bru [6] establishes existence and uniqueness of solutions also for k =
+1, . . . , d − 1. But these are degenerate solutions, as they are only deﬁned on lower-
+dimensional subsets of the boundary of S+
+
+d (see [6], Corollary 1).
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+5
+
+on the drift cannot be applied: ﬁrst, precisely at the boundary of our state
+spaces the diﬀusion coeﬃcients are not Lipschitz continuous anymore, and,
+second, the boundary of the cone of positive semi-deﬁnite matrices is not a
+smooth submanifold but a more complicated object.
+
+For the suﬃcient direction reﬁned methods from stochastic invariance the-
+ory are applied. Having established viability of a particular class of jump-
+diﬀusions on S+
+d —under the necessary
+parameter conditions—is shown through the solution of a martingale prob-
+lem. Uniqueness follows by semigroup methods which need the theory of
+multi-dimensional Riccati equations.
+
+d , existence of aﬃne processes on S+
+
+Summing up, we face two major problems in the analysis of positive ma-
+trix valued aﬃne processes. First, the candidate stochastic diﬀerential equa-
+tions necessarily lead to volatility terms which are not Lipschitz continuous
+at the boundary of the state space. This makes every existence, uniqueness
+and invariance question delicate. Second, the jump behavior transversal to
+the boundary is of ﬁnite total variation.
+
+1.1. Program of the article. For aﬃne processes on S+
+
+d , results and proofs
+deviate in essential points from the theory on state spaces of the form Rm
++ ×
+Rn given in [16, 34], which is a consequence of the more involved geometry
+of this nonpolyhedral cone. The program of the paper as outlined below
+therefore includes a comparison with the approach in [16].
+
+Section 2 contains the main deﬁnition and a summary of the results of
+this article. In Section 3, we then derive two main properties, namely the
+regularity of the process and the Feller property of the associated semigroup.
+The Feller property, in turn, is a simple consequence of an important posi-
+tivity result of the characteristic exponents φ, ψ, which is proved in Lemma
+3.3. This lemma is further employed as a tool for the treatment of the gener-
+alized Riccati diﬀerential equations in Section 5.1 (see proof of Proposition
+5.3). The global existence and uniqueness of these equations is then used to
+show uniqueness of the martingale problem for aﬃne processes (see proof of
+Proposition 5.9).
+
+In Section 4, we deﬁne a set of admissible parameters specifying the in-
+ﬁnitesimal generator of aﬃne semigroups and prove the necessity of the
+parameter restrictions (see Proposition 4.9).
+
+The suﬃcient direction is then treated in Section 5. It is known that, for
+d ≥ 2, there exist continuous aﬃne processes on S+
+d which are—in contrast
++ × Rn—not inﬁnitely divisible (see Example
+to those on the state space Rm
+2.8). The analysis of this paper reveals the failure of inﬁnite divisibility as
+a consequence of the drift condition (see proof of Theorem 2.9). This has
+substantial inﬂuence on the approach chosen here to prove existence of aﬃne
+processes associated with a given parameter set: Being in general hindered
+to recognize the solutions of the generalized Riccati diﬀerential equations as
+
+6
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+cumulant generating functions of sub-stochastic measures, as done in [16],
+Section 7, we solve the martingale problem for the associated L´evy type
+generator on S+
+d , as exposed in Section 5 and Appendix A. In Section 5.3,
+however, we deliver a variant of the existence proof of [16] for pure jump
+processes, which is possible in this case due to the absence of a diﬀusion
+component.
+
+Finally, Section 6 contains the proofs of the main results which build on
+
+the propositions of the previous sections.
+
+1.2. Notation. For the stochastic background and notation, we refer to
+standard text books such as [31] and [43]. We write R+ = [0,∞) and R++ =
+(0,∞). Moreover:
+• Sd denotes the space of symmetric d× d-matrices equipped with the scalar
+product hx, yi = Tr(xy). Note that Sd is isomorphic, but not isometric, to
+the standard Euclidean space Rd(d+1)/2. We denote by {cij, i ≤ j} the
+standard basis of Sd, that is, the (kl)th component of cij is given by cij
+kl =
+δikδjl + δjkδil(1− δij), where δij denotes the Kronecker delta. Additionally,
+we sometimes consider the following basis elements {eij , i ≤ j} which are
+positive semideﬁnite and form a basis of Sd:
+
+eij =(cid:26) cii,
+
+cii + cij + cjj,
+
+if i = j,
+if i 6= j.
+
+d
+
+• S+
+d stands for the cone of symmetric d × d-positive semideﬁnite matrices,
+S++
+for its interior in Sd, the cone of strictly positive deﬁnite matrices.
+The boundary is denoted by ∂S+
+, the complement is denoted
+by (S+
+d ∪ {∆} denotes the one-point compactiﬁcation. Recall
+that S+
+
+d )c, and S+
+d is self-dual [w.r.t. the scalar product hx, yi = Tr(xy)], that is,
+
+d \ S++
+
+d = S+
+
+d
+
+d = {x ∈ Sd | hx, yi ≥ 0,∀y ∈ S+
+S+
+d }.
+
+.
+
+d
+
+d
+
+, induce a partial and strict order relation on Sd,
+
+d , and x ≺ y if y − x ∈ S++
+
+d and S++
+
+Both cones, S+
+respectively: we write x (cid:22) y if y − x ∈ S+
+mension d over R.
+
+• Md is the space of d × d-matrices and O(d) the orthogonal group of di-
+• Id denotes the d × d-identity matrix.
+Throughout this paper, a function f : Sd → R is understood as the restriction
+f = g|Sd of a function g : Md → R which satisﬁes g(x) = g(x⊤) for all x ∈ Md.
+Without loss of generality g(x) = f ((x + x⊤)/2). We avoid using the vech
+operator, that is, to identify x ∈ Sd with a vector in Rd(d+1)/2 by stringing
+the columns of x together, while only taking the entries xij with i ≤ j.
+Throughout this article, we shall consider the following function spaces
+for measurable U ⊆ Sd. We write B(U ) for the Borel σ-algebra on U . bU
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+7
+
+corresponds to the Banach space of bounded real-valued Borel measurable
+functions f on U with norm kfk∞ = supx∈U |f (x)|. We write C(U ) for the
+space of real-valued continuous functions f on U , Cb(U ) for C(U ) ∩ bU ,
+Cc(U ) for the space of functions f ∈ C(U ) with compact support and C0(U )
+for the Banach space of functions f ∈ C(U ) with limx→∆ f (x) = 0 and norm
+kfk∞ = supx∈U|f (x)|. Furthermore, C k(U ) is the space of k times diﬀeren-
+tiable functions f on U◦, the interior of U , such that all partial derivatives of
+f up to order k belong to C(U ). As usual, we set C∞(U ) =Tk≥1 C k(U ), and
+b (U ) = Cb(U ) ∩ C k(U ), for k ≤ ∞.
+2. Deﬁnition and characterization of aﬃne processes. We consider a
+d and semigroup
+
+time-homogeneous Markov process X with state space S+
+(Pt)t≥0 acting on functions f ∈ bS+
+d ,
+
+c (U ) = Cc(U ) ∩ C k(U ) and C k
+
+we write C k
+
+Ptf (x) =ZS+
+
+d
+
+f (ξ)pt(x, dξ),
+
+x ∈ S+
+d .
+
+We note that X may not be conservative. Then there is a standard extension
+of the transition probabilities to the one-point compactiﬁcation S+
+d ∪ {∆}
+of S+
+
+d by deﬁning
+
+pt(x,{∆}) = 1 − pt(x, S+
+d ),
+
+pt(∆,{∆}) = 1
+
+for all t and x ∈ S+
+on S+
+
+d . Thus X becomes conservative on S+
+
+d , with the convention that f (∆) = 0 for any function f
+
+d ∪ {∆}.
+
+on S+
+
+Definition 2.1. The Markov process X is called aﬃne if:
+(i) it is stochastically continuous, that is, lims→t ps(x,·) = pt(x,·) weakly
+d for every t and x ∈ S+
+(ii) its Laplace transform has exponential-aﬃne dependence on the initial
+Pte−hu,xi =ZS+
+
+e−hu,ξipt(x, dξ) = e−φ(t,u)−hψ(t,u),xi,
+
+d , and
+
+d
+
+state
+
+(2.1)
+
+d → R+ and ψ : R+ ×
+
+d , for some functions φ : R+ × S+
+
+for all t and u, x ∈ S+
+d → S+
+S+
+d .
+Note that stochastic continuity of X implies that φ(t, u) and ψ(t, u) are
+jointly continuous in (t, u); see Lemma 3.2(iii) below. Moreover, due to the
+Markov property, this also means that pt(x,{∆}) < 1 for all x ∈ S+
+d and
+t ≥ 0. In contrast to [16], we take stochastic continuity as part of the deﬁ-
+nition of aﬃne processes, and consider the Laplace transform instead of the
+characteristic function. The latter is justiﬁed by the nonnegativity of X, the
+former is by convenience since, as we will see in Proposition 3.4 below, it
+automatically implies regularity in the following sense.
+
+8
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+Definition 2.2. The aﬃne process X is called regular if the derivatives
+
+(2.2)
+
+F (u) =
+
+∂φ(t, u)
+
+∂t
+
+,
+
+R(u) =
+
+∂ψ(t, u)
+
+∂t
+
+exist and are continuous at u = 0.
+
+(cid:12)(cid:12)(cid:12)(cid:12)t=0+
+
+(cid:12)(cid:12)(cid:12)(cid:12)t=0+
+
+We remark that there are simple examples of Markov processes which
+satisfy Deﬁnition 2.1(ii) but are not stochastically continuous; see [16], Re-
+mark 2.11. However, such processes are of limited interest for applications
+and will not be considered.
+
+In the following, we shall provide an equivalent characterization of the
+aﬃne property in terms of the generator of X. As we shall see in (2.12), the
+diﬀusion, drift, jump and killing characteristics of X depend in an aﬃne way
+on the underlying state. We denote by χ : Sd → Sd some bounded continuous
+truncation function with χ(ξ) = ξ in a neighborhood of 0. Then the involved
+parameters are admissible in the following sense.
+
+Definition 2.3. An admissible parameter set (α, b, βij, c, γ, m, µ) asso-
+
+α ∈ S+
+d ,
+
+ciated with χ consists of:
+• a linear diﬀusion coeﬃcient
+(2.3)
+• a constant drift term
+(2.4)
+• a constant killing rate term
+(2.5)
+• a linear killing rate coeﬃcient
+(2.6)
+• a constant jump term: a Borel measure m on S+
+(2.7)
+(kξk ∧ 1)m(dξ) < ∞,
+
+b (cid:23) (d − 1)α,
+
+γ ∈ S+
+d ,
+
+c ∈ R+,
+
+ZS+
+
+d \{0}
+
+d \ {0} satisfying
+
+• a linear jump coeﬃcient: a d× d-matrix µ = (µij) of ﬁnite signed measures
+d \ {0}) and the kernel
+
+d \ {0} such that µ(E) ∈ S+
+
+d for all E ∈ B(S+
+
+on S+
+
+M (x, dξ) := hx, µ(dξ)i
+kξk2 ∧ 1
+
+hχ(ξ), uiM (x, dξ) < ∞
+
+for all x, u ∈ S+
+
+d with hx, ui = 0,
+
+(2.8)
+
+satisﬁes
+
+ZS+
+
+d \{0}
+
+(2.9)
+
+(2.10)
+
+satisﬁes
+
+(2.11)
+
+(2.12)
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+9
+
+• a linear drift coeﬃcient: a family βij = βji ∈ Sd such that the linear map
+
+B : Sd → Sd of the form
+
+B(x) =Xi,j
+
+βijxij
+
+hB(x), ui −ZS+
+
+d \{0}
+
+hχ(ξ), uiM (x, dξ) ≥ 0
+for all x, u ∈ S+
+
+d with hx, ui = 0.
+We shall comment more on the admissibility conditions in Section 2.1
+below. The following three theorems contain the main results of this article.
+Their proofs are given in Section 6. First, we provide a characterization of
+aﬃne processes on S+
+d in terms of the admissible parameter set introduced in
+Deﬁnition 2.3. As for the domain of the generator, we consider the space S+
+of rapidly decreasing C∞-functions on S+
+d , deﬁned in (B.1) below. It is shown
+in Appendix B that e−hu,·i ∈ S+, for u ∈ S++
+
+, as well as C∞c (S+
+
+d ) ⊂ S+.
+
+d
+
+Theorem 2.4. Suppose X is an aﬃne process on S+
+
+d . Then X is reg-
+ular and has the Feller property. Let A be its inﬁnitesimal generator on
+C0(S+
+d ). Then S+ ⊂ D(A) and there exists an admissible parameter set
+(α, b, βij , c, γ, m, µ) such that, for f ∈ S+,
+∂2f (x)
+∂xij ∂xkl
+
+Af (x) =
+
+Aijkl(x)
+
+1
+
+2 Xi,j,k,l
++Xi,j
++ZS+
++ZS+
+
+d \{0}
+
+d \{0}
+
+(bij + Bij(x))
+
+∂f (x)
+∂xij − (c + hγ, xi)f (x)
+
+(f (x + ξ) − f (x))m(dξ)
+
+(f (x + ξ) − f (x) − hχ(ξ),∇f (x)i)M (x, dξ),
+
+where B(x) is deﬁned by (2.10), M (x, dξ) by (2.8) and
+
+(2.13)
+
+Aijkl(x) = xikαjl + xilαjk + xjkαil + xjlαik.
+
+Moreover, φ(t, u) and ψ(t, u) in (2.1) solve the generalized Riccati diﬀerential
+equations, for u ∈ S+
+d ,
+∂φ(t, u)
+(2.14)
+
+= F (ψ(t, u)),
+
+φ(0, u) = 0,
+
+∂t
+
+(2.15)
+
+∂ψ(t, u)
+
+∂t
+
+= R(ψ(t, u)),
+
+ψ(0, u) = u,
+
+10
+
+with
+
+(2.16)
+
+(2.17)
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+F (u) = hb, ui + c −ZS+
+d \{0}
+R(u) = −2uαu + B⊤(u) + γ
+
+(e−hu,ξi − 1)m(dξ),
+
+−ZS+
+
+d \{0}(cid:18)e−hu,ξi − 1 + hχ(ξ), ui
+
+kξk2 ∧ 1
+
+(cid:19)µ(dξ),
+
+where B⊤ij (u) = hβij, ui.
+there exists a unique aﬃne process on S+
+and (2.1) holds for all (t, u) ∈ R+ × S+
+by (2.14) and (2.15).
+
+Conversely, let (α, b, βij , c, γ, m, µ) be an admissible parameter set. Then
+d with inﬁnitesimal generator (2.12)
+d , where φ(t, u) and ψ(t, u) are given
+
+Remark 2.5.
+
+only if c = 0 and ψ(t, 0) ≡ 0 is the only S+
+u = 0. The latter condition clearly requires that γ = 0.
+
+It can be proved as in [39] that X is conservative if and
+d -valued local solution of (2.15) for
+
+Hence, a suﬃcient condition for X to be conservative is c = 0 and γ = 0
+
+and
+
+ZS+
+
+d ∩{kξk≥1}
+
+kξk(µ+
+
+ij(dξ) + µ−ij(dξ)) < ∞
+
+for all 1 ≤ i ≤ j ≤ d,
+
+where µij = µ+
+ij − µ−ij denotes the Jordan decomposition of µij. Indeed, it
+can be shown similarly as in [16], Section 9, that the latter property implies
+Lipschitz continuity of R(u) on Sd.
+
+d ∪ {∆}) of c`adl`ag paths ω : R+ → S+
+
+Due to the Feller property, as established in Theorem 2.4, any aﬃne
+process X on S+
+d admits a c`adl`ag modiﬁcation, still denoted by X (see,
+e.g., [43], Chapter III.2). It can and will thus be realized on the space
+Ω = D(S+
+d ∪ {∆} with ω(s) = ∆ for
+s > t whenever ω(t−) = ∆ or ω(t) = ∆. For every x ∈ S+
+d , we denote by Px
+the law of X given X0 = x and by (F X
+t ) the natural ﬁltration generated by
+Xt. We also consider the usual augmentation
+F (x)
+
+(2.18)
+
+t
+
+eFt := \x∈S+
+
+d
+
+t
+
+t ), where (F (x)
+
+) is the augmentation of (F X
+
+shall now relate conservative aﬃne processes to semimartingales, where semi-
+
+of (F X
+Then (eFt) is right continuous and X is still a Markov process under (eFt). We
+martingales are understood with respect to the stochastic basis (Ω, eF, (eF )t, Px)
+
+t ) with respect to Px.
+
+for every x.
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+11
+
+Theorem 2.6. Let X be a conservative aﬃne process on S+
+
+d and let
+(α, b, βij , c = 0, γ = 0, m, µ) be the related admissible parameter set associ-
+ated with the truncation function χ. Then X is a semimartingale whose
+characteristics (B, A, ν) with respect to χ are given by
+
+(2.19)
+
+(2.20)
+
+At,ijkl =Z t
+Bt =Z t
+
+0
+
+Aijkl(Xs) ds,
+
+0 (cid:18)b +ZS+
+
+d \{0}
+
+χ(ξ)m(dξ) + B(Xs)(cid:19) ds,
+
+(2.21)
+
+ν(dt, dξ) = (m(dξ) + M (Xt, dξ)) dt,
+
+where B(x) is given by (2.10), Aijkl(x) by (2.13) and M (x, dξ) by (2.8). Fur-
+thermore, there exists, possibly on an enlargement of the probability space,
+a d × d-matrix of standard Brownian motions W such that X admits the
+following representation:
+
+(2.22)
+
+0
+
+Xt = x + Bt +Z t
++Z t
+0 ZS+
++Z t
+0 ZS+
+
+d \{0}
+
+d \{0}
+
+(pXs dWs Σ + Σ⊤ dWspXs)
+χ(ξ)(µX(ds, dξ) − ν(ds, dξ))
+
+(ξ − χ(ξ))µX(ds, dξ),
+
+where Σ ∈ Md satisﬁes Σ⊤Σ = α and µX denotes the random measure asso-
+ciated with the jumps of X.
+
+Hence, X is continuous if and only if m and µ vanish.
+
+Let P be the set of all families of probability measures (Px)x∈S+
+
+canonical probability space (Ω,F X ) such that (X, (Px)x∈S+
+) is a stochas-
+tically continuous Markov processes on S+
+d with Px[X0 = x] = 1, for all
+x ∈ S+
+d . Note that in contrast to [16], there is no need to impose regu-
+larity of X. For two probability measures P, Q on (Ω,F X ), the convolution
+P ∗ Q is deﬁned as the push-forward of P × Q under the map (ω, ω′) 7→
+ω + ω′ : (Ω × Ω,F X ⊗ F X ) → (Ω,F X ).
+
+on the
+
+d
+
+d
+
+Definition 2.7. An element (Px)x∈S+
+(i) inﬁnitely decomposable, if for each k ≥ 1, there exists (P
+
+d ∈ P is called:
+
+such that
+
+Px(1)+···+x(k) = P
+
+(k)
+
+x(1) ∗ ··· ∗ P
+
+(k)
+x(k);
+
+(k)
+
+x )x∈S+
+
+d ∈ P
+
+12
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+(ii) inﬁnitely divisible, if the one-dimensional marginal distributions Px ◦
+
+are inﬁnitely divisible, for all (t, x) ∈ R+ × S+
+d .
+
+X−1
+
+t
+
+In [16] it was shown that regular aﬃne processes on Rm
+
++ × Rn are inﬁnitely
+decomposable Markov processes, and vice versa. In fact, this property was
+the core for the existence proof of aﬃne processes in [16]. On S+
+d the situation
+is diﬀerent. The following counterexample reveals that not all aﬃne processes
+on S+
+
+d are inﬁnitely divisible.
+
+Example 2.8. The aﬃne process X on S+
+
+d corresponding to the param-
+eter set (α = Id, b = δId, 0, 0, 0, 0, 0), where δ ∈ [d− 1,∞), is the diﬀusion pro-
+cess initially studied by Bru [6]. By [6], Theorem 3, the Laplace-transforms
+
+Ex[e−hXt,ui] = (det(I + 2tu))−δ/2e−h(I+2tu)−1u,xi
+
+are those of noncentral Wishart distributions WIS(δ, d, x). By a well-known
+result due to Paul L´evy, these Wishart distributions are not inﬁnitely divis-
+ible if d ≥ 2 (see [15], Section 2.C).
+
+Here, is our main result on inﬁnite divisibility of aﬃne processes on S+
+d .
+
+Theorem 2.9. Let d ≥ 2 and (Px)x∈S+
+
+d ∈ P. The following assertions
+
+are equivalent:
+
+d
+
+(i) (Px)x∈S+
+(ii) (X, (Px)x∈S+
+(iii) (X, (Px)x∈S+
+
+d
+
+d
+
+is inﬁnitely decomposable.
+
+) is aﬃne with vanishing diﬀusion parameter α = 0.
+) is aﬃne and inﬁnitely divisible.
+
+2.1. Discussion of the parameters. We discuss and highlight some prop-
+erties of the admissible parameter set (α, b, βij, c, γ, m, µ) of an aﬃne process.
+
+NS+
+
+(2.23)
+
+Let us therefore deﬁne the normal cone
+(x) = {u ∈ S+
+
+d |hu, xi = 0},
+containing the inward pointing normal vectors, to S+
+shown in Lemma 4.1 below that NS+
+x ∈ ∂S+
+d .
+
+d
+
+d
+
+d .7 It will be
+(x) 6= {0} only for boundary elements
+
+d at x ∈ S+
+
+7Indeed, we obtain (2.23) from the general deﬁnition in (A.8) below by choosing y = 0
+
+and y = 2x, and using the self-duality of S+
+
+d : hu, yi ≥ 0 for all y, u ∈ S+
+d .
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+13
+
+2.1.1. Diﬀusion. The diﬀusion term does not admit a constant part, and
+
+its linear part is of the very speciﬁc form
+
+hu, A(x)ui = 4hx, uαui.
+
+This property of A(x) has also been stated in the setting of symmetric cones
+in [26]. We could thus write the second order diﬀerential operator in (2.12)
+as
+
+1
+
+2 Xi,j,k,l
+
+Aijkl(x)
+
+∂2f (x)
+∂xij ∂xkl
+
+= 2hx,∇α∇f (x)i.
+
+The reason why we introduce and use the symmetrization (2.13) of A(x) is
+that it corresponds to the quadratic characteristic (2.19) of the semimartin-
+gale X.
+
+2.1.2. Drift. The remarkable drift condition (2.4) has been assumed in
+many previous papers. Here is the ﬁrst time where necessity and suﬃciency
+of (2.4) are proved in the full generality in the presence of jumps. Note
+that in dimension d = 1, the drift condition simply reduces to nonnegativity
+b ≥ 0. But for dimension d ≥ 2, the boundary of the state space S+
+d becomes
+curved and kinked, implying a nontrivial trade-oﬀ between diﬀusion α and
+b.
+
+Concerning the form of B, let us note the following: condition (2.11)
+
+implies in particular
+
+(2.24)
+
+βii
+
+\{i} −ZS+
+
+d \{0}
+
+χ(ξ)\{i}
+kξk2 ∧ 1
+
+µii(dξ) ∈ S+
+d−1
+
+for all 1 ≤ i ≤ d,
+
+where for any matrix u ∈ Sd, u\{i} denotes the matrix where the ith row
+and column are deleted. Indeed, inserting x = cii in condition (2.11) yields
+
+hB(cii), ui −ZS+
+
+d \{0}
+
+hχ(ξ), ui
+kξk2 ∧ 1
+
+µii(dξ) ≥ 0
+
+for all u ∈ S+
+element u ∈ S+
+
+d with hcii, ui = 0. Since the ith column and row of such an
+d is zero, it follows that
+hB(cii), ui −ZS+
+hχ(ξ), ui
+kξk2 ∧ 1
+
+µii(dξ)
+
+d \{0}
+
+(2.25)
+
+= hβii
+
+\{i}, u\{i}i −ZS+
+
+d \{0}
+
+hχ(ξ)\{i}, u\{i}i
+
+µii(dξ) ≥ 0.
+
+kξk2 ∧ 1
+d−1, we can further derive the
+
+By choosing appropriate elements u\{i} ∈ S+
+integrability of χ(ξ)kl for all k 6= i, l 6= i, which implies
+µii(dξ) =(cid:28)ZS+
+(2.26)
+
+hχ(ξ)\{i}, u\{i}i
+
+ZS+
+
+kξk2 ∧ 1
+
+d \{0}
+
+d \{0}
+
+χ(ξ)\{i}
+kξk2 ∧ 1
+
+µii(dξ), u\{i}(cid:29).
+
+14
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+As (2.25) and (2.26) must hold true for all u\{i} ∈ S+
+proved.
+
+d−1, assertion (2.24) is
+Note that the (ij)th component of the adjoint operator B⊤ is given by
+
+(2.27)
+
+B⊤ij (u) = hβij, ui,
+
+since hB(x), ui = hPi,j βijxij, ui =Pi,jhβij, uixij = hB⊤(u), xi.
+
+In most previous papers, B(x) is of the form
+
+(2.28)
+
+In this case,
+
+B(x) = Hx + xH⊤.
+
+(2.29)
+
+hB(x), ui = hHx + xH⊤, ui = 0
+
+for all x, u ∈ S+
+
+d with hx, ui = 0,
+
+and hence (2.11) is equivalent to
+
+ZS+
+
+hχ(ξ), uiM (x, dξ) = 0,
+
+d \{0}
+d with hx, ui = 0.
+
+for all x, u ∈ S+
+
+If B(x) is of the form
+
+(2.30)
+where H ∈ Md and Γ : Sd → Sd linear satisfying Γ(S+
+of (2.29), condition (2.11) holds true as long as
+
+B(x) = Hx + xH⊤ + Γ(x),
+
+d ) ⊆ S+
+
+d , then, in view
+
+hΓ(x), ui −ZS+
+
+d \{0}
+
+hχ(ξ), uiM (x, dξ) ≥ 0
+
+for all x, u ∈ S+
+B(x) satisfying (2.11) is of form (2.30).
+
+d with hx, ui = 0. As a bold conjecture, we claim that any
+Here is a simple example where B(x) is of the form (2.30) but not of the
+
+usual form (2.28): let d = 2 and
+
+B(x) =(cid:18) x22 x12
+x12 x11(cid:19) .
+
+It can be easily checked that (2.11) is satisﬁed, while B(x) cannot be brought
+into the form (2.28). If xii models the (squared) volatility of the ith stock
+price, as in (1.1), then this drift speciﬁcation admits level impacts of the
+volatility of stock 1 on the volatility of stock 2, and vice versa.
+
+2.1.3. Killing. See Remark 2.5.
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+15
+
+2.1.4. Jumps. Condition (2.7) means that jumps described by m, which
+can for instance appear at x = 0, should be of ﬁnite variation entering the
+cone S+
+d , since inﬁnite variation transversal to the boundary would let the
+process leave the state space. Similarly, condition (2.9) asserts ﬁnite variation
+for the inward pointing directions, while we could a priori have a general
+jump behavior (supported by S+
+d due to the aﬃne structure) parallel to
+the boundary. Note that in the case d = 1, which corresponds to R+, the
+linear jump part can have inﬁnite total variation (see [16], equation (2.11)).
+However, due to the geometry of the cone S+
+d , we conjecture that in higher
+dimensions d ≥ 2 such a behavior is no longer possible and that all jumps are
+in fact of ﬁnite total variation. In any case, for d ≥ 2, aﬃne positive matrix
+valued diﬀusion processes cannot be approximated (in law) by pure jump
+processes, since this would yield a contradiction to condition (2.4). See also
+Remark 5.12 below.
+
+3. Aﬃne processes are regular and Feller. Suppose X is an aﬃne process
+on S+
+d . The main result of this section is that X is regular in the sense of
+Deﬁnition 2.1. In addition, we shall prove that Pt is a Feller semigroup on
+C0(S+
+d ). In order to show both properties, we shall mainly rely on Lemma 3.3
+below. The Feller property is then a simple consequence of this statement
+and regularity is obtained by arguing as in Keller-Ressel, Schachermayer
+and Teichmann [35], who obtained the corresponding statements for aﬃne
+processes on the state space Rm
++ × Rn; see [35], Theorem 4.3, and also the
+Ph.D. thesis of Keller-Ressel [34]. We observe that most arguments of [35]
+translate to our setting without major changes. It is only required to tailor
+some technicalities to the cone S+
+d . We start with the following elementary
+observations.
+
+Lemma 3.1.
+
+Proof. Let x ∈ S+
+
+0 ≤ hv, xi ≤ hu, xi = 0. Hence, v ∈ ∂S+
+
+d . (cid:3)
+
+If u ∈ ∂S+
+
+d and S+
+
+d ∋ v (cid:22) u, then v ∈ ∂S+
+d .
+d \{0} such that hx, ui = 0. Then, S+
+
+d ∋ v (cid:22) u implies
+
+We now derive some ﬁrst properties of the functions φ and ψ in (2.1).
+
+Lemma 3.2. Let X be an aﬃne process on S+
+
+d . Then, we have:
+
+(i) The functions φ and ψ satisfy
+
+(3.1)
+
+(3.2)
+
+φ(t + s, u) = φ(t, u) + φ(s, ψ(t, u)),
+
+ψ(t + s, u) = ψ(s, ψ(t, u))
+
+for all t, s ∈ R+.
+
+16
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+(ii) For all u, v ∈ S+
+
+d with v (cid:22) u and for all t ≥ 0, the order relations
+
+φ(t, v) ≤ φ(t, u) and ψ(t, v) (cid:22) ψ(t, u)
+
+(iii) The functions φ and ψ are jointly continuous in R+ × S+
+
+more, u 7→ φ(t, u) and u 7→ ψ(t, u) are analytic on S++
+
+.
+
+d
+
+d . Further-
+
+Proof. Assertion (i) follows directly from the Chapman–Kolmogorov
+
+(3.3)
+
+hold true.
+
+equation,
+
+e−φ(t+s,u)−hψ(t+s,u),xi =ZS+
+
+d
+
+ps(x, dξ)ZS+
+
+d
+
+e−hu,eξipt(ξ, deξ)
+
+e−hψ(t,u),ξips(x, dξ)
+
+= e−φ(t,u)ZS+
+
+d
+
+= e−φ(t,u)−φ(s,ψ(t,u))−hψ(s,ψ(t,u)),xi.
+
+For the proof of (ii), note that v (cid:22) u is equivalent to hv, xi ≤ hu, xi for all
+x ∈ S+
+d . By the monotonicity of the exponential function, we have for all
+x ∈ S+
+d and for all t ≥ 0,
+
+e−φ(t,v)−hψ(t,v),xi =ZS+
+
+d
+
+e−hv,ξipt(x, dξ) ≥ZS+
+
+d
+
+e−hu,ξipt(x, dξ)
+
+= e−φ(t,u)−hψ(t,u),xi,
+
+and the assertion follows by taking logarithms.
+
+Concerning statement (iii), note that stochastic continuity of X implies
+joint continuity of Pte−hu,xi in (t, u) ∈ R+ × S+
+d (this follows, e.g., from [4],
+Lemma 23.7), for all x ∈ S+
+d . This in turn yields continuity of the func-
+tions (t, u) 7→ φ(t, u) and (t, u) 7→ ψ(t, u). The second assertion follows from
+analyticity properties of the Laplace transform. (cid:3)
+
+The following property of ψ is crucial.
+
+Lemma 3.3. Let ψ : R+ × S+
+
+d be any map satisfying ψ(0, u) = u
+and the properties (i)–(iii) of Lemma 3.2 (regarding the function ψ). Then
+ψ(t, u) ∈ S++
+
+d → S+
+for all (t, u) ∈ R+ × S++
+.
+
+d
+
+d
+
+Proof. We adapt the proof of [34], Proposition 1.10, to our setting.
+Assume by contradiction that there exists some (t, u) ∈ R+ × S++
+such that
+ψ(t, u) ∈ ∂S+
+d . Let us consider the interval (0, λmin(u)] 6= ∅, where λmin(u) >
+0 denotes the smallest eigenvalue of u. Then for all v ∈ (0, λmin(u)] we have
+vId (cid:22) u. Since ψ(t, u) admits property (ii) of Lemma 3.2, we obtain
+
+d
+
+d ∋ ψ(t, vId) (cid:22) ψ(t, u) ∈ ∂S+
+S+
+
+d
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+17
+
+for all v ∈ (0, λmin(u)]. Consequently, Lemma 3.1 yields that ψ(t, vId) ∈ ∂S+
+d .
+Hence,
+
+det(ψ(t, vId)) = 0
+
+d
+
+d
+
+2 , u) ∈ ∂S+
+
+2 . Indeed, if ψ( t
+
+for all v ∈ (0, λmin(u)]. The analyticity of u 7→ ψ(t, u) on S++
+carries over to
+u 7→ det(ψ(t, u)) and implies that det(ψ(t, vId)) = 0 for all v ∈ R++. Indeed,
+the set of zeros of det(ψ(t, vId)) has an accumulation point in R++, which
+implies that det(ψ(t, vId)) vanishes entirely on R++. The same statement
+holds true for t replaced by t
+d , then the assertion
+is shown by the same arguments as above. Otherwise, if ψ( t
+, we
+have for all v ∈ R++ with vId (cid:22) ψ( t
+2 , u)]
+, vId(cid:19) (cid:22) ψ(cid:18) t
+2
+2 , vId) ∈ ∂S+
+
+2 , u) ∈ S++
+2 , u), that is, for all v ∈ (0, λmin(ψ( t
+, ψ(cid:18) t
+
+, u(cid:19)(cid:19) = ψ(t, u) ∈ ∂S+
+
+d ∋ ψ(cid:18) t
+
+2 , u)]. The same reasoning as before then leads to det(ψ( t
+
+which yields again ψ( t
+2 , vId)) = 0 for all v ∈ (0,
+λmin(ψ( t
+2 , vId)) = 0
+for all v ∈ R++. By reapplying this argument, we ﬁnally get for every n ∈ N
+and for all v ∈ R++
+
+d and det(ψ( t
+
+S+
+
+2
+
+d ,
+
+2
+
+det(cid:18)ψ(cid:18) t
+
+2n , vId(cid:19)(cid:19) = 0.
+
+From the continuity of the function t 7→ ψ(t, u) and of the determinant, we
+deduce that for any v ∈ R++,
+
+0 = lim
+n→∞
+
+det(cid:18)ψ(cid:18) t
+
+2n , vId(cid:19)(cid:19) = det(ψ(0, vId)) = det(vId) = vd > 0,
+
+a contradiction, and the assertion is proved. (cid:3)
+
+We may now formulate the main result of this section.
+
+Proposition 3.4. Let X be an aﬃne process with state space S+
+
+d . Then,
+
+we have:
+
+(i) X is a Feller process.
+(ii) X is regular.
+
+Proof.
+
+In order to prove (i), it suﬃces to show that for all f ∈ C0(S+
+d )
+
+(3.4)
+
+(3.5)
+
+Ptf (x) = f (x)
+
+lim
+t→0+
+
+for all x ∈ S+
+d ,
+
+Ptf ∈ C0(S+
+d )
+
+for all t ∈ R+,
+
+18
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+(see, e.g., [43], Propostion III.2.4). Property (3.4) is a consequence of stochas-
+tic continuity, which implies for all f ∈ C0(S+
+Ptf (x) = f (x).
+
+d ) and x ∈ S+
+
+d
+
+lim
+t→0+
+
+Concerning (3.5), it suﬃces to verify this property for a dense subset of
+C0(S+
+d ). By a locally compact version of Stone–Weierstrass’ theorem (see,
+d } is dense in C0(S+
+e.g., [48]), the linear span of the set {e−hu,xi | u ∈ S++
+d ).
+Indeed, it is a subalgebra of C0(S+
+d ), separates points and vanishes nowhere,
+as all elements are strictly positive functions on S+
+d . From Lemma 3.3, we
+, since ψ(t, u) ∈ S++
+can deduce that Pte−hu,xi ∈ C0(S+
+and
+hψ(t, u), xi > 0 for x 6= 0 implying that
+
+d ) if u ∈ S++
+
+d
+
+d
+
+Pte−hu,xi = e−φ(t,u)−hψ(t,u),xi
+
+goes to 0 as x → ∆. Hence, statement (i) is proved.
+The proof of (ii) follows precisely the lines of [35], proof of Theorem
+4.3. Using Lemma 3.3, one may mimic the proof of [35], Theorem 4.3, to
+obtain that diﬀerentiability of ψ(t, u) in u ∈ S++
+, which follows from Lemma
+3.2(iii), implies diﬀerentiability of ψ(t, u) in t for t = 0 and for all u ∈ S+
+d .
+
+d
+
+(cid:3)
+
+By the regularity of X, we are now allowed to diﬀerentiate the equations
+(3.1) and (3.2) with respect to t and evaluate them at t = 0. As a conse-
+quence, φ and ψ satisfy the system of diﬀerential equations
+
+∂φ(t, u)
+
+∂t
+
+∂ψ(t, u)
+
+∂t
+
+= F (ψ(t, u)),
+
+φ(0, u) = 0,
+
+= R(ψ(t, u)),
+
+ψ(0, u) = u ∈ S+
+d ,
+
+where F and R are deﬁned as in (2.2). The analysis of these (generalized
+Riccati) diﬀerential equations is subject of Section 5.1, whereas the speciﬁc
+form of F and R is elaborated in the following.
+
+4. Necessary parameter restrictions.
+
+In this section, we derive necessary
+parametric restrictions, that is, given an aﬃne process on S+
+d , we determine
+necessary implications on a set of parameters which only ensue from Deﬁ-
+nition 2.1. These conditions are precisely the conditions on the admissible
+parameter set as of Deﬁnition 2.3. The form of the functions F and R as
+deﬁned by (2.2) is then characterized by means of this parameter set, which
+is stated in Proposition 4.9 below. For its proof, we ﬁrst provide a number
+of technical prerequisites.
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+19
+
+Lemma 4.1. Let x, u ∈ S+
+
+d and
+
+x = OΛO⊤ = O diag(λ1 > 0, . . . , λd−r > 0, 0, . . . , 0)O⊤
+
+(4.1)
+be the diagonalization of x with r ≥ 0 and O ∈ O(d). Then the following
+assertions are equivalent:
+
+(i) ux = xu = 0,
+(ii) hx, ui = 0,
+(iii) u is of form
+
+(4.2)
+
+with w ∈ S+
+r .
+
+u = O(cid:18) 0
+
+0 w(cid:19) O⊤
+
+0
+
+Proof. The direction (i) ⇒ (ii) is obvious. In order to prove the impli-
+
+cation (ii) ⇒ (iii), deﬁne v as v = O⊤uO. Then we have
+λivii,
+
+0 = hx, ui = hΛ, O⊤uOi = Xi≤d−r
+
+which implies vii = 0 for all i ≤ d − r and by the positive deﬁniteness of v it
+must then be of form
+
+v =(cid:18) 0
+
+0 w(cid:19)
+
+0
+
+with w ∈ S+
+which proves the direction (iii) ⇒ (i). (cid:3)
+
+r . Thus, u is given by (4.2). This then implies that ux = xu = 0,
+
+Lemma 4.2. Let p be an orthogonal projector, that is, p ∈ S+
+d and p2 = p
+(see, e.g., Kato [33], Section I.6.7), and deﬁne q = Id − p. Then q is an
+orthogonal projector and the orthogonal complement of p in S+
+
+d equals
+
+{v ∈ S+
+
+d | hp, vi = 0} = {quq | u ∈ S+
+d }.
+
+Proof. That q is an orthogonal projector follows by inspection. The
+diagonalization of p is of the form p = OΛO⊤ with Λ = diag(1, . . . , 1, 0, . . . , 0),
+and thus q = O(Id − Λ)O⊤. In view of Lemma 4.1, we conclude that v ∈ S+
+is orthogonal to p if and only if v = qvq. This proves the assertion. (cid:3)
+
+d
+
+Lemma 4.3. Let u be in Sd and x ∈ ∂S+
+
+the linear map Tu deﬁned by
+
+d such that ux = xu = 0. Then,
+
+has the following properties:
+
+Tu : Sd → Sd,
+
+v 7→ Tuv := uvu
+
+20
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+d − R+x) ⊆ S+
+d .
+
+(i) Tu is self-adjoint and Tu(S+
+(ii) There exists an element v ∈ Sd such that Tuv = u.
+Proof. The assertion (i) is obvious, since for every k ∈ R+, Tukx =
+kuxu = 0 and Tuv = uvu ∈ S+
+d . For proving part (ii), we use the
+fact that x is of form (4.1) and that all zero divisors u in Sd of x can be
+represented by (4.2) with w ∈ Sr. Thus, setting
+
+d if v ∈ S+
+v = O(cid:18) 0
+
+0
+
+0 w+(cid:19) O⊤,
+
+where w+ satisﬁes ww+w = w, yields Tuv = u. (cid:3)
+
+Lemma 4.4. Let V denote a vector space8 over R. Let L : S+
+
+an additive (resp., homogeneous additive) map, that is, for all x, y ∈ S+
+λ = 1 (resp., for all λ ∈ R+) we have
+
+d → V be
+d and
+
+L(x + λy) = L(x) + λL(y).
+
+Then L(x) is the restriction of an additive (resp., R-linear) map on Sd.
+
+x, y ∈ S+
+d .
+
+Since S+
+
+d − S+
+
+d such that u − v = x − y we have
+
+holds, as for λ > 0, z = x − y ∈ Sd we have by deﬁnition
+
+Proof. We deﬁne the map eL : Sd → V as
+eL(x − y) := L(x) − L(y),
+eL is well deﬁned, as for u, v, x, y ∈ S+
+L(u) − L(v) =eL(u − v) =eL(x − y) = L(x) − L(y).
+d = Sd, the domain of eL is all of Sd. Also, L(0) = 0 by the
+d . Homogeneity of eL
+additivity of L. Hence, L is the restriction of eL to S+
+eL(λz) = L(λx) − L(λy) = λL(x) − λL(y) = λeL(z).
+Finally, we show additivity of eL. Choose w, z ∈ Sd such that z = x − y, w =
+u − v, hence w + z = (x + u) − (y + v). By the deﬁnition of eL, we have
+eL(w) = L(u) − L(v),
+eL(z) = L(x) − L(y),
+=eL(z) +eL(w).
+
+eL(w + z) = L(x + u) − L(y + v) = L(x) + L(u) − L(y) − L(v)
+
+8In the proof of Proposition 4.9 below, V corresponds to Sd, the vector space of linear
+
+and by the additivity of L we obtain
+
+maps Sd → Sd, or the vector space of ﬁnite signed measures on Sd.
+
+(cid:3)
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+21
+
+We now provide a convergence result for Laplace transforms (in fact
+Laplace–Fourier transforms), which is most relevant for the analysis of aﬃne
+processes.
+
+Lemma 4.5. Let νn be a sequence of measures on Sd with
+
+Ln(u) =ZSd
+
+e−hu,ξiνn(dξ) < ∞ and
+
+Ln(u) = L(u),
+
+lim
+n→∞
+
+u ∈ S+
+d ,
+
+pointwise, for some ﬁnite function L on S+
+d continuous at u = 0. Then νn
+converges weakly to some ﬁnite measure ν on Sd and the Fourier–Laplace
+transforms converge for u ∈ S++
+d ∪ {0} and v ∈ Sd to the Fourier–Laplace
+transforms of ν, that is,
+
+In particular, ν(Sd) = limn→∞ νn(Sd) and
+
+n→∞ZSd
+
+lim
+
+e−hu+iv,ξiνn(dξ) =ZSd
+L(u) =ZSd
+
+e−hu,ξiν(dξ),
+
+e−hu+iv,ξiν(dξ).
+
+for all u ∈ S++
+
+d ∪ {0}.
+
+Remark 4.6.
+
+Instead of u = 0 we could take any set K of points at the
+boundary K ⊂ ∂S+
+d : if we assume continuity of L at points in K, then we
+obtain the equality of L with the Laplace transform of ν for all points in
+K. Additionally, continuity is too strong an assumption, since we only need
+right continuity of L along the segment u + εId for ε = 0 at the points from
+the boundary under consideration.
+
+Proof of Lemma 4.5. Since νn(Sd) = Ln(0) is bounded, we know by
+general theory that νn has a vague accumulation point ν, which is a ﬁnite
+measure on Sd.
+
+Since Ln(u) < ∞ on S+
+
+d , it follows by well-known regularity properties of
+Laplace transforms (see, e.g., [19], Lemma 10.8) that the functions Ln admit
+an analytic extension on the strip S++
+
+d + iSd, still denoted by Ln:
+
+(u + iv) 7→ Ln(u + iv) =ZSd
+
+e−hu+iv,ξiνn(dξ).
+
+Moreover, pointwise convergence of the ﬁnite convex functions Ln to L on S+
+d
+implies that this convergence is in fact uniform on compact subsets of S++
+(see, e.g., Rockafellar [44], Theorem 10.8). Hence, the functions Ln are uni-
+formly bounded on compact subsets of S++
+and since |Ln(u + iv)| ≤ Ln(u),
+also on compact subsets of S++
+is a set
+
+d + iSd. Therefore, and since S++
+
+d
+
+d
+
+d
+
+22
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+of uniqueness in S++
+d + iSd, it follows by Vitali’s theorem ([41], Chapter 1,
+Proposition 7) that the analytic functions Ln converge uniformly on com-
+pact subsets of S++
+d + iSd to an analytic limit thereon. By L´evy’s continu-
+ity theorem, we therefore know that for any u ∈ S++
+the ﬁnite measures
+exp(−hu, ξi)νn(dξ) converge weakly to a limit, which by uniqueness of the
+weak limit has to equal exp(−hu, ξi)ν(dξ). Whence the only vague accumu-
+lation point of νn is ν. Vague convergence implies weak convergence if mass
+is conserved. Continuity of L(u) at u = 0 implies this mass conservation:
+indeed, by weak convergence of e−hεId,ξiνn we arrive at
+
+d
+
+L(εId) = lim
+
+e−hεId,ξiνn(dξ) =ZSd
+n→∞ZSd
+e−hεId,ξi1{hId,ξi≤0}ν(dξ) +ZSd
+=ZSd
+
+e−hεId,ξiν(dξ)
+
+e−hεId,ξi1{hId,ξi>0}ν(dξ)
+
+and therefore—by dominated convergence—we obtain that the limit ε → 0
+yields
+
+L(0) =ZSd
+
+ν(dξ),
+
+which is the desired mass conservation, hence weak convergence, which
+means in turn convergence of the Fourier–Laplace transform at u = 0. (cid:3)
+
+Finally, let us state a general comparison result for ODEs and hereto
+introduce the notion of quasi-monotonicity, which we shall need several times
+throughout this article, in particular in the proofs of Propositions 4.9 and
+5.3 below.
+
+Definition 4.7. Let U ⊂ Sd be an open set. A function f : U → Sd is
+d which
+
+called quasi-monotone increasing if for all elements x, y ∈ U , u ∈ S+
+satisfy x (cid:22) y and hx, ui = hy, ui,
+
+holds true. Accordingly, we call f quasi-constant if both f and −f are quasi-
+monotone increasing.
+
+hf (x), ui ≤ hf (y), ui
+
+The following comparison result can be deduced from a more general
+
+theorem proved by Volkmann [52].
+
+Theorem 4.8. Let U ⊂ Sd be an open set. Let f : [0, T ) × U → Sd be a
+continuous locally Lipschitz map such that f (t,·) is quasi-monotone increas-
+ing on U for all t ∈ [0, T ). Let 0 < t0 ≤ T and x, y : [0, t0) → U be diﬀeren-
+tiable maps such that x(0) (cid:22) y(0) and
+
+˙x(t) − f (t, x(t)) (cid:22) ˙y(t) − f (t, y(t)),
+
+0 ≤ t < t0.
+
+Then we have x(t) (cid:22) y(t) for all t ∈ [0, t0).
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+23
+
+4.1. The functions F and R. The main result of this section characterizes
+
+the form of the functions F and R as deﬁned by (2.2).
+
+Proposition 4.9. Let X be an aﬃne process with state space S+
+
+d . Then
+there exist parameters (α, b, βij, c, γ, m, µ), where α, βij, c, γ, m, µ satisfy the
+admissibility conditions of Deﬁnition 2.3 and b ∈ S+
+d , such that the functions
+F and R are of the form (2.16) and (2.17).
+
+Remark 4.10. Note that for the moment we only obtain b ∈ S+
+
+d , and
+
+not (2.4).
+
+Proof of Proposition 4.9. As the proof of Proposition 4.9 is rather
+
+long, we divide it into several steps:
+
+Step 1. Necessary admissibility conditions for b, c, γ, m. In order to derive
+the particular form of F and R with the above parameter restrictions, we
+follow the approach of Keller-Ressel [34], Theorem 2.6. Note that the t-
+derivative of Pte−hu,xi at t = 0 exists for all x, u ∈ S+
+
+d , since
+
+Pte−hu,xi − e−hu,xi
+
+t
+
+lim
+t→0+
+
+= lim
+t→0+
+
+e−φ(t,u)−hψ(t,u),xi − e−hu,xi
+
+t
+
+(4.3)
+
+= (−F (u) − hR(u), xi)e−hu,xi
+is well deﬁned by Proposition 3.4. Moreover, we can also write
+
+−F (u) − hR(u), xi
+
+Pte−hu,xi − e−hu,xi
+
+te−hu,xi
+
+= lim
+t→0+
+
+= lim
+t→0+
+
+1
+
+t(cid:18)ZS+
+t→0+(cid:18) 1
+tZS+
+
+= lim
+
+d \{0}
+
+d −x
+
+e−hu,ξ−xipt(x, dξ) − 1(cid:19)
+(e−hu,ξi − 1)pt(x, dξ + x) +
+
+pt(x, S+
+d ) − 1
+t
+
+(cid:19).
+
+By the above equalities and the fact that pt(x, S+
+u = 0
+
+d ) ≤ 1, we then obtain for
+
+pt(x, S+
+d ) − 1
+t
+
+= −F (0) − hR(0), xi.
+
+0 ≥ lim
+t→0+
+
+Setting F (0) = c and R(0) = γ yields c ∈ R+ as in (2.5) and γ ∈ S+
+(2.6). We thus obtain
+
+d as in
+
+(4.4)
+
+−(F (u) − c) − hR(u) − γ, xi
+
+1
+
+tZS+
+
+d −x
+
+= lim
+t→0+
+
+(e−hu,ξi − 1)pt(x, dξ + x).
+
+24
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+For every ﬁxed t > 0, the right-hand side of (4.4) is the logarithm of the
+Laplace transform of a compound Poisson distribution supported on S+
+d −
+R+x with intensity pt(x, S+
+d )/t and compounding distribution pt(x, dξ +
+x)/pt(x, S+
+d ). Concerning the support, note that the compounding distri-
+bution is concentrated on S+
+d − x, which implies that the compound Poisson
+distribution has support on the convex cone S+
+d − R+x. By Lemma 4.5, the
+pointwise convergence of (4.4) for t → 0 to some function being continu-
+ous at 0, implies weak convergence of the compound Poisson distributions
+to some inﬁnitely divisible probability distribution K(x, dy) supported on
+S+
+d − R+x. Indeed, this follows from the fact that any compound Poisson
+distribution is inﬁnitely divisible and the class of inﬁnitely divisible dis-
+tributions is closed under weak convergence ([47], Lemma 7.8). Again, by
+Lemma 4.5 the Laplace transform of K(x, dy) is then given as exponential
+of the left-hand side of (4.4).
+
+In particular, for x = 0, K(0, dy) is an inﬁnitely divisible distribution with
+d . By the L´evy–Khintchine formula on proper cones
+
+support on the cone S+
+(see [49], Theorem 3.21), its Laplace transform is therefore of the form
+
+exp(cid:18)−hb, ui +ZS+
+
+d \{0}
+
+(e−hu,ξi − 1)m(dξ)(cid:19),
+
+where b ∈ S+
+
+d and m is a Borel measure supported on S+
+
+d such that
+
+ZS+
+
+d \{0}
+
+(kξk ∧ 1)m(dξ) < ∞,
+
+yielding (2.7). Therefore,
+
+F (u) = hb, ui + c −ZS+
+
+d \{0}
+
+(e−hu,ξi − 1)m(dξ).
+
+Step 2. Necessary admissibility conditions for βij, µ. We next obtain the
+
+particular form of R. Observe that for each x ∈ S+
+
+d and k ∈ N,
+
+exp(−(F (u) − c)/k − hR(u) − γ, xi)
+
+k denotes the 1
+
+is the Laplace transform of the inﬁnitely divisible distribution K(kx, dy)∗1/k,
+where ∗ 1
+k convolution power. For k → ∞, these Laplace
+transforms obviously converge to exp(−hR(u) − γ, xi) pointwise in u. Us-
+ing again the same arguments as before [an application of Lemma 4.5 as
+below (4.4)], we can deduce that K(kx, dy)∗1/k converges weakly to some
+inﬁnitely divisible distribution L(x, dy) on S+
+d − R+x with Laplace trans-
+form exp(−hR(u) − γ, xi) for u ∈ S+
+d .
+By the L´evy–Khintchine formula on Sd ([47], Theorem 8.1, indeed on
+R(d(d+1)/2) by modifying the scalar product appropriately), the characteristic
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+25
+
+function of L(x, dy) has the form
+
+bL(x, u) = exp(cid:18) 1
+
+2hu, A(x)ui + hB(x), ui
+
++ZSd\{0}
+
+(e−hu,ξi − 1 − hχ(ξ), ui)M (x, dξ)(cid:19),
+
+for u ∈ iSd, where A(x) is a symmetric positive semideﬁnite linear operator
+on Sd, B(x) ∈ Sd, M (x,·) a measure on Sd \ {0} satisfying
+
+ZSd\{0}
+
+(kξk2 ∧ 1)M (x, dξ) < ∞,
+
+and χ some appropriate truncation function. Furthermore, by [47], Theorem
+8.7,
+
+(4.5)
+
+ZSd\{0}
+
+f (ξ)
+
+1
+t
+
+pt(x, dξ + x)
+
+t→0−→ZSd\{0}
+
+f (ξ)m(dξ) +ZSd\{0}
+
+f (ξ)M (x, dξ)
+
+holds true for all f : Sd → R which are bounded, continuous and vanishing
+on a neighborhood of 0. We conclude that M (x, dξ) has support in S+
+d − x.
+
+Therefore, the characteristic function bL(x, u) admits an analytic extension
+to S+
+u ∈ S+
+
+d × iSd, which then has to coincide with the Laplace transform for
+d . We conclude that, for all x ∈ S+
+d ,
+
+−hR(u) − γ, xi
+
+(4.6)
+
+=
+
+1
+2hu, A(x)ui − hB(x), ui
+
++ZSd\{0}
+
+(e−hu,ξi − 1 + hχ(ξ), ui)M (x, dξ),
+
+u ∈ S+
+d .
+
+As the left-hand side of (4.6) is linear in the components of x, it follows
+
+that x 7→ A(x), x 7→ B(x) as well as x 7→RE(kξk2 ∧ 1)M (x, dξ) for every
+E ∈ B(Sd\{0}) are homogeneous additive maps on S+
+d in the sense of Lemma
+4.4. This then implies that they are restrictions of linear maps on Sd, such
+that we can write
+
+A(x) =Xi,j
+
+aijxij,
+
+ZE
+
+(kξk2 ∧ 1)M (x, dξ) = hx, µ(E)i =Xi,j
+
+βijxij,
+
+B(x) =Xi,j
+
+µij(E)xij ,
+
+26
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+where (recall that cij denotes the standard basis of Sd deﬁned in Section
+1.2):
+
+aij = aji = (1 + δij)
+
+βij = βji = (1 + δij)
+
+A(cij )
+
+2
+
+B(cij)
+
+2
+
+: Sd → Sd
+
+linear,
+
+∈ Sd
+
+and
+
+E 7→ µij(E) = µji(E) = (1 + δij)RE(kξk2 ∧ 1)M (cij , dξ)
+
+2
+
+are ﬁnite signed measures on Sd \ {0}. The fact that M (x,·) is a nonneg-
+ative measure for each x ∈ S+
+d implies immediately that µ(E) is a positive
+semideﬁnite matrix.
+
+1
+
+=
+
+fn(ξ)
+kξk2 ∧ 1
+
+fn(ξ)
+
+n
+
+In (4.5), take now x = 1
+
+d − 1
+n eij, dξ + 1
+
+eij, µ(dξ)(cid:29)
+
+fn(ξ)M(cid:18) 1
+
+n
+
+eij, dξ(cid:19) =ZSd\{0}
+
+n eij and nonnegative functions f = fn ∈ Cb(Sd)
+n eij . Then for each n the left-hand side of (4.5) is zero
+n eij . As supp(m) ⊆ S+
+n eij) is concentrated on S+
+d ,
+
+with fn = 0 on S+
+d − 1
+since the pt( 1
+the ﬁrst integral on the right vanishes as well. Hence,
+kξk2 ∧ 1(cid:28) 1
+
+0 =ZSd\{0}
+nZSd\{0}
+for any nonnegative function fn ∈ Cb(Sd) with fn = 0 on S+
+n eij implies
+that supp(µij) ⊆ S+
+d − 1
+n eij for each n. Thus, we can conclude that supp µij ⊆
+S+
+d for all 1 ≤ i, j ≤ d.
+Now let T : Sd → Sd be any linear map with the property T (S+
+d − R+x) ⊆
+d . Then T (supp(L(x, dy))) ⊆ S+
+S+
+d . This implies that the pushforward T∗L(x,·)
+of L(x, dy) under T is an inﬁnitely divisible distribution supported on S+
+d .
+By the L´evy–Khintchine formula on proper cones (see [49], Theorem 3.21,
+and by [47], Proposition 11.10) this implies that for all x ∈ S+
+T A(x)T ⊤ = 0,
+(4.7)
+
+(µii(dξ) + (1 − δij)(µjj(dξ) + 2µij(dξ)))
+
+d − 1
+
+d
+
+T B(x) +ZS+
+
+d \{0}
+
+(4.8)
+
+(4.9)
+
+(eχ(T ξ) − T (χ(ξ)))M (x, dξ) ∈ S+
+ZS+
+
+(kξk ∧ 1)T∗M (x, dξ) < ∞,
+
+d \{0}
+
+d ,
+
+where eχ denotes some truncation function associated with T∗L(x,·) and
+T∗M the pushforward of M under T . Due to (4.9), we can set eχ = 0. Thus,
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+27
+
+(4.8) becomes
+
+(4.10)
+
+Moreover, equations (4.7), (4.10) and (4.9) are equivalent to
+
+d .
+
+T B(x) −Z T (χ(ξ))M (x, dξ) ∈ S+
+hT ⊤v, A(x)T ⊤vi = 0
+h(χ(ξ)), T ⊤viM (x, dξ) ≥ 0
+
+(kT ξk ∧ 1)M (x, dξ) < ∞.
+
+hB(x), T ⊤vi −ZS+
+ZS+
+
+d \{0}
+
+d \{0}
+
+In particular, we claim that
+
+for all v ∈ Sd,
+for all v ∈ S+
+d ,
+
+(4.11)
+
+(4.12)
+
+(4.13)
+
+(4.14)
+
+hu, A(x)ui = 0
+
+for all u ∈ Sd s.t. ux = xu = 0,
+
+hχ(ξ), uiM (x, dξ) ≥ 0
+
+for all u ∈ S+
+
+d s.t. ux = xu = 0,
+
+hχ(ξ), uiM (x, dξ) < ∞
+
+hB(x), ui −ZS+
+ZS+
+
+d \{0}
+
+d \{0}
+
+for all u ∈ S+
+
+d s.t. ux = xu = 0.
+Indeed, if x is invertible then ux = 0 is equivalent to u = 0 and the assertions
+are obvious. Otherwise, if x is in ∂S+
+d , the linear map Tu deﬁned in Lemma
+d − R+x) ⊆ S+
+4.3 is self-adjoint and satisﬁes Tu(S+
+d . Furthermore, by Lemma
+4.3(ii), there exists an element v ∈ Sd such that Tuv = u. Hence,
+
+hu, A(x)ui = hT ⊤u v, A(x)T ⊤u vi = 0.
+d , v is an element of S+
+It follows from the proof of Lemma 4.3 that for u ∈ S+
+as well and we have hB(x), ui = hB(x), T ⊤u vi and hχ(ξ), ui = h(χ(ξ)), T ⊤vi.
+Equation (4.14) is obtained by choosing T = T√u in (4.11). Indeed,
+
+d
+
+ZS+
+
+d ∩{kξk≤1}
+
+hξ, uiM (x, dξ) =ZS+
+
+hId, ξuiM (x, dξ)
+
+d ∩{kξk≤1}
+
+≤ kIdkZS+
+= kIdkZS+
+
+d ∩{kξk≤1}
+
+d ∩{kξk≤1}
+
+kξukM (x, dξ)
+
+kT√uξkM (x, dξ) < ∞.
+
+28
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+From these arguments and Lemma 4.1, properties (2.11) and (2.9) can be
+derived so far. Thus, only (2.3) remains to be shown.
+
+Step 3. Necessary admissibility condition for α. Due to the linearity of
+A(x), hu, A(x)ui can be written as 4hx, ϑ(u)i, where the (ij)th component
+of ϑ(u) ∈ Sd is deﬁned by ϑij(u) = 1/4hu, aij ui. Note that ϑ is deﬁned on
+all of Sd. Given that for all x ∈ S+
+d , A(x) is a positive semideﬁnite operator
+on Sd, hu, A(x)ui ≥ 0 for all u ∈ Sd and therefore, by the self duality of S+
+d ,
+ϑ(u) ∈ S+
+(4.15)
+
+d . By (4.12), we have for all u such that ux = xu = 0
+
+0 = hu, A(x)ui = 4hx, ϑ(u)i.
+
+Next, we show that ϑ is quasi-constant, that is, hx, ϑ(u+ w)− ϑ(u)i = 0 for
+all x, u, w ∈ S+
+d with hx, wi = 0 (see Deﬁnition 4.7). Indeed, pick x, u, w ∈ S+
+with hx, wi = 0. According to our assumptions, A(x)w = 0, due to (4.15) and
+the positivity of A. Hence,
+
+d
+
+4hx, ϑ(u + w) − ϑ(u)i = hu + w, A(x)(u + w)i − hu, A(x)ui
+
+= hu, A(x)wi + hA(x)w, ui = 0,
+
+where the second last equality holds in view of the symmetry of A(x).
+
+We now claim that there exists some α ∈ S+
+
+d such that ϑ(u) = uαu, for
+each u ∈ Sd. It is suﬃcient to show that this statements holds for all or-
+thogonal projectors p ∈ S+
+d , that is, there exists some α ∈ S+
+d such that
+ϑ(p) = pαp for all orthogonal projectors p. Indeed, if this is the case, we can
+derive the general statement in the following way: take u ∈ S+
+d , then—by
+spectral decomposition—there are numbers λi ≥ 0 and orthogonal projec-
+tors pi, which are mutually orthogonal, such that u =Pd
+i=1 λipi (see, e.g.,
+Kato [33], Section I.6.9). Since the assertion holds for all orthogonal projec-
+tors, we have that
+
+2ϑ(u) =
+
+dXi,j=1
+
+λiλj(ϑ(pi + pj) − ϑ(pi) − ϑ(pj))
+
+by the property that ϑ is quadratic. Since pi + pj is again an orthogonal
+projector, we obtain the result.
+
+We prove the assertion on orthogonal projectors by quasi-constancy. Take
+an arbitrary orthogonal projector p and deﬁne q = Id − p. Additionally, we
+deﬁne α = ϑ(Id). By quasi-constancy, we obtain
+
+hx, ϑ(p + q) − ϑ(q)i = hy, ϑ(p + q) − ϑ(p)i = 0
+
+and
+
+hx, ϑ(p)i = hy, ϑ(q)i = 0,
+
+for all x, y ∈ S+
+are orthogonal to the orthogonal complement of p in S+
+
+d with hx, pi = 0 and hy, qi = 0. Therefore, α − ϑ(q) and ϑ(p)
+d (i.e., the positive
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+29
+
+symmetric matrices of the form quq by Lemma 4.2), and α − ϑ(p) and ϑ(q)
+are orthogonal to the orthogonal complement of q in S+
+d (the positive sym-
+metric matrices of the form pup by Lemma 4.2). This means that we can
+write
+
+α = ϑ(p) + ϑ(q) + β,
+
+where the symmetric matrix β is orthogonal to all elements which are or-
+thogonal to p and q (in S+
+d ), that is, β is orthogonal to the linear span of
+matrices of the form pup and quq. However, such a decomposition is unique,
+since all vectors in the sum are mutually orthogonal, and the decomposition
+is given by
+
+α = (p + q)α(p + q) = pαp + qαq + (pαq + qαp).
+
+Therefore, we can conclude the assertion ϑ(p) = pαp. Since p was arbitrary
+the assertion is proved.
+
+Finally, all the derived restrictions on the parameters together with (4.6)
+
+then yield (2.17). (cid:3)
+
+Remark 4.11. An alternative proof for the special form of the diﬀusion
+matrix A(x) can also be established by Stokes’ theorem [50] on Riccati
+ODEs.
+
+4.2. Inﬁnitesimal generator. The aim of this section is to prove the form
+
+of the inﬁnitesimal generator as stated in (2.12).
+
+Proposition 4.12. The inﬁnitesimal generator A of an aﬃne process
+on S+
+d satisﬁes S+ ⊂ D(A) and is of the form (2.12) for all f ∈ S+ and
+x ∈ S+
+d .
+
+Proof. As already mentioned in the proof of Proposition 4.9, the t-
+d and is given
+d ), for u ∈
+d ), it follows from [47], Lemma
+
+derivative of Pte−hu,xi at t = 0 exists pointwise for all x, u ∈ S+
+by (4.3). Furthermore, x 7→ (−F (u) − hR(u), xi)e−hu,xi ∈ C0(S+
+S++
+31.7, that {e−hu,xi | u ∈ S++
+
+. As (Pt) is a Feller semigroup on C0(S+
+
+d } ∈ D(A) and
+
+d
+
+Ae−hu,xi = (−F (u) − hR(u), xi)e−hu,xi.
+
+Combined with Proposition 4.9, we thus obtain
+
+Ae−hu,xi =(cid:18)−hb, ui − c +ZS+
+
+d \{0}
+
+(e−hu,ξi − 1)m(dξ)
+
++(cid:28)2uαu − B⊤(u) − γ
+
+30
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+(4.16)
+
+=
+
+(cid:19)µ(dξ), x(cid:29)(cid:19)e−hu,xi
+
+1
+
+kξk2 ∧ 1
+
+d \{0}(cid:18) e−hu,ξi − 1 + hχ(ξ), ui
++ZS+
+2 Xi,j,k,l
+Aijkl(x)uij ukle−hu,xi + hb + B(x),∇e−hu,xii
+− (c + hγ, xi)e−hu,xi
++ZS+
++ZS+
+
+(e−hu,x+ξi − e−hu,xi)m(dξ)
+
+d \{0}
+
+(e−hu,x+ξi − e−hu,xi + hχ(ξ),∇e−hu,xii)M (x, dξ).
+Indeed, in order to obtain the form of the diﬀusion part, observe that we
+have by symmetrization
+
+d \{0}
+
+1
+
+2huαu, xi = 2Xi,j,k,l
+2 Xi,j,k,l
+2 Xi,j,k,l
+
+=
+
+=
+
+1
+
+αjkxiluijukl
+
+Aijkl(x)uij ukl;
+
+(xikαjl + xilαjk + xjkαil + xjlαik)uijukl
+
+see (2.13).
+
+According to Theorem B.3, the linear hull M of {e−hu,·i | u ∈ S++
+
+d } is
+dense in S+ with respect to the family of seminorms pk,+ deﬁned in (B.2).
+Denoting the right-hand side of (2.12) by A♯, we now claim that for every
+f ∈ S+
+(4.17)
+
+lim
+
+n→∞kA♯fn − A♯fk∞ = 0,
+
+where fn ∈ M such that limn→∞ pk,+(f − fn) = 0 for every k. Indeed, this is
+obvious for the diﬀerential operator part of A♯. By choosing χ(ξ) = 1{kξk≤1}ξ
+and by denoting g(x) := fn(x) − f (x), we obtain the following estimate for
+the integral part:
+
+(cid:13)(cid:13)(cid:13)(cid:13)ZS+
+d \{0}(cid:18) g(x + ξ) − g(x) − h1{kξk≤1}ξ,∇g(x)i
+d \{0}∩{kξk≤1}(cid:13)(cid:13)(cid:13)(cid:13)(cid:18) Xk,l,m,n(cid:18)Z 1
+≤ZS+
+
+ij(dξ) + µ−ij(dξ))
+
+∂2g(x + sξ)
+∂xkl ∂xmn
+
+kξk2 ∧ 1
+
+0
+
+× (µ+
+
+(cid:19)xijµij(dξ)(cid:13)(cid:13)(cid:13)(cid:13)∞
+(1 − s) ds(cid:19)ξklξmn
+
+kξk2 (cid:19)xij(cid:13)(cid:13)(cid:13)(cid:13)∞
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+31
+
+k(g(x + ξ) − g(x))xijk∞(µ+
+
+ij(dξ) + µ−ij(dξ))
+
+d \{0}∩{kξk≤1}
+
+kξk2
+kξk2 (µ+
+
+ij(dξ) + µ−ij(dξ))
+
+d \{0}∩{kξk>1}
+
++ZS+
+≤ C1p3,+(g)ZS+
++ZS+
+
+d \{0}∩{kξk>1}
+
+(kg(x + ξ)(kx + ξk)k∞ + kg(x)xijk∞)
+× (µ+
+d ) + µ−ij(S+
+
+ij(dξ) + µ−ij(dξ))
+
+ij(S+
+
+≤ C2p3,+(g)(µ+
+
+d )) ≤ C3, p3,+(g),
+where C1, C2 and C3 denote some constants and µ+
+ij, µ−ij correspond to the
+Jordan decomposition µij = µ+
+ij − µ−ij . In the second last inequality, we use
+the estimate xij ≤ kx + ξk. The same as above can be shown for the measure
+m(dξ), whence (4.17) holds true. As by the ﬁrst part of the proof, we have
+A♯ = A for all elements of M, (4.17) implies
+
+lim
+
+n→∞kAfn − A♯fk∞ = 0.
+
+Since the inﬁnitesimal generator of every Feller process is a closed operator,
+it follows that S+ ⊂ D(A) and A = A♯ on S+. (cid:3)
+
+4.3. Linear transformations and canonical representation.
+
+In this sub-
+section, we shall deal with linear transformations of aﬃne processes. The
+proposition below states how the parameters of an aﬃne process on S+
+d
+change under such linear maps, which allows us to establish a canonical
+representation of an aﬃne process.
+
+Proposition 4.13. Suppose X is an aﬃne process on S+
+
+eters α, βij, c, γ, m, µ as speciﬁed in Deﬁnition 2.3 and b ∈ S+
+more, let G : S+
+vertible. Then, Y := gXg⊤ is an aﬃne process on S+
+
+d with param-
+d . Further-
+d → S+
+d , x 7→ gxg⊤ be an automorphism, where g ∈ Md is in-
+d , whose parameters,
+denoted bye·, are given as follows with respect to the truncation function
+eχ = gχ(g−1ξ(g⊤)−1)g⊤:
+eb = gbg⊤,
+ec = c,
+em(dξ) = G∗m(dξ),
+eα = gαg⊤,
+eγ = (g⊤)−1γg−1,
+
+32
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+kξk2 ∧ 1
+
+kg−1ξ(g⊤)−1k2 ∧ 1(cid:19)(g⊤)−1G∗µ(dξ)g−1,
+
+eµ(dξ) =(cid:18)
+eB⊤(u) = (g⊤)−1B⊤(g⊤ug)g−1,
+
+where G∗m (G∗µ) is the pushforward of the measure m (µ, resp.).
+
+Proof. Let us consider the process
+
+t = gX g−1y(g⊤)−1
+Y y
+
+t
+
+g⊤,
+
+for which we have
+
+E[exp(−hu, Y y
+
+t i)]
+
+t
+
+= E[exp(−hu, gX g−1y(g⊤)−1
+= E[exp(−hg⊤ug, X g−1y(g⊤)−1
+= exp(−φ(t, g⊤ug) − hψ(t, g⊤ug), g−1y(g⊤)−1i)
+= exp(−φ(t, g⊤ug) − h(g⊤)−1ψ(t, g⊤ug)g−1, yi).
+
+g⊤i)]
+i)]
+
+t
+
+to see that Y is an aﬃne process on S+
+quently obtain
+
+Deﬁne now eφ and eψ by
+
+eφ(t, u) = φ(t, g⊤ug)
+∂eφ(t, u)
+
+∂φ(t, g⊤ug)
+
+∂t
+
+∂t
+
+=
+
+= F (ψ(t, g⊤ug))
+
+= hb, ψ(t, g⊤ug)i + c −ZS+
+= hgbg⊤,eψ(t, u)i + c −ZS+
+= heb,eψ(t, u)i + c −ZS+
+
+d \{0}
+
+and
+
+eψ(t, u) = (g⊤)−1ψ(t, g⊤ug)g−1,
+
+d . Using (2.14) and (2.16), we conse-
+
+(e−hψ(t,g⊤ug),ξi − 1)m(dξ)
+
+d \{0}
+
+(e−h eψ(t,u),gξg⊤i − 1)m(dξ)
+
+d \{0}
+(e−h eψ(t,u),ξi − 1)G∗m(dξ).
+
+Due to the uniqueness of the L´evy–Khintchine decomposition, this implies
+
+that b transforms toeb = gbg⊤, c remains constant and m becomes em(dξ) =
+G∗m(dξ). For eψ we proceed similarly, that is, we have
+∂eψ(t, u)
+
+= (g⊤)−1 ∂ψ(t, g⊤ug)
+
+g−1 = (g⊤)−1R(ψ(t, g⊤ug))g−1
+
+∂t
+
+∂t
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+33
+
+= (g⊤)−1(cid:18)−2ψ(t, g⊤ug)αψ(t, g⊤ug) + B⊤(ψ(t, g⊤ug)) + γ
+−ZS+
+
+d \{0}(cid:18) e−hψ(t,g⊤ug),ξi − 1 + hχ(ξ), ψ(t, g⊤ug)i
+
+(cid:19)µ(dξ)(cid:19)g−1,
+from which it can be seen that α transforms to eα = gαg⊤, γ becomes eγ =
+
+(g⊤)−1γg−1, and µ changes to
+
+kξk2 ∧ 1
+
+for every E ∈ B(S+
+(4.18)
+
+kξk2 ∧ 1
+
+eµ(E) = (g⊤)−1(cid:18)ZE(cid:18)
+
+kg−1ξ(g⊤)−1k2 ∧ 1(cid:19)G∗µ(dξ)(cid:19)g−1
+d \ {0}). Moreover, since eχ = gχ(g−1ξ(g⊤)−1)g⊤
+
+eB⊤(u) = (g⊤)−1B⊤(g⊤ug)g−1.
+
+By means of Proposition 4.13, we can derive a canonical representation
+
+(cid:3)
+
+for aﬃne processes.
+
+Proposition 4.14. Let X be an aﬃne process on S+
+α, βij, c, γ, m, µ as speciﬁed in Deﬁnition 2.3 and b ∈ S+
+an automorphism G : S+
+
+d with parameters
+d . Then there exists
+d , x 7→ gxg⊤ such that the parameters of the
+
+aﬃne process Y = gXg⊤, denoted bye·, are as in Proposition 4.13 with
+
+r ,
+
+where we deﬁne
+
+d → S+
+eb = θ = diag(θ11, . . . , θdd),
+0(cid:19) .
+
+r =(cid:18) Ir
+
+I d
+
+0
+
+0
+
+eα = I d
+
+Proof. By Proposition 4.13, the parameters of Y = gXg⊤ transform as
+
+Since α and b ∈ S+
+phism on S+
+that
+
+d , they are jointly diagonalizable through an automor-
+d . More precisely, there exists an invertible matrix g ∈ Md such
+
+eα = gαg⊤,
+
+eb = gbg⊤.
+
+and
+
+gαg⊤ = I d
+r
+
+with r = rk(α)
+
+gbg⊤ = diag(θ11, . . . , θdd) =: θ,
+
+where rk denotes the rank of a matrix. For the proof of this fact, we refer
+to [22], Theorem 8.7.1. (cid:3)
+
+34
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+4.4. Condition on the constant drift. This subsection is devoted to show
+that condition (2.4) holds true for any aﬃne process X on S+
+d . Since the
+automorphism G : S+
+d in Proposition 4.14 is order preserving, it suﬃces
+to consider aﬃne processes of the canonical form as speciﬁed in Proposition
+4.14. The following result is a consequence of the L´evy–Khintchine formula
+on R+.
+
+d → S+
+
+Lemma 4.15. Let Y be an aﬃne process of canonical form as speciﬁed
+d ,
+
+in Proposition 4.14 with parameters denoted bye·. Then, for any y ∈ ∂S+
+
+we have
+
+(4.19)
+
+∇ det(y) ∈ NS+
+
+d
+
+(y),
+
+ZS+
+
+d \{0}
+
+heχ(ξ),∇ det(y)ifM (y, dξ) < ∞
+
+and
+
+(4.20)
+
+hθ,∇ det(y)i + heB(y),∇ det(y)i −ZS+
+2 Xi,j,k,leAijkl(y) ∂ij ∂kl det(y) ≥ 0.
+
++
+
+1
+
+d \{0}
+
+heχ(ξ),∇ det(y)ifM (y, dξ)
+
+d and let f ∈ C∞c (S+
+
+Proof. Let y ∈ ∂S+
+
+d ) be a function with f ≥ 0 and
+f (x) = det(x) for all x in a neighborhood of y. Then, for any v ∈ R+, the
+d ) and thus in D(eA), where eA denotes
+function x 7→ e−vf (x) − 1 lies in C∞c (S+
+the inﬁnitesimal generator of Y . Note that f (y) = 0. Hence, the limit
+tZS+
+eA(e−vf (y) − 1) = lim
+(e−vf (ξ) − 1)ept(y, dξ)
+tZR+
+(e−vz − 1)pf
+
+= lim
+t→0+
+
+t (y, dz),
+
+t→0+
+
+1
+
+1
+
+d
+
+and pf
+probability measure supported on R+.
+
+exists for any v ∈ R+, where ept(y, dξ) denotes the transition function of Y ,
+t (y, dz) = f∗ept(y, dz) is the pushforward of ept(y,·) under f , which is a
+
+Using the same arguments as in Proposition 4.9 [i.e., applying Lemma 4.5
+
+as done below (4.4)], and noting that f (y) = 0, we conclude that
+
+(4.21)
+
+1
+
+=
+
+v 7→ eA(e−vf (y) − 1)
+2 Xi,j,k,leAijkl(y)(v2 ∂ijf (y) ∂klf (y) − v ∂ij ∂klf (y))
+− vhθ + eB(y),∇f (y)i
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+35
+
++ZS+
++ZS+
+
+d \{0}
+
+d \{0}
+
+h∇ det(y), xi =
+
+(e−vf (y+ξ) − 1)em(dξ)
+(e−vf (y+ξ) − 1 + vheχ(ξ),∇f (y)i)fM (y, dξ)
+det(y + tx)(cid:12)(cid:12)(cid:12)(cid:12)t=0(cid:26)≥ 0,
+
+x ∈ S+
+d ,
+x = y.
+
+d
+dt
+
+= 0,
+
+is the logarithm of the Laplace transform of an inﬁnitely divisible distribu-
+tion on R+. Note that
+
+(y) and the admissibility condition (2.9) implies (4.19).
+Hence, ∇ det(y) ∈ NS+
+By the L´evy–Khintchine formula on R+ (see [49], Theorem 3.21), the linear
+coeﬃcient in v in (4.21) has to be nonpositive. But this is now just (4.20),
+whence the lemma is proved. (cid:3)
+
+d
+
+It now remains to show that (2.4) follows from (4.20). For this purpose,
+d . Thus, we state
+
+it suﬃces to evaluate (4.20) at diagonal elements y ∈ ∂S+
+the following lemma.
+
+Lemma 4.16. Let y ∈ S+
+
+have
+
+1
+2
+
+dXi,j,k,l=1
+
+(yik(I d
+
+r )jl + yil(I d
+
+d be diagonal, and let f ∈ C∞c (S+
+∂2f (x)
+
+r )jk + yjk(I d
+
+r )il + yjl(I d
+
+r )ik)
+
+d ). Then we
+
+=
+
+1
+2
+
+(yii1{j≤r} + yjj1{i≤r})(cid:18) ∂2f (x)
+dXi,j=1
+
+∂x2
+ij
+
+Proof. Obvious. (cid:3)
+
+∂xij ∂xkl(cid:12)(cid:12)(cid:12)(cid:12)x=y
+∂xijxji(cid:12)(cid:12)(cid:12)(cid:12)x=y(cid:19).
+
+∂2f (x)
+
++
+
+(cid:12)(cid:12)(cid:12)(cid:12)x=y
+
+Next, we calculate the partial derivatives of the determinant.
+Lemma 4.17. Let y ∈ S+
+
+d be diagonal, y = diag(y11, y22, . . . , ydd). Then
+
+we have
+
+∂ det(x)
+
+∂xij
+
+0,
+
+Yk6=i
+
+=
+(cid:12)(cid:12)(cid:12)(cid:12)x=y
+dYk=1,k6=i,k6=j
+
+= −
+
+ykk,
+
+if i = j,
+
+else,
+
+ykk
+
+for 1 ≤ i < j ≤ d,
+
+= 0
+
+for 1 ≤ i ≤ j ≤ d,
+
+and
+
+∂2 det(x)
+
+∂xijxji (cid:12)(cid:12)(cid:12)(cid:12)x=y
+(cid:12)(cid:12)(cid:12)(cid:12)x=y
+
+∂x2
+ij
+
+∂2 det(x)
+
+36
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+where the empty product is deﬁned to be 1.
+
+Proof.
+
+In dimension d = 2, the assertion is easily checked, as det(y) =
+
+y11y22 − y12y21. Therefore, we have
+
+∂11 det(y) = y22,
+
+∂22 det(y) = y11,
+
+∂12 det(y) = ∂21 det(y) = 0
+
+as well as
+
+∂2
+11 det(y) = ∂2
+
+22 det(y) = ∂2
+
+12 det(y) = ∂2
+
+21 det(y) = 0,
+
+∂12 ∂21 det(y) = ∂21 ∂12 det(y) = −1.
+
+For dimension strictly larger than 2, we employ a combinatorial argument.
+Recall Leibniz’s deﬁnition of the determinant,
+
+(4.22)
+
+det(x) =Xσ∈Σ
+
+sgn(σ)
+
+xkσ(k),
+
+dYk=1
+
+where σ is an element of the permutation group Σ on the set {1, 2, . . . , d}
+and sgn denotes the signum function on Σ, that is, sgn = 1 if σ is an even
+permutation and sgn = −1 if it is odd. Diﬀerentiation of (4.22) with respect
+to xij yields
+
+=(cid:18)Xσ∈Σ
+=(cid:18)Xσ∈Σ
+
+xkσ(k)(cid:19)(cid:12)(cid:12)(cid:12)(cid:12)x=y
+sgn(σ)1{σ(i)=j}Yk6=i
+sgn(σ)1{σ(i)=j}1{σ(j)=i} Yk6=i6=j
+
+Thus, for the second derivative we have
+∂2 det(x)
+
+∂xij
+
+∂ det(x)
+
+(cid:12)(cid:12)(cid:12)(cid:12)x=y
+∂xij ∂xji(cid:12)(cid:12)(cid:12)(cid:12)x=y
+
+ykk,
+
+0,
+
+=
+Yk6=i
+xkσ(k)(cid:19)(cid:12)(cid:12)(cid:12)(cid:12)x=y
+
+where the last equality holds since y is diagonal. For ∂2
+is obvious. (cid:3)
+
+ij det(x), the statement
+
+if i = j,
+
+else.
+
+= − Yk6=i6=j
+
+ykk,
+
+We are prepared to prove the admissibility condition on the constant drift.
+
+Proposition 4.18. Let X be an aﬃne process on S+
+
+d , then (2.4) holds,
+
+that is,
+
+b (cid:23) (d − 1)α.
+Proof. Since the automorphism G : S+
+
+order preserving, it suﬃces to show that (4.20) in Lemma 4.15 implies
+
+d → S+
+
+d
+
+in Proposition 4.14 is
+
+(4.23)
+
+θ (cid:23) (d − 1)I d
+r .
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+37
+
++
+
+1
+2
+
+=
+
+1
+
+−
+
+((yii1{j≤r} + yjj1{i≤r})(∂2
+
+(eB(y))ij ∂ij det(y)
+(eχ(ξ))ij ∂ij det(y)(cid:19)fM (y, dξ)
+
+We show that θmm ≥ d − 1, if r ≥ m. To this end, take again some diagonal
+y ∈ ∂S+
+d of form y = diag(y11 > 0, . . . , ymm = 0, . . . , ydd > 0). By Lemmas 4.16
+and 4.17, we obtain
+dXi=1
+θii ∂ii det(y) +Xi,j
+d \{0}(cid:18)Xi,j
+−ZS+
+dXi,j=1
+dXi=1(cid:18)θiiYk6=i
+ykk(cid:19) +Xl6=m(cid:18)eβll
+ykk(cid:19)
+mmyll Yk6=m
+(eχ(ξ))mmyllQk6=m ykk
+−Xl6=mZS+
+eµll(dξ)
+ykk1{i≤r}(cid:19)
+2Xi6=j(cid:18)Yk6=j
+ykk1{j≤r} +Yk6=i
+ykk(cid:18)Xl6=m(cid:18)eβll
+mmyll − yllZS+
+= θmm Yk6=m
+− (d − 1)Yk6=m
+AsQk6=m ykk > 0 and by (2.11) also
+(cid:18)eβll
+mmyll − yllZS+
+
+kξk2 ∧ 1 eµll(dξ)(cid:19) ≥ 0
+(eχ(ξ))mm
+
+for l 6= m, letting yll → 0, l 6= m yields θmm ≥ d − 1 for r ≥ m. Relabeling of
+indices then proves (4.23). (cid:3)
+
+kξk2 ∧ 1 eµll(dξ)(cid:19)(cid:19)
+(eχ(ξ))mm
+
+d \{0}
+
+kξk2 ∧ 1
+
+ykk + Yk6=m
+
+ykk1{m≤r} ≥ 0.
+
+ij det(y) + ∂ij ∂ji det(y)))
+
+d \{0}
+
+d \{0}
+
+5. Suﬃcient conditions for the existence and uniqueness of aﬃne pro-
+In this section, we prove that for a given admissible parameter set
+cesses.
+α, b, βij, c, γ, m, µ satisfying the conditions of Deﬁnition 2.3, there ex-
+ists a unique aﬃne process on S+
+d , whose inﬁnitesimal generator A is of
+form (2.12). Our approach to derive this result is to consider the martingale
+problem for the operator A. In order to prove uniqueness for this martingale
+problem, we shall need the following existence and uniqueness result for the
+generalized Riccati diﬀerential equations (2.14) and (2.15).
+
+38
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+5.1. Generalized Riccati diﬀerential equations. We ﬁrst derive some prop-
+
+erties of the function R given in (2.17).
+
+Lemma 5.1. R is analytic on S++
+S+
+d .
+
+d
+
+Proof. That R is analytic on S++
+
+d
+
+(see, e.g., [16], Lemma A.2).
+Now let δ > 0, and deﬁne
+
+and quasi-monotone increasing on
+
+follows by dominated convergence
+
+Rδ(u) = −2uαu + B⊤(u) + γ −Z{kξk≥δ}(cid:18) e−hu,ξi − 1 + hχ(ξ), ui
+
+kξk2 ∧ 1
+
+(cid:19)µ(dξ)
+
+= −2uαu + γ +(cid:18)B⊤(u) −Z{kξk≥δ}
++Z{kξk≥δ}(cid:18) 1 − e−hu,ξi
+kξk2 ∧ 1 (cid:19)µ(dξ).
+
+hχ(ξ), ui
+kξk2 ∧ 1
+
+µ(dξ)(cid:19)
+
+Now, the map u 7→ −2uαu + γ is quasi-monotone increasing, as it is shown
+in Step 3 of the proof of Proposition 4.9. Furthermore, it follows from the
+admissibility condition (2.11) that
+
+u 7→ B⊤(u) −Z{kξk≥δ}
+
+hχ(ξ), ui
+kξk2 ∧ 1
+
+µ(dξ)
+
+is a quasi-monotone increasing linear map on S+
+of
+
+d . Finally, the quasi-monotonicity
+
+u 7→Z{kξk≥δ}(cid:18) 1 − e−hu,ξi
+
+kξk2 ∧ 1 (cid:19)µ(dξ)
+
+is a consequence of the monotonicity of the exponential and that supp(µ) ⊆
+S+
+d .
+By dominated convergence, we have limδ→0 Rδ(u) = R(u) pointwise for
+d . Hence, the quasi-monotonicity carries over to R. Indeed, choose
+such that u (cid:22) v and hv − u, xi = 0. Then we have for all δ,
+d
+
+each u ∈ S+
+x, u, v ∈ S+
+hRδ(v) − Rδ(u), xi ≥ 0. Thus,
+
+hRδ(v) − Rδ(u), xi → hR(v) − R(u), xi ≥ 0,
+
+as δ → 0, which proves that R is quasi-monotone increasing. (cid:3)
+
+Lemma 5.2. There exists a constant K such that
+
+(5.1)
+
+hu, R(u)i ≤
+
+K
+2
+
+(kuk2 + 1),
+
+u ∈ S+
+d .
+
+(5.2)
+
+Set now
+
+d ∩ {kξk > 1})
+
+(e−hu,ξi − 1)µ(dξ)
+
+d \{0}∩{kξk>1}
+
+−ZS+
+(cid:22) −2uαu + B⊤(u) + γ + µ(S+
+(cid:22) B⊤(u) + γ + µ(S+
+−ZS+
+
+d \{0}∩{kξk>1}
+
+d ∩ {kξk > 1}),
+
+(e−hu,ξi − 1)µ(dξ) (cid:22)ZS+
+d ∩ {kξk > 1}) ∈ S+
+d .
+
+γ := γ + µ(S+
+
+where we use that
+
+µ(dξ).
+
+d \{0}∩{kξk>1}
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+39
+
+Proof. We may assume, without loss of generality, that the truncation
+function in Deﬁnition 2.3 takes the form χ(ξ) = 1{kξk≤1}ξ [otherwise adjust
+B(u) accordingly]. Then, for all u ∈ S+
+R(u) = −2uαu + B⊤(u) + γ −ZS+
+
+d \{0}∩{kξk≤1}(cid:18) e−hu,ξi − 1 + hξ, ui
+
+d we have
+
+µ(dξ)
+
+|
+
+kξk2
+≥0
+
+{z
+
+(cid:19)
+}
+
+By (5.2), we obtain, for u ∈ S+
+
+d , that
+
+hu, R(u)i ≤ hu, B⊤(u)i + hu, γi,
+
+from which we derive the existence of a positive constant K such equation
+(5.1) holds. (cid:3)
+
+Here is our main existence and uniqueness result for the generalized Ric-
+
+cati diﬀerential equations (2.14) and (2.15).
+
+Proposition 5.3. For every u ∈ S++
+, there exists a unique global R+×
+-valued solution (φ, ψ) of (2.14) and (2.15). Moreover, φ(t, u) and ψ(t, u)
+
+d
+
+d
+
+S++
+are analytic in (t, u) ∈ R+ × S++
+
+d
+
+.
+
+Proof. We only have to show that, for every u ∈ S++
+
+, there exists a
+unique global S++
+-valued solution ψ of (2.15), as then φ is uniquely deter-
+mined by integrating (2.14) and has the desired properties by admissibility
+of the parameter set.
+
+d
+
+d
+
+Let u ∈ S++
+
+d
+
+. Since R is analytic on S++
+
+[14], Theorem 10.4.5) yield there exists a unique local S++
+ψ(t, u) of (2.15) for t ∈ [0, t+(u)), where
+
+d
+
+d
+
+, standard ODE results (e.g.,
+-valued solution
+
+t+(u) = lim inf
+
+n→∞{t ≥ 0 | kψ(t, u)k ≥ n or ψ(t, u) ∈ ∂S+
+
+d } ≤ ∞.
+
+40
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+It thus remains to show that t+(u) = ∞. That ψ(t, u), and hence φ(t, u), is
+analytic in (t, u) ∈ R+ × S++
+d (see Remark 5.4 below),
+we ﬁrst have to regularize it. We thus deﬁne
+
+Since R may not be Lipschitz continuous at ∂S+
+
+then follows from [14], Theorem 10.8.2.
+
+d
+
+on S+
+
+kξk2
+
+d \{0}∩{kξk≤1}(cid:18) e−hu,ξi − 1 + hξ, ui
+
+(cid:19)µ(dξ).
+eR(u) = −2uαu + B⊤(u) + γ −ZS+
+It then follows as in Lemmas 5.1 and 5.2 that eR is quasi-monotone increasing
+d and that (5.1) holds for some constant eK. Moreover, eR is analytic on
+Sd. Hence, for all u ∈ Sd, there exists a unique local Sd-valued solution eψ of
+= eR(eψ(t, u)),
+eψ(0, u) = u,
+for all t ∈ [0,et+(u)) with maximal lifetime
+n→∞{t ≥ 0 | keψ(t, u)k ≥ n} ≤ ∞.
+From (5.1), we infer that for all u ∈ S+
+
+∂eψ(t, u)
+et+(u) = lim inf
+
+∂t
+
+Gronwall’s inequality (e.g., [14], (10.5.1.3)) implies
+
+∂tkeψ(t, u)k2 = 2heψ(t, u), ∂teψ(t, u)i ≤ eK(keψ(t, u)k2 + 1).
+
+d and t <et+(u),
+
+d
+
+ψ(t, u) (cid:23) eψ(t, u) ∈ S++
+
+d
+
+,
+
+t ∈ [0, t+(u)).
+
+d ,
+
+(5.3)
+
+d
+
+.
+
+d
+
+t <et+(u).
+
+t ≥ 0, for all 0 (cid:22) u (cid:22) v.
+
+Volkmann’s comparison Theorem 4.8 now yields
+
+keψ(t, u)k2 ≤ e eKt(kuk2 + 1),
+d . As eR is quasi-monotone increasing on S+
+Hence, et+(u) = ∞ for u ∈ S+
+0 (cid:22) eψ(t, u) (cid:22) eψ(t, v),
+Therefore and since eψ(t, u) is also analytic in u, Lemma 3.3 implies that
+eψ(t, u) ∈ S++
+for all (t, u) ∈ R+ × S++
+R(u) − eR(u) = −ZS+
+Hence, for u ∈ S++
+∂eψ(t, u)
+∂t − eR(eψ(t, u)) =
+
+We now carry this over to ψ(t, u) and assume without loss of generality,
+as in the proof of Lemma 5.2, that the truncation function in Deﬁnition 2.3
+takes the form χ(ξ) = 1{kξk≤1}ξ. Then
+
+∂t − eR(ψ(t, u)).
+
+(e−hu,ξi − 1)µ(dξ) (cid:23) 0,
+
+∂t − R(ψ(t, u)) (cid:22)
+
+Theorem 4.8 thus implies
+
+and t < t+(u), we have
+
+d \{0}∩{kξk>1}
+
+u ∈ S+
+d .
+
+∂ψ(t, u)
+
+∂ψ(t, u)
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+41
+
+Hence, t+(u) = lim inf n→∞{t ≥ 0 | kψ(t, u)k ≥ n}. Using (5.1) again, we now
+
+can show as for eψ that
+Hence t+(u) = ∞, as desired. (cid:3)
+
+kψ(t, u)k2 ≤ eKt(kuk2 + 1),
+
+t < t+(u).
+
+Remark 5.4. Lemma 5.1 states that the admissibility of the parame-
+ters α, βij, γ, µ implies quasi-monotonicity of R on S+
+d .9 Moreover, quasi-
+monotonicity just means that R is “inward pointing” close to the boundary
+d . Indeed, let u, x ∈ S+
+S+
+d with hu, xi = 0. Then hR(u), xi ≥ hγ, xi ≥ 0. Hence,
+if R were Lipschitz continuous on S+
+d , a deterministic variant of Theorem
+A.5 would imply the invariance of S+
+d with respect to (2.15) right away. How-
+ever, the map R might fail to be Lipschitz at ∂S+
+d (see the one-dimensional
+counterexample [16], Example 9.3), even though it is analytic on the inte-
+rior S++
+. Here, quasi-monotonicity plays the decisive role. It leads to the
+phenomenon that ψ(t, u) stays away from the boundary ∂S+
+d for u ∈ S++
+,
+which is of crucial importance in our analysis.
+
+d
+
+d
+
+5.2. The martingale problem for A. We are now prepared to study the
+martingale problem for the operator A given by (2.12). For the notion of
+martingale problems, we refer to [17], Chapter 4. We shall proceed in four
+steps. First, we approximate A by regular operators Aε,δ,n on the space S+
+of rapidly decreasing C∞-functions on S+
+d , deﬁned in (B.1). Second, using
+Theorem A.5 below, we show that there exists an S+
+d -valued c`adl`ag solution
+of the martingale problem for Aε,δ,n. Third, a subsequence of these solutions
+is shown to converge to an S+
+d ∪{∆}-valued c`adl`ag solution of the martingale
+problem for A. Finally, we show that this solution is unique, Markov and
+aﬃne, as desired.
+Note that we cannot employ Stroock’s [51] seminal existence and unique-
+ness results for martingale problems, since those are solved on Rn and require
+uniform elliptic diﬀusion parts. Neither of these is satisﬁed in our case.
+
+Now let (α, b, βij, c = 0, γ = 0, m, µ) be some admissible parameter set. Fix
+some ε, δ > 0 and n ∈ N. In order to bound the coeﬃcients and cut oﬀ the
+small jumps, we let
+
+ϕn ∈ C∞b (Sd),
+
+0 ≤ ϕn ≤ 1,
+
+(5.4)
+
+ϕn(x) =( 1,
+
+n
+kxk
+
+,
+
+kxk ≤ n,
+kxk ≥ n + 1.
+
+9We conjecture that the converse also holds: R is quasi-monotone on S+
+
+d and supp(µ) ⊆
+
+S+
+d if and only if the parameters α, βij , γ, µ are admissible.
+
+42
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+We then deﬁne the bounded and smooth parameters
+
+Bn(x) = B(ϕn(x)x),
+mδ(dξ) = m(dξ)1{kξk>δ},
+M δ,n(x, dξ) =(cid:28)ϕn(x)x,
+µ(dξ)
+kξk2 ∧ 1
+
+1{kξk>δ}(cid:29).
+
+Concerning the diﬀusion function Aijkl(x) given by (2.13), we ﬁrst ﬁnd
+an appropriate factorization which will allow us to write the continuous
+martingale part of X as a stochastic integral. Thereto observe that any S+
+d -
+valued solution, presumed that it exists, of the following symmetric matrix-
+valued diﬀusion SDE:
+
+(5.5)
+
+dZt =pZt dWt Σ + Σ⊤ dW ⊤t pZt,
+
+where W is a standard d × d-matrix Brownian motion and Σ ∈ Md with
+Σ⊤Σ = α, has quadratic variation dhZij, Zklit = Aijkl(Zt). Deﬁne now σkl(x) ∈
+Sd by
+
+(5.6)
+
+σkl(x) = √xM klΣ + Σ⊤M lk√x,
+
+where M kl
+
+ij = δikδjl. Then (5.5) can be written as
+
+dZt =
+
+dXk,l=1
+
+σkl(Zt) dWt,kl
+
+and Aijkl(x) =Pd
+
+m,n=1 σmn
+
+ij (x)σmn
+
+kl (x).
+
+Since σkl(x) involves the matrix square root, which is neither Lipschitz
+continuous nor bounded nor globally deﬁned, we need to introduce some
+approximating regularization in order to meet the assumptions of Theorem
+A.5 below. Thereto ﬁx some truncation function
+
+ηε(x) =(cid:26) 1,
+
+ηε ∈ C∞b (Sd),
+
+x ∈ S+
+d ,
+x /∈ S+
+d − εId,
+sε,n(x) =(cid:26) ηε(ϕn(x)x)(pϕn(x)x + εId − √εId),
+
+0,
+
+0,
+
+and deﬁne
+
+(5.7)
+
+if x ∈ S+
+otherwise.
+
+d − εId,
+
+Note that sε,n satisﬁes:
+• sε,n ∈ C∞b (Sd, Sd),
+• sε,n(x) = (pϕn(x)x + εId − √εId) on S+
+• limε→0+ sε,n(x) =pϕn(x)x.
+
+d ,
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+43
+
+With this, we can now deﬁne the regularization of σkl by
+
+(5.8)
+
+σkl
+ε,n(x) = sε,n(x)M klΣ + Σ⊤M lksε,n(x),
+
+which then satisﬁes the smoothness condition of Theorem A.5. Finally, we
+set
+
+(5.9)
+
+Aε,n
+
+ijkl(x) =
+
+(σmn
+
+ε,n (x))ij (σmn
+
+ε,n (x))kl
+
+dXm,n
+
+= (s2
+
+ε,n(x))ikαjl + (s2
++ (s2
+
+ε,n(x))jkαil + (s2
+
+ε,n(x))ilαjk
+
+ε,n(x))jlαik,
+
+and deﬁne the corresponding regularized operator on C0(Sd)
+
+Aε,δ,nf (x) =
+
+(5.10)
+
+Aε,n
+
+ijkl(x)
+
+∂2f (x)
+∂xij ∂xkl
+
+(bij + Bn
+
+ij(x))
+
+∂f (x)
+∂xij
+
+1
+
+2 Xi,j,k,l
++Xi,j
++ZS+
++ZS+
+
+d \{0}
+
+d \{0}
+
+(f (x + ξ) − f (x))mδ(dξ)
+
+(f (x + ξ) − f (x) − hχ(ξ),∇f (x)i)M δ,n(x, dξ).
+
+We now show that Aε,δ,n approximates A. We let S = S(Sd) and S+
+denote the locally convex spaces of rapidly decreasing C∞-functions on Sd
+and S+
+
+d deﬁned in (B.1) below, respectively.
+
+Lemma 5.5. S ⊂ D(Aε,δ,n) and, for every f ∈ S+,
+
+(5.11)
+
+ε,δ,nkAε,δ,nf − Afk∞ = 0.
+lim
+
+Proof. Since ϕn as deﬁned in (5.4) converges uniformly on compact
+sets to 1, this is clear for the diﬀerential operator part. Concerning the
+integral part, we have
+
+d \{0}
+
+(f (x + ξ) − f (x) − h1{kξk≤1}ξ,∇f (x)i)(M δ,n(x, dξ) − M (x, dξ))(cid:13)(cid:13)(cid:13)(cid:13)
+(cid:13)(cid:13)(cid:13)(cid:13)ZS+
+≤(cid:13)(cid:13)(cid:13)(cid:13)Xi,j ZS+
+d \{0}(cid:18) f (x + ξ) − f (x) − h1{kξk≤1}ξ,∇f (x)i
+
+kξk2 ∧ 1
+
+(cid:19)
+
+44
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
++(cid:13)(cid:13)(cid:13)(cid:13)Xi,j ZS+
+
+× xij(ϕn(x) − 1)µδ
+
+ij(dξ)(cid:13)(cid:13)(cid:13)(cid:13)
+(cid:19)
+d \{0}(cid:18) f (x + ξ) − f (x) − h1{kξk≤1}ξ,∇f (x)i
+× xij(1{kξk>δ} − 1)µij(dξ)(cid:13)(cid:13)(cid:13)(cid:13).
+
+kξk2 ∧ 1
+
+By dominated convergence the second term goes uniformly in x to 0, thus
+we only have to consider the ﬁrst one. By splitting the ﬁrst integral into
+
+R{kξk≤1}
+
+Hence, it remains to analyze
+
+, we note that kR{kξk≤1} k converges uniformly in x to 0.
+(f (x + ξ) − f (x))xij(ϕn(x) − 1)µij(dξ)(cid:13)(cid:13)(cid:13)(cid:13),
+
+which can be estimated by
+
++R{kξk>1}
+(cid:13)(cid:13)(cid:13)(cid:13)Xi,j Z{kξk>1}
+Xi,j(cid:18)Z{kξk>1}
++Z{kξk>1}
+
+kf (x + ξ)xij(ϕn(x) − 1)k(µ+
+
+ij(dξ) + µ−ij(dξ))
+
+kf (x)xij(ϕn(x) − 1)k(µ+
+
+ij(dξ) + µ−ij(dξ))(cid:19),
+
+ij, µ−ij correspond to the Jordan decomposition of µij = µ+
+
+where µ+
+ij − µ−ij. As
+f lies in S+, the second term converges uniformly to 0. For the ﬁrst one,
+observe that for every n
+
+kf (x + ξ)xij(ϕn(x) − 1)k ≤ kf (x + ξ)xijk ≤ kf (x + ξ)kkx + ξk,
+
+such that we can apply dominated convergence. Again, since f lies in S+,
+the ﬁrst integral converges uniformly in x to 0 as well. Hence (5.11) holds
+true, and S ⊂ D(Aε,δ,n) follows similarly. (cid:3)
+
+We now establish existence for the martingale problem for Aε,δ,n.
+Lemma 5.6. For every x ∈ S+
+f (Xt) −Z t
+
+X to the martingale problem for Aε,δ,n with X0 = x. That is,
+
+0 Aε,δ,nf (Xs) ds
+
+d there exists an S+
+
+d -valued c`adl`ag solution
+
+is a martingale, for all f ∈ S.
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+45
+
+Proof. Consider the following SDE of type (A.1):
+
+X ε,δ,n
+
+t
+
+(5.12)
+
+s
+
+0 (cid:18)b + Bn(X ε,δ,n
+= x +Z t
+dXk,l Z t
+
+σkl
+ε,n(X ε,δ,n
+
++
+
+0
+
+s
+
+) dWs,kl + Jt,
+
+) −ZS+
+
+d \{0}
+
+χ(ξ)M δ,n(X ε,δ,n
+
+s
+
+, dξ)(cid:19) ds
+
+t
+
+t
+
+Hence, it remains to show that there exists an S+
+
+where W is a d × d-matrix of standard Brownian motions and J a ﬁnite
+activity jump process with compensator mδ(dξ)+M δ,n(X ε,δ,n
+, dξ). Note that
+the quadratic variation of the continuous martingale part of X ε,δ,n
+is given
+by Aε,n
+ijkl(x) as deﬁned in (5.9). It thus follows by inspection that any c`adl`ag
+solution X ε,δ,n of (5.12) solves the martingale problem for Aε,δ,n.
+d -valued c`adl`ag solu-
+tion of (5.12). Let us recall the normal cone (2.23) to S+
+d . As b + Bn(x) −
+RS+
+χ(ξ) × M δ,n(x, dξ), σkl
+ε,n(x) and mδ(dξ) + M δ,n(x, dξ) are designed
+d \{0}
+to satisfy the assumptions of Theorem A.5 and since x + supp(mδ(·) +
+d , we only have to show that for all x ∈ ∂S+
+d for all x ∈ S+
+M δ,n(x,·)) ⊆ S+
+(x)
+and u ∈ NS+
+(5.13)
+
+d
+
+d
+
+hσkl
+ε,n(x), ui = 0,
+
+(5.14)
+
+*b + Bn(x) −ZS+
+dXk,l=1
+
+−
+
+1
+2
+
+d \{0}
+
+χ(ξ)M δ,n(x, dξ)
+
+Dσkl
+
+ε,n(x)σkl
+
+ε,n(x), u+ ≥ 0.
+
+Due to the deﬁnition of σkl
+ε,n(x), respectively, the deﬁnition of sε,n(x) given
+in (5.7), condition (5.13) is satisﬁed. Concerning (5.14), we have by (2.11)
+
+Moreover, it is shown in Lemma 5.7 below that
+
+d \{0}
+
+(cid:28)Bn(x) −ZS+
+*b −
+
+1
+2
+
+dXk,l=1
+
+χ(ξ)M δ,n(x, dξ), u(cid:29) ≥ 0.
+ε,n(x), u+ ≥ 0.
+
+ε,n(x)σkl
+
+Dσkl
+
+The lemma now follows from Theorem A.5. (cid:3)
+
+Lemma 5.7. Let x = OΛO⊤ ∈ S+
+
+the eigenvalues in decreasing order and let σkl
+
+d where Λ = diag(λ1, . . . , λd) contains
+ε,n be deﬁned by (5.8). Then,
+
+46
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+for all x ∈ S+
+d ,
+dXk,l=1
+
+1
+2
+
+Dσkl
+
+ε,n(x)σkl
+
+ε,n(x) =
+
+1
+2
+
+(5.15)
+
+1
+
+U i
+
+ϕn(x)(pλiϕn(x) + ε − √ε)
+dXi=1
+pλiϕn(x) + ε
+ϕn(x)(pλjϕn(x) + ε − √ε)
+2Xi6=j
+pλiϕn(x) + ε +pλjϕn(x) + ε
+2Xi,k,l
+ε,niZ ikl,
+2pλiϕn(x) + εh∇ϕn(x), σkl
+
+U i
+
+λi
+
+1
+
++
+
++
+
+mn = ((Σ⊤Σ)O)miOni + ((Σ⊤Σ)O)niOmi and Z ikl
+
+mn = OmiOkiΣln +
+
+where U i
+OniOkiΣlm.
+
+Furthermore, if
+
+(5.16)
+
+then
+
+(5.17)
+
+*b −
+
+1
+2
+
+b (cid:23) (d − 1)Σ⊤Σ,
+dXk,l=1
+
+ε,n(x)σkl
+
+Dσkl
+
+ε,n(x), u+ ≥ 0
+
+for all x ∈ ∂S+
+
+d and for all u ∈ NS+
+
+d
+
+(x).
+
+Proof. Let us denote
+
+C ε,n(x) =
+
+1
+2
+
+dXk,l=1
+
+Dσkl
+
+ε,n(x)σkl
+
+ε,n(x),
+
+and notice that
+
+C ε,n(x) =
+
+1
+
+2Xk,l(cid:18) d
+
+dt
+
+sε,n(x + tσkl
+
+ε,n(x))|t=0M klΣ
+
++ Σ⊤(M kl)⊤ d
+dt
+
+sε,n(x + tσkl
+
+ε,n(x))|t=0(cid:19).
+
+We now use the following formula from [29], Theorem 6.6.30:
+
+d
+dt
+
+f (V (t)) = O(t)(cid:18)Xi,j
+
+∆f (λi(t), λj(t))M ii[O(t)⊤V ′(t)O(t)]M jj(cid:19)O(t)⊤,
+where V (t) = O(t) diag(λ1(t), . . . , λd(t))O(t)⊤ is a family of symmetric ma-
+trices and ∆f (u, v) = (f (u)−f (v))
+for u 6= v and ∆f (u, u) = f′(u). This holds
+true if V (·) is continuously diﬀerentiable for t ∈ (a, b) and f (·) is continu-
+ously diﬀerentiable on an open real interval which contains all eigenvalues
+of V (t) for all t ∈ (a, b).
+
+(u−v)
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+47
+
+We now apply this formula to our case, where f (t) = √t and
+
+V (t) = ϕn(x + tσkl
+
+ε,n(x))(x + tσkl
+
+ε,n(x)) + εId.
+
+Since we take the derivative at t = 0, we only have to consider
+
+V (0) = O(ϕn(x)Λ + εId)O⊤,
+
+where O is the orthogonal matrix diagonalizing x and
+ε,n(x)ix + ϕn(x)σkl
+
+V ′(0) = h∇ϕn(x), σkl
+
+ε,n(x).
+
+Note that we do not have an explicit contribution of ηε which is part of the
+deﬁnition of sε,n, since ηε(S+
+d ) = 0. Some lines of calcula-
+tions then yield (5.15).
+
+d ) = 1 and ∇ηε(S+
+
+Let us now verify (5.17). Take an arbitrary x = OΛO⊤ ∈ ∂S+
+
+d and assume
+ﬁrst that it has rank d − 1, that is, λd = 0 and all other eigenvalues are
+strictly positive. By Lemma 4.1 and (2.23), the elements of NS+
+(x) can
+then be written as u = OKO⊤, where K = diag(0, . . . , 0, k) with k ≥ 0. Thus,
+(5.17) now reads
+
+d
+
+hb − C ε,n(x), OKO⊤i = k[O⊤bO − O⊤C ε,n(x)O]dd.
+
+As [O⊤U iO]dd = 2δid(O⊤Σ⊤ΣO)id and O⊤Z iklO = 2δidOki(ΣO)ld, we have
+
+K =(cid:18) 0
+
+0 k(cid:19)
+
+0
+
+with k ∈ S+
+can be written as
+
+d−r. This follows again from Lemma 4.1 and (2.23). Now, (5.17)
+
+hb − C ε,n(x), OKO⊤i
+
+=(cid:28)O⊤(cid:18)b −Xj≤r
+
+ϕn(x)(pλjϕn(x) + ε − √ε)
+pλjϕn(x) + ε + √ε
+
+Σ⊤Σ(cid:19)O, K(cid:29)
+
+≥ hO⊤(b − rΣ⊤Σ)O, Ki ≥ 0,
+
+ϕn(x)(pλjϕn(x) + ε − √ε)
+pλjϕn(x) + ε + √ε
+
+[O⊤Σ⊤ΣO]dd.
+
+≤ d − 1, we obtain by condition (5.16)
+
+[O⊤bO − O⊤C ε,n(x)O]dd ≥ [O⊤(b − (d − 1)Σ⊤Σ)O]dd ≥ 0,
+
+d with rk = d− 1. In the general case, we can
+(x)
+d with rk = r ≤ d − 1, the elements of NS+
+
+d
+
+[O⊤C ε,n(x)O]dd =Xj6=d
+
+ϕn(x)(√λj ϕn(x)+ε−√ε)
+
+√λjϕn(x)+ε+√ε
+
+SincePj6=d
+which proves (5.17) for x ∈ ∂S+
+proceed similarly. For x ∈ ∂S+
+are given by u = OKO⊤, where
+
+48
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+which proves the assertion. (cid:3)
+
+Combining Lemmas 5.5 and 5.6, we obtain the announced existence result
+
+solution X to the martingale problem for A with X0 = x. That is,
+
+d , there exists an S+
+
+d ∪ {∆}-valued c`adl`ag
+
+for the martingale problem for A.
+Lemma 5.8. For every x ∈ S+
+f (Xt) −Z t
+
+0 Af (Xs) ds
+
+is a martingale, for all f ∈ S+.
+
+Proof. By Lemma 5.6, there exists a solution X ε,δ,n to the martingale
+problem for Aε,δ,n with sample paths in D(S+
+d -valued
+c`adl`ag paths), and hence also in D(S+
+d ∪ {∆}). We now claim that (X ε,δ,n)
+is relatively compact considered as a sequence of processes with sample
+paths in D(S+
+d ∪{∆}).10 For the proof of this assertion, we shall make use of
+Theorems 9.1 and 9.4 in Chapter 3 of [17]. In order to meet the assumption
+of [17], Chapter 3, Theorem 9.4, we take C∞c (S+
+d ) as subalgebra of Cb(S+
+d ).
+Then, for every T > 0 and f ∈ C∞c (S+
+d ), we have
+
+d ) (the space of S+
+
+sup
+ε,δ,n
+
+Exhessup
+t∈[0,T ]|Aε,δ,nf (X ε,δ,n
+
+t
+
+)|i < ∞,
+
+since there exists a constant C such that kAε,δ,nfk∞ ≤ Cp3,+(f ) < ∞ for all
+n, ε, δ, where pk,+ are the semi-norms as deﬁned in (B.2) (see also the proof
+of Proposition 4.12). Thus, the requirements of [17], Chapter 3, Theorem
+9.4, are satisﬁed. Note that Y in the notation of [17], Chapter 3, Theorem
+9.4, corresponds in our case to f (X) such that [17], Chapter 3, Condition
+(9.17), is automatically fulﬁlled. It then follows by the conclusion of [17],
+Chapter 3, Theorem 9.4, that (f (X ε,δ,n
+)) is relatively compact [as family of
+processes with sample paths in D(R)] for each f ∈ C∞c (S+
+d ). Furthermore,
+since we consider S+
+d ∪ {∆}, the compact containment condition is always
+satisﬁed, that is, for every η > 0 and T > 0, there exists a compact set
+Γη,T ⊂ (S+
+
+t
+
+d ∪ {∆}) for which
+Px[X ε,δ,n
+
+t
+
+inf
+ε,δ,n
+
+∈ Γε,T for t ∈ [0, T ]] ≥ 1 − η
+
+10This means that the family of probability distributions associated to (X ε,δ,n) is rel-
+d ∪ {∆})) is compact. Here,
+d ∪ {∆}) and
+
+atively compact, that is, the closure of (Pε,δ,n) in P(D(S+
+P(D(S+
+Pε,δ,n the distribution of X ε,δ,n.
+
+d ∪ {∆})) denotes the family of probability distributions on D(S+
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+49
+
+holds true. By [17], Chapter 3, Theorem 9.1, and the fact that {1, C∞c (S+
+d )} is
+dense in C(S+
+d ∪{∆}), we therefore obtain that (X ε,δ,n) is relatively compact
+in D(S+
+d ∪ {∆}). Thus, there exists a subsequence (Pεk,δk,nk) of the proba-
+bility distributions associated to (X ε,δ,n) which converges in the Prohorov
+metric to some limit probability distribution. By [17], Chapter 3, Theorem
+3.1, this implies weak convergence of (Pεk,δk,nk ) and hence the subsequence
+(X εk,δk,nk) converges in distribution to some limit process X in D(S+
+d ∪{∆}).
+Combining this with Lemma 5.5 and [17], Chapter 4, Lemma 5.1, we
+conclude that X is a solution to the martingale problem for A. Hence, the
+lemma is proved. (cid:3)
+
+We can now prove the existence and uniqueness of an aﬃne process for
+
+any admissible parameter set.
+
+Proposition 5.9. Let (α, b, βij , c, γ, m, µ) be an admissible parameter
+d with inﬁnitesimal gen-
+d , where φ(t, u) and
+
+set. Then there exists a unique aﬃne process on S+
+erator (2.12), and (2.1) holds for all (t, u) ∈ R+ × S+
+ψ(t, u) are given by (2.14) and (2.15).
+
+Proof. Suppose ﬁrst that c = 0 and γ = 0. Let x ∈ S+
+
+d . Then Lemma
+5.8 implies the existence of an S+
+d ∪ {∆}-valued c`adl`ag solution X of the
+martingale problem for A with X0 = x. We now show that X is unique in
+distribution.
+
+Thereto, note that by [17], Chapter 4, Theorem 7.1,
+
+(5.18)
+
+(Af (s, Xs) + ∂sf (s, Xs)) ds
+
+f (t, Xt) −Z t
+
+0
+
+is a martingale for all rapidly decreasing functions f ∈ S(R+× S+
+d ), similarly
+deﬁned as S+ in (B.1). Now let φ and ψ be the unique solutions of the gener-
+alized Riccati diﬀerential equations (2.14) and (2.15), given by Proposition
+5.3. Fix t > 0, u ∈ S++
+
+, and some f ∈ S(R+ × S+
+
+d
+
+d ) such that
+0 ≤ s ≤ t, x ∈ S+
+d .
+
+f (s, x) = e−φ(t−s,u)−hψ(t−s,u),xi,
+
+Then
+
+Af (s, x) + ∂sf (s, x) = 0,
+
+0 ≤ s ≤ t, x ∈ S+
+d .
+
+In view of (5.18), the Laplace transform of Xt at u is thus given by
+Ex[e−hu,Xti] = Ex[f (t, Xt)] = f (0, x) − 0 = e−φ(t,u)−hψ(t,u),xi.
+
+(5.19)
+Since u ∈ S++
+d was arbitrary, we conclude that the distribution of Xt is
+uniquely determined for all t > 0. From [17], Chapter 4, Theorem 4.2, we
+infer that X is a Markov process with generator A on S+ and thus unique in
+
+50
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+law as solution of the martingale problem for A. Moreover, by (5.19), X is
+stochastically continuous and aﬃne. Thus, the proposition is proved under
+the premise that c = 0 and γ = 0.
+
+For general parameters c and γ, we employ a Feynman–Kac argument.
+Denote by B and (Qt) the aﬃne generator and corresponding Feller semi-
+group associated with (α, b, βij , c = 0, γ = 0, m, µ) from the ﬁrst part of the
+proof, respectively. Since x 7→ c +hγ, xi is nonnegative on S+
+d , it follows along
+the lines of [16], Proposition 11.1, that
+Ptf (x) = Ex[e−R t
+deﬁnes a Feller semigroup (Pt) on C0(S+
+Bf (x) − (c + hγ, xi)f (x) for f ∈ S+, which is the desired solution. (cid:3)
+
+0 c+hγ,Xsi dsf (Xt)]
+d ) with inﬁnitesimal generator Af (x) =
+
+5.3. An alternative existence proof for jump processes. For aﬃne pro-
+cesses without diﬀusion component (i.e., the admissible parameter α van-
+ishes), the existence question can be handled entirely as in the case of aﬃne
++ × Rn [16], Section 7. In this section, we elaborate an al-
+processes on Rm
+ternative existence proof in this speciﬁc case, by following the lines of [16].
+Note that the OU-type processes driven by matrix L´evy subordinators [3]
+are contained in the class of pure jump processes of this section.
+d → R of L´evy–Khintchine form on S+
+
+We call a function f : S+
+
+d , if
+
+f (u) = hb0, ui −ZS+
+
+(e−hu,ξi − 1)m0(dξ),
+d and m0 is a Borel measure supported on S+
+
+d \{0}
+
+d such that
+
+where b0 ∈ S+
+
+ZS+
+
+(kξk ∧ 1)m0(dξ) < ∞.
+Once again, we recall that a distribution on S+
+
+d \{0}
+
+d is inﬁnitely divisible if
+and only if its Laplace transform takes the form e−f (u), where f is of the
+above form (see also Step 1 in the proof of Proposition 4.9).
+
+Similarly to [16], we introduce the sets
+C := {f + c | f : S+
+CS := {ψ | u 7→ hψ(u), xi ∈ C for all x ∈ S+
+d }.
+
+d → R is of L´evy–Khintchine form on S+
+
+d , c ∈ R+},
+
+The following technical statement can be obtained easily by mimicking the
+proofs of the corresponding statements in [16], Proposition 7.2 and Lemma
+7.5:
+
+Lemma 5.10. We have:
+(i) C, CS are convex cones in C(S+
+d ).
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+51
+
+(ii) φ ∈ C, ψ ∈ CS imply φ(ψ) ∈ C.
+(iii) ψ, ψ1 ∈ CS imply ψ1(ψ) ∈ CS .
+(iv) If φk ∈ C converges to a continuous function φ on S+
+d , then φ ∈ C.
+A similar statement holds for sequences in CS.
+(v) Let (α = 0, b, βij, c, γ, m, µ) be an admissible parameter set. Then
+Rδ → R locally uniformly as δ → 0, where Rδ corresponds to the admis-
+sible parameter set (α = 0, b, βij, c, γ, m, µ1{kξk≥δ}). (Note that there is one
+ﬁxed truncation function.)
+
+Proposition 5.11. Let (α = 0, b, βij, c, γ, m, µ) be an admissible param-
+eter set. Then for all t ≥ 0, the solutions (φ(t,·), ψ(t,·)) of (2.14) and (2.15)
+lie in (C,CS).
+
+Proof. Suppose ﬁrst that11
+
+(5.20)
+
+ZS+
+
+d \{0}
+
+µij(dξ)
+kξk ∧ 1
+
+< ∞
+
+for all i ≤ j. Then equation (2.15) is equivalent to the integral equation
+(5.21)
+
+e eB⊤(t−s)eR(ψ(s, u)) ds,
+where R(u) = eR(u) + eB⊤(u) and eB⊤ ∈ L(Sd) is given by
+
+ψ(t, u) = e eB⊤t(u) +Z t
+eB⊤(u) := B⊤(u) −ZS+
+
+hχ(ξ), ui
+kξk2 ∧ 1
+
+Here, e eB⊤t(u) is the notation for the semi-group induced by ∂tx(t, u) =
+
+d \{0}
+
+µ(dξ).
+
+0
+
+(5.21).
+
+which is “inward pointing” at the boundary of S+
+e eB⊤t being a positive semi-group, that is, e eB⊤t maps S+
+
+eB⊤(x(t, u)), x(0, u) = u. Hence, the variation of constants formula yields
+Due to admissibility condition (2.11), we have that eB⊤ is a linear drift
+e eB⊤t ∈ CS and since eR(u) is given by
+eR(u) = γ −ZS+
+
+d \{0}
+with µ satisfying (5.20), we also have
+
+d , which is equivalent to
+d . Therefore,
+
+(e−hu,ξi − 1)
+kξk2 ∧ 1
+
+d into S+
+
+µ(dξ)
+
+(5.22)
+
+eR ∈ CS.
+
+11According to our conjecture in Section 2.1.4, this would already cover all possible
+
+jump measures if d ≥ 2.
+
+52
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+Using Picard’s iteration and Lemma 5.10, it follows that the sequence
+
+ψ(k) deﬁned as
+
+ψ(0)(t, u) := u,
+
+ψ(k+1)(t, u) := e eB⊤t(u) +Z t
+
+0
+
+e eB⊤(t−s)eR(ψ(k)(s, u)) ds,
+
+lies in CS, for each t ≥ 0, hence so does its limit ψ(t,·). Since F ∈ C, we have
+By an application of Lemma 5.10(v), the general case is then reduced to
+
+again by Lemma 5.10 φ(t,·) =R t
+
+0 F (ψ(s,·)) ds ∈ C.
+
+the former, since Rδ clearly satisﬁes (5.20). (cid:3)
+
+We are prepared to provide an alternative proof of Proposition 5.9 un-
+der the additional assumption α = 0: by Proposition 5.11, (φ(t,·), ψ(t,·))
+lie in (C,CS). Hence for all t ≥ 0, x ∈ S+
+d , there exists an inﬁnitely divisible
+sub-stochastic kernel pt(x, dξ) with Laplace-transform e−φ(t,u)−hψ(t,u),xi. The
+Chapman–Kolmogorov equations hold in view of properties (3.1) and (3.2).
+Whence, Proposition 5.9 follows.
+
+Remark 5.12. We note that the proof of statement (v) in Lemma 5.10 is
+much easier than the one of [16], Lemma 7.5, because α = 0. However, for α 6=
+0 and d ≥ 2, R cannot be locally uniformly approximated by functions Rδ of
+a pure jump type such as in Lemma 5.10. Indeed, otherwise one could infer
+as above the existence of an aﬃne process which is inﬁnitely decomposable
+and has nonvanishing diﬀusion component. This is in contradiction with
+Proposition 2.9 and in the case of pure diﬀusions it contradicts Example
+2.8.
+
+6. Proof of the main results.
+
+6.1. Proof of Theorem 2.4. The ﬁrst part is a summary of Propositions
+
+3.4, 4.9, 4.12 and 4.18. The second part follows from Proposition 5.9.
+
+6.2. Proof of Theorem 2.6. Let X be a conservative aﬃne process. It is
+
+shown in Proposition 4.12 that {e−hu,·i | u ∈ S++
+
+d } ⊂ D(A). Hence,
+
+e−hu,Xti − e−hu,xi −Z t
+
+0 Ae−hu,Xsi ds
+
+is a (eFt, Px)-martingale with eFt deﬁned in (2.18). From [31], Theorem II.2.42,
+
+combined with (4.16) and Remark 2.5, it then follows that X is a semi-
+martingale with characteristics (2.19)–(2.21). The canonical semimartingale
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+53
+
+representation ([31], Theorem II.2.34) of X is thus given by
+
+Xt = x + Bt + X c
+
+χ(ξ)(µX (ds, dξ) − ν(ds, dξ))
+
+t +Z t
+0 ZS+
+(ξ − χ(ξ))µX(ds, dξ),
+
+d \{0}
+
++Z t
+0 ZS+
+
+d \{0}
+
+where X c denotes the continuous martingale part, and µX the random mea-
+sure associated with the jumps of X. In order to establish representation
+(2.22), we ﬁnd it convenient to consider the vectorization, vec(X c) ∈ Rd2
+,
+of X c. The aim is now to ﬁnd a d2-dimensional Brownian motion fW on a
+possibly enlarged probability space and a d2 × d2-matrix-valued function σ
+such that
+
+(6.1)
+
+Thus, σ has to fulﬁll
+
+vec(X c
+
+t ) =Z t
+
+0
+
+σ(Xs) dfWs.
+
+(6.2)
+
+dhX c
+
+ij , X c
+
+klit = Xt,ikαjl + Xt,ilαjk + Xt,jkαil + Xt,jlαik
+
+= (σ(Xt)σ⊤(Xt))ijkl.
+
+As suggested by (5.6), we deﬁne the entries of the d2 × d2-matrix σ(x) in
+
+terms of σkl(x) given in (5.6) by
+
+(6.3)
+
+σijkl(x) = σkl
+
+ij (x) = √xikΣlj + Σ⊤il√xjk.
+
+Note that the (kl)th column of σ(x) is just the vectorization of the ma-
+trix σkl(x). We thus obtain Aijkl(x) = (σ(x)σ⊤(x))ijkl. Hence, σ(x) satisﬁes
+(6.2). Analogous to the proof of [45], Theorem 20.1, we can now build a
+
+d2-dimensional Brownian motion fW on an enlargement of the probability
+
+space such that (6.1) holds true. As the (ij)th entry of X c is given by
+
+X c
+
+t,ij = vec(X c
+
+0
+
+dXk,l=1
+
+t )ij =Z t
+σijkl(Xs) dfWs,kl
+(pXs dWsΣ + Σ⊤ dW ⊤s pXs)ij,
+
+=Z t
+
+0
+
+where W is the d × d-matrix Brownian motion satisfying vec(W ) =fW , we
+
+obtain the desired representation.
+
+f−1(E) =
+
+=
+
+=
+
+∞[n=1
+
+Bn =
+
+∞[n=1
+∞[n=1
+∞[n=1
+{y ∈ S+
+
+{y ∈ Sd | f (y) ∈ E + f (nId),ky − nIdk ≤ n} − nId
+
+d | g(y) ∈ E + g(nId),ky − nIdk ≤ n} − nId,
+
+54
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+6.3. Proof of Theorem 2.9. We ﬁrst prove some technical lemmas.
+
+Lemma 6.1. Let g : S+
+
+Cauchy’s functional equation
+
+d → R be an additive function, that is, g satisﬁes
+
+g(x + y) = g(x) + g(y),
+
+(6.4)
+Then g can be extended to an additive function f : Sd → R. Moreover, if g is
+measurable on S+
+d then f is measurable on Sd. In that case, f is a continuous
+linear functional, that is, f (x) = hc, xi for some c ∈ Sd.
+
+x, y ∈ S+
+d .
+
+Proof. The ﬁrst part follows from Lemma 4.4.
+Concerning measurability, let E ∈ B(R), a Borel measurable set. Then we
+
+have by the additivity of f ,
+
+{x + nId | x ∈ Sd, f (x) ∈ E,kxk ≤ n} − nId
+
+which is again a measurable set, in view of the measurability of g on S+
+d .
+
+For x ∈ Sd we write x = (xi)i, where 1 ≤ i ≤ d(d+1)
+
+. We introduce the
+additive functions fi : R → R via fi(xi) = f (0, . . . , 0, xi, 0, . . . , 0). By the just
+proved measurability of f , we infer that all fi are measurable functions on
+R. By [1], Chapter 2, Theorem 8, any additive measurable function on the
+real line is a continuous linear functional. Hence for each i, we infer the
+
+existence of ci ∈ R such that fi(xi) = cixi holds. Since f (x) =Pi fi(xi), it
+
+follows that f (x) = hc, xi for some c ∈ Sd. (cid:3)
+
+2
+
+Also, we consider Cauchy’s exponential equation for h : S+
+
+d → R+, that is,
+
+(6.5)
+
+h(x + y) = h(x)h(y),
+
+x, y ∈ S+
+d .
+
+Lemma 6.2. Suppose h : S+
+
+d → R+ is measurable, strictly positive, and
+satisﬁes (6.5). Then h(x) = e−hc,xi, for some c ∈ Sd. If h ≤ 1, then c ∈ S+
+d .
+Proof. Since h is strictly positive, its logarithm yields the well deﬁned
+d → R, g(x) := log h(x). Clearly g is additive, hence by the
+
+function g : S+
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+55
+
+ﬁrst part of Lemma 6.1, there exists a unique additive extension f : Sd → R.
+Also, f is measurable on S+
+d , hence by the second assertion of Lemma 6.1
+we have f (x) = −hc, xi, for some c ∈ Sd. The last statement follows from the
+monotonicity of the exponential and the self duality of S+
+
+d . (cid:3)
+
+Remark 6.3. The assumption of strict positivity of h in the preceding
+lemma is essential. Otherwise, there exist solutions h which are not of the
+asserted form.
+
+Lemma 6.2 is the main ingredient of the proof of the following character-
+
+ization concerning k-fold convolutions of Markov processes.
+
+Lemma 6.4. Let (P
+
+d ∈ P (i = 0, 1, . . . , k). Then
+
+(i)
+
+x )x∈S+
+x(k) = P(0)
+
+(k)
+
+x
+
+(6.7)
+
+(6.8)
+
+(1)
+
+P
+
+x(1) ∗ ··· ∗ P
+
+(6.6)
+if and only if for all t = (t1, . . . , tN ) ∈ RN
+N ∈ N0, there exists 0 < ρ(i)(t, u) ≤ 1 and ψ(t, u) ∈ S+
+u) = ρ(0)(t, u) and
+
+x = x(1) + ··· + x(k),
++ and u = (u(1), . . . , u(N )) ∈ (S+
+d such thatQk
+
+∀x(i) ∈ S+
+d ,
+
+d )N ,
+i=1 ρ(i)(t,
+
+x [e−PN
+E(j)
+
+i=1hu(i),Xtii] = ρ(j)(t, u)e−hψ(t,u),xi
+∀x ∈ S+
+
+d , j = 0, 1, . . . , k.
+
+Proof. We proceed similarly as in the proof of [16], Lemma 10.3. Fix
+
+k > 1, N > 1, t, u and set
+
+g(j)(x) := E(j)
+
+x [e−PN
+
+i=1hu(i),Xtii].
+
+By the deﬁnition of the convolution, (6.6) is equivalent to the following:
+
+g(1)(x(1)) · ··· · g(k)(x(k)) = g(0)(x)
+
+x = x(1) + ··· + x(k).
+Hence, the implication (6.7) ⇒ (6.8) is obvious. For the converse direction,
+we observe that g(i) are strictly positive on all of S+
+d . Thus, by (6.8) we have
+
+∀x(i) ∈ S+
+d ,
+
+g := g(1)/g(1)(0) = ··· = g(k)/g(k)(0) = g(0)/g(0)(0)
+
+and g is a measurable, strictly positive function on S+
+satisfying (6.5).
+d
+Hence, an application of Lemma 6.2 yields the validity of (6.7), where
+ρ(i)(t, u) = g(i)(0). By the deﬁnition of g(i), it follows that 0 < ρ(i)(t, u) ≤ 1
+and ψ(t, u) ∈ S+
+
+d . (cid:3)
+
+We are prepared to prove Theorem 2.9:
+
+56
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+d
+
+(k)
+
+(k)
+
+x )x∈S+
+
+(i) ⇒ (ii): due to Lemma 6.4, inﬁnite decomposability implies that X is
+aﬃne. Also, by the deﬁnition of inﬁnite decomposability and by Lemma
+x ) for each k ≥ 1 is an aﬃne process
+6.4 we have that the kth root (P
+with state space S+
+d with exponents ψ(t, u) and φ(t, u)/k. This implies that
+has admissible parameters (α, b/k, βij , c/k, γ, m/k, µ). Hence, the
+(P
+admissibility condition proved in Proposition 4.18 implies b/k (cid:23) (d−1)α (cid:23) 0,
+for each k, which is impossible, unless α = 0 or d = 1.
+(ii) ⇒ (iii): follows from Proposition 5.11, in view of the L´evy–Khintchine
+form of −φ(t,·) − hψ(t,·), xi, for each t > 0.
+(iii) ⇒ (i): by deﬁnition, every transition kernel pt(x, dξ) of X is inﬁnitely
+divisible with Laplace transform Pte−hu,xi = e−φ(t,u)−hx,ψ(t,u)i. For each k ≥
+1, the maps φ(k) := φ
+k , ψ(k) := ψ satisfy the properties (3.1) and (3.2). Also,
+inﬁnite divisibility implies that for each (t, x) ∈ R+ × S+
+d ,
+t e−hu,xi := e−φ(k)(t,u)−hψ(k)(t,u),x/ki
+
+Q(k)
+
+is the Laplace transform of a sub-stochastic measure on S+
+d . In conjunction
+with Properties (3.1) and (3.2) we may conclude that Q(k)
+gives rise to a
+Feller semigroup on C0(S+
+d ), which is aﬃne in y = x/k. Hence, we have
+constructed for each k ≥ 1 a kth root of X which is stochastic continuous by
+the deﬁnition of its characteristic exponents φ(k), ψ(k). Thus Theorem 2.9 is
+proved.
+
+t
+
+APPENDIX A: EXISTENCE AND VIABILITY OF A CLASS OF
+
+JUMP-DIFFUSIONS
+
+In this section, we study existence and viability in a nonempty closed
+
+convex set D ⊂ Rn of solutions to the equation
+
+(A.1)
+
+σ(Xs) dWs + Jt,
+
+Xt = x +Z t
+
+0
+
+b(Xs) +Z t
+
+0
+
+where b(x) ∈ Cb(Rn, Rn), σ(x) ∈ Cb(Rn, Rn×m) are Lipschitz continuous maps,
+W a standard m-dimensional Brownian motion and J a ﬁnite activity jump
+process with state-dependent, absolutely continuous compensator K(Xt, dξ) dt.
+We further assume that x 7→ K(x, Rn) is bounded.
+We tackle this problem in three steps. First, we derive some regularity and
+existence results for diﬀusion SDEs. These results are not in the standard
+literature, we thus provide full proofs. Second, we prove existence of a c`adl`ag
+solution X for (A.1). Finally, we provide suﬃcient conditions for X to be
+D-valued.
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+57
+
+A.1. Diﬀusion stochastic diﬀerential equations. Let (Ω,F, (Ft), P) be a
+ﬁltered probability space satisfying the usual conditions and carrying an
+m-dimensional standard Brownian motion W . We consider the following
+diﬀusion SDE:
+
+(A.2)
+
+Xt = x +Z t
+
+0
+
+b(Xs)1{θ≤s} ds +Z t
+
+0
+
+σ(Xs)1{θ≤s} dWs,
+
+where (θ, x) ∈ [0,∞] × Rn and b and σ are as above. Recall that X is a
+solution of (A.2) if X is continuous and (A.2) holds for all t ≥ 0 a.s. In
+particular, note that this null set depends on (θ, x).
+
+Lemma A.1. Fix T > 0 and let p ≥ 2. Furthermore, let Θ1, Θ2 be stop-
+ping times and for i = 1, 2, Ui, FΘi -measurable random variables. Consider
+the following equations:
+
+Xt = U1 +Z t
+Yt = U2 +Z t
+
+0
+
+0
+
+b(Xs)1{Θ1≤s} ds +Z t
+b(Ys)1{Θ2≤s} ds +Z t
+
+0
+
+0
+
+σ(Xs)1{Θ1≤s} dWs,
+
+σ(Ys)1{Θ2≤s} dWs.
+
+Then there exists a constant C depending only on p, T , n, the Lipschitz
+constants of b and σ and kbk∞,kσk∞ such that for 0 ≤ t ≤ T ,
+
+(A.3)
+
+s≤t kXs − Yskpi
+Ehsup
+≤ CE(cid:20)kU1 − U2kp + |Θ1 ∧ t − Θ2 ∧ t|p/2
+u≤skXu − Yukp ds(cid:21).
+
++Z t
+
+sup
+
+0
+
+Proof. By the same arguments as in the proof of [45], Lemma 11.5, we
+
+ﬁrst obtain the following estimate:
+
+sup
+
+s≤t kXs − Yskp
+≤ 3p−1(cid:18)kU1 − U2kp +(cid:18)Z t
+s≤t(cid:13)(cid:13)(cid:13)(cid:13)Z s
+
++ sup
+
+0
+
+Moreover,
+
+0 kb(Xs)1{Θ1≤s} − b(Ys)1{Θ2≤s}k ds(cid:19)p
+(σ(Xu)1{Θ1≤u} − σ(Yu)1{Θ2≤u}) dWu(cid:13)(cid:13)(cid:13)(cid:13)
+
+p(cid:19).
+
+0 kb(Xs)1{Θ1≤s} − b(Ys)1{Θ2≤s}k ds(cid:19)p
+(cid:18)Z t
+
+58
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+Θ2∧t
+
+≤ 2p−1(cid:18)(cid:18)Z (Θ1∨Θ2)∧t
+
+Θ1∧t
+
+For the stochastic integral part, we apply the Burkholder–Davis–Gundy in-
+equality
+
+kb(Ys)k ds(cid:19)p
++(cid:18)Z (Θ1∨Θ2)∧t
+(Θ1∨Θ2)∧t kb(Xs) − b(Ys)k ds(cid:19)p(cid:19)
+0 kb(Xs) − b(Ys)kp ds(cid:19)
+u≤s kXu − Yukp ds(cid:19).
+
+kb(Xs)k ds(cid:19)p
++(cid:18)Z t
+≤ 2p−1(cid:18)K|Θ1 ∧ t − Θ2 ∧ t|p + tp−1Z t
+≤ K(cid:18)tp/2|Θ1 ∧ t − Θ2 ∧ t|p/2 +Z t
+s≤t(cid:13)(cid:13)(cid:13)(cid:13)Z s
+(σ(Xu)1{Θ1≤u} − σ(Yu)1{Θ2≤u}) dWu(cid:13)(cid:13)(cid:13)(cid:13)
+E(cid:20)sup
+0 kσ(Xu)1{Θ1≤u} − σ(Yu)1{Θ2≤u}k2 du(cid:19)p/2(cid:21)
+≤ KE(cid:20)(cid:18)Z t
+kσ(Yu)k2 du(cid:19)p/2
++(cid:18)Z (Θ1∨Θ2)∧t
+≤ KE(cid:20)(cid:18)Z (Θ1∨Θ2)∧t
+(Θ1∨Θ2)∧t kσ(Xu) − σ(Yu)k2 du(cid:19)p/2(cid:21)
+
+p(cid:21)
+
+Θ1∧t
+
+sup
+
+0
+
+0
+
+Θ2∧t
+
+kσ(Xu)k2 du(cid:19)p/2
++(cid:18)Z t
+0 kσ(Xs) − σ(Ys)kp ds(cid:21)
+u≤s kXu − Yukp ds(cid:21),
+
+sup
+
+≤ KE(cid:20)|Θ1 ∧ t − Θ2 ∧ t|p/2 +Z t
+≤ KE(cid:20)|Θ1 ∧ t − Θ2 ∧ t|p/2 +Z t
+
+0
+
+where K always denotes a constant which varies from line to line. The last
+estimate in both inequalities follows from the the Lipschitz continuity of b
+and σ. By assembling these pieces, the proof is complete. (cid:3)
+
+Here is a fundamental existence result, which is not stated in this general
+
+form in the standard literature. Therefore, we provide a full proof.
+
+Theorem A.2. There exists a function Z : [0,∞] × Rn × Ω × R+ → Rn
+
+with the following properties:
+
+(i) Z(θ, x, ω, t) is continuous in (θ, x, t) for all ω.
+(ii) Z is B([0,∞] × Rn) ⊗ P-measurable.12
+12Here, P denotes the predictable σ-ﬁeld.
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+59
+
+(iii) Z(θ, x, ω, t) solves (A.2) for all (θ, x).
+(iv) Let Θ be a stopping time and U an FΘ measurable random variable,
+
+then Xt = Z(Θ, U, t) solves
+
+(A.4)
+
+Xt = U +Z t
+
+0
+
+b(Xs)1{Θ≤s} ds +Z t
+
+0
+
+σ(Xs)1{Θ≤s} dWs.
+
+Proof. For every (θ, x) ∈ [0,∞] × Rn, there exists a unique solution
+Xt(ω) = eZ(θ, x, ω, t) of (A.2), which is continuous in t. This is a conse-
+quence of the Lipschitz continuity of x 7→ b(x)1{θ≤s} and x 7→ σ(x)1{θ≤s}.
+Uniqueness is meant modulo indistinguishability. From estimate (A.3), we
+can deduce for p ≥ 2, x, y ∈ [−T, T ]n, 0 ≤ θ1, θ2 ≤ T and 0 ≤ t ≤ T ,
+
+s≤tkeZ(θ1, x, s) − eZ(θ2, y, s)kpi
+Ehsup
+≤ K(cid:18)kx − ykp/2 + |θ1 − θ2|p/2
+
++Z t
+
+0
+
+u≤s keZ(θ1, x, u) − eZ(θ2, y, u)kpi ds(cid:19)
+Ehsup
+
+for some constant K. Hence, by Gronwall’s lemma,
+
+s≤tkeZ(θ1, x, s) − eZ(θ2, y, s)kpi ≤ KeKT (kx − ykp/2 + |θ1 − θ2|p/2)
+Ehsup
+
+≤ Ck(θ1, x) − (θ2, y)kp/2.
+
+Let now Dya = {j2−k, j ∈ Z, k ∈ N} be the set of dyadic rational numbers
+in R and Dyan = Dya×··· × Dya the set of dyadic rational numbers in Rn.
+Furthermore, we deﬁne M by M = Dyan+1 ∩([0, T ] × [−T, T ]n). By setting
+p = 2n + 4, we can apply Kolmogorov’s lemma. Indeed, analogous to the
+proof of [32], Theorem 2.8, we derive for all (θ1, x), (θ2, y) ∈ M with 0 <
+k(θ1, x) − (θ2, y)k < h(ω), where h is a positive valued random variable, and
+for all ω ∈ Ω∗T , where Ω∗T ∈ F is some set depending on T with P(Ω∗T ) = 1,
+the following estimate:
+
+(A.5)
+
+sup
+
+s≤tkeZ(θ1, x, ω, s) − eZ(θ2, y, ω, s)k ≤ δk(θ1, x) − (θ2, y)kγ.
+
+Here, γ ∈ (0, 1
+p ) and δ is some positive constant. Let us now deﬁne Z:
+if ω /∈ Ω∗T , then Z(θ, x, ω, t) = x for 0 ≤ t ≤ T . For ω ∈ Ω∗T and (θ, x) ∈
+M , Z(θ, x, ω, t) = eZ(θ, x, ω, t) for 0 ≤ t ≤ T . If (θ, x) ∈ M c, we choose a
+sequence (θn, xn)n∈N ⊆ M such that (θn, xn) → (θ, x). By estimate (A.5),
+eZ(θn, xn, ω, t) is a Cauchy sequence converging with respect to sups≤tk · k.
+
+60
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+is jointly continuous in (θ, x, t). Furthermore, for every (θ, x), Z is indistin-
+
+We can therefore set Z(θ, x, ω, t) = limn→∞eZ(θn, xn, ω, t). As we have uni-
+form convergence in t and as eZ is continuous in t, the resulting process Z
+guishable from eZ, that is,
+(A.6)
+Indeed, for (θ, x) ∈ M , this is clear and for (θ, x) ∈ M c, we have for (θn, xn)n∈N ⊆
+M with (θn, xn) → (θ, x)
+
+P[Z(θ, x, t) = eZ(θ, x, t) for all 0 ≤ t ≤ T ] = 1.
+
+Phsup
+s≤tkeZ(θn, xn, s) − eZ(θ, x, s)k ≥ εi ≤ Cε−pk(θn, xn) − (θ, x)kp/2,
+which implies that eZ(θn, xn, t) → eZ(θ, x, t) in probability, uniformly in t.
+As eZ(θn, xn, t) → Z(θ, x, t) a.s., and thus in particular in probability, it fol-
+lows that Z(θ, x, t) = eZ(θ, x, t) a.s. for all 0 ≤ t ≤ T . Letting T → ∞ proves
+
+Statement (ii) is then a consequence of (i) and the Ft-measurability of
+Furthermore, property (A.6) implies that Z(θ, x, t) is a solution of (A.2)
+
+ω 7→ Z(θ, x, t, ω), which is satisﬁed since F0 contains all null sets of F .
+for all (θ, x), which yields assertion (iii).
+
+assertion (i).
+
+In order to prove (iv), we proceed in two steps:
+Step 1. We ﬁrst assume that Θ and U take ﬁnitely many values θ1, . . . , θk ∈
+
+[0,∞] and x1, . . . , xl ∈ Rn, respectively. Denote
+
+Then
+
+Aj = {Θ = θj},
+
+Bh = {U = xh}.
+
+Z(Θ, U, t) =Xj,h
+
+1Aj∩BhZ(θj, xh, t)
+
+does the job. Indeed, as Aj ∩ Bh are disjoint and Aj ∩ Bh ∈ Fθj for all j, h,
+we have (see, e.g., [36], page 39)
+
+σ(Z(Θ, U, s))1{Θ≤s} dWs
+
+1Aj∩Bhb(Z(θj, xh, s))1{θj≤s} ds
+
+1Aj∩Bhσ(Z(θj, xh, s))1{θj≤s} dWs
+
+U +Z t
+
+0
+
+0
+
+b(Z(Θ, U, s))1{Θ≤s} ds +Z t
+= U +Z t
+0 Xj,h
++Z t
+0 Xj,h
+1Aj∩Bh(cid:18)xh +Z t
+=Xj,h
+
+b(Z(θj, xh, s))1{θj≤s} ds
+
+0
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+61
+
++Z t
+
+0
+
+σ(Z(θj, xh, s))1{θj≤s} dWs(cid:19)
+
+1Aj∩BhZ(θj, xh, t) = Z(Θ, U, t)
+
+=Xj,h
+
+for all t ≥ 0 a.s.
+times
+
+Step 2. For general Θ, U , approximate Θ(k) ↓ Θ by the simple stopping
+
+Θ(k) =(cid:26) j2−k,
+
+∞,
+
+(j − 1)2−k ≤ Θ < j2−k, j = 1, . . . , k2k,
+k ≤ Θ.
+
+Let U (l) be a sequence of FΘ-measurable random variables, each U (l) tak-
+ing ﬁnitely many values, and U (l) → U in L2 (such U (l) obviously exists).
+Moreover, {Θ(k) = θj} ∩ {U (l) = xh} ∈ Fθj for all j, h (see [32], Chapter 1,
+Problem 2.24).
+By Step 1, each Z(Θ(k), U (l)) satisﬁes the respective SDE. Moreover, from
+estimate (A.3) and Grownwall’s lemma we deduce that for any T > 0, there
+exists a constant C such that
+
+t≤TkZ(Θ(k), U (l), t) − Z(Θ(k′), U (l′), t)k2i
+Ehsup
+≤ CeCT E[kU (k) − U (k′)k2 + |Θ(k) ∧ T − Θ(k′) ∧ T|].
+
+Hence, Z(Θ(k), U (l)) is a Cauchy sequence and thus converging with respect
+to E[supt≤Tk · k2], for all T > 0, to some continuous process X satisfying
+(A.4). On the other hand, by the continuity of (θ, x) 7→ Z(θ, x, t), we know
+that
+
+Z(Θ(k), U (l), t) → Z(Θ, U, t)
+
+for all ω and t ≥ 0. Again, by continuity of t 7→ Z(Θ, U, t), we conclude that
+Z(Θ, U ) = X up to indistinguishability, which proves the claim. (cid:3)
+
+A.2. Existence of jump-diﬀusions. We now provide a constructive proof
+for the existence of a solution of (A.1) on a speciﬁc stochastic basis which
+is deﬁned as follows:
+• (Ω,F, (Ft)t≥0) is a ﬁltered space, where Ω := Ω1 × Ω2, Ft := Gt ⊗ Ht and
+F = G⊗H are precisely deﬁned below. Note that we do not have a measure
+on (Ω,F) for the moment. The generic sample element will be denoted by
+ω = (ω1, ω2) ∈ Ω.
+• (Ω1,G, (Gt)t≥0, P1) is some ﬁltered probability space satisfying the usual
+conditions and carrying an m-dimensional standard Brownian motion W .
+We shall consider the above diﬀusion SDE (A.2) on Ω1 and thus obtain
+the respective solution Z(θ, x, ω1, t) satisfying the regularity properties of
+Theorem A.2.
+
+62
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+• (Ω2,H) is the canonical space for Rn-valued marked point processes (see,
+e.g., [30]): Ω2 consists of all c`adl`ag, piecewise constant functions ω2 : [0,
+T∞(ω2)) → Rn with ω2(0) = 0 and T∞(ω2) = limn→∞ Tn(ω2) ≤ ∞, where
+Tn(ω2), deﬁned by T0 = 0 and
+
+Tn(ω2) := inf{t > Tn−1(ω2) | ω2(t) 6= ω2(t−)} ∧ ∞,
+
+n ≥ 1,
+
+are the successive jump times of ω2. We denote by
+
+Jt(ω) = Jt(ω2) = ω2(t)
+
+on [0, T∞(ω2))
+
+the canonical jump process, and let Ht = σ(Js | s ≤ t) be its natural ﬁl-
+tration with H = H∞. Note that Tn are (Ht) and (Ft)-stopping times if
+interpreted as Tn(ω) = Tn(ω2).
+
+The following statement is meant to be pointwise, referring to the ﬁltered
+
+measure space (Ω,F, (Ft)) without reference to a probability measure.
+
+Lemma A.3. Let Z(θ, x, ω1, t) be as of Theorem A.2. Then for an FTn -
+measurable random variable U (ω1, ω2) the process Z(Tn(ω2), U (ω1, ω2), ω1, t)
+is:
+
+(i) continuous in t for all (ω1, ω2),
+(ii) Ft-adapted on {Tn ≤ t}.
+Proof. The ﬁrst assertion is a consequence of Theorem A.2(i). The
+second one follows from the B([0,∞]× Rn)⊗P-measurability of Z(θ, x, ω1, t),
+as stated in Theorem A.2(ii), and the fact that Tn and U are Ft-measurable
+on {Tn ≤ t}. (cid:3)
+
+Here is our existence result for (A.1).
+
+Theorem A.4. There exists a c`adl`ag Ft-adapted process X and a prob-
+ability measure P on (Ω,F) with P|G = P1, such that X is a solution of (A.1)
+on (Ω,F, (Ft), P).
+
+Proof. We follow the arguments in the proof of [21], Theorem 5.1,
+
+which is based on [30], Theorem 3.6, and proceed in three steps.
+
+Step 1. We start by solving (A.1) along every path ω2. To this end, let us
+
+deﬁne recursively: ∆ω2(0) = ∆ω2(∞) = 0, X (0)
+
+X (n)
+
+t
+
+(ω1, ω2) =
+
+0 = x, and for n ≥ 1:
+(ω1, ω2)
++ ∆ω2(Tn−1), ω1, t),
+
+Z(Tn−1(ω2), X (n−1)
+x0,
+
+Tn−1
+
+t ∈ [0,∞),
+t = ∞,
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+63
+
+where x0 is any ﬁxed point in D ⊂ Rn and Z satisﬁes the properties of Theo-
+rem A.2. By Lemma A.3, every X (n) is continuous in t for all (ω1, ω2) and Ft-
+adapted on {Tn ≤ t} since X (n−1)
+(ω1, ω2) + ∆ω2(Tn−1) is FTn -measurable.
+Thus, the process
+Xt(ω1, ω2) =Xn≥1
+
+(ω1, ω2)1{Tn−1≤t<Tn}
+
+X (n)
+
+(A.7)
+
+Tn−1
+
+t
+
+is c`adl`ag Ft-adapted and solves (A.1) on (Ω1,G, (Gt), P1) for t ∈ [0, T∞(ω2))
+and any ﬁxed path ω2.
+Step 2. It remains to show that there exists a probability measure P such
+that K(Xt, dξ) is the compensator of J and P|G = P1 holds true. For this
+purpose, we shall make use of [30], Theorem 3.6. Let us deﬁne the following
+random measure ν by
+
+ν(dt, dξ) =(cid:26) K(Xt, dξ) dt,
+
+0,
+
+t < T∞,
+t ≥ T∞.
+
+Observe that ν is predictable, since Xt is c`adl`ag and Ft-adapted. Theorem
+3.6 in [30] now implies that there exists a unique probability kernel P2 from
+Ω1 to H, such that ν is the compensator of the random measure µ associated
+to the jumps of J . On (Ω,F) we then deﬁne the probability measure P by
+P(dω) = P1(dω1)P2(ω1, dω2) whose restriction to G is equal to P1.
+for all t ≥ 0. Note that W (ω) = W (ω1) is an (Ω,F, (Ft), P)-Brownian mo-
+tion. This implies that Z(θ, x, ω, t) = Z(θ, x, ω1, t) is a solution of (A.2) on
+(Ω,F, (Ft), P), satisfying the properties of Theorem A.2. It thus remains to
+show that T∞ = ∞ P-a.s. Let µ be the random measure associated with the
+jumps. As x 7→ K(x, Rn) is bounded, we have for all T ≥ 0,
+
+Step 3. We ﬁnally show that X deﬁned by (A.7) solves (A.1) on (Ω,F, (Ft), P)
+
+EP[µ([0, T ] × Rn)] = EP[ν([0, T ] × Rn)] = EP(cid:20)Z T
+
+K(Xt, Rn) dt(cid:21) ≤ CT
+for some constant C. This implies that µ([0, T ] × Rn) < ∞ a.s. for all T ≥ 0
+and hence P[T∞ < ∞] = 0 or equivalently T∞ = ∞ a.s. (cid:3)
+
+0
+
+A.3. Viability of jump-diﬀusions. Consider a nonempty closed convex
+set D ⊂ Rn. We now provide suﬃcient conditions for the solution X in
+(A.7) to be D-valued. This result is based on [13], Theorem 4.1. We recall
+the notion of the normal cone
+
+(A.8)
+
+ND(x) = {u ∈ Rn | hu, y − xi ≥ 0, for all y ∈ D}
+
+of D at x ∈ D, consisting of inward pointing vectors. See, for example, [28],
+Deﬁnition III.5.2.3, except for a change of the sign.
+
+64
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+Theorem A.5. Assume that σ also has a Lipschitz continuous deriva-
+
+tive. Suppose furthermore that
+
+(A.9)
+
+(A.10)
+
+(A.11)
+
+*b(x) −
+
+1
+2
+
+x + supp(K(x,·)) ⊆ D,
+hσi(x), ui = 0,
+Dσi(x)σi(x), u+ ≥ 0,
+
+nXi=1
+
+for all u ∈ ND(x) and x ∈ D, where σi denotes the ith column of σ. Then,
+for every initial point x ∈ D, the process X deﬁned in (A.7) is a D-valued
+solution of (A.1).
+
+Proof. We have to show that Xt =Pn≥1 X (n)
+a.s. for all t ≥ 0. We proceed by induction on n. For n = 1, X (1)
+
+(ω1, ω2)1{Tn−1≤t<Tn} ∈ D
+, is simply
+
+t
+
+t
+
+given by
+
+X (1)
+
+t = x +Z t
+
+0
+
+b(X (1)
+
+s ) ds +Z t
+
+0
+
+σ(X (1)
+
+s ) dWs.
+
+Due to [13], Theorem 4.1, conditions (A.10) and (A.11) imply that for all
+∈ D a.s.,
+= XTn−1− ∈ D a.s. If Tn−1 = ∞, then we immedi-
+
+t ∈ D a.s. Let us now assume that for all t ≥ 0, X (n−1)
+
+t ≥ 0, X (1)
+thus in particular X (n−1)
+Tn−1
+ately obtain
+
+t
+
+X (n)
+
+t = X (n−1)
+Tn−1
+
++ ∆JTn−1 = x0 ∈ D.
+
+Otherwise, let f ∈ Cb(Rn, R+) satisfy supp(f ) ⊆ Dc. Then,
+
+E[f (X (n−1)
+Tn−1
+
++ ∆JTn−1)] = E[f (XTn−1− + ∆JTn−1 )]
+
+= E(cid:20)ZRn\{0}
+
+f (XTn−1− + ξ)K(XTn−1−, dξ)(cid:21) = 0,
+
++ ∆JTn−1) = 0 a.s., implying that X (n−1)
+Tn−1
+
+since by (A.9), XTn−1− + supp(K(XTn−1−,·)) ⊆ D a.s. and f (D) = 0. Hence,
+f (X (n−1)
++ ∆JTn−1 /∈ supp(f ) a.s.
+Tn−1
+As this holds true for all f ∈ Cb(Rn, R+) with supp(f ) ⊆ Dc, it follows that
+X (n−1)
++ ∆JTn−1 ∈ D a.s. Thus, again by [13], Theorem 4.1, and conditions
+Tn−1
+(A.10) and (A.11)
+
+X (n)
+
+t = X (n−1)
+Tn−1
+
+)1{Tn−1≤s} dWs
+a.s. takes values in D, which proves the induction hypothesis. The deﬁnition
+of X then yields the assertion. (cid:3)
+
+s
+
+s
+
+σ(X (n)
+
+b(X (n)
+
+)1{Tn−1≤s} ds+Z t
+
+0
+
++∆JTn−1 +Z t
+
+0
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+65
+
+APPENDIX B: AN APPROXIMATION LEMMA ON THE CONE OF
+
+POSITIVE SEMIDEFINITE MATRICES
+
+In this section, we deliver a diﬀerentiable variant of the Stone–Weierstrass
+theorem for C∞-functions on S+
+d . This approximation statement is essential
+for the description of the generator of an aﬃne semigroup, as is elaborated
+in Section 4.2.
+
+We employ multi-index notation in the sequel. For n ≥ 1, a multi-index
+is an element α = (α1, . . . , αn) ∈ Nn
+0 having length |α| := α1 + ··· + αn. The
+factorial is deﬁned by α! :=Qn
+i=1 αi!. The partial order ≤ is understood
+componentwise, and so are the elementary operations +,−. That is, α ≥ β
+if and only if αi ≥ βi for i = 1, . . . , n. Moreover, for α ≥ β, the multinomial
+coeﬃcient is deﬁned by
+(cid:18) α
+β(cid:19) :=
+We deﬁne the monomial xα :=Qn
+. Corresponding to a polynomial P (x) =P|α|≤k aαxα, we introduce
+the diﬀerential operator P (∂) :=P|α|≤k aα
+Let S = S(Sd) denote the locally convex space of rapidly decreasing C∞-
+functions on Sd (see [46], Chapter 7), and deﬁne the space of rapidly de-
+creasing C∞-functions on S+
+
+, and the diﬀerential operator ∂α :=
+
+(α − β)!β!
+
+∂|α|
+x1 ···∂αn
+∂
+
+d via the restriction
+
+i=1 xαi
+
+∂|α|
+∂xα .
+
+α1
+
+xn
+
+α!
+
+.
+
+i
+
+(B.1)
+
+: F ∈ S}.
+Equipped with the increasing family of semi-norms
+
+S+ = {f = F |S+
+
+d
+
+(B.2)
+
+pk,+(f ) :=
+
+sup
+
+d ,|α+β|≤k|xα ∂βf (x)|,
+
+x∈S+
+
+S+ becomes a locally convex vector space (see [46], Theorem 1.37).
+For technical reasons, we also introduce for ε ≥ 0 the semi-norms
+
+pk,ε(f ) :=
+
+sup
+
+d +B≤ε(0),|α+β|≤k|xα∂βf (x)|
+
+x∈S+
+
+on C∞(Sd), where B≤r(y) = {z ∈ Sd | kz − yk ≤ r} denotes the closed ball
+with radius r and center y. Note that pk,+ = pk,0. We ﬁrst give an alternative
+description of S+.
+
+Lemma B.1. We have
+
+S+ = {f = G |S+
+
+d
+
+: G ∈ C∞(Sd) and ∃ε > 0 such that pk,ε(G) < ∞ ∀k ≥ 0}.
+
+66
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+Proof. The inclusion ⊆ is trivial. Hence, we prove ⊇. So let f = G |S+
+for some G ∈ C∞(Sd) with pk,ε(G) < ∞ for all k ≥ 0 and some ε > 0.
+We choose a standard molliﬁer ρ ∈ C∞c (Sd) supported in B≤ε/2(0) and
+satisfying ρ ≥ 0, R ρ = 1. For δ > 0 we introduce the neighborhoods Kδ :=
+S+
+d + B≤δ(0) of S+
+d . The convolution ϕ := ρ∗ 1Kε/2 ∈ C∞(Sd) of the indicator
+function for Kε/2 with ρ satisﬁes ϕ = 1 on S+
+d and it vanishes outside Kε.
+Furthermore, all derivatives of ϕ are bounded, since
+
+d
+
+|∂αϕ(x)| =(cid:12)(cid:12)(cid:12)(cid:12)ZKε/2
+
+∂αρ(y − x) dy(cid:12)(cid:12)(cid:12)(cid:12) =(cid:12)(cid:12)(cid:12)(cid:12)ZKε/2−x
+
+≤ZB≤ε/2(0) |∂αρ(z)| dz < ∞,
+
+∂αρ(z) dz(cid:12)(cid:12)(cid:12)(cid:12)
+
+Now we set F := G · ϕ. By construction F ∈ C∞(Sd), F |S+
+
+where the last estimate holds because supp ρ ⊆ B≤ε/2(0).
+= f and F
+vanishes outside Kε, because ϕ does. What is left to show is that F ∈ S.
+Since F vanishes outside Kε, it is suﬃcient to deliver all estimates of its
+derivatives on Kε.
+
+d
+
+Let α, β ∈ N
+
+d(d+1)/2
+0
+
+, then we have by the Leibniz rule
+
+xα ∂βF (x) = xα X0≤γ≤β(cid:18) β
+= X0≤γ≤β(cid:18) β
+
+γ(cid:19) (∂β−γ ϕ(x))(∂γ G(x))
+γ(cid:19) (∂β−γϕ(x))(xα ∂γ G(x)).
+
+By assumption xα ∂γ G is bounded on Kε, and (∂β−γ ϕ(x)) is bounded on all
+of Sd. Hence, by the last equation, we have supx∈Sd,|α+β|≤k|xα ∂βF (x)| < ∞
+for all k ∈ N0, which by deﬁnition means F ∈ S. (cid:3)
+
+Lemma B.2. Let u ∈ S++
+
+d
+
+. Then for each ε ≥ 0, and for all k ≥ 0 we
+
+have pk,ε(exp(−hu,·i)) < ∞. In particular, we have
+d ∈ S+.
+
+fu := exp(−hu,·i)|S+
+
+That is, fu = Fu |S+
+
+d
+
+for some Fu ∈ S.
+
+Proof. Since u ∈ S++
+hu, xi ≥ ckxk, for all x ∈ S+
+culation, pk,+(exp(−hu,·i)) < ∞, for all k ≥ 0.
+
+d
+
+, there exists a positive constant c such that
+d . Hence, we obtain by a straightforward cal-
+
+Next, let ε > 0, and write x = y + z, where y ∈ S+
+
+d and z ∈ B≤ε(0) and
+. Then we have by the binomial formula
+
+d(d+1)/2
+0
+
+pick multi-indices α, β ∈ N
+
+xα ∂βe−hu,xi = xα(−1)|β|uβe−hu,xi
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+67
+
+= (y + z)α(−1)|β|uβe−hu,y+zi
+
+= (−1)|β|uβ X0≤γ≤α(cid:18) α
+
+γ(cid:19) (yαe−hu,yi)(zα−γe−hu,zi).
+
+d
+
+Now since z ranges in a compact set, and since pk,+(exp(−hu,·i)) < ∞ we
+see that xα∂βe−hu,xi must be bounded uniformly in x ∈ S+
+d + B≤ε(0). Hence,
+pk,ε(exp(−hu,·i)) < ∞, for all k ≥ 0.
+
+Together with Lemma B.1, this implies fu ∈ S+. (cid:3)
+We are now prepared to deliver the following density result for the R-
+
+, u ∈ S++
+
+d } in S+.
+
+linear hull M of {fu = exp(−hu,·i)|S+
+Theorem B.3. M is dense in S+.
+Proof. Denote by S′ = S′(Sd) and S′+ the topological dual of S and
+S+, respectively. The former, S′, is known as the space of tempered distri-
+butions. The distributional action is denoted by h·,·i and h·,·i+ for S′ and
+S′+, respectively.
+Now suppose by contradiction, that M is not dense in S+. Then by [46],
+Theorem 3.5, there exists some T1 ∈ S′+ \{0} such that T1 = 0 on M. Hence,
+hT1, fui+ = 0, for all u ∈ S++
+yields a continuous
+linear embedding S ֒→ S+. Hence, the restriction T of T1 to S, given by
+
+. The restriction F 7→ F|S+
+
+d
+
+d
+
+d
+
+ϕ ∈ S(Sd),
+
+hT, ϕi := hT1, ϕ|S+
+
+d i+,
+yields an element of S′ with supp(T ) ⊆ S+
+d . Pick an Fu ∈ S according to Lem-
+ma B.2. By the deﬁnition of T , we have hT, Fui = hT1, fui+ = 0, for all u ∈
+S++
+. By the Bros–Epstein–Glaser theorem (see [42], Theorem IX.15), there
+exists a function G ∈ C(Sd) with supp(G) ⊆ S+
+d , polynomially bounded [i.e.,
+for suitable constants C, N we have |G(x)| ≤ C(1 + kxk)N , for all x ∈ S+
+d ]
+and a real polynomial P (x) such that P (∂)G = T in S′. Hence, we obtain
+for any u ∈ S++
+=ZS+
+
+G(x)P (−∂)Fu(x) dx = P (u)ZS+
+
+0 = hT, Fui = hP (∂)G, Fui = hG, P (−∂)Fui
+
+G(x) exp(−hu, xi) dx.
+
+d
+
+d
+
+d
+
+But the last factor is just the Laplace transform of G. This implies G = 0,
+hence T = 0, which in turn implies that T1 vanishes on all of S+, a contra-
+diction. (cid:3)
+
+Acknowledgments. We thank Martin Keller-Ressel and Alexander Smirnov
+
+for discussions and helpful comments.
+
+68
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+REFERENCES
+
+[1] Acz´el, J. and Dhombres, J. (1989). Functional Equations in Several Variables.
+Encyclopedia of Mathematics and Its Applications 31. Cambridge Univ. Press,
+Cambridge. MR1004465
+
+[2] Barndorff-Nielsen, O. E. and Shephard, N. (2001). Modelling by L´evy processes
+for ﬁnancial econometrics. In L´evy Processes 283–318. Birkh¨auser, Boston, MA.
+MR1833702
+
+[3] Barndorff-Nielsen, O. E. and Stelzer, R. (2007). Positive-deﬁnite matrix pro-
+
+cesses of ﬁnite variation. Probab. Math. Statist. 27 3–43. MR2353270
+
+[4] Bauer, H. (1996). Probability Theory. de Gruyter Studies in Mathematics 23. de
+
+Gruyter, Berlin. MR1385460
+
+[5] Bru, M.-F. (1989). Diﬀusions of perturbed principal component analysis. J. Multi-
+
+variate Anal. 29 127–136. MR0991060
+
+[6] Bru, M.-F. (1991). Wishart processes. J. Theoret. Probab. 4 725–751. MR1132135
+[7] Buraschi, B., Cieslak, A. and Trojani, F. (2007). Correlation risk and the term
+
+structure of interest rates. Working paper, Univ. St. Gallen.
+
+[8] Buraschi, B., Porchia, P. and Trojani, F. (2010). Correlation risk and optimal
+
+portfolio choice. J. Finance 65 393–420.
+
+[9] Da Fonseca, J., Grasselli, M. and Ielpo, F. (2008). Hedging (co)variance risk
+with variance swaps. Working paper ESILV RR-37, Ecole Sup´erieure d’Ing´enierie
+L´eonard de Vinci.
+
+[10] Da Fonseca, J., Grasselli, M. and Ielpo, F. (2008). Estimating the Wishart
+aﬃne stochastic correlation model using the empirical characteristic function.
+Working paper ESILV RR-35, Ecole Sup´erieure d’Ing´enierie L´eonard de Vinci.
+[11] Da Fonseca, J., Grasselli, M. and Tebaldi, C. (2007). Option pricing when
+correlations are stochastic: An analytical framework. Review of Derivatives Re-
+search 10 151–180.
+
+[12] Da Fonseca, J., Grasselli, M. and Tebaldi, C. (2008). A multifactor volatility
+
+Heston model. Quant. Finance 8 591–604. MR2457710
+
+[13] Da Prato, G. and Frankowska, H. (2004). Invariance of stochastic control systems
+with deterministic arguments. J. Diﬀerential Equations 200 18–52. MR2046316
+[14] Dieudonn´e, J. (1969). Foundations of Modern Analysis. Academic Press, New York.
+
+MR0349288
+
+[15] Donati-Martin, C., Doumerc, Y., Matsumoto, H. and Yor, M. (2004). Some
+properties of the Wishart processes and a matrix extension of the Hartman–
+Watson laws. Publ. Res. Inst. Math. Sci. 40 1385–1412. MR2105711
+
+[16] Duffie, D., Filipovi´c, D. and Schachermayer, W. (2003). Aﬃne processes and
+
+applications in ﬁnance. Ann. Appl. Probab. 13 984–1053. MR1994043
+
+[17] Ethier, S. N. and Kurtz, T. G. (1986). Markov Processes: Characterization and
+
+Convergence. Wiley, New York. MR0838085
+
+[18] Filipovi´c, D. (2005). Time-inhomogeneous aﬃne processes. Stochastic Process. Appl.
+
+115 639–659. MR2128634
+
+[19] Filipovi´c, D. (2009). Term-Structure Models: A Graduate Course. Springer, Berlin.
+
+MR2553163
+
+[20] Filipovi´c, D. and Mayerhofer, E. (2009). Aﬃne diﬀusion processes: Theory and
+applications. In Advanced Financial Modelling. Radon Ser. Comput. Appl. Math.
+8 125–164. Walter de Gruyter, Berlin. MR2648460
+
+[21] Filipovi´c, D., Overbeck, L. and Schmidt, T. (2009). Dynamic CDO term
+structure modeling. Forthcoming in mathematical ﬁnance, Ecole Polytechnique
+F´ed´erale de Lausanne.
+
+AFFINE PROCESSES ON POSITIVE SEMIDEFINITE MATRICES
+
+69
+
+[22] Golub, G. H. and Van Loan, C. F. (1996). Matrix Computations, 3rd ed. Johns
+
+Hopkins Univ. Press, Baltimore, MD. MR1417720
+
+[23] Gourieroux, C., Montfort, A. and Sufana, R. (2007). International money and
+stock market contingent claims. Working paper, CREST, CEPREMAP and
+Univ. Toronto.
+
+[24] Gourieroux, C. and Sufana, R. (2007). Wishart quadratic term structure models.
+
+Working paper, CREST, CEPREMAP and Univ. Toronto.
+
+[25] Gourieroux, C. and Sufana, R. (2007). Derivative pricing with Wishart multi-
+variate stochastic volatility: Application to credit risk. Working paper, CREST,
+CEPREMAP and Univ. Toronto.
+
+[26] Grasselli, M. and Tebaldi, C. (2008). Solvable aﬃne term structure models. Math.
+
+Finance 18 135–153. MR2380943
+
+[27] Heston, S. (1993). A closed-form solution for options with stochastic volatility with
+applications to bond and currency options. Rev. of Financial Studies 6 327–343.
+[28] Hiriart-Urruty, J.-B. and Lemar´echal, C. (1993). Convex Analysis and Mini-
+mization Algorithms. I. Grundlehren der Mathematischen Wissenschaften [Fun-
+damental Principles of Mathematical Sciences] 305. Springer, Berlin. MR1261420
+[29] Horn, R. A. and Johnson, C. R. (1991). Topics in Matrix Analysis. Cambridge
+
+Univ. Press, Cambridge. MR1091716
+
+[30] Jacod, J. (1974/75). Multivariate point processes: Predictable projection, Radon–
+Nikod´ym derivatives, representation of martingales. Z. Wahrsch. Verw. Gebiete
+31 235–253. MR0380978
+
+[31] Jacod, J. and Shiryaev, A. N. (2003). Limit Theorems for Stochastic Processes, 2nd
+ed. Grundlehren der Mathematischen Wissenschaften [Fundamental Principles
+of Mathematical Sciences] 288. Springer, Berlin. MR1943877
+
+[32] Karatzas, I. and Shreve, S. E. (1991). Brownian Motion and Stochastic Calculus,
+
+2nd ed. Graduate Texts in Mathematics 113. Springer, New York. MR1121940
+
+[33] Kato, T. (1995). Perturbation Theory for Linear Operators. Springer, Berlin.
+
+MR1335452
+
+[34] Keller-Ressel, M. (2009). Aﬃne processes—theory and applications in mathemat-
+
+ical ﬁnance. Ph.D. thesis, Vienna Univ. Technology.
+
+[35] Keller-Ressel, M., Schachermayer, W.
+
+Aﬃne
+10.1007/s00440-010-0309-4. To appear.
+
+processes
+
+(2010).
+regular. Probab. Theory Related Fields. DOI:
+
+and Teichmann, J.
+
+are
+
+[36] Lamberton, D. and Lapeyre, B. (2008). Introduction to Stochastic Calculus Ap-
+plied to Finance, 2nd ed. Chapman and Hall/CRC, Boca Raton, FL. MR2362458
+[37] Lang, S. (1993). Real and Functional Analysis, 3rd ed. Graduate Texts in Mathe-
+
+matics 142. Springer, New York. MR1216137
+
+[38] Leippold, M. and Trojani, F. (2008). Asset pricing with matrix aﬃne jump diﬀu-
+
+sions. Working paper, University of Zurich—Swiss Banking Institute (ISB).
+
+[39] Mayerhofer, E., Muhle-Karbe, J. and Smirnov, A. G. (2011). A characteri-
+zation of the martingale property of exponentially aﬃne processes. Stochastic
+Process. Appl. 121 568–582.
+
+[40] Mayerhofer, E., Pfaffel, O. and Stelzer, R. (2009). On strong solutions for
+positive deﬁnite jump–diﬀusions. VIF Working Paper No. 30, Vienna Institute
+of Finance.
+
+[41] Narasimhan, R. (1971). Several Complex Variables. Univ. Chicago Press, Chicago.
+
+MR0342725
+
+[42] Reed, M. and Simon, B. (1975). Methods of Modern Mathematical Physics. II.
+
+Fourier Analysis, Self-Adjointness. Academic Press, New York. MR0493420
+
+70
+
+CUCHIERO, FILIPOVI ´C, MAYERHOFER AND TEICHMANN
+
+[43] Revuz, D. and Yor, M. (1991). Continuous Martingales and Brownian Motion.
+Grundlehren der Mathematischen Wissenschaften [Fundamental Principles of
+Mathematical Sciences] 293. Springer, Berlin. MR1083357
+
+[44] Rockafellar, R. T. (1997). Convex Analysis. Princeton Univ. Press, Princeton,
+
+NJ. MR1451876
+
+[45] Rogers, L. C. G. and Williams, D. (2000). Diﬀusions, Markov Processes, and
+
+Martingales. Vol. 2. Cambridge Univ. Press, Cambridge. MR1780932
+
+[46] Rudin, W. (1991). Functional Analysis, 2nd ed. McGraw-Hill, New York. MR1157815
+[47] Sato, K.-i. (1999). L´evy Processes and Inﬁnitely Divisible Distributions. Cam-
+bridge Studies in Advanced Mathematics 68. Cambridge Univ. Press, Cambridge.
+MR1739520
+
+[48] Semadeni, Z. (1971). Banach Spaces of Continuous Functions. Vol. I. PWN—Polish
+
+Scientiﬁc Publishers, Warsaw. MR0296671
+
+[49] Skorohod, A. V. (1991). Random Processes with Independent Increments. Math-
+ematics and Its Applications (Soviet Series) 47. Kluwer Academic, Dordrecht.
+MR1155400
+
+[50] Stokes, A. N. (1974). A special property of the matrix Riccati equation. Bull.
+
+Austral. Math. Soc. 10 245–253. MR0342748
+
+[51] Stroock, D. W. (1975). Diﬀusion processes associated with L´evy generators. Z.
+
+Wahrsch. Verw. Gebiete 32 209–244. MR0433614
+
+[52] Volkmann, P. (1973). ¨Uber die Invarianz konvexer Mengen und Diﬀerentialungle-
+
+ichungen in einem normierten Raume. Math. Ann. 203 201–210. MR0322305
+
+C. Cuchiero
+J. Teichmann
+ETH Z¨urich
+Departement Mathematik
+R¨amistrasse 101, 8092 Z¨urich
+Switzerland
+E-mail: christa.cuchiero@math.ethz.ch
+josef.teichmann@math.ethz.ch
+
+D. Filipovi´c
+´Ecole Polytechnique F´ed´erale
+de Lausanne
+Swiss Finance Institute
+Quartier UNIL-Dorigny
+Extranef Building, 1015 Lausanne
+Switzerland
+E-mail: damir.ﬁlipovic@epﬂ.ch
+
+E. Mayerhofer
+Vienna Institute of Finance
+Heiligenst¨adter Strasse 46–48
+1190 Vienna
+Austria
+E-mail: eberhard.mayerhofer@vif.ac.at
+
+

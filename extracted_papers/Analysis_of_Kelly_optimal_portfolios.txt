@@ -1,0 +1,1404 @@
+9
+0
+0
+2
+
+ 
+r
+p
+A
+3
+2
+
+ 
+
+ 
+ 
+]
+
+.
+
+M
+P
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+3
+v
+1
+7
+7
+2
+
+.
+
+2
+1
+7
+0
+:
+v
+i
+X
+r
+a
+
+Analysis of Kelly-optimal portfolios
+
+Paolo Laureti, Mat´uˇs Medo, Yi-Cheng Zhang
+
+Department of Physics, University of Fribourg,
+Chemin du Mus´ee 3, 1700 Fribourg, Switzerland
+
+Abstract
+
+We investigate the use of Kelly’s strategy in the construction of an optimal portfolio
+of assets. For lognormally distributed asset returns, we derive approximate analytical
+results for the optimal investment fractions in various settings. We show that when mean
+returns and volatilities of the assets are small and there is no risk-free asset, the Kelly-
+optimal portfolio lies on Markowitz Eﬃcient Frontier. Since in the investigated case the
+Kelly approach forbids short positions and borrowing, often only a small fraction of the
+available assets is included in the Kelly-optimal portfolio. This phenomenon, that we call
+condensation, is studied analytically in various model scenarios.
+
+1
+
+Introduction
+
+The construction of an eﬃcient portfolio aims at maximising the investor’s capital, or its
+return, while minimising the risk of unfavourable events. This problem has been pioneered by
+Markowitz in [1], where the Mean-Variance (M-V) eﬃcient portfolio has been introduced: it
+minimizes the portfolio variance for any ﬁxed value of its expected return. Since this rule can
+be only justiﬁed under somewhat unrealistic assumptions (namely a quadratic utility function
+or a normal distribution of returns, in addition to risk aversion), it should be considered as a
+ﬁrst approximation of the optimisation process. Later, several optimisation schemes inspired
+by Markowitz’s work have been proposed [2, 3, 4]. For a recent thorough overview of the
+portfolio theory see [5].
+
+A diﬀerent perspective has been put forward by Kelly in [6], where he shows that the
+optimal strategy for the long run can be found by maximising the expected value of the
+logarithm of the wealth after one time step. The optimality of this strategy has long been
+treated and proven in many diﬀerent ways [7, 8, 9], according to [10], it was successfully used
+in real ﬁnancial markets. For an overview of its continuous time limit see [11]. Recently,
+the superiority of typical outcomes to average values has been discussed from a diﬀerent
+point of view in [12, 13]. Although the Kelly criterion does not employ a utility function, as
+pointed out by the author himself, a number of economists have adopted the point of view of
+utility theory to evaluate it [14, 15, 16, 17]. Various modiﬁcations, such as fractional Kelly
+strategies [18] and controlled drawdowns [19], have been proposed to increase security of the
+resulting portfolios. A thorough review of the advantages, drawbacks and modiﬁcations of
+the Kelly criterion is presented in [20]. For an exposition of the Kelly approach in the context
+of information theory see [21].
+
+In this paper, we shall discuss the original Kelly strategy in the framework of a simple
+stochastic model and without assuming the existence of a utility function. We will present
+
+1
+
+approximate analytical results for optimal portfolios in various situations, as well as numeri-
+cal solutions and computer simulations. We will show that, in the limit of small returns and
+volatilities, when there is no risk-free asset, the Kelly-optimal portfolio lies on the Eﬃcient
+Frontier. Furthermore, we shall analytically study the conditions under which diversiﬁcation
+is no longer proﬁtable and the optimal portfolio “condensates” on a few assets. Such con-
+densation (or underdiversiﬁcation) is said to be typical for the Kelly portfolio [20] and here
+we examine it in various model scenarios. Finally, we will consider the ﬂuctuations of the
+logarithm of wealth as a measure of risk, and compare it with the classic M-V picture.
+
+This paper is organised as follows. After introducing a multiplicative stochastic model for
+the dynamics of assets’ prices, we brieﬂy list the main results of the Markowitz Mean-Variance
+approach. In Sec. 2, we apply Kelly’s method to our model, analysing the case of one, two
+and many risky assets, both with and without additional constraints. Finally, a combination
+of the Markowitz Eﬃcient Frontier with the Kelly strategy is investigated. In the appendix
+we explain the approximations used in this paper as well as a generalisation of the model to
+the case of correlated asset prices.
+
+1.1 A simple model
+
+We shall study the portfolio optimisation on a very simple model which leads to lognormally
+distributed returns. Consider N assets, whose prices pi(t) (i = 1, . . . , N ) undergo uncorrelated
+multiplicative random walks
+
+pi(t) = pi(t − 1) eηi (t).
+
+(1)
+
+Here the random numbers ηi(t) are drawn from Gaussian density distributions of ﬁxed mean
+mi and variance Di, and are independent of their value at previous time steps. This model
+can be easily generalised to the case of non-Gaussian densities and correlated price variations
+as it is discussed in appendix B; the inﬂuence of correlations on the Kelly portfolio is investi-
+gated in [22]. We assume that the investor knows exact values of the parameters mi, Di—for
+the eﬀects of wrong parameter estimates and the details of the Bayesian parameter-learning
+process see e.g. [20, 23, 24]. We further assume the existence of a risk-free asset paying zero
+interest rate.
+
+For the sake of simplicity, we do not include dividends, transaction costs and taxes in
+the model. Hence, the return of asset i is Ri(t) := [pi(t) − pi(t − 1)] /pi(t − 1) = eηi(t) − 1 is
+lognormally distributed with the average µi := E(Ri) = exp[mi + Di/2]− 1 and the volatility
+σ2
+i := E((Ri − µi)2) = (exp[Di]− 1) exp[2mi + Di]. With E we denote averages over the noise
+ηi(t).
+A portfolio is determined by the fractions qi of the total capital invested in each one of
+N available assets; the rest is kept in the risk-free asset. Since mi and Di are ﬁxed, both
+the Kelly strategy and the Eﬃcient Frontier use one time step optimisation and the basic
+quantity is the wealth after one time step W1. If we set the initial wealth to 1, W1 has the
+form
+
+N
+
+W1 = 1 +
+
+Xi=1
+
+qiRi = 1 + RP ,
+
+(2)
+
+where RP := PN
+
+i=1 qiRi is the portfolio return. To simplify the computation we assume
+inﬁnite divisibility of the investment. Thus, the investment fractions qi are real numbers and
+do not need to be rounded.
+
+In the portfolio optimisation, some common constraints are often imposed and can as well
+be applied in the present context. For instance, the non-negativity of the investment fractions
+
+2
+
+0.4
+
+0.3
+
+ µ
+P
+
+0.2
+
+0.1
+
+0
+0
+
+EF
+
+MP
+
+CML
+
+0.2
+
+0.4
+ σ
+P
+
+0.6
+
+0.8
+
+Figure 1: The expected return µP versus the standard deviation of the portfolio σP . The
+assets are described by the following parameters: m1 = 0.1, D1 = 0.04, m2 = 0.15, D2 = 0.09,
+m3 = 0.2, D3 = 0.25 (in the graph they are shown as full circles). The dashed line represents
+the CML from Eq. (4), the solid line is Eﬃcient Frontier given by Eq. (5), the tangent point of
+the two is the Market Portfolio. The thick part of EF marks the region where all investment
+fractions are positive.
+
+qi ≥ 0 forbids short positions. The condition PN
+asset and PN
+
+i=1 qi ≤ 1 does not allow the investor to borrow money.
+
+i=1 qi = 1 indicates the absence of a riskless
+
+1.2 The Mean-Variance approach
+
+The unconstrained maximisation of the expected capital gain results in the investment of
+the entire wealth on the asset with the highest expected return; this strategy is sometimes
+referred to as risk neutral. If the investor has a strong aversion to risk, on the other hand,
+one might be tempted to simply minimise the portfolio variance σ2
+i . This leads
+to invest the entire capital on the risk-free asset with no chance to beneﬁt from asset price
+movements. The Mean-Variance (MV) approach is much more reasonable as it allows to
+compromise between the gain and the risk. Here we recount basic results of this standard
+tool.
+
+P = PN
+
+i=0 q2
+
+i σ2
+
+With the desired expected return ﬁxed at E(RP ) = µP , the constrained minimisation of
+
+the portfolio variance σ2
+
+P is performed using the Lagrange function L = E(R2
+
+µP(cid:1) with a Lagrange multiplier γ. The resulting optimal fractions are
+
+P ) + γ(cid:0)E(RP )−
+
+ˆqi = µP
+
+µi
+
+C2σ2
+i
+
+, where Ck =
+
+Xj=1
+
+N
+
+µk
+j
+σ2
+j
+
+.
+
+(3)
+
+For µP = 0, ˆqi = 0 for all assets. As we increase µP , all optimal fractions ˆqi grow in a uniform
+way and their ratios are preserved. At some value µ∗
+are investing the entire capital. Any further increase would require to borrow money, with
+Eq. (3) remaining valid as long as the borrowing rate equals the lending rate (both set to zero
+here). The relation between σP and µP is
+
+P we reach P ˆqi = 1, which means we
+
+This equation is often referred to as Capital Market Line (CML).
+
+σP = µP /pC2.
+
+(4)
+
+3
+
+If there is no risk-free asset in the market, one has to introduce the additional constraint
+i=1 ˆqi = 1. It follows that
+
+PN
+
+C0µ2
+
+σ2
+P =
+
+P − 2C1µP + C2
+C0C2 − C 2
+
+1
+
+.
+
+(5)
+
+The functional relation between the optimised σP and µP is called Eﬃcient Frontier (EF).
+
+Since there is only one point on the CML where Pi qi = 1, this line is tangent to the EF. The
+
+results of this section are plotted in Fig. 1 for a particular choice of three available assets.
+
+2 The Kelly portfolio
+
+When the investor’s capital follows a multiplicative process, after many time steps is its ex-
+pected value strongly inﬂuenced by rare events and in consequence it is not reasonable to
+form a portfolio by simply maximising E(W (t)). The Mean-Variance approach tries to solve
+this problem in a straightforward, yet criticisable way. We support here the idea that an
+eﬃcient investment strategy can be found by maximising the investment growth rate in the
+long run, which is, under the assumption of ﬁxed asset properties, equivalent to maximising
+the logarithm of the wealth W1 after one time step [6]. Thus the key quantity in the con-
+struction of a Kelly-optimal portfolio is v := E(ln W1), the average exponential growth rate
+of the wealth. We remind that the quantity ln W1 is not a logarithmic utility function.
+
+In [13], v is optimised in a similar context and the authors claim that their procedure
+corresponds to maximising the median of the distribution of returns. They consider short
+time intervals and thus small assets returns. Assuming RP ≪ 1 (very small portfolio return),
+they use the approximation ln(1 + RP ) ≈ RP − R2
+P /2 of the logarithm in the expression of
+v before maximising it. However, while such an expansion is only justiﬁed for RP ≪ 1, the
+maximum of the resulting function is at RP = 1, in contradiction with the hypothesis. We
+will develop a diﬀerent approximation in the following.
+
+First, the unconstrained maximisation of v is achieved by solving the set of equations
+∂v/∂qi = 0 (i = 1, . . . , N ). After exchanging the order of the derivative and the average, we
+obtain the condition
+
+(i = 1, . . . , N ).
+
+(6)
+
+E(cid:18)
+
+Ri
+
+1 +Pj qjRj(cid:19) = 0
+
+In our case, Ri has a lognormal distribution and to our knowledge, this set of equations cannot
+be solved analytically. With the help of the approximations introduced in the appendix we
+shall work out approximative solutions for some particular cases. We emphasize an important
+restriction which applies to all solutions of Eq. (6). Since returns Ri lie in the range (−1,∞),
+whenPN
+i=1 qi > 1 or when there is an investment fraction qi < 0, there is a nonzero probability
+that W1 is negative and hence v = E(ln W1) is not well deﬁned. Since Kelly’s approach focuses
+on the long run, it requires strictly zero probability of getting bankrupted in one turn. As
+a consequence, for lognormally distributed returns any Kelly strategy must obey qi ≥ 0 and
+PN
+i=1 qi ≤ 1, i.e. both short selling and borrowing must be avoided.
+
+2.1 One risky asset
+
+Let us begin the reasoning with the case of one risky asset. We want to ﬁnd the optimal
+investment fraction q of the available wealth. The remaining fraction 1 − q we keep in cash
+at the risk-free interest rate which, without loss of generality, is set to zero. This problem
+is described by Eq. (6) in one dimension; even this simplest case has no analytical solution.
+
+4
+
+q∧
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0
+-1
+
+analytical
+D = 0.25
+D = 1.0
+
+-0.5
+
+0
+
+2m/D
+
+0.5
+
+1
+
+Figure 2: The optimal portfolio fraction ˆq: a comparison of the analytical result Eq. (7) with
+a numerical maximisation of E(ln W1).
+
+Nevertheless, for a given D, one can ask what is the value m< for which it becomes proﬁtable
+to invest a positive fraction of the investor’s capital in the risky asset. This can be found
+imposing q = 0 in Eq. (6), yielding m< = −D/2. Similarly, the value m> for which it becomes
+proﬁtable to invest the entire capital can be found by imposing q = 1, yielding m> = D/2.
+We shall look for approximate solutions that are valid for small values of D, which is the
+
+case treated in appendix A. Using approximation Eq. (20) in Eq. (6) gives
+
+em − 1
+1 − q + qem +
+
+D
+2
+
+em(1 − q − qem)
+(1 − q + qem)3 = 0.
+
+With respect to q, this is merely a quadratic equation. Since the solution is rather long, we
+ﬁrst simplify the equation using m, D ≪ 1 as in Eq. (21), leading to the result
+
+ˆq =
+
+1
+2
+
++
+
+m
+D
+
+.
+
+(7)
+
+Since borrowing and short selling are forbidden, for m < −D/2 is ˆq = 0 and for m > D/2
+is ˆq = 1. When asset prices undergo a multiplicative random walk with lognormal returns,
+both m and D scale linearly with the time scale and hence ˆq does not depend on the length of
+the time step. Notice also that substituting m = ±D/2 gives ˆq = 0 and ˆq = 1, in agreement
+with the bounds we found before by exact computation. The ﬁrst order correction to Eq. (7)
+is m(4m2 − D2)/4D2 which is, for m ∈ [−D/2, D/2], of order O(m). The validity of the
+presented approximations can be easily tested by a straightforward numerical maximisation
+of E(ln W1). As can be seen in Fig. 2, the numerical results are well approximated by the
+analytical formula Eq. (7) even for D = 1.
+
+Notice that, for m, D ≪ 1, one can approximate µ ≈ m + D/2 and σ2 ≈ D, which
+makes the optimal portfolio fraction derived above equal to ˆq′ = µ/(µ2 + σ2) obtained in [13].
+However, if we check the accuracy of ˆq′, we ﬁnd a relative error up to 3% for D = 0.01, and
+for D = 0.25 we are already far out of the applicability range with an error around 50%. Also,
+Eq. (7) is for m, D ≪ 1 identical to the classical Merton’s result [25] which is derived under
+the assumption of continuous-time, non-zero consumption of the wealth, and a logarithmic
+utility function. In [11, 26], the result ˆq = 1
+2 + m/D is derived for the continuous time limit
+of our model: m, D → 0, m/D = const.
+
+5
+
+2.2 Constrained optimisation
+
+ˆqi < 0 do not enter the optimal portfolio. Since borrowing is also forbidden, if PN
+we have to introduce the additional constraint PN
+Lagrange function L(q, γ) = v + γ(cid:0)PN
+
+The optimal portfolio fractions qi can be derived from Eq. (6) also for N > 1. Using the same
+approximations as in the single asset case, we obtain the general formula ˆqi = 1/2 + mi/Di
+for i = 1, . . . , N . In our case, Kelly’s approach forbids short selling and hence the assets with
+i=1 ˆqi > 1,
+i=1 qi = 1. This can be done by use of the
+i=1 qi− 1(cid:1) where q is the vector of investment fractions.
+i=1 qiRi(cid:19) + γ = 0
+
+The optimal portfolio is then the solution of the set of equations
+
+qj = 1, E(cid:18)
+
+(i = 1, . . . , N ),
+
+(8)
+
+N
+
+Xj=1
+
+Ri
+
+1 +PN
+
+where Ri = eηi − 1. Using the same approximations again, one obtains the general result
+
+ˆqi =
+
+1
+2
+
++
+
+mi + γ
+
+Di
+
+.
+
+(9)
+
+The Lagrange multiplier γ is ﬁxed by the condition PN
+It can occur that even
+a proﬁtable asset with mi > −Di/2 has a negative optimal investment fraction. Since in
+our case the Kelly approach forbids short selling, this asset has to be eliminated from the
+optimisation process. In consequence, under some conditions, only a few assets are included
+in the resulting optimal portfolio. This phenomenon, which we call portfolio condensation, we
+study closer in sections 2.3 and 2.4. An alternative approach to the constrained Kelly-optimal
+portfolio is provided by the Kuhn-Tucker equations (see [21]) which, however, can be shown
+to be equivalent to Eq. (8).
+
+j=1 ˆqj = 1.
+
+Now we can establish an important link to Markowitz’s approach: in the limit µi, σi → 0
+the Kelly portfolio lies on the constrained Eﬃcient Frontier (no short selling allowed). We
+shall prove this statement in the following. When all the assets have small µi and σi, in Eq. (3)
+and Eq. (5) we can approximate µi ≈ mi + Di/2 and σ2
+i ≈ Di, leading to the approximative
+relation for the Eﬃcient Frontier
+
+σ2
+P =
+
+˜C0µ2
+
+P − 2 ˜C1µP + ˜C2
+˜C0 ˜C2 − ˜C 2
+
+1
+
+, where ˜Ck =
+
+N
+
+Xj=1
+
+(mi + Di/2)k
+
+Di
+
+.
+
+(10)
+
+For the Kelly portfolio we need to work out a similar approximation. Using the condition
+
+Pi ˆqi = 1, for γ in Eq. (9) we obtain γ = (1 − ˜C1)/ ˜C0. In the relations µP = Pi qiµi and
+i σ2
+P = Pi q2
+
+σ2
+from Eq. (9), for the Kelly optimal portfolio we get
+
+i we use the approximations for µi, σi introduced above. After substituting qi
+
+µK =
+
+˜C0 ˜C2 − ˜C 2
+˜C0
+
+1 + ˜C1
+
+,
+
+σ2
+K =
+
+˜C0 ˜C2 − ˜C 2
+˜C0
+
+1 + 1
+
+.
+
+(11)
+
+Both in Eq. (10) and Eq. (11) we consider only the assets that have positive investment
+fractions. Now it is only a question of simple algebra to show that µK and σK given by
+Eq. (11) fulﬁll Eq. (10), which completes the proof. Similar, yet weaker, results can be found
+in the literature. For instance, Markowitz states in [17] that “on the EF there is a point which
+approximately maximizes E(ln W1).”
+
+Obtained results are illustrated in Fig. 3, where we plot the Eﬃcient Frontier, the con-
+strained Eﬃcient Frontier, and the Kelly portfolio for the same three assets as in Fig. 1.
+
+6
+
+µ
+P
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+Single assets
+EF
+EF without SS
+Kelly portfolio
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+σ
+P
+
+0.6
+
+0.7
+
+Figure 3: The Eﬃcient Frontier (EF, thin solid line), EF without short selling (bold line),
+and the Kelly portfolio (solid square) in a particular case of three assets (asset parameters as
+in Fig. 1).
+
+While the original EF is not bounded (for any µP exists appropriate σP ), the constrained EF
+starts at the point corresponding to the full investment in the least proﬁtable asset and ends
+at the point corresponding to the most proﬁtable asset. The two lines coincide on a wide
+range of µP . In agreement with the previous paragraph, the Kelly portfolio lies close to the
+constrained EF.
+
+2.3 Condensation in the two asset case
+
+To illustrate the condensation phenomenon we focus on a simple case here: two risky assets
+plus a risk-free one, borrowing and short selling forbidden. As we have already seen, without
+constraints ˆqi = 1/2 + mi/Di. Therefore, when mi < −Di/2, ˆqi is negative and due to
+forbidden short selling, asset i drops out of the optimal portfolio. In Fig. 4 this threshold is
+shown for i = 1, 2 by dashed lines. In the lower-left corner (A) we have the region where both
+assets are unproﬁtable and the optimal strategy prescribes a fully riskless investment.
+
+When the results of the unconstrained optimisation sum up to one (ˆq1 + ˆq2 = 1), we are
+advised to invest all our wealth in the risky assets. If both assets are proﬁtable, this occurs
+when m1/D1 +m2/D2 = 0. When only asset i is proﬁtable, we should invest the entire capital
+on it only when mi equals at least Di/2. In Fig. 4 these results are shown as a thick solid
+curve.
+
+Since borrowing is not allowed, in the region above the solid line constrained optimisation
+has to be used. The condensation to one of the two assets arises when the optimal fractions
+(ˆq1, ˆq2) are either (1, 0) or (0, 1); we can ﬁnd the values m′
+1 when this happens. By
+eliminating γ from Eq. (8) and substituting q1 = 1 and q2 = 0 we obtain the condition for the
+
+1 and m′′
+
+condensation on asset 1: E(cid:0)(eη1 − 1)/eη1(cid:1) = E(cid:0)(eη2 − 1)/eη1(cid:1). This can be solved analytically,
+
+yielding
+
+m′
+
+1 = m2 +
+
+D1 + D2
+
+2
+
+.
+
+(12)
+
+This equation holds with interchanged indices for the condensation on asset 2, thus m′′
+1 =
+m2−(D1 +D2)/2. Finally, for m′′
+1 the optimal portfolio contains both assets. The
+crossover values m′
+2 are shown in Fig. 4 as dotted lines. They delimit the region where
+the portfolio condensates to only one of two proﬁtable assets. A complete “phase diagram” of
+the optimal investment in the two assets case is presented in Fig. 4 for a particular choice of
+the assets’ variances. Interestingly, growth-rate optimising strategies have their importance
+
+1 < m1 < m′
+
+1 and m′
+
+7
+
+0.2
+
+0.1
+
+m2
+
+0.0
+
+-0.1
+
+D2
+
+B2
+
+A
+
+-0.2
+
+-0.2
+
+-0.1
+
+F2
+
+E
+
+F1
+
+D1
+
+0.1
+
+0.2
+
+C
+
+B1
+
+0.0
+m1
+
+Figure 4: The phase diagram of the two-asset system with D1 = 0.1 and D2 = 0.2. In region
+A the investor is advised to use only the risk-free asset. In regions B1, B2, and C the optimal
+investment is still partially in the risk-free asset. In regions D1, D2, E, F1, and F2 one should
+invest everything in the risky assets. While in regions C and E the investment is divided
+between the two assets, in shaded regions F1 and F2 a nontrivial condensation arises: one is
+advised to invest all wealth in one asset although the other one is also proﬁtable.
+
+also in evolutionary biology [27] where a similar condensation phenomenon has been observed
+when studying evolution in an uncertain environment [28].
+
+2.4 Many assets with equal volatility
+
+We investigate here the case of an arbitrary large number N of available assets where Kelly’s
+approach, which forbids borrowing and short selling, gives rise to a portfolio condensation.
+While the optimal portfolio fractions are given by Eq. (9), to ﬁnd which assets are included in
+the optimal portfolio is a hard combinatorial task. To obtain analytical results, we simplify
+the problem by assuming that the variances of all assets are equal, Di = D (i = 1, . . . , N ).
+The number of assets contained in the optimal portfolio is labeled as M and the assets are
+sorted in order of decreasing mi (m1 > m2 > ··· > mN ).
+If the unconstrained optimisation does not violate forbidden borrowing, then proﬁtability
+of an asset (i.e., mi > −D/2) is the only criterion for including it in the optimal portfolio.
+When the constrained optimisation is necessary, the optimal portfolio is formed by starting
+from the most proﬁtable asset m1, and adding the others one by one until the last added asset
+has a nonpositive optimal fraction qM +1 ≤ 0. Summing Eq. (9) from 1 to M , we can write γ
+as γ(M ) = D(M −1 − 1/2) − 1
+1 mi. For a given realisation of {mi}, we can obtain the
+resulting portfolio size by ﬁnding the largest M that satisﬁes qM > 0, which leads to
+
+M PM
+
+mM +
+
+D
+M
+
+>
+
+1
+M
+
+M
+
+Xi=1
+
+mi.
+
+(13)
+
+This relation tells us how many assets we should invest on, once their expected growths and
+volatility are known. Notice that for M = 2 and D1 = D2 = D, this result is consistent with
+that of Eq. (12) where a special case of the condensation on two assets is described.
+
+Let us follow now a statistical approach. If all mi are drawn from a given distribution
+f (m), the value of M depends on the current realisation. The characteristic behaviour of
+
+8
+
+the system can be found by taking the average over all possible realizations and replacing mi
+by mi. The resulting typical portfolio size MT captures this behaviour and depends on the
+distribution f (m) and on the number of available assets N .
+
+2.4.1 Uniform distribution of m
+
+Let us ﬁrst analyse the case of a uniform distribution of mi within the range [a, b]. First we
+assume that all assets are proﬁtable, i.e. a + D/2 > 0. For mi are sorted in decreasing order,
+one can show mi = b− (b− a)i/(N + 1). Since mi declines with i linearly, according to Eq. (9)
+so does ˆqi. Substituting mi for mi in Eq. (13) and replacing > with =, we can estimate the
+typical number of assets in the optimal portfolio MT . Assuming MT ≫ 1, the solution has
+the simple form MT = p2N D/(b − a).
+We are now able to generalise this result to the case where not all assets are proﬁtable, i.e.
+mi + D/2 < 0 for some i’s. In the extreme case b + D/2 < 0 and all assets are unproﬁtable,
+leading to M = MT = 0. The opposite extreme is realized for mMT +1 + D/2 > 0 which falls
+in the previously treated case because the number of proﬁtable assets is larger than MT . In
+the intermediate region, only the assets with mi > −D/2 are proﬁtable and enter the optimal
+portfolio. On average, they are N (b + D/2)/(b − a). All together we have the formula
+
+MT =
+
+
+0
+N b+D/2
+b−a
+q 2N D
+
+
+b−a
+
+(b + D/2 < 0),
+(b + D/2 > 0, mMT + D/2 < 0),
+
+(mMT + D/2 > 0).
+
+(14)
+
+In Fig. 5, left, an illustration of a particular system (a = x − L, b = x + L, x = −0.05,
+motivated by [29]) is shown. We plot MT and µP as functions of L. When L is small,
+all available assets are unproﬁtable and the optimal strategy is to keep the entire capital
+at the risk-free rate. As soon as the ﬁrst proﬁtable assets are added to the system, the
+
+optimal portfolio includes all of them, until it saturates at the value pN D/L (in Eq. (14)
+we substitute b − a = 2L). A further increase of L widens the distribution of m and enlarges
+the gaps between proﬁtable assets. It becomes, as a consequence, more rewarding to drop the
+worse ones and MT decreases. The analytical solution, displayed in Fig. 5 as a solid line, is
+in a good agreement with the numerical results (shown as symbols). Although no single-asset
+
+portfolio arises in this case, the relative portfolio size is MT /N ∼ 1/√N and hence in the
+
+large N limit, the optimal portfolio condensates to a small fraction of all available assets.
+
+i=1 q2
+i .
+
+A more ﬂexible measure of the level of condensation is the inverse participation ratio,
+deﬁned as R = 1/PN
+It estimates the eﬀective number of assets in the portfolio:
+when all investment fractions are equal, R = N , while when one asset covers 99% of the
+portfolio, R ≈ 1. Concerning the typical case, using Eq. (9) we can write qi = A − Bi,
+B = (b − a)/[D(N + 1)], the detailed form of A is not needed for the solution. We assume
+that the number of proﬁtable assets is larger than the typical size of the optimal portfolio
+MT . Consequently, passing from i = 1 to i = MT , qi decreases linearly to zero and we can
+
+use the identity PMT
+
+i=1(A − Bi)2 = PMT
+
+i=1(Bi)2 to obtain
+
+R = (cid:2)B2MT (MT + 1)(2MT + 1)/6(cid:3)−1 ≈ (cid:2)B2M 3
+
+T /3(cid:3)−1 ≈ 3
+
+4 MT .
+
+(15)
+
+In the last step we used Eq. (14) for the typical size of the condensed optimal portfolio. We
+see that the uniform distribution of mi leads to the inverse participation ratio proportional
+to the number of assets in the portfolio. In the right graph of Fig. 5, Eq. (15) is shown to
+match the numerical solution (based on Eq. (13)) for various numbers of available assets.
+
+9
+
+15
+
+10
+
+MT
+
+5
+
+0
+
+0
+
+0.15
+
+0.10
+
+µ
+P
+
+0.05
+
+50
+
+10
+
+5
+
+o
+i
+l
+o
+f
+t
+r
+o
+p
+
+ 
+e
+h
+t
+ 
+n
+i
+ 
+s
+t
+e
+s
+s
+a
+ 
+f
+o
+
+ 
+
+#
+
+MTµ
+
+P
+
+0.05
+
+0.1
+L
+
+0.15
+
+0
+0.2
+
+100
+
+1000
+N
+
+MT
+R
+
+10000
+
+Figure 5: Left: In the case with mi uniformly distributed in [x − L, x + L] we plot the size
+of the optimal portfolio MT (solid line represents analytical result Eq. (14), symbols are
+numerical results averaged over 10 000 repetitions). With the dashed line the portfolio return
+µP (measured in percents) is shown. The parameters are N = 1 000, D = 0.01, x = −0.05.
+Right: In the case of N assets with D = 0.01 and mi uniformly distributed in [0, 0.1], we plot
+the average size of the optimal portfolio MT , and the inverse participation ratio R. Solid
+lines are the analytical solutions reported in Eqs. (14) and (15), symbols stand for numerical
+results.
+
+2.4.2 Power-law distribution of m
+
+Now we treat the case of a distribution f (m) that has a power-law tail: f (m) = Cm−α−1 for
+m > mmin. As long as M ≪ N , the properties of the assets included in the optimal portfolio
+are driven by the tail of f (m). In consequence, the detailed form of f (m) for m < mmin is not
+important here. We assume that only a fraction r of all assets falls in the region m > mmin.
+Instead of seeking the typical portfolio size MT , we shall limit ourselves to ﬁnding the
+conditions when a condensation on one asset arises. With this aim in mind, we put M = 2 in
+Eq. (13), obtaining the equation m1−m2 = D. When m1−m2 > D, only asset 1 is included in
+the optimal portfolio. By replacing m1 and m2 with their medians ˜m1 and ˜m2, one obtains an
+approximate condition for a system where such a condensation typically exists. Using order
+statistics [30] we ﬁnd the following expressions for the medians: ˜m1 = mmin(N r/ ln 2)1/α,
+.
+= mmin(N r/1.68)1/α. The equation ˜m1− ˜m2 = D thus achieved can be solved numerically
+˜m2
+with respect to α.
+In this way we ﬁnd the value α1 below which the optimal portfolio
+typically contains only the most proﬁtable asset. In Fig. 6 we plot the result as a function
+of D. For comparison, the outcomes from a purely numerical investigation of the equation
+P (m1 − m2 > D) = 0.5 are also shown as ﬁlled circles. Our approximate condition has the
+same qualitative behaviour as the simulation, showing that the use of median gives us a good
+notion of the optimal portfolio behaviour.
+
+3 Eﬃcient frontiers
+
+Markowitz’s Eﬃcient Frontier is the line where eﬃcient portfolios are supposed to lie in the
+Mean-Variance picture. Here we would like to follow the same procedure, using typical instead
+of average quantities. To capture a typical case, we replace the portfolio return RP by ln W1
+in all averages of Sec. 1.2. According to the formula E((x − E(x))2) = E(x2) − E(x)2 we can
+minimise E((ln W1)2) − E(ln W1)2 instead of E((ln W1 − E(ln W1))2). With the constraints
+
+10
+
+5
+
+4
+
+α1
+
+3
+
+2
+
+1
+
+0
+0
+
+simulation
+analytical
+
+0.1
+
+0.2
+
+0.3
+
+D
+
+0.4
+
+0.5
+
+Figure 6: Values of the power law exponent α1 at which condensation to one asset arises for
+N = 1 000, r = 0.1, and mmin = 0.1. We compare the semi-analytical result obtained by
+solving ˜m1 − ˜m2 = D (shown as the solid line) with a numerical simulation of the system
+(shown as ﬁlled circles). Below the line, the optimal portfolio typically contains only one
+asset.
+
+E(ln W1) = vP and PN
+
+i=1 qi = 1, the Lagrange function has the form
+
+L = E(cid:0)(ln W1)2(cid:1) + γ1(cid:0)E(ln W1) − vP(cid:1) + γ2(cid:0)
+
+N
+
+Xi=1
+
+qi − 1(cid:1).
+
+(16)
+
+Its analytical maximisation leads to complicated equations and thus it is convenient to inves-
+tigate the system numerically; we do so in the particular case of three assets used in Fig. 1.
+Due to the two constraints there is eﬀectively only one degree of freedom for the minimisation
+of E((ln W1)2) and the numerical procedure may be straightforward.
+
+For the resulting portfolios we can compute expected returns and variances which allows
+us to add this “Logarithmic Eﬃcient Frontier” (LEF) to the σP -µP plane depicted in Fig. 1.
+The result is shown in Fig. 7, where the solid line is again Markowitz’s EF. Solid circles
+correspond to the three individual assets. The dashed line represents LEF (obtained by the
+numerical optimisation described above) and the thick gray curve is the region where both
+EF and LEF consist only of positive portfolio fractions. The solid square represents the Kelly
+portfolio as follows from Eq. (9) (again, short selling and borrowing are forbidden). We see
+that EF and LEF are close to each other and thus from the practical point of view they do
+not diﬀer.
+
+Finally, let us discuss a useful simpliﬁcation which allows us, in some cases, to reduce the
+time-consuming numerical computations. By diﬀerentiating Eq. (16) we obtain the condition
+for the optimal portfolio fractions
+
+E(cid:18) 2 ln W1
+
+W1
+
+Ri(cid:19) + γ1 E(cid:18) Ri
+
+W1(cid:19) + γ2 = 0
+
+(i = 1, . . . , N ).
+
+(17)
+
+When the parameters of all assets fulﬁll the condition mi, Di ≪ 1, we can use approximations
+for E(Ri/W1) introduced in Appendix A. The ﬁrst term can be evaluated more precisely using
+ln W1 = ln(1 + RP ) ≈ RP . Hence E(Ri ln W1/W1) ≈ qi E(R2
+i ) +Pj6=i qj E(Ri)E(Rj), where
+Ri = eηi − 1 is the return of asset i. Furthermore, for mi, Di ≪ 1 we have E(Ri) ≈ mi + Di/2
+and E(R2
+
+i ) ≈ Di. As a result we obtain the equations
+2qiDi + 2(mi + Di/2)Xj6=i
+
+qj(mj + Dj/2) + γ1(cid:20)mi +
+
+Di
+2
+
+(1 − 2qi)(cid:21) + γ2 = 0,
+
+(18)
+
+11
+
+µ
+P
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+Mean-Var EF
+Logarithmic EF
+LEF with qi > 0
+Kelly portfolio
+Single assets
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+σ
+P
+
+0.6
+
+0.7
+
+Figure 7: Comparison of two eﬃcient frontiers. The solid line is the classic EF given by
+Eq. (5). The dashed line is obtained by ﬁxing E(ln W1) and by numerically minimising
+ﬂuctuations of ln W1 around this value. This we call LEF, its portion with positive qi values
+is highlighted in thick gray. The small ﬁlled circles represent the three individual assets that
+compose the system. The ﬁlled square is the Kelly-optimal portfolio (no borrowing, no short
+selling).
+
+where i = 1, . . . , N and the values of γ1 and γ2 are ﬁxed by the constraints PN
+Di/2) = vP , PN
+
+i=1 qi(mi +
+i=1 ˆqi = 1. This set of N +2 nonlinear equations allows us to approximately ﬁnd
+Logarithmic Eﬃcient Frontier. In comparison with a straightforward numerical maximisation
+of Eq. (16) (involving numerical integration of E(ln W1) and E((ln W1)2)), a substantial saving
+of computational costs is achieved.
+
+4 Concluding remarks
+
+In this work we investigated the Kelly optimisation strategy in the framework of a simple
+stochastic model for asset prices. We derived a highly accurate approximate analytical formula
+for the optimal portfolio fractions. We proved that in the limit of small returns and volatilities
+of the assets, the constrained Kelly-optimal portfolio lies on the Eﬃcient Frontier. Based on
+the obtained analytical results, we proposed a simple algorithm for the construction of the
+optimal portfolio in the constrained case. We showed that since in the investigated case
+of lognormal returns, Kelly’s approach forbids short positions and borrowing, only a part
+of the available assets is included in the optimal portfolio.
+In some cases the size of the
+optimal portfolio is much smaller than the number of available assets—we say that a portfolio
+condensation arises. In particular, when the distribution of the mean asset returns is wide,
+there is a high probability that only the most proﬁtable asset is included in the Kelly-optimal
+portfolio.
+
+The Mean-Variance analysis is a well-established approach to the portfolio optimisation.
+We modiﬁed this method by replacing the averages E(W1) and E(W 2
+1 ) with the logarithm-
+related quantities E(ln W1) and E((ln W1)2). These are less aﬀected by rare events and allow
+to capture the typical behaviour of the system. As a matter of fact, the diﬀerence between
+the traditional M-V approach and the modiﬁcation proposed here is very small and does not
+justify the additional complexity thus induced.
+
+12
+
+5 Acknowledgement
+
+We acknowledge the partial support from Swiss National Science Foundation (project 205120-
+113842) as well as STIPCO (European exchange program). We appreciate early collaboration
+with Dr. Andrea Capocci in this research, stimulating remarks from Damien Challet in late
+stages of the paper preparation, and helpful comments of our anonymous reviewers.
+
+A Main approximations
+
+Our aim is to approximate expressions of the type E(g(η)), where η follows a normal distri-
+bution f (η) with the mean m and the variance D. For small values of D, this distribution
+is sharply peaked and an approximate solution can be found expanding g(η) around this m.
+This expansion has the following eﬀective form
+
+g(η)
+
+ef.
+= g(m) +
+
+1
+2
+
+(η − m)2g(2)(m) +
+
+1
+24
+
+(η − m)4g(4)(x),
+
+(19)
+
+for some x ∈ [m, η]. Here we dropped the terms proportional to (η−m)k with an odd exponent
+k, for they vanish after the averaging. If we take only the ﬁrst two terms into account, we
+obtain
+
+E(cid:0)g(η)(cid:1) = Z ∞
+
+−∞
+
+g(η)f (η) dη ≈ g(m) +
+
+D
+2
+
+g(2)(m).
+
+(20)
+
+This approximation is valid when the following term of the Taylor series brings a negligible
+contribution ∆. We can estimate it in the following way (x ∈ [m, η])
+
+∆ = Z ∞
+
+−∞
+
+(η − m)4
+
+24
+
+g(4)(x)f (η) dη . Z ∞
+
+−∞
+
+(η − m)4
+
+24
+
+M f (η) dη =
+
+M D2
+
+8
+
+.
+
+Here by M we label the maximum of |g(4)(η)| in the region X where f (η) diﬀers from zero
+considerably, e.g. X = [m − 2D, m + 2D]. Since g(x) has no singular points in a wide
+neighbourhood of m, its fourth derivative is a bounded and well-behaved function. Thus M
+is ﬁnite and ∆ vanish when D is small.
+
+In particular, in this work we deal with functions of the form g(ηi) = (eη−1)/[1+q(eη−1)].
+If we use Eq. (20) with this g(η), approximate 1 + q(em − 1) in the resulting denominators by
+1, em by 1, and em − 1 by m, we are left with
+
+We widely use approximations of this kind to obtain the leading terms for the optimal portfolio
+fractions in this paper.
+
+E(cid:0)g(η)(cid:1) ≈ m + D(cid:0)1 − 2q(cid:1)/2.
+
+(21)
+
+B Procedure for correlated asset prices
+
+So far we have considered uncorrelated asset prices, undergoing the geometric Brownian
+motion of Eq. (1). Obviously, this is an idealised model and real asset prices exhibit various
+kinds of correlations. In order to treat correlated prices we employ the covariance matrix S
+to characterise the second moment of the stochastic terms E((ηi − mi)(ηj − mj)) = Sij. The
+uncorrelated case can be recovered with the substitution Sij = δijDi.
+
+13
+
+Again, we would like to ﬁnd an approximation of the term E(cid:0)g(η)(cid:1) ≡ R g(η)f (η) dη.
+
+Here f (η) is the probability distribution of η and g(η) is the function of interest. Notice that
+the correlations impose the use of vector forms for all the quantities of interest. The Taylor
+expansion of g(η) around m, Eq. (19) in the uncorrelated case, takes the form
+
+g(η) = g(m) + ∇g(m) · (η − m) +
+
+1
+2
+
+(η − m)T V(m)(η − m) + . . . .
+
+Here V(m) is the matrix of second derivatives of the function g(η), calculated at the point
+η = m. Now we can proceed in the same way as before
+
+E(cid:0)g(η)(cid:1) ≈ g(m)Z f (η) dη +
+
+N
+
+Xi=1
+
+∂ig(m)Z (ηi − mi)f (η) dη +
+
++
+
+1
+2
+
+N
+
+Xi,j=1
+
+Vij Z (ηi − mi)(ηj − mj)f (η) dη =
+
+= g(m) +
+
+1
+2
+
+N
+
+Xi,j=1
+
+SijVij = g(m) +
+
+1
+2
+
+Tr(SV).
+
+In the last line we used the symmetry of S. For given g(η), m and S, we can now solve the
+equation E(g(η)) = 0. In particular, these approximations can be cast into Eq. (6), which
+can then be treated as in the uncorrelated case.
+
+References
+
+[1] H. M. Markowitz, The Journal of Finance 7, 77–91, 1952
+
+[2] W. F. Sharpe, The Journal of Finance 19, 425–442, 1964
+
+[3] A. F. Perold, Management Science 30, 1143–1160, 1984
+
+[4] H. Konno and H. Yamazaki, Management Science 37, 519–531, 1991
+
+[5] E. J. Elton, M. J. Gruber, S. J. Brown, and W. N. Goetzmann, Modern Portfolio Theory
+
+and Investment Analysis, 7th Edition, Wiley, 2006
+
+[6] J. L. Kelly, IEEE Transactions on Information Theory 2, 185–189, 1956
+
+[7] L. Breiman, Proc. 4th berkeley Symp. Math. Stat. Prob., 65–78, 1962
+
+[8] M. Finkelstein and R. Whitley, Advances in Applied Probability 13, 415–428, 1981
+
+[9] S. Browne, in Finding the Edge, Mathematical Analysis of Casino Games, eds. O. Van-
+
+cura, J. Cornelius, and W. R. Eadington, University of Nevada, 215–231, 2000
+
+[10] E. O. Thorp, in Handbook of Asset and Liability Management, S. Zenios and W. Ziemba,
+
+Eds., Elsevier/North-Holland, 385–428, 2006
+
+[11] E. Platen and D. Heath, A benchmark approach to quantitative ﬁnance, Springer, 2006
+
+[12] M. Marsili, S. Maslov, and Y.-C. Zhang, Physica A 253, 403–418, 1998
+
+14
+
+[13] S. Maslov and Y.-C. Zhang, International Journal of Theoretical and Applied Finance
+
+1, 377–387, 1998
+
+[14] H. A. Latan´e, The Journal of Political Economy 67, 144–155, 1959
+
+[15] P. A. Samuelson, PNAS 68, 2493–2496, 1971
+
+[16] H. Levy, International Economic Review 14, 601–614, 1973
+
+[17] H. M. Markowitz, The Journal of Finance 31, 1273–1286, 1976
+
+[18] L. C. MacLean, W. T. Ziemba, and G. Blazenko, Management Science 38, 1562–1585,
+
+1992
+
+[19] S. J. Grossman and Z. Zhou, Mathematical Finance 3, 241–276, 1993
+
+[20] L. C. MacLean and W. T. Ziemba, in Handbook of Asset and Liability Management,
+
+S. Zenios and W. Ziemba, Eds., Elsevier/North-Holland, 429–474, 2006
+
+[21] T. M. Cover and J. A. Thomas, Elements of Information Theory, 2nd Edition, Wiley-
+
+Interscience, 2006
+
+[22] M. Medo, C. H. Yeung, and Y.-C. Zhang, International Review of Financial Analysis
+
+18, 34–39, 2009
+
+[23] L. C. MacLean, R. Sanegre, Y. Zhao, and W. T. Ziemba, Journal of Economic Dynamics
+
+and Control 28, 937–954, 2004
+
+[24] M. Medo, Y. M. Pis’mak, and Y.-C. Zhang, Physica A 387, 6151–6158, 2008
+
+[25] R. C. Merton, The Review of Economics and Statistics 51, 247–257, 1969
+
+[26] S. Browne and W. Whitt, Adv. Appl. Prob. 28, 1145–1176, 1996
+
+[27] J. Yoshimura and V. A. A. Jansen, Population Ecology 38, 165–182, 1996
+
+[28] C. T. Bergstrom and M. Lachmann, IEEE Information Theory Workshop 2004, 50–54,
+
+2004
+
+[29] A. Capocci, private communication
+
+[30] H. A. David and H. N. Nagaraja, Order Statistics, 3rd Edition, Wiley, 2003
+
+15
+
+

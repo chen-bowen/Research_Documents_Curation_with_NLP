@@ -1,0 +1,727 @@
+AFFINE MODELS
+
+CHRISTA CUCHIERO, DAMIR FILIPOVIC, JOSEF TEICHMANN
+
+Abstract. Aﬃne term structure models have gained signiﬁcant
+
+attention in the ﬁnance literature, mainly due to their analytical
+
+tractability and statistical ﬂexibility. The aim of this article is to
+
+present both theoretical foundations as well as empirical aspects of
+
+the aﬃne model class. Starting from the original one-factor short-
+
+rate models of Vasiˇcek and Cox et al, we provide an overview of the
+
+properties of regular aﬃne processes and explain their relationship
+
+to aﬃne term structure models. Methods for securities pricing
+
+and for parameter estimation are also discussed, demonstrating
+
+how the analytical tractability of aﬃne models can be exploited
+
+for practical purposes.
+
+8
+0
+0
+2
+
+ 
+t
+c
+O
+0
+1
+
+ 
+
+ 
+ 
+]
+
+.
+
+R
+P
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+2
+v
+5
+8
+9
+1
+
+.
+
+9
+0
+8
+0
+:
+v
+i
+X
+r
+a
+
+Key words and phrases. Aﬃne Term Structure, Aﬃne Process, Characteristic Func-
+tion, Pricing, Estimation.
+The ﬁrst and third author gratefully acknowledge the support from the FWF-grant
+Y 328 (START prize from the Austrian Science Fund). The second author gratefully
+acknowledges the support from WWTF (Vienna Science and Technology Fund).
+
+1
+
+2
+
+CHRISTA CUCHIERO, DAMIR FILIPOVIC, JOSEF TEICHMANN
+
+1. Definition
+
+Notation 1. Throughout the article, h·, ·i denotes the standard scalar
+
+product on RN .
+
+Deﬁnition 1. Let rt be a short rate model speciﬁed as an aﬃne func-
+
+tion of an N-dimensional Markov process Xt with state space D ⊆ RN :
+
+rt = l + hλ, Xti,
+
+(1)
+
+for some (non time-dependent) constants l ∈ R and λ ∈ RN . This
+
+is called an Aﬃne Term Structure Model (ATSM) if the zero-coupon
+
+bond price has exponential aﬃne form, i.e.
+
+P (t, T ) = Ehe−R T
+
+t rsds(cid:12)(cid:12)(cid:12)Xti = eG(t,T )+hH(t,T ),Xti,
+
+(2)
+
+where E denotes the expectation under a risk neutral probability mea-
+
+sure.
+
+2. Early Examples
+
+Early well-known examples are the Vasiˇcek [14] and the Cox, In-
+
+gersoll, Ross [5] (see eqf11-024 and eqf11-025) time-homogeneous one-
+
+factor short rate models.
+
+In (1), both models are characterized by
+
+N = 1, l = 0 and λ = 1.
+
+2.1. Vasiˇcek Model: Xt follows an Ornstein-Uhlenbeck process on
+
+D = R,
+
+dXt = (b + βXt)dt + σdWt,
+
+b, β ∈ R,
+
+σ ∈ R+,
+
+AFFINE MODELS
+
+3
+
+where Wt is a standard Brownian motion. Under these model speciﬁ-
+
+cations, bond prices can be explicitly calculated and the corresponding
+
+coeﬃcients G and H in (2) are given by
+
+H(t, T ) =
+
+1 − eβ(T −t)
+
+β
+
+,
+
+G(t, T ) =
+
+σ2
+
+2 Z T
+
+t
+
+H 2(s, T )ds + bZ T
+
+t
+
+H(s, T )ds,
+
+provided that β 6= 0. (see also eqf11-024)
+
+2.2. Cox-Ingersoll-Ross Model: Xt is deﬁned as the solution of the
+
+following aﬃne diﬀusion process on D = R+, known as Feller square
+
+root process,
+
+dXt = (b + βXt)dt + σpXtdWt,
+
+b, σ ∈ R+,
+
+β ∈ R.
+
+Like in the Vasiˇcek model, there is a closed-form solution for the bond
+
+price. If σ 6= 0, G and H in (2) are then of the form:
+
+G(t, T ) =
+
+2b
+
+σ2 ln 
+
+2γe(γ−β)(T −t)/2
+
+(γ − β)(eγ(T −t) − 1) + 2γ!,
+
+H(t, T ) =
+
+−2(eγ(T −t) − 1)
+
+(γ − β)(eγ(T −t) − 1) + 2γ
+
+,
+
+where γ :=pβ2 + 2σ2. (see also eqf11-025)
+
+Since the development of these ﬁrst one-dimensional term-structure
+
+models, many multi-factor extensions have been considered with the
+
+aim to provide more realistic models.
+
+4
+
+CHRISTA CUCHIERO, DAMIR FILIPOVIC, JOSEF TEICHMANN
+
+3. Regular Affine Processes
+
+The generic method to construct ATSMs is to use regular aﬃne
+
+processes. A concise mathematical foundation was provided by Duﬃe,
+
+Filipovi´c and Schachermayer [7]. Henceforth, we ﬁx the state space
+
+D = Rm
+
++ × RN −m, for some 0 ≤ m ≤ N.
+
+Deﬁnition 2. A Markov process X is called regular aﬃne if its charac-
+
+teristic function has exponential-aﬃne dependence on the initial state,
+
+i.e. for t ∈ R+ and u ∈ iRN , there exist φ(t, u) ∈ C and ψ(t, u) ∈ CN ,
+
+such that for all x ∈ D
+
+E(cid:2)ehu,Xti(cid:12)(cid:12)X0 = x(cid:3) = eφ(t,u)+hψ(t,u),xi.
+
+(3)
+
+Moreover, the functions φ and ψ are continuous in t and ∂+
+
+t φ(t, u)|t=0
+
+and ∂+
+
+t ψ(t, u)|t=0 exist and are continuous at u = 0.
+
+Regular aﬃne processes have been deﬁned and completely charac-
+
+terized in [7]. The main result is stated below.
+
+Theorem 3. A regular aﬃne process is a Feller semimartingale with
+
+inﬁnitesimal generator
+
+Af (x) =
+
+Akl(x)
+
+∂2f (x)
+∂xk∂xl
+
++ hB(x), ∇f (x)i − C(x)f (x)
+
+(f (x + ξ) − f (x) − h∇f (x), χ(ξ)i)M(x, dξ), (4)
+
+NXk,l=1
++ ZD\{0}
+
+for f in the set of smooth test functions, with
+
+AFFINE MODELS
+
+A(x) = a +
+
+B(x) = b +
+
+C(x) = c +
+
+mXi=1
+NXi=1
+mXi=1
+
+xiαi,
+
+a, αi ∈ RN ×N ,
+
+xiβi,
+
+b, βi ∈ RN ,
+
+xiγi,
+
+c, γi ∈ R+,
+
+M(x, dξ) = m(dξ) +
+
+xiµi(dξ),
+
+mXi=1
+
+5
+
+(5)
+
+(6)
+
+(7)
+
+(8)
+
+where m, µi are Borel measures on D\{0} and χ : RN → RN some
+
+bounded continuous truncation function with χ(ξ) = ξ in a neighbor-
+
+hood of 0. Furthermore, φ and ψ in (3) solve the generalized Riccati
+
+equations,
+
+with
+
+∂tφ(t, u) = F (ψ(t, u)), φ(0, u) = 0,
+
+∂tψ(t, u) = R(ψ(t, u)), ψ(0, u) = u,
+
+(9)
+
+(10)
+
+F (u) = hau, ui + hb, ui − c +ZD\{0}(cid:16)ehu,ξi − 1 − hu, χ(ξ)i(cid:17)m(dξ),
+Ri(u) = hαiu, ui + hβi, ui − γi +ZD\{0}(cid:16)ehu,ξi − 1 − hu, χ(ξ)i(cid:17)µi(dξ),
+
+for i ∈ {1, . . . , m},
+
+Ri(u) = hβi, ui,
+
+for i ∈ {m + 1, . . . , N}.
+
+Conversely, for any choice of admissible parameters a, αi, b, βi, c, γi,
+
+m, µi, there exists a unique regular aﬃne process with generator (4).
+
+6
+
+CHRISTA CUCHIERO, DAMIR FILIPOVIC, JOSEF TEICHMANN
+
+Remark 4. It is worth noting that the inﬁnitesimal generator of every
+
+Feller process on RN has the form of the above integro-diﬀerential op-
+
+erator (4) with some functions A, B, C and a kernel M. The speciﬁc
+
+characteristic of regular aﬃne processes is that these functions are all
+
+aﬃne, as described in (5) - (8).
+
+Observe furthermore that by the deﬁnition of the inﬁnitesimal genera-
+
+tor and the form of F and R, we have
+
+d
+dt
+
+E(cid:2)ehu,Xti(cid:12)(cid:12)X0 = x(cid:3)(cid:12)(cid:12)(cid:12)t=0+
+
+= (cid:0)∂+
+
+= (F (u) + hR(u), xi) ehu,xi = Aehu,xi.
+
+t φ(t, u)|t=0 + ∂+
+
+t ψ(t, u)|t=0(cid:1) ehu,xi
+
+This gives the link between the form of the operator A and the functions
+
+F and R in the Riccati equations (9) and (10).
+
+Remark 5. The above parameters satisfy certain admissibility condi-
+
+tions guaranteeing the existence of the process in D. These parameter
+
+restrictions can be found in Deﬁnition 2.6 and equations (2.23)-(2.24)
+
+in [7]. We note that admissibility in particular means αi,kl = 0 for
+
+i, k, l ≤ m unless k = l = i.
+
+4. Systematic analysis
+
+4.1. Regular aﬃne processes and ATSMs. Regular aﬃne pro-
+
+cesses generically induce ATSMs. This relation is explicitly stated in
+
+the subsequent argument. Under some technical conditions which are
+
+AFFINE MODELS
+
+7
+
+speciﬁed in [7] chapter 11, we have for rt as deﬁned in (1),
+
+(11)
+
+where
+
+Ehe−R t
+
+0 rsdsehu,Xti(cid:12)(cid:12)(cid:12)X0 = xi = eeφ(t,u)+h eψ(t,u),xi ,
+∂teφ(t, u) = eF (eψ(t, u)),
+∂teψ(t, u) = eR(eψ(t, u)),
+
+with eF (u) = F (u) − l and eR(u) = R(u) − λ. Setting u = 0 in (11),
+one immediately gets (2) with G(t, T ) = eφ(T − t, 0) and H(t, T ) =
+eψ(T − t, 0).
+
+4.2. Diﬀusion case. Conversely, for a class of diﬀusions
+
+dXt = B(Xt)dt + σ(Xt)dWt
+
+(12)
+
+on D, Duﬃe and Kan [8] analyzed when (2) implies an aﬃne diﬀusion
+
+matrix A = σσT
+
+2 and an aﬃne drift B of form (5) and (6) respectively.
+
+4.3. One dimensional nonnegative Markov process. For D =
+
+R+, Filipovi´c [9] showed that (1) deﬁnes an ATSM if and only if Xt is
+
+a regular aﬃne process.
+
+4.4. Relation to Heath-Jarrow-Morton framework. Filipovi´c and
+
+Teichmann [10] established a relation between the Heath-Jarrow-Morton
+
+(HJM) framework (see eqf11-022) and ATSMs: Essentially, all generic
+
+ﬁnite dimensional realizations1 of a HJM term structure model are
+
+time-inhomogeneous ATSMs.
+
+1For a precise deﬁnition see [10].
+
+8
+
+CHRISTA CUCHIERO, DAMIR FILIPOVIC, JOSEF TEICHMANN
+
+5. Canonical Representation
+
+An ATSM stemming from a regular aﬃne diﬀusion process X on
+
+Rm
+
++ × RN −m can be represented in diﬀerent ways by applying non-
+
+singular aﬃne transformations to X.
+
+Indeed, for every nonsingular
+
+N × N-matrix K and κ ∈ RN , the transformation KX + κ modiﬁes
+
+the particular form of (12) and the short rate process (1), while ob-
+
+servable quantities (e.g.
+
+the term structure or bond prices) remain
+
+unchanged. In order to group those N-dimensional ATSMs generating
+
+identical term structures, Dai and Singleton [6] found N +1 subfamilies
+
+Am(N), where 0 ≤ m ≤ N is the number of state variables actually
+
+appearing in the diﬀusion matrix (i.e. the dimension of the positive
+
+half space). For each class, they speciﬁed a canonical representation
+
+whose diﬀusion matrix σσT is of diagonal form with
+
+(σσT (x))kk = 
+
+xk,
+
+1 +Pm
+
+k ≤ m
+
+,
+
+i=1 λk,ixi k > m
+
+where λk,i ∈ R. For N ≤ 3 the Dai-Singleton speciﬁcation comprises
+
+all ATSMs generated by regular aﬃne diﬀusions on Rm
+
++ × RN −m. The
+
+general situation N > 3 was analyzed by Cheridito, Filipovi´c and Kim-
+
+mel [4].
+
+6. Empirical Aspects
+
+6.1. Pricing: The price of a claim with payoﬀ function f (Xt) is given
+
+by the risk neutral expectation formula
+
+π(t, x) = Ehe−R t
+
+0 rsdsf (Xt)(cid:12)(cid:12)(cid:12)X0 = xi.
+
+Suppose f can be expressed by
+
+AFFINE MODELS
+
+9
+
+λ ∈ RN ,
+
+(13)
+
+then (11) implies
+
+for some integrable function ef and some constant C ∈ RN . If, moreover
+
+f (x) =ZRN
+
+Ehe−R t
+
+ehC+iλ,xief (λ)dλ,
+0 rsdsehC,Xti(cid:12)(cid:12)(cid:12)X0 = xi < ∞,
+ehC+iλ,Xtief (λ)dλ(cid:19)(cid:12)(cid:12)(cid:12)(cid:12)X0 = x(cid:21)
+0 rsds(cid:18)ZRN
+π(t, x) = E(cid:20)e−R t
+= ZRN
+0 rsdsehC+iλ,Xti(cid:12)(cid:12)(cid:12)X0 = xief (λ)dλ
+Ehe−R t
+= ZRN
+eeφ(t,C+iλ)+h eψ(t,C+iλ),xief (λ)dλ.
+
+Hence, the price π(t, x) can be computed via numerical integration,
+
+since the integrands are in principle known. For instance, in the case
+
+N = 1, the payoﬀ function of a European call (ex − ek)+, where x
+
+corresponds to the log price of the underlying and k to the log strike
+
+price, satisﬁes (13). In particular, we have the following integral rep-
+
+resentation (see [11])
+
+(ex − ek)+ =
+
+1
+
+2πZR
+
+e(C+iλ)x
+
+ek(1−C−iλ)
+
+(C + iλ)(C + iλ − 1)
+
+dλ.
+
+Therefore, the previous formula to compute the price of the call π(t, x)
+
+is applicable. An alternative approach leading to the same result can
+
+be found in Carr and Madan [3].
+
+10
+
+CHRISTA CUCHIERO, DAMIR FILIPOVIC, JOSEF TEICHMANN
+
+6.2. Estimation: Statistical methods to estimate the parameters of
+
+ATSMs have been based on maximum likelihood and generalized method
+
+of moments.
+
+Concerning maximum likelihood techniques, the conditional log den-
+
+sities entering into the log likelihood function can in general be obtained
+
+by inverse Fourier transformation. Since this procedure is computation-
+
+ally costly, several approximations and limited-information estimation
+
+strategies have been considered (e.g. [13]). Another possibility is to use
+
+closed form expansions of the log likelihood function which are available
+
+for general diﬀusions [1] and which have been applied to ATSMs. In
+
+the case of Gaussian and Cox-Ingersoll-Ross models, one can forgo such
+
+techniques, since the log densities are known in closed form (e.g [12]).
+
+As conditional moments of the form E[X m
+
+t X n
+
+t−s] for m, n ≥ 0 can be
+
+computed from the derivatives of the conditional characteristic function
+
+and are in general explicitly known up to the solution of the Riccati
+
+ODEs (9) and (10), the generalized method of moments is an alterna-
+
+tive to maximum likelihood estimation (e.g. [2]).
+
+7. Related articles
+
+• eqf08-018
+
+• eqf11-022
+
+• eqf11-024
+
+• eqf11-025
+
+• eqf11-027
+
+• eqf13-009
+
+AFFINE MODELS
+
+11
+
+References
+
+[1] Y. Ait-Sahalia. Closed-form likelihood expansions for multivariate diﬀusions.
+
+Annals of Statistics, 36(2):906–937, 2008.
+
+[2] T. G. Andersen and B. E. Sørensen. GMM estimation of a stochastic volatility
+
+model: A Monte Carlo study. Journal of Business & Economic Statistics,
+
+14(3):328–352, 1996.
+
+[3] P. Carr and D. Madan. Option valuation using the fast Fourier transform.
+
+Journal of Computational Finance, 2(4):61–73, 1998.
+
+[4] P. Cheridito, D. Filipovi´c, and R. L. Kimmel. A note on the Dai-Singleton
+
+canonical representation of aﬃne term structure models. forthcoming in Math-
+
+ematical Finance.
+
+[5] J. C. Cox, J. E. Ingersoll, and S. A. Ross. A theory of the term structure of
+
+interest rates. Econometrica, 53(2):385–407, 1985.
+
+[6] Q. Dai and K. J. Singleton. Speciﬁcation analysis of aﬃne term structure
+
+models. Journal of Finance, 55:1943–1978, 2000.
+
+[7] D. Duﬃe, D. Filipovi´c, and W. Schachermayer. Aﬃne processes and applica-
+
+tions in ﬁnance. The Annals of Applied Probability, 13(3):984–1053, 2003.
+
+[8] D. Duﬃe and R. Kan. A yield-factor model of interest rates. Mathematical
+
+Finance, 6(4):379–406, 1996.
+
+[9] D. Filipovi´c. A general characterization of one factor aﬃne term structure
+
+models. Finance and Stochastics, 5(3):389–412, 2001.
+
+[10] D. Filipovi´c and J. Teichmann. On the geometry of the term structure of inter-
+
+est rates. Proceedings of The Royal Society of London. Series A. Mathematical,
+
+Physical and Engineering Sciences, 460(2041):129–167, 2004.
+
+[11] F. Hubalek, J. Kallsen, and L. Krawczyk. Variance-optimal hedging for pro-
+
+cesses with stationary independent increments. Annals of Applied Probability,
+
+16(2):853–885, 2006.
+
+12
+
+CHRISTA CUCHIERO, DAMIR FILIPOVIC, JOSEF TEICHMANN
+
+[12] N. D. Pearson and T.-S. Sun. Exploiting the conditional density in estimating
+
+the term structure: An application to the Cox, Ingersoll, and Ross model.
+
+Journal of Finance, 49(4):1279–1304, 1994.
+
+[13] K. J. Singleton. Estimation of aﬃne asset pricing models using the empirical
+
+characteristic function. Journal of Econometrics, 102:111–141, 2001.
+
+[14] O. Vasiˇcek. An equilibrium characterization of the term structure. Journal of
+
+Financial Economics, 5:177–188, 1977.
+
+Vienna Institute of Finance, University of Vienna, and Vienna Uni-
+
+versity of Economics and Business Administration, Heiligenst¨adter
+
+Strasse 46-48, A-1190 Wien, Austria; Vienna University of Technol-
+
+ogy, Department of Mathematical Methods in Economics, Wiedner
+
+Hauptstrasse 8–10, A-1040 Wien, Austria
+
+E-mail address: cuchiero@fam.tuwien.ac.at, damir.filipovic@vif.ac.at,
+
+jteichma@fam.tuwien.ac.at
+
+

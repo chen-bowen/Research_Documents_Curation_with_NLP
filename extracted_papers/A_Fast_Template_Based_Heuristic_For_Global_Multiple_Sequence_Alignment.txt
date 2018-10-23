@@ -1,0 +1,1554 @@
+3
+1
+0
+2
+
+ 
+
+b
+e
+F
+5
+2
+
+ 
+
+ 
+ 
+]
+E
+C
+.
+s
+c
+[
+ 
+ 
+
+1
+v
+0
+3
+0
+6
+
+.
+
+2
+0
+3
+1
+:
+v
+i
+X
+r
+a
+
+A Fast Template Based Heuristic For Global Multiple
+
+Sequence Alignment
+
+Srikrishnan Divakaran, Arpit Mithal, and Namit Jain
+
+DA-IICT, Gandhinagar, Gujarat, India 382007,
+
+srikrishnan-divakaran@daiict.ac.in, arpit-mithal@daiict.ac.in, and namit-jain@daiict.ac.in
+
+Abstract
+
+Advances in bio-technology have made available massive amounts of functional,
+structural and genomic data for many biological sequences. This increased availability
+of heterogeneous biological data has resulted in biological applications where a multiple
+sequence alignment (msa) is required for aligning similar features, where a feature is
+described in structural, functional or evolutionary terms. In these applications, for a
+given set of sequences, depending on the feature of interest the optimal msa is likely
+to be diﬀerent, and sequence similarity can only be used as a rough initial estimate on
+the accuracy of an msa. This has motivated the growth in template based heuristics
+that supplement the sequence information with evolutionary, structural and functional
+data and exploit feature similarity instead of sequence similarity to construct multiple
+sequence alignments that are biologically more accurate. However, current frameworks
+for designing template based heuristics do not allow the user to explicitly specify infor-
+mation that can help to classify features into types and associate weights signifying the
+relative importance of a feature with respect to other features, even though in many
+instances this additional information is readily available. This has resulted in the use
+of ad hoc measures and algorithms to deﬁne feature similarity and msa construction
+respectively.
+
+In this paper, we ﬁrst provide a mechanism where as a part of the template infor-
+mation the user can explicitly specify for each feature, its type, and weight. The type
+is to classify the features into diﬀerent categories based on their characteristics and the
+weight signiﬁes the relative importance of a feature with respect to other features in
+that sequence. Second, we exploit the above information to deﬁne scoring models for
+pair-wise sequence alignment that assume segment conservation as opposed to single
+character (residue) conservation. Finally, we present a fast progressive alignment based
+heuristic framework that helps in constructing a global msa by ﬁrst constructing an
+msa involving only the informative segments using exact methods, and then stitch into
+this the alignment of non-informative segments constructed using fast approximate
+methods.
+
+Key words: Analysis of algorithms; Bioinformatics; Computational Biology; Multiple Se-
+
+quence Alignment; Template Based Heuristics
+
+1.
+
+Introduction
+
+A global multiple sequence alignment (msa) [7, 17, 29] of a set S = {S1, S2, ..., Sk} of k
+
+related protein sequences is a way of arranging the characters in S into a rectangular grid
+
+1
+
+of columns by introducing zero or more spaces into each sequence so that similar sequence
+
+features occur in the same column, where a feature can be any relevant biological informa-
+
+tion like secondary/tertiary structure, function, domain decomposition, or homology to the
+
+common ancestor. The goal in attempting to construct a global msa is either to identify
+
+conserved features that may explain their functional, structural, evolutionary or phenotypic
+
+similarity, or identify mutations that may explain functional, structural, evolutionary or phe-
+
+notypic variability.
+
+Until recently, sequence information was the only information that was easily available for
+
+many proteins. So, the measures that were used to evaluate the quality (accuracy) of a msa
+
+were mostly based on sequence similarity. The sum of pairs score (SP-score) and Tree score
+
+were two such measures that were widely used. For both these measures, the computation
+
+of an optimal msa is known to be NP-Complete [54]. So, in practice most of the focus is
+
+on designing fast approximation algorithms and heuristics. From the perspective of approx-
+
+imation algorithms, constant polynomial time approximation algorithms are known for the
+
+SP-score [17,55] and polynomial time approximation schemes (PTAS) [55] are known for the
+
+Tree score. However, in practice, these approximation algorithms have large run-times that
+
+makes them not very useful even for moderate sized problem instances. From the perspective
+
+of heuristics, most heuristics are based on progressive alignment [18, 20, 48, 49, 51], iterative
+
+alignment [10, 11, 12, 14, 15, 19, 24, 47], branch and bound [45], genetic algorithms [36, 37],
+
+simulated annealing [26] or on Hidden Markov Modeling (HMM) [8, 9, 21]. For an extensive
+
+review of the various heuristics for msa construction, we refer the reader to excellent survey
+
+articles of Kemena and Notredame [25], Notredame [33, 34, 35], Edger and Batzoglou [12],
+
+Gotoh [15], Wallace et al. [52], Blackshields et al. [5].
+
+In heuristics based on progressive alignment, the msa is constructed by ﬁrst computing
+
+pair-wise sequence distances using optimal pair-wise global alignment scores. Second, a
+
+clustering algorithm (UPGMA or NJ [46]) uses these pair-wise sequence distances to con-
+
+struct a rooted binary tree, usually referred to as guide tree. Finally, an agglomerative
+
+algorithm uses this guide tree to progressively align sequences a pair at a time to construct
+
+a msa. The pair-wise global alignments scores are usually computed using a substitution
+
+matrix and a gap penalty scheme that is based on sequence similarity. ClustalW [51] was
+
+among the ﬁrst widely used progressive alignment tool on which many of the current day
+
+2
+
+progressive aligners are based. In this paper, our focus is on heuristics that are based on
+
+progressive alignment mainly because in this method the computation of pair-wise sequence
+
+distances, guide tree and the choice of agglomerative algorithm for progressively pair-wise
+
+aligning sequences can be essentially split into three independent steps. This helps to pro-
+
+vide a ﬂexible algorithmic framework for designing simple parameterized greedy algorithms
+
+that are computationally scalable and whose parameters can be tuned easily to improve its
+
+accuracy. In addition, the alignments obtained through this approach are usually a good
+
+starting point for other popular approaches like iterative, branch and bound, and HMM.
+
+However, the progressive aligners because of their greedy approach commit mistakes early
+
+in the alignment process that are usually very hard to correct even when using sophisticated
+
+iterative aligners. This problem can be addressed if we can incorporate into the pair-wise
+
+scoring scheme the information for every pair of sites the frequency at which the residues at
+
+these sites are involved in alignments involving other sequences in S. However, incorporating
+
+this information for all pairs of sites based on all sequences in S is computationally infeasible.
+
+The consistency based heuristics [6, 10, 11, 24, 28, 38, 39, 40, 42, 43, 47] tackle this problem
+
+by incorporating a larger fraction of this information at a reasonable computational cost as
+
+follows: The score for aligning residues at a pair of sites is estimated from a collection of pair-
+
+wise residue alignments named the library. The library is constituted of pair-wise alignments
+
+whose residue alignment characteristics are implicitly assumed to be similar to an optimal
+
+msa or a reference alignment that was constructed using sequence independent methods.
+
+For a given library, any pair of residues receives an alignment score equal to the number of
+
+times these two residues have been found aligned either directly or indirectly through a third
+
+residue. The Consistency based progressive aligners generally construct msas that are more
+
+accurate than the pure progressive aligners like clustalW. However, it is not very clear how
+
+to construct a library of alignments whose reside alignment characteristics are guaranteed
+
+to be similar to an optimal msa. In addition, the increased accuracy of msa of consistency
+
+based aligners comes at a computational cost that is on an average k times more than a pure
+
+progressive aligner. T-Coﬀee [38], ProbCons [6], MAFFT [24], M-Coﬀee [53], MUMMALS
+
+[41], EXPRESSO [2], PRALINE [42], T-Lara [4] are some of the widely used consistency
+
+based aligners.
+
+Currently, advances in bio-technology have made available massive amounts of functional,
+
+3
+
+structural and genomic data for many biological sequences. This increased availability of het-
+
+erogeneous biological data has resulted in biological applications where an msa is required
+
+for aligning similar features, where a feature is described in structural, functional or evolu-
+
+tionary terms. In these applications, for a given set of sequences, depending on the feature of
+
+interest the optimal msa is likely to be diﬀerent, and sequence similarity can only be used as
+
+a rough initial estimate on the accuracy of an msa. In addition, from evolutionary studies we
+
+know that structure and function of biological sequences are usually more conserved than the
+
+sequence itself. This has motivated the growth in template based heuristics [50] that supple-
+
+ment the sequence information with evolutionary, structural and functional data and exploit
+
+feature similarity instead of sequence similarity to construct multiple sequence alignments
+
+that are biologically more accurate. In these methods, each sequence is associated with a
+
+template, where a template can either be a 3-D structure, a proﬁle or prediction of any kind.
+
+Once a template is mapped onto a sequence, its information content can be used to guide
+
+the sequence alignment in a sequence independent fashion. Depending on the nature of the
+
+template one refers to its usage as structural extension or homology extension. Structural
+
+extension takes advantage of the increasing number of sequences with an experimentally
+
+characterized homolog in the PDB database, whereas homology extension uses proﬁles. 3-D
+
+Coﬀee [3], EXPRESSO [3], PROMALS [42, 44] and PRALINE [47] are some popular aligners
+
+that are widely used tools that employ template based methods. For more details about tem-
+
+plate based methods we refer the reader to Kemena and Notredame [25] and Notredame [34].
+
+In template based methods, we can view each template once mapped to a sequence as essen-
+
+tially partitioning the sequence into segments, where each segment corresponds to a feature
+
+described by the template. Then, we construct a msa by essentially aligning segments that
+
+share similar features. The current frameworks for describing templates do not allow the
+
+user to explicitly specify information that can help (i) classify features into types and (ii)
+
+associate a weight signifying the relative importance of a feature with respect to other fea-
+
+tures, even though in many instances this additional information is readily available. This
+
+has resulted in the use of ad hoc measures and algorithms to deﬁne feature similarity and
+
+msa construction respectively.
+
+In this paper, we
+
+- provide a mechanism where as a part of the template information the user can explicitly
+
+4
+
+specify for each feature, its type, and weight. The type is to classify the features into
+
+diﬀerent categories based on their characteristics and the weight signiﬁes the relative
+
+importance of a feature with respect to other features in that sequence.
+
+- deﬁne scoring models for pair-wise sequence alignment that assume segment conser-
+
+vation as opposed to single character (residue) conservation. Our scoring schemes for
+
+aligning pairs of segments are based on segment type, segment weight, information
+
+content of an optimal local alignment involving that segment pair, and its supporting
+
+context. This is an attempt to deﬁne scoring schemes that evaluate a pair-wise global
+
+alignment through information content of a global segment alignment, where segments
+
+correspond to features within sequences. For example, in a structurally correct align-
+
+ment the focus is on aligning residues that play a similar role in the 3D structure of
+
+the sequences, whereas a correct alignment from an evolutionary viewpoint focuses
+
+on aligning two residues that share a similar relation to their closest common ances-
+
+tor, and in a functionally correct alignment the focus is on aligning residues that are
+
+known to be responsible for the same function. The supporting context consists of set
+
+of sequences that are known to belong to the same family (i.e. share similar structure,
+
+function or homology to a common ancestor) as the given sequence pair and can help
+
+determine to what extent the alignment of the features in that pair-wise alignment is
+
+consistent with the alignment of these features with other sequences in the family.
+
+- present a fast progressive alignment based heuristic that essentially constructs global
+
+msa by ﬁrst classifying segments into informative or non-informative segments based
+
+on their information content determined using segment scoring matrices. Then, using
+
+exact methods, we construct a global msa involving only the informative segments.
+
+Finally, using approximate methods we construct the alignment of non-informative
+
+segments and stitches them into the alignment of informative segments.
+
+Remark: The statistical theory for evaluating alignments in terms of its information content
+
+was developed for local alignments by Karlin and Altschul [23]. However, their theory do not
+
+extend to the case of global alignments. The pair-HMMS provide a framework for statistical
+
+analysis of pair-wise global alignments for complex scoring schemes using standard methods
+
+like Baum-Welch and Viterbi training. However, determining the right set of parameters
+
+for optimal statistical support is highly non-trivial and involves dynamic programming algo-
+
+rithms with computational complexity that is quadratic in the length of the given sequences.
+
+5
+
+The rest of this paper is structured as follows.
+
+In Section 2, we deﬁne the problem and
+
+introduce the relevant terms and notations to deﬁne our segment scoring schemes and heuris-
+
+tics. In Section 3, we present our segment scoring schemes. In Section 4, we present our
+
+heuristics, in Section 5, we describe our experimental set-up and summarize our preliminary
+
+experimental results, and in Section 6, we present our conclusions and future work.
+
+2. Preliminaries
+
+In this section, we ﬁrst deﬁne the problem of msa construction for a given a set of sequences
+
+and their segment decompositions, where each segment is classiﬁed into one of many types
+
+and is associated with a weight reﬂecting its importance relative to other segments within
+
+that sequence. Then, we introduce some basic terms and deﬁnitions that are required for
+
+deﬁning our scoring models and heuristics.
+
+2.1 Problem Deﬁnition
+
+Let S = { S1, , Sk } be a set of k related protein sequences each of length n. For i ∈ [1..k],
+let Bi = {B1
+
+i } be the decomposition of Si into ni segments. Each segment s ∈ Bi is
+classiﬁed into one of many types based on the type of features that are known/predicted to
+
+i , , Bni
+
+be present in that segment, and is associated with a non-negative real number weight that
+
+reﬂects the importance of the feature associated with that segment relative to other features
+
+in that sequence. That is, each segment s ∈ Bi, i ∈ [1..k], is associated with a type type(s),
+
+and a non-negative real number weight weight(s).
+
+Example: If the sequences in S are partitioned into segments based on their predicted
+
+secondary structure, each segment is classiﬁed into one of three types helix, strand or a coil,
+
+is associated with a non-negative weight in the interval [1, 10] that reﬂects the conﬁdence in
+
+its secondary structure classiﬁcation.
+
+Given a set S of k biological related sequences, their decomposition into segments, and
+
+the type and weight associated with each of these segments, our goal is to design fast pro-
+
+gressive alignment based heuristics that exploit the information content in these segments
+
+to build a biologically signiﬁcant multiple sequence alignment.
+
+6
+
+2.2 Basic Terms and Deﬁnitions
+
+Now we introduce some terms and deﬁnitions that will necessary for deﬁning our segment
+
+scoring models and heuristics.
+
+Definitions 2.1 For i ∈ [1..k], we deﬁne
+
+- Binf
+
+i = {s ∈ Bi : weight(s) ≥ α} to be the segments in Si whose weights are greater
+than or equal to α, where α is a non-negative user speciﬁed real number parameter.
+We refer to the segments in Binf
+
+as informative segments of Si;
+
+i
+
+- Sinf
+
+i
+
+to be the subsequence of Si obtained by concatenating the segments in Binf
+
+i
+
+in
+
+the order in which they appear in Si. We refer to this subsequence as the informative
+
+sequence of Si.
+
+Definition 2.2 For a pair of segments s ∈ Binf
+[1..k], we deﬁne LH(s, t) to be the local alignment between s and t constructed using heuristic
+
+of the same type, i 6= j ∈
+
+and t ∈ Binf
+
+j
+
+i
+
+H and BLOSUM62 scoring matrix and SEGH(s, t) to be bit score correpsonding to LH(s, t).
+
+Definitions 2.3 For i 6= j ∈ [1..k], we deﬁne
+
+- αi,j to be a real number in the interval [0,2] that reﬂects the level of divergence between
+
+Si and Sj. We estimate the level of divergence between Si and Sj using the bit score of a
+local alignment between Sinf
+
+constructed using heuristic H and BLOSU M62
+
+and Sinf
+
+i
+
+j
+
+scoring matrix;
+
+- c : [0 − 2] → R+ is a function that computes for a given level of divergence the infor-
+
+mation threshold for an alignment to be informative.
+
+Definitions 2.4 For a segment s ∈ Binf
+
+i
+
+and j 6= i ∈ [1..k], we deﬁne
+
+- N eighborj(s) = {t ∈ Binf
+
+j
+
+: type(t) = type(s) ∧ SEGH(s, t) ≥ c(αi,j) ∗ |s|} to be the set
+
+of informative segments t in Sj of the same type as s with bit score of a local alignment
+
+between s and t greater than or equal to c(αi,j) ∗ |s|. We refer to the segments in
+
+N eighborj(s) to be the neighbors of s in Sj.
+
+- Closest − neighborj(s) = {u′ ∈ Binf
+
+: SEGH(s, u′) = maxt∈N eighborj (s)SEGH(s, t)} is
+the neighbor of s in Sj that maximizes the bit score of a pair-wise local alignment with
+
+j
+
+s. We refer to such a segment to be the closest neighbor of s in Sj.
+
+7
+
+- N eighborhood(s) = Sj∈[1..k] Closest − neighborj(s) to be the set consisting of a closest
+
+neighbor of s from each sequence in S.
+
+Definitions 2.5 For i ∈ [1..k],
+
+- Bnei
+
+i = {s ∈ Bi : s is a neighbor of some segment in S \Si. }.
+
+- Snei
+
+i
+
+to denote the subsequence obtained by concatenating the segments in Bnei
+
+i
+
+in the
+
+order in which they appear in Si. We refer to this subsequence as the neighbor sequence
+
+of Si.
+
+Definitions 2.6 For each pair of segments s ∈ Snei
+
+i
+
+and t ∈ Snei
+
+j
+
+of the same type from
+
+distinct sequences in S, and l 6= i, j ∈ [1..k], we deﬁne
+
+- M utual − neighborsl(s, t) = {u ∈ Bnei
+
+l
+
+: u ∈ N eighbori(u) T N eighborj(u)} to be the
+
+segments in Sl that are neighbors of both s and t.
+
+- Closest − mutual − neighborl(s, t) = {u′ ∈ Bnei
+
+: SEGH(s, u′) + SEGH(t, u′) =
+maxu∈mutual−neighborsl(s,t)(SEGH(s, u) + SEGH(t, u)) to be the mutual neighbor u of s
+and t in Sl that maximizes SEGH(s, u) + SEGH(t, u). We refer to such a segment as
+
+l
+
+the closest mutual neighbor of s and t in Sl.
+
+- M utual − neighborhood(s, t) = Sj∈[1..k] Closest − mutual − neighborj(s, t) to be the
+
+set consisting of a closest mutual neighbor of s and t from each sequence in S.
+
+3. Scoring Models for Global Segment Alignment
+
+In this section, we deﬁne scoring models for pair-wise segment alignment of sequences. We
+
+classify segments into informative and non-informative based on their weight and construct
+
+segment scoring matrix entries only for informative segments. Restricting the segment scor-
+
+ing matrix entries to only informative segments helps to signiﬁcantly reduce the computa-
+
+tional time of our heuristics with minimal impact on alignment accuracy. In Section 3.1,
+
+we introduce scoring schemes for aligning pairs of informative segments. In Section 3.2, we
+
+introduce scoring schemes for aligning a segment with a gap.
+
+8
+
+3.1
+
+Scoring Schemes for Aligning Pairs of Segments
+
+We now introduce the following three scoring schemes for aligning a pair s, t of informative
+
+segments of the same type: (i) Progressive scoring; (ii) Linear Consistency scoring, and (iii)
+
+Quadratic Consistency scoring.
+
+Progressive scoring: SCORE(s, t) = SEGH(s, t).
+
+In this scheme, we only make use
+
+of the information content of a pair wise local alignment between segments s and t con-
+
+structed using heuristic H and BLOSUM62 scoring matrix.
+
+Linear consistency scoring:
+SCORE(s, t) = |M utual − neighborhood(s, t)| * Pu∈M utual−neighborhood(s,t)(SEGH(s, u) +
+SEGH(t, u)). In this scheme, we make use of the information from both (i) pair-wise local
+
+alignment between s and t, and (ii) pair-wise alignments involving the segments s and t with
+
+segments in their mutual neighborhood.
+
+Quadratic consistency scoring:
+SCORE(s, t) = |M utual − neighborhood(s, t)|2 ∗ Pu∈M utual−neighborhood(s,t) (SEGH(s, u) +
+SEGH(t, u)). In this scheme, the information obtained through the alignment of two con-
+
+served segments of two diverging sequences is weighed more than the information obtained
+
+through the alignment of two non-conserved segments of two closely related sequences.
+
+3.2
+
+Scoring Schemes for Aligning a Segment with a Gap
+
+We now introduce the following two scoring schemes for aligning an informative segment
+
+with a gap: (i) Zero gap penalty, and (ii) Maximum gap penalty.
+
+Zero gap penalty: SCORE(s, −) = 0.
+
+In this scheme, we do not penalize the dele-
+
+tion of any informative segment.
+
+Maximum gap penalty: SCORE(s, −) = maxt∈N eighborhood(s) SEGH(s, t). In this scheme,
+the gap penalty of s ∈ Bi based on the informative segment t ∈ S \ Si of the same type that
+
+maximizes the bit score of a pair-wise local alignment between s and t.
+
+9
+
+4. Heuristics for msa Construction
+
+We now present a generic framework for designing template based fast progressive alignment
+
+heuristics that construct global msa as follows:
+
+(i) construct DIST nei, a matrix of pair-wise sequence distances, based on scores of pair-
+
+wise global segment alignment involving only the informative segments;
+
+(ii) construct a guide tree Gnei using N J algorithm using DIST nei and build M SAnei, a
+
+msa of the informative segments, by progressively pair-wise segment aligning sequences
+
+consistent with Gnei;
+
+(iii) construct the pair-wise global alignment of the residues in non-informative segments
+
+using fast approximate methods and stitch them back into M SAnei.
+
+In Section 4.1, we describe our heuristic and in Section 4.2, we present our Heuristic A.
+
+4.1 Description of Our Heuristic
+
+Construction of pair-wise sequence distances: We now describe how we compute the
+
+pair-wise sequence distances for each pair of sequences in S.
+
+Definitions 4.1 For i, j ∈ [1..k], we deﬁne
+
+- a global segment alignment between two sequences Si and Sj to be an alignment where
+
+a segment in Si is either aligned to a gap or another segment in Sj of the same type;
+
+- Gnei(i, j) to be the optimal global segment alignment between Snei
+
+i
+
+and Snei
+
+j
+
+constructed
+
+using the segment scoring matrix SCORE;.
+
+- DIST nei(i, j) to be the score corresponding to Gnei(i, j).
+
+Notice that if each segment consists of a single amino acid then the global segment alignment
+
+is the same as a traditional global alignment. In this case, the traditional scoring matrices
+
+can be used to score alignments between segments. Otherwise, one needs to determine an
+
+appropriate segment scoring matrix and then using Needleman-Wunsch’s [32] dynamic pro-
+
+gram construct an optimal global pair-wise segment alignment.
+
+Construction of Guide Tree and msa of Informative Segments: We construct the
+
+10
+
+guide tree Gnei from pair-wise sequence distance matrix DIST nei using the Neighbor Join-
+
+ing (NJ) algorithm. Then, we construct M nei, the msa of informative of sequences in S,
+
+by progressively pair-wise globally segment aligning the sequences Snei
+
+1
+
+, Snei
+
+2
+
+, , Snei
+
+k
+
+consistent
+
+with Gnei.
+
+Stitching the sites in non-informative segments into msa of informative sequences:
+
+We will describe now for each pair of sequences Si and Sj that were progressively aligned
+while constructing M nei, how we stitch the alignment of sites in Si and Sj that were either
+in non-informative segments or in non-aligned portion of informative segments into M nei.
+
+First, we introduce some necessary deﬁnitions.
+
+Definitions 4.2 For a pair of informative segments s ∈ Binf
+let LH (s, t) be the local alignment of s and t constructed using heuristic H and BLOSUM62
+
+of the same type,
+
+and t ∈ Binf
+
+j
+
+i
+
+matrix. we now deﬁne
+
+- P REF IXs(LH(s, t)) to be the preﬁx of segment s that is not part of the local alignment
+
+LH(s, t);
+
+- SU F F IXs(LH (s, t)) to be the suﬃx of segment s that is not part of the local alignment
+
+LH(s, t).
+
+Let Gnei(i, j), i 6= j ∈ [1..k], denote an optimal global segment alignment between sequence
+
+Snei
+
+i
+
+and Snei
+
+j
+
+constructed using the segment scoring matrix SCORE. For Gnei(i, j), we say
+
+a segment s ∈ Si to be a matched segment if in Gnei(i, j) it is aligned to a segment t ∈ Snei
+
+j
+
+,
+
+otherwise it is an unmatched segment. We now present a procedure stitch that stitches the
+
+alignment between the sites in Si that occur between any two consecutive matched segments
+s and ˆs and the sites in Sj that occur between the corresponding matched segments t and ˆt
+into Gnei(i, j).
+
+Procedure Stitch(s, ˆs):
+
+- Let p, ˆp (q, ˆq) be the respective indices of segments s, ˆs (t, ˆt) in Si and Sj;
+
+- Let A = SU F F IXi(Bp
+
+j ) be the sequence of sites
+in Si that are either in non-informative segments or unaligned portions of informative
+
+i S P REF IXi(B ˆp
+
+i , B ˆq
+
+i , Bq
+
+j ) Sˆp−1
+
+l=p+1 Bl
+
+segments in Gnei(i, j);
+
+11
+
+- B = SU F F IXj(Bp
+
+j ) be the sequence of sites in
+Sj that are either in non-informative segments or unaligned portions of informative
+
+j S P REF IXj(B ˆp
+
+j , B ˆq
+
+i , Bq
+
+j ) Sˆq−1
+
+l=q+1 Bl
+
+segments in Gnei(i, j);
+
+- Globally align segments A and B using BLOSUM62 scoring matrix and any fast linear
+
+time heuristic and then insert this alignment between segments s and ˆs in Gnei(i, j).
+
+4.2 Heuristic A(α, H, c)
+
+Parameters:
+
+(1) α: a non-negative real number;
+
+(2) H: an algorithm/heuristic for pair-wise local alignment of sequences;
+
+(3) c: a function that maps for any given level of divergence in the interval [0, 2] to
+
+the information threshold for an alignment to be informative.
+
+Inputs:
+
+(1) S = {S1, ..., Sk}: the set of k input sequences;
+
+(2) B = {B1, ..., Bk}: the set consisting of the segment decompositions of the se-
+
+quences in S, where each segment s is associated with a type type(s) and weight
+
+weight(s);
+
+Main Heuristic
+
+(1) For i ∈ [1..k], construct Binf
+
+i = {s ∈ Bi : weight(s) ≥ α } and Sinf
+
+i
+
+the sequence
+
+of informative segments.
+
+(2) For each pair of informative segments s ∈ Binf
+
+i
+
+and t ∈ Binf
+
+j
+
+of the same type,
+
+using heuristic H and BLOSUM62 scoring matrix construct LH (s, t) and compute
+
+SEGH (s, t).
+
+(3) For i 6= j ∈ [1..k], set αi,j to the bit score per unit length corresponding to
+
+LH (Sinf
+
+i
+
+, Sinf
+
+j
+
+), the local alignment between Sinf
+
+i
+
+and Sinf
+
+j
+
+constructed using
+
+heuristic H and BLOSUM62 scoring matrix.
+
+(4) For each informative segment s ∈ Binf
+
+i
+
+and j 6= i ∈ [1..k], compute the following:
+
+(i) N eighborj(s) = {t ∈ Binf
+
+j
+
+: type(t) = type(s) ∧ SEGH(s, t) ≥ c(αi,j) ∗ |s|}.
+
+12
+
+(ii) Closest−neighborj(s) = {u′ ∈ Binf
+
+j
+
+: SEGH(s, u′) = maxt∈N eighborj (s)SEGH(s, t)}.
+
+(iii) N eighborhood(s) = Sj∈[1..k] Closest − neighborj(s).
+
+(5) For each sequence Si ∈ S, i ∈ [1..k], construct Bnei
+
+i = {s ∈ Bi : s is a neighbor of
+
+some segment in S \Si. } and Sinf
+
+i
+
+, the neighbor sequence of Si.
+
+(6) For each pair of segments s ∈ Snei
+
+i
+
+and t ∈ Snei
+
+j
+
+from distinct sequences and
+
+l 6= i, j ∈ [1..k], compute
+
+(i) M utual − neighborsl(s, t) = {u ∈ Bnei
+
+l
+
+: u ∈ N eighbori(u) T N eighborj(u)}.
+
+(ii) Closest−mutual−neighborl(s, t) = {u′ ∈ Bnei
+
+l
+
+: SEGH(s, u′)+SEGH(t, u′) =
+
+maxu∈mutual−neighborsl(s,t)(SEGH(s, u) + SEGH(t, u))}.
+
+(iii) M utual − neighborhood(s, t) = Sj∈[1..k] Closest − mutual − neighborj(s, t).
+
+(7) For each segment s ∈ Bnei
+
+i
+
+, i ∈ [1..k], compute SCORE(s, −).
+
+(8) For each pair of segments s ∈ Bnei
+
+i
+
+and t ∈ Bnei
+
+j
+
+of the same type, compute
+
+SCORE(s, t).
+
+(9) For i 6= j ∈ [1..k], compute DIST nei(i, j) by globally segment aligning Snei
+
+i
+
+and
+
+Snei
+
+j
+
+using Needleman-Wunch’s dynamic program and segment scoring matrix
+
+SCORE.
+
+(10) We now construct the msa of S as follows:
+
+(i) Construct guide tree T nei from DIST nei using the Neighbor Joining (NJ)
+
+algorithm.
+
+(ii) Construct M nei by progressively globally segment aligning the sequences
+
+Snei
+
+1
+
+, ..., Snei
+
+k
+
+a pair at a time consistent with T nei.
+
+(iii) For each pair of sequences Snei
+
+i
+
+and Snei
+
+j
+
+that were progressively aligned while
+
+constructing M nei,
+
+- Let Gnei(i, j) denote the global segment alignment of Snei
+
+i
+
+and Snei
+
+j
+
+;
+
+- For each pair s, ˆs of consecutive matched segments of Snei
+
+i
+(where t, ˆt are the corresponding matched segments of Snei
+
+in Gnei(i, j)
+
+) use procedure
+
+j
+
+stitch to stitch the alignment between the sites in Si that occur between
+s and ˆs and the sites in Sj that occur between the sites in t and ˆt to
+Gnei(i, j).
+
+13
+
+5. Experimental Results
+
+In this section, we ﬁrst describe our experimental set-up, then we describe how we evaluate
+
+the performance of our heuristic, and ﬁnally we summarize our preliminary experimental
+
+results.
+
+5.1 Experimental Set-up
+
+Our computational experiments have been set-up with the focus on analyzing the perfor-
+
+mance of our heuristics for sequences from protein families in the PFAM [13] database for
+
+which (i) accurate reference alignments were available either through structural aligners or
+
+through other sequence independent biological methods, and (ii) annotations describing the
+
+salient biological features were available for each sequence. We chose 12 sets of sequences
+
+ranging from 5 to 23 sequences with sequence similarity ranging from 20% to 80%. For these
+
+sequences, we used PSIPRED [22], a widely used structure prediction tool, to partition each
+
+sequence into segments based on their secondary structure characteristics. PSIPRED classi-
+
+ﬁes each segment into one of three types helix, strand or a coil, and associated a non-negative
+
+weight in the interval [1, 10] reﬂecting the conﬁdence in its partitioning and classiﬁcation.
+
+Then for these sets of sequences, we construct an msa by using our heuristic A(α, H, c), where
+
+α is a non-negative real number parameter for classifying segments based on their weights
+
+into informative and non-informative segments, H is an algorithm/heuristic for pair-wise
+
+local alignment of segments, and c is a function that maps for any given level of divergence
+
+in the interval [0, 2] to the information threshold for an alignment to be informative. In our
+
+experiments, we have set α to be 6. That is a segment is considered to be informative if
+
+its average segment weight ≥ 6 (i.e. α ≥ 6) and its length is at least 5.
+
+In addition, if
+
+two informative segments of the same type are separated by less than 4 residues we merged
+
+the two segments with the intervening residues into a single informative segment. We set
+
+H, the algorithm/heuristic for local alignment to be BLASTP [1, 30] with slight modiﬁca-
+1 We deﬁned the function c based
+
+tions to handle alignments involving short sequences.
+
+on the average bit scores of BLOSUM matrices corresponding to diﬀerent levels of sequence
+
+divergence.
+
+1The quality of alignment constructed using Smith-Watermans dynamic program was not signiﬁcantly
+
+diﬀerent from that obtained using BLASTP.
+
+14
+
+5.2 Evaluation the Performance of Our Heuristic
+
+We evaluate the performance of our heuristic based on (i) the accuracy of its msa in com-
+
+parison with an reference alignment, and (ii) its computational eﬃciency for the appropriate
+
+choice of its parameters α, H and c,
+
+Evaluating accuracy of an msa: The traditional sequence similarity based measures
+
+like SP score and Tree score have only been helpful in providing a crude estimate of the
+
+alignment quality and measures based on structurally correct alignments are likely to be
+
+better alternatives for evaluating alignment accuracy. So, for sequences for which their 3D
+
+structure is known, the accuracy of an msa can be evaluated in comparison with reference
+
+alignments constructed through a structure aligner. We also observe instances of homolo-
+
+gous sequences that share only a few features and yet preserve their overall structure and
+
+function. In these instances, local feature conservation is another good predictor of align-
+
+ment accuracy. So, we measure the accuracy of the msas constructed by our heuristic in
+
+terms of the percentage correlation between the columns in the multiple sequence alignments
+
+constructed by our heuristic and the columns of the sites within the reference alignment that
+
+correspond to conserved features.
+
+Note: Our heuristics make use of the secondary structure predictions from PSIPRED. So,
+
+any inaccuracies in the secondary structure prediction of PSIPRED should also be factored
+
+while evaluating the accuracy of msa constructed by our heuristics. We factor this in terms
+
+of the correlation between the informative sites in our heuristic and the sites in the reference
+
+alignment that correspond to conserved features. We also restrict the impact of inaccuracies
+
+in secondary structure prediction on msa accuracy by conservative choice of the information
+
+threshold function c (i.e. higher than if we had an accurate partitioning and correct classi-
+
+ﬁcation of segments).
+
+Evaluation of Computational Eﬃciency: Our heuristics attempt to minimize its com-
+
+putational time with minimal impact on its accuracy by ﬁrst classifying the segments within
+
+each sequence into informative (non-informative) segments based on its weight exceeding
+
+(not exceeding) α. Then, the msa is essentially constructed by ﬁrst progressively pair-wise
+
+aligning the sites in informative segments using exact methods and then us linear time ap-
+
+15
+
+proximate heuristics to align the sites in non-informative segments and stitch them back
+
+into the alignment of sites in informative segments. So, the saving in computational time
+
+depends on the fraction of the segments that are informative. This in turn depends mainly
+
+on the choice of the information threshold α.
+
+5.3 Summary of Preliminary Experimental Results
+
+Protein
+Family
+PF13420
+PF13652
+PF13693
+PF13733
+PF13844
+PF13856
+PF13944
+PF14186
+PF14263
+PF14274
+PF14323
+
+# of
+
+Sequences
+
+21
+11
+22
+5
+6
+23
+21
+11
+10
+20
+18
+
+segments
+
+Sequence % Sequence # of informative
+Lengths
+152-164
+131-152
+77-81
+133-142
+449-481
+90-112
+120-146
+152-157
+120-129
+155-165
+485-548
+
+Similarity
+20%-70%
+65%-85%
+55%-83%
+55%-61%
+68%-78%
+30%-73%
+30%-85%
+38%-68%
+50%-66%
+36%-71%
+36%-43%
+
+4
+4
+3
+2
+7
+3
+3
+4
+3
+3
+6
+
+Avg Length of
+
+% Local
+informative segment Similarity
+< 70%a
+> 90%
+> 90%
+> 90%
+> 90%
+> 80%a
+> 90%
+> 90%
+> 90%
+> 90%
+> 90%
+
+10
+12
+12
+8
+12
+10
+10
+8
+10
+12
+11
+
+a: Quadratic Consistency and Max Gap Penalty Scoring Schemes was employed.
+
+Table 1: Summary of msa results using Linear Consistency and Max Gap Penalty Schemes
+
+6. Conclusions and Future Work
+
+Our preliminary experimental results indicate that our template based heuristic framework
+
+can help in designing heuristics that can exploit template based information to construct
+
+msas that are biologically accurate in a computationally eﬃcient manner. However, we
+
+would like to (i) make use of extreme value distribution [16] to deﬁne the the function c that
+
+maps for a given level of sequence divergence the information threshold for an alignment
+
+to be informative; (ii) Understand how to deﬁne the segment scoring schemes for aligning
+
+sequences that are highly divergent; (iii) evaluate the accuracy of the alignments constructed
+
+by our heuristics by using sequence independent measures [2, 25, 34] on challenging datasets
+
+in BAliBASE [27, 28].
+
+16
+
+References
+
+[1] Altschul SF, Gish W, Miller W, Myers EW and Lipman DJ. Basic local alignment search
+
+tool. J. Mol. Biol. 1990;215:403-410.
+
+[2] Armougom F, Moretti S, Keduas V, Notredame C., The iRMSD: a local measure of
+
+sequence alignment accuracy using structural information. Bioinformatics. 2006 Jul
+
+15;22(14):e35-e39.
+
+[3] Armougom F, Moretti S, Poirot O, Audic S, Dumas P, Schaeli B, Keduas V and Notredame
+
+C. Expresso: automatic incorporation of structural information in multiple sequence
+
+alignments using 3D-Coﬀee. Nucleic Acids Res, 2007;Jul 1-34.
+
+[4] Bauer M, Klau GW, and Reinert K. Accurate multiple sequence-structure alignment of
+
+RNA sequences using combinatorial optimization. BMC Bioinformatics, 2007;8(271).
+
+[5] Blackshields G, Wallace IM, Larkin M, and Higgins DG. Analysis and comparison of
+
+benchmarks for multiple sequence alignment. In Silico Biol. 2006;6(4):321-39.
+
+[6] Do CB, Mahabhashyam MS, Brudno M and Batzoglou S. ProbCons: Probabilistic
+
+consistency-based multiple sequence alignment. Genome Res. 2005 Feb;15(2):330-40.
+
+[7] Carrillo H and Lipman DJ. The Multiple Sequence Alignment Problem in Biology. SIAM
+
+Journal of Applied Mathematics. 1988;Vol.48, No. 5, 1073-1082.
+
+[8] Durbin R, Eddy S, Krogh A and Mitchison G. Biological sequence analysis: probabilistic
+
+models of proteins and nucleic acids, Cambridge University Press. 1998.
+
+[9] Eddy SR. Multiple alignment using hidden Markov models. Proc of Int Conf Intell Syst
+
+Mol Biol (ISMB). 1995;3:114-20.
+
+[10] Edgar RC. MUSCLE: a multiple sequence alignment method with reduced time and
+
+space complexity. BMC Bioinformatics. 2004a;5:113.
+
+[11] Edgar RC. MUSCLE: multiple sequence alignment with high accuracy and high through-
+
+put. Nucleic Acids Res. 2004b;32:17921797.
+
+[12] Edgar RC and Batzoglou S. Multiple sequence alignment. Curr. Opin. Struct. Biol.
+
+2006;16:368373.
+
+[13] Finn RD, Mistry J, Tate J, Coggill P, Heger A, Pollington JE, Gavin OL, Gunesekaran
+
+P, Ceric G, Forslund K, Holm L, Sonnhammer EL, Eddy SR and , Bateman A. The Pfam
+
+protein families database. Nucleic Acids Res. 2010;Database Issue 38:D211-222
+
+17
+
+[14] Gotoh O. Consistency of optimal sequence alignments. Bull. Math. Biol. 1990;52:509525.
+
+[15] Gotoh O. Signiﬁcant improvement in accuracy of multiple protein sequence alignments
+
+by iterative reﬁnements as assessed by reference to structural alignments. J. Mol. Biol.
+
+1996;264:823838.
+
+[16] Gumbel EJ. Statistics of extremes. Columbia University Press, New York, NY. 1958.
+
+[17] Gusﬁeld D. Algorithms on Strings, Trees and Sequences: Computer Science and Com-
+
+putational Biology. Cambridge University Press. 1997.
+
+[18] Higgins DG and Sharp PM. CLUSTAL: a package for performing multiple sequence
+
+alignment on a microcomputer. Gene 1998;73(1): 237244.
+
+[19] Hirosawa M, Totoki Y, Hoshida M and Ishikawa M. Comprehensive study on iterative
+
+algorithms of multiple sequence alignment. Comput Appl Biosci 1995;11 (1): 1318.
+
+[20] Hogeweg P and Hesper B. The alignment of sets of sequences and the construction of
+
+phylogenetic trees. An integrated method. J. Mol. Evol. 1984;20:175186.
+
+[21] Hughey R and Krogh A. Hidden Markov models for sequence analysis: extension and
+
+analysis of the basic method. CABIOS 1996;12 (2): 95107.
+
+[22] Jones DT. Protein secondary structure prediction based on position-speciﬁc scoring
+
+matrices. J. Mol. Biol. 1991;292: 195-202.
+
+[23] Karlin Samuel and Altschul Stephen F. (1990). Methods for assessing the statistical
+
+signiﬁcance of molecular sequence features by using general scoring schemes. Proc Natl
+
+Acad Sci USA 1987 (6): 22648.
+
+[24] Katoh K and Toh H. Recent developments in the MAFFT multiple sequence alignment
+
+program. Brief. Bioinform. 2008;9:286298.
+
+[25] Kemena C and Notredame C. Upcoming challenges for multiple sequence alignment
+
+methods in the high-throughput era. Bioinformatics. 2009;Oct 1;25(19):2455-65.
+
+[26] Kim J, Pramanik S and Chung MJ. Multiple sequence alignment using simulated an-
+
+nealing. Comput Appl Biosci 1994;10 (4): 41926.
+
+[27] Lassmann T and Sonnhammer EL. Quality assessment of multiple alignment programs.
+
+FEBS Lett. 2002;18:126130.
+
+[28] Lassmann T and Sonnhammer EL. Automatic assessment of alignment quality. Nucleic
+
+Acids Res. 2005a;33:71207128.
+
+18
+
+[29] Lipman DJ, Altschul SF and Kececioglu JD. A tool for multiple sequence alignment.
+
+Proc Natl Acad Sci U S A 1988:86 (12): 44124415.
+
+[30] McWilliam H, Valentin F, Goujon M, Li W, Narayanasamy M, Martin J, Miyar T and
+
+Lopez R. Web services at the European Bioinformatics Institute - 2009 Nucleic Acids
+
+Res. 2009;37: W6-W10.
+
+[31] Morgenstern B. Multiple DNA and Protein sequence based on segment-to-segment com-
+
+parison. Proc. Natl Acad. Sci. USA. 1996;93:1209812103.
+
+[32] Needleman SB and Wunsch CD. A general method applicable to the search for similar-
+
+ities in the amino acid sequence of two proteins. J. Mol. Biol. 1970;48:443453.
+
+[33] Notredame C. Recent evolutions of multiple sequence alignment. PLoS Comput. Biol.
+
+2007;3:e123.
+
+[34] Notredame C. Computing Multiple Sequence Alignment with Template-Based Methods.
+
+Sequence Alignment: Methods, Models and Strategies, Edited by Michael S. Rosenberg,
+
+University of California Press. 2011;Chapter 4:56-68.
+
+[35] Notredame C. Recent evolutions of multiple sequence alignment. PLoS Comput. Biol.
+
+2007;3:e123.
+
+[36] Notredame C, O’Brien EA and Higgins DG. SAGA: RNA sequence alignment by genetic
+
+algorithm. Nucleic Acids Res. 1997 25 (22): 457080.
+
+[37] Notredame C and Higgins DG. SAGA: sequence alignment by genetic algorithm. Nucleic
+
+Acids Res. 1996;24:15151524.
+
+[38] Notredame C, Higgins DG and Heringa J. T-Coﬀee: A novel method for fast and accurate
+
+multiple sequence alignment. J Mol Biol. 2000 Sep 8;302(1):205-17.
+
+[39] O’Sullivan O, Suhre K, Abergel C, Higgins DG and Notredame C. 3DCoﬀee: combining
+
+protein sequences and structures within multiple sequence alignments. J. Mol. Biol.
+
+2004;340:385395.
+
+[40] Pei J. Multiple protein sequence alignment. Curr. Opin. Struct. Biol. 2008;18:382386.
+
+[41] Pei J and Grishin NV. MUMMALS: multiple sequence alignment improved by using hid-
+
+den Markov models with local structural information. Nucleic Acids Res. 2006;34:43644374.
+
+[42] Pei J and Grishin NV. PROMALS: towards accurate multiple sequence alignments of
+
+distantly related proteins. Bioinformatics. 2007;23:802808.
+
+19
+
+[43] Pei J, Sadreyev R and Grishin NV. PCMA: fast and accurate multiple sequence align-
+
+ment based on proﬁle consistency. Bioinformatics. 2003;19:427428.
+
+[44] Pei J, Kim BH and Grishin NV. PROMALS3D: a tool for multiple protein sequence and
+
+structure alignments. Nucleic Acids Res. 2008;36:22952300.
+
+[45] Reinert K, Lenhof H, MutzelP, Mehlhorn K and Kececioglou JD. A branch-and-cut
+
+algorithm for multiple sequence alignment. Recomb97. 1997;241-249.
+
+[46] Saitou N and Nei M. The neighbor-joining method: a new method for reconstructing
+
+phylogenetic trees. Molecular Biology and Evolution, volume 4, issue 4, pp. 406-425,
+
+July
+
+[47] Simossis VA and Heringa J. PRALINE: a multiple sequence alignment toolbox that
+
+integrates homology-extended and secondary structure information. Nucleic Acids Res.
+
+[48] Subramanian AR, Weyer-Menkhoﬀ J, Kaufmann M and Morgenstern B. DIALIGN-T:
+
+an improved algorithm for segment-based multiple sequence alignment. BMC Bioinfor-
+
+matics. 2005 Mar 22;6:66.
+
+[49] Subramanian AR, Kaufmann M and Morgenstern B. DIALIGN-TX: greedy and progres-
+
+sive approaches for segment-based multiple sequence alignment. Algorithms Mol Biol.
+
+2008 May 27;3:6. doi: 10.1186/1748-7188-3-6.
+
+[50] Taylor WR. Identiﬁcation of protein sequence homology by consensus template align-
+
+ment. J. Mol. Biol. 1986;188:233258.
+
+[51] Thompson JD, Higgins DG and Gibson TJ. CLUSTAL W: improving the sensitivity
+
+of progressive multiple sequence alignment through sequence weighting, position-speciﬁc
+
+gap penalties and weight matrix choice. Nucleic Acids Res. 1994 Nov 11;22(22):4673-80.
+
+[52] Wallace IM, O’Sullivan O and Higgins DG. Evaluation of iterative alignment algorithms
+
+for multiple alignment. Bioinformatics. 2005b;21:14081414.
+
+[53] Wallace IM, ’Sullivan O, Higgins DG and Notredame C. M-Coﬀee: combining multiple
+
+sequence alignment methods with T-Coﬀee. Nucleic Acids Res. 2006;34:16921699.
+
+[54] Wang L and Jiang T. On the complexity of multiple sequence alignment. J Comput
+
+Biol. 1994;1 (4): 337348.
+
+[55] Wang L, Jiang T and Gusﬁeld D. A more Eﬃcient Approximation Scheme for Tree
+
+Alignment. SIAM Journal on Computing. 1997;Vol 30, No. 1, 283-299.
+
+20
+
+

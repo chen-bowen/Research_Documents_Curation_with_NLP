@@ -1,0 +1,2962 @@
+8
+1
+0
+2
+
+ 
+
+p
+e
+S
+4
+1
+
+ 
+
+ 
+ 
+]
+
+.
+
+R
+P
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+2
+v
+7
+0
+3
+1
+0
+
+.
+
+2
+0
+8
+1
+:
+v
+i
+X
+r
+a
+
+Asian Option Pricing with Orthogonal Polynomials∗
+
+Sander Willems†
+
+September 14, 2018
+
+forthcoming in Quantitative Finance
+
+Abstract
+
+In this paper we derive a series expansion for the price of a continuously sampled arith-
+metic Asian option in the Black-Scholes setting. The expansion is based on polynomials that
+are orthogonal with respect to the log-normal distribution. All terms in the series are fully
+explicit and no numerical integration nor any special functions are involved. We provide
+suﬃcient conditions to guarantee convergence of the series. The moment indeterminacy of
+the log-normal distribution introduces an asymptotic bias in the series, however we show
+numerically that the bias can safely be ignored in practice.
+
+JEL Classiﬁcation: C32, G13
+
+Keywords: Asian option, option pricing, orthogonal polynomials
+
+1
+
+Introduction
+
+An Asian option is a derivative contract with payoﬀ contingent on the average value of the
+underlying asset over a certain time period. Valuation of these contracts is not straightforward
+because of the path-dependent nature of the payoﬀ. Even in the standard Black and Scholes
+(1973) setting the distribution of the (arithmetic) average stock price is not known.
+In this
+paper we derive a series expansion for the Asian option price in the Black-Scholes setting using
+polynomials that are orthogonal with respect to the log-normal distribution. The terms in the
+series are fully explicit since all the moments of the average price are known. We prove that the
+series does not diverge by showing that the tails of the average price distribution are dominated
+by the tails of a log-normal distribution. As a consequence of the well known moment indeter-
+minacy of the log-normal distribution (see e.g., Heyde (1963)), it is not theoretically guaranteed
+that the series converges to the true price. We show numerically that this asymptotic bias is
+small for standard parameterizations and the real approximation challenge lies in controlling the
+error coming from truncating the series after a ﬁnite number of terms.
+
+There exists a vast literature on the problem of Asian option pricing. We give a brief overview
+which is by no means exhaustive. One approach is to approximate the unknown distribution
+of the average price with a more tractable one. Turnbull and Wakeman (1991), Levy (1992),
+
+∗I thank Damien Ackerer, Damir Filipovi´c, participants at the 9th International Workshop on Applied Prob-
+ability in Budapest, and two anonymous referees for helpful comments. The research leading to these results
+has received funding from the European Research Council under the European Union’s Seventh Framework Pro-
+gramme (FP/2007-2013) / ERC Grant Agreement n. 307465-POLYTE.
+
+†EPFL and Swiss Finance Institute, 1015 Lausanne, Switzerland. Email: sander.willems@epﬂ.ch
+
+1
+
+Ritchken et al. (1993), Li and Chen (2016) use an Edgeworth expansion around a log-normal
+reference distribution to approximate the distribution of the arithmetic average of the geometric
+Brownian motion. Ju (2002) and Sun et al. (2013) use a Taylor series approach to approxi-
+mate the unknown average distribution from a log-normal. Milevsky and Posner (1998) use a
+moment matched inverse gamma distribution as approximation. Their choice is motivated by
+the fact that the inﬁnite horizon average stock price has an inverse gamma distribution. More
+recently, Aprahamian and Maddah (2015) use a moment matched compound gamma distribu-
+tion. Although these type of approximations lead to analytic option price formulas, their main
+drawback is the lack of reliable error estimates. A second strand of the literature focuses on
+Monte-Carlo and PDE methods. Kemna and Vorst (1990) propose to use the continuously sam-
+pled geometric option price as a control variate and show that it leads to a signiﬁcant variance
+reduction. Fu et al. (1999) argue that this is a biased control variate, but interestingly the
+bias approximately oﬀsets the bias coming from discretely computing the continuous average
+in the simulation. Lapeyre et al. (2001) perform a numerical comparison of diﬀerent Monte-
+Carlo schemes. Rogers and Shi (1995), Zvan et al. (1996), Vecer (2001, 2002), Marcozzi (2003)
+solve the pricing PDE numerically. Another approach is to derive bounds on the Asian option
+price, see e.g. Curran (1994), Rogers and Shi (1995), Thompson (2002), and Vanmaele et al.
+(2006). Finally, there are several papers that derive exact representations of the Asian option
+price. Yor (1992) expresses the option price as a triple integral, to be evaluated numerically.
+Geman and Yor (1993) derive the Laplace transform of the option price. Numerical inversion of
+this Laplace transform is however a delicate task, see e.g. Eydeland and Geman (1995), Fu et al.
+(1999), Shaw (2002). Carverhill and Clewlow (1990) relate the density of the discrete arithmetic
+average to an iterative convolution of densities, which is approximated numerically through the
+Fast Fourier Transform algorithm. Later extensions and improvements of the convolution ap-
+proach include Benhamou (2002), Fusai and Meucci (2008), ˇCern`y and Kyriakou (2011), and
+Fusai et al. (2011). Dufresne (2000) derives a series representation using Laguerre orthogonal
+polynomials. Linetsky (2004) derives a series representation using spectral expansions involving
+Whittaker functions.
+
+The approach taken in this paper is closely related to Dufresne (2000) in the sense that both
+are based on orthogonal polynomial expansions. The Laguerre series expansion can be shown
+to diverge when directly expanding the density of the average price, which is related to the fact
+that the tails of the average price distribution are heavier than those of the Gamma distribution.
+As a workaround, Dufresne (2000) proposes to work with the reciprocal of the average, for which
+the Laguerre series does converge. The main downside of this approach is that the moments
+of the reciprocal average are not available in closed form and need to be calculated through
+numerical integration, which introduces a high computational cost and additional numerical
+errors. Asmussen et al. (2016) use a diﬀerent workaround and expand an exponentially tilted
+transformation of the density of a sum of log-normal random variables using a Laguerre series.
+They show that the exponential tilting transformation guarantees the expansion to converge.
+However, a similar problem as in Dufresne (2000) arises: the moments of the exponentially tilted
+density are not available in closed form and have to be computed numerically. In contrast, our
+approach is fully explicit and does not involve any numerical integration, which makes it very
+fast.
+
+Truncating our series after only one term is equivalent to pricing the option under the assump-
+tion that the average price is log-normally distributed. The remaining terms in the series can
+therefore be thought of as corrections to the log-normal distribution. This has a very similar
+ﬂavour to approaches using an Edgeworth expansion around the log-normal distribution (cfr.
+
+2
+
+Jarrow and Rudd (1982) and Turnbull and Wakeman (1991)). The key diﬀerence with our ap-
+proach is that the Edgeworth expansion can easily diverge because it lacks a proper theoretical
+framework. In contrast, the series we present in this paper is guaranteed to converge, possibly
+with a small asymptotic bias. A thorough study of the approximation error reveals that the
+asymptotic bias is positively related to the volatility of the stock price process and the option
+expiry. We use the integration by parts formula from Malliavin calculus to derive an upper
+bound on the approximation error.
+
+The remaining of this paper is structured as follows. Section 2 casts the problem and derives
+useful properties about the distribution of the arithmetic average. Section 3 describes the density
+expansion used to approximate the option price. In Section 4 we investigate the approximation
+error. Section 5 illustrates the method with numerical examples. Section 6 concludes. All proofs
+can be found in Appendix C.
+
+2 The distribution of the arithmetic average
+
+We ﬁx a stochastic basis (Ω,F, (Ft)t≥0, Q) satisfying the usual conditions and let Q be the risk-
+neutral probability measure. We consider the Black-Scholes setup where the underlying stock
+price St follows a geometric Brownian motion:
+
+dSt = rSt dt + σSt dBt,
+
+where r ∈ R is the short-rate, σ > 0 the volatility of the asset, and Bt a standard Brownian
+motion. For notational convenience we assume S0 = 1, which is without loss of generality. We
+deﬁne the average price process as
+
+At =
+
+1
+
+t Z t
+
+0
+
+Su du,
+
+t > 0.
+
+The price at time 0 of an Asian option with continuous arithmetic averaging, strike K > 0, and
+expiry T > 0 is given by
+
+The option price can not be computed explicitly since we do not know the distribution of AT .
+However, we can derive useful results about its distribution.
+
+π = e−rT E(cid:2)(AT − K)+(cid:3) .
+
+We start by computing all the moments of AT . Using the time-reversal property of a Brownian
+motion, we have the following identity in law (cfr. Dufresne (1990), Carmona et al. (1997),
+Donati-Martin et al. (2001), Linetsky (2004)):
+
+Lemma 2.1. The random variable T AT has the same distribution as the solution at time T of
+the following SDE
+
+(2.1)
+
+dXt = (rXt + 1) dt + σXt dBt, X0 = 0.
+
+Since the SDE in (2.1) deﬁnes a polynomial diﬀusion (see e.g., Filipovi´c and Larsson (2016)),
+we can compute all the moments of its solution at a given time in closed form. By the identity
+in law of Lemma 2.1 we therefore also have all of the moments of AT in closed form:
+
+3
+
+Proposition 2.2. If we denote by Hn(x) = (1, x, . . . , xn)⊤, n ∈ N, then we have
+
+E [Hn(AT )] = eGnT Hn(0),
+
+where Gn ∈ R(n+1)×(n+1) is the following lower bidiagonal matrix
+
+(2.2)
+
+Gn =
+
+
+0
+1
+T
+
+r
+. . .
+
+. . .
+
+n
+T
+
+
+
+2 n(n − 1)σ2)
+
+.
+
+(nr + 1
+
+Given that the matrix exponential is a standard built-in function in most scientiﬁc comput-
+ing packages, the above moment formula is very easy to implement. There also exist eﬃ-
+cient numerical methods to directly compute the action of the matrix exponential, see e.g.
+Al-Mohy and Higham (2011) and Caliari et al. (2014). An equivalent, but more cumbersome to
+implement, representation of the moments can be found in Geman and Yor (1993).
+
+The following proposition shows that AT admits a smooth density function g(x) whose tails are
+dominated by the tails of a log-normal density function:
+
+Proposition 2.3.
+
+1. The random variable AT admits an inﬁnitely diﬀerentiable density function g(x).
+
+2. The density function g(x) has the following asymptotic properties:
+
+g(x) =
+
+
+O(cid:18)exp(cid:26)−
+O(cid:18)exp(cid:26)−
+
+3
+2
+
+1
+2
+
+3 Polynomial expansion
+
+log(x)2
+
+σ2T (cid:27)(cid:19) for x → 0,
+σ2T (cid:27)(cid:19) for x → ∞.
+
+log(x)2
+
+Following a similar structure as Ackerer et al. (2017) and Ackerer and Filipovi´c (2017), we use in
+this section the density expansion approach described by Filipovi´c et al. (2013) to approximate
+the Asian option price. Deﬁne the weighted Hilbert space L2
+w as the set of measurable functions
+f on R with ﬁnite L2
+
+w-norm deﬁned as
+
+(3.1)
+
+w =Z ∞
+kfk2
+
+0
+
+f (x)2w(x) dx, w(x) =
+
+(cid:27) ,
+for some constants µ ∈ R, ν > 0. The weight function w is the density function of a log-normal
+distribution. The corresponding scalar product between two functions f, h ∈ L2
+w is deﬁned
+as
+
+exp(cid:26)−
+
+(log(x) − µ)2
+
+1
+
+√2πνx
+
+2ν2
+
+hf, hiw =Z ∞
+
+0
+
+f (x)h(x)w(x) dx.
+
+Since the measures associated with the densities g and w are equivalent, we can deﬁne the
+likelihood ratio function ℓ such that
+
+Using Proposition 2.3 we now have the following result:
+
+g(x) = ℓ(x)w(x),
+
+x ∈ (0,∞).
+
+4
+
+Proposition 3.1. If ν2 > 1
+
+w(x) dx < ∞.
+
+w, i.e.
+
+2 σ2T , then ℓ ∈ L2
+w(x)(cid:19)2
+Z ∞
+0 (cid:18) g(x)
+
+Denote by Pol(R) the set of polynomials on R and by PolN (R) the subset of polynomials on R of
+degree at most N ∈ N. Since the log-normal distribution has ﬁnite moments of any degree, we
+have PolN (R) ⊂ L2
+w for all N ∈ N. Let b0, b1, . . . , bN form an orthonormal polynomial basis for
+PolN (R). Such a basis can, for example, be constructed numerically from the monomial basis
+using a Cholesky decomposition. Indeed, deﬁne the Hankel moment matrix M = (Mij)0≤i,j≤N
+as
+
+(3.2)
+
+Mij = hxi, xjiw = eµ(i+j)+ 1
+
+2 (i+j)2ν2
+
+,
+
+i, j = 0, . . . , N,
+
+which is positive deﬁnite by construction.
+decomposition of M , then
+
+If we denote by M = LL⊤ the unique Cholesky
+
+(b0(x), . . . , bN (x))⊤ = L−1HN (x),
+
+forms an orthonormal polynomial basis for PolN (R). Alternative approaches to build an or-
+thonormal basis are, for example, the three-term recurrence relation (see Lemma A.1 for de-
+tails) or the analytical expressions for the orthonormal polynomials derived in Theorem 1.1 of
+Asmussen et al. (2016).
+
+Remark 3.2. The matrix M deﬁned in (3.2) can in practice be non-positive deﬁnite due to
+rounding errors. This problem becomes increasingly important for large N and/or large ν because
+the elements in M grow very fast. Similarly, the moments of AT can also grow very large, which
+causes rounding errors in ﬁnite precision arithmetic. In Appendix A we describe a convenient
+scaling technique that solves these problems in many cases.
+Deﬁne the discounted payoﬀ function F (x) = e−rT (x − K)+. Since F (x) ≤ e−rT x for all x ≥ 0,
+we immediately have that F ∈ L2
+w. We deﬁne
+the projected option price ¯π = E[ ¯F (AT )], where ¯F denotes the orthogonal projection of F onto
+Pol(R) in L2
+
+w. Denote by Pol(R) the closure of Pol(R) in L2
+
+w. Elementary functional analysis gives
+
+(3.3)
+
+¯π = h ¯F , ℓiw =Xn≥0
+
+fnℓn,
+
+where we deﬁne the likelihood coeﬃcients ℓn = hℓ, bniw and payoﬀ coeﬃcients fn = hF, bniw.
+Truncating the series in (3.3) after a ﬁnite number of terms ﬁnally gives the following approxi-
+mation for the Asian option price:
+
+(3.4)
+
+π(N ) =
+
+N
+
+Xn=0
+
+fnℓn, N ∈ N.
+
+The likelihood coeﬃcients are available in closed form using the moments of AT in Proposition
+2.2:
+
+(ℓ0, . . . , ℓN )⊤ = L−1eGN T HN (0).
+
+The payoﬀ coeﬃcients can also be derived explicitly, as shown in the following proposition.
+
+5
+
+Proposition 3.3. Let Φ be the standard normal cumulative distribution function. The payoﬀ
+coeﬃcients f0, . . . , fN are given by
+
+(f0, . . . , fN )⊤ = e−rT L−1( ˜f0, . . . , ˜fN )⊤,
+
+with
+
+(3.5)
+
+dn =
+
+˜fn = eµ(n+1)+ 1
+
+2 (n+1)2ν2
+µ + ν2n − log(K)
+
+ν
+
+Φ(dn+1) − Keµn+ 1
+
+2 n2ν2
+
+, n = 0, . . . , N + 1.
+
+Φ(dn), n = 0, . . . , N,
+
+Equivalently, we could also derive the approximation (3.4) by projecting ℓ, instead of F , on the
+set of polynomials. This leads to the interpretation of (3.4) as the option price one obtains when
+approximating the true density g(x) by
+
+(3.6)
+
+g(N )(x) = w(x)
+
+ℓnbn(x).
+
+N
+
+Xn=0
+
+The function g(N )(x) integrates to one by construction
+
+g(N )(x) dx =
+
+Z ∞
+
+0
+
+N
+
+Xn=0
+
+ℓnhbn, b0 = 1iw = ℓ0 = 1,
+
+where the last equality follows from the fact that g(x) integrates to one. However, it is not a
+true probability density function since it is not guaranteed to be non-negative.
+
+4 Approximation error
+
+The error introduced by the the approximation in (3.4) can be decomposed as
+
+π − π(N ) = (π − ¯π) +(cid:16)¯π − π(N )(cid:17) .
+The second term is guaranteed to converge to zero as N → ∞.
+In order for the ﬁrst term
+to vanish, we need F ∈ Pol(R) and/or ℓ ∈ Pol(R). It is well known (see e.g., Heyde (1963))
+that the log-normal distribution is not determined by its moments. As a consequence, the set
+of polynomials does not lie dense in L2
+w is not
+suﬃcient to guarantee that the ﬁrst term in the error decomposition is zero. One of the goals
+of this paper is to quantify the importance of the ﬁrst error term. In this section we therefore
+investigate the error associated with projecting F and ℓ on the set of polynomials.
+
+w. Hence, the fact that F, ℓ ∈ L2
+
+w: Pol(R) ( L2
+
+The L2
+by
+
+w-distances of F and ℓ to their respective orthogonal projections on PolN (R) are given
+
+F −
+
+ℓ −
+
+ǫF
+
+ǫℓ
+
+N :=(cid:13)(cid:13)(cid:13)(cid:13)(cid:13)
+N :=(cid:13)(cid:13)(cid:13)(cid:13)(cid:13)
+
+2
+
+w
+
+2
+
+N
+
+N
+
+bnfn(cid:13)(cid:13)(cid:13)(cid:13)(cid:13)
+Xn=0
+bnℓn(cid:13)(cid:13)(cid:13)(cid:13)(cid:13)
+Xn=0
+
+w
+
+6
+
+= kℓk2
+
+w −
+
+= kFk2
+
+w −
+
+f 2
+n,
+
+N
+
+N
+
+Xn=0
+Xn=0
+
+ℓ2
+n.
+
+w-norm of the payoﬀ function F can be derived explicitly following very similar steps as
+
+The L2
+in the proof of Proposition 3.3:
+
+kFk2
+
+w = e−2rT (cid:16)e2µ+2ν2
+
+Φ(d2) − 2Keµ+0.5ν2
+
+Φ(d1) + K 2Φ(d0)(cid:17) ,
+
+where d0, d1, and d2 are deﬁned in (3.5). Hence, we can explicitly evaluate ǫF
+N .
+
+The computation of ǫℓ
+w depends on the unknown density g(x).
+The following lemma uses the integration by parts formula from Malliavin calculus to derive
+a representation of g(x) in terms of an expectation, which can be evaluated by Monte-Carlo
+simulation:
+
+N is more diﬃcult since kℓk2
+
+Lemma 4.1. For any x ∈ R we have
+
+(4.1)
+
+g(x) = E(cid:20)(cid:0)1{AT ≥x} − c(x)(cid:1)
+
+2
+
+σ2 (cid:18) ST − S0
+
+T A2
+T
+
++
+
+σ2 − r
+AT (cid:19)(cid:21) ,
+
+where c is any deterministic ﬁnite-valued function.
+
+Remark 4.2. The purpose of the function c is to guarantee that the simulated g(x) actually
+goes to zero for x → 0. Indeed, if we set c(x) ≡ 0, then g(0) can be diﬀerent from zero due to
+the Monte-Carlo error, which can lead to numerical problems when evaluating ℓ(x). This can be
+avoided by, for example, using the indicator function c(x) = 1x≤ξ, for some ξ > 0.
+As a direct consequence of (4.1) we get the following expression for the L2
+ratio.
+
+w-norm of the likelihood
+
+Corollary 4.3. The L2
+
+w-norm of ℓ is given by
+
+w = E
+kℓk2
+
+
+(1
+
+{AT ≥ ˜AT } − c( ˜AT )) 2
+w( ˜AT )
+
+σ2 (cid:16) ST −S0
+
+T A2
+T
+
++ σ2−r
+
+AT (cid:17)
+
+
+ ,
+
+where the random variable ˜AT is independent from all other random variables and has the same
+distribution as AT .
+
+This allows us to get an estimate for ǫℓ
+In
+Appendix B we describe how to use the known density function of the geometric average as a
+powerful control variate to signiﬁcantly reduce the variance in the Monte-Carlo simulation.
+
+N by simulating the random vector (ST , AT , ˜AT ).
+
+Using the Cauchy-Schwarz inequality we also have the following upper bound on the approxi-
+mation error in terms of the projection errors ǫF
+
+N and ǫℓ
+
+K.
+
+Proposition 4.4. For any N ≥ 0 we have
+
+(4.2)
+
+|π − π(N )| ≤qǫF
+
+N ǫℓ
+N
+
+w. Computing the upper bound involves a Monte-Carlo simulation to compute ǫℓ
+
+This upper bound will therefore be small if F and/or ℓ are well approximated by a polynomial
+in L2
+N , which
+makes it impractical to use as a decision rule for N . This bound should be seen as a more
+conservative estimate of the approximation error compared to direct simulation of the option
+price.
+
+7
+
+5 Numerical examples
+
+In this section we compute Asian option prices using the series expansion in (3.4). The or-
+thonormal basis is constructed using the scaling technique described in Appendix A. We set
+ν2 = 1
+2 σ2T + 10−4 so that Proposition 3.1 is satisﬁed and choose µ so that the ﬁrst moment of
+w matches the ﬁrst moment of AT . As a consequence, we always have
+
+ℓ1 =Z ∞
+
+0
+
+b1(x)g(x) dx = hb0, b1iw = 0.
+
+Remark 5.1. Choosing µ and ν so that the ﬁrst two moments of AT are matched is typically
+not possible due to the restriction ν2 > 1
+2 σ2T in Proposition 3.1. A similar problem arises in
+the Jacobi stochastic volatility model of Ackerer et al. (2017), where options are priced using a
+polynomial expansion with a normal density as weight function. Ackerer and Filipovi´c (2017)
+address this problem by using a mixture of two normal densities as weight function. Specifying
+w as a mixture of normal densities would not work in our setting since in this case ℓ /∈ L2
+w .1
+Instead, we can use a mixture of two log-normal densities:
+
+w(x) = cw1(x) + (1 − c)w2(x),
+
+where c ∈ [0, 1] is the mixture weight, and w1 and w2 are log-normal density functions with
+mean parameters µ1, µ2 ∈ R, and volatility parameters ν1, ν2 > 0, respectively. In order for
+Proposition 3.1 to apply, it suﬃces to choose ν2
+2 σ2T . The remaining parameters can then
+be chosen freely and used for higher order moment matching.
+
+1 > 1
+
+We consider a set of seven parameterizations that has been used as a set of test cases in, among
+others, Eydeland and Geman (1995), Fu et al. (1999), Dufresne (2000), and Linetsky (2004).
+The ﬁrst columns of Table 1 contain the parameter values of the seven cases. The cases are
+ordered in increasing size of τ = σ2T . Remark that S0 6= 1 for all cases, however we normalize the
+initial stock price to one and scale the strike and option price accordingly. The columns LNS10,
+LNS15, LNS20 (Log-Normal Series) contain the option price approximations using (3.4) for
+N = 10, 15, 20, respectively. The columns LS (Laguerre Series) and EE (Eigenvalue Expansion)
+correspond to the series expansions of Dufresne (2000) and Linetsky (2004), respectively. The
+column VEC shows the prices produced by the PDE method of Vecer (2001, 2002) using a
+grid with 400 space points and 200 time points.2 The last column contains the 95% conﬁdence
+intervals of a Monte-Carlo simulation using the geometric Asian option price as a control variate,
+cfr. Kemna and Vorst (1990). We simulate 2 × 105 price trajectories with a time step of 10−3
+and approximate the continuous average with a discrete average.
+
+[Table 1 around here]
+
+For the ﬁrst three cases we ﬁnd virtually identical prices as Linetsky (2004), which is one
+of the most accurate benchmarks available in the literature. Remarkably, our method does
+not face any problems with the very low volatility in case 1. Many other existing method
+
+1 Instead of approximating the distribution of AT , it is tempting to approximate the distribution of log(AT )
+and rewrite the discounted payoﬀ function accordingly. In this case, one can show that specifying w as a normal
+density function gives a series approximation that converges to the true price. The catch is that we do not know
+the moments of log(AT ), only those of AT , and hence the terms in the series can not be computed explicitly.
+
+2This grid choice corresponds to the one used in Vecer (2001). By signiﬁcantly increasing the number of space
+points in the grid, the PDE method can achieve the same accuracy as Linetsky (2004). However, doing so makes
+the method very slow.
+
+8
+
+have serious diﬃculty with this parameterization.
+Indeed, the series of Dufresne (2000) does
+not even come close to the true price, while Linetsky (2004) requires 400 terms to obtain an
+accurate result. The price of Vecer (2001, 2002) is close to the true price, but still outside
+of the 95% Monte-Carlo conﬁdence interval. Methods based on numerical inversion of the
+Laplace transform of Geman and Yor (1993) also struggle with low volatility because they involve
+numerical integration of highly oscillating integrands (see e.g., Fu et al. (1999)). When using
+exact arithmetic for case 1, our series with 20+1 terms agrees with the 400 term series of Linetsky
+(2004) to eight decimal places. When using double precision arithmetic, which was used for all
+numerical results in this section, the price agrees to four decimal places due to rounding errors.
+For cases 4 to 7, the LNS prices are slightly diﬀerent from the EE benchmark. However, they are
+still very close and with the exception of case 4, they are all within the 95% conﬁdence interval
+of the Monte-Carlo simulation.
+
+[Figure 1 around here]
+
+Figure 1 plots the LNS price approximations for N ranging from 0 to 20, together with the
+Monte-Carlo price and the corresponding 95% conﬁdence intervals as a benchmark.3 We observe
+that the series converges very fast in all cases. In fact, truncating the series at N = 10 would
+give almost identical results.
+In theory, N can be chosen arbitrarily large, however in ﬁnite
+precision arithmetic it is inevitable that rounding errors start playing a role at some point.
+Remark that the prices for N = 0 and N = 1 are identical, which is a consequence of the fact
+that the auxiliary distribution matches the ﬁrst moment of AT . Figure 2 plots the simulated
+true density g(x) and the approximating densities g(0)(x), g(4)(x), and g(20)(x) deﬁned in (3.6).
+The true density was simulated using (B.2) in Appendix B, which is an extension of (4.1) using
+the density of the geometric average as a powerful control variate. Note that g(0)(x) = w(x),
+since b0(x) = ℓ0 = 1. We can see that the approximating densities approach the true density
+as we include more terms in the expansion. In Figure 2a and 2b the approximation g(20)(x) is
+virtually indistinguishable from the true density. However, in Figure 2c and 2d there remains
+a noticeable diﬀerence between g(x) and g(20)(x). This is consistent with the pricing errors we
+observed earlier in Table 1.
+
+[Figure 2 around here]
+
+The above results indicate that for τ not too high, the LNS provides a very accurate approx-
+imation of the option price. This is not entirely surprising since τ determines the volatility
+parameter of the auxiliary log-normal density w, and hence how fast the tails of w go to zero.
+Loosely speaking, when τ is small, projecting the payoﬀ or likelihood ratio function on the set
+of polynomials in L2
+w is almost like approximating a continuous function on a compact interval
+by polynomials. However, when τ becomes larger, the tails of w decay slowly and it becomes
+increasingly diﬃcult to approximate a function with a polynomial in L2
+w. In other words, for
+larger values of τ , the moment indeterminacy of the log-normal distribution starts playing a
+more prominent role. A natural question is therefore whether this poses a problem for option
+pricing purposes. In Figure 3a we ﬁx T = 1 and plot for a range of values for σ the squared
+relative error
+
+SRE =  ˆπM C − π(20)
+
+π(20)
+
+!2
+
+,
+
+where ˆπM C denotes the Monte-Carlo price estimate. The error starts to becomes noticeable
+
+3Figure 1 and 2 only show cases 1, 3, 5, and 7. The plots for the other cases look very similar and are available
+
+upon request.
+
+9
+
+around σ = 80%, where √SRE ≈ 0.5%. For higher values of σ the error increases sharply. In
+
+Figure 3b we plot a more conservative estimate of the squared relative error using the upper
+bound in (4.2). This plot shows that the upper bound is only signiﬁcantly diﬀerent from zero
+for σ larger than approximately 70%. Figure 4 gives a more detailed insight in the extreme
+case of σ = 100%. Although the LNS series converges relatively fast, it is clear from Figure
+4a that it does not converge to the true price. The reason, as already mentioned before, is
+that the payoﬀ and likelihood ratio functions are not accurately approximated by polynomials
+in the L2
+w-norm, as indicated by the projection errors in Figure 4c and 4d. We would obtain
+similar results by keeping σ ﬁxed and varying the maturity T , since the crucial parameter for
+the asymptotic pricing error is τ = σ2T . As a rule of thumb, we suggest to use the LNS method
+when τ ≤ 0.5.
+
+[Figure 3 and 4 around here]
+
+The main advantage of the method proposed in this paper is the ease of of its implementation and
+the computation speed. All terms in the series are fully explicit and involve only simple linear
+algebra operations. Table 2 shows the computation times of the LNS with N ∈ {10, 25, 20}, as
+well as the computation times of the benchmark methods.4 The LNS computation times are
+all in the order of miliseconds. Although the EE is very accurate, it comes at the cost of long
+computation times (in the order of several seconds) caused by the expensive evaluations of the
+Whittaker function. The LS does not require calls to special functions, however the method is
+slowed down by the numerical integration involved in computing the moments of the reciprocal
+of the average. The implementation of both the EE and LS require the use of software that can
+handle symbolic mathematics, in contrast to the implementation of the LNS. The VEC method
+is the fastest among the benchmarks considered in this paper, but still an order of magnitude
+slower than the LNS.
+
+[Table 2 around here]
+
+6 Conclusion
+
+We have presented a series expansion for the continuously sampled arithmetic Asian option using
+polynomials that are orthogonal with respect to the log-normal distribution. The terms in the
+series are fully explicit and do not require any numerical integration or special functions, which
+makes the method very fast. We have shown that the series does not diverge if the volatility of
+the auxiliary log-normal distribution is suﬃciently high. However, the series is not guaranteed
+to converge to the true price. We have investigated this asymptotic bias numerically and found
+that its magnitude is related to the size of τ = σ2T .
+
+4For the LS, all symbolic calculations related to the moments of the reciprocal of the average have been
+pre-computed using Matlab’s Symbolic Math Toolbox. We use 15+1 terms in the series, a higher number of
+terms leads to severe rounding problems in double precision arithmetic. For the EE, the integral representa-
+tion (16) in Linetsky (2004) has been implemented instead of the series representation (15). The implemen-
+tation of the series representation involves partial derivatives of the Whittaker function with respect to its in-
+dices. These derivatives are not available in Matlab’s Symbolic Math Toolbox and numerical ﬁnite diﬀerence
+approximations did not give accurate results. All numerical integrations are performed using Matlab’s built-
+in function integral. For case 1, the numerical integration in the EE did not ﬁnish in a reasonable amount
+of time. For the VEC method, we use Prof. Jan Vecer’s Matlab implementation, which can be downloaded
+at http://www.stat.columbia.edu/~vecer/asiancontinuous.m. All computations are performed on a desktop
+computer with an Intel Xeon 3.50GHz CPU.
+
+10
+
+There are several extensions to our method. First of all, we can handle discretely monitored
+Asian options using exactly the same setup, but replacing the moments of the continuous av-
+erage with those of the discrete average. The latter are easily computed using iterated expec-
+tations. Secondly, we only look at ﬁxed-strike Asian options in this paper. Since the process
+
+(cid:16)St,R t
+
+0 Su du(cid:17) is jointly a polynomial diﬀusion, we can compute all of its mixed moments. Our
+
+method can then be extended to price ﬂoating-strike Asian options by using a bivariate log-
+normal as auxiliary distribution. Finally, we can deﬁne the auxiliary density w as a mixture
+of log-normal densities, as studied in Ackerer and Filipovi´c (2017). Using a mixture allows
+to match higher order moments, which can lead to a faster convergence of the approximating
+series.
+
+11
+
+References
+
+Ackerer, D. and D. Filipovi´c (2017). Option pricing with orthogonal polynomial expansions.
+
+Working paper .
+
+Ackerer, D., D. Filipovi´c, and S. Pulido (2017). The Jacobi stochastic volatility model. Finance
+
+and Stochastics, 1–34.
+
+Al-Mohy, A. H. and N. J. Higham (2011). Computing the action of the matrix exponential,
+with an application to exponential integrators. SIAM Journal on Scientiﬁc Computing 33 (2),
+488–511.
+
+Aprahamian, H. and B. Maddah (2015). Pricing Asian options via compound gamma and
+
+orthogonal polynomials. Applied Mathematics and Computation 264, 21–43.
+
+Asmussen, S., P.-O. Goﬀard, and P. J. Laub (2016). Orthonormal polynomial expansions and
+
+lognormal sum densities. arXiv preprint arXiv:1601.01763 .
+
+Bally, V. (2003). An elementary introduction to Malliavin calculus. Ph. D. thesis, INRIA.
+
+Benhamou, E. (2002). Fast Fourier transform for discrete Asian options. Journal of Computa-
+
+tional Finance 6 (1), 49–68.
+
+Bj¨orck, k. and V. Pereyra (1970). Solution of Vandermonde systems of equations. Mathematics
+
+of Computation 24 (112), 893–903.
+
+Black, F. and M. Scholes (1973). The pricing of options and corporate liabilities. Journal of
+
+Political Economy 81 (3), 637–654.
+
+Caliari, M., P. Kandolf, A. Ostermann, and S. Rainer (2014). Comparison of software for
+computing the action of the matrix exponential. BIT Numerical Mathematics 54 (1), 113–
+128.
+
+Carmona, P., F. Petit, and M. Yor (1997). On the distribution and asymptotic results for
+exponential functionals of L´evy processes. Exponential functionals and principal values related
+to Brownian motion, 73–121.
+
+Carverhill, A. and L. Clewlow (1990). Valuing average rate (Asian) options. Risk 3 (4), 25–29.
+
+ˇCern`y, A. and I. Kyriakou (2011). An improved convolution algorithm for discretely sampled
+
+Asian options. Quantitative Finance 11 (3), 381–389.
+
+Curran, M. (1994). Valuing Asian and portfolio options by conditioning on the geometric mean
+
+price. Management science 40 (12), 1705–1711.
+
+Donati-Martin, C., R. Ghomrasni, and M. Yor (2001). On certain Markov processes attached to
+exponential functionals of Brownian motion; applications to Asian options. Revista Matem-
+atica Iberoamericana 17 (1), 179.
+
+Dufresne, D. (1990). The distribution of a perpetuity, with applications to risk theory and
+
+pension funding. Scandinavian Actuarial Journal 1990 (1), 39–79.
+
+Dufresne, D. (2000). Laguerre series for Asian and other options. Mathematical Finance 10 (4),
+
+407–428.
+
+12
+
+Eydeland, A. and H. Geman (1995). Domino eﬀect: Inverting the Laplace transform. Risk 8 (4),
+
+65–67.
+
+Filipovi´c, D. and M. Larsson (2016). Polynomial diﬀusions and applications in ﬁnance. Finance
+
+and Stochastics 20 (4), 931–972.
+
+Filipovi´c, D., E. Mayerhofer, and P. Schneider (2013). Density approximations for multivariate
+
+aﬃne jump-diﬀusion processes. Journal of Econometrics 176 (2), 93–111.
+
+Fourni´e, E., J.-M. Lasry, J. Lebuchoux, P.-L. Lions, and N. Touzi (1999). Applications of
+Malliavin calculus to Monte Carlo methods in ﬁnance. Finance and Stochastics 3 (4), 391–
+412.
+
+Fu, M. C., D. B. Madan, and T. Wang (1999). Pricing continuous Asian options: a compar-
+ison of Monte Carlo and Laplace transform inversion methods. Journal of Computational
+Finance 2 (2), 49–74.
+
+Fusai, G., D. Marazzina, and M. Marena (2011). Pricing discretely monitored asian options by
+
+maturity randomization. SIAM Journal on Financial Mathematics 2 (1), 383–403.
+
+Fusai, G. and A. Meucci (2008). Pricing discretely monitored Asian options under L´evy pro-
+
+cesses. Journal of Banking & Finance 32 (10), 2076–2088.
+
+Gautschi, W. (2004). Orthogonal Polynomials: Computation and Approximation. Oxford Uni-
+
+versity Press.
+
+Geman, H. and M. Yor (1993). Bessel processes, Asian options, and perpetuities. Mathematical
+
+Finance 3 (4), 349–375.
+
+Heyde, C. (1963). On a property of the lognormal distribution. In Selected Works of CC Heyde.
+
+Springer Science & Business Media.
+
+Jarrow, R. and A. Rudd (1982). Approximate option valuation for arbitrary stochastic processes.
+
+Journal of Financial Economics 10 (3), 347–369.
+
+Ju, N. (2002). Pricing Asian and basket options via Taylor expansion. Journal of Computational
+
+Finance 5 (3), 79–103.
+
+Kemna, A. G. and A. Vorst (1990). A pricing method for options based on average asset values.
+
+Journal of Banking & Finance 14 (1), 113–129.
+
+Lapeyre, B., E. Temam, et al. (2001). Competitive Monte Carlo methods for the pricing of
+
+Asian options. Journal of Computational Finance 5 (1), 39–58.
+
+Levy, E. (1992). Pricing European average rate currency options. Journal of International
+
+Money and Finance 11 (5), 474–491.
+
+Li, W. and S. Chen (2016). Pricing and hedging of arithmetic Asian options via the Edgeworth
+
+series expansion approach. The Journal of Finance and Data Science 2 (1), 1–25.
+
+Linetsky, V. (2004). Spectral expansions for Asian (average price) options. Operations Re-
+
+search 52 (6), 856–867.
+
+Marcozzi, M. D. (2003). On the valuation of Asian options by variational methods. SIAM
+
+Journal on Scientiﬁc Computing 24 (4), 1124–1140.
+
+13
+
+Milevsky, M. A. and S. E. Posner (1998). Asian options, the sum of lognormals, and the reciprocal
+
+gamma distribution. Journal of Financial and Quantitative Analysis 33 (3), 409–422.
+
+Nualart, D. (2006). The Malliavin Calculus and Related Topics. Springer.
+
+Ritchken, P., L. Sankarasubramanian, and A. M. Vijh (1993). The valuation of path dependent
+
+contracts on the average. Management Science 39 (10), 1202–1213.
+
+Rogers, L. C. G. and Z. Shi (1995). The value of an Asian option. Journal of Applied Probabil-
+
+ity 32 (4), 1077–1088.
+
+Shaw, W. (2002). Pricing Asian options by contour integration, including asymptotic methods
+
+for low volatility. Working paper .
+
+Sun, J., L. Chen, and S. Li (2013). A quasi-analytical pricing model for arithmetic Asian options.
+
+Journal of Futures Markets 33 (12), 1143–1166.
+
+Thompson, G. (2002). Fast narrow bounds on the value of Asian options. Technical report,
+
+Judge Institute of Management Studies.
+
+Turnbull, S. M. and L. M. Wakeman (1991). A quick algorithm for pricing European average
+
+options. Journal of Financial and Quantitative Analysis 26 (3), 377–389.
+
+Turner, L. R. (1966). Inverse of the Vandermonde matrix with applications.
+
+Vanmaele, M., G. Deelstra, J. Liinev, J. Dhaene, and M. J. Goovaerts (2006). Bounds for the
+price of discrete arithmetic Asian options. Journal of Computational and Applied Mathemat-
+ics 185 (1), 51–90.
+
+Vecer, J. (2001). A new PDE approach for pricing arithmetic average Asian options. Journal of
+
+Computational Finance 4 (4), 105–113.
+
+Vecer, J. (2002). Uniﬁed pricing of Asian options. Risk 15 (6), 113–116.
+
+Yor, M. (1992). On some exponential functionals of Brownian motion. Advances in Applied
+
+Probability 24 (3), 509–531.
+
+Zvan, R., P. A. Forsyth, and K. R. Vetzal (1996). Robust numerical methods for PDE models
+
+of Asian options. Technical report, University of Waterloo, Faculty of Mathematics.
+
+14
+
+A Scaling with auxiliary moments
+
+In this appendix we show how to avoid rounding errors by scaling the problem using the moments
+of the auxiliary density w.
+
+Using (L−1)⊤L−1 = M−1 we get from (3.4):
+
+π(N ) = (f0, . . . , fN )(ℓ0, . . . , ℓN )⊤
+
+= e−rT ( ˜f0, . . . , ˜fN )M−1eGN T HN (0).
+
+Deﬁne S ∈ R(N +1)×(N +1) as the diagonal matrix with the moments of w on its diagonal:
+
+We can now write
+
+S = diag(s0, . . . , sN ),
+
+si = eiµ+ 1
+
+2 i2ν2
+
+.
+
+π(N ) = e−rT (f 0, . . . , f N )S−1SM−1SS−1eGN T SS−1HN (0)
+
+(A.1)
+where we have deﬁned the matrices ((GN )ij)0≤i,j≤N , (M ij)0≤i,j≤N and the vector (f 0, . . . , f N )⊤
+as
+
+= e−rT (f 0, . . . , f N )M−1
+
+eGN T HN (0),
+
+M ij = eijν2
+
+,
+
+f i = eµ+ 1
+
+2 (2i+1)ν2
+
+Φ(di+1) − KΦ(di),
+
+2 i(i − 1)σ2
+2 (1−2i)ν2
+
+ir + 1
+T e−µ+ 1
+i
+0
+
+j = i
+j = i − 1
+else
+
+,
+
+(GN )ij =
+
+
+for i, j = 0, . . . , N . The components of M and (f 0, . . . , f N )⊤ grow much slower for increasing
+N as their counterparts M and ( ˜f0, . . . , ˜fN )⊤, respectively. The vector eGN T HN (0) corresponds
+to the moments of AT divided by the moments corresponding to w. Since both moments grow
+approximately at the same rate, this vector will have components around one. This scaling is
+important since for large N the raw moments of AT are enormous. This was causing trouble for
+example in Dufresne (2000). We therefore circumvent the numerical inaccuracies coming from
+the explosive moment behavior by directly computing the relative moments.
+
+The likelihood and payoﬀ coeﬃcients can be computed by performing a Cholesky decomposition
+on M instead of M :
+
+(f0, . . . , fN )⊤ = e−rT L−1
+(ℓ0, . . . , ℓN )⊤ = L−1
+
+eGN T HN (0),
+
+(f 0, . . . , f N )⊤,
+
+where M = L L⊤ is the Cholesky decomposition of M .
+
+Remark that to compute the option price in (A.1), we do not necessarily need to do a Cholesky
+decomposition. Indeed, we only need to invert the matrix M . Doing a Cholesky decomposition
+is one way to solve a linear system, but there are other possibilities.
+In particular, remark
+that M is a Vandermonde matrix and its inverse can be computed analytically (see e.g. Turner
+(1966)). There also exist speciﬁc numerical methods to solve linear Vandermonde systems, see
+e.g. Bj¨orck and Pereyra (1970). However, we have not found any signiﬁcant diﬀerences between
+the Cholesky method and alternative matrix inversion techniques for the examples considered
+in this paper.
+
+For very large values of ν, even the matrix M might become ill conditioned. In this case it is
+advisable to construct the orthonormal basis using the three-term recurrence relation:
+
+15
+
+Lemma A.1. The polynomials bn ∈ Poln(R), n = 0, 1, . . ., deﬁned recursively by
+
+b0(x) = 1,
+
+b1(x) =
+
+1
+β1
+
+(x − α0),
+
+bn(x) =
+
+1
+βn
+
+((x − αn−1)bn−1(x) − βn−1bn−2(x)) , n = 2, 3, . . . ,
+
+with
+
+satisfy
+
+αn = eµ+ν2(n− 1
+βn = eµ+ 1
+
+2 )(cid:16)eν2(n+1) + eν2n − 1(cid:17) , n = 0, 1, . . .
+
+2 ν2(3n−2)peν2n − 1, n = 1, 2, . . . ,
+
+bi(x)bj(x)w(x) dx =(1
+
+0
+
+i = j
+else
+
+ZR
+
+,
+
+i, j = 0, 1, . . . .
+
+Proof. Straightforward application of the moment-generating function of the normal distribution
+and Theorem 1.29 in Gautschi (2004).
+
+The above recursion suﬀers from rounding errors in double precision arithmetic for small ν, but
+is very accurate for large ν.
+
+B Control variate for simulating g(x)
+
+In order to increase the eﬃciency of the Monte-Carlo simulation of g(x), we describe in this
+appendix how to use the density of the geometric average as a control variate. This idea is
+inspired by Kemna and Vorst (1990), who report a very substantial variance reduction when
+using the geometric Asian option price as a control variate in the simulation of the arithmetic
+
+0 log(Ss) ds(cid:17) the geometrical price average. It is
+Asian option price. Denote by QT = exp(cid:16) 1
+T R T
+
+not diﬃcult to see that log(QT ) is normally distributed with mean 1
+2 σ2)T and variance
+σ2
+3 T . Hence, QT is log-normally distributed and we know its density function, which we denote
+by q(x), explicitly. Similarly as in Lemma 4.1, we can also express q(x) as an expectation:
+
+2 (r − 1
+
+Lemma B.1. For any x ∈ R
+
+(B.1)
+
+q(x) = E(cid:20)(cid:0)1{QT ≥x} − c(x)(cid:1)(cid:18) 2BT
+
+σT QT
+
++
+
+1
+
+QT(cid:19)(cid:21) ,
+
+where c is any deterministic ﬁnite-valued function.
+
+We now propose the following estimator for the density of the arithmetic average:
+
+(B.2)
+
+2
+
+g(x) =E(cid:20)(1{AT ≥x} − c1(x))
+
+σ2 (cid:18) ST − S0
++(cid:18)q(x) −(cid:0)1{QT ≥x} − c2(x)(cid:1)(cid:18) 2BT
+
+T A2
+T
+
++
+
+σT QT
+
+σ2 − r
+AT (cid:19)
+QT(cid:19)(cid:19)(cid:21) ,
+
++
+
+1
+
+16
+
+for some deterministic ﬁnite-valued functions c1 and c2. Given the typically high correlation
+between the geometric and arithmetic average, the above estimator has a signiﬁcantly smaller
+variance than the estimator in (4.1). In numerical examples the functions c1 and c2 are chosen
+as follows:
+
+c1(x) = 1x≤mA
+
+1
+
+,
+
+c2(x) = 1x≤mQ
+
+1
+
+,
+
+1 denote the ﬁrst moments of AT and QT , respectively.
+
+1 and mQ
+
+where mA
+Finally, we use (B.2) to express kℓk2
+simulation:
+
+w as an expectation that can be evaluated using Monte-Carlo
+
+w = E
+kℓk2
+
+
+(1
+
+{AT ≥ ˜AT } − c1( ˜AT )) 2
+w( ˜AT )
+
+T A2
+T
+
++ σ2−r
+
+σ2 (cid:16) ST −S0
+
+AT (cid:17)
+{QT ≥ ˜AT } − c2( ˜AT )(cid:17)(cid:16) 2BT
+
+σT QT
+
+w( ˜AT )
+
+q( ˜AT ) −(cid:16)1
+
+(B.3)
+
++
+
++ 1
+
+QT(cid:17)
+
+
+ ,
+
+where the random variable ˜AT is independent from all other random variables and has the same
+distribution as AT .
+In numerical examples we ﬁnd a variance reduction of roughly a factor
+ten.
+
+C Proofs
+
+This appendix contains all the proofs.
+
+C.1 Proof of Lemma 2.1
+
+Using the time-reversal property of a Brownian motion, we have the following identity in law
+for ﬁxed t > 0 :
+
+e(r− 1
+
+2 σ2)u+σBu du
+
+e(r− 1
+
+2 σ2)(t−u)+σ(Bt−Bu) du
+
+0
+
+law
+
+tAt =Z t
+= Z t
+= StZ t
+
+0
+
+0
+
+S−1
+u du.
+
+Applying Itˆo’s lemma to Xt := StR t
+
+0 S−1
+
+u du gives
+
+dXt = StS−1
+
+S−1
+u du (rSt dt + σSt dBt)
+
+t dt +Z t
+
+0
+
+= (rXt + 1) dt + σXt dBt.
+
+17
+
+C.2 Proof of Proposition 2.2
+
+Applying the inﬁnitesimal generator G corresponding to the diﬀusion in (2.1) to a monomial xn
+gives:
+
+Gxn = xn(nr +
+
+1
+2
+
+n(n − 1)σ2) + nxn−1.
+
+Hence, we have GHn(x) = ˜GnHn(x) componentwise, where ˜Gn is deﬁned as
+
+0
+1
+
+˜Gn =
+
+
+r
+. . .
+
+. . .
+n
+
+.
+
+
+
+
+(nr + 1
+
+2 n(n − 1)σ2)
+
+Using the identity in distribution of Lemma 2.1, we get
+
+E[Hn(AT )] = diag(Hn(T −1))E[Hn(XT )]
+
+0
+
+= diag(Hn(T −1))(cid:18)Hn(X0) +Z T
+E[GHn(Xu)] du(cid:19)
+= diag(Hn(T −1))Hn(0) + diag(Hn(T −1)) ˜GnZ T
+= Hn(0) + diag(Hn(T −1)) ˜Gndiag(Hn(T ))Z T
+= Hn(0) + GnZ T
+
+E[Hn(Au)] du,
+
+0
+
+0
+
+E[Hn(Xu)] du
+
+E[Hn(Au)] du
+
+0
+
+where Gn was deﬁned in (2.2). The result now follows from solving the above linear ﬁrst order
+ODE.
+
+C.3 Proof of Proposition 2.3
+
+1. We will show that the solution at time T > 0 of the SDE in (2.1) admits a smooth density
+
+function. The claim then follows by the identity in law.
+
+Deﬁne the volatility and drift functions a(x) = σx and b(x) = rx + 1. H¨ormander’s
+condition (see for example Section 2.3.2 in Nualart (2006)) becomes in this case:
+
+a(X0) 6= 0
+
+or a(n)(X0)b(X0) 6= 0 for some n ≥ 1.
+
+H¨ormander’s condition is satisﬁed since for n = 1 we have a′(0)b(0) = σ 6= 0. Since
+a(x) and b(x) are inﬁnitely diﬀerentiable functions with bounded partial derivatives of
+all orders, we conclude by Theorem 2.3.3 in Nualart (2006) that XT , and therefore AT ,
+admits a smooth density function.
+
+2. We start from the following two observations:
+
+AT ≤ sup
+0≤u≤T
+
+Su
+
+and P   sup
+
+0≤u≤T
+
+σBu ≥ x! = 2P (cid:18)Z ≥
+
+x
+
+σ√T(cid:19) ,
+
+18
+
+where Z ∼ N (0, 1). Using the fact that the exponential is an increasing function, we get
+
+1
+2
+
+0≤u≤T
+
+0≤u≤T
+
+P (AT ≥ x) ≤ P   sup
+Su ≥ x!
+= P   sup
+(r −
+log(x)−(r− 1
+≤
+2P (cid:16)Z ≥
+σ√T
+σ√T (cid:17)
+2P (cid:16)Z ≥ log(x)
+
+P (AT ≥ x)(cid:18)Z ∞
+= lim
+x→∞
+x→∞Z ∞
+1
+√2πT σ
+1
+σ
+
+≤ 2
+=r 2
+
+lim
+
+e−
+
+πT
+
+x
+
+x
+
+.
+
+Applying the rule of l’Hˆopital gives
+
+lim
+x→∞
+
+g(x)(cid:18)e− log(x)2
+
+2σ2T (cid:19)−1
+
+σ2)u + σBu ≥ log(x)!
+r ≥ 1
+r ≤ 1
+
+(cid:17) if
+
+2 σ2)T
+
+if
+
+2 σ2
+2 σ2
+
+.
+
+2σ2T dy(cid:19)−1
+e− log(y)2
+
+(log(y)−(r− 1
+2σ2T
+
+2 σ2)+T )2
+
+dy(cid:18)Z ∞
+
+x
+
+2σ2T dy(cid:19)−1
+e− log(y)2
+
+Hence we have show that g(x) = O(cid:16)expn− 1
+
+2
+
+log(x)2
+
+σ2T o(cid:17) for x → ∞.
+
+Since the exponential is a convex function, we have that the arithmetic average is always
+bounded below by the geometric average:
+
+AT ≥ QT = exp(cid:18) 1
+
+T Z T
+
+0
+
+log(Ss) ds(cid:19) .
+
+It is not diﬃcult to see that log(QT ) is normally distributed with mean 1
+variance σ2
+
+3 T . By similar arguments as before we therefore have
+
+2 (r − 1
+
+2 σ2)T and
+
+g(x) = O(cid:18)exp(cid:26)−
+
+3
+2
+
+log(x)2
+
+σ2T (cid:27)(cid:19) for x → 0.
+
+C.4 Proof of Proposition 3.1
+
+We can write the squared norm of ℓ as
+
+(C.1)
+
+w(x) dx
+
+w =Z ∞
+kℓk2
+=Z a
+
+w(x)(cid:19)2
+0 (cid:18) g(x)
+dx +Z b
+
+g(x)2
+w(x)
+
+0
+
+a
+
+g(x)2
+w(x)
+
+dx +Z ∞
+
+b
+
+g(x)2
+w(x)
+
+dx,
+
+for some 0 < a < b < ∞. The second term is ﬁnite since the function g2
+
+compact interval [a, b]. From Proposition 2.3 we have
+
+w is continuous over the
+
+g(x)2 = O(cid:18)exp(cid:26)−
+
+log(x)2
+
+σ2T (cid:27)(cid:19) ,
+
+for x → ∞ and x → 0.
+
+19
+
+For the log-normal density we have
+
+w(x) = O(cid:18)exp(cid:26)−
+
+log(x)2
+
+2ν (cid:27)(cid:19) ,
+
+for x → ∞ and x → 0.
+
+Since 2ν > σ2T by assumption, we are guaranteed that the ﬁrst and last term in (C.1) are ﬁnite
+for a suﬃciently small (resp. large) choice of a (resp. b).
+
+C.5 Proof of Proposition 3.3
+
+The payoﬀ coeﬃcients can be written as
+
+(f0, . . . , fN )⊤ = e−rT C( ˜f0, . . . , ˜fN )⊤,
+
+with
+
+˜fn =
+
+=
+
+0
+
+1
+
+√2πν Z ∞
+√2πν  Z ∞
+
+1
+
+log(K)
+
+(ex − K)+enxe− (x−µ)2
+e(n+1)xe− (x−µ)2
+
+2ν2 dx
+
+2ν2 dx − KZ ∞
+
+log(K)
+
+Completing the square in the exponent gives
+
+enxe− (x−µ)2
+
+2ν2 dx! .
+
+e− (x−(µ+ν2n))2
+
+2ν2
+
+dx
+
+e− 1
+
+2 y2
+
+dy
+
+log(K)−(µ+ν2n)
+
+ν
+
+1
+
+√2πν Z ∞
+
+log(K)
+
+enxe− (x−µ)2
+
+2ν2 dx =
+
+1
+
+√2πν
+1
+√2π
+= eµn+ 1
+
+=
+
+eµn+ 1
+
+eµn+ 1
+
+log(K)
+
+2 n2ν2Z ∞
+2 n2ν2Z ∞
+
+2 n2ν2
+
+Φ(dn),
+
+where dn is deﬁned in (3.5). We ﬁnally get
+
+˜fn = eµ(n+1)+ 1
+
+2 (n+1)2ν2
+
+Φ(dn+1) − Keµn+ 1
+
+2 n2ν2
+
+Φ(dn).
+
+C.6 Proof of Lemma 4.1
+
+This proof is based on Malliavin calculus techniques, we refer to Nualart (2006) for an overview
+of standard results in this area. A similar approach is taken by Fourni´e et al. (1999) to compute
+the Greeks of an Asian option by Monte-Carlo simulation.
+Denote by D : D1,2 → L2(Ω × [0, T ]), F 7→ {DtF, t ∈ [0, T ]}, the Malliavin derivative operator.
+By Theorem 2.2.1 in (Nualart, 2006) we have St, At ∈ D1,2 for t ∈ (0, T ] and
+
+DuSt = σSt1{u≤t}, DuAt =
+
+σ
+
+t Z t
+
+u
+
+Ss ds.
+
+Denote by
+
+δ : Dom(δ) → L2(Ω), {Xt, t ∈ [0, T ]} 7→ δ(X)
+
+the Skorohod integral and by Dom(δ) ⊆ L2(Ω×[0, T ]) the corresponding domain. The Skorohod
+integral is deﬁned as the adjoint operator of the Malliavin derivative and can be shown to
+
+20
+
+extend the Itˆo integral to non-adapted processes.
+{St, t ∈ [0, T ]} ∈ Dom(δ) and
+
+In particular, we have immediately that
+
+(C.2)
+
+δ(S) =Z T
+
+0
+
+Ss dBs.
+
+For φ ∈ C∞c we have φ(AT ) ∈ D1,2 and
+
+Z T
+
+0
+
+(Duφ(AT ))Su du = φ′(AT )Z T
+
+0
+
+(DuAT )Su du.
+
+Using the duality relationship between the Skorohod integral and the Malliavin derivative we
+get
+
+E[φ′(AT )] = E"Z T
+
+0
+
+(Duφ(AT ))
+
+(C.3)
+
+= E"φ(AT )δ 
+
+du#
+
+Su
+
+R T
+
+0 (DuAT )Su du
+S
+
+0 (DuAT )Su du!# .
+R T
+
+By Lemma 1 in Bally (2003) (see also Proposition 2.1.1 in Nualart (2006) for a similar approach)
+we obtain the following representation of the density function of AT :5
+
+(C.4)
+
+Interchanging the order of integration gives
+
+S
+
+u Ss ds du!# .
+
+S
+
+=
+
+T
+σ
+
+0 (DuAT )Su du!#
+g(x) = E"1{AT ≥x}δ 
+R T
+E"1{AT ≥x}δ 
+R T
+0 SuR T
+−Z T
+0 Z u
+Su du(cid:19)
+SsZ T
+−Z T
+Su du(cid:19)
+
+Ss ds du =(cid:18)Z T
+=(cid:18)Z T
+
+0
+
+2
+
+0
+
+0
+
+2
+
+0
+
+s
+
+SuSs ds du
+
+Su du ds,
+
+Z T
+
+0
+
+SuZ T
+
+u
+
+which gives R T
+
+0 SuR T
+
+u Ss ds du = T 2
+
+2 A2
+
+T . Plugging this into (C.4) gives
+
+g(x) =
+
+2
+T σ
+
+E(cid:20)1{AT ≥x}δ(cid:18) S
+
+A2
+
+T(cid:19)(cid:21) .
+
+We use Proposition 1.3.3 in Nualart (2006) to factor out the random variable A−2
+T
+Skorohod integral:
+
+from the
+
+δ(cid:18) S
+
+A2
+
+T(cid:19) = A−2
+
+T δ(S) −Z T
+Dt(cid:0)A−2
+σ (cid:18)ST − S0 − rZ T
+
+T (cid:1) St dt
+Ss ds(cid:19) −Z T
+
+1
+
+0
+
+0
+
+0
+
+= A−2
+T
+
+Dt(cid:0)A−2
+
+T (cid:1) St dt,
+
+5Informally speaking one applies a regularization argument in order to use (C.3) for the (shifted) Heaviside
+
+function φ(y) = 1{y≥x}.
+
+21
+
+where we used (C.2) in the last equation. Using the chain rule for the Malliavin derivative we
+get
+
+δ(cid:18) S
+
+A2
+
+T(cid:19) = A−2
+
+T
+
+= A−2
+T
+
+= A−2
+T
+
+= A−2
+T
+
+0
+
+1
+
+Ss ds(cid:19) + 2A−3
+T Z T
+
+σ (cid:18)ST − S0 − rZ T
+(ST − S0 − rT AT ) + 2A−3
+(ST − S0 − rT AT ) + A−1
+T σT
+(ST − S0) +
+
+A−1
+T (σ2 − r).
+
+1
+σ
+1
+σ
+1
+σ
+
+T
+σ
+
+1
+
+T
+
+0
+
+0
+
+T Z T
+StZ T
+
+t
+
+DtAT St dt
+
+σSu du dt
+
+Putting everything back together we ﬁnally get:
+
+g(x) =
+
+2
+
+σ2 E(cid:20)1{AT ≥x}(cid:18) ST − S0
+
+T A2
+T
+
++
+
+σ2 − r
+AT (cid:19)(cid:21) .
+
+Since the Skorohod integral has zero expectation we also have
+
+g(x) =
+
+2
+
+σ2 E(cid:20)(cid:0)1{AT ≥x} − c(x)(cid:1)(cid:18) ST − S0
+
+T A2
+T
+
++
+
+σ2 − r
+AT (cid:19)(cid:21) ,
+
+for any deterministic ﬁnite-valued function c.
+
+C.7 Proof of Corollary 4.3
+
+The result follows immediately from (4.1) and
+
+w =Z ∞
+kℓk2
+
+0
+
+ℓ2(x)w(x) dx =Z ∞
+
+0
+
+g(x)
+w(x)
+
+g(x) dx.
+
+C.8 Proof of Proposition 4.4
+
+Using the Cauchy-Schwarz inequality and the orthonormality of the polynomials b0, . . . , bN we
+get
+
+N
+
+N
+
+Xn=0
+bnfn , ℓ −
+
+fnℓn(cid:12)(cid:12)(cid:12)(cid:12)(cid:12)
+|π − π(N )| =(cid:12)(cid:12)(cid:12)(cid:12)(cid:12)
+hF, liw −
+=*F −
+Xn=0
+bnfn(cid:13)(cid:13)(cid:13)(cid:13)(cid:13)w (cid:13)(cid:13)(cid:13)(cid:13)(cid:13)
+≤(cid:13)(cid:13)(cid:13)(cid:13)(cid:13)
+Xn=0
+F −
+n!
+= kFk2
+Xn=0
+w −
+
+f 2
+
+N
+
+N
+
+1
+
+N
+
+N
+
+bnℓn+w
+Xn=0
+bnℓn(cid:13)(cid:13)(cid:13)(cid:13)(cid:13)w
+Xn=0
+ℓ −
+2  kℓk2
+Xn=0
+w −
+
+N
+
+1
+2
+
+.
+
+ℓ2
+
+n!
+
+22
+
+C.9 Proof of Lemma B.1
+
+Applying the Malliavin derivative to QT gives
+
+DuQT = QT Du(cid:18) 1
+
+T Z T
+
+0
+
+log(Ss) ds(cid:19) = QT
+
+σ
+T
+
+(T − u)1u≤T .
+
+Similarly as in the proof of Lemma 4.1 we can write
+
+(C.5)
+
+1
+
+q(x) = E"1{QT ≥x}δ 
+
+0 DuQT du!#
+R T
+QT σT(cid:19)(cid:21) .
+= E(cid:20)1{QT ≥x}δ(cid:18) 2
+
+Using Proposition 1.3.3 in Nualart (2006) to factor out the random variable from the Skorohod
+integral gives
+
+δ(cid:18) 2
+QT σT(cid:19) =
+
+=
+
+=
+
+2BT
+σT QT −
+2BT
+σT QT −
+2BT
++
+σT QT
+
+Du(Q−1
+
+T ) du
+
+Q−2
+
+T Z T
+
+0
+
+QT
+
+σ
+T
+
+(T − u) du
+
+2
+
+σT Z T
+
+0
+
+2
+σT
+1
+QT
+
+.
+
+Plugging this back into (C.5) ﬁnally gives
+
+q(x) = E(cid:20)1{QT ≥x}(cid:18) 2BT
+
+σT QT
+
++
+
+1
+
+QT(cid:19)(cid:21) .
+
+Since the Skorohod integral has zero expectation we also have
+
+q(x) = E(cid:20)(cid:0)1{QT ≥x} − c(x)(cid:1)(cid:18) 2BT
+
+σT QT
+
+for any deterministic ﬁnite-valued function c.
+
++
+
+1
+
+QT(cid:19)(cid:21) ,
+
+23
+
+Case
+
+r
+
+σ T S0 LNS10 LNS15 LNS20 LS
+
+EE
+
+VEC MC 95% CI
+
+1
+2
+3
+4
+5
+6
+7
+
+.10 1 2.0 .05601 .05600 .05599 .0197 .05599 .05595 [.05598 , .05599]
+.02
+.30 1 2.0 .2185
+.2185]
+.18
+.1724]
+.0125 .25 2 2.0 .1723
+.1933]
+.50 1 1.9 .1930
+.05
+.2466]
+.50 1 2.0 .2466
+.05
+.05
+.50 1 2.1 .3068
+.3065]
+.3504]
+.50 2 2.0 .3501
+.05
+
+.2184 .2184 .2184
+.1722 .1723 .1723
+.1928 .1932 .1932
+.2461 .2464 .2464
+.3061 .3062 .3062
+.3499 .3501 .3501
+
+.2184
+.1722
+.1927
+.2461
+.3062
+.3499
+
+.2184 [.2183 ,
+.1723 [.1722 ,
+.1932 [.1929 ,
+.2464 [.2461 ,
+.3062 [.3060 ,
+.3500 [.3494 ,
+
+Table 1: Price approximations for diﬀerent parameterizations and diﬀerent methods. The strike
+price is K = 2 for all cases. The column LNSX refers to the method presented in this paper with
+the ﬁrst 1 + X terms of the series, LS to Dufresne (2000), EE to Linetsky (2004), VEC to Vecer
+(2001, 2002), and MC 95% CI to the 95% conﬁdence interval of the Monte-Carlo simulation.
+
+Case
+
+r
+
+σ T S0 LNS10 LNS15 LNS20 LS EE VEC MC
+
+1
+2
+3
+4
+5
+6
+7
+
+.10 1 2.0
+.02
+.18
+.30 1 2.0
+.0125 .25 2 2.0
+.50 1 1.9
+.05
+.50 1 2.0
+.05
+.50 1 2.1
+.05
+.05
+.50 2 2.0
+
+.006
+.002
+.002
+.001
+.001
+.001
+.002
+
+.008
+.002
+.002
+.002
+.002
+.001
+.002
+
+.009
+.003
+.002
+.003
+.002
+.002
+.004
+
+-
+
+6.344
+.930
+.277
+.666 2.901 .345
+5.518
+.635 3.505 .374 12.138
+6.819
+.785 3.172 .404
+5.432
+.701 2.768 .404
+.687 2.719 .398
+5.452
+.594 2.202 .438 11.699
+
+Table 2: Computation times in seconds. The column LNSX refers to the method presented in
+this paper with the ﬁrst 1 + X terms of the series, LS to Dufresne (2000), EE to Linetsky (2004),
+VEC to Vecer (2001, 2002), and MC to the Monte-Carlo simulation.
+
+24
+
+0.068
+
+0.066
+
+0.064
+
+0.062
+
+0.06
+
+0.058
+
+0.056
+
+0.054
+
+Polynomial expansion
+MC
+MC 95%-CI
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+20
+
+(a) Case 1
+
+Polynomial expansion
+MC
+MC 95%-CI
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+20
+
+0.3
+
+0.29
+
+0.28
+
+0.27
+
+0.26
+
+0.25
+
+0.24
+
+0
+
+0.21
+
+0.205
+
+0.2
+
+0.195
+
+0.19
+
+0.185
+
+0.18
+
+0.175
+
+0.17
+
+0
+
+0.42
+
+0.41
+
+0.4
+
+0.39
+
+0.38
+
+0.37
+
+0.36
+
+0.35
+
+0.34
+
+0
+
+Polynomial expansion
+MC
+MC 95%-CI
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+20
+
+(b) Case 3
+
+Polynomial expansion
+MC
+MC 95%-CI
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+20
+
+(c) Case 5
+
+(d) Case 7
+
+Figure 1: Asian option price approximations in function of polynomial approximation order N .
+The cases correspond to diﬀerent parameterizations shown in Table 1.
+
+25
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+-1
+
+0.7
+
+1.6
+
+1.4
+
+1.2
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0
+
+2.5
+
+2
+
+1.5
+
+1
+
+0.5
+
+0
+
+0.8
+
+0.9
+
+1
+
+1.1
+
+1.2
+
+1.3
+
+1.4
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+1.2
+
+1.4
+
+1.6
+
+1.8
+
+2
+
+2.2
+
+(a) Case 1
+
+(b) Case 3
+
+1.2
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0
+
+0.5
+
+1
+
+1.5
+
+2
+
+2.5
+
+0
+
+0.5
+
+1
+
+1.5
+
+2
+
+2.5
+
+3
+
+3.5
+
+(c) Case 5
+
+(d) Case 7
+
+Figure 2: Simulated true density function g(x) and approximated density functions g(n)(x),
+n = 0, 4, 20. The cases correspond to diﬀerent parameterizations shown in Table 1.
+
+10-3
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+0.1
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+
+0.6
+
+0.7
+
+0.8
+
+0.9
+
+1
+
+10-3
+
+16
+
+14
+
+12
+
+10
+
+8
+
+6
+
+4
+
+2
+
+0
+
+-2
+
+0.1
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+
+0.6
+
+0.7
+
+0.8
+
+0.9
+
+1
+
+(a) Squared relative error
+
+(b) Squared relative error upper bound
+
+Figure 3: Squared relative approximation error for diﬀerent values of σ. Dashed lines correspond
+to the 95% conﬁdence intervals from the Monte-Carlo simulation. Parameters: T = 1, r = 0.05,
+S0 = K = 2.
+
+26
+
+0.56
+
+0.54
+
+0.52
+
+0.5
+
+0.48
+
+0.46
+
+0.44
+
+0
+
+101
+
+100
+
+10-1
+
+10-2
+
+0
+
+Polynomial expansion
+MC
+MC 95%-CI
+
+1.2
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+20
+
+0
+
+0.5
+
+1
+
+1.5
+
+2
+
+2.5
+
+3
+
+3.5
+
+4
+
+4.5
+
+(a) Monte-Carlo simulated price
+
+(b) Density approximations
+
+0.2
+
+0.18
+
+0.16
+
+0.14
+
+0.12
+
+0.1
+
+0.08
+
+0.06
+
+0.04
+
+0.02
+
+0
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+20
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+20
+
+(c) Payoﬀ projection error
+
+(d) Likelihood projection error
+
+Figure 4: Visualization of the projection bias in the extreme volatility case. Dashed lines
+correspond to the 95% conﬁdence intervals from the Monte-Carlo simulation. Parameters: σ = 1,
+T = 1, r = 0.05, S0 = K = 2.
+
+27
+
+

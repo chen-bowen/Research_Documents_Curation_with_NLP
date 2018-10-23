@@ -1,0 +1,2602 @@
+5
+1
+0
+2
+
+ 
+
+n
+a
+J
+ 
+
+9
+1
+
+ 
+ 
+]
+
+.
+
+M
+Q
+o
+i
+b
+-
+q
+[
+ 
+ 
+
+1
+v
+6
+8
+9
+4
+0
+
+.
+
+1
+0
+5
+1
+:
+v
+i
+X
+r
+a
+
+Approximate statistical alignment by iterative sampling
+
+of substitution matrices
+
+Joseph L. Herman* 1, Adrienn Szab´o2, Istv´an Mikl´os3, and Jotun Hein4
+
+June 12, 2018
+
+Abstract
+
+We outline a procedure for jointly sampling substitution matrices and multiple
+sequence alignments, according to an approximate posterior distribution, using an
+MCMC-based algorithm. This procedure provides an eﬃcient and simple method by
+which to generate alternative alignments according to their expected accuracy, and
+allows appropriate parameters for substitution matrices to be selected in an auto-
+mated fashion. In the cases considered here, the sampled alignments with the highest
+likelihood have an accuracy consistently higher than alignments generated using the
+standard BLOSUM62 matrix.
+
+Introduction
+
+Most commonly used sequence alignment programs (e.g. [1–3]) make use of a substitution
+matrix to specify the score associated with aligning diﬀerent types of amino acids. Much
+work has been focused on the development of improved substitution matrices to improve
+the accuracy of the resulting alignments, and various algorithms have been developed to
+this end.
+
+One approach is to take a set of reference alignments, and to derive parameters that gen-
+erate alignments that best match this reference set, either by matching the substitution
+parameters to observed statistics [4–8], or by varying parameters in order to maximise the
+alignment accuracy with respect to the reference set [9–13]. An alternative approach is
+to iteratively align the set of sequences, at each iteration deriving a new matrix from the
+observed pair frequencies within the aligned dataset [14].
+
+While the early substitution matrices consisted of a small set of alternative matrices tailored
+for sequences of diﬀering sequence identity [4,5], later approaches allowed for these matrices
+to be adjusted to account for the amino acid content in a speciﬁc set of sequences [15], as well
+as allowing for multiple classes of substitution matrix at diﬀerent sites in the sequence [16].
+Further improvements in accuracy have been obtained by accounting for of the primary [17],
+secondary [14, 18–20] and tertiary [21–23] structural context of each residue, or by using
+matrices tailored for speciﬁc types of proteins [24, 25].
+
+*Correspondence: herman@hms.harvard.edu
+1Department of Statistics, University of Oxford; Center for Biomedical Informatics, Harvard Medical
+
+School.
+
+2Institute of Computer Science and Control, Hungarian Academy of Sciences, Budapest.
+3Institute of Computer Science and Control, Hungarian Academy of Sciences, Budapest; Department of
+
+Stochastics, Renyi Institute, Budapest.
+
+4Department of Statistics, University of Oxford.
+
+1
+
+Impact of substitution matrix on alignment uncertainty
+
+An issue arising with all of the above approaches is that once the substitution matrix is
+selected, it is typically regarded as ﬁxed for the purposes of subsequent analyses. Some
+algorithms include steps to select diﬀerent substitution matrices at various stages of a pro-
+gressive alignment [3], but these matrices are sampled from a ﬁxed initial set.
+
+Since the resulting alignments will often be sensitive to the choice of matrix parameters,
+especially for more divergent sequences [3], the choice of substitution matrix may lead
+to signiﬁcant bias in the resulting alignments.
+In some cases even small changes to the
+procedures used to derive optimal matrices may make a noticeable diﬀerence to the resulting
+alignment accuracy [26].
+
+In addition, although procedures exist for adapting substitution matrices to sequences of
+interest [15, 16, 27], the optimisation of the matrix parameters is generally carried out on
+the reference alignments rather than the sequences under analysis; unless explicitly ac-
+counted for, any diﬀerences in composition between datasets may be a further source of
+unpredictability.
+
+Although several procedures have been devised for assessing the reliability of alignments (e.g.
+[28–30]), these procedures do not account for the uncertainty in the choice of substitution
+matrix, such that the reliability in the alignment will usually be overestimated.
+
+Joint sampling approaches
+
+One way to address this problem is to simultaneously sample substitution matrices and
+alignments from a joint posterior distribution, thereby incorporating parameter uncertainty
+into the alignment estimation. The approach of Zhu et al. [31] focuses on pairwise align-
+ments, and deﬁnes the space of possible substitution matrices as the BLOSUM or PAM
+series.
+In contrast, StatAlign is able to estimate parameters for arbitrary matrices once
+converted into rate matrix form, and does so while simultaneously sampling multiple se-
+quence alignments and phylogenetic trees [32]. However, this full joint sampling process is
+computationally intensive, limiting its application to larger numbers of sequences.
+
+Here we explore an intermediate approach whereby substitution matrices are sampled from
+an approximate posterior distribution, and a single optimal alignment generated for each
+sampled matrix. This approach allows the eﬀect of parameter uncertainty to be propagated
+into the alignment inference, while retaining much of the tractability of commonly used
+alignment algorithms.
+
+Methods
+
+Substitution matrices are frequently deﬁned in terms of log odds scores for pairwise homology
+statements. In the case of PAM matrices, these log odds scores are derived via conditional
+probabilities of one amino acid mutating into another within a particular time interval [4].
+BLOSUM matrices [5] are similarly based on the joint probabilities of observing a particular
+amino acid pairing in a set of reference alignments, with matrix entries deﬁned as
+
+Ma,b =
+
+2
+λ
+
+log2
+
+p(a ⋄ b)
+p(a)p(b)
+
+(1)
+
+2
+
+where a ⋄ b denotes a homology statement between characters a and b, and p(a) denotes the
+background probability of character a. Rearranging and exponentiating, we obtain
+
+p(a ⋄ b) = p(a)p(b) exp {λMa,b}
+
+(2)
+
+with λ deﬁned such that Pab p(a ⋄ b) = 1. As discussed by Yu et al. [15], for a given
+
+substitution matrix, M , the matrix of pair probabilities can be uniquely recovered via the
+relationship P = Y −1, where Yij = 2λMij /2.
+
+While the pairing probabilities, p(a ⋄ b), are usually taken as ﬁxed throughout the analysis,
+we proceed by conducting approximate posterior inference on these parameters.
+
+Prior probability of substitution matrices
+
+We use the pair frequencies from the BLOCKS database [33] in order to construct an
+informative prior for the substitution matrix. To do so, we place the the following prior
+on the pair frequencies, centred around the observed frequencies used in the BLOSUM62
+matrix
+
+fij ∼ Gamma( ˆfij /σ2, ˆf 2
+
+ij/σ2)
+
+(3)
+
+(4)
+
+which has mean ˆfij and variance σ2. The pairing probabilities are then derived as
+
+p(i ⋄ j) =
+
+fij
+
+Pij fij
+
+One could in principle sample σ2 from its posterior using MCMC, but in the current applica-
+tion we ﬁx σ = 103 (for comparison the standard deviation between the empirical frequencies
+is 6656.3), leading to a prior that moderately constrains the pair probabilities around the
+values in the original BLOSUM62 matrix, but allows for some signiﬁcant variability, as
+shown in Figure 1.
+
+3
+
+0
+0
+0
+0
+0
+0
+0
+0
+5
+5
+
+0
+0
+0
+0
+0
+0
+0
+0
+3
+3
+
+0
+0
+0
+0
+0
+0
+0
+0
+1
+1
+
+0
+0
+
+s
+s
+t
+t
+n
+n
+u
+u
+o
+o
+c
+c
+ 
+ 
+r
+r
+i
+i
+a
+a
+p
+p
+ 
+ 
+r
+r
+o
+o
+i
+i
+r
+r
+
+P
+P
+
+A N D
+
+C
+
+Q
+
+E
+
+G
+
+H
+
+I
+
+L
+
+K
+
+M
+
+F
+
+P
+
+S
+
+T
+
+W
+
+Y
+
+V
+
+Amino acid pair (grouped by first letter of pair)
+
+Figure 1 – The prior distribution on pair frequencies, shown for each amino acid pairing, as deﬁned in equation (3). Each block of boxes (shown in the same colour, with boundaries
+highlighted by the alternating grey/white background) corresponds to pairings with the amino acid shown on the x-axis. Within each block, the ordering of the second letter of the pair
+follows the ordering of the ﬁrst letters on the axis label. In each case the mean is centred around the observed frequencies taken from the counts in the BLOCKS database used to derive the
+BLOSUM62 matrix. Self pairings (corresponding to the right-most box in each group) typically show a much higher frequency, reﬂecting the level of sequence conservation in the database.
+Due to the symmetry of the matrix, only the upper triangle and diagonal elements are shown, such that moving from right to left across the plot involves progressively removing the ﬁrst
+element of the group (for example, the ﬁrst box in the ’V’ block corresponds to a ’VA’ amino acid pairing, whereas the ﬁrst box in the ’Y’ block corresponds to a ’YN’ pairing, and the ﬁrst
+box in the ’W’ block to a ’WD’ pairing).
+
+Likelihood
+
+A sum-of-pairs alignment objective score is equivalent to the log likelihood under a Markov
+random ﬁeld model, with independence between alignment columns. The overall likelihood
+of a set of sequences, S, given an alignment, A, and parameters, Θ, can be written as
+
+p(S | A, Θ) ∝ log
+
+p(Aji | Θ)
+
+K−1
+
+Yk=1
+
+p(Aki ⋄ Ali | Θ)
+
+p(Aki | Θ)p(Ali | Θ)
+
+(5)
+
+log p(S | A, Θ) =
+
+log p(Aji | Θ)
+
++
+
+λMAki,Ali
+
++const.
+
+(6)
+
+L
+
+K
+
+L
+
+K
+
+Yj=1
+Yi=1
+Xi=1
+Xj=1
+|
+
+{z
+
+K
+
+K−1
+
+L
+
+Yl=k+1
+Xi=1
+Xk=1
+|
+
+K
+
+Xl=k+1
+{z
+
+}
+
+sequence log likelihood
+
+alignment score
+
+}
+
+where L is the number of columns in the alignment, K is the number of sequences, and Aki
+represents either the character from sequence k that is aligned to the ith column, or a gap
+character. The marginal probabilities p(Aki | Θ) can also be modiﬁed to incorporate an
+aﬃne gap penalty, such that
+
+p(Aki = −) = (cid:26) g
+
+if Ak,i−1 = −
+h if Ak,i−1 6= −
+
+(7)
+
+with g < h.
+
+Approximate marginal likelihood
+
+As discussed earlier, full posterior sampling of multiple alignments is computationally in-
+tensive, such that joint estimation of substitution matrices and alignments is currently
+impractical on datasets with larger numbers of sequences.
+
+In order to increase computational eﬃciency, we adopt an approximate procedure whereby
+the marginal likelihood of the sequences given a set of parameters Θ is assumed to be equal
+to the value of the likelihood corresponding to the alignment with the optimal score
+
+p(S | Θ) ≈ sup
+A
+
+p(S | A, Θ)
+
+(8)
+
+This approximation eﬀectively asserts that the contribution of suboptimal alignments to the
+posterior is negligible, or, equivalently, that the prior on alignments for a particular Θ is
+a point mass at the maximum likelihood alignment. Under this approximation, alignment
+uncertainty is determined by the variance in Θ.
+
+Sampling according to expected alignment accuracy
+
+The search for alignments that maximise the target score is predicated on the assumption
+that the score is positively correlated with alignment accuracy for a given set of parameters.
+For pairwise alignments, the approximate distribution of alignment scores can be derived
+under various assumptions [34]. However, for multiple sequences the objective scores used
+within the alignment programs may not carry suﬃcient information to predict alignment re-
+liability [35]. As such, many alternative metrics have been developed for assessing alignment
+quality [36–39].
+
+5
+
+In this study, we consider a measure of alignment quality that is based on the number of
+non-gap homology statements in the alignment
+
+q(A) = Xi
+
+(K − gi(A))(K − gi(A) − 1)/2
+
+(9)
+
+where K is the number of sequences, and gi(A) denotes the number of gaps in column i in
+alignment A.
+
+As discussed in the Results section, empirically we observe a strong correlation between
+q(A) and the alignment accuracy. For a random set of alignments, this quantity will not in
+general be correlated with the alignment accuracy, since it does not account for the sequence
+content. However, for optimal-scoring alignments generated according to equation (6), any
+predicted homology statements must show signiﬁcant evidence of being non-random in order
+to be included in the alignment, hence an alignment containing more homology statements
+should have a higher expected accuracy.
+
+Alternative likelihood function
+
+Given the empirically observed correlation between q(A) and the alignment accuracy, we
+opt to sample substitution matrices according a modiﬁed marginal log likelihood of the form
+
+log ˜p(S | Θ) =
+
+1
+
+τ (S)
+
+q( ˆA[Θ])
+
+(10)
+
+where ˆA[Θ] = supA p(S | A, Θ) is the optimal-scoring alignment under the original likelihood
+in equation (6), and τ (S) is a measure of the variability in the alignment of the set of
+sequences S.
+
+The quantity q(A) can be roughly approximated as a sum of N independent squared binomial
+variables with n = K and p = χ/K, where χ is the expected number of non-gap characters
+per column. Denoting the average sequence length by ¯L, then we must have χN = K ¯L,
+such that N = ¯L/p. Using the delta method, the approximate variance of each of these
+variables will be O(χ3(1 − p)). Hence, ignoring variability between the number of characters
+in each column, to a ﬁrst approximation the variance of q(A) for random alignments will be
+of the order of (1 − p)χ3N = βK 3 ¯L, where β = (1 − p)p2, with a maximum value of 0.148,
+when p = 2/3. With a uniform prior on β, the posterior mean is approximately 0.08.
+
+We therefore set τ to be the following function of the number of sequences, K, and the
+average sequence length, ¯L:
+
+τ (S) = qβK 3 ¯L
+
+(11)
+
+In principle one could sample β from its posterior distribution, but the estimation of this
+quantity will be aﬀected signiﬁcantly by considering only a single alignment for each substi-
+tution matrix. In our analyses we ﬁxed the value to 0.025, below the approximate expected
+value for random alignments, but large enough to allow eﬃcient traversal between modes of
+the likelihood.
+
+Alignment accuracy
+
+To measure the accuracy of generated alignments, we opt for the alignment metric accuracy
+(AMA) score introduced by Schwartz et al. [40], since this possesses no inherent bias towards
+
+6
+
+long or short alignments. To deﬁne the AMA score metric, we ﬁrst deﬁne the following sets
+
+HH (A) = {(cj, ck) | ∃i · (Aij 6= −), (Aik 6= −)}
+HD(A) = {(cj, 0) | ∃i · (Aij 6= −), (Aik = −)}
+HI (A) = {(0, ck) | ∃i · (Aij = −), (Aik 6= −)}
+HN (A) = HD(A) ∪ HI (A)
+
+pairwise homology statements
+pairwise deletions
+pairwise insertions
+pairwise non-homology statements
+
+where cj ∈ {1, . . . , |Aj|}, and |Aj | is the length of the jth sequence. With these deﬁnitions,
+the accuracy of a predicted alignment, P , relative to the true alignment, T , is given by
+
+a(P, T ) = a(T, P ) =
+
+2|HH (P ) ∩ HH (T )| + |HN (P ) ∩ HN (T )|
+
+(K − 1)Pk |Ak|
+
+(12)
+
+Varying the eﬀective gap penalty
+
+Allowing the overall magnitude of the substitution matrix to vary is analogous to varying the
+gap parameters. Hence, by allowing the λ parameter to vary, it is possible to simultaneously
+explore alternative substitution matrices and gap parameters, assuming a ﬁxed ratio between
+the gap opening and extension penalties.
+
+However, using a likelihood of the form in equation (10), caution must be exercised when
+allowing λ to vary, since large values of λ will eﬀectively render gaps exceedingly unlikely,
+causing the sequences to be over-aligned. As an example of this, Figure 2 shows the posterior
+relationship between λ and alignment accuracy when λ is allowed to vary freely (i.e. with
+an uninformative prior), with gap parameters g = −10, h = −1. Up to a certain point
+(roughly λ = 1.5), increasing λ is associated with increased alignment accuracy, but beyond
+this the accuracy deteriorates rapidly, although the number of homology statements in the
+alignment continues to increase.
+
+A similar pattern was observed in several other datasets (not shown), hence we opted to use
+an informative prior for λ centred around unity, designed to keep λ approximately within
+the range [0.5, 1.5].
+
+p(λ) = N(log λ | 0, 0.1)
+
+(13)
+
+MCMC scheme
+
+The general MCMC scheme we adopt consists of proposing a new set of pair frequencies, f ∗,
+computing the corresponding log-odds substitution matrix, M ∗, recomputing the optimal
+alignment for the new substitution matrix under the scoring scheme in equation (6), and
+then accepting or rejecting the new matrix based on the equation (10), i.e. accepting when
+
+log U (0, 1) < log
+
+˜p(S | M ∗, g, h)
+˜p(S | M, g, h)
+
++ log
+
+p(f ∗ | ˆf , σ2)
+p(f | ˆf , σ2)
+
+(14)
+
+where ˜p( · ) is as deﬁned in equation (10).
+
+In order to improve mixing on the space of substitution matrices, we used two types of
+proposals. These involve taking subsets of matrix entries of size n, where n = 50, 25, and
+adding independent U [−ρi, ρi] noise to the corresponding frequencies, where i = 1 indicates
+n = 50, and i = 2 indicates n = 25. By modifying submatrices of this size, on average
+
+7
+
+y
+c
+a
+r
+u
+c
+c
+a
+
+ 
+t
+
+n
+e
+m
+n
+g
+
+i
+l
+
+A
+
+5
+6
+
+.
+
+0
+
+0
+6
+
+.
+
+0
+
+5
+5
+
+.
+
+0
+
+0
+5
+
+.
+
+0
+
+5
+4
+
+.
+
+0
+
+y
+c
+a
+r
+u
+c
+c
+a
+
+ 
+t
+
+n
+e
+m
+n
+g
+
+i
+l
+
+A
+
+6
+
+.
+
+0
+
+5
+
+.
+
+0
+
+4
+
+.
+
+0
+
+3
+
+.
+
+0
+
+2
+
+.
+
+0
+
+1
+
+.
+
+0
+
+0.5
+
+1.0
+
+1.5
+
+2.0
+
+2.5
+
+3.0
+
+0
+
+5
+
+10
+
+15
+
+20
+
+Figure 2 – When λ is not constrained by an informative prior, it can become very large,
+since this increases the number of homology statements, thereby increasing the likelihood in
+equation (10). However, beyond λ = 1.5, this leads to a decrease in alignment accuracy, due
+to over-alignment of the sequences.
+
+between 90% and 95% of proposed changes to the substitution matrix lead to changes to
+the optimal alignment.
+
+In order to preserve the symmetry of the matrix, only the upper triangle and diagonal
+elements are modiﬁed, with the lower triangle updated accordingly afterwards. Since we
+are using symmetric proposal kernels, no adjustment to the Metropolis-Hastings ratio is
+required. Moves that lead to negative frequencies result in zero density under the prior, and
+hence are rejected.
+
+The scaling factor, λ, is also sampled using a uniform random walk, characterised by a
+parameter ρ3.
+
+The perturbation factors, ρi, are initialised at 70, 10 and 0.5, and automatically tuned
+during the burn-in period, according to the following procedure: Every 10 iterations, the
+acceptance rate for each move type is queried, and if it does not fall within the speciﬁed
+range (set by default to [0.2, 0.4] as per the considerations outlined by [41]), the parameter
+ρi is multiplied or divided by a factor of 0.9, and the acceptance counts reset to zero. The
+diﬀerent moves are selected according to weights w1 = 1, w2 = 0.2 and w3 = 0.5.
+
+Implementation details
+
+In general, ﬁnding the alignment that maximises a score of the type in equation (6) is NP
+hard [42]. Multiple alignment programs generally make use of heuristic procedures such as
+progressive alignment in order to approximate this optimum.
+
+In the current implementation of our iterative sampling scheme, we use the program MUS-
+CLE [2] in order to generate the (approximately) optimal alignment for each substitution
+matrix.
+
+8
+
+l
+l
+s
+ 
+/
+ 
+
+e
+m
+
+i
+t
+
+n
+u
+R
+
+0
+0
+9
+
+0
+0
+8
+
+0
+0
+7
+
+0
+0
+6
+
+0
+0
+5
+
+0
+0
+4
+
+0
+0
+3
+
+20
+
+40
+
+60
+
+80
+
+100
+
+120
+
+Number of sequences
+
+Figure 3 – Time taken to generate 4500 alignment samples under the iterative realignment
+MCMC algorithm, using MUSCLE to realign the sequences, on a single Intel i3 2.4GHz core.
+A signiﬁcant portion of the runtime involves reading and writing to disk; the runtime could
+therefore be signiﬁcantly reduced by integrating the perturbation procedure with the alignment
+code.
+
+Each sampled substitution matrix is written to ﬁle, and then an instance of MUSCLE is
+run using this substitution matrix, with the following command
+
+muscle -gapopen g -gapextend h -matrix M -in seqs.fasta -out ali.fasta
+
+In order to increase sampling speed, we also used the ﬂag -maxiters 2, which restricts
+the number of reﬁnement steps carried out by MUSCLE. Sampling 3000 alignments after a
+burn-in of 1500 iterations (4500 iterations overall) requires approximately 4.5 minutes for a
+set of 15 sequences, 6 minutes for 33 sequences, 9 minutes for 60 sequences, and 16 minutes
+for 122 sequences, increasing by a factor of approximately 1.5 as the number of sequences is
+doubled. Signiﬁcant improvements to the runtime could be obtained by incorporating the
+perturbation procedure directly into the MUSCLE code, such that intermediate read/write
+operations can be omitted from the workﬂow.
+
+Results
+
+To evaluate the methodology, we conducted analyses on four datasets taken from the
+OXBench database [43]. To generate these datasets, we selected one of the largest align-
+ments from the OXBench suite [118], consisting of 122 immunoglobulin sequences, with
+average length 113. To assess how the alignment sampling method scaled with the number
+of sequences after controlling for other factors (such as amino acid content and sequence
+length), we subsampled smaller datasets from this alignment, yielding datasets with 15, 33,
+60 and 122 sequences. These subsets were sampled so as to maximise dissimilarity within
+the subset, since the original alignment contained several well-deﬁned subgroups that would
+otherwise skew the analysis.
+
+9
+
+s
+t
+
+n
+e
+m
+e
+a
+
+t
+
+l
+
+t
+s
+ 
+y
+g
+o
+o
+m
+o
+h
+e
+s
+w
+
+ 
+
+i
+
+r
+i
+a
+P
+
+0
+0
+0
+0
+1
+
+0
+0
+8
+9
+
+0
+0
+6
+9
+
+0
+0
+4
+9
+
+0
+0
+2
+9
+
+0
+0
+0
+3
+5
+
+0
+0
+5
+2
+5
+
+0
+0
+0
+2
+5
+
+0
+0
+5
+1
+5
+
+0
+0
+0
+1
+5
+
+s
+t
+
+n
+e
+m
+e
+a
+
+t
+
+l
+
+t
+s
+ 
+y
+g
+o
+o
+m
+o
+h
+e
+s
+w
+
+ 
+
+i
+
+r
+i
+a
+P
+
+s
+t
+
+n
+e
+m
+e
+a
+
+t
+
+l
+
+t
+s
+ 
+y
+g
+o
+o
+m
+o
+h
+e
+s
+w
+
+ 
+
+i
+
+r
+i
+a
+P
+
+0
+0
+0
+4
+8
+1
+
+0
+0
+0
+2
+8
+1
+
+0
+0
+0
+0
+8
+1
+
+0
+0
+0
+8
+7
+1
+
+s
+t
+
+n
+e
+m
+e
+a
+
+t
+
+l
+
+t
+s
+ 
+y
+g
+o
+o
+m
+o
+h
+e
+s
+w
+
+ 
+
+i
+
+r
+i
+a
+P
+
+0
+0
+0
+0
+7
+7
+
+0
+0
+0
+0
+6
+7
+
+0
+0
+0
+0
+5
+7
+
+0
+0
+0
+0
+4
+7
+
+0
+
+1000
+
+2000
+
+3000
+
+4000
+
+0
+
+1000
+
+2000
+
+3000
+
+4000
+
+0
+
+1000
+
+2000
+
+3000
+
+4000
+
+0
+
+1000
+
+2000
+
+3000
+
+4000
+
+Iteration
+
+Iteration
+
+Iteration
+
+Iteration
+
+Figure 4 – Trace plot of the number of homology pairs in the alignment over the course of
+4500 MCMC iterations, with a burn-in period of 1500 at the start, for K = 15, 33, 60, 122 (left
+to right). This quantity plays the role of a log-likelihood in these simulations (after weighting
+by the factor τ ).
+
+# seqs R2 (log likelihood) R2 (λ) R2 (# pairs)
+
+15
+33
+60
+122
+
+0.22
+0.21
+0.30
+0.16
+
+0.23
+0.36
+0.20
+-0.01
+
+0.47
+0.59
+0.58
+0.58
+
+Table 1 – While the log likelihood of the optimal alignment has a weak positive correlation
+with the alignment accuracy, the number of pairwise homology statements is more strongly
+correlated with the accuracy (linear correlation coeﬃcients shown in bold). The scaling factor
+λ is also only weakly correlated with the accuracy. The log likelihood and number of pairs have
+a very low correlation with each other (R2 = 0.07, 0.18, −0.01, 0.01 respectively).
+
+MCMC sampling was carried out for 4500 iterations, with the initial 1500 as burn-in. As
+shown by the trace plots in Figures 4-6, the key summary statistics appear to have success-
+fully converged by the end of the burn-in.
+
+The log likelihood shown in Figure 5 (corresponding to equation (6)) decreases during
+the burn-in. This quantity is not strongly correlated with the alignment accuracy (see
+Figure 7, Table 1), and is uncorrelated with the alternative likelihood used when accept-
+ing or rejecting the proposals according to equation (14) (R2 = 0.07, 0.18, −0.01, 0.01 for
+K = 15, 33, 60, 122). Similarly, the multiplier λ is also only weakly correlated with the
+alignment accuracy (see Table 1).
+
+In contrast, the number of homology pairs is strongly correlated with the alignment accuracy
+(see Figure 8, Table 1), justifying the use of the alternative likelihood in equation (10).
+
+It is also notable that a signiﬁcant proportion of the sampled alignments have accuracy
+higher than the alignment generated using the original BLOSUM62 matrix (shown in red
+in Figures 7-8 and Figure 9).
+
+On average, the sampled alignments are similar in length to the true alignments shorter
+(posterior mean lengths of 140, 149, 150 and 153, compared to the corresponding bench-
+mark OXBench alignment lengths of 144, 150, 152 and 157 for K = 15, 33, 60, 122 respec-
+tively), while the alignments generated with the original BLOSUM62 matrix deviate more
+signiﬁcantly in length when compared to the benchmarks (lengths 141, 141, 146 and 150
+respectively).
+
+10
+
+d
+o
+o
+h
+
+i
+l
+
+e
+k
+
+i
+l
+ 
+
+g
+o
+L
+
+0
+0
+5
+5
+−
+
+0
+0
+5
+6
+−
+
+0
+0
+5
+7
+−
+
+0
+0
+5
+8
+−
+
+0
+0
+0
+5
+−
+
+0
+0
+0
+5
+1
+−
+
+0
+0
+0
+5
+2
+−
+
+d
+o
+o
+h
+
+i
+l
+
+e
+k
+
+i
+l
+ 
+
+g
+o
+L
+
+d
+o
+o
+h
+
+i
+l
+
+e
+k
+
+i
+l
+ 
+
+g
+o
+L
+
+0
+
+0
+0
+0
+0
+2
+−
+
+0
+0
+0
+0
+4
+−
+
+0
+0
+0
+0
+6
+−
+
+d
+o
+o
+h
+
+i
+l
+
+e
+k
+
+i
+l
+ 
+
+g
+o
+L
+
+0
+0
+0
+0
+5
+
+0
+
+0
+0
+0
+0
+5
+−
+
+0
+0
+0
+0
+5
+1
+−
+
+0
+
+1000
+
+2000
+
+3000
+
+4000
+
+0
+
+1000
+
+2000
+
+3000
+
+4000
+
+0
+
+1000
+
+2000
+
+3000
+
+4000
+
+0
+
+1000
+
+2000
+
+3000
+
+4000
+
+Iteration
+
+Iteration
+
+Iteration
+
+Iteration
+
+Figure 5 – Trace plot of the original log likelihood in equation (6) over the course of 4500
+MCMC iterations, with a burn-in period of 1500 at the start, for K = 15, 33, 60, 122 (left to
+right). In all cases, this quantity decreases substantially during the burn-in, since it is typically
+uncorrelated with the overall number of homology pairs in the alignment.
+
+4
+.
+1
+
+3
+.
+1
+
+2
+.
+1
+
+1
+.
+1
+
+0
+.
+1
+
+9
+.
+0
+
+8
+.
+0
+
+4
+.
+1
+
+2
+.
+1
+
+0
+.
+1
+
+8
+.
+0
+
+4
+.
+1
+
+3
+.
+1
+
+2
+.
+1
+
+1
+.
+1
+
+0
+.
+1
+
+9
+.
+0
+
+8
+.
+0
+
+4
+.
+1
+
+2
+.
+1
+
+0
+.
+1
+
+8
+.
+0
+
+0
+
+1000
+
+2000
+
+3000
+
+4000
+
+0
+
+1000
+
+2000
+
+3000
+
+4000
+
+0
+
+1000
+
+2000
+
+3000
+
+4000
+
+0
+
+1000
+
+2000
+
+3000
+
+4000
+
+Iteration
+
+Iteration
+
+Iteration
+
+Iteration
+
+Figure 6 – Trace plot of the λ parameter that acts as an inverse multiplier on all the entries
+of the substitution matrix, for K = 15, 33, 60, 122 (left to right).
+
+K = 15
+
+K = 33
+
+K = 60
+
+K = 122
+
+corr = 0.22
+
+y
+c
+a
+r
+u
+c
+c
+a
+
+ 
+t
+
+n
+e
+m
+n
+g
+
+i
+l
+
+A
+
+6
+6
+.
+0
+
+2
+6
+
+.
+
+0
+
+8
+5
+
+.
+
+0
+
+4
+5
+
+.
+
+0
+
+corr = 0.21
+
+y
+c
+a
+r
+u
+c
+c
+a
+
+ 
+t
+
+n
+e
+m
+n
+g
+
+i
+l
+
+A
+
+4
+7
+.
+0
+
+2
+7
+
+.
+
+0
+
+0
+7
+
+.
+
+0
+
+8
+6
+
+.
+
+0
+
+6
+6
+
+.
+
+0
+
+4
+6
+
+.
+
+0
+
+corr = 0.30
+
+y
+c
+a
+r
+u
+c
+c
+a
+
+ 
+t
+
+n
+e
+m
+n
+g
+
+i
+l
+
+A
+
+0
+8
+.
+0
+
+6
+7
+
+.
+
+0
+
+2
+7
+
+.
+
+0
+
+8
+6
+
+.
+
+0
+
+corr = 0.16
+
+y
+c
+a
+r
+u
+c
+c
+a
+
+ 
+t
+
+n
+e
+m
+n
+g
+
+i
+l
+
+A
+
+0
+8
+.
+0
+
+8
+7
+
+.
+
+0
+
+6
+7
+
+.
+
+0
+
+4
+7
+
+.
+
+0
+
+2
+7
+
+.
+
+0
+
+0
+7
+
+.
+
+0
+
+−8500
+
+−7500
+
+−6500
+
+−5500
+
+−25000
+
+−15000
+
+−5000
+
+−60000
+
+−40000
+
+−20000
+
+0
+
+−150000
+
+−50000
+
+0
+
+50000
+
+Log likelihood
+
+Log likelihood
+
+Log likelihood
+
+Log likelihood
+
+Figure 7 – Although there is some correlation between log likelihood and alignment accuracy,
+it is generally weak. The alignment generated using the original BLOSUM62 matrix is shown
+in red.
+
+11
+
+l
+l
+l
+l
+K = 15
+
+K = 33
+
+K = 60
+
+K = 122
+
+corr = 0.47
+
+y
+c
+a
+r
+u
+c
+c
+a
+
+ 
+t
+
+n
+e
+m
+n
+g
+
+i
+l
+
+A
+
+6
+6
+0
+
+.
+
+2
+6
+0
+
+.
+
+8
+5
+0
+
+.
+
+4
+5
+0
+
+.
+
+corr = 0.59
+
+y
+c
+a
+r
+u
+c
+c
+a
+
+ 
+t
+
+n
+e
+m
+n
+g
+
+i
+l
+
+A
+
+4
+7
+0
+
+.
+
+2
+7
+0
+
+.
+
+0
+7
+0
+
+.
+
+8
+6
+0
+
+.
+
+6
+6
+0
+
+.
+
+4
+6
+0
+
+.
+
+corr = 0.58
+
+y
+c
+a
+r
+u
+c
+c
+a
+
+ 
+t
+
+n
+e
+m
+n
+g
+
+i
+l
+
+A
+
+0
+8
+0
+
+.
+
+6
+7
+0
+
+.
+
+2
+7
+0
+
+.
+
+8
+6
+0
+
+.
+
+corr = 0.58
+
+y
+c
+a
+r
+u
+c
+c
+a
+
+ 
+t
+
+n
+e
+m
+n
+g
+
+i
+l
+
+A
+
+0
+8
+0
+
+.
+
+8
+7
+0
+
+.
+
+6
+7
+0
+
+.
+
+4
+7
+0
+
+.
+
+2
+7
+0
+
+.
+
+0
+7
+0
+
+.
+
+9200
+
+9400
+
+9600
+
+9800 10000
+
+51000 51500 52000 52500 53000
+
+178000
+
+180000
+
+182000
+
+184000
+
+740000
+
+750000
+
+760000
+
+770000
+
+Pairwise homology statements
+
+Pairwise homology statements
+
+Pairwise homology statements
+
+Pairwise homology statements
+
+Figure 8 – The number of homology statements in the alignment is strongly correlated with
+the alignment accuracy. Although this will not be true in general for randomly generated align-
+ments, for optimal alignments generated by a program such as MUSCLE, predicted homology
+statements have a higher probability of being accurate, hence larger numbers of homology state-
+ments is correlated with overall accuracy, justifying the form of the alternative likelihood in
+equation (10). The alignment generated using the original BLOSUM62 matrix is shown in red.
+
+Original BLOSUM62
+
+y
+c
+a
+r
+u
+c
+c
+a
+
+ 
+t
+
+n
+e
+m
+n
+g
+
+i
+l
+
+A
+
+0
+8
+0
+
+.
+
+5
+7
+
+.
+
+0
+
+0
+7
+0
+
+.
+
+5
+6
+0
+
+.
+
+0
+6
+0
+
+.
+
+5
+5
+.
+0
+
+15
+
+30
+
+60
+
+122
+
+Number of sequences
+
+Figure 9 – The distribution of alignment accuracy scores typically includes a large number of
+alignments with accuracy greater than that of the alignment derived from the initial BLOSUM62
+matrix. As more sequences are added to the dataset, the average accuracy increases, due to
+additional information contained in the dataset. The variability remains roughly constant due
+to the dependency of τ on K in equation (11).
+
+12
+
+s
+e
+i
+r
+t
+
+n
+e
+
+ 
+x
+i
+r
+t
+
+ 
+
+a
+m
+d
+e
+b
+r
+u
+
+t
+r
+e
+P
+
+0
+1
+
+5
+
+0
+
+5
+−
+
+0
+1
+−
+
+5
+1
+−
+
+0
+2
+−
+
+−4
+
+−2
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+Original BLOSUM62 value
+
+Figure 10 – A comparison of the matrix entries in the original BLOSUM62 matrix (x-axis)
+with the entries of the matrix yielding the highest accuracy alignment on the 60-sequence
+dataset. While the distributions are centred around the initial values, there is signiﬁcant vari-
+ability, particularly for the negative entries (corresponding to pairings with a low probability).
+
+Small perturbations can have a large eﬀect on the resulting align-
+ment
+
+Although the perturbations to the substitution matrix are generally small, constrained fairly
+strongly by the prior, these small modiﬁcations to the substitution matrix can often make
+a large diﬀerence to the resulting alignment. As an example, for the 60-sequence OXBench
+dataset, while the original BLOSUM62 matrix in conjunction with MUSCLE yielded an
+alignment with AMA score of 0.73, the 95% highest posterior density interval spans the
+range [0.70, 0.79], and the maximum accuracy yielded by one of the sampled matrices is 0.80.
+Figure 10 shows the distribution of entries of the matrix yielding this maximum accuracy
+alignment, illustrating how the entries are centred closely on the values in the original
+BLOSUM62 matrix, but with higher variance for the more negative entries (corresponding
+to low pairing probabilities).
+
+Posterior gap multiplier
+
+As shown in Figure 6, the λ multiplier parameter appears to converge and mix relatively
+successfully. Examining the posterior distribution of this quantity shows that it remains
+strongly constrained by the prior (see Figure 11), but shifted slightly upwards towards
+higher values of λ.
+
+13
+
+3
+
+.
+
+1
+
+2
+1
+
+.
+
+1
+
+.
+
+1
+
+0
+1
+
+.
+
+9
+
+.
+
+0
+
+8
+0
+
+.
+
+7
+
+.
+
+0
+
+15
+
+33
+
+60
+
+122
+
+Prior
+
+Number of sequences
+
+Figure 11 – Posterior distributions for the λ multiplier parameter, shown alongside the prior
+distribution (right).
+
+14
+
+l
+Conclusions
+
+The method outlined here provides a simple approach for incorporating parameter uncer-
+tainty into score-based alignment, generating a set of alternative multiple alignments for a
+set of sequences, and sampling substitution matrices based upon an approximate likelihood
+that is a good predictor of the accuracy of the resulting alignments.
+
+In the examples considered here, varying the substitution matrix parameters can signiﬁ-
+cantly aﬀect alignment accuracy, and the high-likelihood alignments typically have a higher
+accuracy than the alignment generated using the standard BLOSUM substitution matrix.
+
+As well as providing a way to address parameter uncertainty, this approach provides a
+way of systematically generating alignments according to a probability distribution that is
+correlated with alignment accuracy. These sampled alignments may provide a useful starting
+point for assessing the aﬀect of alignment uncertainty downstream analyses [44].
+
+As discussed by Herman et al., the minimum-risk summary alignment derived from a set of
+posterior alignment samples typically is more accurate than the majority of the individual
+samples [44]. The minimum-risk summary procedure could be used in conjunction with the
+sampling procedure outlined here in order to generate more reliable alignments.
+
+More extensive tests of this procedure on alignment benchmark databases are required
+to determine whether this observed relationship between number of homology pairs and
+alignment accuracy holds in a more general context.
+
+Additional material
+
+BLOSUM matrices and pair frequencies were downloaded from
+
+ftp://ftp.ncbi.nih.gov/repository/blocks/unix/blosum/blosum.tar.Z
+
+(last accesed 18 January, 2015).
+
+References
+
+[1] Katoh K, Kuma K, Toh H, Miyata T: MAFFT version 5: improvement in accu-
+
+racy of multiple sequence alignment. Nucleic Acids Res 2005, 33:511–8.
+
+[2] Edgar R: MUSCLE: multiple sequence alignment with high accuracy and
+
+high throughput. Nucleic Acids Res 2004, 32:1792–7.
+
+[3] Thompson JD, Higgins DG, Gibson TJ: CLUSTAL W: improving the sensitiv-
+ity of progressive multiple sequence alignment through sequence weighting,
+position-speciﬁc gap penalties and weight matrix choice. Nucleic acids research
+1994, 22(22):4673–4680.
+
+[4] Dayhoﬀ MO, Schwartz RM, Orcutt BC: A model of evolutionary change in pro-
+
+teins. Atlas of Protein Sequence and Structure 1978, 5(suppl 3):345–351.
+
+15
+
+[5] Henikoﬀ S, Henikoﬀ JG: Amino acid substitution matrices from protein blocks.
+
+Proceedings of the National Academy of Sciences 1992, 89(22):10915–10919.
+
+[6] Jones DT, Taylor WR, Thornton JM: The rapid generation of mutation data ma-
+trices from protein sequences. Computer applications in the biosciences: CABIOS
+1992, 8(3):275–282.
+
+[7] Muller T, Spang R, Vingron M: Estimating amino acid substitution models: a
+comparison of Dayhoﬀ ’s estimator, the resolvent approach and a maximum
+likelihood method. Mol Biol Evol 2002, 19:8–13.
+
+[8] Qiu J, Elber R: SSALN: An alignment algorithm using structure-dependent
+substitution matrices and gap penalties learned from structurally aligned
+protein pairs. Proteins: Structure, Function, and Bioinformatics 2006, 62(4):881–
+891.
+
+[9] Qian B, Goldstein RA: Optimization of a new score function for the generation
+of accurate alignments. Proteins: Structure, Function, and Bioinformatics 2002,
+48(4):605–610.
+
+[10] Hourai Y, Akutsu T, Akiyama Y: Optimizing substitution matrices by separat-
+
+ing score distributions. Bioinformatics 2004, 20(6):863–873.
+
+[11] Kim E, Kececioglu J: Learning scoring schemes for sequence alignment from
+partial examples. IEEE/ACM Transactions on Computational Biology and Bioinfor-
+matics (TCBB) 2008, 5(4):546–556.
+
+[12] Huang X: Sequence alignment with an appropriate substitution matrix. Jour-
+
+nal of Computational Biology 2008, 15(2):129–138.
+
+[13] Edgar R: Optimizing substitution matrix choice and gap parameters for se-
+
+quence alignment. BMC Bioinformatics 2009, 10:396.
+
+[14] Radivojac P, Obradovic Z, Brown CJ, Dunker AK: Improving sequence alignments
+for intrinsically disordered proteins. In Paciﬁc Symposium on Biocomputing, Vol-
+ume 7 2002:589–600.
+
+[15] Yu YK, Wootton JC, Altschul SF: The compositional adjustment of amino
+acid substitution matrices. Proceedings of the National Academy of Sciences 2003,
+100(26):15688–15693.
+
+[16] Lartillot N, Philippe H: A Bayesian Mixture Model for Across-Site Hetero-
+geneities in the Amino-Acid Replacement Process. Molecular Biology and Evo-
+lution 2004, 21(6):1095–1109.
+
+[17] Biegert A, S¨oding J: Sequence context-speciﬁc proﬁles for homology searching.
+
+Proceedings of the National Academy of Sciences 2009, 106(10):3770–3775.
+
+[18] Koshi JM, Goldstein RA: Context-dependent optimal substitution matrices.
+
+Protein Engineering 1995, 8(7):641–645.
+
+[19] Thorne JL, Goldman N, Jones DT: Combining protein evolution and secondary
+
+structure. Molecular Biology and Evolution 1996, 13(5):666–673.
+
+[20] Szalkowski AM, Anisimova M: Markov Models of Amino Acid Substitution
+to Study Proteins with Intrinsically Disordered Regions. PLoS ONE 2011,
+6(5):e20488.
+
+16
+
+[21] Topham CM, Srinivasan N, Blundell TL: Prediction of the stability of protein mu-
+tants based on structural environment-dependent amino acid substitution
+and propensity tables. Protein Engineering 1997, 10:7–21.
+
+[22] Rice DW, Eisenberg D: A 3D-1D substitution matrix for protein fold recogni-
+tion that includes predicted secondary structure of the sequence. Journal of
+Molecular Biology 1997, 267(4):1026 – 1038.
+
+[23] Shi J, Blundell TL, Mizuguchi K: FUGUE: sequence-structure homology
+recognition using environment-speciﬁc substitution tables and structure-
+dependent gap penalties. Journal of Molecular Biology 2001, 310:243 – 257.
+
+[24] Blundell TL, Donnelly D, Overington JP, Ruﬄe SV, Nugent JH: Modeling α-helical
+transmembrane domains: The calculation and use of substitution tables for
+lipid-facing residues. Protein Science 1993, 2:55–70.
+
+[25] Hill JR, Kelm S, Shi J, Deane CM: Environment speciﬁc substitution tables
+
+improve membrane protein alignment. Bioinformatics 2011, 27(13):i15–i23.
+
+[26] Styczynski MP, Jensen KL, Rigoutsos I, Stephanopoulos G: BLOSUM62 miscalcu-
+
+lations improve search performance. Nature biotechnology 2008, 26(3):274–275.
+
+[27] Yu YK, Altschul SF: The construction of amino acid substitution matrices for
+the comparison of proteins with non-standard compositions. Bioinformatics
+2005, 21(7):902–911.
+
+[28] Landan G, Graur D: Heads or Tails: A simple reliability check for multiple
+
+sequence alignments. Molecular Biology and Evolution 2007, 24(6):1380–1383.
+
+[29] Dress A, Flamm C, Fritzsch G, Grunewald S, Kruspe M, Prohaska S, Stadler P: Noisy:
+Identiﬁcation of problematic columns in multiple sequence alignments. Al-
+gorithms for Molecular Biology 2008, 3:7.
+
+[30] Penn O, Privman E, Landan G, Graur D, Pupko T: An alignment conﬁdence score
+capturing robustness to guide tree uncertainty. Molecular Biology and Evolution
+2010, 27(8):1759–1767.
+
+[31] Zhu J, Liu JS, Lawrence CE: Bayesian adaptive sequence alignment algorithms.
+
+Bioinformatics 1998, 14:25–39.
+
+[32] Nov´ak A, Mikl´os I, Lyngsø R, Hein J: StatAlign: an extendable software package
+for joint Bayesian estimation of alignments and evolutionary trees. Bioinfor-
+matics 2008, 24(20):2403–2404.
+
+[33] Henikoﬀ S, Henikoﬀ JG, Pietrokovski S: Blocks+: a non-redundant database of
+protein alignment blocks derived from multiple compilations. Bioinformatics
+1999, 15(6):471–479.
+
+[34] Karlin S, Altschul SF: Methods for assessing the statistical signiﬁcance of
+molecular sequence features by using general scoring schemes. Proceedings
+of the National Academy of Sciences 1990, 87(6):2264–2268.
+
+[35] Mitrophanov AY, Borodovsky M: Statistical signiﬁcance in biological sequence
+
+analysis. Brieﬁngs in Bioinformatics 2006, 7:2–24.
+
+17
+
+[36] Thompson JD, Plewniak F, Ripp R, Thierry JC, Poch O: Towards a reliable ob-
+jective function for multiple sequence alignments. Journal of Molecular Biology
+2001, 314(4):937 – 951.
+
+[37] Lassmann T, Sonnhammer ELL: Automatic assessment of alignment quality.
+
+Nucleic Acids Research 2005, 33(22):7120–7128.
+
+[38] Ahola V, Aittokallio T, Vihinen M, Uusipaikka E: Model-based prediction of se-
+
+quence alignment quality. Bioinformatics 2008, 24(19):2165–2171.
+
+[39] DeBlasio D, Wheeler T, Kececioglu J: Estimating the accuracy of multiple align-
+ments and its use in parameter advising. In Research in Computational Molec-
+ular Biology, Volume 7262 of Lecture Notes in Computer Science. Edited by Chor B,
+Springer Berlin Heidelberg 2012:45–59.
+
+[40] Schwartz AS, Myers EW, Pachter L: Alignment metric accuracy. arXiv:q-
+
+bio/0510052 2005.
+
+[41] Roberts GO, Gelman A, Gilks WR: Weak convergence and optimal scaling of
+random walk Metropolis algorithms. Annals of Applied Probability 1997, 7:110–
+120.
+
+[42] Wang L, Jiang T: On the complexity of multiple sequence alignment. Journal
+
+of Computational Biology 1994, 1(4):337–348.
+
+[43] Raghava G, Searle S, Audley P, Barber J, Barton G: OXBench: A benchmark for
+evaluation of protein multiple sequence alignment accuracy. BMC Bioinfor-
+matics 2003, 4:47.
+
+[44] Herman JL, Nov´ak A, Lyngsø R, Szab´o A, Mikl´os I, Hein J: Eﬃcient representation
+of uncertainty in multiple sequence alignments using directed acyclic graphs.
+(submitted) 2014.
+
+18
+
+

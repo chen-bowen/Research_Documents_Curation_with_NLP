@@ -1,0 +1,1511 @@
+6
+1
+0
+2
+ 
+c
+e
+D
+2
+1
+
+ 
+
+.
+
+ 
+ 
+]
+T
+S
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+2
+v
+4
+9
+9
+4
+
+.
+
+6
+0
+3
+1
+:
+v
+i
+X
+r
+a
+
+Additive versus multiplicative parameters:
+
+applications in economics and ﬁnance
+
+Helena Jasiulewicz∗†, Wojciech Kordecki‡
+
+December 13, 2016
+
+Abstract
+
+In this paper, we pay our attention to multiplicative parameters
+of random variables and their estimators. We study multiplicative
+properties of the multiplicative expectation and multiplicative varia-
+tion as well as their estimators. For distributions having applications
+in ﬁnance and insurance we provide their multiplicative parameters
+and their properties. We consider, among others, heavy-tailed dis-
+tributions such as lognormal and Pareto distributions, applied to the
+modelling of large losses. We discuss multiplicative models, in which
+the geometric mean and the geometric standard deviation are more
+natural than their arithmetic counterparts. We provide two examples
+from the Warsaw Stock Exchange in 1995–2009 and from a bid of 52-
+week treasury bills in 1992–2009 in Poland as an illustrative example.
+
+Keywords: Geometric mean; Geometric variance; Lognormal distri-
+bution; Pareto distribution; Multiplicative estimators.
+
+1
+
+Introduction
+
+Two measures frequently used in descriptive statistics are the arithmetic
+mean and the standard deviation. The geometric mean is used less often,
+
+∗Wroc law University of Environmental and Life Sciences, Institute of Economics and
+
+Social Sciences.
+
+†This work was supported by National Science Centre, Poland.
+‡Faculty of Technical and Economic Science, The Witelon State University of Applied
+
+Sciences in Legnica, Poland.
+
+1
+
+while the geometric standard deviation connected with the geometric mean
+is used even more rarely.
+
+When is it better to use arithmetic (additive) parameters and when ge-
+ometric (multiplicative) ones? A lot of attention has been paid to these
+problems in the economic and ﬁnance literature. One of the ﬁrsts papers on
+this topic was the article by Latan´e (1959), who introduced the geometric-
+mean investment strategy into the ﬁnance and economics literature. Weide,
+Peterson and Maier wrote in their paper (1977):
+
+Most of this work has been devoted to the investigation of various prop-
+erties of the geometric mean strategy. Among the properties of optimal
+geometric-mean portfolios recently discovered are (i) they maximize the prob-
+ability of exceeding a given wealth level in a ﬁxed amount of time, (ii) they
+minimize the long-run probability of ruin, and (iii) they maximize the ex-
+pected growth rate of wealth.
+
+In the paper (Weide et al., 1977), they consider either the computational
+problem of ﬁnding the optimal geometric mean portfolio or the question of
+the existence of such a portfolio. They analysed both of these problems
+under various assumptions about the investor’s opportunity set and the form
+of his/her subjective probability distribution of holding period returns.
+
+Let us assume that the gross return R in a single period has a lognormal
+distribution. The unknown parameter is a = E (R) = em+σ2/2. To estimate
+this parameter one can use the arithmetic mean of gross returns:
+
+R =
+
+1
+N
+
+NXi=1
+
+Ri .
+
+It is an unbiased estimator of the parameter a. Another unknown parameter
+considered in (Cooper, 1996) is the geometric mean of the gross return b =
+EG (R) = em. The parameter b can be estimated as the geometric mean
+
+RG = eln R = exp  1
+
+N
+
+ln Ri! .
+
+NXi=1
+
+calculated. This value is an asymptotically unbiased estimator of b. More-
+
+In (Cooper, 1996; Jacquier et al., 2003, 2005), the expected value E(cid:0)RG(cid:1) is
+over, the variance D2(cid:0)RG(cid:1), which tends to zero, is determined. In our paper,
+
+we point out that the quality of the geometric estimator should be examined
+
+2
+
+by the geometric mean and variance, not by their arithmetic counterparts as
+in (Cooper, 1996; Jacquier et al., 2003, 2005).
+
+In the paper (Hughson et al., 2006), the authors point out that forecasting
+a typical future cumulative return should be more focused on estimating the
+median of the future cumulative return than on the median of the expected
+cumulative return. Expectation of the cumulative return is always higher
+than the median of the cumulative return. The probability distribution of
+returns from risky ventures is positively skewed.
+It is frequently assumed
+that returns have lognormal distributions. For a lognormal distribution, the
+median and the geometrical expectation are equal. Another distribution
+frequently used in ﬁnance and insurance is the Pareto distribution, in which
+the geometric mean is close to the median and far from the arithmetic mean.
+Arithmetic and geometric means are somewhat controversial measure-
+ments of the past and future investment returns. Critical remarks on this
+topic are given in the paper (Missiakoulis et al., 2007). A review of basic
+equalities and inequalities in the context of a gross income from the invest-
+ment in a discrete time can be found in the article (Cate, 2009).
+
+Properties of various kinds of means can be found in the review paper
+
+(Ostasiewicz and Ostasiewicz, 2000).
+
+In this paper, unlike in the results discussed above, the issue concerning
+multiplicative parameters, including a geometric mean, is also extended with
+interpretations and applications of multiplicative variance as a measure of
+dispersion. Such a measure, as we justify in more detail in the next sections,
+is a better and more natural measure of deviation between random variables
+and their geometric mean.
+
+The geometric variance is invariant with respect to multiplication by a
+constant. From this property it follows that the variance of an economic
+quantity given in diﬀerent monetary units is constant, independent of the
+choice of the unit. For example, if the monetary unit is $1 or one monetary
+unit is $100 then the variance is the same. Moreover, the geometric variance
+is a dimensionless measure of variability. For example, it allows to compare
+the variability of exchange rates between diﬀerent currencies.
+
+In Section 2.1 we give deﬁnitions and properties of multiplicative pa-
+rameters. We discuss multiplicative models, in which the geometric mean
+and the geometric standard deviation are more natural than their arithmetic
+counterparts. In Section 2.2 we introduce typical distributions for which the
+multiplicative parameters are more natural than the additive ones. In Sec-
+tion 2.3 we provide estimators of the multiplicative parameters considered
+
+3
+
+in Section 2.1 and their properties. In Section 3 we give real examples of
+applications. These examples indicate the real beneﬁts of applying the geo-
+metric parameters instead of arithmetic ones in real situations in economics
+and ﬁnance.
+
+2 Parameters and models
+
+2.1 Multiplicative parameters and models
+
+Let us deﬁne the multiplicative (geometric) mean by
+
+where Pr (X > 0) = 1. From Jensen’s inequality it is easy to see that
+
+EG (X) = eE(ln X),
+
+(1)
+
+EG (X) ≤ E (X) .
+
+Below we give some obvious properties of the geometric mean. Equa-
+
+tion (1) implies the formula
+
+EG  nYi=1
+
+Xi! =
+
+nYi=1
+
+EG (Xi) ,
+
+(2)
+
+provided multiplicative expectations of random variables Xi exist. In this
+formula the random variables Xi may be dependent. Moreover, for every
+a > 0
+
+and for every a ∈ R
+
+EG (aX) = aEG (X) ,
+
+EG (X a) = (EG (X))a .
+
+From (3) for a = −1 we obtain
+
+Hence, from (2) and (4) we have
+
+EG(cid:18) 1
+EG(cid:18)X
+
+X(cid:19) =
+Y (cid:19) =
+
+1
+
+EG (X)
+
+.
+
+EG (X)
+EG (Y )
+
+.
+
+4
+
+(3)
+
+(4)
+
+Property 1. If EG (X + Y ) exists then
+
+EG (X + Y ) ≥ EG (X) + EG (Y ) .
+Proof. The formula (5) is by deﬁnition equivalent to
+
+eE(ln(X+Y )) ≥ eE(ln(X)) + eE(ln(Y )).
+
+(5)
+
+(6)
+
+Dividing both sides of (6) by eE(ln(X)) we obtain an equivalent inequality
+
+eE(ln(1+Y /X)) ≥ 1 + eE(ln(Y /X)).
+
+Let T = Y /X. Then, it is suﬃcient to prove the inequality
+
+eE(ln(1+T )) ≥ 1 + eE(ln T ).
+
+Let us assume that T is a discrete random variable and Pr (T = xi) = pi.
+From the inequality (7.1) from the book (Mitrinovi´c et al., 1993), p. 6, we
+obtain, after the substitution f (x) = ln (1 + ex), the inequality
+
+Substituting xi = ln ai we obtain
+
+ln exp  nXi=1
+exp  nXi=1
+
+nXi=1
+pi ln ai! + 1 ≤ exp  nXi=1
+
+pixi! + 1! ≤
+
+pi ln (exi + 1) .
+
+pi ln (ai + 1)! ,
+
+which completes the proof of (5) for discrete X and Y . For any X and Y
+in the inequality (5) we approximate X and Y by discrete random variables.
+
+The square multiplicative divergence between positive t and 1 is deﬁned
+
+by the following conditions:
+
+1. f (t) ≥ 1 and f (1) = 1,
+
+t(cid:19),
+2. f (t) = f(cid:18)1
+
+3. f (t) is an increasing function for t ≥ 1.
+
+5
+
+Condition 2 means that for any two positive numbers u or v:
+
+The function
+
+v(cid:17) = f(cid:16) v
+f(cid:16)u
+u(cid:17) .
+
+f (t) = eln2 t = tln t
+
+(7)
+
+fulﬁls the above conditions and plays the same role for quotients as t2 for
+diﬀerences. It means that f (u/v) is a square multiplicative deviation of u/v
+from 1.
+
+We will deﬁne the geometric variance as the multiplicative mean of the
+square multiplicative deviation of the random variable X from its geometric
+mean:
+
+D2
+
+G (X) = EG(cid:18)exp(cid:18)ln2 X
+
+EG (X)(cid:19)(cid:19) = eD2(ln X).
+
+(8)
+
+From deﬁnition (8) we have
+
+D2
+G (X) ≥ 1,
+D2
+G (X) = 1 ⇐⇒ Pr (X = const) = 1.
+
+The multiplicative (geometric) standard deviation is deﬁned by:
+
+Note that if D2
+terpart of
+
+G (X) 6= 1 or D2
+
+G (X). A coun-
+
+σG (X) = e√D2(ln X).
+G (X) 6= e then σG (x) 6=pD2
+
+σ (X) + σ (Y ) ≥ σ (X + Y )
+
+is given by the equation
+
+σG (X) σG (Y ) ≥ σG (X + Y ) .
+
+(9)
+
+However, one cannot compare D2 (X) and D2
+is represented in the same units as X (e.g. in euro or units of weights or sizes)
+but σG (X) is dimensionless (may be expressed in percent after multiplying
+by 100).
+
+G (X) because σ (X) =pD2 (X)
+
+Apart from function (7) the function
+
+f (t) = e|ln t|
+
+6
+
+(10)
+
+also fulﬁls the above conditions (Saaty and Vargas, 2007). Note, how-
+ever, that the function deﬁned by (10) is a multiplicative counterpart of
+E|X − EX|, not of the variance D2 (X).
+tion (8) implies the formula
+
+Below we give some properties of the multiplicative variance. Equa-
+
+D2
+
+G  nYi=1
+
+Xi! =
+
+nYi=1
+
+D2
+
+G (Xi) ,
+
+(11)
+
+provided multiplicative variances of random variables Xi exist and Xi are
+independent. Moreover, for every a > 0
+
+D2
+
+G (aX) = D2
+
+G (X) ,
+
+and for every a ∈ R
+
+D2
+σG (X a) = (σG (X))a .
+
+G (X a) =(cid:0)D2
+
+G (X)(cid:1)a2
+
+From (12) for a = −1 we obtain
+
+,
+
+(12)
+
+(13)
+
+Hence, if X and Y are independent then from (11) and (13) we have
+
+G (X) .
+
+D2
+
+G(cid:18) 1
+X(cid:19) = D2
+G(cid:18)X
+Y (cid:19) = D2
+
+D2
+
+G (X) D2
+
+G (Y ) .
+
+The multiplicative variance and standard deviation are quotient measures
+of the deviation between a random variable and its multiplicative mean mG =
+EG (X), whereas the additive variance and standard deviation are diﬀerence
+measures of the deviation between a random variable and its additive mean
+m. Since in the additive case it is useful to deﬁne the kth interval of the form
+
+in the multiplicative case we have the counterpart of the form
+
+(m − kσ, m + kσ) ,
+
+G , mGσk
+
+(cid:0)mGσ−k
+
+7
+
+G(cid:1) .
+
+(14)
+
+Let (X, Y ) be a two-dimensional random vector. We will ﬁnd the best
+exponential approximation of a random variable Y by a random variable X.
+To achieve that we will ﬁnd a multiplicative counterpart of the equation
+
+min
+a,b
+
+E (Y − (aX + b))2 = E(cid:16)Y −(cid:16)eaX +eb(cid:17)(cid:17)2
+
+.
+
+The measure of the distance between a random variable Y and the exponen-
+tial function of a random variable X of the form eαX+β will be, according to
+equation (7), the geometric expectation of the random variable eln2 T , where
+
+T =
+
+eαX+β
+
+Y
+
+.
+
+Note that
+
+EG(cid:16)eln2 T(cid:17) = exp(cid:16)E ln eln2 t(cid:17) = eE(ln2 T) = eE(ln Y −(αX+β))2
+
+.
+
+Instead of minimizing the expression E (Y − (aX + b))2 we will minimise the
+expression
+
+EGe(αX+β−ln Y )2
+
+.
+
+Therefore,
+
+min
+α,β
+
+for
+
+E (ln Y − (αX + β))2 = E(cid:16)ln Y −(cid:16)eαX +eβ(cid:17)(cid:17)2
+eα =
+eβ = E (ln Y ) −
+
+Cov (X, ln Y )
+
+Cov (X, ln Y )
+
+D2 (X)
+
+D2 (X)
+
+E (X) .
+
+,
+
+,
+
+(15)
+
+(16)
+
+Formulae (15) and (16) imply that the function that is the best approximation
+of the random variable Y has the form
+
+y = e eα(x−E(X))EG (Y ) .
+
+(17)
+
+Note that in equation (17) the parameters of the random variable X are
+additive whereas the parameters of the random variable Y are multiplicative.
+
+8
+
+The multiplicative econometric model with one explanatory variable is of
+
+the form
+
+Y = f (x) ε,
+
+where ε is a random component.
+lognormal distribution with parameters m and σ. Let Z = ln Y . Then
+
+It is frequently assumed that ε has a
+
+Z = ln f (x) + ln ε
+
+(18)
+
+is an additive model with a random component η = ln ε with a normal
+distribution N (0, σ). We will denote its trend by z, where
+
+z = ln f (x) .
+
+An exponential trend is deﬁned by the formula
+
+y = f (x) = eαx+β.
+
+The trend in the multiplicative model is given by
+
+y = ez.
+
+(19)
+
+(20)
+
+(21)
+
+The behaviour of the variable y in the multiplicative model is reﬂected by
+its geometric mean.
+
+2.2 Parameters of selected distributions
+
+In this section we will determine multiplicative parameters of distributions
+frequently applied to the modelling of a ﬁnance risk. Two heavy-tailed dis-
+tributions, namely lognormal and Pareto distributions used to estimate large
+losses on ﬁnancial and insurance markets, are especially important.
+
+A random variable X has a lognormal distribution if Y = ln X has a nor-
+mal distribution, Y ∼ N (m, σ), EY = m, D2Y = σ2. Then, the expectation
+is
+
+E (X) = em+σ2/2
+
+and the variance
+
+Multiplicative parameters are the following:
+
+D2 (X) = e2m+σ2(cid:16)eσ2
+
+− 1(cid:17) .
+
+EG (X) = Me (X) = em = e−σ2/2E (X) ,
+
+9
+
+G (X) = eσ2
+,
+where the median Me (X) = EG (X) and D2
+respectively.
+
+D2
+
+G (X) depend only on m and σ,
+
+The divergence between means E (X) and EG (X) measured by their re-
+
+lationship d is given by
+
+d (σ) =
+
+E (X)
+EG (X)
+
+=
+
+em+σ2/2
+
+em = eσ2/2
+
+and increases exponentially with σ2.
+
+In this context, an interesting distribution is the Pareto distribution, with
+
+a cumulative distribution function
+
+FP (x) =(1 −(cid:0) β
+x(cid:1)α
+
+0
+
+for x ≥ β,
+for x < β,
+
+where α > 0, β > 0.
+
+The additive parameters of the random variable X are:
+
+E (X) =
+
+αβ
+α − 1
+
+αβ2
+
+for α > 1 and
+
+for α > 2.
+
+D2 (X) =
+
+(α − 2) (α − 1)2
+
+The multiplicative parameters are:
+
+EG (X) = βe1/α,
+G (X) = e1/α2
+D2
+
+(22)
+
+(23)
+
+(24)
+
+and exist for any α > 0. The median Me(X) exists for any α and is given by
+
+Since
+
+Me (X) = β21/α < EG (X) .
+
+lim
+α→∞
+
+E (X) = lim
+α→∞
+
+EG (X) = 1,
+
+for large α we have E (X) ≈ EG (X).
+
+10
+
+(25)
+
+(26)
+
+(27)
+
+xi!1/n
+
+= exp  1
+
+n
+
+ln xi!
+
+nXi=1
+
+n
+
+= exp  1
+nXi=1
+= exp  1
+
+ln2 xi
+
+xG! ,
+nXi=1
+
+ln2 xi
+
+xG! .
+
+xG(cid:19)!1/n
+xG(cid:19)!1/(n−1)
+ln sG =vuut 1
+nXi=1
+ln ˆsG =vuut 1
+
+n − 1
+
+n
+
+ln2 xi
+xG
+
+,
+
+ln2 xi
+xG
+
+.
+
+nXi=1
+
+2.3 Estimation of multiplicative parameters
+
+Let us deﬁne the following empirical parameters: the geometric mean
+
+and geometric variances
+
+xG =  nYi=1
+exp(cid:18)ln2 xi
+exp(cid:18)ln2 xi
+
+s2
+
+ˆs2
+
+G =  nYi=1
+G =  nYi=1
+
+n − 1
+Then, empirical standard deviations are deﬁned as
+
+Now we can derive from Section 2.1 the equations for estimators of the mul-
+tiplicative parameters and their properties.
+
+Let X1, X2, . . . , Xn be a random sample for a population with cdf F (x).
+Let θ be a multiplicative parameter of F (x), e.g. θ = EG (X) or θ = D2
+G (X).
+Below we formulate the basic properties of the multiplicative estimators of
+such parameters.
+
+The statistic Zn = f (X1, . . . , Xn) is a multiplicative unbiased estimator
+of θ if EG (Zn) = θ. The Zn is a multiplicative, asymptotically unbiased
+estimator of θ if limn→∞ EG (Zn) = θ. The Zn is a multiplicative consistent
+estimator of θ if Zn/θ is convergent in probability to 1, denoted as Zn/θ P−→ 1,
+
+i.e.
+
+lim
+n→∞
+
+for any ε > 0.
+
+Pr(cid:18)(cid:12)(cid:12)(cid:12)(cid:12)
+
+Zn
+
+θ − 1(cid:12)(cid:12)(cid:12)(cid:12) > ε(cid:19) = 0,
+
+11
+
+Theorem 1. Let X1, X2, . . . , Xn be a random sample with the multiplicative
+mean EGXi = mG. The statistic X G is a multiplicative unbiased estimator
+of mG.
+
+Proof. From (3) and (1) we have
+
+Xi!1/n = EG  nYi=1
+
+Xi!!1/n
+
+=  nYi=1
+
+EG (Xi)!1/n
+
+.
+
+EG(cid:0)X G(cid:1) = EG  nYi=1
+Then, EG(cid:0)X G(cid:1) = mG.
+
+Moreover, one can easily calculate the following:
+
+Property 2. If X1, X2, . . . , Xn are independent, identically distributed ran-
+dom variables and have the multiplicative expectations mG and variances σ2
+G
+then
+
+Proof.
+
+D2
+
+D2
+
+G (X)(cid:1)1/n .
+G(cid:0)X G(cid:1) =(cid:0)D2
+G  nYi=1
+Xi!1/n
+G  nYi=1
+= D2
+G(cid:0)X G(cid:1) = D2
+=  nYi=1
+G (Xi)!1/n2
+=(cid:0)D2
+G (X)(cid:1)1/n
+G(cid:0)X G(cid:1) → 1 while n → ∞.
+
+D2
+
+Note that D2
+
+Xi!!1/n2
+G(cid:1)1/n
+=(cid:0)σ2
+
+.
+
+Theorem 2. If X1, X2, . . . , Xn are independent, identically distributed ran-
+dom variables and have the multiplicative expectations mG and variances σ2
+G
+then X G is the consistent estimator of mG.
+
+Proof. From the
+Law of
+ln X1, ln X2, . . . , ln Xn we have
+
+Large Numbers
+
+for
+
+the
+
+sequence
+
+1
+n
+
+nXi=1
+
+ln Xi
+
+P−→ E ln X.
+
+12
+
+For any continuous g (x)
+
+g  1
+
+n
+
+Taking g (x) = ex we have X G
+tor of mG .
+
+ln Xi! P−→ g (E ln X) .
+nXi=1
+P−→ mG . Hence, X G is the consistent estima-
+
+Theorem 3. Let X1, X2, . . . , Xn be independent, identically distributed ran-
+dom variables. The statistic ˆS2
+G is a multiplicative unbiased estimator of σ2
+G
+and S2
+
+G is a multiplicative asymptotically unbiased estimator of σ2
+G.
+
+Proof. To prove that ˆS2
+to calculate the term
+
+G is a multiplicative unbiased estimator of σ2
+
+G we have
+
+EG  nYi=1
+
+eln2(Xi/X G)!1/n
+
+.
+
+Let yi = ln xi. Similarly to proving that
+
+ˆS2 =
+
+1
+
+n − 1
+
+nXi=1(cid:0)Xi − X(cid:1)2
+
+is an unbiased estimator of D2 (X) we can prove that ˆS2
+unbiased estimator of σ2
+obtain that S2
+
+G is a multiplicative
+G. Hence, we omit details. As a simple conclusion we
+G .
+
+G is a multiplicative asymptotically unbiased estimator of σ2
+
+Theorem 4. Let X1, X2, . . . , Xn be independent, identically distributed ran-
+dom variables. Then S2
+
+G are the consistent estimators of σ2
+
+G and ˆS2
+
+G .
+
+Proof.
+
+Since
+
+S2
+
+G = exp
+
+1
+n
+
+nXi=1
+
+ln2 Xi
+X G
+
+.
+
+ln2 Xi
+X G
+
+=(cid:0)ln Xi − ln X G(cid:1)2
+
+= (ln Xi)2 − 2 ln Xi ln X G +(cid:0)ln X G(cid:1)2
+
+,
+
+13
+
+we have
+
+1
+n
+
+nXi=1
+
+ln2 Xi
+X G
+
+=
+
+=
+
+1
+n
+
+1
+n
+
+From the facts
+
+nXi=1(cid:16)(ln xi)2 − 2 ln Xi ln X G +(cid:0)ln X G(cid:1)2(cid:17)
+nXi=1
+ln Xi +(cid:0)ln X G(cid:1)2
+
+(ln xi)2 − 2 ln X G
+
+nXi=1
+
+1
+n
+
+.
+
+ln Xi
+
+ln X G
+
+1
+n
+
+1
+n
+
+P−→ ln mG ,
+
+P−→ E (ln X) ,
+
+(ln Xi)2 P−→ E (ln X)2 ,
+
+nXi=1
+nXi=1
+(cid:0)ln X G(cid:1)2 P−→ (ln mG)2 ,
+X G! P−→ exp(cid:0)E (ln X − mG)2(cid:1) = exp(cid:0)D2 (ln X)(cid:1) ,
+Estimators ˆα and ˆβ of the parameters eα and eβ given by equations (15)
+
+exp  1
+
+nXi=1
+
+ln2 Xi
+
+n
+
+which completes the proof.
+
+and (16) are given respectively by
+
+we obtain by easy calculations
+
+ˆα = Pn
+Pn
+i=1 x2
+ˆβ = ln y − ˆαx.
+
+i=1 xi ln yi − nx ln y
+
+,
+
+i − nx2
+
+Estimators of the trend y given by (20) has the form
+
+where ˆz = ˆαx + ˆβ.
+
+ˆyG = exp (ˆz) ,
+
+14
+
+(28)
+
+(29)
+
+(30)
+
+3 Applications of the multiplicative model
+
+Many applications of the geometric mean in economics can be found in
+the papers (Hughson et al., 2006; Jacquier et al., 2003). The future port-
+folio of shares in (Jacquier et al., 2003) and the expected gross return
+in (Hughson et al., 2006) were estimated by the geometric mean. Cooper
+in (1996) provided some interesting considerations on how one can apply the
+geometric or the arithmetic mean to the estimation of the discount rate of
+planned investments.
+
+However, applications nearly always used the multiplicative mean. Only
+in (Saaty and Vargas, 2007) the multiplicative dispersion given by (10) was
+applied, but, as it was explained in Section 2.1, that dispersion diﬀers from
+our standard deviation.
+
+In insurance and ﬁnance huge losses are modelled by Pareto or lognormal
+distributions. Such distributions are positively skewed, so their arithmetic
+expected values are very far from their medians. Therefore, the expected
+values do not reﬂect the central tendency of these distributions. As we will see
+later, geometric means of distributions do not have such defects. Moreover,
+it is evident that the dispersion around EGX must be equal to D2
+GX, not to
+D2X.
+
+Let us only point out that also in other ﬁelds of science, multiplicative
+parameters give a better description of some phenomena than additive ones—
+see, for example, (Zacharias et al., 2011) and references therein.
+
+In the next sections we provide two examples of applications of multiplica-
+tive parameters. Those examples come from the Polish market and concern
+the Stock Exchange in Poland.
+
+3.1 Return index rates
+
+Return rates ir100% of indexes WIG20 from the Warsaw Stock Exchange in
+the years 1995–2009 are given in Table 1, r = 1995 . . . 2009. The accumula-
+tion coeﬃcients ar = 1 + ir are given in the third column.
+
+The total return at the end of 2009 of an investing initial capital p = 1
+
+at the beginning of 1995 (future value FV ) is given by the formula:
+
+FV =
+
+2009Yr=1995
+
+ar .
+
+15
+
+Table 1: Return rates ir100% of indexes WIG20 in the years 1995–2009
+
+Rate Coeﬃcient
+
+Year
+2009
+33.47%
+2008 −48.21%
+5.19%
+2007
+23.75%
+2006
+35.42%
+2005
+2004
+24.56%
+2003
+33.89%
+2002 −2.70%
+2001 −33.46%
+2000
+3.40%
+1999
+43.80%
+1998 −16.20%
+1.10%
+1997
+1996
+82.10%
+8.20%
+1995
+
+1.33
+0.52
+1.05
+1.24
+1.35
+1.25
+1.34
+0.97
+0.67
+1.03
+1.44
+0.84
+1.01
+1.82
+1.08
+
+Source: http://www.gpw.pl/analizy_i_statystyki_pelna_wersja
+
+(November 2014)
+
+Since aG = 1.0820,
+
+FV = (aG)15 = 3.2656.
+
+Using the arithmetic mean a = 1.1295 instead of the geometric mean we
+obtain
+
+FV ′ = (a)15 = 6.2161,
+
+(31)
+
+which is a two-time overstated estimation of the quantity FV .
+
+Next, we calculate ˆsG = 1.1600. Using equation (14) we have the kth
+interval for aG: (0.9328, 1.2550), (0.8042, 1.4561) and (0.6933, 1.6890) for k =
+1, k = 2 and k = 3, respectively.
+
+If we calculate aG = 1.1036 from the 10 years 1995–2004 only, then the
+total forecasted return of the capital with the investment of initial capital
+p = 1 at the beginning of the year 2005 is equal to 1.6370. The forecast using
+the arithmetic mean a = 1.1447 from the years 1995–2004 is equal to 1.9653.
+The true value of the total return is equal to 1.2185. Therefore, it is more
+precisely estimated by the geometric mean than by the arithmetic mean.
+
+The analogical conclusion can be drawn from determining the present
+value PV by the geometric and arithmetic means of the discount factor
+
+16
+
+vr = 1/ar. Namely,
+
+PV = (vG)15 = 0.3062,
+PV ′ = (v)15 = 0.6504.
+
+3.2 The mean annual rate of proﬁtability of treasury
+
+bills
+
+A multiplicative model will be used here to describe the annual market rate
+with investment for 52-week treasury bills in Poland. The use of a multi-
+plicative model can be justiﬁed by the fact that the accumulation of the
+capital is yielded by the multiplication, not by the addition, of gross return
+from an investment. Let R denote the annual rate for the 52-week treasury
+bills and f (t) = abt be an exponential function of trend. Assume that (see
+equation (20))
+
+R = abtε,
+
+where the random component ε has a lognormal distribution LN (0, σ).
+
+To estimate the unknown parameters a and b (see equations (28) and
+(29)) of the trend function of the annual rate of interest we make use of
+the observations of the average proﬁtabilities from weekly bids in the years
+1992–2009. In the observed years, there were from 18 to 56 bids per year.
+For these particular years, the arithmetic and geometric means as well as the
+medians were taken as the means—see Table 2.
+
+Since diﬀerences between them are small, we take as ri the arithmetic
+
+mean from the annual proﬁtabilities of bids in a particular year.
+
+We will test the hypothesis of normality of ln ε using the modiﬁed Jarque–
+2, where mi
+
+Bera test. Let n be the sample size, b1/2
+
+is the i-th central moment of the observations mi =P (cj − x)i /n, and x the
+
+sample mean. For testing normality we use the Jarque–Bera test modiﬁed
+by Urz´ua (1996) (see also Thadewald and B¨uning (2004)):
+
+1 = m3/m3/2
+
+2
+
+, b2 = m4/m2
+
+ALM = (cid:16)b1/2
+1 (cid:17)2
+
+c1
+
++
+
+(b2 − c2)2
+
+c3
+
+.
+
+(32)
+
+17
+
+Table 2: Average annual proﬁtabilities of treasury papers in bids in the years
+1992–2009
+
+Year Arithmetic Geometric Median Number of bids
+1992
+1993
+1994
+1995
+1996
+1997
+1998
+1999
+2000
+2001
+2002
+2003
+2004
+2005
+2006
+2007
+2008
+2009
+
+0.4861
+0.3841
+0.3231
+0.2618
+0.2054
+0.2210
+0.1844
+0.1290
+0.1761
+0.1462
+0.0821
+0.0536
+0.0659
+0.0508
+0.0419
+0.0464
+0.0652
+0.0465
+
+0.4729
+0.3817
+0.3816
+0.2611
+0.2034
+0.2193
+0.1889
+0.1229
+0.1780
+0.1536
+0.0840
+0.0549
+0.0678
+0.0421
+0.0421
+0.0445
+0.0656
+0.0475
+
+0.4864
+0.3842
+0.3238
+0.2618
+0.2054
+0.2210
+0.1851
+0.1291
+0.1761
+0.1464
+0.0821
+0.0536
+0.0659
+0.0679
+0.0420
+0.0464
+0.0652
+0.0465
+
+34
+52
+52
+58
+52
+56
+53
+52
+49
+48
+48
+48
+46
+36
+23
+18
+20
+49
+
+Source: www.money.pl/pieniadze/bony/archiwum/ (November 2014)
+
+Here the parameters ci, i = 1, 2, 3, are given by
+
+c1 =
+
+c2 =
+
+c3 =
+
+6 (n − 2)
+
+,
+
+(n + 1) (n + 3)
+3 (n − 1)
+(n + 1)
+24n (n − 2) (n − 3)
+
+,
+
+(n + 1)2 (n + 3) (n + 5)
+
+.
+
+For our data, we have m2 = 0.046825093, m3 = −0.003081238, m4 =
+0.006135356, and n = 18. Hence, we can calculate that ALM = 0.4062.
+The statistic (32) has an asymptotic χ2 distribution. W¨urtz and Katzgraber
+(2005), using a Monte Carlo simulation, provide precise quantiles for small
+samples. For the size of sample n = 20 and the levels 0.01 and 0.05 they
+obtain critical values 18.643 and 6.9317, respectively. Therefore, for such
+critical values one can not reject the null hypothesis of normality.
+
+18
+
+Figure 1 shows the average annual proﬁtabilities as well as their expo-
+
+nential approximation
+
+ˆr (t) = exp (−0.1425t − 0.7299)
+
+given by (20).
+
+0.6
+
+0.5
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+0
+
+92 93 94 95 96 97 98 99 00 01 02 03 04 05 06 07 08 09
+
+Figure 1: Annual means and their exponential approximations
+
+The geometric (multiplicative) mean rG = 0.1245 was used here to de-
+termine the exponential (that is multiplicative) trend of proﬁtability R (see
+formula (17)). For comparison, the arithmetic mean amounts to r = 0.1661,
+and therefore, since it is signiﬁcantly greater than rG, it overestimates the
+long-run returns (see, e.g., (Cooper, 1996) and (Jacquier et al., 2003)).
+
+Acknowledgements
+
+We are grateful to the anonymous reviewer for constructive criticism and to
+Dr Cezary Sielu˙zycki for discussions on the ﬁnal version of the manuscript.
+
+19
+
+References
+
+Cate, A. (2009). Arithmetic and geometric mean rates and return in discrete
+
+time. CPB Memorandum.
+
+Cooper, I. (1996). Arithmetic versus geometric mean estimators: Setting
+discount rates for capital budgeting. European Financial Management,
+2:157–167.
+
+Hughson, E., Stutzer, M., and Yung, C. (2006). The misue of expected
+
+returns. Financial Analysts Journal, 62(6):88–96.
+
+Jacquier, E., Kane, A., and Marcus, A. J. (2003). Geometric or arithmetic
+
+mean: A reconsideration. Financial Analysts Journal, 59(6):46–53.
+
+Jacquier, E., Kane, A., and Marcus, A. J. (2005). Optimal estimation of the
+risk premium for the long run and asset allocation: A case of compounded
+estimation risk. Journal of Financial Econometrics, 3:37–55.
+
+Latan´e, H. (1959). Criteria for choice among risky ventures. The Journal of
+
+Political Economy, 67(2):144–155.
+
+Missiakoulis, S., Vasiliou, D., and Eriotis, N. (2007). A requiem for the use of
+the geometric mean in evaluating portfolio performance. Appl. Financial
+Economics Lett., 3:403–408.
+
+Mitrinovi´c, D. S., Peˇcari´c, J. E., and Fink, A. M. (1993). Classical and New
+
+Inequalities in Analysis. Kluwer Academic Publisher, Dortrecht.
+
+Ostasiewicz, S. and Ostasiewicz, W. (2000). Means and their applications.
+
+Ann. Oper. Res., 97:337–355.
+
+Saaty, T. L. and Vargas, L. G. (2007). Dispersion of group judgments. Math-
+
+ematical and Computer Modelling, 46:918–925.
+
+Thadewald, T. and B¨uning, H. (2004). Jarque-bera test and its competi-
+tors for testing normality: A power comparison. School of Business &
+Economics Discussion Paper: Economics 2004/9, Berlin.
+
+Urz´ua, C. M. (1996). On the correct use of omnibus tests for normality.
+
+Economics Letters, 53:247–251. (corrigendum, 1997, 54:301).
+
+20
+
+Weide, J. H. V., Peterson, D. W., and Maier, S. F. (1977). A strategy which
+maximizes the geometric mean return on portfolio investments. Manage-
+ment Science, 23:1117–1123.
+
+W¨urtz, D. and Katzgraber, H. G. (2005). Precise ﬁnite-sample quantiles of
+the Jarque-Bera adjusted Lagrange multiplier test. arXiv:math/0509423v1
+[math.ST].
+
+Zacharias, N., Sielu˙zycki, C., Kordecki, W., K¨onig, R., and Heil, P. (2011).
+The M100 component of evoked magnetic ﬁelds diﬀers by scaling factors:
+Implications for signal averaging. Psychophysiology, 48:1069–1082.
+
+21
+
+

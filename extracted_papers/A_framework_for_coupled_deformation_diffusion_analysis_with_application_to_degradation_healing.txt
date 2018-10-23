@@ -1,0 +1,3593 @@
+1
+1
+0
+2
+
+ 
+
+n
+u
+J
+ 
+
+2
+1
+
+ 
+ 
+]
+
+A
+N
+.
+s
+c
+[
+ 
+ 
+
+1
+v
+7
+2
+3
+2
+
+.
+
+6
+0
+1
+1
+:
+v
+i
+X
+r
+a
+
+A FRAMEWORK FOR COUPLED DEFORMATION-DIFFUSION ANALYSIS
+
+WITH APPLICATION TO DEGRADATION/HEALING
+
+M. K. MUDUNURU AND K. B. NAKSHATRALA
+
+Abstract. This paper deals with the formulation and numerical implementation of a fully cou-
+
+pled continuum model for deformation-diﬀusion in linearized elastic solids. The mathematical
+
+model takes into account the eﬀect of the deformation on the diﬀusion process, and the aﬀect of
+
+the transport of an inert chemical species on the deformation of the solid. We then present a
+
+robust computational framework for solving the proposed mathematical model, which consists of
+
+coupled non-linear partial diﬀerential equations. It should be noted that many popular numerical
+
+formulations may produce unphysical negative values for the concentration, particularly, when the
+
+diﬀusion process is anisotropic. The violation of the non-negative constraint by these numerical
+
+formulations is not mere numerical noise. In the proposed computational framework we employ a
+
+novel numerical formulation that will ensure that the concentration of the diﬀusant be always non-
+
+negative, which is one of the main contributions of this paper. Representative numerical examples
+
+are presented to show the robustness, convergence, and performance of the proposed computational
+
+framework. Another contribution of this paper is to systematically study the aﬀect of transport
+
+of the diﬀusant on the deformation of the solid and vice-versa, and their implication in modeling
+
+degradation/healing of materials. We show that the coupled response is both qualitatively and
+
+quantitatively diﬀerent from the uncoupled response.
+
+1. INTRODUCTION
+
+In this paper we present a continuum mathematical model and a computational framework for
+
+degradation/healing in elastic solids due to the presence of a solute. We shall neglect chemical
+
+reactions as well as thermal eﬀects. We shall also assume that the strains in the solid are small.
+
+The deformation is coupled with the diﬀusion process, and the diﬀusion process is in turn coupled
+
+with the deformation of the solid. The chosen problem belongs to a broader class of problems,
+
+namely, coupled deformation-diﬀusion problems.
+
+Coupled deformation-diﬀusion problems arise in many civil engineering, material science, and
+
+polymer science applications. An important example is degradation/healing of materials and struc-
+
+tures. Many man-made and natural materials degrade/heal due to environmental conditions, and
+
+structural components and superstructures are constantly exposed to adverse conditions. The fate
+
+of the transport of a diﬀusant will in turn depend on the deformation of the solid. Some other
+
+Key words and phrases. coupled deformation-diﬀusion analysis; non-negative solutions; maximum principles;
+
+degradation/healing; damage mechanics; convex quadratic programming; staggered coupling algorithm.
+
+1
+
+examples of coupled deformation-diﬀusion problems are moisture damage in cementitious materials
+
+[30, 31] and asphalt [11, 26], hydrogen embrittlement [51, 57], curing of ceramics [35], and swelling
+
+of polymers and composites [58, 55].
+
+The governing equations of a deformation-diﬀusion problem are coupled non-linear partial dif-
+
+ferential equations. That is, the mechanical variables (strains and stresses) and diﬀusive variables
+
+(concentration and mass ﬂux) are coupled through constitutive relations. It is (in general) not pos-
+
+sible to obtain analytical solutions for these kinds of problems, and one has to resort to numerical
+
+techniques to solve practical problems. Despite the importance of coupled deformation-diﬀusion
+
+problems, there is no robust and reliable computational framework for solving such coupled prob-
+
+lems. In particular, the existing numerical studies have one or more of the following limitations:
+
+• considered academic and unrealistic problems like inﬁnite slabs and inﬁnite cylinders,
+• did not consider anisotropic diﬀusion and/or assumed the medium to be homogeneous, or
+• did not consider the fact that conventional numerical formulations and ﬁnite element pack-
+ages produce unphysical negative values for the concentration in solving diﬀusion-type equa-
+
+tions.
+
+1.1. Maximum principles and non-negative solutions for diﬀusion-type equations. Pre-
+
+dictive numerical simulations require accurate and reliable discretization methods. The resulting
+
+discrete systems must inherit or mimic fundamental properties of continuous systems. Maximum
+
+principles form an important set of properties for diﬀusion-type equations as these maximum princi-
+
+ples have mathematical implications and physical consequences. In the study on partial diﬀerential
+
+equations, maximum principles are often used in existence theorems, and in obtaining point-wise
+
+estimates. For further details on (continuous) maximum principles refer to [40, 15, 18, 17, 47, 20].
+
+A direct consequence of maximum principles for diﬀusion-type is the non-negativity of the so-
+
+lution (under appropriate conditions on the source and boundary conditions). Physical quantities
+
+like concentration of a diﬀusant should be non-negative by their nature and their approximations
+
+should also be non-negative as well. The question to ask is whether a chosen numerical formulation
+
+satisﬁes these maximum principles and meet the non-negative constraint. The discrete version of
+
+maximum principles is commonly referred as discrete maximum principles.
+
+Many existing numerical formulations and packages do not satisfy the maximum principles. They
+
+may produce negative values for the primary variables in diﬀusion-type equations (that is, negative
+
+values for the concentration and temperature). It should be emphasized that the violation is not
+
+mere numerical noise, that is, the violations will be much larger than the machine precision and
+
+cannot be neglected.
+
+For example, in Figure 1, we have shown that the contours of concentration obtained using
+
+Abaqus [1] for pure diﬀusion. The uncoupled problem is similar to one considered in Section
+
+2
+
+4. As one can see from the ﬁgure, signiﬁcant part of the domain has negative solution. The
+minimum value of the concentration is approximately −0.0832, which is 4.16% oﬀ the range of
+In a subsequent section we show that the classical
+possible values (which is between 0 and 2).
+
+single-ﬁeld Galerkin formulation produces negative values for the concentration for the same test
+
+problem (see Figure 15), and produces (qualitatively and quantitatively) wrong results for a cou-
+
+pled deformation-diﬀusion problem. Furthermore, Nakshatrala and Valocchi [45] have shown that
+
+the lowest order Raviart-Thomas [48] and variational multiscale [36, 44] mixed formulations violate
+
+discrete maximum principle and produce negative solutions for pure diﬀusion equation. Nagara-
+
+jan and Nakshatrala [42] have shown that the single-ﬁeld formulation violates discrete maximum
+
+principles for diﬀusion with decay.
+
+1.2. Our approach. Herein, we will consider realistic problems, allow the medium to be inhomo-
+
+geneous, consider anisotropic diﬀusion, and develop a robust computational framework that will
+
+always produce physically meaningful non-negative values for the concentration of the diﬀusant on
+
+general computational grids. The computational framework will consist of a non-negative formula-
+
+tion for diﬀusion equation, a single-ﬁeld formulation for the deformation problem, and a staggered
+
+coupling algorithm.
+
+We employ a staggered coupling technique (also known as partitioned solution approach) to cou-
+
+ple individual analyses to obtain the coupled response. The non-negative formulation for diﬀusion
+
+is developed by extending the Galerkin formulation using convex programming, which produces
+
+(physical) non-negative solutions for the concentration even on general computational grids with
+
+low-order ﬁnite elements (linear three-node triangular, bilinear four-node quadrilateral, linear four-
+
+node tetrahedron, and tri-linear eight-node brick elements). The proposed non-negative formulation
+
+being applicable only to low-order ﬁnite elements is not a limitation as low-order ﬁnite elements
+
+remain quite popular in the solution of practical problems. (This is particularly true for large-scale
+
+simulations with complex geometries because of the inherent simplicity of low-order elements. An-
+
+other reason is that adaptive mesh-generation techniques are simpler and tend to perform better
+
+with low-order ﬁnite elements.)
+
+1.3. Main contributions of this paper. Some of the main contributions of this paper are as
+
+follows:
+
+(1) We presented a mathematical model for diﬀusion of an inert chemical species in an elastic
+
+deformable solid that takes into account the eﬀect of diﬀusant on the deformation. The model
+
+is truly coupled in the sense that the deformation of the solid will be aﬀected by the diﬀusion
+
+process, and the diﬀusion process is in turn aﬀected by the deformation of the solid. Such a
+
+3
+
+coupled deformation-diﬀusion model is suitable to study degradation/healing in elastic solids.
+
+We restricted our model to steady-state.
+
+(2) We presented a robust computational framework for performing deformation–diﬀusion analysis.
+
+The framework includes a solver for deformation, a non-negative solver for tensorial-diﬀusion,
+
+and a coupling algorithm to couple the individual deformation and diﬀusion analyses. The
+
+coupling algorithm is a staggered algorithm in which deformation and diﬀusion sub-problems are
+
+solved in an iterative fashion until convergence. An important aspect of the proposed framework
+
+is that it employs a novel numerical formulation that ensures non-negative solutions for the
+
+concentration of the diﬀusant.
+
+(3) Using the proposed computational framework, we solved some realistic ﬁnite domain problems
+
+on general computational meshes. Also, we systematically studied the eﬀect of the concentra-
+
+tion of the diﬀusant on the deformation of the solid and vice-versa, and their implications on
+
+degradation/healing of materials and structures.
+
+1.4. An outline of this paper and symbolic notation. The remainder of this paper is orga-
+
+nized as follows. Section 2 presents a mathematical model for degradation/healing of a deformable
+
+elastic solid. The mathematical model will require performing coupled deformation-diﬀusion analy-
+
+sis. In Section 3 we present a fully coupled computational framework for deformation-diﬀusion anal-
+
+ysis. The proposed computational framework will contain a non-negative formulation for tensorial-
+
+diﬀusion equation on general computational grids (which will always produce physically meaningful
+
+non–negative values for the concentration), a numerical solver for deformation, and a staggered cou-
+
+pling algorithm for coupling individual diﬀusion and deformation numerical solvers. In Section 4,
+
+representative numerical examples will be presented to illustrate the performance of the proposed
+
+coupled deformation-diﬀusion computational framework. Conclusions are drawn in Section 5.
+
+The symbolic notation adopted in this paper is as follows. We shall make a distinction between
+
+vectors in the continuum and ﬁnite element settings. Similarly, we make a distinction between
+
+second-order tensors in the continuum setting versus matrices in the context of the ﬁnite element
+
+method. The continuum vectors are denoted by lower case boldface normal letters, and the second-
+
+order tensors will be denoted using upper case boldface normal letters (for example, vector u and
+
+second-order tensor T).
+
+In the ﬁnite element context, we shall denote the vectors using lower
+
+case boldface italic letters, and the matrices are denoted using upper case boldface italic letters
+
+(for example, vector v and matrix K). Other notational conventions adopted in this paper are
+
+introduced as needed.
+
+4
+
+2. A MATHEMATICAL MODEL FOR COUPLED DEFORMATION-DIFFUSION
+
+Consider an inert (chemical or biological) species being diﬀused through a deformable elastic
+solid. We now present a simple mathematical model for such a process. Let Ω ⊂ Rnd be a bounded
+open domain, where “nd” denotes the number of spatial dimensions. The boundary ∂Ω is assumed
+to be piecewise smooth. Mathematically, ∂Ω = ¯Ω − Ω, where ¯Ω is the set closure of Ω. A spatial
+point in ¯Ω is denoted by x. The gradient and divergence operators with respect to x are denoted by
+grad[·] and div[·], respectively. The unit outward normal to the boundary is denoted by n(x). We
+shall denote the displacement of the solid by u(x), and the concentration of the diﬀusant by c(x).
+
+It is important to note that the concentration is a non-negative quantity, and a robust numerical
+
+solver should meet the non-negative constraint (which is not the case with many popular numerical
+
+schemes).
+
+For the deformation problem, the boundary is divided into two complementary parts: ΓD
+
+which the displacement vector is prescribed, and ΓN
+the diﬀusion problem, the boundary is divided into ΓD
+c on which the ﬂux is prescribed. For well-posedness, we require that ΓD
+ΓN
+c = ∂Ω. In addition, we assume that meas(ΓD
+c ∩ ΓN
+ΓD
+for uniqueness of the solution.
+
+c = ∅, and ΓD
+
+c ∪ ΓN
+
+u on
+u on which the traction vector is prescribed. For
+c on which concentration is prescribed, and
+u = ∂Ω,
+c ) > 0
+
+u ∪ ΓN
+u ∩ ΓN
+u ) > 0 and meas(ΓD
+
+u = ∅, ΓD
+
+2.1. A model for diﬀusion-dependent deformation. The solid is modeled using linearized
+
+elasticity but the material parameters are allowed to depend on the concentration. The linearized
+
+strain is deﬁned through
+
+El :=
+
+1
+
+For a given concentration c(x), the stress-strain relationship will be modeled as follows:
+
+2(cid:0)grad[u] + grad[u]T(cid:1)
+
+Tc(u, x) = λ(x, c)tr[El]I + 2µ(x, c)El
+
+(1)
+
+(2)
+
+where Tc is the Cauchy stress, and λ and µ are the Lam´e parameters but now can depend both on
+
+the concentration and position. A simple model for the Lam´e parameters to account for degrada-
+
+tion/healing of the material due to the presence of a diﬀusant can be taken as follows:
+
+λ(x, c) = λ0(x) + λ1(x)
+
+µ(x, c) = µ0(x) + µ1(x)
+
+c(x)
+cref
+c(x)
+cref
+
+(3a)
+
+(3b)
+
+where cref
+
+is the reference concentration (which depends on the problem); λ0 and µ0 are the
+
+Lam´e parameters for the virgin material (that is, in the absence of the diﬀusant); and λ1(x)
+
+and µ1(x) are the weights to account for the eﬀect of concentration on the Lam´e parameters.
+
+5
+
+The material parameters λ1 and µ1 can be individually positive (which means that the material
+
+is healing), negative (which means that the material is degrading), or zero (which means that
+
+the material is unaﬀected by the presence of the diﬀusant). However,
+
+it is assumed that the
+
+parameters (λ0(x), λ1(x), µ0(x) and µ1(x)) and concentration are such that we have bulk modulus
+λ(x, c) + 2
+
+3 µ(x, c) > 0 and shear modulus µ(x, c) > 0.
+
+The above model given by equation (3) is similar to the concept of macroscopic damage variables,
+
+which has been introduced by Kachanov [24] to model material damage. The basic idea behind
+
+the concept of macroscopic damage variables is to quantify damage using internal variable(s). This
+
+concept has now been widely employed in numerous other works on damage (for example, see the
+
+review articles by Chaboche [8, 9]). In the above model, the concentration of the diﬀusant can
+
+be thought as a macroscopic damage/healing variable. The most common criticism about using
+
+internal variables is that these variables (in many cases) cannot be measured using physical experi-
+
+ments. However, in the above model, the dependence of the Lam´e parameters on the concentration
+
+can be measured indirectly by non-destructive testing methods.
+
+It should be noted that Weitsman [56], Kringos et al.
+
+[29, 28], and Muliana et al.
+
+[41] have
+
+considered material degradation as a function of concentration of the diﬀusant. However, the
+
+models developed in these works are not fully coupled. That is, the material properties of the solid
+
+are dependent on the concentration but the diﬀusivity is unaﬀected by the deformation of the solid.
+
+In Reference [25], a fully coupled model is proposed but a speciﬁc boundary value problem (torsion
+
+of a cylindrical annulus undergoing degradation) is solved using the semi-inverse method. They did
+
+not present a computational framework, and also their mathematical model is diﬀerent from the
+
+one present in this paper (see Remark 2.1).
+
+2.2. A model for deformation-dependent diﬀusion. We deﬁne the ﬁrst and second invariants
+
+of the tensor El as follows:
+
+IEl := tr[El]
+
+(4a)
+
+(4b)
+
+IIEl :=p2 dev[El] • dev[El] =r 2
+
+3(cid:0)3 tr[E2
+
+l ] − (tr[El])2(cid:1)
+
+where dev[El] := El − 1
+3 tr[El]I is the deviatoric part of El. (Note that the second invariant is not
+the principal invariant, and the reason for such a choice will be discussed later.) For a given strain
+
+ﬁeld (that is, for a given deformation ﬁeld), we model the eﬀect of deformation on the diﬀusivity
+
+as follows:
+
+DEl(x) = D0(x) + (DT (x) − D0(x))(cid:18) exp[ηT IEl] − 1
+
+exp[ηT Eref ] − 1(cid:19) + (DS(x) − D0(x))(cid:18) exp[ηSIIEl] − 1
+exp[ηSEref ] − 1(cid:19)
+
+(5)
+
+6
+
+where ηT and ηS are non-negative parameters; D0(x), DT (x) and DS(x) are (respectively) the
+
+reference diﬀusivity tensors under no, tensile, and shear strains; and Eref is a reference measure
+
+of the strain. The above model is partly motivated by the stress-induced diﬀusion experiments on
+
+glass done by McAfee [38, 39]. These experiments have clearly shown the following aspects, which
+
+have been qualitatively incorporated in the above model.
+
+(a) The relative diﬀusion rate under tension is nearly ﬁve times more than that of the relative
+
+diﬀusion rates under compression and shear.
+
+(b) The relative diﬀusion rate varies exponentially with respect to the (circumferential) strain for
+
+Pyrex glass (see [38, Equation 15 and Figure 3]).
+
+(c) The relative diﬀusion rate under compression is signiﬁcantly diﬀerent from that of shear (see
+
+[39, Figure 4]).
+
+Remark 2.1. In Reference [25], the eﬀect of deformation on the diﬀusivity tensor is modeled using
+
+the Frobenius norm of the Almansi-Hamel strain.
+
+(In linearized elasticity, the Almansi-Hamel
+
+strain is approximately equal to linearized strain.) Although the Frobenius norm of the strain is an
+
+invariant, the model cannot capture the diﬀerence in diﬀusivity under tension, compression, and
+
+shear, which has been observed in many materials. On the other hand, our model given by equation
+
+(5) can capture such departures between the diﬀusivities under tension, compression and shear.
+
+Remark 2.2. A remark on the choice of invariants in the model (given by equation (5)) is in
+
+order. Note that the second principal invariant of a tensor A is deﬁned as
+
+II ∗
+
+A :=
+
+1
+
+2(cid:16)(tr[A])2 − tr[A2](cid:17)
+
+(6)
+
+which is diﬀerent from the one used in equation (4). It has been discussed in the literature that
+
+the principal invariants are not suitable to ﬁt experimental data (e.g., Lurie [33], Anand [2, 3],
+
+Criscione et al.
+
+[13], Pleˇsek and Kruisov´a [49]). These works employed invariants of Eulerian
+
+Hencky strain. Let the Eulerian Hencky strain be denoted by EH = ln[V], with V being the left
+
+stretch tensor in the polar decomposition of the deformation gradient F. The ﬁrst three invariants
+
+based on the Eulerian Hencky strain which represent dilation (k1), magnitude of distortion (k2) and
+
+mode of distortion (k3) are given by
+
+k1 = tr[EH] = ln[J]
+
+k2 =pdev[EH] • dev[EH]
+k3 = 3√6 det(cid:20) 1
+dev[EH](cid:21)
+
+k2
+
+7
+
+(7a)
+
+(7b)
+
+(7c)
+
+where dev[EH ] := EH − 1
+we have
+
+3 tr[EH]I and J = det[F] > 0. For small gradients of the displacement,
+
+EH ≈ El
+
+(8)
+
+In linearized elasticity, the constitutive equation depends only on k1 and k2 as any dependence
+
+on k3 makes the model inherently non-linear (see Criscione et al.
+
+[13]). Herein, for modeling
+
+deformation-dependent diﬀusivity tensor we did not use k3 just to be consistent with the theory of
+
+linearized elasticity. However, in the case of ﬁnite elasticity, one should also use the third invariant
+
+in modeling the deformation-dependent diﬀusivity.
+
+One of the attractive features of the above model is that the parameters in the model can be
+
+established using standard experiments, which we shall describe below.
+
+(a) It is easy to check that if there is no strain (that is, El = 0), then DEl = D0. Hence, one
+can ﬁnd the reference diﬀusivity tensor D0 by doing a diﬀusion experiment on an unstrained
+
+specimen.
+
+(b) Under simple shear, we have IEl = 0, and IIEl = αS, where αS is the angle of shear. As
+αS → Eref , the diﬀusivity tensor D → DS. Hence, one can ﬁnd DS and ηS by doing a diﬀusion
+experiment on a specimen undergoing a simple shear.
+
+(c) Under a uniform tri-axial tension test, the linearized strain can be written as El = αT I with
+αT > 0. In this case, IIEl = 0, IEl = 3αT , and as αT → 1
+3 Eref we have D → DT . Hence, one
+can ﬁnd DT and ηT in the model given by equation (5) by doing a diﬀusion experiment on a
+
+specimen under uniform tri-axial strain.
+
+There are experimental techniques discussed in the literature for maintaining a specimen
+
+under uniform tri-axial strain. To name a few, tri-axial tensile testing of brittle materials
+
+such as calestone (a dental plaster), copper and aluminum alloys, austenitic stainless steel were
+
+described by Cridland and Wood [12], Hayhurst and Felce [21] and Calloch and Marquis [7].
+
+Advanced tri-axial testing of geomaterials such as rock and soil were carried out by Donaghe
+
+et al. [14], Hunsche [23] and Wawersik [54]. Despite these experimental techniques, it can well
+
+be argued that maintaining a specimen under uniform tri-axial strain can be a diﬃcult and
+
+expensive. In that case, after determining D0, DS and ηS one can evaluate DT and ηT using
+
+either uni-axial or bi-axial tension tests. However, in uni-axial and bi-axial tests, it should be
+
+noted that IIEl will not be equal to zero.
+
+Remark 2.3. For brittle materials such as concrete, ceramics, metallic alloys and geomaterials
+
+such as soil and rock it is relatively easier to perform compression tests than tension tests. In those
+
+8
+
+cases, the expression for diﬀusivity tensor DEl(x) can be modeled as follows:
+
+DEl(x) = D0(x) + (D0(x) − DC(x))(cid:18) exp[ηC IEl] − 1
+
+exp[ηCEref ] − 1(cid:19) + (DS(x) − D0(x))(cid:18) exp[ηSIIEl] − 1
+exp[ηSEref ] − 1(cid:19)
+
+(9)
+
+where ηC and ηS are non-negative parameters; D0(x), DC(x), and DS(x) are (respectively) ref-
+
+erence diﬀusivity tensors under no, compressive, and shear strains. Also, it should be noted that
+
+modeling diﬀusivity as an exponential function of stress/strain is quite popular in literature (e.g.,
+
+see McAfee [38], Fahmy and Hurt [16]).
+
+The diﬀusivity tensor is assumed to be symmetric, bounded, and uniformly elliptic. That is,
+
+DEl(x) = DT
+
+El(x) ∀ x ∈ Ω
+
+and there exists two constants 0 < ξ1 ≤ ξ2 < +∞ such that
+
+ξ1yT y ≤ yT DEl(x)y ≤ ξ2yT y ∀ x ∈ Ω and ∀ y ∈ Rnd
+
+(10)
+
+(11)
+
+2.3. Governing ﬁeld equations. The governing equations for the deformation of the solid can
+
+be written as follows:
+
+div[Tc] + ρ(x)b(x) = 0 in Ω
+
+u(x) = up(x) on ΓD
+u
+
+Tc n(x) = tp(x)
+
+on ΓN
+u
+
+(12a)
+
+(12b)
+
+(12c)
+
+where ρ(x) is the density, b(x) is the speciﬁc body force, up(x) is the prescribed displacement,
+tp(x) is the prescribed traction, and recall that n(x) is the unit outward normal to the boundary.
+
+In the absence of internal couples, the balance of angular momentum reads
+
+Tc = TT
+c
+
+(13)
+
+which the Cauchy stress given in equation (2) clearly satisﬁes. The governing equations for the
+
+steady-state (deformation-dependent) diﬀusion process can be written as follows:
+
+−div [DEl(x) grad[c]] = f (x)
+c(x) = cp(x)
+n(x) · DEl(x) grad[c] = hp(x) on ΓN
+
+on ΓD
+c
+
+in Ω
+
+c
+
+(14a)
+
+(14b)
+
+(14c)
+
+where cp(x) is the prescribed concentration, hp(x) is the prescribed concentration ﬂux on the
+
+boundary, and f (x) is the volumetric source.
+
+It is easy to see that the governing equations for the deformation (12) and the governing equations
+
+for the diﬀusion (14) are coupled through equations (2) and (5). To predict the degradation/healing
+
+9
+
+of the solid due to the diﬀusant, one needs to solve this system of coupled nonlinear partial dif-
+
+ferential equations given by equations (1)-(4), (5), (12) and (14). It is noteworthy that, except for
+
+simple problems, it is not possible to ﬁnd analytical solutions to this system of equations, and one
+
+needs to resort to numerical solutions for solving realistic and practical problems.
+
+However, to obtain reliable and predictive numerical solutions, one has to overcome many nu-
+
+merical challenges.
+
+In particular, one has to make sure that the chosen numerical scheme gives
+
+non-negative values for the concentration as a negative value for the concentration is unphysical.
+
+We will show in a subsequent section that the classical single-ﬁeld formulation produces negative
+
+concentrations. This is particularly true if the medium is anisotropic, and one may even get nega-
+
+tive values for the concentration even when the medium is isotropic if the mesh is not chosen with
+
+care. For example, one need to choose a mesh with square elements or a well-centered triangular
+
+mesh [45] even for isotropic diﬀusion. (In two-dimensions a well-centered triangular mesh means
+
+that all the angles of any triangle are acute. Similarly, one can deﬁne a well-centered mesh in higher
+
+dimensions [53].)
+
+We now present a numerical framework to solve the coupled deformation-diﬀusion equations (1)
+
+–(14) in a systematic manner.
+
+3. A COUPLED COMPUTATIONAL FRAMEWORK
+
+The computational framework will be based on the Finite Element Method (FEM), convex
+
+quadratic programming, and staggered coupling techniques. To this end, let the domain Ω be
+
+decomposed into “N ele” non-overlapping open sub-domains (which in the ﬁnite element context
+
+will be elements). That is,
+
+¯Ω =
+
+¯Ωe
+
+N ele
+
+[e=1
+
+(15)
+
+where a superposed bar denotes the set closure. The boundary of Ωe is denoted as ∂Ωe := ¯Ωe − Ωe.
+For convenience and to avoid errors due to projection operators, we shall employ the same com-
+
+putational mesh for both deformation and diﬀusion analyses.
+
+(Note that one needs to employ
+
+projection operators if diﬀerent computational meshes are employed for multi-ﬁeld problems like
+
+coupled deformation-diﬀusion.) We now present individual solvers for deformation and diﬀusion,
+
+and a coupling algorithm to couple individual solvers to obtain the coupled response. The solver
+
+for the diﬀusion problem will always give physically meaningful non-negative values for the con-
+
+centration.
+
+10
+
+3.1. A numerical solver for deformation analysis. For solving the pure deformation problem
+
+(that is, for a given concentration ﬁeld) the computational framework utilizes the standard single-
+
+ﬁeld (pure displacement) formulation. However, it should be noted that one can employ any other
+
+formulation (e.g., B-bar method [22], stabilized mixed formulation [43], mixed assumed strain
+
+formulation [50], mixed enhanced formulation [52]) to solve the (pure) deformation problem. For
+
+completeness, we shall now brieﬂy outline the single-ﬁeld formulation. To this end, we shall deﬁne
+
+the following function spaces:
+
+uo
+U :=nu(x) ∈(cid:0)H 1(Ω)(cid:1)nd (cid:12)(cid:12) u(x) = up(x) on ΓD
+uo
+W :=nw(x) ∈(cid:0)H 1(Ω)(cid:1)nd (cid:12)(cid:12) w(x) = 0 on ΓD
+
+(16a)
+
+(16b)
+
+where H 1(Ω) is a standard Sobolev space on Ω [6], and recall that “nd” is the number of spatial
+
+dimensions. The standard single-ﬁeld formulation for the pure deformation problem (12) reads:
+Find u(x) ∈ U such that we have
+
+where the bilinear form and linear functional are, respectively, deﬁned as follows:
+
+Bu(w; u) = Lu(w) ∀ w(x) ∈ W
+
+Bu(w; u) :=ZΩ
+Lu(w) :=ZΩ
+
+grad[w] • Tc(u, x) dΩ
+w(x) · ρ(x)b(x) dΩ +ZΓN
+
+u
+
+w(x) · tp(x) dΓ
+
+(17)
+
+(18a)
+
+(18b)
+
+For a non-negative integer m, let Pm(Ωe) denotes the linear vector space spanned by polynomials
+up-to mth order deﬁned on the sub-domain Ωe. We shall deﬁne the following ﬁnite dimensional
+subsets of U and W:
+
+U h :=(cid:26)uh(x) ∈ U (cid:12)(cid:12) uh(x) ∈(cid:0)C 0( ¯Ω)(cid:1)nd
+W h :=(cid:26)wh(x) ∈ W (cid:12)(cid:12) wh(x) ∈(cid:0)C 0( ¯Ω)(cid:1)nd
+
+, uh(x)(cid:12)(cid:12)Ωe ∈(cid:16)Pk(Ωe)(cid:17)nd
+, wh(x)(cid:12)(cid:12)Ωe ∈(cid:16)Pk(Ωe)(cid:17)nd
+
+, e = 1,··· , N ele(cid:27)
+, e = 1,··· , N ele(cid:27) (19b)
+
+(19a)
+
+where k is a non-negative integer. A corresponding ﬁnite element formulation for the deformation
+analysis can be written as: Find uh(x) ∈ U h such that we have
+
+After the ﬁnite element discretization, the deformation analysis will involve solving the following
+
+Bu(wh; uh) = Lu(wh) ∀ wh(x) ∈ W h
+
+(20)
+
+discrete equations:
+
+Ku(c)u = f u
+
+(21)
+
+where u denotes the nodal displacements, c denotes the nodal concentrations, and the stiﬀness
+
+matrix for the deformation analysis K u depends on the concentration of the diﬀusant.
+
+11
+
+3.2. A numerical solver for diﬀusion analysis. Before we provide a numerical solver for dif-
+fusion, we shall provide a mathematical argument to show that c(x) ≥ 0 in Ω even for the coupled
+problem. We shall assume that a solution exists for the coupled problem. (Proving existence of a
+
+solution for the coupled system is a research topic by itself, and is beyond the scope of this paper.
+
+However, in this paper we do ﬁnd a numerical solution for various coupled deformation-diﬀusion
+
+problems.) That is, there exists a pair, u(x) and c(x), such that they satisfy the coupled system
+
+of equations. For the given displacement ﬁeld, u(x), (and hence for a given strain ﬁeld El(x)) we
+
+deﬁne
+
+D(x) := DEl(x)
+
+(22)
+
+From the theory of partial diﬀerential equations we have the following maximum principle [15]:
+
+Theorem 3.1. Let cp(x) ≥ 0 on ∂Ω and D(x) be continuously diﬀerentiable. If c(x) ∈ C 2(Ω) ∩
+C 0( ¯Ω) satisﬁes the diﬀerential inequality −div[D(x)grad[c]] = f (x) ≥ 0 in Ω, then we have the
+following non-negative property:
+
+c(x) ≥ 0
+
+in ¯Ω
+
+(23)
+
+Remark 3.2. The above maximum principle theorem is due to Hopf, and a proof can be found in
+
+any standard textbook on partial diﬀerential equations (e.g., References [40, 15, 47, 18, 20]). One
+
+can ﬁnd in the literature maximum principles for diﬀusion-type equations under weaker regularity
+than C 2(Ω)∩ C 0( ¯Ω) (for example, see References [37, 4]). But such a thorough treatment is beyond
+the scope of this paper, and is not crucial to our presentation.
+
+As discussed earlier, many existing numerical formulations (including the single-ﬁeld formulation,
+
+which is based on the Galerkin principle) for diﬀusion-type equation do not meet the non-negative
+
+constraint. For example, the widely used single-ﬁeld formulation (which is based on the Galerkin
+
+principle) does not produce physically meaningful non-negative solutions. We now present a novel
+
+methodology of enforcing the non-negative constraint on the concentration of the diﬀusant. The
+
+methodology works well for general computational grids and for low-order ﬁnite elements.
+
+We start with the single-ﬁeld formulation, and then modify the underlying (discrete) variational
+
+statement to meet the non-negative constraint. We shall deﬁne the following function spaces
+
+P :=(cid:8)c(x) ∈ H 1(Ω)(cid:12)(cid:12) c(x) = cp(x) on ΓD
+c(cid:9)
+Q :=(cid:8)q(x) ∈ H 1(Ω)(cid:12)(cid:12) q(x) = 0 on ΓD
+c(cid:9)
+
+12
+
+(24a)
+
+(24b)
+
+where H 1(Ω) is a standard Sobolev space [6]. We also relax the regularity of the diﬀusivity tensor
+
+for weak solutions, and assume that
+
+ZΩ
+
+tr[DEl(x)T DEl(x)] dΩ < +∞
+
+(25)
+
+where tr[·] is the standard trace operator used in tensor algebra and continuum mechanics [10].
+The standard single ﬁeld formulation for tensorial diﬀusion equation (14) reads: Find c(x) ∈ P
+such that we have
+
+where the bilinear form and linear functional are, respectively, deﬁned as
+
+Bc(q; c) = Lc(q) ∀ q(x) ∈ Q
+
+Bc(q; c) :=ZΩ
+Lc(q) :=ZΩ
+
+grad[q] · DEl(x)grad[c] dΩ
+q(x) f (x) dΩ +ZΓN
+
+c
+
+q(x) hp(x) dΓ
+
+(26)
+
+(27a)
+
+(27b)
+
+It is well-known that the above weak form (26) has a corresponding variational statement, which
+
+can be written as follows:
+
+minimize
+
+c(x)∈P
+
+1
+2Bc(c; c) − Lc(c)
+
+We shall deﬁne the following ﬁnite dimensional vector spaces of P and Q:
+
+(28)
+
+(29a)
+
+(29b)
+
+P h :=nch(x) ∈ P (cid:12)(cid:12) ch(x) ∈ C 0( ¯Ω), ch(x)(cid:12)(cid:12)Ωe ∈ Pk(Ωe), e = 1,··· , N eleo
+Qh :=nqh(x) ∈ Q(cid:12)(cid:12) qh(x) ∈ C 0( ¯Ω), qh(x)(cid:12)(cid:12)Ωe ∈ Pk(Ωe), e = 1,··· , N eleo
+
+where k is a non-negative integer. (Recall that, for a non-negative integer m, Pm(Ωe) denotes the
+linear vector space spanned by polynomials up-to mth order deﬁned on the subdomain Ωe.) A
+corresponding ﬁnite element formulation can be written as: Find ch(x) ∈ P h such that we have
+
+Bc(qh; ch) = Lc(qh) ∀ qh(x) ∈ Qh
+
+(30)
+
+3.2.1. A non-negative solver for tensorial diﬀusion equation. We shall use the symbols (cid:22) and (cid:23)
+to denote component-wise inequalities for vectors. That is, for given any two (ﬁnite dimensional)
+
+vectors a and b
+
+a (cid:22) b means that
+
+ai ≤ bi ∀ i
+
+(31)
+
+Similarly, one can deﬁne the symbol (cid:23). We shall denote the standard inner-product on Euclidean
+spaces by h·;·i.
+
+13
+
+After ﬁnite element discretization, for given nodal displacement vector u, the discrete equation
+
+for the diﬀusion analysis takes the following form:
+
+K c(u)c = f c
+
+(32)
+
+where Kc is a symmetric positive deﬁnite matrix, c is the vector containing nodal concentrations,
+
+and f c is the source vector. Let “ndof s” denote the number of degrees-of-freedom for the concen-
+tration. The matrix Kc is of size ndof s × ndof s, and the vectors c and f c are of size ndof s × 1.
+The ﬁnite element discretized equation (32) is equivalent to the following minimization problem:
+
+minimize
+c∈Rndof s
+
+1
+2hc; K c(u)ci − hc; f ci
+
+(33)
+
+As shown in Figure 15(a), the numerical formulation based on equations (32) and (33) produces un-
+
+physical negative concentrations for many practically important problems. (More examples showing
+
+Galerkin formulation producing negative solutions can be found in Reference [42].) Following the
+
+ideas outlined in References [45, 32, 42] a non-negative formulation corresponding to (33) can be
+
+written as follows:
+
+minimize
+c∈Rndof s
+
+1
+2hc; K c(u)ci − hc; f ci
+
+subject to c (cid:23) 0
+
+(34a)
+
+(34b)
+
+Since for a given nodal displacement vector, the matrix K c(u) is positive deﬁnite, the above problem
+
+(34) belongs to convex quadratic programming. From optimization theory it can be shown that
+
+the problem (34) has a unique global minimizer. There are many robust numerical algorithms
+
+available in the literature to solve the aforementioned constrained minimization problem (e.g.,
+
+active set strategy, interior point methods, barrier methods). In all our numerical simulations, we
+
+have employed the active set strategy. A detailed discussion on numerical optimization can be
+
+found in references [46, 5, 34].
+
+3.3. A staggered coupling algorithm. Current coupling algorithms are broadly classiﬁed into
+
+main classes: monolithic and staggered schemes. In monolithic schemes discretization scheme is
+
+applied to the full problem. On the other hand, in staggered schemes (which are based on operator-
+
+split techniques) the coupled system is partitioned, often according to the diﬀerent coupled ﬁelds
+
+(in our case, concentration and displacement in deformation-diﬀusion analysis), and each partition
+
+is treated by diﬀerent and tailored numerical schemes. There is no easy way to incorporate our non-
+
+negative formulation within a monolithic scheme. Therefore, we shall employ a staggered coupling
+
+approach. The various steps of the proposed coupling algorithm is presented in Algorithm 1.
+
+14
+
+Algorithm 1 Staggered coupling algorithm for deformation-diﬀusion analysis
+1: Input: tolerance (ǫ(c)
+2: Guess c(0) (cid:23) 0
+3: for i = 1, 2,··· do
+
+TOL), maximum number of iteration (MAXITERS)
+
+if i > MAXITERS then
+
+4:
+
+5:
+
+6:
+
+7:
+
+Solution did not converge in speciﬁed maximum number of iterations. EXIT
+
+end if
+Call deformation solver: Obtain u(i) by solving
+
+K u(c(i−1))u(i) = f u
+
+8:
+
+Call non-negative diﬀusion solver: Obtain c(i) by solving the following minimization problem
+
+minimize
+c(i) ∈Rndof s
+
+1
+2hc(i); K c(u(i))c(i)i − hc(i); f ci
+
+subject to c(i) (cid:23) 0
+
+9:
+
+10:
+
+11:
+
+if kc(i) − c(i−1)k < ǫ(c)
+
+TOL then
+
+Staggered scheme converged. EXIT
+
+end if
+
+12: end for
+
+Remark 3.3. In this paper, we shall use the 2-norm in the stopping criterion kc(i) − c(i−1)k <
+ǫ(c)
+TOL in the staggered coupling algorithm. However, one could use any other norm as in (ﬁnite
+dimensional) Euclidean spaces all norms are equivalent [19].
+
+Remark 3.4. It should be noted that even though the solution procedure is a staggered scheme, the
+
+problem is coupled, and the converged numerical solution will be the coupled response.
+
+4. PERFORMANCE OF THE PROPOSED FRAMEWORK
+
+In this section, we present numerical solutions of several realistic problems using the proposed
+
+mathematical model and computational framework. The ﬁrst set of problems involve degrada-
+
+tion/healing of beams, and the second set involves degradation/healing of rectangular domains
+
+with holes. All these problems naturally arise in many important engineering applications. For
+
+example, study of degradation of beams is important to assess the performance of structural com-
+
+ponents in bridges, towers, buildings and aircraft wings. The second set of problems is to study
+
+the degradation of ducts carrying chemicals (e.g., water, carbon-dioxide, coolant) cutting through
+
+15
+
+a slab or a wall, which have many applications in civil and nuclear structures. Using these two
+
+sets of representative problems we will illustrate the performance of the proposed computational
+
+framework for coupled deformation-diﬀusion analyses. In particular, we will show that the proposed
+
+computational framework produces physical and reliable solutions. We also systematically study
+
+the eﬀect of the concentration of the diﬀusant on the deformation of the solid and vice-versa.
+
+Here, in these representative numerical examples we have chosen D0, DT and DS as follows:
+
+D0 =  cos(θ) − sin(θ)
+
+cos(θ) !  d1
+
+sin(θ)
+
+0
+
+DT = ΦT D0
+
+DS = ΦSD0
+
+0
+
+d2 !  cos(θ)
+− sin(θ)
+
+sin(θ)
+
+cos(θ) !
+
+(35a)
+
+(35b)
+
+(35c)
+
+where ΦT and ΦS are some positive real numbers. The reason for choosing such a form is that
+
+a change in each of the DT and DS eﬀect the concentration in a considerable manner in various
+
+important realistic problems. But in general each component of DT , DS may be diﬀerent from that
+
+of D0, even then our computational framework is still valid and works as shown in the representative
+
+problems outline in subsections plate with a hole 4.5.1 and beam with three holes 4.5.2, where in
+
+DT and DS are chosen as follows:
+
+sin(θ)
+
+DT =  cos(θ) − sin(θ)
+DS =  cos(θ) − sin(θ)
+
+cos(θ) !  dT
+cos(θ) !  dS
+
+sin(θ)
+
+1
+0
+
+1
+0
+
+0
+dT
+
+2 !  cos(θ)
+− sin(θ)
+2 !  cos(θ)
+− sin(θ)
+
+0
+dS
+
+sin(θ)
+
+cos(θ) !
+cos(θ) !
+
+sin(θ)
+
+(36a)
+
+(36b)
+
+4.1. Numerical h-convergence study. In this subsection, we perform a numerical h-convergence
+
+study by employing the proposed computational framework on a coupled deformation-diﬀusion
+
+problem. Herein, by h-convergence we mean the overall convergence of the proposed framework
+
+with respect to the reﬁnement of the computational mesh (but still maintaining the same order of
+
+interpolation within each ﬁnite element). Since the non-negative solver for diﬀusion works only for
+
+low-order ﬁnite element, we employ low-order ﬁnite elements in all our numerical simulations. It
+
+should be noted that for each successful coupled analysis using the proposed computational frame-
+
+work, the staggered coupling algorithm should converge. For each iteration in the staggered coupling
+
+algorithm, the active-set strategy in the non-negative solver for the diﬀusion problem should con-
+
+verge.
+
+We employ the method of manufactured solutions [27] in this convergence study. The computa-
+tional domain is taken as a bi-unit square (0 ≤ x ≤ 1 and 0 ≤ y ≤ 1). The displacement vector is
+
+16
+
+given by
+
+u(x, y) =
+
+v(x, y) =
+
+1
+π
+1
+π
+
+sin(
+
+) sin(
+
+cos(
+
+) cos(
+
+πx
+2
+πx
+2
+
+)
+
+πy
+2
+πy
+2
+
+)
+
+The concentration is given by
+
+c(x, y) = 1 +
+
+1
+π
+
+sin(
+
+πx
+2
+
+) sin(
+
+πy
+2
+
+)
+
+(37a)
+
+(37b)
+
+(38)
+
+Note that the concentration given in the above equation is non-negative in the whole computational
+
+domain. The following parameters are assumed in the convergence study:
+
+µ0 = π + 2, µ1 = −π, λ0 = 2, λ1 = −1, ρ = 1, Eref = 0.0001,
+cref = 1, ηT = 1, ηS = 1, βT = 2, βS = 2, γS =
+
+βS − 1
+
+exp[ηSEref ] − 1
+
+,
+
+D0 = 2 I, DT = βT D0, DS = βSD0
+
+The volumetric source for the diﬀusion problem is given by
+
+f (x, y) = π sin(
+
+πx
+2
+
+) sin(
+
+πy
+2
+
+)(cid:16)(1 − γS) + γS exphcos(
+)i
+
+sin(πx) cos(πy)exphcos(
+
+πx
+2
+
+πy
+2
+
+) sin(
+
+πγS
+4
+
+−
+
+The speciﬁc body force for the deformation problem is given by
+
+πx
+2
+
+) sin(
+
+πy
+2
+
+)i(cid:17)
+
+b(x, y) =  π sin( πx
+
+π cos( πx
+
+2 ) sin( πy
+
+2 ) + π
+
+2 ) cos( πy
+
+2 ) − π
+
+4 cos(πx)(1 − cos(πy))
+
+4 sin(πx) sin(πy)
+
+!
+
+(39)
+
+(40)
+
+(41)
+
+The boundary value problem is pictorially described in Figure 2. The tolerance in the stopping
+criterion for the staggered coupling algorithm is taken as ǫ(c)
+TOL = 10−8. A hierarchy of meshes
+similar to the ones shown in Figure 3 is employed in the numerical convergence study. In Figure
+
+4, the obtained numerical solution using the mesh shown in Figure 3(a) is compared with the
+
+analytical solution. The convergence of the proposed coupled framework is illustrated in Figures 5
+and 6 for three-node triangular and four-node quadrilateral elements with respect to L2-norm and
+H 1-seminorm, and the proposed computational framework performed well.
+
+In the subsequent subsections, we employ the proposed computational framework to solve various
+
+ﬁnite domain practical problems. Using these we illustrate how the tension, compression and shear
+
+in the solid aﬀect the (steady-state) diﬀusion process, and how the concentration of the diﬀusant
+
+aﬀect the deformation of the solid. The values of the parameters that are common to all the test
+
+problems are presented in Table 1. We have given the values for the volumetric source and body
+
+force for all the test problems in Table 2.
+
+17
+
+Table 1. Values of the parameters that are the same in all test problems (except for the
+
+one in the numerical h-convergence).
+
+Parameter
+
+value
+
+ρ
+
+cref
+
+Eref
+
+λ0
+
+µ0
+
+λ1
+
+µ1
+
+1
+
+1
+
+0.0001
++106
++106
+−9 × 105
+−9 × 105
+
+Table 2. Volumetric source f (x) and body force b(x) for various test problems.
+
+Test problem
+
+f (x)
+
+b(x)
+
+Cantilever beam with edge shear
+
+Simply supported beam under self-weight
+
+Fixed beam under self-weight
+
+Plate with a hole under self-weight
+
+Beam with three holes under self-weight
+
+0
+
+10000
+1000 −10 ˆey
+100 −10 ˆey
+−10 ˆey
+0
+−10 ˆey
+
+0
+
+4.2. Cantilever beam with edge shear. The purpose of this test problem is to illustrate the
+
+aﬀect of DS on the coupled response. We consider a cantilever beam with a uniform edge shear
+
+of 500. The length of the beam is 1.0, and the height of the beam is 0.1. For the deformation
+
+problem, top and bottom surfaces are subjected to zero traction. For the diﬀusion problem, zero
+
+concentration is prescribed on the top and bottom surfaces, and zero ﬂux is prescribed on the left
+
+and right surfaces. The boundary value problem is pictorially described in Figure 7.
+
+We have employed a structured mesh using four-node quadrilateral elements with 21 nodes
+
+along each side of the domain (see the mesh in Figure 8). The stopping criterion is again taken
+as ǫ(c)
+TOL = 10−8. We have considered three diﬀerent values for ΦS: 5, 10, and 20. The other
+parameters used in the coupled analysis are as follows:
+
+θ =
+
+π
+6
+
+, d1 = 1, d2 = 1, ΦT = 2, ηT = 100, ηS = 1
+
+(42)
+
+The contour proﬁles for the concentration for these three values are shown in Figure 8. As expected,
+
+the diﬀusant accumulated near the right side of the domain (where the uniform edge shear is
+
+applied). In Table 3, we have presented the maximum concentration and the number of iterations
+
+taken by the staggered coupling algorithm for the chosen values of ΦS. One can observe that as
+
+18
+
+Table 3. Cantilever beam with edge shear: The table presents the maximum concentration
+
+and the number of iterations taken by the staggered coupling algorithm for various values
+
+of ΦS. (Note that the minimum concentration in all the cases is zero.)
+
+ΦS Max. concentration Iterations
+
+5
+
+10
+
+20
+
+4.257 × 10−1
+2.187 × 10−1
+1.107 × 10−1
+
+14
+
+9
+
+7
+
+Table 4. Simply supported beam under self-weight: The table presents the maximum
+
+concentration and the iterations taken by the staggered coupling algorithm for various values
+
+of ηS. (Note that the minimum concentration in all the cases is zero.)
+
+ηS
+
+Max. concentration Iterations
+
+1
+103
+2 × 104
+
+7.205 × 10−1
+7.309 × 10−1
+9.365 × 10−1
+
+10
+
+10
+
+12
+
+ΦS increases, the staggered coupling algorithm takes fewer iterations. This can be explained as ΦS
+
+increases, the diﬀusivity increases and the diﬀusant is more uniformly distributed (which is evident
+
+from Figure 8).
+
+4.3. Simply supported beam under self-weight. The purpose of this test problem is to study
+
+the aﬀect of ηS on the coupled response, and to illustrate the competitive eﬀects of shear and
+
+tension/compression on the diﬀusion process. We consider a simply supported beam under self-
+
+weight with traction-free surfaces. The boundary value problem is pictorially described in Figure
+
+9.
+
+The tolerance for the stopping criterion in the staggered coupling algorithm is taken as ǫ(c)
+
+TOL =
+10−5. We have employed a structured mesh using four-node quadrilateral element with 21 nodes
+
+along each side of the domain (see the mesh in Figure 10). We have considered three values for ηS:
+1, 103 and 2 × 104. The other parameters used in this test problem are as follows:
+
+θ =
+
+π
+6
+
+, d1 = 1, d2 = 1, ΦT = 10, ΦS = 10, ηT = 1
+
+(43)
+
+From Table 4 one can infer that as ηS increases the maximum concentration and iterations taken
+
+for convergence of staggered coupling algorithm increase. This is because for lower values of ηS
+
+shear aﬀects the diﬀusivity tensor more than the tension/compression and for higher values of ηS
+
+tension/compression dominates. This is also evident in the numerical results presented in Figure
+
+19
+
+Table 5. Fixed beam under self-weight: The table presents the maximum concentration
+
+and the iterations taken by the staggered coupling algorithm for various values of ηT . (Note
+
+that the minimum concentration in all the cases is zero.)
+
+ΦT Max. concentration Iterations
+
+1
+
+5
+
+7
+
+1.250 × 10−1
+1.348 × 10−1
+1.575 × 10−1
+
+2
+
+5
+
+8
+
+10. For lower values of ηS, the diﬀusant accumulated near the supports of the beam (where the
+
+shear is maximum). For higher values of ηS, the diﬀusant spreads deep into beam. An important
+
+feature to be noted is that the concentration proﬁle curves up. This is because the diﬀusivity is
+
+higher in tension than in compression. This is physically meaningful, as, in general, the sizes of
+
+pores in the solid enlarge due to tension, shrink due to compression, and distort due to shear.
+
+The deformation-dependent diﬀusivity tensor DEl(x) given by equation (5) takes these factors into
+account. The next test problem highlights other important features of the proposed mathematical
+
+model.
+
+4.4. Fixed beam under self-weight. The purpose of this test problem is to study the aﬀect of
+
+ΦT on the coupled response and show that our model can capture the qualitative aspects of the
+
+experiments done by McAfee [38, 39]. A ﬁxed beam of length unity and depth 0.1 is subjected
+
+to self-weight. The top and bottom surfaces are traction-free. For the diﬀusion problem, the top
+
+and bottom surfaces have zero concentration, and the left and right surfaces have zero ﬂux. The
+
+boundary value problem is pictorially described in Figure 11.
+
+The tolerance for the stopping criterion in the staggered coupling algorithm is taken as ǫ(c)
+
+TOL =
+10−7. We have employed a structured mesh using four-node quadrilateral element with 21 nodes
+
+along each side of the domain (see the mesh in Figure 12). We have considered three diﬀerent
+
+values for ΦT : 1, 5 and 7. The other parameters used in this test problem are as follows:
+
+θ = 0, d1 = 1, d2 = 1, ΦS = 1, ηT = 100, ηS = 1
+
+(44)
+
+In Table 5, we have presented the maximum concentration and number of iterations taken by
+
+the staggered coupling algorithm for chosen values of ΦT . One can observe that as ΦT increases the
+
+maximum concentration and iterations taken increase. This results in the deformation-dependent
+
+diﬀusivity DEl being high in tensile and low in compressive and shear regions of the beam. The
+diﬀusant accumulates in low diﬀusive areas such as the supports which are under shear and top
+
+section of the beam which is in compression. From Figure 12 one can observe that the concentration
+
+proﬁle which is initially around the central line of the beam curves up (the region of interest being
+
+20
+
+around 0.12). This test problem shows the success of our mathematical model in predicting the
+
+underlying physical phenomena observed from the stress-induced experiments done by McAfee
+
+[38, 39]. The invariants which represent dilation and distortion in our model were instrumental
+
+in capturing the change in diﬀusivity under tension, compression and shear. Hence concentration
+
+curves towards the compression zone.
+
+This type of curving of the concentration proﬁle is not observed when one uses the model in which
+DEl(x) depends only on kElk. As mentioned in the Remark 2.1, a diﬀusivity model based on the
+frobenius norm of El cannot capture the change in diﬀusivity tensor under tension, compression
+
+and shear deformations. The diﬀusivity tensor as per Reference [25] and the parameters assumed
+
+for the numerical study are given by:
+
+DEl(x) = D0(x) + (D∞(x) − D0(x)) (1 − exp[−λkElk])
+θ = 0, d1 = 1, d2 = 1, λ = 100, D∞ = 10 D0
+
+(45a)
+
+(45b)
+
+The concentration proﬁle as illustrated in Figure 13 is always around the central line and does not
+
+curve up for any value of D∞ and λ.
+
+4.5. Degradation/healing of rectangular domains with holes. In the following subsections,
+
+we highlight the importance of non-negative solutions and its impact on coupled deformation-
+
+diﬀusion analyses of rectangular domains with holes. We compare the non-negative formulation
+
+with the standard Galerkin formulation using two representative problems. We shall model DT
+and DS by the equations (36) in which di
+
+j is diﬀerent from dj where i = T, S and j = 1, 2. In both
+numerical studies here, the tolerance for the stopping criterion in the staggered coupling algorithm
+is taken as ǫ(c)
+TOL = 10−5 and three-node triangular unstructured meshes were used (see Figures 14
+and 18).
+
+4.5.1. Plate with a hole under self-weight. The purpose of this test problem is to study the im-
+
+portance of non-negative constraint in coupled-deformation-diﬀusion analyses. Herein, we perform
+
+coupled analysis for a square plate with a square hole under self-weight. The computational domain
+Ω is the region in-between a bi-unit square plate and a square hole of length 1
+
+9 . The boundary con-
+ditions for displacements at the hole and traction for the plate are equal to zero. The concentration
+
+at the hole is maintained at 1 while that at boundary of the plate is equal to 0. The boundary
+
+value problem is pictorially described in Figure 14. The other parameters assumed in the analysis
+
+of the coupled problem are as follows:
+
+θ =
+
+π
+3
+
+, ηT = 1, ηS = 1, d1 = 10000, dT
+
+1 = 11000, dS
+
+1 = 11000, d2 = 1, dT
+
+2 = 10, dS
+
+2 = 5
+
+(46)
+
+From Figure 15 it is evident that the proposed non-negative formulation satisﬁes the above condition
+
+and produces physically meaningful concentration while the standard Galerkin formulation predicts
+
+21
+
+Table 6. Plate with a hole under self-weight: The table presents the minimum concen-
+
+tration, degradation index and the iterations taken by staggered coupling algorithm using
+
+keeping other parameters in equations 46 ﬁxed.
+
+the standard single-ﬁeld formulation. Analysis is done for various values of (cid:0)d1, dT
+(cid:0)d1, dT
+
+(% of nodes violated)
+
+Min. concentration
+
+Degradation Index
+
+Iterations
+
+1(cid:1)
+
+1 , dS
+
+1 , dS
+
+1(cid:1) by
+
+Iterations
+
+(Galerkin)
+
+(non-negative)
+
+(1, 10, 10)
+
+(10, 30, 20)
+
+(100, 120, 110)
+
+(1000, 1200, 1100)
+
+(10000, 11000, 11000)
+
+0
+
+0
+
+−3.301 × 10−3
+−3.586 × 10−2
+−4.398 × 10−2
+
+0
+
+0
+
+25.15
+
+32.76
+
+34.07
+
+9
+
+8
+
+6
+
+5
+
+4
+
+9
+
+8
+
+21
+
+22
+
+8
+
+otherwise. The comparison of the concentration and degradation proﬁles for the standard Galerkin
+
+vs. the non-negative formulation given in Figures 15 and 16 shows that the Galerkin formulation
+
+violates the non-negative constraint. The obtained negative values for the concentration are not
+
+just numerical noise (see Table 6).
+
+4.5.2. Beam with three holes under self-weight. The purpose of this test problem is to show that
+
+as number of holes increase, the spatial extent and magnitude of violation of the non-negative con-
+
+straint by the Galerkin formulation increase dramatically. Herein, we perform coupled deformation-
+
+diﬀusion analysis for a beam with three square holes under self-weight. The computational domain
+
+Ω is the region in-between a beam of length 10.0 and height 1.0 and three square holes each of
+
+length 0.4. The boundary conditions for displacements at the holes and traction for the beam are
+
+equal to zero. The concentration at the holes is maintained at 1 while that at boundary of the
+
+beam is equal to 0. The boundary value problem is pictorially described in Figure 17. The other
+
+parameters assumed in the analysis of the coupled problem are as follows:
+
+θ =
+
+π
+4
+
+, ηT = 1, ηS = 1, d1 = 10000, dT
+
+1 = 20000, dS
+
+1 = 15000, d2 = 1, dT
+
+2 = 5, dS
+
+2 = 2
+
+(47)
+
+From Figures 18 and 19 it is evident that as the number of holes increase, the regions of negative
+
+concentration obtained from the standard Galerkin formulation also increases. Also from Tables 6
+
+and 7 it is evident that the negative concentration obtained from numerical study on beam with
+
+three holes is 1.35 times that of the plate with a hole.
+
+From Tables 6 and 7, one can see that as the directional diﬀusivities d1, dT
+
+1 increase the
+minimum concentration (which is initially zero) becomes negative under the Galerkin formulation.
+
+1 and dS
+
+This negative value of concentration and the degradation index (which represents the % of nodes at
+
+which concentration is negative) increases as these diﬀusivities increase. The proposed non-negative
+
+22
+
+Table 7. Beam with three holes under self-weight: The table presents the minimum con-
+
+centration, degradation index and the iterations taken by staggered coupling algorithm using
+
+keeping other parameters in equations 47 ﬁxed.
+
+the standard single-ﬁeld formulation. Analysis is done for various values of (cid:0)d1, dT
+(cid:0)d1, dT
+
+(% of nodes violated)
+
+Iterations
+
+Min. concentration
+
+Degradation Index
+
+1 , dS
+
+1(cid:1)
+
+1 , dS
+
+1(cid:1) by
+
+Iterations
+
+(Galerkin)
+
+(non-negative)
+
+(1, 10, 10)
+
+(10, 50, 30)
+
+(100, 200, 150)
+
+(1000, 2000, 1500)
+
+(10000, 20000, 15000)
+
+0
+
+0
+
+−3.150 × 10−2
+−5.665 × 10−2
+−5.948 × 10−2
+
+0
+
+0
+
+30.69
+
+31.14
+
+31.14
+
+8
+
+8
+
+6
+
+6
+
+6
+
+8
+
+8
+
+8
+
+6
+
+16
+
+formulation does not give negative values for the concentration for any values for these how these
+
+diﬀusivities. This is quite important because the material properties of the solid are dependent on
+
+the concentration obtained. From Figures 16 and 19, one can observe that the standard Galerkin
+
+method predicts that some regions are healing due to the negative values of the concentration which
+
+is physically unrealistic. The non-negative solver employed always gives non-negative concentration
+
+and shows that material is degrading everywhere.
+
+4.6. Performance of the staggered scheme and the active-set strategy. The convergence
+
+histories of the staggered coupling algorithm for the aforementioned test problems are shown in
+
+Figure 20. Note that the convergence of the staggered coupling algorithm is monotonic for the
+
+test problems on degradation/healing of beams. But the convergence is not monotonic for the test
+
+problem on degradation/healing of rectangular domain with holes, which is illustrated in Figure
+
+20(b)). Figure 21 shows the number of active-strategy iterations required for solving the constrained
+
+optimization problem for each iteration in the staggered coupling algorithm.
+
+5. CONCLUSIONS
+
+Many technologically and biologically important processes are coupled deformation-diﬀusion
+
+problems. Lately, there is a surge in research activity in studying coupled deformation-diﬀusion
+
+problems. However, in all these research eﬀorts it has not been recognized that many popular
+
+numerical formulations and existing computational packages predict unphysical negative solutions
+
+for the concentration of the diﬀusant, and this is more prominent in the case of a medium which
+
+has high directional diﬀusivities. Concentration of a chemical is a non-negative quantity, and this
+
+property has to be preserved to obtain physically meaningful numerical solution for a coupled
+
+deformation-diﬀusion problem.
+
+23
+
+We proposed a mathematical model for coupled deformation-diﬀusion analysis, which is suitable
+
+to model degradation/healing of materials and structures. The model is fully coupled in the sense
+
+that the deformation process is aﬀected by the diﬀusion process, and the diﬀusion process is in turn
+
+aﬀected by the deformation of solid. One of the main contributions is that we have presented a
+
+robust computational framework for solving coupled deformation-diﬀusion problems. The computa-
+
+tional framework includes a non-negative formulation for (tensorial) diﬀusion equation, a numerical
+
+solver for the deformation of the solid, and a staggered coupling algorithm. An important aspect of
+
+the computational framework is that it always produces physically meaningful non-negative values
+
+for the concentration of the diﬀusant on any computational grid (with low-order ﬁnite elements)
+
+even for a medium which has high directional diﬀusivities. We have illustrated the robustness of the
+
+computational framework on representative numerical examples. We have studied systematically
+
+the aﬀect of the deformation on the diﬀusion process on various practically important problems.
+
+ACKNOWLEDGMENTS
+
+The research reported herein was supported by Texas Engineering Experiment Station (TEES).
+
+This support is gratefully acknowledged. The opinions expressed in this paper are those of the
+
+authors and do not necessarily reﬂect that of the sponsor.
+
+References
+
+[1] ABAQUS/CAE/Standard, Version 6.8-3. Simulia, Providence, Rhode Island, www.simulia.com, 2009.
+
+[2] L. Anand. On Hencky’s approximate strain-energy function for moderate deformations. Journal of Applied Me-
+
+chanics, 46:78–82, 1979.
+
+[3] L. Anand. Moderate deformations in extension-torsion of incompressible isotropic elastic materials. Journal of
+
+the Mechanics and Physics of Solids, 34:293–304, 1986.
+
+[4] M. Borsuk and V. Kondratiev. Elliptic Boundary Value Problems of Second Order in Piecewise Smooth Domains.
+
+Elsevier Science, San Diego, USA, 2006.
+
+[5] S. Boyd and L. Vandenberghe. Convex Optimization. Cambridge University Press, Cambridge, UK, 2004.
+
+[6] F. Brezzi and M. Fortin. Mixed and Hybrid Finite Element Methods, volume 15 of Springer series in computa-
+
+tional mathematics. Springer-Verlag, New York, USA, 1991.
+
+[7] S. Calloch and D. Marquis. Triaxial tension-compression tests for multiaxial cyclic plasticity. International
+
+Journal of Plasticity, 15:521–549, 1999.
+
+[8] J. L. Chaboche. Continuum damage mechanics: Part I - General Concepts. Journal of Applied Mechanics,
+
+55:59–64, 1988.
+
+[9] J. L. Chaboche. Continuum damage mechanics: Part II - Damage growth, crack initiation and crack growth.
+
+Journal of Applied Mechanics, 55:65–72, 1988.
+
+[10] P. Chadwick. Continuum Mechanics: Concise Theory and Problems. Dover Publications, Inc., Minealo, New
+
+York, 1999.
+
+24
+
+[11] D. X. Cheng, D. N. Little, R. L. Lytton, and J. C. Holste. Moisture damage evaluation of asphalt mixtures by
+
+considering both moisture diﬀusion and repeated-load conditions. Transportation Research Record: Journal of
+
+the Transportation Research Board, (1832):42–49, 2003.
+
+[12] L. Cridland and W. G. Wood. A hydrostatic tension test of a brittle material. International Journal of Fracture
+
+Mechanics, 4:277–285, 1968.
+
+[13] J. C. Criscione, J. D. Humphrey, A. S. Douglas, and W. C. Hunter. An invariant basis for natural strain which
+
+yields orthogonal stress response terms in isotropic hyperelasticity. Journal of the Mechanics and Physics of
+
+Solids, 48:2445–2465, 2000.
+
+[14] R. T. Donaghe, R. C. Chaney, and S. Marshall. Advanced Triaxial Testing of Soil and Rock. ASTM STP: 977,
+
+1986.
+
+[15] L. C. Evans. Partial Diﬀerential Equations. American Mathematical Society, Providence, Rhode Island, USA,
+
+1998.
+
+[16] A. A. Fahmy and J. C. Hurt. Stress dependence of water diﬀusion in epoxy resin. Polymer Composities, 1:77–80,
+
+1980.
+
+[17] L. E. Fraenkel. An Introduction to Maximum Principles and Symmetry in Elliptic Problems. Cambridge Univer-
+
+sity Press, Cambridge, UK, 2000.
+
+[18] D. Gilbarg and N. S. Trudinger. Elliptic Partial Diﬀerential Equations of Second Order. Springer, New York,
+
+USA, 2001.
+
+[19] P. R. Halmos. Finite-Dimensional Vector Spaces. Springer-Verlag, New York, USA, 1993.
+
+[20] Q. Han and F. Lin. Elliptic Partial Diﬀerential Equations. American Mathematical Society, Providence, Rhode
+
+Island, USA, 2000.
+
+[21] D. R. Hayhurst and I. D. Felce. Creep rupture under tri-axial tension. Engineering Fracture Mechanics, 25:645–
+
+664, 1986.
+
+[22] T. J. R. Hughes. Generalization of selective integration procedures to anisotropic and nonlinear media. Interna-
+
+tional Journal for Numerical Methods in Engineering, 15:1413–1418, 1980.
+
+[23] U. Hunsche. Uniaxial and triaxial creep and failure tests on rock: Experimental technique and interpretation,
+
+pages 1–54. Visco-Plastic Behavior of Geomaterials. Springer-Verlag, 1994.
+
+[24] L. M. Kachanov. Introduction to Continuum Damage Mechanics. Kluwer Academic Publishers, Dordrecht,
+
+Netherlands, 1986.
+
+[25] S. Karra and K. R. Rajagopal. Degradation and healing in a generalized neo-Hookean solid due to infusion of a
+
+ﬂuid. arXiv:1007.1038, 2010.
+
+[26] Y. R. Kim, D. N. Little, and R. L. Lytton. Eﬀect of moisture damage on material properties and fatigue
+
+resistance of asphalt mixtures. Transportation Research Record: Journal of the Transportation Research Board,
+
+(1891):48–54, 2004.
+
+[27] P. Knupp and K. Salari. Veriﬁcation of Computer Codes in Computational Science and Engineering. Chapman
+
+and Hall, Boca Raton, Florida, 2003.
+
+[28] N. Kringos, T. Scarpas, A. Copeland, and J. Youtcheﬀ. Modelling of combined physical-mechanical moisture-
+
+induced damage in asphaltic mixes, Part 2: moisture susceptibility parameters. International Journal of Pave-
+
+ment Engineering, 9:129–151, 2008.
+
+25
+
+[29] N. Kringos, T. Scarpas, C. Kasbergen, and P. Selvadurai. Modelling of combined physical-mechanical moisture-
+
+induced damage in asphaltic mixes, Part 1: governing processes and formulations. International Journal of
+
+Pavement Engineering, 9:115–128, 2008.
+
+[30] D. Kuhl, F. Bangert, and G. Meschke. Coupled chemo-mechanical deterioration of cementitious materials. Part
+
+I: Modeling. International Journal of Solids and Structures, 41:15–40, 2004.
+
+[31] D. Kuhl, F. Bangert, and G. Meschke. Coupled chemo-mechanical deterioration of cementitious materials Part
+
+II: Numerical methods and simulations. International Journal of Solids and Structures, 41:41–67, 2004.
+
+[32] R. Liska and M. Shashkov. Enforcing the discrete maximum principle for linear ﬁnite element solutions for elliptic
+
+problems. Communications in Computational Physics, 3:852–877, 2008.
+
+[33] A. I. Lurie. Nonlinear Theory of Elasticity. North Holland Series in Applied Mathematics and Mechanics, Elsevier
+
+Science, Netherlands, 1990.
+
+[34] O. L. Mangasarian. Nonlinear Programming. SIAM, New York, USA, 1994.
+
+[35] S. I. Marras, I. A. Ihtiaris, N. K. Hatzitrifon, K. Sikalidis, and E. C. Aifantis. A preliminary study of stress-
+
+assisted ﬂuid penetration in ceramic bricks. Journal of the European Ceramic Society, 20:243–269, 2000.
+
+[36] A. Masud and T. J. R. Hughes. A stabilized mixed ﬁnite element method for Darcy ﬂow. Computer Methods in
+
+Applied Mechanics and Engineering, 191:4341–4370, 2002.
+
+[37] V. G. Mazja and B. A. Plamenevskii. lp estimates of solutions of elliptic boundary value problems in domains
+
+with edges. Transactions of the Moscow Mathematical Society, 1:49–97, 1980.
+
+[38] K. B. McAfee. Stress-enhanced diﬀusion in glass I. Glass under tension and compression. Journal of Chemical
+
+Physics, 28:218–226, 1958.
+
+[39] K. B. McAfee. Stress-enhanced diﬀusion in glass II. Glass under shear. Journal of Chemical Physics, 28:226–229,
+
+1958.
+
+[40] R. McOwen. Partial Diﬀerential Equations: Methods and Applications. Prentice Hall, New Jersey, USA, 1996.
+
+[41] A. Muliana, K. R. Rajagopal, and S. C. Subramanian. Degradation of an elastic composite cylinder due to the
+
+diﬀusion of a ﬂuid. Journal of Composite Materials, 43:1225–1249, 2009.
+
+[42] H. Nagarajan and K. B. Nakshatrala. Enforcing the non-negativity constraint and maximum principles for
+
+diﬀusion with decay on general computational grids. International Journal for Numerical Methods in Fluids, In
+
+print, DOI: 10.1002/ﬂd.2389, 2010.
+
+[43] K. B. Nakshatrala, A. Masud, and K. D. Hjelmstad. On ﬁnite element formulations for nearly incompressible
+
+linear elasticity. Computational Mechanics, 41:547–561, 2008.
+
+[44] K. B. Nakshatrala, D. Z. Turner, K. D. Hjelmstad, and A. Masud. A stabilized mixed ﬁnite element formulation
+
+for Darcy ﬂow based on a multiscale decomposition of the solution. Computer Methods in Applied Mechanics
+
+and Engineering, 195:4036–4049, 2006.
+
+[45] K. B. Nakshatrala and A. J. Valocchi. Non-negative mixed ﬁnite element formulations for a tensorial diﬀusion
+
+equation. Journal of Computational Physics, 228:6726–6752, 2009.
+
+[46] J. Nocedal and S. J. Wright. Numerical Optimization. Springer Verlag, New York, USA, 1999.
+
+[47] M. H. Protter and H. F. Weinberger. Maximum Principles in Diﬀerential Equations. Springer-Verlag, New York,
+
+USA, 1999.
+
+[48] P. A. Raviart and J. M. Thomas. A mixed ﬁnite element method for 2nd order elliptic problems. In Mathematical
+
+Aspects of the Finite Element Method, pages 292–315, Springer-Verlag, New York, 1977.
+
+26
+
+[49] J. Pleˇsek and A. Kruisov´a. Formulation, validation and numerical procedures for Hencky’s elasticity model.
+
+Computer and Structures, 84:1141–1150, 2006.
+
+[50] J. C. Simo and M. S. Rifai. A class of mixed assumed strain methods and the method of incompatible modes.
+
+International Journal for Numerical Methods in Engineering, 29:1595–1638, 1990.
+
+[51] P. Sofronis. The inﬂuence of mobility of dissolved hydrogen on the elastic response of a metal. Journal of
+
+Mechanics and Physics of Solids, 43:1385–1407, 1995.
+
+[52] R. L. Taylor. A mixed-enhanced formulation for tetrahedral ﬁnite elements. International Journal for Numerical
+
+Methods in Engineering, 47:205–227, 2000.
+
+[53] E. Vanderzee, A. N. Hirani, D. Guoy, and E. Ramos. Well-centered triangulation. Technical Report UIUCDCS-
+
+R-2008-2936, Department of Computer Science, University of Illinois at Urbana-Champaign, February 2008.
+
+Also available as a preprint at arXiv as arXiv:0802.2108v1 [cs.CG].
+
+[54] W. R. Wawersik, L. W. Carlson, D. J. Holcomb, and R. J. Williams. New method for true-triaxial rock testing.
+
+International Journal of Rock Mechanics and Mining Sciences, 34:330.e1–330.e14, 1997.
+
+[55] Y. Weitsman. Coupled damage and moisture-transport in ﬁber-reinforced polymeric composities. International
+
+Journal of Solids and Structures, 23:1003–1025, 1987.
+
+[56] Y. J. Weitsman. Anomalous ﬂuid sorption in polymeric composites and its relation to ﬂuid-induced damage.
+
+Composities Part A: applied science and manufacturing, 37:617–623, 2006.
+
+[57] J. Woodtli and R. Kieselbach. Damage due to hydrogen embrittlement and stress corrosion cracking. Engineering
+
+Failure Analysis, 7:427–450, 2000.
+
+[58] J. C. Wu and N. A. Peppas. Numerical simulation of anomalous penetrant diﬀusion in polymers. Journal of
+
+Applied Polymer Science, 49:1845–1856, 1993.
+
+27
+
+2.0
+
+1.6
+
+1.2
+
+0.8
+
+0.4
+
+0.0
+
+1
+
+0.8
+
+0.6
+
+Y
+
+0.4
+
+0.2
+
+1
+
+0.8
+
+0.6
+
+Y
+
+0.4
+
+0.2
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+X
+
+0.8
+
+1
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+X
+
+0.8
+
+1
+
+Figure 1. ABAQUS simulation for plate with a square hole: The left ﬁgure shows three-
+
+node triangular mesh used in the simulation using Abaqus [1]. The right ﬁgure shows
+
+contours of concentration obtained using Abaqus for the problem described in subsection
+
+4.5.1. The white area in the right ﬁgure indicates the region in which concentration has a
+
+negative value. Approximately 37 % of nodes have negative values. The minimum concen-
+tration obtained is −0.0832 (which is -4.16 % oﬀ the range of possible values: 0 to 2). We
+have taken d1 = 10000, d2 = 1, and θ = −π/6.
+
+PSfrag replacements
+
+hp(x) = 0
+
+PSfrag replacements
+
+u(x) = up(x)
+
+speciﬁc body force is
+
+given by equation (41)
+
+1
+=
+
+)
+x
+(
+p
+c
+
+u(x) = up(x)
+
+volumetric source is
+given by equation (40)
+
+volumetric source is
+given by equation (40)
+
+=
+0
+
+h
+p
+(
+x
+)
+
+)
+x
+(
+p
+u
+=
+
+)
+x
+(
+u
+
+speciﬁc body force is
+given by equation (41)
+
+u
+(
+x
+)
+
+=
+u
+p
+(
+x
+)
+
+O
+
+cp(x) = 1
+
+cp(x) = 1
+hp(x) = 0
+
+O
+
+u(x) = up(x)
+
+Figure 2. Numerical h-convergence: A pictorial description of the boundary value problem.
+
+The computational domain is a bi-unit square with origin denoted as O. The boundary
+
+conditions and the volumetric source for the diﬀusion problem is shown in the left ﬁgure.
+
+The (Dirichlet) boundary conditions and the speciﬁc body force for the deformation problem
+is shown in the right ﬁgure. The Dirichlet boundary conditions up(x) are prescribed by
+
+directly evaluating the expressions for the displacement given in equation (37).
+
+28
+
+1
+
+0.8
+
+0.6
+
+Y
+
+0.4
+
+0.2
+
+1
+
+0.8
+
+0.6
+
+Y
+
+0.4
+
+0.2
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+X
+
+0.8
+
+1
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+X
+
+0.8
+
+1
+
+Figure 3. Numerical h-convergence: This ﬁgure shows the typical three-node triangular
+
+and four-node quadrilateral meshes used in the numerical convergence analysis. Both these
+
+meshes have 21 nodes along each side. For the numerical convergence analysis, these meshes
+
+are subdivided in a hierarchical manner to obtain a series of meshes.
+
+1
+
+0.8
+
+0.6
+
+Y
+
+0.4
+
+0.2
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+X
+
+0.8
+
+1
+
+1.30
+
+1.24
+
+1.18
+
+1.12
+
+1
+
+0.8
+
+0.6
+
+Y
+
+0.4
+
+1.06
+
+0.2
+
+1.00
+
+0
+
+0
+
+1.30
+
+1.24
+
+1.18
+
+1.12
+
+1.06
+
+1.00
+
+0.2
+
+0.4
+
+0.6
+X
+
+0.8
+
+1
+
+Figure 4. Numerical h-convergence: Comparison of concentration proﬁle from analytical
+
+solution (left) to that of the numerical study (right) using three-node triangular mesh shown
+
+in Figure 3.
+
+29
+
+)
+r
+o
+r
+r
+e
+(
+g
+o
+l
+
+−2
+
+−4
+
+−6
+
+−8
+
+ 
+
+−10
+2
+
+ 
+
+slope = 0.93
+
+slope = 1.52
+
+L2− norm
+H1− seminorm
+
+2.5
+
+3
+
+−log(h)
+
+3.5
+
+4
+
+)
+r
+o
+r
+r
+e
+(
+g
+o
+l
+
+−2
+
+−4
+
+−6
+
+−8
+
+ 
+
+−10
+2
+
+ 
+
+L2− norm
+H1− seminorm
+
+slope = 0.99
+
+slope = 1.64
+
+2.5
+
+3
+
+−log(h)
+
+3.5
+
+4
+
+Figure 5. Numerical h-convergence: Convergence of the proposed computational frame-
+
+work with respect to the concentration ﬁeld is illustrated in this ﬁgure. We show the
+convergence in L2-norm and H 1-seminorm for three-node triangular (left) and four-node
+
+quadrilateral (right) ﬁnite elements.
+
+0
+
+−4
+
+−8
+
+)
+r
+o
+r
+r
+e
+(
+g
+o
+l
+
+ 
+
+−12
+2
+
+ 
+
+−2
+
+−4
+
+−6
+
+−8
+
+)
+r
+o
+r
+r
+e
+(
+g
+o
+l
+
+ 
+
+L2− norm
+H1− seminorm
+
+slope = 1.00
+
+slope = 1.99
+
+slope = 0.99
+
+slope = 1.99
+
+L2− norm
+H1− seminorm
+3
+
+2.5
+
+−log(h)
+
+3.5
+
+4
+
+ 
+
+−10
+2
+
+2.5
+
+3
+
+−log(h)
+
+3.5
+
+4
+
+Figure 6. Numerical h-convergence: Convergence of the proposed computational frame-
+
+work with respect to the displacement ﬁeld is illustrated in this ﬁgure. We show the
+convergence in L2-norm and H 1-seminorm for three-node triangular (left) and four-node
+
+quadrilateral (right) ﬁnite elements.
+
+30
+
+PSfrag replacements
+
+1
+.
+0
+
+O
+
+0
+=
+
+)
+x
+(
+p
+h
+
+O
+
+1.0
+
+b(x) = 0
+
+uniformly distributed shear = 500
+
+cp(x) = 0
+
+f (x) = 104
+
+cp(x) = 0
+
+h
+p
+(
+x
+)
+
+=
+0
+
+Figure 7. Cantilever beam with edge shear: A pictorial description of the boundary value
+
+problem with origin at ‘O’. The boundary conditions and the speciﬁc body force for the
+
+deformation problem is shown in the top ﬁgure and the boundary conditions and the volu-
+
+metric source for the diﬀusion problem is shown in the bottom ﬁgure.
+
+31
+
+Figure 8. Cantilever beam with edge shear: Four-node quadrilateral mesh (top ﬁgure)
+
+PSfrag replacements
+
+used in the numerical study and comparison of the concentration proﬁles (in the order of
+
+precedence) for three diﬀerent values of ΦS being equal to 5, 10 and 20
+
+.
+
+1.0
+
+b(x) = −10 ˆey
+
+cp(x) = 0
+
+f (x) = 103
+
+cp(x) = 0
+
+h
+p
+(
+x
+)
+
+=
+0
+
+1
+.
+0
+
+O
+
+0
+=
+
+)
+x
+(
+p
+h
+
+O
+
+Figure 9. Simply supported beam under self-weight: A pictorial description of the bound-
+
+ary value problem with origin at ‘O’. The boundary conditions and the speciﬁc body force
+
+for the deformation problem is shown in the top ﬁgure and the boundary conditions and the
+
+volumetric source for the diﬀusion problem is shown in the bottom ﬁgure.
+
+32
+
+Figure 10. Simply supported beam under self-weight: Four-node quadrilateral mesh (top
+
+PSfrag replacements
+
+ﬁgure) used in the numerical study and comparison of the concentration proﬁles (in the
+order of precedence) for three diﬀerent values of ηS being equal to 1, 103 and 2 × 104
+
+.
+
+1.0
+
+b(x) = −10 ˆey
+
+cp(x) = 0
+
+f (x) = 102
+
+cp(x) = 0
+
+h
+p
+(
+x
+)
+
+=
+0
+
+1
+.
+0
+
+O
+
+O
+
+0
+=
+
+)
+x
+(
+p
+h
+
+Figure 11. Fixed beam under self-weight: A pictorial description of the boundary value
+
+problem with origin at ‘O’. The boundary conditions and the speciﬁc body force for the
+
+deformation problem is shown in the top ﬁgure and the boundary conditions and the volu-
+
+metric source for the diﬀusion problem is shown in the bottom ﬁgure.
+
+33
+
+Figure 12. Fixed beam under self-weight: Four-node quadrilateral mesh (top ﬁgure) used
+
+in the numerical study and comparison of the concentration proﬁles (in the order of prece-
+
+dence) for three diﬀerent values of ΦT being equal to 1, 5 and 7.
+
+Figure 13. Fixed beam under self-weight: The concentration proﬁles obtained using the
+
+diﬀusivity model (45) as outlined in Reference [25].
+
+34
+
+PSfrag replacements
+
+1.0
+
+1/9
+
+PSfrag replacements
+
+1
+
+0
+.
+1
+
+0.8
+
+0
+.
+1
+
+9
+/
+1
+
+H
+
+cp(x) = 1
+
+O
+
+cp(x) = 0
+
+1.0
+9
+/
+1
+
+1/9
+
+O
+
+H
+cp(x) = 1
+cp(x) = 0
+
+0.6
+
+Y
+
+0.4
+
+0.2
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+X
+
+0.8
+
+1
+
+Figure 14. Plate with a hole under self-weight: A pictorial description of the dimensions
+
+for a plate with a hole in the left ﬁgure and three-node triangular unstructured mesh used in
+
+our numerical study in right ﬁgure. The origin is located at ‘O’ and the vertex ‘H’ of the hole
+
+9 , 4
+
+at (cid:0) 4
+9(cid:1). Displacements at the boundary of the hole and traction at the boundary of the
+plate are zero. In the region between the plate and the hole, the body force is b(x) = −10 ˆey
+and the volumetric source is f (x) = 0. The concentration at the boundary of the hole is 1
+
+and at the boundary of the plate is 0.
+
+35
+
+1
+
+0.8
+
+0.6
+
+Y
+
+0.4
+
+0.2
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+X
+
+0.8
+
+1
+
+1.00
+
+0.80
+
+0.60
+
+0.40
+
+1
+
+0.8
+
+0.6
+
+Y
+
+0.4
+
+0.20
+
+0.2
+
+0.00
+
+0
+
+0
+
+1.00
+
+0.80
+
+0.60
+
+0.40
+
+0.20
+
+0.00
+
+0.2
+
+0.4
+
+0.6
+X
+
+0.8
+
+1
+
+Figure 15. Plate with a hole under self-weight: This ﬁgure compares concentration proﬁles
+
+from the standard Galerkin formulation (left ﬁgure) and the non-negative formulation (right
+
+ﬁgure). The white area in the left ﬁgure indicates the regions in which concentration is
+
+negative. The violations also include that are of order machine precision.
+
+1
+
+0.8
+
+0.6
+
+Y
+
+0.4
+
+0.2
+
+1
+
+0.8
+
+0.6
+
+Y
+
+0.4
+
+0.2
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+X
+
+0.8
+
+1
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+X
+
+0.8
+
+1
+
+Figure 16. Plate with a hole under self-weight: This ﬁgure compares degradation proﬁles
+
+from the standard Galerkin formulation (left ﬁgure) and the non-negative formulation (right
+
+ﬁgure). The red area indicates the regions in which the material is degrading and the green
+
+area indicates the regions in which the material is healing (which is because unphysical
+
+negative value for the concentration). In this ﬁgure we do not consider negative values of
+
+order machine precision as violations.
+
+36
+
+10.0
+
+B
+
+H2
+
+C
+
+H3
+
+0
+.
+1
+
+O
+
+A
+
+H1
+
+Figure 17. Beam with three holes under self-weight: A pictorial description of the dimen-
+sions for a beam with three square holes. The dimensions of each hole are 0.4 × 0.4. The
+origin is located at ‘O’ and the vertices ‘H1’, ‘H2’ and ‘H3’ of the holes ‘A, B, C’ are at
+
+(1.8, 0.3), (4.8, 0.3) and (7.8, 0.3). Displacements at the boundary of the holes and traction
+
+at the boundary of the beam are zero. In the region between the beam and the holes, the
+body force is b(x) = −10 ˆey and the volumetric source is f (x) = 0. The concentration at
+the boundary of the holes is 1 and at the boundary of the beam is 0.
+
+Figure 18. Beam with three holes under self-weight: Comparison of concentration proﬁle
+
+from standard Galerkin formulation (middle ﬁgure) to that of the non-negative formulation
+
+(bottom ﬁgure). Three-node triangular unstructured mesh used in the numerical study is
+
+shown in the top ﬁgure. The white area in the middle ﬁgure indicates the region in which
+
+concentration has a negative value. In this ﬁgure, the white area also includes the regions
+
+with concentration of order machine precision.
+
+37
+
+Figure 19. Beam with three holes under self-weight: Comparison of degradation proﬁle
+
+from standard Galerkin formulation (top ﬁgure) to that of the non-negative formulation
+
+(bottom ﬁgure). The red area indicates material is degrading and the green area indicates
+
+the material is healing (because of unphysical negative value for the concentration).
+
+In
+
+this ﬁgure we do not consider the negative values that are of order machine precision as
+
+violations.
+
+38
+
+ 
+
+Cantilever
+Simply supp.
+Fixed 
+
+5
+
+0
+
+−5
+
+−10
+
+¤
+k
+)
+1
+−
+
+i
+(
+c
+−
+
+)
+i
+(
+c
+k
+£
+
+n
+
+l
+
+−15
+
+ 
+
+−20
+0
+
+2
+
+4
+
+6
+
+Iterations
+
+8
+
+10
+
+12
+
+¤
+k
+)
+1
+−
+
+i
+(
+c
+−
+
+)
+i
+(
+c
+k
+£
+
+n
+l
+
+5
+
+0
+
+−5
+
+−10
+
+ 
+
+−15
+0
+
+Plate with a hole
+Beam with three holes
+
+ 
+
+5
+
+10
+
+Iterations
+
+15
+
+20
+
+Figure 20. Convergence of staggered coupling algorithm: We have plotted ln[kc(i) −
+c(i−1)k] with respect to iteration number for various problems. The stopping criterion in
+the staggered coupling algorithm is kc(i) − c(i−1)k < ǫ(c)
+TOL. As one can see from the ﬁgure,
+the staggered coupling algorithm converges for all the chosen problems. Also, note that the
+
+algorithm need not converge monotonically, which is evident in the case of plate with a hole
+
+test problem.
+
+Maruti Kumar Mudunuru, Graduate Student, Department of Mechanical Engineering, Texas A&M
+
+University, College Station, Texas 77843.
+
+E-mail address: maruti.iitm@neo.tamu.edu
+
+Correspondence to: Dr. Kalyana Babu Nakshatrala, Department of Mechanical Engineering, 216
+
+Engineering/Physics Building, Texas A&M University, College Station, Texas 77843. TEL:+1-979-
+
+845-1292
+
+E-mail address: knakshatrala@tamu.edu
+
+39
+
+s
+n
+o
+i
+t
+a
+r
+e
+t
+i
+ 
+t
+e
+s
+−
+e
+v
+i
+t
+c
+A
+
+10
+
+9
+
+8
+
+7
+
+ 
+
+22
+
+20
+
+18
+
+16
+
+14
+
+s
+n
+o
+i
+t
+a
+r
+e
+t
+i
+ 
+t
+e
+s
+−
+e
+v
+i
+t
+c
+A
+
+ 
+
+12
+0
+
+ 
+
+Cantilever
+Fixed
+Simply supp.
+
+9
+
+10 11 12
+
+1
+
+2
+
+3
+
+5
+
+4
+8
+Staggered iterations
+
+6
+
+7
+
+ 
+
+Plate with a hole
+Beam with three holes
+
+5
+
+10
+
+Staggered iterations
+
+15
+
+20
+
+Figure 21. Convergence of the active-set strategy: This ﬁgure shows the number of itera-
+
+tions taken by the active-set strategy for each iteration in the staggered coupling algorithm
+
+for various test problems.
+
+40
+
+

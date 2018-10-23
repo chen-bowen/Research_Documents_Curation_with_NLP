@@ -1,0 +1,468 @@
+4
+1
+0
+2
+
+ 
+
+g
+u
+A
+4
+2
+
+ 
+
+ 
+ 
+]
+E
+C
+.
+s
+c
+[
+ 
+ 
+
+1
+v
+4
+3
+6
+5
+
+.
+
+8
+0
+4
+1
+:
+v
+i
+X
+r
+a
+
+An application of topological graph clustering
+
+to protein function prediction
+
+R. Sean Bowman
+
+Douglas Heisterkamp
+
+Jesse Johnson
+
+Danielle O’Donnol
+
+March 14, 2018
+
+Abstract
+
+We use a semisupervised learning algorithm based on a topological
+data analysis approach to assign functional categories to yeast proteins
+using similarity graphs. This new approach to analyzing biological
+networks yields results that are as good as or better than state of the
+art existing approaches.
+
+1
+
+Introduction
+
+Determining protein function is an integral part of understanding biologi-
+cal mechanisms. Until recently, proteins were characterized one at a time,
+slowly building our knowledge of a given pathway or mechanism. The yeast
+Saccharomyces cerevisiae was one of the ﬁrst organisms to have its genome
+sequenced [3]. As a model organism it has been thoroughly studied. How-
+ever, at the time of sequencing only about a third of the genes had been
+characterized. With the increasing ease of DNA sequencing, databases were
+made of proteins with known function from diﬀerent organisms. Sequences
+could be compared with those in the database, and those with sequence simi-
+larity would likely correspond to a similar protein in a diﬀerent organism. For
+S. cerevisiae, about one third showed sequence similarity to genes in other
+organisms, leaving the last third, approximately 2000 genes, completely un-
+known. The number of unknown genes and diﬃculty in understanding their
+
+1
+
+function called for a new approach.
+
+The shift to large scale biology has brought about both necessity for large
+scale protein function identiﬁcation and many new avenues for large scale
+protein characterization. There are now hundreds of genomes sequenced.
+Before, being able to sequence a gene was a major obstacle. Now, the dif-
+ﬁculty has shifted to determining the function of a large number of genes.
+There are numerous new high throughput methods producing information
+about all diﬀerent attributes of a protein, like the Pfam domain, protein-
+protein interaction, protein expression, etc. This gives us a more complete
+picture of these complex systems, and also gives us vast amounts of informa-
+tion for which there are not always obvious conclusions. For more background
+information, see [14] and [6].
+
+We can represent information about diﬀerent proteins in the form of a graph.
+For example, with protein-protein interaction, the proteins are represented
+by vertices and edges between vertices represent interactions. Given such a
+graph, it is natural to apply approaches from machine learning to ﬁnd clusters
+of vertices. The idea is that proteins that form a tightly grouped cluster in
+such a graph will have similar functions. Thus we can predict the function of
+an unknown protein when there are proteins of known function in its cluster.
+This strategy has been successfully implemented by many groups. In this
+paper, we apply a novel semisupervised topological data analysis approach to
+the same problem. This algorithm is based on the TILO/PRC (Topologically
+Intrinsic Lexicographic Ordering/Pinch Cluster Ratio) algorithm developed
+by the second and third author [4, 5] and described in the next section.
+
+Many approaches to functional annotation given a protein interaction graph
+have been proposed [9]. Some have focused on techniques from statistics and
+machine learning such as Markov random ﬁeld models [2] and Support Vector
+Machines (SVM) [7]. Clustering using TILO/PRC bears some similarity to
+Spectral clustering [10] in that it attempts to ﬁnd a partition of a graph with
+small boundary but large interior weight. Our approach is therefore similar
+in spirit to methods that make use of the graph Laplacian in clustering or
+propagation of labels [8, 11–13]. Note that several of these methods use a
+combined graph obtained as a weighted average of several other graphs. The
+weights are obtained as part of the procedure using, for example, semideﬁnite
+programming in [7]. We have not attempted to do this in the present work,
+and use a simple average to form a combined graph. As we will see, our
+
+2
+
+results are on par with methods that attempt to select optimal weights with
+regard to some objective function.
+
+The contributions of this paper are as follows:
+
+1. We describe the TILO algorithm for semisupervised learning.
+
+2. We demonstrate that this algorithm is eﬀective at predicting protein
+
+function.
+
+3. We demonstrate that this algorithm performs well in comparison to
+existing semisupervised methods, including the Markov random ﬁeld
+model of Deng, Chen, and Sun [2], and the kernel methods of Lanckriet
+et al. [7].
+
+Code for the project is located at http://seanbowman.me/yeast-protein.
+
+2 The TILO algorithm
+
+First we describe the TILO/PRC algorithm, which clusters the vertices of a
+graph by ﬁnding a linear order on the vertices with nice properties. See [4,5]
+for more details. Let G = (V, E) be a graph, where V is the set of vertices
+and E is a set of weighted edges. Given a set of vertices A ⊆ V , deﬁne the
+boundary ∂A ⊆ E to be the set of edges with one endpoint in A and the
+other in V \ A. The size of the boundary, |∂A|, is deﬁned to be the sum of
+weights of ∂A.
+A pinch cluster in G is a set of vertices S ⊆ V such that for any sequence
+of vertices v1, . . . , vm, if adding these vertices to S or removing them from S
+creates a set with smaller boundary, then for some k < m, adding/removing
+v1, . . . , vk to/from creates a set with strictly larger boundary.
+Informally,
+a pinch cluster has small boundary relative to the edges it contains, and
+vertices in a pinch cluster are more strongly connected to each other than to
+outside vertices.
+Consider an ordering O = (v1, v2, . . . , vn) of V . Let Ai = {v1, . . . , vi}
+and bi = |∂Ai|. The width of O, w(O) is the tuple (w1, . . . , wn−1), where
+{w1, . . . , wn−1} = {b1, . . . , bn−1} and wi+1 ≤ wi for each 1 ≤ i < n − 1. We
+order widths lexicographically. In [5] a property called weak reducibility is
+
+3
+
+deﬁned for an ordering O, and [5, Lemma 3] shows that given a weakly re-
+ducible ordering O, we can ﬁnd a new ordering O(cid:48) so that w(O(cid:48)) < w(O).
+After applying this procedure a ﬁnite number of times, we arrive at a strongly
+irreducible ordering.
+
+The goal of the TILO algorithm is to ﬁnd a strongly irreducible ordering of
+the vertices of G. Suppose that O is a strongly irreducible ordering and i is
+the index of a local minimum of (b1, . . . , bn−1). Then [5, Theorem 4] shows
+that Ai and its complement are pinch clusters. Note that we are free to pick
+the index of any local minimum of the boundary vector in order to partition
+the data. The pinch ratio cut, deﬁned in [4], is one heuristic for choosing
+such an index which has been shown to work well in practice. However, in
+the present work we will always make cuts at every index corresponding to
+a local minimum.
+
+2.1 Semisupervised learning with TILO
+
+In the case at hand, we are given a weighted graph (V, E) which we think of
+as a similarity graph. The vertex set V = {v1, v2, . . . , vn} is divided into two
+parts: m vertices v1, . . . , vm are labeled y1, . . . , ym, and the rest are unlabeled.
+We wish to use the structure of the graph to assign labels to vm+1, . . . , vn. In
+the present application yi ∈ {0, 1} for 1 ≤ i ≤ m, and so we may also assign
+probabilities yi ∈ [0, 1], m < i ≤ n, representing the likelihood that vertex vi
+has the label 1.
+
+For each connected component of the similarity graph, we use the TILO/PRC
+algorithm to divide the vertices into clusters. Given a strongly reducible
+ordering O, we make a cut at every local minimum of the boundary vec-
+tor, thus cutting the graph into the maximal number of pinch clusters. If
+vi1, vi2, . . . , vik are labeled vertices in a resulting cluster, we assign the prob-
+ability
+
+k(cid:88)
+
+j=1
+
+1
+k
+
+yij
+
+to each unlabeled vertex in the cluster. If there are no labeled vertices in the
+cluster, we assign the most common label in the data set to each unlabeled
+vertex.
+
+4
+
+The TILO algorithm can get stuck in local minima, which correspond to
+orderings that may realize suboptimal clusters in a given graph. We use a
+version of bagging [1] in order to generate more accurate predictions from our
+labeled data. Bagging also ensures that the probability that a given vertex
+always receives the most common label in the data set is extremely low.
+After generating N subsets of the unlabeled data by sampling a proportion
+λ uniformly without replacement, the algorithm described above is run on
+each sample. The probabilities obtained are averaged over all runs, and the
+averaged probabilities ym+1, . . . , yn are the output of the algorithm. In the
+data below, we use N = 25 and λ = 0.5.
+
+3 Experimental Results
+
+We use the data set from [12] and also used in [2] and [7] (among others)
+in order to compare our results. The goal of the algorithm is to predict
+functional classes of 3588 yeast proteins, with true labels given by the MIPS
+Comprehensive Yeast Genome Database. There are 13 classes in the top
+level hierarchy, and we view the problem as 13 separate binary classiﬁcation
+tasks.
+
+The input data consists of ﬁve symmetric matrices Wi, i = 1, 2, 3, 4, 5, whose
+entries describe diﬀerent types of interaction between the row and column
+proteins. The ﬁrst matrix, W1, comes from the Pfam domain of the proteins.
+Each protein was characterized based on the presence or absence of 3950
+diﬀerent structural domains. This results in 3950-bit vector, and the dot
+products of these vectors are used to generate the matrix. The next three,
+W2, W3, and W4, are from the combined data in the MIPS Comprehensive
+Yeast Genome Database. The matrix W2 indicates if there is co-participation
+in a protein complex. The matrix W3 indicates known protein-protein inter-
+actions. The matrix W4 indicates known genetic interactions. The ﬁnal
+matrix W5 is based on comparing the proteins’ gene expression proﬁles.
+
+The graphs obtained by considering the Wi as adjacency matrices are highly
+disconnected and have many components with a small number of vertices.
+We do not consider isolated vertices, since it is impossible to infer a label
+using our graph based approach. Furthermore, W5 is so sparse that we have
+
+5
+
+not used it in our tests. We also examine the integrated graph
+
+5(cid:88)
+
+i=1
+
+1
+5
+
+Wi.
+
+This graph is relatively well connected. We use 5 fold cross validation 3 times
+and report the receiver operating characteristic (ROC) score on the test set.
+
+Our results are shown in Table 1. Shown are the mean ROC scores, as
+described above, for the graphs W1, W2, W3, W4, and the integrated graph.
+The graph W1 has 432 components, 2809 vertices, and 48445 edges; W2 has
+29 components, 1051 vertices, and 1872 edges; W3 has 140 components, 1342
+vertices, and 1844 edges; W4 has 106 components, 819 vertices, and 1006
+edges; the integrated graph has 96 components, 3278 vertices, and 56371
+edges. The columns labeled SVM/W1 and SDP/SVM are results from [7].
+The ﬁrst shows the ROC values obtained using a 1–norm SVM with C = 1
+on a normalization of our matrix W1, and the SDP/SVM column shows
+the performance of a semideﬁnite programming SVM approach which uses a
+weighted combination of the Wi. The last column shows the performance of
+the Markov random ﬁeld algorithm of [2] on the weighted combination used
+in the previous column.
+
+4 Conclusion
+
+Understanding protein function is integral to our understanding of pathways
+and mechanisms in biological systems, and the huge amount of data available
+today necessitates techniques which can work on a large scale. We have de-
+scribed a semisupervised learning algorithm based on TILO/PRC and shown
+that this algorithm performs well on the task of predicting protein functional
+classes on a data set of yeast proteins.
+
+Tables 1 and 2 show that for each of the 13 functional classes studied, the
+semisupervised TILO method performs better than the SVM method of [7]
+when using W1. The same is true for W2, W3, and W4. In all, the mean
+ROC score improves from 0.767 to 0.842 on W1, albeit with slightly higher
+standard deviations. For the combined graph, we obtain similar scores (a
+mean ROC of 0.844 versus 0.853 for the SDP/SVM approach of [7]) while
+using a simple average of the Wi instead of a weighted average.
+
+6
+
+Class
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+
+W1
+
+W2
+
+W3
+
+W4
+
+0.880 ± 0.019 0.768 ± 0.046 0.700 ± 0.027 0.833 ± 0.043
+0.879 ± 0.031 0.684 ± 0.098 0.722 ± 0.059 0.756 ± 0.165
+0.825 ± 0.022 0.793 ± 0.040 0.755 ± 0.033 0.881 ± 0.029
+0.876 ± 0.014 0.844 ± 0.020 0.842 ± 0.021 0.857 ± 0.034
+0.896 ± 0.019 0.847 ± 0.032 0.816 ± 0.058 0.830 ± 0.091
+0.881 ± 0.021 0.751 ± 0.046 0.767 ± 0.039 0.830 ± 0.023
+0.878 ± 0.022 0.863 ± 0.042 0.887 ± 0.027 0.866 ± 0.039
+0.794 ± 0.034 0.656 ± 0.103 0.651 ± 0.052 0.776 ± 0.067
+0.823 ± 0.054 0.589 ± 0.149 0.811 ± 0.063 0.744 ± 0.079
+0.767 ± 0.034 0.755 ± 0.045 0.776 ± 0.045 0.804 ± 0.025
+0.629 ± 0.050 0.625 ± 0.056 0.674 ± 0.055 0.635 ± 0.070
+0.961 ± 0.019 0.756 ± 0.109 0.796 ± 0.056 0.759 ± 0.126
+0.854 ± 0.053 0.577 ± 0.159 0.710 ± 0.104 0.753 ± 0.107
+
+Table 1: Mean ROC of the semisupervised TILO/PRC algorithm on the
+graphs Wi.
+
+We believe that algorithms inspired from ideas in topology, such as the
+TILO/PRC algorithm described here, are uniquely suited to this problem
+for several reasons. They have a good theoretical grounding with clear links
+to both topology and existing machine learning approaches, they operate
+directly on protein interaction graphs, they are less sensitive to geometric
+properties of the data (which are not always relevant), and they are capable
+of meeting the challenges of large scale biology described above.
+
+Acknowledgments: we would like to thank Loc Tran for providing us with
+the data used in our experiments.
+
+7
+
+Class
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+
+SVM/W1
+
+MRF
+
+SDP/SVM
+
+Integrated
+0.866 ± 0.018 .8373 ± .0037 .8825 ± .0042 .7532 ± .0042
+0.871 ± 0.033 .8107 ± .0113 .8563 ± .0100 .7173 ± .0102
+0.839 ± 0.019 .7547 ± .0062 .8464 ± .0053 .6990 ± .0045
+0.882 ± 0.011 .8085 ± .0048 .9024 ± .0028 .7409 ± .0049
+0.908 ± 0.014 .8349 ± .0058 .9094 ± .0050 .7375 ± .0102
+0.868 ± 0.022 .8069 ± .0046 .8742 ± .0049 .7183 ± .0059
+0.880 ± 0.019 .8010 ± .0074 .9149 ± .0040 .7534 ± .0085
+0.811 ± 0.030 .7023 ± .0089 .8023 ± .0094 .7285 ± .0120
+0.823 ± 0.043 .7309 ± .0113 .8623 ± .0091 .6849 ± .0107
+0.790 ± 0.023 .6906 ± .0079 .8120 ± .0078 .6954 ± .0060
+0.658 ± 0.043 .5952 ± .0148 .6575 ± .0093 .5691 ± .0092
+0.954 ± 0.018 .9331 ± .0038 .9674 ± .0023 .8575 ± .0076
+0.841 ± 0.068 .6678 ± .0227 .8083 ± .0091 .6612 ± .0169
+
+Table 2: Mean ROC of the semisupervised TILO/PRC algorithm on the
+integrated graph. Columns SVN/W1 and SDP/SVM are results of [7], and
+the last column is results from [2]. See text for details.
+
+8
+
+References
+
+[1] Leo Breiman. Bagging predictors. Machine learning, 24(2):123–140,
+
+1996.
+
+[2] Minghua Deng, Ting Chen, and Fengzhu Sun. An integrated probabilis-
+tic model for functional prediction of proteins. Journal of Computational
+Biology, 11(2-3):463–475, 2004.
+
+[3] A. Goﬀeau, B. G. Barrell, H. Bussey, R. W. Davis, B. Dujon, H. Feld-
+mann, F. Galibert, J. D. Hoheisel, C. Jacq, M. Johnston, E. J. Louis,
+H. W. Mewes, Y. Murakami, P. Philippsen, H. Tettelin, and S. G. Oliver.
+Life with 6000 genes. Science, 274(5287):546—-567, oct 1996.
+
+[4] Doug Heisterkamp and Jesse Johnson. Pinch ratio clustering from a
+topologically intrinsic lexicographic ordering. To appear in Proceedings
+of the SIAM International Conference on Data Mining, 2013.
+
+[5] Jesse Johnson. Topological graph clustering with thin position. Geome-
+
+triae Dedicata, 169:165–173, 2012.
+
+[6] A. Kraj and J. Silberring. Proteomics: Introduction to Methods and Ap-
+plications. Wiley-Interscience series on mass spectrometry. John Wiley
+& Sons, 2008.
+
+[7] Gert R. G. Lanckriet, Minghua Deng, Nello Cristianini, Michael I. Jor-
+dan, and William Staﬀord Noble. Kernel-based data fusion and its ap-
+plication to protein function prediction in yeast. In Paciﬁc symposium
+on biocomputing, volume 9, pages 300–311, 2004.
+
+[8] Taner Z. Sen, Andrzej Kloczkowski, and Robert L. Jernigan. Functional
+clustering of yeast proteins from the protein-protein interaction network.
+BMC Bioinformatics, 7:355, 2006.
+
+[9] Roded Sharan, Igor Ulitsky, and Ron Shamir. Network-based prediction
+
+of protein function. Mol. Syst. Biol., 3, Mar 2007.
+
+[10] Jianbo Shi and Jitendra Malik. Normalized cuts and image segmenta-
+tion. IEEE Trans. Pattern Anal. Mach. Intell., 22(8):888–905, August
+2000.
+
+9
+
+[11] Hyunjung Shin, Koji Tsuda, and Bernhard Sch¨olkopf. Protein func-
+tional class prediction with a combined graph. Expert Systems with
+Applications, 36(2):3284–3292, 2009.
+
+[12] Loc Tran. Application of three graph laplacian based semisupervised
+learning methods to protein function prediction problem. International
+journal on bioinformatics & biosciences, 3(2), 2013.
+
+[13] Kire Trivodaliev, Ivana Cingovska, and Slobodan Kalajdziski. Protein
+function prediction by spectral clustering of protein interaction network.
+In FGIT-DTA/BSBT, pages 108–117, 2011.
+
+[14] R. Twyman. Principles of Proteomics. Advanced Texts. Taylor & Fran-
+
+cis, 2004.
+
+10
+
+

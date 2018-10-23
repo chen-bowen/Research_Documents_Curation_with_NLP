@@ -1,0 +1,3213 @@
+6
+1
+0
+2
+
+ 
+
+n
+u
+J
+ 
+
+1
+
+ 
+ 
+]
+
+Y
+S
+.
+s
+c
+[
+ 
+ 
+
+6
+v
+6
+0
+8
+2
+
+.
+
+5
+0
+4
+1
+:
+v
+i
+X
+r
+a
+
+Active network management for electrical distribution
+
+systems: problem formulation, benchmark, and approximate
+
+solution
+
+Quentin Gemine*, Damien Ernst*, and Bertrand Corn´elusse*
+
+*{qgemine@ulg.ac.be, dernst@ulg.ac.be, bertrand.cornelusse@ulg.ac.be},
+Department of Electrical Engineering and Computer Science, University of Li`ege,
+
+4000 Li`ege, Belgium
+
+May 31, 2016
+
+Abstract
+
+With the increasing share of renewable and distributed generation in electri-
+cal distribution systems, Active Network Management (ANM) becomes a valuable
+option for a distribution system operator to operate his system in a secure and cost-
+eﬀective way without relying solely on network reinforcement. ANM strategies are
+short-term policies that control the power injected by generators and/or taken oﬀ by
+loads in order to avoid congestion or voltage issues. While simple ANM strategies
+consist in curtailing temporary excess generation, more advanced strategies rather
+attempt to move the consumption of loads to anticipated periods of high renewable
+generation. However, such advanced strategies imply that the system operator has
+to solve large-scale optimal sequential decision-making problems under uncertainty.
+The problems are sequential for several reasons. For example, decisions taken at
+a given moment constrain the future decisions that can be taken, and decisions
+should be communicated to the actors of the system suﬃciently in advance to grant
+them enough time for implementation. Uncertainty must be explicitly accounted
+for because neither demand nor generation can be accurately forecasted. We ﬁrst
+formulate the ANM problem, which in addition to be sequential and uncertain, has
+a nonlinear nature stemming from the power ﬂow equations and a discrete nature
+arising from the activation of power modulation signals. This ANM problem is then
+cast as a stochastic mixed-integer nonlinear program, as well as second-order cone
+and linear counterparts, for which we provide quantitative results using state of the
+art solvers and perform a sensitivity analysis over the size of the system, the amount
+of available ﬂexibility, and the number of scenarios considered in the deterministic
+equivalent of the stochastic program. To foster further research on this problem,
+we make available at http://www.montefiore.ulg.ac.be/~anm/ three test beds
+based on distribution networks of 5, 33, and 77 buses. These test beds contain a
+simulator of the distribution system, with stochastic models for the generation and
+consumption devices, and callbacks to implement and test various ANM strategies.
+
+1
+
+Index terms— Active network management, electrical distribution network, ﬂexibility
+services, renewable energy, optimal sequential decision-making under uncertainty, large
+system, Mixed Integer Non-linear Program.
+
+1 Notation
+
+We present here the main elements of notation used throughout the text. Some locally
+deﬁned notation may not be covered in this section.
+
+Indices:
+
+d Device connected to a node.
+
+m or n Node of the electrical system.
+
+mn Link of the electrical system between nodes m and n.
+
+t Time period.
+
+Sets:D Set of electrical devices.
+
+Subset of D that are electrical loads.
+
+G Subset of D containing distributed generators.
+C
+F Subset of C that can be controlled by the DSO.
+T
+N Set of nodes of the electrical system.
+L Set of links of the electrical system.
+
+Set of time periods.
+
+S (i)
+
+t
+
+Space of state vector s(i)
+t
+{1, 2, 3}).
+
+S Global state space of the system.
+As Feasible action (or control) space in state s ∈ S.
+Ad,s Feasible set of actd,t (see variables).
+W Set of possible realizations of random processes.
+
+(see the variables below for i ∈
+
+Parameters:
+
+Y
+Y
+
+(br)
+mn
+(sh)
+mn
+tmn Transformation ratio of link (m, n) on the side of node m.
+
+Branch admittance of link (m, n).
+Shunt admittance of link (m, n) on the side of node m.
+
+Y Nodal admittance matrix.
+Yn· nth row of Y .
+Ymn Element (m, n) of Y .
+
+Vn and Vn Lower and upper operational limits on voltage magnitude
+
+|Vn|.
+
+I mn Operational limit on current magnitude |Imn|.
+
+tan φd Reactive to active power ratio of device d (assumed constant
+
+for all devices).
+
+Td Duration of a modulation signal sent to a ﬂexible load.
+
+2
+
+∆Pd Vector of length Td representing the modulation signal sent
+
+to a ﬂexible load.
+
+Nloads Length of the history of load consumption tracked in the
+
+state.
+
+Nir Length of the history of solar irradiance tracked in the state.
+Nv Length of the history of wind speed tracked in the state.
+qt
+
+Index of a quarter of an hour.
+
+Variables: Note that some variables may have an additional subscript t. Also some
+variables are control variables, some represent the state of the system, and the remaining
+variables are exogenous stochastic processes.
+V Vector of size |N|, node voltages.
+Vn Complex voltage at node n, i.e. nth component of V .
+I Vector of size |N|, current injected in the nodes.
+Ii
+
+If i = l, it is the complex current in link l, if i = n, it is the
+complex current injected in bus n, i.e. nth component of I.
+Si Apparent power injected in bus. If i = d, it is the power
+injected by device d. If i = n, it is the total power injected
+by all devices connected at node n.
+
+Pi Active power injected in bus. If i = d, it is the power injected
+by device d. If i = n, it is the total power injected by all
+devices connected at node n.
+
+Qi Reactive power injected in bus.
+
+If i = d, it is the power
+injected by one device. If i = n, it is the total power injected
+by all devices connected at node n.
+
+Smn Apparent power entering branch l = (m, n) from the m side.
+Pmn Active power entering branch l = (m, n) from the m side.
+Qmn Reactive power entering branch l = (m, n) from the m side.
+
+Solar irradiance level at time t.
+
+irt
+vt Wind speed at time t.
+
+s(1)
+t
+s(2)
+t
+
+Vector representing the state of the devices at time t.
+Vector representing the state of the modulation instructions
+sent to controllable devices, at time t.
+
+f lext Vector representing the state of the ﬂexible loads at time t,
+
+s(3)
+t
+
+it is a part of s(2)
+Part of the state of the system that, at time t, keeps track
+of past realizations of the uncertain phenomena.
+
+.
+
+t
+
+st Global state of the system at time t.
+at Vector of control actions taken at time t.
+pt Maximum level of active power injection for period t + 1 and
+
+actt Activation indicators of the ﬂexibility services of the loads
+
+for each of the generators g ∈ G, part of at.
+d ∈ F, part of at.
+
+3
+
+actd,t Component of actt for ﬂexible load d ∈ F.
+
+wt
+
+Information on exogenous phenomena available at time t.
+
+Operators and functions:
+
+| · | Magnitude of a complex number or size of a set.
+·∗ Complex conjugate.
+
+f : S × As × W → S Transition function of the system.
+r : S × As × S → R Reward function.
+
+π : S → As Policy that returns an action for every feasible state.
+
+G(n) Set of generators connected to node n.
+C(n) Set of loads connected to node n.
+F(n) Set of ﬂexible loads connected to node n.
+
+2
+
+Introduction
+
+In Europe, the 20/20/20 objectives of the European Commission and the consequent
+ﬁnancial incentives established by local governments are currently driving the growth of
+electricity generation from renewable energy sources [1]. A substantial part of the invest-
+ments is made at the distribution networks (DN) level and consists of the installation
+of wind turbines or photovoltaic panels. The signiﬁcant increase of the number of these
+distributed generators (DGs) undermines the ﬁt and forget 1 doctrine, which has domi-
+nated the planning and the operation of DNs up to now. This doctrine was developed
+when the energy was coming from the transmission network (TN) to the consumers,
+through the distribution network (DN). With this approach, adequate investments in
+network components (i.e., lines, cables, transformers, etc.) are made to avoid congestion
+and voltage issues, without requiring continuous monitoring and control of the power
+ﬂows or voltages. To that end, network planning is done with respect to a set of critical
+scenarios gathering information about production and demand levels, in order to al-
+ways ensure suﬃcient operational margins. Nevertheless, with the rapid growth of DGs,
+the preservation of such conservative margins implies signiﬁcant network reinforcement
+costs2, because the net energy ﬂow may be reversed, from the distribution network to
+the transmission network, and ﬂows within the distribution network be very diﬀerent
+from the ﬂows historically observed.
+
+In order to host a larger share of distributed generation [2] and avoid potentially
+prohibitive reinforcement costs [3], active network management (ANM) strategies have
+recently been proposed as alternatives to the ﬁt and forget approach. The principle of
+ANM is to address congestion and voltage issues via short-term decision-making policies
+[4]. Frequently, ANM schemes maintain the system within operational limits in quasi
+real-time by relying on the curtailment of wind or solar generation [5, 6, 7]. Curtailment
+
+1Under this approach, adequate investments in network components (i.e., lines, cables, transformers,
+
+etc.) must be made in order to always avoid congestion and voltage problems.
+
+2Network reinforcement is the process of upgrading the transmission capacity of lines, cables, trans-
+formers, and other devices. As distribution systems of interest in this paper are mostly done of under-
+ground cables, upgrading them implies a lot of infrastructure work.
+
+4
+
+of renewable energy may, however, be very controversial from an environmental point
+of view and should probably be considered as a last resort. In that mindset, it is worth
+investigating ANM schemes that could also exploit the ﬂexibility of the loads, so as
+to decrease the reliance on generation curtailment. Exploiting ﬂexible loads within an
+ANM scheme comes with several challenges. One such challenge is that modulating a
+ﬂexible load at one instant is often going to inﬂuence its modulation range at subsequent
+instants. This is because ﬂexible loads (e.g. heat pumps) are often constrained to con-
+sume a speciﬁc amount of energy over a certain duration. In this context, it is therefore
+important for a distribution system operator (DSO) to take decisions by planning oper-
+ations over a suﬃciently long time horizon [8, 9, 10]. The uncertainty of future power
+injections from DGs relying on natural energy sources (wind, sun, etc.), as well as the
+uncertainty of the power consumption of the loads, should also be explicitly accounted
+for in the ANM strategy. In this work we consider the operation of the medium-voltage
+(MV) network of the DSO, i.e. low voltage subnetworks are aggregated, since in general
+current DSOs’ dispatching centers only monitor the MV part, and ANM in low voltage
+distribution systems is generally performed using distributed algorithms [11].
+
+Many authors have already attempted to provide solutions to these operational plan-
+ning problems. Since they rely on diﬀerent formulations, it is diﬃcult for one author to
+rebuild on top of another’s work. However, these formulations can be considered as an
+extension of the optimal power ﬂow (OPF) problem [12]. More speciﬁcally, they can be
+assimilated to sequential decision-making problems where, at each time step, constraints
+that are similar to those used for deﬁning an OPF problem are met. Optimal power ﬂow
+problems, although non-convex, have been solved for a long time using local nonlinear
+optimization methods. Interior-point methods are probably the most widespread class
+of methods dedicated to this problem [13]. If the solution they provide has no guarantee
+to be globally optimal, then they have been made popular by their convergence speed
+and their ability to solve problems of large dimensions fairly eﬃciently. Convexiﬁcations
+of the power ﬂow equations have been successful, in particular in [14] where the author
+models power ﬂows in a radial distribution system using second-order cone constraints.
+Recently, semideﬁnite programming (SDP) was applied as a convex relaxation to the
+OPF problem [15]. The authors report no duality gap on some standard meshed test
+systems and randomized versions of these test systems. The zero duality gap property
+was thus observed experimentally on standard test systems, and further research resulted
+in suﬃcient conditions. This is the case, for example, if the objective function is con-
+vex and monotonically increasing with the active power generation, and if the network
+has a radial topology [16, 17]. Another approach aiming at global optimality relies on
+Lagrangian relaxation (LR) [18]. The author also describes a spatial branch and bound
+(B&B) algorithm to close the gap, should one exist. The ability of both SDP and LR to
+decrease the optimality gap within a B&B framework was evaluated in [19]. Although
+SDP appeared to be computationally more attractive, it showed that it could be very
+challenging to reach a signiﬁcant gap reduction within reasonable time limits, even for
+small test systems. A diﬀerent approach is considered in [20], where the authors present
+a linear approximation of the power ﬂow equations with a focus on distribution networks.
+
+5
+
+Multi-period applications related to energy storage are investigated in [21], where the
+SDP relaxation of [15] is successfully applied, as their particular application met the
+conditions of having no duality gap. The authors of [22] argue that extending [19] to a
+multi-period setting yields an SDP too large for current solvers to solve eﬃciently and
+suggest relaxing the time-coupling constraints using LR. However, it ended up being
+computationally too expensive to make the B&B approach worthwhile. Many papers
+consider the unit commitment problem over an AC network, which is an instance of a
+multi-period OPF with discrete variables. For instance in [23], a generalized Benders de-
+composition divides the problem into a linear master problem with discrete variables and
+nonlinear multi-period sub-problems. Benders cuts are generated from the sub-problems
+to tighten the MIP master problem. Finally, [24] focused on trying to solve a problem
+that is mathematically close to the one we consider and provides more information on
+related research.
+
+A ﬁrst objective of this work is to facilitate the comparison of solution techniques
+that have been developed in the research community. To that end, we ﬁrst propose a
+generic formulation of ANM related decision-making problems. More speciﬁcally, we
+detail a procedure to state these problems as Markov Decision Processes (MDP), where
+the system dynamics describes the evolution of the electrical network and devices, while
+the action space encompasses the control actions that are available to the DSO. Af-
+terwards, we instantiate this procedure on networks of 5, 33, and 77 buses, and use
+the elements of the resulting MDPs to build a simulator of these systems, which is
+available at http://www.montefiore.ulg.ac.be/~anm/. As a second contribution, we
+provide quantitative results for the resolution of the ANM problem cast as a stochastic
+mixed-integer nonlinear program (MINLP), as well as a mixed-integer second-order cone
+programming (MISOCP) relaxation and a mixed-integer linear programming (MILP) ap-
+proximation, using state of the art open source and commercial solvers. We then perform
+a sensitivity analysis over the size of the distribution system, the amount of ﬂexibility
+available in the system, and the number of scenarios considered in the deterministic
+equivalent of the stochastic program. Finally, a last contribution lies in the features
+modeled in this work. Compared to the work of [9] and [10], we explicitly account for
+uncertainty, and for discrete variables stemming from the activation of ﬂexibility ser-
+vices. Compared to our work, [9] relies only on a continuous nonlinear programming
+formulation, and thus does not analyze linear or second order cone programming formu-
+lations, but models a storage system, and [10] also models discrete decisions variables,
+but they are related to capacitor banks switching and storage system operation modes.
+The latter reference also uses MISOCP and MILP formulations.
+
+The rest of this paper is structured as follows. The ANM problem of a DN is
+described in Section 3, where the electrical model and the network operation details
+are explained, and the operational planning problem is formulated as a Markov decision
+process. This formulation is then cast as a stochastic mixed-integer nonlinear program
+in Section 4, where a second order cone relaxation and a linear approximation are also
+detailed. The test beds built around the diﬀerent distribution systems are described in
+Section 5, and test results are presented in Section 6. Section 7 concludes and presents
+
+6
+
+Vm
+
+1:tmn
+
+Imn
+
+tnm:1
+
+Vn
+
+Y (br)
+mn
+
+Y (sh)
+mn
+
+Y (sh)
+nm
+
+Figure 1: π-model of a link.
+
+possible extensions of this work.
+
+3 Problem Description
+
+3.1 Model of the electrical distribution system
+
+In this paper, we are always considering that the network and all its devices are operating
+in alternating current mode. We also make the choice to represent complex numbers in
+rectangular coordinates.
+
+The electrical distribution system can be mathematically represented by a graph,
+that is a set of nodes, and a set of links connecting nodes. A node is an electrical bus
+characterized by a voltage Vn ∈ C. In addition to links connecting a bus to its neighbors,
+several devices may be connected to a bus. Devices are either injecting or withdrawing
+power. Every link (m, n) ∈ L ⊂ N 2 connects a pair of nodes m, n ∈ N and represents
+an overhead line, an underground cable, or a transformer. A link is represented by
+its π-model, composed of ﬁve complex parameters: two ratios tmn and tnm, a branch
+(sh)
+nm (see Fig. 1), that are
+admittance Y
+considered ﬁxed in this work, although opportunities to change them dynamically can
+exist in practice. More details on the π-model of speciﬁc links can be found in [25].
+nitude |Vn| at note n should not deviate too much from its nominal voltage level:
+
+To ensure the proper operation of the devices connected to a bus, the voltage mag-
+
+(br)
+mn , and two shunt admittances Y
+
+(sh)
+mn and Y
+
+∀n ∈ N : V n ≤ |Vn| ≤ V n .
+
+(1)
+If Imn ∈ C is the branch current through link (m, n), its magnitude |Imn| should be kept
+below a pre-speciﬁed limit to prevent excessive heating of conductors and insulating
+materials:
+
+∀(m, n) ∈ L : |Imn| ≤ I mn.
+
+(2)
+
+In reality, there are several limits depending on the magnitude and duration of the over-
+current. In this work we consider only the most conservative limit, since we want to
+keep a suﬃcient margin as we are taking decisions ahead of time with a relatively high
+uncertainty. The magnitude of the current Il in link l connecting nodes m and n can be
+deduced from the voltage at these nodes by
+
+(3)
+
+(cid:12)(cid:12)(cid:12)(cid:16)|tmn|2Vm − (t(l)
+
+∗
+mn)
+
+|Imn| =
+
+7
+
+(cid:17)
+
+(cid:12)(cid:12)(cid:12) ,
+
+t(l)
+nmVn
+
+Y (br)
+mn
+
+where ·∗ denotes the complex conjugate operator.
+
+Before deﬁning the power injections as a function of voltages, it is convenient to
+
+relate the current injected at nodes to the voltage by writing:
+
+I = Y V ,
+
+(4)
+
+where I = (I1, . . . , I|N|) is the vector of the current injection at nodes, V = (V1, . . . , V|N|)
+is the vector of the voltage at nodes, and Y is the |N| × |N| nodal admittance matrix,
+which has its elements deﬁned by
+
+(sh)
+mn + Y
+
+(br)
+mn )
+
+if m (cid:54)= n and ∃(m, n) ∈ L ,
+if m = n ,
+
+(5)
+
+otherwise .
+
+−(t
+(cid:80)
+mn)∗t
+(m,k)∈L |tmk|2(Y
+
+(l)
+nmY
+
+(br)
+mn
+
+(l)
+
+Ymn =
+
+0
+
+Regarding the active power Pn and reactive power Qn injected at every node n, they are
+related to the node voltages through the power ﬂow equations [26]:
+n·V ∗
+
+∀n ∈ N : Sn = Pn + jQn = VnI
+
+∗
+n = VnY ∗
+
+(6)
+
+,
+
+where Sn is the apparent power injection at bus n and Yn· denotes the nth row of the
+nodal admittance matrix. By convention a power injection is positive if it supplies the
+network and negative if it takes energy from the network.
+In summary, there are four quantities attached to each node n ∈ N that determine
+the electrical state of the system: Pn, Qn, and real and imaginary parts of Vn. The
+power ﬂow equations (6) provide 2|N| relations. 2|N| variables should thus be ﬁxed
+to obtain a solution to this system of equations. In general, Vn is ﬁxed on one side of
+the transformer between the MV network and the transmission system, to provide a
+reference voltage. At other nodes, the active power injection Pn is known, as well as
+either the reactive power Qn or the voltage magnitude |Vn|, depending on the type of
+device connected at the node. In this work we consider that we have some control over
+the power ﬂows in the system, hence we consider that less than 2|N| variables are ﬁxed
+and that we can act on Pn and Qn at some nodes. The system is actually controlled by
+acting on the electrical devices attached to these nodes.
+Electrical devices can be classiﬁed into two distinct subsets, the set C ⊂ D of loads
+that withdraw power from the network, and the set G ⊂ D of generators that inject power
+into the network. Within each subset, we also distinguish two types of device models.
+The ﬁrst ones represent individual injection and withdrawal points. They can model
+certain types of DGs or consumers that are directly connected to the MV grid (e.g.,
+wind farms, some companies and factories, etc.). The others model an aggregate set of
+devices that are assimilated to a single connection point at the MV grid (e.g., residential
+consumers and solar panels). Correspondences between some physical elements and their
+device model are illustrated in Fig. 2. At node 3, a set of residential loads and a set
+of distributed solar units have been aggregated into a single load model and a single
+generator model.
+
+8
+
+Figure 2: System model
+
+An active power injection value Pd and a reactive power injection value Qd are
+associated with every device d ∈ D, and, denoting the set of devices connected at node
+n by D(n) ⊂ D:
+
+(Pd + jQd) .
+
+(7)
+
+∀n ∈ N : Sn = Pn + jQn =
+
+(cid:88)
+
+d∈D(n)
+
+Every device d has a restricted set Od ⊂ R2 of valid (Pd,Qd) injection points. We assume
+that the loads are operating at a constant power factor, i.e. the ratio between reactive
+and active powers - denoted as tan φd - remains unchanged:
+
+∀d ∈ C : Od = {(Pd, Qd) ∈ R2 | Qd
+Pd
+
+= tan φd} .
+
+(8)
+
+For distributed generators, the injections points have to stay within a polyhedron, as
+illustrated in Fig. 3. This set is deﬁned by lower and upper bounds on both Pd and Qd,
+as well as by two linear constraints that prevent a full ﬂexibility on Qg when Pg is close
+to its maximum. These constraints model the limitations of the power converter and/or
+of the electric generator [27]. We have:
+
+∀g ∈ G : Og = {(Pd, Qd) ∈ R2 | Pmin,g ≤ Pg ≤ Pmax,g ,
+Qmin,g ≤ Qg ≤ Qmax,g ,
+Qg ≤ α+
+g Pg + β+
+g ,
+Qg ≤ α
+g } .
+−
+−
+g Pg + β
+
+(9)
+
+9
+
+MV/LVtransformerDistributedgeneratorAggregate of DGAggregateof loadsLoadNode 1Node 2Node 3Node 4Node 5Transmissionnetwork (HV)Node 1Node 2Node 3Node 4Node 5Modeling ofelectrical devicesTransmissionnetwork (HV)HV/MVtransformerHV/MVtransformerQg ≤ α+
+
+g Pg + β+
+g
+
+Qg
+
+Pmax,g
+
+Qmax,g
+
+Pg
+
+Qmin,g
+
+Qg ≤ α−
+
+g Pg + β−
+
+g
+
+Figure 3: Illustration of a polyhedral set Od deﬁning the P-Q capability area of a dis-
+tributed generator g ∈ G.
+
+3.2 Operational planning problem statement
+
+Considering the model of the electrical distribution network presented in Section 3.1,
+operational planning is a recurring task performed by the DSO to anticipate the evolution
+of the system, that is the impact of the evolution of the injection and the consumption
+patterns on the operational limits of the system, and take preventive decisions to stay
+within these limits. Among the available decisions in the considered timing of operations,
+we consider that acting on the power injected or consumed by a predeﬁned set of devices
+is the only type of control the DSO has, as detailed in Section 3.1. We describe the
+evolution of the system by a discrete-time process having a time horizon T , the number
+of periods used for the operational planning phase. The period duration is 15 minutes,
+by analogy with the typical duration of a market period. The power injection and
+withdrawal levels are constant within a single period, and we neglect the fast dynamics
+of the system, which may be handled by real time controllers [28]. The control actions
+in this section are aimed to directly impact these power levels and can introduce time-
+coupling eﬀects, depending on the type of device. We now describe two control means
+of the system, the modulation of the generation and the modulation of the demand, as
+well as one of the possible interaction schemes between the actors of this system.
+For each device belonging to the set G ⊂ D of DGs, the DSO can impose a curtailment
+instruction, i.e. an upper limit on the generation level of the DG (cf. Fig. 4). This request
+can be performed until the time period immediately preceding the one concerned by the
+curtailment and it is acquired in exchange for a fee. This fee is used to compensate
+the producer for ﬁnancial loss related to the energy that could not be produced during
+modulation periods. We assume that this fee is deﬁned as a per unit compensation for
+the energy not produced, with respect to the actual potential that is known after the
+market period.
+
+10
+
+Figure 4: Curtailment of a distributed generator.
+
+We also consider that the DSO can modify the consumption of some ﬂexible loads,
+a subset F of full set of the loads C ⊂ D of the network. An activation fee is associated
+with this control mean and ﬂexible loads can be notiﬁed of activation until the time
+immediately preceding the start of the service. Once the activation is performed at time
+t0, the consumption of the ﬂexible load d is modiﬁed by a certain value during Td periods.
+For each of these modulation periods t ∈ {t0 + 1, ..., t0 + Td}, this value is deﬁned by the
+modulation function ∆Pd(t − t0). An example of modulation function and its inﬂuence
+over the consumption curve are presented in Fig. 5. Loads cannot be modulated in an
+arbitrary way. There are constraints to be imposed on the modulation signal, which
+are inherited from the ﬂexibility sources of the loads, such as an inner storage capacity
+(e.g. electric heater, refrigerator, water pump) or a process that can be scheduled with
+some ﬂexibility (e.g., industrial production line, dishwasher, washing machine). In any
+case, we will always consider that the modulation signal ∆Pd has to satisfy the following
+conditions:
+
+• A downward modulation is followed by an increase of the consumption, and con-
+
+versely.
+
+• The integral of the modulation signal is null in order to ensure that the consump-
+
+tion is only shifted, not modiﬁed.
+
+Other approaches that we do not consider in this work exist to control the system,
+such as modulating the tariﬀ signal(s), acting on the topology of the network, or using
+distributed storage sources. We do not model either the automatic regulation devices
+that often exist in distribution systems, such as On Load Tap Changers of transform-
+ers which automatically adapt to control the voltage level. This should be the case,
+obviously, in a real life application. We will discuss in the conclusion what are the
+implications of these non-modeled control possibilities.
+
+11
+
+(a) Modulation signal of the consumption (Td = 9).
+
+(b) Impact of the modulation signal over the consumption.
+
+Figure 5: Illustration of ﬂexibility services.
+
+3.3 Optimal sequential decision-making formulation
+
+We now formulate operational planning as an optimal sequential decision-making prob-
+lem, that is, we explain how the time, the decision process, and uncertainty are included
+to extend the mathematical model described in Section 3.1. The sequential aspect is
+induced by the modulation service that is provided by ﬂexible loads. Indeed, if such a
+service is activated at time t0 for a ﬂexible load d, the action will inﬂuence the system
+for the set of periods {t0 + 1, ..., t0 + Td}. In addition to being a sequential problem, it is
+also stochastic, because the evolution of the system and the outcome of control actions
+are aﬀected by several uncertain factors. These factors include, but are not limited to,
+the wind speed, the level of solar irradiance, and the consumption level of the loads.
+In this section, we model this problem as a Markov decision process with mixed-integer
+sets of states and actions. We thus consider that the transition probabilities of the state
+of the system from a period t to a period t + 1 only depend on the state at time t.
+
+12
+
+However, this state can encompass several past values of wind speed, solar irradiance,
+consumption levels, and any auxiliary modeling variables, in order to obtain a relevant
+model. An automatic procedure that determines an adequate number of past values to
+track in the state is presented in Section 5. Note that modeling the actual system as
+a Markovian system is not restrictive as all properly modeled systems are Markovian
+if the state variables capture all the information to model the system from time t and
+onwards [29]. Finally, the notion of optimality is deﬁned using a reward function that
+associates an immediate reward (or score) to every transition of the system. The better
+the cumulated reward over a system trajectory, the better the sequence of control actions
+for this trajectory.
+
+3.3.1 System state
+The global state space S of the system is decomposed in three subsets:
+
+S = S (1) × S (2) × S (3).
+
+The power injections of the devices are suﬃcient to obtain the value of the electrical
+quantities through equations (6) and (7). These injections are determined from the re-
+alization of the exogenous consumption and generation processes at a given time period,
+and from the modulation instructions for that period.
+If the consumption processes
+require the representation of the individual consumption of every load, it is possible to
+obtain the production of DGs given the power level of their energy source (i.e. the wind
+speed or the level of solar irradiance). We thus deﬁne a ﬁrst state set S (1) such that the
+vectors s(1)
+
+t ∈ S (1) are deﬁned by
+s(1)
+t = (P1,t, . . . , P|C|,t, irt, vt) ,
+
+where, at time t ∈ T , the irt and vt components represent the level of solar irradiance
+and the wind speed, respectively. If, for the sake of simplicity, we consider only solar and
+wind generation, other types of generators could easily be integrated by increasing the
+dimension of S (1). Note that the reactive power withdrawals of loads are known from
+s(1)
+t
+
+through equation (8).
+The vector s(2)
+
+t ∈ S (2), deﬁned as
+s(2)
+t = (P 1,t, ˆQ1,t, . . . , P |G|,t, ˆQ|G|,t, f lex1,t, . . . , f lex|F|,t),
+
+contains the upper limits P g,t on the active power injection and the reactive set-points
+ˆQg,t of the DGs g ∈ G, as authorized by the DSO, and the indicators f lexd,t of the
+ﬂexibility service state of the loads d ∈ F:
+
+(cid:40)
+
+f lexd,t =
+
+number of active periods left
+0
+
+if service is active
+if service is inactive .
+
+We denote by s(3)
+
+t ∈ S (3) the part of the system’s state that, at time t ∈ T , keeps track
+of past realizations of the uncertain phenomena (i.e. wind speed, solar irradiance, and
+
+13
+
+consumption levels) and contains the optional auxiliary modeling variables. Its purpose
+is to improve the accuracy of the stochastic modeling and to allow the representation of
+processes that are required for some reward functions (see Section 3.3.4). The number
+of past values can be diﬀerent for each phenomenon and, we have
+
+s(3)
+t = (P1,t−1, . . . , P1,t−Nloads+1, . . . , P|C|,t−1, . . . , P|C|,t−Nloads+1,
+
+irt−1, . . . , irt−Nir+1, vt−1, . . . , vt−Nv+1,
+(aux)
+s
+1,t
+
+(aux)
+Naux,t)
+
+, . . . , s
+0 , and Naux ∈ Z+. The value of these parameters has to be
+where Nloads, Nir, Nv ∈ Z+
+determined when instantiating the presented abstract decision model (see Section 5). A
+value of 1 for the three former parameters means that the history of the corresponding
+phenomenon consists of s(1) only, while a value of 0 for the latter parameter means that
+there is no auxiliary variable. We denote thereafter the vector of the Naux auxiliary
+modeling variables by s(aux)
+
+.
+
+t
+
+3.3.2 Control actions
+
+The control means that are available to the DSO to control the system are modeled by
+the set As of control actions. This set depends on the state st of the system because
+it is not possible to activate the ﬂexibility service of a load if it is already active. The
+components of vectors at ∈ As are deﬁned by
+
+at = (pt, ˆqt, actt) ,
+
+with pt, ˆqt ∈ R|G| such that, for period t + 1 and for each of the generators g ∈ G, pg,t
+and ˆqg,t indicate the maximum level of active power injection and the desired reactive
+set-point, respectively. On the other hand, the vector actt represents the activation
+indicators of the ﬂexibility services of the loads d ∈ F, where each component actd,t
+belongs to Ad,s, which is deﬁned as
+
+(cid:40){0, 1}
+
+{0}
+
+Ad,s =
+
+if f lexd,t = 0
+if f lexd,t > 0 ,
+
+(10)
+
+to ensure that a load which is already active is not activated.
+
+By using this representation of the control actions, we consider that a curtailment
+or ﬂexibility activation action targeting a period t must always be performed at the
+period t − 1, as described in Section 3. We do not consider the possibility to notify
+control actions several periods ahead, because it would induce even larger time-coupling
+eﬀects, while not improving the extent of control of the DSO since in the interaction
+model considered in this paper the cost associated with an action is independent of the
+notiﬁcation delay.
+
+14
+
+3.3.3 Transition function
+
+The system evolution from a state st to a state st+1 is described by the transition
+function f . The new state st+1 depends, in addition to the preceding state, on the
+control actions at and on the realization of the stochastic processes:
+
+where W is the set of possible realizations of a random process. The general evolution
+of the system is thus governed by relation
+
+f : S × As × W → S ,
+
+st+1 = f (st, at, wt) ,
+
+(11)
+where wt ∈ W represents the exogenous information and follows a probability law pW (·).
+We could write equivalently that st+1 ∼ pS(·|st, at), which clearly highlights that the
+next state of the system follows a probability distribution that is conditional on the
+current state and on the action taken at the corresponding time step. However, we
+favor notation of equation (11) as it enables an easier formulation of concepts that are
+introduced latter in this paper. We now describe the various elements that constitute
+the transition function.
+
+Load consumption The uncertainty about the behavior of consumers inevitably leads
+to uncertainty about the power level they draw from the network. However, over a
+one-day horizon, some trends can be observed. For example, consumption peaks arise
+in the early morning and in the evening for residential consumers, but at levels that
+ﬂuctuate from one day to another and among consumers. We model the evolution of the
+consumption of each load d ∈ C by
+
+Pd,t+1 = fd(Pd,t, Pd,t−1, . . . , Pd,t−Nloads+1, s(aux)
+
+(12)
+where wd,t ∼ pWd(·) denotes some components of wt ∼ pW (·). Given the hypothesis of
+a constant power factor for the loads, the reactive power consumption can directly be
+deduced from Pd,t+1:
+
+, wd,t) ,
+
+t
+
+Qq,t+1 = tan φd · Pd,t+1 .
+
+(13)
+
+Speed and power level of wind generators The uncertainty about the produc-
+tion level of wind turbines is inherited from the uncertainty about the wind speed. The
+stochastic process that we consider governs the wind speed, which is assumed to be uni-
+form across the network. The production level of the wind generators is then obtained by
+using a deterministic function that depends on the wind speed realization, this function
+is the power curve of the considered generator. We can formulate this phenomenon as:
+
+vt+1 = fv(vt, . . . , vt−Nv+1, s(aux)
+Pg,t+1 = ηg(vt+1),∀g ∈ wind generators ⊂ G ,
+
+, w(v)
+
+) ,
+
+t
+
+(15)
+t ∼ pW (v)(·) denotes some components of wt ∼ pW (·) and where ηg is the
+such that w(v)
+power curve of generator g. A typical example of power curve ηg(v) is illustrated in
+Fig. 6.
+
+t
+
+(14)
+
+15
+
+Figure 6: Power curve of a wind generator.
+
+Irradiance and photovoltaic production Like wind generators, the photovoltaic
+generators inherit their uncertainty in production level from the uncertainty associated
+with their energy source. This source is represented by the level of solar irradiance,
+which is the power level of the incident solar energy per square meter. The irradiance
+level is the stochastic process that we model, while the production level is obtained by a
+deterministic function of the irradiance and of the surface of photovoltaic panels. This
+function is simpler than the power curve of wind generators and is deﬁned as
+
+Pg,t = ηg · surfg · irt ,
+
+where ηg is the eﬃciency factor of the panels, assumed constant and with a typical
+value around 15%, while surfg is the surface of the panels in m2 and is speciﬁc to each
+photovoltaic generator. The irradiance level is denoted by irt and the whole phenomenon
+is modeled by the following process:
+
+irt+1 = fir(irt, . . . , irt−Nir+1, s(aux)
+Pg,t+1 = ηg · surfg · irt+1,∀g ∈ solar generators ⊂ G ,
+t ∼ pW (ir)(·) denotes some components of wt ∼ pW (·).
+
+, w(ir)
+
+t
+
+such that w(ir)
+
+) ,
+
+t
+
+(16)
+
+(17)
+
+Auxiliary modeling variables The evolution of auxiliary modeling variables de-
+pends on their meaning and must be determined when instantiating the presented ab-
+stract decision model. The evolution of each component of s(aux)
+can be either stochastic
+or deterministic and, without loss of generality, we can write:
+
+t
+
+s(aux)
+t+1 = faux(st, w(aux)
+
+t
+
+) ,
+
+(18)
+
+such that w(aux)
+
+t
+
+∼ pW (aux)(·) denotes some components of wt ∼ pW (·).
+
+16
+
+Impact of control actions The stochastic processes that we described govern the
+t ∈ S (1) of the consumption of loads (ﬂexibility services ex-
+evolution of the state s(1)
+cluded) and of the power level of energy sources of DGs. We now deﬁne the evolution of
+t ∈ S (2) by integrating the control actions of the DSO. Concerning
+the components of s(2)
+the modulation instructions of the generators, we have:
+
+(cid:40)
+
+P g,t+1 =
+
+ˆQg,t+1 = ˆqg,t ,
+
+∀g ∈ G :
+∀g ∈ G :
+
+pg,t
+max(p,ˆqg,t)∈Og p otherwise ,
+
+if (pg,t, ˆqg,t) ∈ Og ,
+
+where max(p,ˆqg,t)∈Og p denotes the maximal active production level that generator g can
+sustain with a reactive set-point of ˆqg,t. It is used if needed to ensure that the instructed
+(P g,t+1, ˆQg,t+1) point is a valid operating point, such a deﬁned by equation (9). As for
+the components dedicated to the ﬂexible loads, their evolution is governed by:
+
+∀d ∈ F :
+∀d ∈ F :
+
+f lexd,t+1 = max(f lexd,t − 1 ; 0) + actd,tTd ,
+
+∆Pd,t+1 =
+
+∆Pd(Td − f lexd,t+1 + 1)
+0
+
+if f lexd,t+1 > 0
+if f lexd,t+1 = 0 .
+
+(cid:40)
+
+From vectors s(1)
+and s(2)
+, we can determine the active and reactive power injections
+at nodes and thus obtain the value of the electrical quantities at nodes n ∈ N and links
+(m, n) ∈ L of the network:
+
+t
+
+t
+
+min(P g,t; Pg,t) +
+
+Pd,t +
+
+∆Pd,t ,
+
+(cid:88)
+
+d∈F (n)
+
+(cid:88)
+(cid:88)
+
+d∈C(n)
+
+d∈F (n)
+
+g∈G(n)
+
+(cid:88)
+(cid:88)
+(cid:88)
+(cid:12)(cid:12)(cid:12)(cid:16)|tmn|2Vm,t − (t(l)
+
+g∈G(n)
+∗
+n,tYn·Vn,t ,
+
+ˆQg,t +
+
+d∈C(n)
+
+Qd,t +
+
+tan φd∆Pd,t ,
+
+(cid:17)
+
+(cid:12)(cid:12)(cid:12) .
+
+Y (br)
+mn
+
+∗
+mn)
+
+t(l)
+nmVn,t
+
+Pn,t =
+
+Qn,t =
+
+Pn,t − jQn,t = V
+|Imn,t| =
+
+3.3.4 Reward function and goal
+
+In order to evaluate the performance of a policy, we ﬁrst specify the reward function
+r : S × As × S → R, which associates an instantaneous reward for each transition of the
+system from a period t to a period t + 1:
+
+(19)
+
+(20)
+
+(21)
+
+(22)
+
+(23)
+
+(24)
+
+(25)
+
+(26)
+
+r(st, at, st+1) = −(cid:88)
+(cid:124)
+−(cid:88)
+(cid:124)
+
+d∈F
+
+g∈G
+
+}Ccurt
+
+g
+
+(s(aux)
+t+1 )
+
+(cid:125)
+
+Pg,t+1 − P g,t+1
+
+4
+
+(cid:123)(cid:122)
+(cid:124) (cid:123)(cid:122) (cid:125)
+
+− Φ(st+1)
+
+curtailment cost of DGs
+
+penalty function
+
+(cid:125)
+
+max{0,
+
+actd,tCf lex
+
+d
+
+(cid:123)(cid:122)
+
+activation cost
+of ﬂexible loads
+
+17
+
+,
+
+(27)
+
+g
+
+d
+
+(·) is a per-generator function that deﬁnes the curtailment price, while
+where Ccurt
+(·) deﬁnes the activation cost for each ﬂexible load. In this generic deﬁnition of
+Cf lex
+the reward, we allow both functions to depend on the auxiliary state variables so that
+it can model arbitrary processes. The function Φ aims at penalizing a policy that leads
+the system into an undesirable state (e.g. that violates the operational limits or induces
+many losses) and, together with Ccurt
+, it must be deﬁned when instantiating
+the decision model. Note that equation (27) is such that the higher the operational
+costs and the larger the violations of operational limits, the more negative the reward
+function.
+
+and Cf lex
+
+d
+
+g
+
+We can now deﬁne the return over T periods, denoted RT , as the weighted sum of
+
+the rewards that are observed over a system trajectory of T periods
+
+RT =
+
+γtr(st, at, st+1) ,
+
+(28)
+
+where γ ∈]0; 1[ is the discount factor. Given that γt < 1 for t > 0, the further in time
+the transition from period t = 0, the less importance is given to the associated reward.
+Because the operation of a DN must always be ensured, it does not seem relevant to
+consider returns over a ﬁnite number of periods and we introduce the return R as
+
+T−1(cid:88)
+
+t=0
+
+It means that even if the return R is deﬁned as an inﬁnite sum, it converges to a ﬁnite
+value. One can also observe that, because st+1 = f (st, at, wt), a function ρ : S×A×W →
+R exists that aggregates functions f and r such that
+
+ρ(st, at, wt) = r(st, at, f (st, at, wt)) = r(st, at, st+1) ,
+
+(31)
+with wt ∼ pW (·). Let π : S → As be a policy that associates a control action to each
+state of the system. We can deﬁne, starting from an initial state s0 = s, the expected
+return R of the policy π by
+
+J π(s) = lim
+T→∞
+
+E
+
+wt∼pW (·)
+
+t=0,1,...
+
+γtρ(st, π(st), wt)|s0 = s} .
+
+(32)
+
+R = R∞ = lim
+T→∞
+
+γtr(st, at, st+1) ,
+
+(29)
+
+that corresponds to the weighted sum of the rewards observed over an inﬁnite trajectory
+of the system. Given that the costs have ﬁnite values, assuming the same for penalties,
+and observing that the reward function r is the sum of an inﬁnite number of these costs
+and penalties, a constant C exists such that, ∀(st, at, st+1) ∈ S × As × S, we have
+|r(st, at, st+1)| < C and thus
+
+|R| < lim
+
+T→∞ C
+
+γt =
+
+C
+1 − γ
+
+.
+
+(30)
+
+T−1(cid:88)
+
+t=0
+
+T−1(cid:88)
+
+t=0
+
+{T−1(cid:88)
+
+t=0
+
+18
+
+We denote by Π the space of all the policies π. For a DSO, addressing the operational
+planning problem described in Section 3 is equivalent to determine an optimal policy π∗
+among all the elements of Π, i.e. a policy that satisﬁes the following condition
+
+J π∗
+
+(s) ≥ J π(s),∀s ∈ S,∀π ∈ Π .
+
+(33)
+
+It is well known that such a policy satisﬁes the Bellman equation [30], which can be
+written
+
+(cid:8)ρ(s, a, w) + γJ π∗
+
+(f (s, a, w))(cid:9),∀s ∈ S .
+
+(34)
+
+J π∗
+
+(s) = max
+a∈As
+
+E
+
+w∼pW (·)
+
+If we only take into account the space of stationary policies (i.e. that selects an action
+independently of time t), it is without loss of generality comparing to the space of policies
+Π(cid:48) : S×T → A because the return to be maximized corresponds to an inﬁnite trajectory
+of the system [31].
+
+4 Lookahead optimization model
+
+We now describe a look-ahead algorithm to build a policy based on stochastic pro-
+gramming. The principle is, at each time step t ∈ T , to optimize a model Mt of the
+system over a ﬁnite time horizon Tt = {t, ..., t + T − 1} and to apply the control action
+ˆa∗
+t = ˆπ∗
+Mt(st) that corresponds to the ﬁrst stage of the model. This approximate optimal
+policy ˆπ∗
+Mt can be formulated as
+
+(cid:104) t+T−1(cid:88)
+
+t(cid:48)=t
+
+E
+
+wt(cid:48)∼pW (·)
+
+γt(cid:48)−tr(st(cid:48), at(cid:48), f (st(cid:48), at(cid:48), wt(cid:48)))
+
+ˆπ
+
+∗
+Mt(st) = arg
+at
+
+max
+st(cid:48) ,at(cid:48)
+∀t(cid:48)∈Tt
+s.t.
+
+st(cid:48) = f (st(cid:48)−1, at(cid:48)−1, wt(cid:48)−1) ,
+at(cid:48) ∈ Ast(cid:48) ,
+
+(cid:48) ∈ Tt ,
+
+∀t
+
+∀t
+
+(cid:48) ∈ Tt\{t}
+
+(cid:105)
+
+(35)
+
+(36)
+
+(37)
+
+where the shorter the horizon T , the higher the approximation error.
+
+The ﬁnite lookahead time horizon is not the only source of approximation. First,
+there is no exact numerical method to solve (35)-(37) without requiring a discrete ap-
+proximation of the continuous stochastic processes [32]. We detail in Section 4.2 how
+to build such a discrete approximation. Then, because of the nonlinearity of power-ﬂow
+equations on the one hand, and the integer variables that model the activation of ﬂexi-
+bility services on the other hand, the resulting mathematical problem is very complex to
+solve. For this reason, it is often required either to resort to local optimization techniques
+and heuristics, or to use relaxations and approximations of the power-ﬂow equations. In
+particular, we describe in Section 4.5 several models of the electrical network of diﬀerent
+complexity and accuracy.
+
+19
+
+4.1 Model instantiation
+
+The decision model presented in Section 3.3 is generic on some of its elements. We
+now instantiate these elements to obtain a practical model that can be implemented to
+perform numerical simulations.
+
+Auxiliary state variable We limit the vector s(aux)
+indicates the time of the day:
+
+t
+
+to a single auxiliary variable that
+
+s(aux)
+t
+
+= qt ,
+
+(38)
+which takes values in {0, . . . , 95} to identify the quarter of an hour in the day. This
+information will be used as an input of the modulation price functions and of the transi-
+tion function of both production and consumption processes. The relation that governs
+the evolution of qt can be stated as a function faux : {0, . . . , 95} (cid:55)→ {0, . . . , 95}, which is
+deﬁned as:
+
+qt+1 = faux(qt) = (qt + 1) mod 96
+
+.
+
+(39)
+
+g
+
+Modulation prices For the sake of simplicity, we consider that the curtailment price
+functions Ccurt
+depend exclusively on qt. The time of the day being deterministic, these
+functions are deterministic too and correspond to arrays of 96 price values, which span
+a whole day. Concerning the activation costs Cf lex
+, they are assumed to be constant on
+a per-load basis. The values of both the arrays and constants are speciﬁed in Section 5
+when presenting the test instances.
+
+d
+
+Penalty function We choose to penalize a policy for violating operational limits and
+for the active losses in the network. This is implemented using the following function:
+
+Φ(st+1) = k.(cid:0)(cid:88)
+[max(0,|Vn,t+1| − V n) + max(0, V n − |Vn,t+1|)]
+(cid:88)
+
+n∈N
+
++
+
+(m,n)∈L
+
+max(0,|Imn,t+1| − I mn)(cid:1)
+(cid:88)
+
+Pn,t+1
+
+n∈N
+
+4
+
++ Closs(qt+1)
+
+,
+
+(40)
+
+where |Vn,t+1| (n ∈ N ) and Imn,t+1 ((m, n) ∈ L) are determined from st+1 using equa-
+tions (23)-(26), and where k ∈ R+
+0 is a typically large constant. The per-unit price
+Closs(qt+1) of losses is a deterministic function of the quarter of hour and corresponds
+to an array of 96 price values.
+
+Production and consumption processes The instantiated versions of transition
+functions (12), (14), and (16), of the stochastic quantities (i.e. the consumption of the
+
+20
+
+loads, the wind speed, and the level of solar irradiance) have the following structure:
+
+(x)
+xt+1 = fx(xt, . . . , xt−Nx+1, qt, w
+t
+
+) ,
+
+(cid:18)
+
+= µx,t+1 + σx,t+1 · w
+·| xt − µx,t
+
+t ∼ pW (x)
+
+(x)
+
+σx,t
+
+(x)
+t
+
+,
+
+, . . . ,
+
+(cid:19)
+
+,
+
+(41)
+
+(42)
+
+(43)
+
+xt−Nx − µx,t−Nx+1
+
+σx,t−Nx+1
+
+with w
+
+where x denotes the considered process, and where µx,t±∆t and σx,t±∆t are shortcuts for
+the following per-process functions:
+
+(cid:16)
+(cid:16)
+
+(cid:17)
+(cid:17)
+
+µx,t±∆t = µx
+
+σx,t±∆t = σx
+
+(qt ± ∆t) mod 96
+(qt ± ∆t) mod 96
+
+,
+
+.
+
+(44)
+
+(45)
+
+These functions normalize the processes and remove their diurnal seasonality, and the
+conditional distribution of w
+is then assumed to be stationary. The details of the
+conditional density functions are not required for the development of the lookahead
+optimization model, we specify in Section 5 a possible procedure to learn these functions
+from time series of measurements.
+
+(x)
+t
+
+4.2 Discretization of the random process
+
+The random process needs to be discretized over the look-ahead horizon to implement
+the policy with a computer program. A prevalent technique is to use a scenario tree [33]
+for this purpose. At each time step t ∈ T , the evolution of the stochastic components is
+aggregated as a ﬁnite set ˜W T
+
+t of outcome trajectories of the exogenous variables:
+
+˜W T
+
+t = {(w(k)
+
+, . . . , w(k)
+
+t+T−1)|k = 1, . . . , W} ,
+
+t
+
+(46)
+and a probability Pk is associated to each trajectory k ∈ {1, . . . , W}. If two trajectories i
+and j share the same outcomes up to stage o, i.e. if (w(i)
+t(cid:48)+o),
+they can be interpreted as a single trajectory of probability Pi + Pj up this stage. Fig. 7
+provides an example of such a scenario tree, where the nodes represent the outcomes
+and the edges correspond to the transition probabilities.
+
+t(cid:48)+o) = (w(j)
+
+t(cid:48) , . . . , w(j)
+
+t(cid:48) , . . . , w(i)
+
+4.3 Mathematical program
+
+The purpose of the ﬁrst term in the penalty function is to be an incentive to prevent
+the policy to bring the system in a state that violates operational limits. This deﬁnition
+allows to evaluate any kind of policy.
+In a mathematical programming setting, we
+remove this term from the objective function and add operational constraints deﬁned in
+
+21
+
+equations (1) and (2) to (35)-(37). The new objective function becomes:
+
+cost(st, at, st+1) =
+
+max{0,
+
+}Ccurt
+
+g
+
+(qt+1) +
+
+actd,tCf lex
+
+d
+
+(cid:88)
+
+d∈F
+
+(cid:88)
+
+g∈G
+
+Pg,t+1 − P g,t+1
+
+(cid:88)
+
+4
+
+Pn,t+1
+
+n∈N
+
+4
+
++ Closs(qt+1)
+
+.
+
+(47)
+
+Taking into account the discretization of the stochastic processes, the objective func-
+tion deﬁned in equation (47), and the additional constraints, we can formulate a new
+approximate optimal policy ˆπ∗
+ˆMt
+
+as
+
+W(cid:88)
+
+t+T−1(cid:88)
+
+k=1
+
+t(cid:48)=t
+
+(cid:104)
+Pkγt(cid:48)−tcost(s(k)
+t(cid:48)
+
+(cid:105)
+
+, a(k)
+t(cid:48)
+
+, s(k)
+
+t(cid:48)+1)
+
+(48)
+
+∗
+ˆπ
+ˆMt
+
+(st) = arg
+at
+
+min
+,...,s(k)
+,...,a(k)
+
+t+T ,
+t+T−1,
+
+s(k)
+t
+a(k)
+
+t
+∀k∈{1,...,W}
+
+s.t.
+
+,...,w(i)
+
+t(cid:48) )=(w(j)
+
+t
+
+∀i, j s.t. (w(i)
+) ∈ {1, . . . , W} × Tt :
+, w(k)
+t(cid:48) ) ,
+
+, a(k)
+t(cid:48)
+
+t
+
+∀t
+
+(cid:48) ∈ Tt :
+t(cid:48) = a(j)
+a(i)
+t(cid:48) ,
+∀(k, t
+(cid:48)
+t(cid:48)+1 = f (s(k)
+s(k)
+t(cid:48)
+t(cid:48) ∈ A
+a(k)
+,
+∀(n, k, t
+(cid:48)
+
+s(k)
+t(cid:48)
+
+) ∈ N × {1, . . . , W} × Tt :
+
+V
+
+(k)
+
+(k)
+
+n,t(cid:48) ≤ |V
+∀(m, n, k, t
+(cid:48)
+
+n,t(cid:48)| ≤ V
+) ∈ L × {1, . . . , W} × Tt :
+
+(k)
+n,t(cid:48) ,
+
+|Imn,t| ≤ I mn ,
+
+,...,w(j)
+
+t(cid:48) ) ,
+
+(49)
+
+(50)
+
+(51)
+
+(52)
+
+(53)
+
+where (50) stands for equations (12)-(26), and (51) for equation (10). The model takes
+into account that decisions at stage t(cid:48) ∈ Tt only depend on exogenous information up
+
+Figure 7: Example of scenario tree with T = 3 and W = 5.
+
+22
+
+w(3)tw(1)t+1w(2)t+1w(3)t+1w(4)t+1w(5)t+1w(5)tw(4)tw(1)tw(2)tw(1)t+2w(2)t+2w(3)t+2w(4)t+2w(5)t+2P1+P2P4+P5P3P1/(P1+P2)P2/(P1+P2)P4/(P4+P5)P5/(P4+P5)11111to stage t(cid:48), i.e. that future unknown data is not used, which is why we integrate the
+nonanticipativity constraints [32] to the mathematical program using equation (49).
+Problem (48)-(53) is a mixed-integer program (MIP). For a given distribution system,
+its complexity depends mainly on the network model chosen to represent power-ﬂow
+equations (cf. Section 4.5), and on the number of scenarios representing the uncertainty.
+
+4.4 Detailed model of control actions
+
+Implementing the model of control actions of Section 3.3.2 in a mathematical program is
+not straightforward. We now present how it can be implemented in problem (48)-(53).
+
+4.4.1 Generation curtailment
+
+This section focuses on the curtailment decision model. To ease the reading, we focus
+on one particular generator and thus omit subscript g. Note ﬁrst that the active power
+injection term of equation (23) that follows a curtailment instruction pt ≥ 0 from stage
+t, i.e. min(P t+1; Pt+1), is translated in the mathematical program by
+
+min(P t+1; Pt+1) = Pt+1 − pcurt,t+1 ,
+
+(54)
+where pcurt,t+1 ≥ 0 is the amount of active power curtailment induced by the power limit
+instruction. This quantity is easy to determine in a deterministic setting:
+
+P t+1 = pt ,
+
+pcurt,t+1 = Pt+1 − P t+1 ,
+
+(55)
+
+(56)
+
+where Pt+1 is the potential active production level at time step t + 1.
+
+Considering several scenarios leads to a less obvious deﬁnition of the amount of
+curtailment. Let pt denote the curtailment instruction that, at time t, is shared by
+all scenarios j ∈ {1, . . . , W} such that (. . . , w(k)
+t ). For one
+generator, the maximum power allowed and the curtailed power are deﬁned by the
+following set of constraints for each scenario k:
+
+) = (. . . , w(j)
+
+t−1, w(k)
+
+t−1, w(j)
+
+t
+
+P
+
+(k)
+t+1 = pt ,
+(k)
+(k)
+t+1 = P
+
+t+1 − P
+∆p
+(k)
+p
+curt,t+1 = max(0, ∆p
+
+(k)
+t+1 ,
+(k)
+t+1) ,
+
+(57)
+
+(58)
+
+(59)
+
+(k)
+t+1 is the potential active production level in scenario k, and ∆p
+
+(k)
+where P
+t+1 is an auxiliary
+variable that has no physical meaning, since it can be negative when pt is not restrictive
+for scenario k (i.e. when pt ≥ P
+(k)
+curt,t+1 would be the power curtailed
+if scenario k realizes.
+It contributes linearly to the value of the objective function,
+proportional to the curtailment cost and weighted by the probability of scenario k. A
+
+(k)
+t+1). The variable p
+
+23
+
+common relaxation of the max operator of constraint (59) for a variable that tends to
+be minimized is
+
+(k)
+
+curt,t+1 ≥ ∆p
+
+(k)
+t+1 .
+
+p
+
+(60)
+
+However, this holds only if constraint (60) is always tight, which is not always true
+(k)
+t+1, it would
+in problem (48)-(53). Without preventing p
+allow to discriminate the curtailment decisions between diﬀerent scenarios even though
+the nonanticipativity constraint (49) is respected. Indeed, the amount of power curtailed
+(k)
+could be increased beyond P
+t+1 and it would diﬀer from the set point pt, which
+is guaranteeing nonanticipativity by being common for all subsequent scenarios.
+
+(k)
+curt,t+1 to be greater than ∆p
+
+t+1 − P
+
+(k)
+
+From this analysis, we conclude that a continuous implementation of equation (59) is
+not possible and we model it using equation (60) and the following additional constraints:
+
+p
+
+p
+
+(k)
+
+(k)
+
+curt,t+1 ≤ ∆p
+curt,t+1 ≤ (1 − y
+t+1 ∈ {0, 1} ,
+y
+
+(k)
+
+(k)
+
+t+1 − y(k)∆P
+(k)
+t+1) ∆P
+
+(k)
+t+1 ,
+
+(k)
+t+1 ,
+
+(61)
+
+(62)
+
+(63)
+
+(k)
+t+1 and ∆P
+
+(k)
+where ∆P
+t+1 are parameters that indicate the maximal and minimal values
+(k)
+t+1 can take, respectively. It corresponds to a big M formulation [34] and can
+
+that ∆p
+be interpreted as follow:
+
+(k)
+t+1 < 0, constraint (61) is satisﬁed only if y
+
+(k)
+t+1 = 1, and constraint (62) then
+
+(k)
+curt,t+1 = 0 ;
+t+1 ≥ 0, constraints (60) and (61) can be satisﬁed simultaneously only if
+
+(k)
+
+• if ∆p
+
+forces p
+
+• if ∆p
+
+(k)
+t+1 = 0 .
+
+y
+
+Parameters ∆P
+
+(k)
+t+1 and ∆P
+
+(k)
+t+1 should be chosen such that the continuous relaxation
+(k)
+is as tight as possible. For instance for a wind turbine ∆P
+t+1 =
+t+1 − maxj P
+Finally, the curtailment instruction pg,t are recovered from the solution of ˆMt upon
+
+(k)
+t+1 and ∆P
+
+(k)
+t+1 = P
+
+(j)
+t+1.
+
+(k)
+
+P
+
+the following processing of the solution:
+
+(cid:40)
+
+∀g ∈ G : pg,t ←
+
+pg,t
++∞ otherwise ,
+
+if ∃k ∈ {1, ..., W} s.t. pg,t < P
+
+(k)
+g,t+1 ,
+
+(64)
+
+This processing is introduced because, in ˆMt, the value of pg,t has no meaning when it
+does not induce an actual curtailment for at least one scenario. Therefore, it makes no
+sense to interpret these variables as curtailment instructions and equation (64) makes
+sure that curtailment actions sent to the system actually corresponds to curtailment
+decisions in the optimization model.
+
+24
+
+4.4.2 Activation of ﬂexibility services
+
+This section details how the control actions actd,t deﬁned in Section 3.3.2 are computed.
+To ease the reading, we focus on one particular device and thus omit subscript d in this
+section. The superscript (k) is also dropped and the following equations simply needs to
+be repeated for each scenario of the lookahead model, with equation (49) guaranteeing
+the nonanticipativity of the model. We ﬁrst deﬁne several auxiliary variables:
+
+• zt ∈ {0, 1} is a binary variable used to model the max operator for state transitions;
+• mt ∈ Z+ is a integer variable used for state transitions.
+
+Ignoring the activation signal, the transition rule of the ﬂexible state, i.e.
+
+mt+1 = max(0, f lext − 1) ,
+
+is implemented through the following big M formulation:
+
+mt+1 ≤ f lext − 1 + zt
+mt+1 ≤ T (1 − zt)
+mt+1 ≥ f lext − 1 .
+
+The inﬂuence of the activation signal is then incorporated to the ﬂexible state:
+
+f lext+1 = mt+1 + acttT ,
+
+while the following constraint prevents a double activation of a ﬂexibility service:
+
+at +
+
+f lext
+
+T
+
+≤ 1 .
+
+(65)
+
+(66)
+
+(67)
+
+(68)
+
+(69)
+
+Finally, the value of the eﬀective modulation signal, deﬁned in equation (22), is imple-
+mented as:
+
+at−t(cid:48)∆P (t − t
+(cid:48)
+
+) ,
+
+(70)
+
+(cid:88)
+
+∆Pt =
+
+t(cid:48):t−t(cid:48)≤T
+
+where ∆P (·) is the modulation curve of the load, which produces parameters for the
+mathematical program.
+
+4.5 Detailed network models
+
+We detail how the network model described in Section 3.1 is precisely instantiated in
+the AC non-convex case, then we describe a linearization approach and ﬁnally a second
+order cone program (SOCP) model. To ease reading we consider only one time step
+and omit the subscripts t and the scenario notation, but in reality these equations are
+replicated for each time step or node of the scenario tree. In this section, we deﬁne
+
+gmn + jbmn = Y (br)
+mn
+
+25
+
+and
+
+g(sh)
+m + jb(sh)
+
+m =
+
+(cid:88)
+
+n:(m,n)∈L
+
+Y (sh)
+mn .
+
+We also consider arbitrarily that node 1 is a slack bus which sets a reference phase angle
+of 0 and a ﬁxed voltage magnitude.
+
+4.5.1 Non-convex AC model
+
+We chose to express relations (6) in rectangular coordinates. Hence we deﬁne variables
+
+• en as the real part of Vn
+• fn as the imaginary part of Vn
+• Pmn as the active power leaving bus m and ﬂowing in link (m, n)
+• Qmn as the reactive power leaving bus m and ﬂowing in link (m, n)
+• P shunt
+• Qshunt
+
+as the reactive power shunted at bus n.
+
+as the active power shunted at bus n
+
+n
+
+n
+
+The above powers are deﬁned as
+∀(m, n) ∈L :
+
+Pmn = em (gmn(em − en) − bmn(fm − fn)) + fm (bmn(em − en) + gmn(fm − fn)) ,
+(71)
+Qmn = fm (gmn(em − en) − bmn(fm − fn)) − em (bmn(em − en) + gmn(fm − fn)) ,
+(72)
+
+∀n ∈N :
+P shunt
+Qshunt
+
+n
+
+n
+
+n
+
+= g(sh)
+= b(sh)
+
+n
+
+(e2
+(e2
+
+n + f 2
+n),
+n + f 2
+n).
+
+Then the voltage operational limits are deﬁned for every node n as
+
+2 ≤ e2
+
+n + f 2
+
+n ≤ Vn
+
+2
+
+, ∀n ∈ N ,
+
+Vn
+
+and the thermal limits by
+
+mn ≤ I
+I 2
+
+2
+
+mn, ∀(m, n) ∈ L,
+
+with
+
+imag ,
+
+real + I 2
+
+I 2
+mn = I 2
+Ireal = gmn(em − en) − bmn(fm − fn) ,
+Iimag = bmn(em − en) + gmn(fm − fn) .
+
+26
+
+(73)
+
+(74)
+
+(75)
+
+(76)
+
+(77)
+
+(78)
+
+(79)
+
+4.5.2 Linearized model
+
+This model proposed in [20] approximates linearly (71) and (72). Note that this approx-
+= 0, ∀n ∈ N . This
+imation does not include the shunt powers, i.e. P shunt
+yields
+
+= Qshunt
+
+n
+
+n
+
+Pmn = gmn(em − en) − bmn(fm − fn), ∀(m, n) ∈ L
+Qmn = −bmn(em − en) − gmn(fm − fn), ∀(m, n) ∈ L.
+
+(80)
+
+(81)
+
+The upper voltage limits and the thermal limits are approximated by a regular poly-
+hedron inscribed in the respective circles of the original limits. The lower voltage op-
+erational limit is simply modeled as a lower bound on en, which means that we make
+the hypothesis that the angles are small. An iterative method could be set up if the
+approximated solutions are far from feasible solutions of the AC model. However, this
+turned out to be unnecessary as the decisions taken are most of the time very coherent
+with those obtained with other models, as illustrated in Section 5. This formulation
+does not account for losses.
+
+4.5.3 Convex SOCP model
+By introducing variables un ≥ 0, Rmn ≥ 0 and Tmn ∈ R that substitute the expressions
+
+e2
+n + f 2
+n√
+2
+
+,
+
+emen + fmfn,
+
+fmen − emfn,
+
+respectively, constraints (71)-(74) can be rewritten without e and f as
+√
+2um − gmnRmn − bmnTmn, ∀(m, n) ∈ L
+Pmn = gmn
+√
+Qmn = −bmn
+2um + bmnRmn − gmnTmn, ∀(m, n) ∈ L
+√
+2un, ∀n ∈ N
+P shunt
+= g(sh)
+√
+2un, ∀n ∈ N .
+= b(sh)
+Qshunt
+
+n
+
+n
+
+n
+
+n
+
+The additional set of constraints
+
+2umun = R2
+
+mn + T 2
+
+mn, ∀(m, n) ∈ L
+
+(82)
+
+(83)
+
+(84)
+
+(85)
+
+(86)
+
+are imposed to maintain a relationship between the newly introduced variables. They
+are then relaxed to obtain a convex second order cone program:
+mn, ∀(m, n) ∈ L.
+Voltage limits can be easily rewritten as a function of un as
+, ∀n ∈ N .
+
+√
+2un ≤ Vn
+
+2umun ≥ R2
+
+mn + T 2
+
+2 ≤
+
+(87)
+
+(88)
+
+Vn
+
+2
+
+Thermal limits are approximated in the same way as for the non-convex AC model. Note
+that as Rmn = Rnm and Tmn = −Tnm, they are in practice replaced by a single variable
+
+27
+
+per branch and constraints (82) and (83) are updated accordingly. It is shown in [14]
+that this relaxation is tight for radial networks under some conditions on the objective
+function. These conditions are not met in our formulation since minimizing curtailment
+is equivalent to maximizing the renewable generation. To mitigate this issue, the losses
+term in the objective function must be scaled with a coeﬃcient suﬃciently large so that
+(87) are tight, but not too large so that the original objective function is still guiding
+the solution. This tradeoﬀ is further discussed in Section 5.
+
+5 Test instances
+
+We describe below the three test instances of the ANM problem that are used in the
+results section. The set of models and parameters that are speciﬁc to these instances,
+as well as documentation for their usage, are accessible at http://www.montefiore.
+ulg.ac.be/~anm/ as Python code. It has been developed to provide a black-box-type
+simulator that is quick to set up. The DNs on which these instances are based are a toy
+5-bus radial test system, a 33-bus non-radial test system [35], and a 77-bus radial test
+system [36]. Table 1 summarizes some relevant data about these instances. The test
+systems are also illustrated in Figures 8, 9, and 10. The location of the wind generators,
+which we assume to be curtailable, is indicated by a circled W . The 77-bus instance also
+includes non-curtailable generators that model residential photovoltaic panels.
+
+case
+ﬂex level
+|N|
+|L|
+|G|
+|C|
+|F|
+max ﬂex (MW)
+∼peak load (MW)
+
+Og ,
+
+∀g ∈ wind turbines
+
+case5
+
+case33
+
+case77
+
+low medium high
+5
+4
+1
+3
+3
+0.9
+11
+
+1
+0.3
+
+2
+0.6
+
+0 ≤ Pg ≤ 20
+−5 ≤ Qg ≤ 5
+
+Qg ≤ −0.24Pg + 6.8
+Qg ≤ 0.24Pg − 6.8
+
+low medium high
+33
+37
+4
+32
+32
+2
+9
+
+11
+0.62
+
+22
+1.3
+
+0 ≤ Pg ≤ 4.5
+−1 ≤ Qg ≤ 1
+Qg ≤ −0.2Pg + 1.3
+Qg ≤ 0.2Pg − 1.3
+
+low medium high
+
+77
+76
+6 curtailable (out of 59)
+53
+33
+5.01
+18
+
+11
+1.71
+
+22
+3.41
+
+0 ≤ Pg ≤ 4.5
+−1 ≤ Qg ≤ 1
+Qg ≤ −0.2Pg + 1.3
+Qg ≤ 0.2Pg − 1.3
+
+Table 1: Summary of test instances.
+
+Figure 8: 5-bus test system.
+
+28
+
+Ext. Grid12345WFigure 9: 33-bus test system.
+
+We consider that the per-unit curtailment prices are the same for all the generators.
+As described in Section 4.1, this price varies through the day and Figure 11 speciﬁes the
+values considered in the test instances. We also use these values for the per-unit cost
+of the losses, i.e. Closs(·), while the constant k that appear in equation (40) is set to
+104. Concerning ﬂexible loads, three diﬀerent penetration levels exist for each test case.
+For every conﬁguration, about half of the ﬂexible services oﬀer a downward modulation,
+followed by an upward rebound eﬀect, and inversely for the other half. The maximal
+and cumulated modulation magnitude is reported in Table 1 to illustrate the potential
+oﬀered by ﬂexible loads in every conﬁguration. Finally, the duration of the modulation
+signals is of 7 time periods for the 5-bus instances, and from 6 to 24 time periods for the
+33 and 77-bus instances.
+The conditional density functions deﬁned in equation (43) are built using a para-
+metric model P(N,n) that relies on a mixture of n Gaussians to represent the probability
+distribution p(wt+1|wt, . . . , wt−N +1) of the next outcome of the process, conditionally
+to the last N observed outcomes. In particular, the following procedure allows to ﬁt
+a model P(N,n) to a set {(w
+L ), i = 1, . . . , I} of time series of normalized
+realizations of the process of interest:
+
+(i)
+2 , . . . , w
+
+(i)
+1 , w
+
+(i)
+
+1. build a dataset of tuples (w
+
+1};
+
+(i)
+t−N +1, . . . , w
+
+(i)
+t
+
+(i)
+
+t+1),∀(i, t) ∈ {1, . . . , I}×{N, . . . , L−
+
+, w
+
+2. model the joint distribution p(wt−N +1, . . . , wt+1) of the dataset using a mixture
+of n Gaussians, by performing a maximum likelihood estimation [37] of the mix-
+ture’s parameters (i.e. the weight ηi, mean µi, and covariance matrix Σi of every
+Gaussian i ∈ {1, . . . , n});
+
+3. ∀i ∈ {1, . . . , n}, deduce from µi and Σi the functions µ
+
+·|·
+i (wt−N +1, . . . , wt) and
+·|·
+i (wt−N +1, . . . , wt) that deﬁne the mean and standard deviation of wt+1, accord-
+σ
+ing to the ith Gaussian in the mixture and conditional to wt−N +1, . . . , wt [38];
+
+29
+
+Ext. Grid23222324452526272829303132678910111213141516172120191810WWWWFigure 10: 77-bus test system.
+
+Table 2: Parameters of the stochastic models used in the implementation of the bench-
+mark.
+
+Wind speed (Nv)
+Solar irradiance (Nir)
+Load consumption (Nloads)
+
+N n
+1
+1
+1
+10
+10
+2
+
+4. produce p(·|wt, . . . , wt−N +1) as the following mixture of conditional Gaussian dis-
+
+tributions:
+p(·|wt, . . . , wt−N +1) =
+
+n(cid:88)
+
+ηiN(cid:16)
+
+(cid:17)
+
+·|·
+i (wt−N +1, . . . , wt), σ
+
+·|·
+i (wt−N +1, . . . , wt)
+
+µ
+
+. (89)
+
+i=1
+
+In order to determine an adequate value of the model’s hyper-parameters n and N for
+each process, we relied on an Approximate Bayesian Computation (ABC) method [39].
+Such an approach consists in sampling trajectories from each model and to compare
+them with the original data to estimate its posterior probability among the set Θ of
+candidate models [40]. Using Θ = {P(N,m)|n∈{1,...,20},N∈{1,...,3}}, the most likely param-
+eters identiﬁed by this model choice technique are presented in Table 2. We refer the
+interested reader to [41] for more details on the modeling approach.
+
+The datasets that we used are real measurements of the wind speed3 and of the solar
+irradiance4. For the residential consumption data, a single stochastic model has been
+
+3http://www.nrel.gov/electricity/transmission/eastern_wind_dataset.html
+4http://solargis.info/
+
+30
+
+025811162734679101213141517182319202421252226282934303135323633373852394047414248434944455046515354685556695770585971606172626373647465667567761Ext. GridWWWWWWFigure 11: Curtailment prices used in the test instance.
+
+learned from measurements of a Belgian distribution network and it is used for all the
+loads of the test instance. However, this model diﬀers among the loads through the use
+of a scaling factor. The implementation of the statistical algorithms relies on both SciPy
+[42] and Scikit-learn [43], two Python libraries.
+
+6 Numerical results
+
+The goals of this section are to illustrate the operational planning problem and the test
+instances, as well as to provide some empirical evaluations of the proposed lookahead
+policy for the considered network models and for scenario trees of varying complexity.
+In particular, the policy ˆπ∗
+(st) deﬁned by problem (48)-(53) was applied to every test
+ˆMt
+instance and penetration level of the ﬂexible loads. The empirical expected return of
+the policy, for a given test instance, level of ﬂexibility, network model, and scenario tree
+complexity, is determined from 50 runs of 288 time steps (i.e. of 3 days), each run i
+corresponding to the following sequence:
+
+1. Initialize the state vector s0 by setting all the ﬂexible loads as inactive and by
+sampling stochastic components from the joint distributions learned when building
+the test instance.
+
+2. Run a simulation of 288 time steps, where, at every time step, problem (48)-(53)
+
+is implemented as follow:
+
+(a) sample 100 trajectories of the exogenous variables over a lookahead horizon
+
+of length T = 10, i.e. trajectories (w(j)
+
+t
+
+, . . . , w(j)
+
+t+9), with j = 1, . . . , 100;
+
+(b) determine the corresponding trajectories of the potential (i.e. not accounting
+for modulation instructions) power injections of the devices, as they are fully
+
+31
+
+020406080qt253035404550556065Ccurtdetermined by the current state st and by (w(j)
+
+t
+
+, . . . , w(j)
+
+t+9);
+
+(c) cluster the 100 trajectories of power injections into W scenarios, using a
+
+hierarchical clustering method and Ward’s distance [44];
+
+(d) build the corresponding clusters of outcome trajectories, i.e.
+t+9)|k = 1, . . . , W} ,
+
+t = {( ˜w(k)
+
+˜W T
+
+, . . . , ˜w(k)
+
+t
+
+t(cid:48) denotes the centroid of cluster k at time t(cid:48) ∈ {t, . . . , t + 9}, and
+
+where ˜w(k)
+compute the probabilities Pk of the resulting scenarios as
+
+Pk =
+
+number of trajectories in cluster k
+
+100
+
+;
+
+(e) solve problem ˆMt with a discount factor γ = 0.99 and over the scenario tree
+
+deﬁned by outcomes of ˜W T
+
+t and probabilities (P1, . . . , PW );
+
+(f) recover the action vector at to apply to the system.
+
+The motivation behind the use of Ward’s method to cluster trajectories is that it is a
+minimum variance method, which means that the trajectories of a cluster were selected
+because they are close to its centroid, in comparison to trajectories of other clusters.
+Consequently, the scenarios used in the optimization model, which are the centroids of
+the clusters, diﬀer minimally from the trajectories it summarizes.
+
+The implementation has been done using the Python code mentioned in Section 5
+to simulate the system and Pyomo [45] to build the mathematical programs. These
+programs were solved by BONMIN [46] in the MINLP case, and by Gurobi in the
+MISOCP and MILP cases. At each time step, a budget of 10 minutes is allowed to solve
+the mathematical program. If the solver reaches the time limit, the current best solution
+is applied to the system if a feasible solution is available, or the whole simulation run
+fails if no solution was found. Both solvers stop before the time limit if they reach a
+relative optimality gap of 1%. Note that BONMIN performs local optimization and must
+be seen as an heuristic method to solve the non-convex MINLPs, as it comes with no
+optimality guarantees. In the MISOCP case, the scaling factor of the losses discussed in
+Section 4.5.3 was ﬁxed empirically to 3. For every combination of test instance, level of
+ﬂexibility, and network model, the same runs were performed with a scenario tree ˜W T
+t of
+one scenario (i.e. the mean of the sampled trajectories) and of three scenarios. A version
+of the problem with perfect information, i.e. with a scenario tree consisting of the actual
+future trajectory of the exogenous information, was also simulated to obtain a reference
+value of performance. The overall simulation was carried on in a high-performance
+computing environment with 128 cores. Each run being limited to a single core, such an
+infrastructure enabled hundreds of simulations to run in parallel and thus to speed up
+computations by the same factor. Ignoring failed simulation runs, more than 1 million
+of mathematical programs were solved for a cumulated time budget of approximately
+1122 days.
+
+32
+
+are computed as:
+
+E
+
+s∼p0(·)
+
+(cid:110)
+
+J ˆπ∗
+
+(s)
+
+The empirical estimations of the expected return reported in the following results
+
+(cid:111) ≈ 1
+
+50
+
+50(cid:88)
+
+287(cid:88)
+
+i=1
+
+t=0
+
+(i)
+0.99tr
+t
+
+,
+
+(90)
+
+(i)
+corresponds to the instantaneous reward observed during the nth simulation
+where r
+t
+run at time step t, and where p0(·) denotes the probability distribution described at step
+(1). Tables 3, 4, and 5, summarize the results of the simulation runs for the 5-bus, 33-
+bus, and 77-bus test systems, respectively. The ﬁrst columns identiﬁes the test instance
+conﬁguration and the two latter columns report the expected return and the distribution
+of solution time. The blue and red bars denote the contributions to the expected return
+of the expected costs (including losses) and of the penalties from constraint violations,
+respectively. The box plots’ whiskers cover the whole range of the observed solution
+times and the red makers indicate the median time.
+
+We can ﬁrst observe from the simulation results of the 5-bus test system that having
+a perfect forecast of the evolution of the system yields signiﬁcantly better returns than
+when decisions are subject to uncertainty. It also shows that considering three possible
+future scenarios can signiﬁcantly improve over an optimization performed on the average
+future scenario, to the expense of the solution time. Among the three network models,
+the SOCP relaxation is the one that induces the most penalties. These penalties also
+appear in the deterministic case, which implies that the relaxation is not always tight.
+We also observe that the policy slightly beneﬁts from an increase of the ﬂexibility level of
+loads in the deterministic setting but not in the presence of uncertainty. Given the small
+size of the 5-bus test system, the solution times are very good for every conﬁguration
+with the exception of the MINLPs, for which worst-case solution time already reaches
+the time limit for all lookahead models.
+
+The results for the 33-bus test system are quite similar, with the notable exception of
+the solution times. Both the SOCP and LP network models still produce mathematical
+programs that can be solved within a reasonable time budget. On the other hand, the
+time limit is very often reached when solving the MINLPs5. The simulation runs even
+failed in the two most complex conﬁgurations as the solver could not ﬁnd any feasible
+solution within the time limit. This observation can be extended to the simulation results
+of the 77-bus test system, with the diﬀerence that, in the 1-scenario conﬁgurations, the
+mean and median solution times are lower while the worst-case time is even larger. None
+of the 3-scenario runs succeeded for the NLP network model and even the SOCP model
+produces signiﬁcantly increased solution times, with worst cases reaching the time limit.
+
+Finally, a part of a 5-bus and low-ﬂexibility simulation run is illustrated in Figures 12,
+13, and 14, with a 3-scenarios lookahead model and a NLP, SOCP, and linear network
+model, respectively. The dashed lines in the upper-left subplots represent the estimated
+
+5Reported solution time can be larger than the time limit. It happens when the solver is executing
+
+a complex routine for some amount time before being able to check the limit.
+
+33
+
+Table 3: Estimation of expected return and distribution of solver time for the 5-bus test
+system.
+
+production in the 3 scenarios of the lookahead model at time step 101 (i.e. when comput-
+ing decisions for time step 102 and onwards). The bottom-right subplots represent the
+generator’s P-Q operating points for the whole simulation and the red point corresponds
+to time step 102. Notable diﬀerences can be observed among the network models. At
+time step 102, both the NLP and LP approaches show a violation of a thermal con-
+straint because of an inadequate scenario tree, but the SOCP model is, on the contrary,
+quite conservative. This behavior is likely due to the scaling of the losses term in this
+latter model, as suggested by its chart of P-Q set-points. The policy did not explicitly
+computed a curtailment of active power but chose an aggressive Q set-point, which led
+to a power curtailment due to the P-Q capabilities of the generator. This phenomenon
+is observed several times in the reported simulation, in particular at and prior to time
+step 102. The NLP and LP models show a similar curtailment pattern, with the latter
+inducing more curtailment and an over-satisfaction of the thermal limit. We suspect the
+cause to be the non-inclusion of the losses in the LP model, which may also explain why
+this approach activates more ﬂexible services than the two other approaches. Another
+consequence of not accounting for the losses is that the policy makes little use of the
+generator’s reactive capabilities, as shown by the lower-right subplot of Figure 14. In
+accordance with results of Tables 3, 4, and 5, the SOCP network model is not always
+tight and, around time step 110, shows constraint violations in the lower-left subplot of
+Figure 13, while the two other network models keep the system within the operational
+limits.
+
+34
+
+case5Lookahead modelNetwok modelFlex. levelExp. return (costs, penalties)Solution time (s)meanDeterminist, T = 10tt+10nlplowsocplowlinlownlpmediumsocpmediumlinmediumnlphighsocphighlinhighMean scenario, T = 10tt+10nlplowsocplowlinlownlpmediumsocpmediumlinmediumnlphighsocphighlinhigh3 scenarios, T = 10tt+10nlplowsocplowlinlownlpmediumsocpmediumlinmediumnlphighsocphighlinhigh0100200300400500600Table 4: Estimation of expected return and distribution of solver time for the 33-bus
+test system.
+
+Table 5: Estimation of expected return and distribution of solver time for the 77-bus
+test system.
+
+35
+
+case33Lookahead modelNetwok modelFlex. levelExp. return (costs, penalties)Solution time (s)meanDeterminist, T = 10tt+10nlplowsocplowlinlownlpmediumsocpmediumlinmediumnlphighsocphighlinhighMean scenario, T = 10tt+10nlplowsocplowlinlownlpmediumsocpmediumlinmediumnlphighsocphighlinhigh3 scenarios, T = 10tt+10nlplowsocplowlinlownlpmediumsocpmediumlinmediumnlphighsocphighlinhighfailedfailed0200400600800failedfailedcase75Lookahead modelNetwok modelFlex. levelExp. return (costs, penalties)Solution time (s)meanDeterminist, T = 10tt+10nlplowsocplowlinlownlpmediumsocpmediumlinmediumnlphighsocphighlinhighMean scenario, T = 10tt+10nlplowsocplowlinlownlpmediumsocpmediumlinmediumnlphighsocphighlinhigh3 scenarios, T = 10tt+10nlplowsocplowlinlownlpmediumsocpmediumlinmediumnlphighsocphighlinhighfailedfailedfailed0200400600800failedfailedfailed)
+
+W
+M
+
+(
+
+.
+d
+o
+r
+P
+
+¯I
+/
+|
+I
+|
+
+)
+
+W
+M
+
+(
+
+.
+s
+n
+o
+C
+
+Time step
+
+Time step
+
+)
+
+W
+M
+
+(
+
+Q
+
+Time step
+
+P (MW)
+
+Figure 12: Illustrations of part of a 5-bus and low-ﬂexibility simulation run, with a
+3-scenarios lookahead model and a NLP network model.
+
+36
+
+)
+
+W
+M
+
+(
+
+.
+d
+o
+r
+P
+
+¯I
+/
+|
+I
+|
+
+)
+
+W
+M
+
+(
+
+.
+s
+n
+o
+C
+
+Time step
+
+Time step
+
+)
+
+W
+M
+
+(
+
+Q
+
+Time step
+
+P (MW)
+
+Figure 13: Illustrations of part of a 5-bus and low-ﬂexibility simulation run, with a
+3-scenarios lookahead model and a SOCP network model.
+
+37
+
+)
+
+W
+M
+
+(
+
+.
+d
+o
+r
+P
+
+¯I
+/
+|
+I
+|
+
+)
+
+W
+M
+
+(
+
+.
+s
+n
+o
+C
+
+Time step
+
+Time step
+
+)
+
+W
+M
+
+(
+
+Q
+
+Time step
+
+P (MW)
+
+Figure 14: Illustrations of part of a 5-bus and low-ﬂexibility simulation run, with a
+3-scenarios lookahead model and a linear network model.
+
+38
+
+7 Conclusions
+
+Active Network Management is an alternative or a complement to network reinforcement
+in case of massive integration of renewable energy in distribution systems in the future.
+Mathematically, operational planning, which is the preventive version of active network
+management we consider in this paper, is an optimal sequential decision-making problem
+under uncertainty. The properties of the operational planning problem that we want to
+highlight are the need to optimize over a suﬃciently long time horizon, to account for
+uncertainty of generation and consumption, and to model the discrete decisions related
+to the activation of ﬂexibility services. In an attempt not to restrict ourselves to one
+solution method and one research community, we provide a formulation of this problem
+as a Markov Decision Process (MDP), which does not call for a particular solution
+method. We provide a simulator and several test beds at http://www.montefiore.ulg.
+ac.be/~anm/ along with this formulation to foster research in this ﬁeld, and ease future
+comparison of results. Although these benchmarks are not taken from real systems, their
+properties are coherent with what system operators could face in real life. We detail one
+possible solution method, which is a lookahead optimization model, then cast the MDP as
+a sequence of MINLPs, MISOCPs, or MILPs, and provide results on the benchmarks we
+created. Results show that state of the art open source local solvers for MINLP can show
+good performance on the test instances of limited size, at least when we approximate
+the stochastic program with few scenarios. Solving the MISOCPs and MILPs is however
+much more tractable, to the expense of the network model accuracy. In particular, the
+results of the MILP approximation suggest that it could scale to larger test systems and
+scenario trees. On the modeling side, we considered that all buses except the slack bus
+are P-Q buses, and that the power factors of the loads are constant while the generators
+are ﬂexible as deﬁned by their P-Q capabilities. Possible extensions of this work could
+be to consider the control of steerable synchronous generation, and of generators with
+time coupling constraints (e.g. combined heat and power generation). As mentioned in
+Section 3.2, other approaches exist to control the system, such as modulating the tariﬀ
+signal(s), acting on the topology of the network, or using distributed storage sources.
+We did not model either the automatic regulation devices that often exist in distribution
+systems, such as On Load Tap Changers (OLTCs) of transformers that automatically
+adapt to control the voltage level. These automatic regulation devices have been recently
+addressed in [10]. We believe that all of these aspects should be considered in a real life
+solution. However, computational experiments show that we are at the limit of what
+can be achieved with modern computers and standard mathematical programing tools.
+Furthermore, including a more detailed representation of the physical system makes
+the problem yet more discrete (OLTCs), and more uncertain (for instance, if ﬂexibility
+services are not as well characterized as what we have assumed). Our experiments
+also show that increasing the number of scenarios, or stages of the stochastic program,
+would probably signiﬁcantly improve the policies. All these observations suggest further
+research for tailored approximation or decomposition techniques, for instance techniques
+relying on the dynamic programming framework, in particular approximate dynamic
+
+39
+
+programming, or simulation methods, such as direct policy search [47] or Monte-Carlo
+tree search [48, 49], or other approaches from the robust and stochastic programming
+community [50]. Actually the benchmarks that we proposed makes the comparison of
+new techniques possible.
+
+Acknowledgements
+
+This research is supported by the public service of Wallonia - Department of Energy
+and Sustainable Building within the framework of the GREDOR project. The authors
+give their thanks for the ﬁnancial support of the Belgian Network DYSCO, an Inter-
+university Attraction Poles Program initiated by the Belgian State, Science Policy Oﬃce.
+The authors would also like to thank Rapha¨el Fonteneau for his precious advices and
+comments.
+
+References
+
+[1] D. Fouquet and T.B. Johansson. European renewable energy policy at crossroads
+– focus on electricity support mechanisms. Energy Policy, 36(11):4079–4092, 2008.
+
+[2] Bertrand Corn´elusse, David Vangulick, Mevludin Glavic, and Damien Ernst. Global
+capacity announcement of electrical distribution systems: A pragmatic approach.
+Sustainable Energy, Grids and Networks, 4:43–53, 2015.
+
+[3] David TC Wang, Luis F Ochoa, and Gareth P Harrison. Dg impact on invest-
+ment deferral: Network planning and security of supply. Power Systems, IEEE
+Transactions on, 25(2):1134–1141, 2010.
+
+[4] J.A.P. Lopes, N. Hatziargyriou, J. Mutale, P. Djapic, and N. Jenkins. Integrating
+distributed generation into electric power systems: A review of drivers, challenges
+and opportunities. Electric Power Systems Research, 77(9):1189–1203, 2007.
+
+[5] S.N. Liew and G. Strbac. Maximising penetration of wind generation in existing
+distribution networks. IET Generation Transmission and Distribution, 149(3):256–
+262, 2002.
+
+[6] L.F. Ochoa, C.J. Dent, and G.P. Harrison. Distribution network capacity assess-
+ment: Variable DG and active networks. IEEE Transactions on Power Systems,
+25(1):87–95, 2010.
+
+[7] M. J. Dolan, E. M. Davidson, I. Kockar, G. W. Ault, and S. D. J. McArthur. Dis-
+tribution power ﬂow management utilizing an online optimal power ﬂow technique.
+IEEE Transactions on Power Systems, 27(2):790–799, 2012.
+
+[8] Q. Gemine, E. Karangelos, D. Ernst, and B. Corn´elusse. Active network manage-
+ment: planning under uncertainty for exploiting load modulation. In Proceedings
+
+40
+
+of the 2013 IREP Symposium - Bulk Power System Dynamics and Control - IX,
+page 9, 2013.
+
+[9] S. Gill, I. Kockar, and G.W. Ault. Dynamic optimal power ﬂow for active distribu-
+
+tion networks. Power Systems, IEEE Transactions on, 29(1):121–131, 2014.
+
+[10] Leonardo H Macedo, John F Franco, Marcos J Rider, and Ruben Romero. Optimal
+operation of distribution networks considering energy storage devices. Smart Grid,
+IEEE Transactions on, 6(6):2825–2836, 2015.
+
+[11] Fr´ed´eric Olivier, Petros Aristidou, Damien Ernst, and Thierry Van Cutsem. Active
+management of low-voltage networks for mitigating overvoltages due to photovoltaic
+units. Smart Grid, IEEE Transactions on, 7(2):926–936, 2015.
+
+[12] H.W. Dommel and W.F. Tinney. Optimal power ﬂow solutions. IEEE transactions
+
+on Power Apparatus and Systems, PAS-87(10):1866–1876, 1968.
+
+[13] F. Capitanescu, M. Glavic, D. Ernst, and L. Wehenkel. Interior-point based algo-
+rithms for the solution of optimal power ﬂow problems. Electric Power Systems
+Research, 77(5–6):508–517, 2007.
+
+[14] Rabih A Jabr. Radial distribution load ﬂow using conic programming. Power
+
+Systems, IEEE Transactions on, 21(3):1458–1459, 2006.
+
+[15] J. Lavaei and S.H. Low. Zero duality gap in optimal power ﬂow problem. IEEE
+
+Transactions on Power Systems, 27(1):92–107, 2012.
+
+[16] S. Bose, D.F. Gayme, K. Mani Chandy, and S.H. Low. Quadratically constrained
+quadratic programs on acyclic graphs with application to power ﬂow. ArXiv e-
+prints, 2012.
+
+[17] L. Gan, N. Li, U. Topcu, and S. Low. On the exactness of convex relaxation
+for optimal power ﬂow in tree networks. In Proceedings of the IEEE 51st Annual
+Conference on Decision and Control (CDC), pages 465–471, 2012.
+
+[18] DT Phan. Lagrangian duality and branch-and-bound algorithms for optimal power
+
+ﬂow. Operations Research, 60(2):275–285, 2012.
+
+[19] A. Gopalakrishnan, A.U. Raghunathan, D. Nikovski, and L.T. Biegler. Global opti-
+mization of optimal power ﬂow using a branch & bound algorithm. In Proceedings of
+the 50th Annual Allerton Conference on Communication, Control, and Computing,
+pages 609–616, 2012.
+
+[20] Saverio Bolognani and Sandro Zampieri. On the existence and linear approximation
+of the power ﬂow solution in power distribution networks. Power Systems, IEEE
+Transactions on, 31(1):163–172, 2016.
+
+41
+
+[21] Dennice Gayme and Ufuk Topcu. Optimal power ﬂow with distributed energy
+storage dynamics. In Proceedings of the 2011 American Control Conference (ACC),
+pages 1536–1542, 2011.
+
+[22] A. Gopalakrishnan, A.U. Raghunathan, D. Nikovski, and L.T. Biegler. Global opti-
+mization of multi-period optimal power ﬂow. In Proceedings of the 2013 American
+Control Conference (ACC), pages 1157–1164, 2013.
+
+[23] N. Alguacil and A.J. Conejo. Multiperiod optimal power ﬂow using Benders de-
+
+composition. IEEE Transactions on Power Systems, 15(1):196–201, 2000.
+
+[24] Q. Gemine, D. Ernst, Q. Louveaux, and B. Corn´elusse. Relaxations for multi-period
+optimal power ﬂow problems with discrete decision variables. In Proceedings of the
+18th Power Systems Computation Conference (PSCC-14), page 7, 2014.
+
+[25] G. Andersson. Modelling and analysis of electric power systems. EEH-Power Sys-
+tems Laboratory, Swiss Federal Institute of Technology (ETH), Z¨urich, Switzerland,
+2004.
+
+[26] A. Monticelli. State estimation in electric power systems: a generalized approach,
+
+volume 507. Springer Science & Business Media, 1999.
+
+[27] Stephan Engelhardt, Istvan Erlich, Christian Feltes, J¨org Kretschmann, and Fekadu
+Shewarega. Reactive power capability of wind turbines based on doubly fed induc-
+tion generators. Energy Conversion, IEEE Transactions on, 26(1):364–372, 2011.
+
+[28] Hamid Soleimani Bidgoli, Mevludin Glavic, and Thierry Van Cutsem. Receding-
+horizon control of distributed generation to correct voltage or thermal violations
+and track desired schedules. In Proceedings of the 19th Power Systems Computation
+Conference (PSCC 2016), 2016.
+
+[29] W.B. Powell. A Uniﬁed Framework for Optimization under Uncertainty. Informs
+
+TutORials in Operations Research, 2016.
+
+[30] R. Bellman. Dynamic Programming. Princeton University Press, 1957.
+
+[31] D.P. Bertsekas and S.E. Shreve. Stochastic Optimal Control: The Discrete Time
+
+Case. Academic Press New York, 1978.
+
+[32] A. Shapiro, D. Dentcheva, and A. Ruszczy´nski. Lectures on Stochastic Program-
+
+ming: Modeling and Theory. SIAM, 2009.
+
+[33] B. Defourny, D. Ernst, and L. Wehenkel. Multistage stochastic programming: A
+scenario tree based approach to planning under uncertainty, chapter 6, page 51.
+Information Science Publishing, Hershey, PA, 2011.
+
+[34] Jos´e Fortuny-Amat and Bruce McCarl. A representation and economic interpre-
+tation of a two-level programming problem. Journal of the operational Research
+Society, pages 783–792, 1981.
+
+42
+
+[35] F. Capitanescu, L. F. Ochoa, H. Margossian, and N. D. Hatzargyriou. Assessing
+the potential of network reconﬁguration to improve distributed generation hosting
+capacity in active distribution systems. IEEE Trans. Power Syst., 1:346–356, 2015.
+
+[36] SEDG Centre. UK generic distribution system (UKGDS) project. http://www.
+
+sedg.ac.uk/, 2010.
+
+[37] R.A. Redner and H.F. Walker. Mixture densities, maximum likelihood and the EM
+
+algorithm. SIAM Review, 26(2):pp. 195–239, 1984.
+
+[38] C.M. Bishop. Pattern recognition and machine learning. springer, 2006.
+
+[39] J.-M. Marin, P. Pudlo, C.P. Robert, and R.J. Ryder. Approximate bayesian com-
+
+putational methods. Statistics and Computing, 22(6):1167–1180, 2012.
+
+[40] A. Grelaud, C.P. Robert, J.-M. Marin, F. Rodolphe, and J.-F. Taly. ABC likelihood-
+free methods for model choice in gibbs random ﬁelds. Bayesian Analysis, 4(2):317–
+335, 06 2009.
+
+[41] Quentin Gemine, Bertrand Corn´elusse, Mevludin Glavic, Rapha¨el Fonteneau, and
+Damien Ernst. A gaussian mixture approach to model stochastic processes in
+In Proceedings of the 19th Power Systems Computation Confer-
+power systems.
+ence (PSCC’16), 2016.
+
+[42] E. Jones, T. Oliphant, and P. Peterson. SciPy: Open source scientiﬁc tools for
+
+Python. 2014.
+
+[43] F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel,
+M. Blondel, P. Prettenhofer, R. Weiss, V. Dubourg, and al. Scikit-learn: Machine
+learning in python. The Journal of Machine Learning Research, 12:2825–2830, 2011.
+
+[44] Trevor Hastie, Robert Tibshirani, Jerome Friedman, and James Franklin. The
+elements of statistical learning: data mining, inference and prediction. The Mathe-
+matical Intelligencer, 27(2):83–85, 2005.
+
+[45] W.E. Hart, C. Laird, J.-P. Watson, and D.L. Woodruﬀ. Pyomo–optimization mod-
+
+eling in python, volume 67. Springer Science & Business Media, 2012.
+
+[46] P. Bonami and J. Lee. BONMIN users manual. Technical report, 2006.
+
+[47] L. Busoniu, D. Ernst, B. De Schutter, and R. Babuska. Cross-entropy optimization
+of control policies with adaptive basis functions. IEEE Transactions on Systems,
+Man, and Cybernetics, Part B: Cybernetics, 41(1):196–209, 2011.
+
+[48] D.P. Bertsekas and J.N. Tsitsiklis. Neuro-Dynamic Programming. Athena Scientiﬁc,
+
+Belmont, MA, 1996.
+
+43
+
+[49] L. Busoniu, R. Babuska, B. De Schutter, and D. Ernst. Reinforcement Learning and
+Dynamic Programming Using Function Approximators. CRC Press, Boca Raton,
+FL, 2010.
+
+[50] W.B. Powell. Clearing the Jungle of Stochastic Optimization. Informs TutORials,
+
+2014.
+
+44
+
+

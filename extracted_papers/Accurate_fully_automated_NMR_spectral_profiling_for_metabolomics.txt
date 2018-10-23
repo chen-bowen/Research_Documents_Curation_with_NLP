@@ -1,0 +1,1450 @@
+Accurate, fully-automated NMR spectral proﬁling
+
+for metabolomics
+
+Siamak Ravanbakhsh1,2, Philip Liu1,3, Trent C. Bjorndahl1,3, Rupasri Mandal1,3, Jason R. Grant1, Michael Wilson1,
+Roman Eisner1, Igor Sinelnikov3, Xiaoyu Hu4, Claudio Luchinat5, Russell Greiner1,2, and David S. Wishart1,3,6
+
+1
+
+1Department of Computing Science, University of Alberta, Edmonton, AB, Canada
+
+2Alberta Innovates Center for Machine Learning (AICML)
+
+3Department of Biological Sciences, University of Alberta, Edmonton, AB, Canada
+
+5Centro Risonanze Magnetiche (CERM/CIRMMP), University of Florence, 50019 Sesto Fiorentino, Italy
+
+6National Research Council, National Institute for Nanotechnology (NINT)
+
+4Fiorgen Foundation, 50019 Sesto Fiorentino, Italy
+
+4
+1
+0
+2
+
+ 
+
+p
+e
+S
+8
+
+ 
+
+ 
+ 
+]
+I
+
+A
+.
+s
+c
+[
+ 
+ 
+
+3
+v
+6
+5
+4
+1
+
+.
+
+9
+0
+4
+1
+:
+v
+i
+X
+r
+a
+
+Abstract—Many diseases cause signiﬁcant changes to the con-
+centrations of small molecules (a.k.a. metabolites) that appear in a
+person’s bioﬂuids, which means such diseases can often be readily
+detected from a persons metabolic proﬁle.This information can
+be extracted from a person’s bioﬂuids using NMR spectroscopy.
+Today, this is often done manually by trained experts, which
+means this process is relatively slow, expensive and can be error-
+prone. A system that can quickly, accurately and autonomously
+produce a person’s metabolic proﬁle would enable efﬁcient and
+reliable prediction of many such diseases from a single sample,
+which could signiﬁcantly improve the way medicine is practiced.
+This paper presents such a system: Given a 1D 1H NMR
+spectrum of a complex bioﬂuid such as serum or CSF, our
+BAYESIL system can automatically determine this metabolic
+proﬁle, and do so without any human guidance. This requires
+ﬁrst performing all of the required spectral processing steps
+(i.e., Fourier transformation, phasing, solvent-removal, chemical
+shift referencing, baseline correction, lineshape convolution) then
+matching this resulting spectrum against a reference compound
+library, which contains the signatures of each relevant metabolite.
+Many of these processing steps are novel algorithms, and our
+matching step views spectral matching as an inference problem
+within a probabilistic graphical model that rapidly approximates
+the most probable metabolic proﬁle.
+
+Our extensive studies on a diverse set of complex mixtures
+(real biological samples, deﬁned mixtures and realistic computer
+generated spectra; each involving ∼ 50 compounds), show that
+BAYESIL can autonomously and accurately ﬁnd NMR-detectable
+metabolites at concentrations as low as 2µM, in terms of both
+identiﬁcation (∼ 90% correct) and quantiﬁcation (∼ 10% error),
+in under 5 minutes on a single CPU processor. These results
+demonstrate that BAYESIL is the ﬁrst fully-automatic publicly-
+accessible system that provides quantitative NMR spectral pro-
+ﬁling effectively – with an accuracy that meets or exceeds the
+performance of highly trained human experts. We anticipate this
+tool will usher in high-throughput metabolomics and enable a
+wealth of new applications of NMR in clinical settings. Users
+can access BAYESIL at http://www.bayesil.ca.
+
+Index Terms— NMR — Metabolomics — Targeted Proﬁling
+— Probabilistic Graphical Models NMR — Metabolomics —
+Targeted Proﬁling — Probabilistic Graphical Models—
+
+Metabolomics is a relatively new branch of “omics” science
+that focuses on the system-wide characterization of metabo-
+lites [1]. Metabolomics is often viewed as complementary to the
+other “omics” ﬁelds as it provides information about both an or-
+ganism’s phenotype and its environment. Because metabolomics
+
+provides a unique window on gene-environment interactions, it
+is playing an increasingly important role in many quantitative
+phenotyping and functional genomics studies [2], [3], [4]. It is also
+ﬁnding more applications in disease diagnosis, biomarker discov-
+ery and drug development/discovery (e.g., [5], [6], [7]). This rapid
+growth in interest and excitement surrounding metabolomics
+is also revealing its “Achilles heel”: Unlike proteomics, ge-
+nomics or transcriptomics, which are high-throughput sciences,
+metabolomics is a relatively low-throughput science. Compared to
+genomics, where it is now possible to automatically characterize
+1000s of genes, 100s of thousands of transcripts and millions of
+SNPs in mere minutes, metabolomics only allows users to identify
+and measure a few dozen metabolites after many hours of manual
+effort. In other words, metabolomics is not automated. This prob-
+lem may stem from the history of metabolomics, as its analytical
+techniques, such as NMR spectroscopy, gas-chromatography-
+mass spectrometry (GC-MS) and liquid chromatography-mass
+spectrometry (LC-MS), were originally developed for identifying
+and quantifying pure compounds, not complex mixtures. Because
+most biological samples contain hundreds of metabolites, the
+resulting NMR, HPLC or LC-MS spectra usually contain hundreds
+or even thousands of peaks. The challenge in metabolomics,
+therefore, is to identify the mixture of compounds that produced
+this forest of peaks. This compound identiﬁcation process, called
+spectral proﬁling,
+involves ﬁtting the mixture spectrum to a
+set of individual pure reference spectra obtained from known
+compounds [8], [9]. If done correctly, the ﬁtting process yields not
+only the identity of the compounds, but also the concentration
+of those compounds. Therefore, the end result of a successful
+spectral proﬁling study is a table of metabolite names and their
+absolute or relative concentrations. Because spectral proﬁling
+is such a complex pattern recognition problem, it is often best
+done by a trained expert. However, this reliance on manual data
+analysis by a human expert is problematic, as it is slow and
+leads to inconsistent results, operator errors and reduced levels
+of reproducibility [10].
+
+The automation bottleneck in metabolomics is widely recog-
+nized, and has led to a number of efforts to accelerate or automate
+compound identiﬁcation and/or quantiﬁcation in LC-MS, in GC-
+MS and in NMR spectroscopy. Some of the most active efforts in
+(semi)automated compound identiﬁcation and quantiﬁcation have
+been in NMR-based metabolomics. In particular, several software
+packages have been developed that support semi-automatic NMR
+spectral proﬁling of 1D and 2D 1H NMR spectra, including some
+commercial packages (e.g., [12], [14], [13]). There are tremen-
+dous differences in the quantiﬁcation/identiﬁcation capabilities,
+spectral database size, speed and instrument compatibility of
+these software tools. Furthermore, these packages either require
+manual ﬁtting or manual spectral processing, or a bit of both;
+
+2
+
+Fig. 1. This ﬁgure shows the crowded region (3.5-4.1 PPM) of a computer generated spectrum with 150 compounds (solid black) and the ﬁt produced by
+BAYESIL (dashed red) as well as individual clusters as quantiﬁed by BAYESIL. Each cluster is free to shift a speciﬁed amount, which is at least 0.025 PPM.
+
+see Appendix I for a comprehensive list of NMR softwares and
+their limitations. The need for such manual interventions leads
+to a number of issues, including slower throughput, operator
+fatigue and associated operator errors, the need for highly trained
+and dedicated experts, the requirement of two or more spectral
+assessments for quality assessment and control purposes, and
+inconsistent results between individuals, between labs or over
+different time periods [8], [10].
+
+It would be better to have a software system that can
+automatically perform both spectral processing and spectral
+deconvolution, be able to analyze complex mixtures (∼60 com-
+pounds) quickly and accurately, and be able to produce reliable
+compound concentrations. Here we describe such a system, called
+BAYESIL.
+
+Extensive testing, on computer-generated and laboratory-
+generated chemical mixtures as well as real biological samples,
+shows that BAYESIL consistently performs with ∼ 90% accuracy
+for compound identiﬁcation in mixtures with up to 60 different
+metabolites. It also determines metabolite concentrations with
+∼ 10% error. For computer-generated bioﬂuid spectra, where the
+ground truth is known, BAYESIL consistently outperforms highly
+trained experts in both identiﬁcation and quantiﬁcation. BAYESIL
+appears to be the ﬁrst system that supports fully automated and
+fully quantitative NMR-based metabolomics. This paper describes
+this system, its underlying algorithms and its performance across
+various tests.
+
+I. METABOLIC PROFILING PIPELINE
+
+BAYESIL performs fully automated spectral processing and
+spectral proﬁling for 1D 1H NMR spectra collected on either
+Agilent/Varian or Bruker instruments, at several different fre-
+quencies. In particular, it uses a variety of intelligent phasing
+and baseline correction methods to automatically process raw 1D
+NMR spectra (i.e., FIDs). It also uses approximate inference tech-
+niques to rapidly perform very accurate spectral deconvolution,
+yielding both compound identities and their concentrations. Here
+we brieﬂy describe BAYESIL’s spectral processing algorithms, the
+principles and rationale behind BAYESIL’s spectral deconvolution
+method and the construction of BAYESIL’s spectral library.
+
+A. Spectral Processing in BAYESIL
+
+Successful NMR spectral proﬁling depends critically on the
+quality and uniformity of the starting NMR spectrum. Unfortu-
+nately, most spectral processing functions (i.e., phasing, baseline
+correction, solvent ﬁltering, chemical shift referencing) are left
+
+to the user. Given the complexity and large number of variables,
+values and ﬁlters that can be used, many view spectral processing
+more as an art, rather than a science. Different perspectives
+or different personal thresholds on what is a “good looking”
+NMR spectrum can potentially lead to very different results
+regarding what compounds are identiﬁed or which compounds
+are accurately quantiﬁed in a bioﬂuid spectrum. To address
+this issue, BAYESIL itself performs all of the spectral processing
+functions: starting from the FID, it performs zero-ﬁlling, Fourier
+and Hilbert transformation, phasing, baseline correction, chem-
+ical shift referencing, reference deconvolution and smoothing.
+Automating this process ensures reproducibility, consistency and
+uniformity of the input data prior to spectral deconvolution. Here
+we brieﬂy sketch some of the more challenging steps in this
+process.
+
+Phasing involves maximizing the symmetry of the peaks by
+reducing zero-order and ﬁrst-order phase mismatch. Zero-order
+phase mismatch is a sign of the difference between the reference
+phase and the receiver phase and is independent of frequency.
+The ﬁrst-order phase mismatch can be a result of the time-delay
+between excitation and detection, ﬂip-angle variation and the
+ﬁlter that is used to reduce the noise outside of the spectral
+bandwidth [15]. In addition to using well-known techniques,
+such as spectral norm minimization [16], BAYESIL uses the
+cross entropy optimization method [11] to jointly maximize a
+direct measure of peak symmetry for isolated peaks across the
+spectrum.
+
+Baseline correction involves removing distortions that may
+arise from hardware artifacts or highly concentrated compo-
+nents of the mixture (e.g., solvent), while keeping the desirable
+signal intact. This process is often performed in two steps: 1)
+baseline-detection and 2) modelling. BAYESIL relies on iterative
+thresholding [17] and estimating the signal-to-noise ratio to detect
+the baseline points. It uses monotonic cubic Hermite interpolation
+[18] and Whittaker smoothing technique for baseline modelling
+[19].
+
+BAYESIL also provides the options for smoothing and line-
+broadening using Savitzky-Golay [20] and Gaussian ﬁlters. How-
+ever smoothing is mostly cosmetic and it is not essential for
+spectral deconvolution. In fact, it may degrade the signal and
+occasionally remove the the low-amplitude and narrow peaks.
+Similarly, we found the effect of reference deconvolution – which
+may be used to remove instrumental or experimentally induced
+distortions of the Lorentzian lineshape – is also mostly cosmetic,
+and if the distortion around the reference peak has any source
+other than poor shimming, using reference deconvolution will
+have an adverse effect on the rest of the NMR spectrum.
+
+3.63.73.83.94.04.1PPMreconstructionspectrumB. Spectral Deconvolution
+
+3
+
+An NMR spectrum for a compound M is a collection of one
+or more Lorentzian peaks formed into one or more clusters –
+that is, each compound M is a set of clusters {Ck}, where each
+cluster Ck is set of peaks, and each peak is deﬁned by a triple,
+θ = (θ1, θ2, θ3) corresponding to its height, center and width (at
+half height) respectively – where the height at x due to this peak
+θ3+4(θ2−x)2 . Letting X refer to the entire spectrum
+is q(x; θ) =
+(e.g., from -1 to 13 PPM when referenced against the DSS peak),
+the height of the spectrum of a pure compound M at each location
+
+θ1θ3
+
+x ∈ X , is(cid:98)s(x ; M, ρM, δM) = ρM
+
+(cid:88)
+
+(cid:88)
+
+C∈M
+
+θ∈C
+
+q(x − δC; θ)
+
+(1)
+
+where ρM is the concentration of this compound and δM =
+{δC | C ∈ M} is the set of chemical shifts for the clusters associated
+with this compound.
+An NMR spectrum is essentially a linear combination of the
+peaks in its component compounds: that is, the height at each
+PPM value x of a mixture spectrum is just the sum of the contribu-
+tions of each compound. This means, given the concentrations of
+M δM
+of the clusters associated with these compounds, we can then
+“draw” an NMR spectrum – i.e., the height at each PPM x, given
+
+the compounds ρ = {ρM}, and the chemical shifts δ =(cid:83)
+this ρ and δ, is(cid:98)s(x ; ρ, δ) = (cid:80)
+M(cid:98)s(x ; M, ρM, δM).
+
+The spectral deconvolution challenge, in general, is the reverse
+process: Given a set of compounds {M1, . . . , Mr} with associated
+signatures (i.e., θ values of their peaks, organized in clusters)
+and the observed spectrum s(·), ﬁnd the “best” combination of
+concentrations ρ and shifts δ to ﬁt that spectrum. To determine
+which values are best, for now, we consider a simple loss
+function that is the (square of the) difference of the heights
+between the observed spectrum s(·) and the reconstructed
+
+spectrum(cid:98)s(· ; δ, ρ)
+(cid:96)X ( s(·), (cid:98)s(· ; ρ, δ) ) =
+
+(cid:90)
+
+(cid:0) s(x) −(cid:98)s(x ; ρ, δ)(cid:1)2 dx
+
+(cid:96)X (s(·),(cid:98)s(· ; ρ, δ))
+
+(2)
+where the subscript X indicates that this loss function applies to
+the entire spectrum; see Appendix II for BAYESIL’s actual loss
+function.
+
+x∈X
+
+Our task is to ﬁnd the values of
+
+∗
+
+∗
+
+[ρ
+
+, δ
+
+] = argρ,δ min
+
+(3)
+that minimize this loss function. Figure 1 shows part of a spec-
+trum over a complex mixture, and BAYESIL’s solution obtained
+by minimizing the loss function.
+
+This corresponds to search over a huge space – all possible
+shifts for each of the clusters, and all possible concentrations
+over the compounds. The key innovation of BAYESIL is how
+it minimizes this highly non-linear loss function, efﬁciently. In
+particular, BAYESIL “factors” this large task into a set of inter-
+related smaller tasks. Two characteristics of the NMR spectra
+make this factorization possible: 1) each shift is over only a small
+range (typically a window of ±0.025 PPM); and 2) as the height in
+the spectrum due to a Lorentzian peak diminishes quadratically
+from its center, each peak and therefore each cluster can only
+“inﬂuence” a small interval; see Appendix III.
+
+Now consider a function that maps each point in the spectrum
+to the set of clusters that might affect the height at this location.
+That is, given the set of compounds {M} that might appear in a
+particular bioﬂuid (e.g., the 48 that can appear in CSF), we can
+identify each PPM location x ∈ X with the small set of clusters
+that might inﬂuence it, C(x).
+We can then partition the spectrum into disjoint contiguous
+regions, {XI}, where every PPM location in each XI involves
+exactly the same subset of clusters – i.e., for any pair of points
+x1, x2 ∈ XI, we know that C(x1) = C(x2). For example, our
+library for CSF includes 48 compounds, with a total of 180
+clusters and 946 peaks. A typical CSF spectrum is partitioned into
+
+Partitioning of X into continuous blocks XI ⊂ X for a part of a
+Fig. 2.
+human serum spectrum. Here each block is shown with a different shade of
+blue, below the horizontal axis. The domain of inﬂuence of each cluster is
+also indicated with coloured blocks.
+
+∼350 regions. Each of these regions will involve between 1 and
+∼25 clusters, and span between 0.0001 and 1.5 PPM. Moreover,
+each cluster will appear in between 1 and ∼70 different regions.
+Figure 2 shows the division of a part of human serum NMR
+spectrum into regions XI; blocks in different shades of blue.
+For example the region X[.8563,9289] from 0.8563 to 0.9289 PPM
+might include signiﬁcant contributions from the ﬁrst cluster of 2-
+Hydroxybutyrate, the ﬁrst cluster of L-Isoleucine and/or the ﬁrst
+cluster of L-Leucine. The region immediately to its left (from
+0.9289 to 0.9370 PPM) includes these and also a cluster of L-
+Valine, and the one to the right (from 0.8563 to 0.87526 PPM)
+does not include L-Isoleucine.
+As the loss function (cid:96)(·,·) is additive over the domain X , we
+can rewrite the optimization of eq[3] as the sum of the losses for
+each of the regions XI:
+
+(cid:0) s(·),(cid:98)s(· ; ρI , δI )(cid:1)
+
+(4)
+
+∗
+
+[ρ
+
+, δ
+
+∗
+
+] = argρ,δ min
+
+(cid:96)XI
+
+(cid:88)
+
+I
+
+Now recall that each region XI involves relatively few compounds
+and clusters. This suggests a preliminary step of simply “solving”
+each region, by itself: i.e., ﬁnd the best centers for the clusters
+in that region δI, and the best concentrations for the associated
+compounds ρI, which collectively minimize the loss over the PPM-
+interval XI. This simple approach is fast, as it involves relatively
+few variables and a limited range of PPM-values. Unfortunately,
+this does not produce the overall correct answer – that is, each
+region has an opinion about the concentration and shift values
+of its cluster, and when two (or more) regions each involve the
+same variable, they must both agree on its value.
+
+To address this problem, we take a probabilistic approach,
+viewing the task of minimizing the loss function eq[2] as ﬁnding
+the “Maximum a Posteriori” (MAP) assignment – i.e., the assign-
+ment to all of the cluster-shift and compound-concentration [δ, ρ]
+variables that makes the observed data as likely as possible. Here,
+the Boltzmann formula gives the probabilistic interpretation of
+the loss (a.k.a.
+
+the energy)
+
+(cid:26)
+
+(cid:96)X(cid:0) s(·),(cid:98)s(· ; ρ, δ)(cid:1)(cid:27)
+
+(5)
+
+P( ρ, δ | s(·) ) =
+
+1
+Z
+
+exp
+
+− 1
+T
+
+where Z is the normalization constant and T is known as the
+“temperature” parameter, explained in Appendix IV. Using the
+decomposition of loss over regions (eq[4]) we can write this
+distribution in factored form
+
+(cid:89)
+(cid:26)
+
+I
+
+P( ρ, δ | s(·) ) =
+
+1
+Z
+
+fI (ρI , δI ) = exp
+
+fI (ρI , δI )
+
+− 1
+T
+
+(cid:96)XI
+
+(cid:0) s(·),(cid:98)s(.; ρI , δI )(cid:1)(cid:27)
+
+(6)
+
+0.60.70.80.91.01.11.21.3PPMDSS(1)DSS(2)DSS(3)DSS(4)1-Methylhistidine(1)1-Methylhistidine(2)1-Methylhistidine(3)1-Methylhistidine(4)1-Methylhistidine(5)1-Methylhistidine(6)2-Hydroxybutyrate(1)2-Hydroxybutyrate(2)2-Hydroxybutyrate(3)2-Hydroxybutyrate(4)Acetic acid(1)Betaine(1)Betaine(2)Acetoacetate(1)Acetoacetate(2)L-Carnitine(1)L-Carnitine(2)L-Carnitine(3)L-Carnitine(4)L-Carnitine(5)L-Carnitine(6)Creatine(1)Creatine(2)Citric acid(1)Citric acid(2)Citric acid(3)Choline(1)Choline(2)Choline(3)Ethanol(1)Ethanol(2)D-Glucose(1)D-Glucose(2)D-Glucose(3)D-Glucose(4)D-Glucose(5)D-Glucose(6)D-Glucose(7)D-Glucose(8)D-Glucose(9)D-Glucose(10)D-Glucose(11)D-Glucose(12)D-Glucose(13)D-Glucose(14)Glycine(1)Glycerol(1)Glycerol(2)Glycerol(3)Formic acid(1)L-Glutamic acid(1)L-Glutamic acid(2)L-Glutamic acid(3)L-Glutamic acid(4)Hypoxanthine(1)Hypoxanthine(2)L-Tyrosine(1)L-Tyrosine(2)L-Tyrosine(3)L-Tyrosine(4)L-Tyrosine(5)L-Phenylalanine(1)L-Phenylalanine(2)L-Phenylalanine(3)L-Phenylalanine(4)L-Phenylalanine(5)L-Phenylalanine(6)L-Alanine(1)L-Alanine(2)L-Proline(1)L-Proline(2)L-Proline(3)L-Proline(4)L-Proline(5)L-Threonine(1)L-Threonine(2)L-Threonine(3)L-Asparagine(1)L-Asparagine(2)L-Asparagine(3)L-Asparagine(4)L-Isoleucine(1)L-Isoleucine(2)L-Isoleucine(3)L-Isoleucine(4)L-Isoleucine(5)L-Isoleucine(6)L-Histidine(1)L-Histidine(2)L-Histidine(3)L-Histidine(4)L-Histidine(5)Lysine(1)Lysine(2)Lysine(3)Lysine(4)Lysine(5)L-Serine(1)L-Serine(2)L-Serine(3)L-Lactic acid(1)L-Lactic acid(2)L-Aspartic acid(1)L-Aspartic acid(2)L-Aspartic acid(3)L-Cystine(1)L-Cystine(2)L-Cystine(3)Ornithine(1)Ornithine(2)Ornithine(3)Ornithine(4)Ornithine(5)Pyruvic acid(1)Succinic acid(1)Urea(1)3-Hydroxybutyric acid(1)3-Hydroxybutyric acid(2)3-Hydroxybutyric acid(3)3-Hydroxybutyric acid(4)L-Arginine(1)L-Arginine(2)L-Arginine(3)L-Arginine(4)L-Arginine(5)Creatinine(1)Creatinine(2)L-Cysteine(1)L-Cysteine(2)L-Cysteine(3)L-Glutamine(1)L-Glutamine(2)L-Glutamine(3)L-Glutamine(4)L-Glutamine(5)L-Leucine(1)L-Leucine(2)L-Leucine(3)Malonic acid(1)L-Methionine(1)L-Methionine(2)L-Methionine(3)L-Methionine(4)Isopropanol(1)Isopropanol(2)L-Valine(1)L-Valine(2)L-Valine(3)L-Valine(4)L-Tryptophan(1)L-Tryptophan(2)L-Tryptophan(3)L-Tryptophan(4)L-Tryptophan(5)L-Tryptophan(6)L-Tryptophan(7)L-Tryptophan(8)Acetone(1)Methanol(1)Propylene glycol(1)Propylene glycol(2)Propylene glycol(3)Propylene glycol(4)Dimethylsulfone(1)Isobutyric acid(1)Isobutyric acid(2)reconstructionspectrum4
+
+BAYESIL’s spectral library using pure compounds obtained from
+the Human Metabolome Library [1], using a standard protocol
+(see Materials and Methods). The spectral library contains rele-
+vant information about each compound (M) including individual
+peak clusters (C) and peak amplitude positions and widths (i.e., θ
+in eq[1]), as well as allowable chemical shift window δC ≤ δC ≤ δC
+for each cluster C.
+To analyze each bioﬂuid, BAYESIL uses a speciﬁc spectral sub-
+library – here, one for serum and another one for CSF. The
+serum library consists of 50 NMR-detectable compounds from the
+human serum metabolome [23] while the CSF library consists
+of the 48 NMR-detectable compounds from the human CSF
+metabolome [24]; see Appendix V. The use of bioﬂuid-speciﬁc
+or organism-speciﬁc spectral libraries signiﬁcantly improves the
+performance of the spectral ﬁtting process as it reduces the
+number of possible explanations for each peak.
+
+II. ASSESSMENT
+
+BAYESIL was assessed using 3 different types of spectral data
+
+sets over two different types of bioﬂuids:
+(a) Computer generated mixtures derived from its spectral
+library. We generated 5 random serum and 5 random CSF
+spectra by sampling from the distribution of the measured
+concentration ranges of various compounds, and the probability
+of observing them in the mixture from [23], [24]. The chemical
+shifts were also randomly sampled according to the chemical
+shift ranges from the corresponding spectral libraries. To be
+more realistic, we also added a small amount of noise to the
+spectrum – independently to the height at each position x ∈ X .
+These correspond to “perfect” spectra, and are intended to assess
+the robustness and performance limits of BAYESIL under optimal
+conditions.
+(b) Deﬁned mixtures prepared in the laboratory. We created 15
+deﬁned mixtures (5 deﬁned mixture of serum, 5 deﬁned mixture
+of CSF, 5 random mixture of compounds in both serum and
+CSF, involving > 60 compounds), using carefully measured pure
+compounds and freshly prepared solutions. These provide real
+spectral data that probably include common spectral and solution
+artifacts (baseline and phasing issues, minor spontaneous reaction
+products, contaminants, matrix or pH effects). This set was used
+to assess BAYESIL’s performance under well-controlled conditions
+where the composition and of the mixtures was almost perfectly
+known.
+(c) Biological serum and CSF samples. We took human CSF and
+serum samples from previously studied samples that had been
+analyzed and quantiﬁed by NMR experts – here, 50 human serum
+and 5 human CSF samples. The set of compound mixtures was
+used to assess BAYESIL’s performance under realistic conditions
+with common spectral and solution artifacts. Although human
+CSF contains a smaller number of NMR-detectable compounds
+than human serum, it is more difﬁcult to proﬁle due to the
+lower concentration of metabolites. While both the biological
+samples and deﬁned mixtures were thoroughly analyzed, their
+exact compound concentrations cannot be perfectly known.
+Overall, we believe these 3 test sets provide a robust assessment
+of BAYESIL’s performance (as well as its limitations) under a
+wide range of conditions.
+
+BAYESIL estimates the “detection threshold” based on the
+signal to noise ratio (SNR) in each spectrum – i.e., when the
+signal
+is noisy this threshold is increase to provide a more
+conﬁdent identiﬁcation and quantiﬁcation. The SNR and therefore
+the detection threshold is directly related to the number of
+scans during spectral acquisition. For example our biological
+serum samples are produced using 128 scans and therefore most
+detection thresholds are ∼ 10µM. Since compound concentra-
+tions in our CSF samples are considerably lower than serum,
+their analysis requires higher quality spectra (see Materials and
+Methods). Our CSF samples use 1024 scans resulting in detection
+thresholds that are often less than 2µM. However this threshold
+
+Fig. 3.
+Factor-graph for a library of 15 compounds immediately below
+an associated NMR spectrum. Each factor is represented by a square and
+each variable using a circle. Concentration (larger circles) and shift variables
+(smaller circles, beside the associated concentration) corresponding to each
+compound appear together. The position of each factor fI position in the plot
+corresponds to the center of the corresponding block XI.
+
+Fig. 4. A small region of human serum spectrum. The plots above horizontal
+axis show the original spectrum (solid black), individual clusters as well as
+overall ﬁt (dashed red). The curves below horizontal axis show the BAYESIL’s
+distribution over chemical shift variables for each cluster (C), over 6 iterations
+of spectral deconvolution. The distributions become more peaked towards the
+correct center in each iteration. Distributions below the horizon have the color
+of their associated cluster.
+
+the distribution P( ρ, δ | s(·) ) can be
+This decomposition of
+represented using a probabilistic graphical model, known as a
+factor graph [21], which is a graph with two types of nodes: 1)
+factors (corresponding to regions or fI), and 2) variables (here,
+concentrations and chemical shifts). Each factor has arcs that
+point only to its associated variables. Figure 3 shows a portion of
+this factor-graph for a simple deﬁned mixture of 15 compounds.
+By formulating the spectral deconvolution problem as MAP
+inference in a factor-graph, we have a variety of inference
+techniques at our disposal [21]. BAYESIL uses a non-parametric
+sequential Monte Carlo method [22] tailored to this inference
+problem (see Appendix IV for details). Using a Gaussian distri-
+bution around a set of particles (a.k.a. kernel density estimation)
+BAYESIL represents a distribution over each concentration ρM
+and shift variable δC. By reducing the temperature parameter,
+these distributions are gradually narrowed in each iteration
+until convergence, at which point the mode of the distributions
+represent an approximate MAP assignment. Figure 4 shows the
+evolution of distributions over the chemical shift variables over
+6 iterations of spectral deconvolution.
+
+C. BAYESIL’s Spectral Library
+
+Key to the success of any spectral deconvolution algorithm is
+the quality and size of its spectral library. We therefore collected
+1D 1H NMR reference spectra for each of the compounds in
+
+3.743.753.763.773.78PPMreconstructionspectrumIDENTIFICATION AND QUANTIFICATION ACCURACY OF BAYESIL AND HUMAN EXPERT ON VARIOUS DATA-SETS.
+
+TABLE I
+
+BAYESIL
+
+expert
+
+id. accuracy
+quant. accuracy
+id. accuracy
+quant. accuracy
+
+biological
+.93 ± .04
+.89 ± .02
+-
+-
+
+serum
+def. mix.
+.94 ± .02
+.90 ± .02
+
+-
+-
+
+comp. gen.
+.98 ± .01
+.98 ± .01
+.91 ± .02
+.95 ± .01
+
+biological
+.90 ± .04
+.91 ± .01
+-
+-
+
+CSF
+def. mix.
+.89 ± .03
+.90 ± .02
+
+-
+-
+
+comp. gen.
+.95 ± .03
+.94 ± .02
+.87 ± .05
+.91 ± .04
+
+complex
+def. mix.
+.90 ± .02
+.88 ± .02
+
+-
+-
+
+5
+
+A. Efﬁciency
+
+On a single 2.8 GHz CPU processor, BAYESIL typically takes
+less than 5 minutes to proﬁle a serum or CSF spectrum. Over
+a sustained 24 hour period, BAYESIL should be able to process
+more than 200 spectra (vs. ∼20 spectra/day for a human expert)
+and accurately identify-&-quantify approximately 50 compounds
+per spectrum. This corresponds to an output of more than 5000
+metabolite measurements a day for a single CPU. It is possible to
+produce proﬁles yet faster by reducing the number of particles
+used in BAYESIL’s deconvolution process: reducing this by a
+factor of 10, reduces the run-time to less than one minute.
+This speed-up often reduces the identiﬁcation and quantiﬁcation
+accuracy by only 5-10%.
+
+B. Limitations
+
+A key disadvantage of NMR analysis (versus mass spec), in
+general, is that NMR is relatively insensitive, with a lower limit
+of detection of ∼ 1− 5 µM and a requirement of relatively large
+sample sizes (∼ 500µL). For high-quality spectra with high SNR,
+such as CSF samples in our study, BAYESIL is often able to
+achieve its high accuracy within these detection limits.
+
+Key to the high level of performance of BAYESIL is the
+use of bioﬂuid-speciﬁc spectral libraries in its spectral ﬁtting
+routines (a.k.a. targeted proﬁling). Without these, BAYESIL would
+be substantially slower and less accurate in both identiﬁcation
+and quantiﬁcation. Therefore users must provide BAYESIL with
+information about the bioﬂuid being analyzed. Obviously, the
+mis-identiﬁcation or mislabelling of a bioﬂuid sample could lead
+to somewhat poorer results.
+
+This need for prior knowledge about the typical composition of
+bioﬂuid mixtures has motivated us, and others, to spend consid-
+erable efforts to determine the NMR-detectable metabolomes for
+many bioﬂuids, including human plasma/serum, cerebrospinal
+ﬂuid, saliva and urine (e.g., [23], [24], [25]), milk and rumen
+(e.g., [26]), cell extracts (e.g., [27]), cancer cells [28], [29], and
+many other ﬂuids or extracts.
+
+C. Other systems
+
+There have been a number of software packages recently
+developed to facilitate spectral proﬁling and compound iden-
+tiﬁcation/quantiﬁcation by NMR; see Appendix I for details.
+However, they do not seem to be particularly accurate on real
+bioﬂuids. Furthermore, many of the packages are not currently
+publicly available. To date, the largest number of metabolites that
+has been automatically identiﬁed and quantiﬁed using publicly
+available software is 26 compounds, by BATMAN [13]. However,
+an analysis of this magnitude required several hours of CPU
+time to process a single spectrum. Furthermore, BATMAN also
+requires a human expert to perform many of the preliminary
+steps. We compared BAYESIL to BATMAN on simple computer-
+generated mixtures, involving 5, 10 and 20 compounds selected
+from BATMAN’s library, as well as a preprocessed human serum
+sample. For the computer generated spectra, both BATMAN and
+BAYESIL used identical
+libraries containing only the relevant
+compounds. BATMAN achieved 85− 87% quantiﬁcation accuracy
+for the computer-generated mixtures but took 2-9 hours to run,
+while in all cases BAYESIL achieved > 98% accuracy in less than
+
+Fig. 5.
+(left) BAYESIL’s true/false positive/negative rate in identiﬁcation of
+individual compounds in 50 biological serum samples. (right) The average
+concentration for correctly identiﬁed compounds in the same samples. The
+error bars show the average difference between BAYESIL and expert values
+for each compound and the red dots show the detection threshold for each
+compound.
+
+is not uniform across metabolites. BAYESIL also uses a relative
+factor in compound detectability; as some compound such as
+Choline are easy to identify and quantify at low concentrations
+while for some other compounds such as L-Asparagine, experts
+use a higher detection threshold.
+Given a spectrum of a mixture of compounds (with “true”
+concentrations {ρM}), BAYESIL returns its estimates of these
+
+concentrations {(cid:98)ρM}, which might be 0 if that compound is
+absent. We say a compound is a true positive if both (cid:98)ρM and
+and a true negative if both (cid:98)ρM and ρM are less than the
+how often its estimates(cid:98)ρM were “close enough” to the true values
+ρM; note that simply computing |(cid:98)ρM−ρM| is not enough as this
+
+threshold; in either case, BAYESIL’s prediction is considered
+correct. BAYESIL’s identiﬁcation accuracy for a given spectrum
+is the ratio of correct labels (true positives plus true negatives)
+to the library size. BAYESIL’s “quantitative accuracy” describes
+
+ρM are positive – that is, greater than the detection threshold,
+
+measure would basically only consider the compounds with high
+as a
+concentrations. We instead use the medianM
+measure of the percentage error in concentrations. Table I reports
+BAYESIL’s identiﬁcation and quantiﬁcation accuracies, for each
+of the tasks listed above. For the biological and synthetic samples,
+we assume the human expert’s assessment is correct.
+
+(cid:16) |ρM−(cid:98)ρM|
+max((cid:98)ρM,ρM)
+
+the frequency of
+
+Figure 5(left) reports
+
+false/true posi-
+tives/negatives for individual compounds in 50 serum samples.
+Figure 5(right) shows the average of ρM for correctly identiﬁed
+compounds in 50 serum samples, as reported by NMR experts,
+the average detection threshold for diffent compounds as well as
+
+the average difference (cid:98)ρM − ρM, between BAYESIL and expert’s
+
+(cid:17)
+
+estimate for each compound.
+
+test data suggest
+
+These results on a diverse set of
+
+that
+BAYESIL is often within 10% of the expert’s estimate, and
+where the ground truth is known, BAYESIL’s metabolic proﬁle
+is often more accurate than the expert’s. BAYESIL’s web-page
+http://www.bayesil.ca provides a complete description of all of the
+studies reported above, showing the ﬁts and the metabolic proﬁles
+obtained.
+
+AcetoacetateMalonic acidL−TryptophanL−AsparagineDimethylsulfoneIsobutyric acidHypoxanthinePropylene glycolL−Aspartic acidIsopropanolFormic acidEthanol2−HydroxybutyrateL−MethionineAcetonePyruvate/SuccinateBetaineCreatineL−Histidine1−MethylhistidineL−CarnitineCholine3−Hydroxybutyric acidDSSAcetic acidCitric acidD−GlucoseGlycineGlycerolL−Glutamic acidL−TyrosineL−PhenylalanineL−AlanineL−ProlineL−ThreonineL−IsoleucineLysineL−SerineL−Lactic acidL−ArginineCreatinineL−GlutamineL−LeucineL−ValineMethanol0%25%50%75%100%IdentificationTrue PositiveTrue NegativeFalse PositiveFalse Negative101102103Quantification (µM)Avg. ThresholdAvg. ConcentrationAvg. Error3 minutes. For the serum spectra, BAYESIL used a library of 50
+compounds, while BATMAN used a subset of 40 compounds that
+its library has in common with the serum metabolome. BATMAN
+took 19 hours to analyze the serum spectrum and identiﬁed all
+the compounds in its library (resulting in 85% identiﬁcation
+accuracy) and only 8% quantiﬁcation accuracy compared to
+BAYESIL which took 5 minutes to achieve 98% identiﬁcation
+and 90% quantiﬁcation accuracy.
+
+CONCLUSION
+
+NMR is a particularly appealing platform for conducting
+metabolomic studies on bioﬂuids as it is a rapid, robust, highly
+reproducible, non-destructive, and fully quantitative technique
+that requires no prior compound separation or derivatization.
+The main barrier preventing widespread adoption of NMR-
+based metabolomics in industrial or clinical applications is the
+requirement for manual spectral proﬁling. BAYESIL addresses
+this critical problem by providing fully automated spectral
+processing and deconvolution. Furthermore it is able to perform
+this task on mixtures containing > 50 compounds, with 90%
+accuracy. We believe that removing the automation barrier will
+have a signiﬁcant, positive impact on NMR spectroscopy and
+NMR-based metabolomics. BAYESIL is freely available for users
+to perform metabolic proﬁling of 1D 1H NMR spectra of serum,
+CSF and other bioﬂuid mxitures (excluding urine) collected at
+500 and 600 MHz.
+
+III. MATERIALS AND METHODS
+
+To produce each of the reference spectra for BAYESIL’s library,
+we ﬁrst prepared stock solutions (1 mM to 100 mM) for each
+compound in 1 L in volumetric ﬂasks. The metabolites were
+dissolved in 20 mM NaHPO4 (pH 7.0). These stock solutions
+were further diluted if necessary to obtain a ﬁnal stock solution
+concentration of 1 mM. The ﬁnal sample for NMR was prepared
+by transferring 1140 µL to a 1.5 mL Eppendorf tube followed by
+the addition of 140 µL D2O and 120 µL of the reference standard
+solution (11.67 mM DSS (disodium-2,2-dimethyl-2-silapentane-5-
+sulphonate), 20 mM NaHPO4, pH 7.0). After conﬁrming that the
+pH of the sample was between 6.8 and 7.2 (adjusting the buffer
+if necessary), we transferred 700 µL to a standard NMR tube for
+spectral acquisition. All library 1H NMR spectra were collected
+on both 500 MHz and 600 MHz Inova spectrometers equipped
+with 5 mm Z-gradient PFG probes. A standard presaturation
+1H-NOESY experiment(tnnoesy.c) was acquired at 25oC using
+the ﬁrst increment of the presaturation pulse sequence. A 4 s
+acquisition time, a 100 ms mixing time, a 10 ms recyle delay and a
+990 ms saturation delay were chosen. Thirty-two transients were
+acquired for samples collected at 600 MHz while 128 transients
+were acquired for all samples collected at 500 MHz. Eight steady
+state scans were employed and the presaturation pulse power was
+calibrated to provide a ﬁeld width no greater than 80 Hz. Both
+the transmitter offset and the saturation pulse were centered on
+the water resonance and no suppression gradients were used.
+After spectral collection, the spectra were checked for quality
+and then analyzed using a locally developed spectral analysis tool
+to convert the spectra into a series of XML ﬁles. In producing
+the XML library, most peak clusters were given a default shift-
+window of 0.025 ppm, with the exception of few compounds
+such as histidine or citrate that are known to be highly pH-
+sensitive. Both the synthetic and real biological spectral data were
+collected in the manner described above except for biological CSF
+in which 1024 scans were collected to compensate for dilution.
+For sample preparation, CSF was used as is, while serum was
+obtained after the blood had clotted for 30 min at 25oC and then
+passed through pre-rinsed 3000 MWCO Amicon Ultra-0.5 ﬁlters
+to remove remaining proteins. In each case 285 µL of ﬁltrate
+was obtained and 35 µL of D2O and 30 µL of buffer was added.
+A total of 350 µL was then transferred to a suitable Sigma tube
+
+6
+
+for NMR data acquisition. In the case of biological CSF, where
+less than 285 µL was obtainable, the samples were diluted with
+sufﬁcient H2O.
+
+ACKNOWLEDGMENTS
+
+We gratefully acknowledge support from the Alberta Innovates
+– Health Solutions, the Alberta/Pﬁzer Translational Research
+Fund and the Metabolomics Innovation Centre (funded by
+Genome Canada and Genome Alberta) for the project as a whole,
+and to NSERC, CIHR, the Alberta Innovates Centre for Machine
+Learning (funded by Alberta Innovates – Technology Futures),
+QEII and AIFT graduate scholarships for individual funding.
+
+REFERENCES
+
+[1] Wishart et al. (2007). HMDB: the human metabolome database.
+
+Nucleic Acids Res, 35(suppl 1), D521-D526.
+
+[2] Gieger, C. et al. (2008). Genetics meets metabolomics: a genome-wide
+association study of metabolite proﬁles in human serum. PLoS Genet,
+4(11), e1000282.
+
+[3] Illig, T. et al. (2010). A genome-wide perspective of genetic variation in
+
+human metabolism. Nat Genet, 42(2), 137-141.
+
+[4] Keurentjes, J. J. et al. (2006). The genetics of plant metabolism. Nature
+
+genetics, 38(7), 842-849.
+
+[5] Assfalg, M., Bertini, I., Colangiuli, D., Luchinat, C., Schfer, H., Schtz,
+B., Spraul, M. (2008). Evidence of different metabolic phenotypes in
+humans. Proc Natl Acad Sci U S A, 105(5), 1420-1424.
+
+[6] Gerszten, R. E., Wang, T. J. (2008). The search for new cardiovascular
+
+biomarkers. Nature, 451(7181), 949-952.
+
+[7] Sreekumar, A. et al. (2009). Metabolomic proﬁles delineate potential
+role for sarcosine in prostate cancer progression. Nature, 457(7231),
+910-914.
+
+[8] Wishart, D. (2008). Quantitative metabolomics using NMR. Trends
+
+Analyt Chem, 27(3), 228-237.
+
+[9] Weljie, A. M., Newton, J., Mercier, P., Carlson, E., Slupsky, C. M. (2006).
+Targeted proﬁling: quantitative analysis of 1H NMR metabolomics data.
+Anal Chem, 78(13), 4430-4442.
+
+[10] Tredwell, G. D., Behrends, V., Geier, F. M., Liebeke, M., Bundy, J. G.
+(2011). Between-person comparison of metabolite ﬁtting for NMR-based
+quantitative metabolomics. Anal Chem, 83(22), 8683-8687.
+
+[11] Ravanbakhsh, S. (2009) A stochastic optimization method for partially
+decomposable problems, with applications to analysis of NMR spectra,
+M.Sc. Thesis, U of Alberta.
+
+[12] Mercier, P., Lewis, M. J., Chang, D., Baker, D., Wishart, D. (2011).
+Towards automatic metabolomic proﬁling of high-resolution one-
+dimensional proton NMR spectra. J Biomol NMR, 49(3-4), 307-323
+
+[13] Hao, J., Astle, W., De Iorio, M., Ebbels, T. M. (2012). BATMANan R
+package for the automated quantiﬁcation of metabolites from nuclear
+magnetic resonance spectra using a Bayesian model. Bioinformatics,
+28(15), 2088-2090.
+
+[14] Ravanbakhsh, S., Poczos, B., Greiner, R. (2010). A Cross-Entropy
+method that optimizes partially decomposable problems: a new way to
+interpret NMR spectra, Proc Conf AAAI Artif Intell.
+
+[15] Brown, D. E., Campbell, T. W., Moore, R. N. (1989). Automated phase
+correction of FT NMR spectra by baseline optimization. J Magn Reson,
+85(1), 15-23.
+
+[16] de Brouwer, H. (2009). Evaluation of algorithms for automated phase
+
+correction of NMR spectra. J Magn Reson, 201(2), 230-238.
+
+[17] Dietrich, W., Rdel, C. H., Neumann, M. (1991). Fast and precise
+automatic baseline correction of one-and two-dimensional NMR spectra.
+J Magn Reson, 91(1), 1-11.
+
+[18] Fritsch, F. N., Carlson, R. E. (1980). Monotone piecewise cubic inter-
+
+polation. SIAM J Numer Anal, 17(2), 238-246.
+
+[19] Whittaker, E. T. (1922). On a new method of graduation. Proceedings
+
+of the Edinburgh Mathematical Society, 41, 63-75.
+
+[20] Savitzky, A., Golay, M. J. (1964). Smoothing and differentiation of data
+by simpliﬁed least squares procedures. Anal Chem, 36(8), 1627-1639.
+[21] Koller, D., Friedman, N. (2009). Probabilistic graphical models: prin-
+
+ciples and techniques. MIT press.
+
+[22] Doucet, A. (2001). Sequential monte carlo methods. John Wiley and
+
+Sons, Inc.
+
+6(2), e16957.
+
+[23] Psychogios et al. (2011). The human serum metabolome. PLoS One,
+
+[24] Wishart et al. (2008). The human cerebrospinal ﬂuid metabolome. J
+
+Chromatogr B Biomed Sci Appl, 871(2), 164-173.
+
+[25] Bouatra et al. (2013). The human urine metabolome. PloS One, 8(9),
+
+7
+
+e73076.
+
+[26] Sundekilde, U. K., Larsen, L. B., Bertram, H. C. (2013). NMR-based
+
+milk metabolomics. Metabolites, 3(2), 204-222.
+
+[27] Dietmair, S., Timmins, N. E., Gray, P. P., Nielsen, L. K., Kromer, J.
+O. (2010). Towards quantitative metabolomics of mammalian cells:
+Development of a metabolite extraction protocol. Anal Biochem, 404(2),
+155-164.
+
+[28] Grifﬁn, J. L., Shockcor, J. P. (2004). Metabolic proﬁles of cancer cells.
+
+Nat Rev Cancer, 4(7), 551-561.
+
+[29] Abate-Shen, C., Shen, M. M. (2009). Diagnostics: The prostate-cancer
+
+metabolome. Nature, 457(7231), 799-800.
+
+8
+
+(cid:90)
+
+(cid:88)
+
+spectral deconvolution. In practice BAYESIL uses a more com-
+plicated loss function that also penalizes the derivatives of the
+difference between the given spectrum s(·) and its reconstruction
+
+(cid:98)s(· ; ρ, δ):
+(cid:96)X (s(·),(cid:98)s(· ; ρ, δ)) =
+between s(·) and (cid:98)s(·). Here, the scalars γc weight the relative
+
+where the integral for c = 0 corresponds to sum of squared
+errors (eq[2]), and c ≥ 1 enforce the smoothness of the difference
+
+(cid:18) ∂c
+∂xc (s(x)−(cid:98)s(x ; ρ, δ))
+
+importance of these terms. Similar to the sum of square errors,
+this loss function also decomposes over the regions XI, allowing
+for the same kind of factor-graph representation.
+
+c∈{0,1,2,3}
+
+(cid:19)2
+
+γc
+
+X
+
+dx
+
+III. DETAILS ABOUT THE CONSTRUCTION OF NMR
+
+APPENDIX
+
+SPECTRAL REGIONS
+
+The construction of the spectral regions is based on the
+observation that the inﬂuence of each peak (and hence of each
+spectral cluster) is signiﬁcant over only a relatively small region
+of the spectrum. To estimate this “region of effect” for each
+cluster, BAYESIL ﬁrst obtains an upper-bound ρM ≥ ρM on
+the concentration of each compound. This upper-bound is also
+used in performing approximate inference (see Appendix IV).
+For each compound M, this is the minimum of the upper-bounds
+obtained using each of its clusters C ∈ M: ρM = minC∈M ρC. The
+upper-bound from each cluster (ρC) is obtained by progressively
+shifting the signature for that cluster under the spectrum and
+ﬁnding the maximum value that it can take, assuming all the
+other compounds and clusters are absent:
+
+ρC = max
+δC
+
+min
+
+x
+
+s(x)
+
+sC(x; 1, δC)
+
+where sC(., 1, δC) is the signature of cluster C as deﬁned by the
+set of all its peaks (see eq[1]) assuming a unit concentration and
+allowing δC to vary in a small window [δC, δC] around the center
+deﬁned by the library.
+Now that we have an upper-bound on concentrations, using an
+example from Figure 2 (in the main manuscript) we show why
+the region of effect for each cluster is bounded. In this ﬁgure,
+the center (δL−Isolucine(1)) for the ﬁrst cluster of L-Isoleucine
+can only appear in the interval [0.9130, 0.9380] PPM; as its
+concentration is at most ρL−Isoleucine = 95µM, its contribution
+to any point outside [.8563, .9954] will be ﬁve times less than the
+estimated noise-level of this spectrum, where the noise-level is
+estimated as the standard deviation of the spectrum s(·) over all
+of the baseline points. We can therefore identify this L-Isoleucine
+cluster with the interval [.8563, .9954]. Note this cluster includes
+3 peaks. In general, the range of a cluster spans the set of peaks
+that it contains.
+
+I. OTHER NMR-ANALYSIS SOFTWARE TOOLS
+
+APPENDIX
+
+Several software packages have been developed to facilitate
+NMR spectral processing, compound identiﬁcation and quan-
+tiﬁcation. While some facilitate two dimensional NMR spectral
+processing and compound identiﬁcation (e.g., [1], [2], dataChord
+(One Moon Scientiﬁc)), none are completely automated and
+provide compound quantiﬁcation. Furthermore, because modern
+metabolomic NMR studies require the analysis of a tremendous
+amount of spectral data, the time required to collect 2D NMR
+spectra makes their implementation prohibitive not only due
+to their inherent inability to facilitate high-throughput studies
+but also due to complicating factors such as sample degradation
+within the spectral acquisition time frame. Thus, more effort has
+been directed at developing software tools for 1D NMR.
+
+Some tools provide basic processing functionalities [3], [4].
+(In fact, BAYESIL uses NMR-GLUE [3] for handling different
+input/output data formats.)
+
+We focus on software package capable of handling high-
+throughput 1D metabolomic NMR data. An ideal tool here should
+have the following features: (1) fully automated – in both spec-
+tral processing and compound identiﬁcation and quantiﬁcation;
+(2) ﬂexible and customizable – capable of analyzing a wide (and
+extendable) range of different biological ﬂuids; (3) ubiquitous –
+can accommodate input from different NMR vendors, multiple
+spectrometer frequencies; and of course (4) accurate.
+
+Various software packages have made incremental steps to-
+ward achieving these goals. Of the 19 that we could identify, only
+a handful provide some degree of automated identiﬁcation and/or
+quantiﬁcation (1): [1], [5], [6], [12], [8], [10], [12], Juice Screener,
+Wine Screener and Metabolic Proﬁler (Bruker Corporation) and
+Chenomx NMR Suite (Chenomx Inc.). This task (of spectral
+deconvolution and metabolite proﬁling) has been tackled with
+a variety of algorithmic approaches – including simple text ﬁle
+matching, binning [5], principal component analysis and non-
+negative matrix factorization [1], [6], combinations of simulated
+annealing and gradient descend ([7], Chenomx NMR Suite
+(Chenomx Inc.)), cross entropy method [8] and Monte Carlo
+techniques [10]. However only a few of these softwares provide
+automated spectral processing ([11],Juice Screener and Wine
+Screener).
+
+In terms of ﬂexibility and customizability (2), some software
+packages do utilize large data-sets (HMDB [14], BMRB [15] or
+MMCD [16]) but they still require the user to select a subset
+of the compounds, and/or do not provide quantiﬁcation [1], [9],
+[2]. Others are specialized to particular mixtures ([11], Wine
+Screener, Juice Screener and Vantera (LipoScience Inc.)) and
+none can accurately quantify complex mixtures (with > 50
+compounds). Moreover, many of these software packages are
+speciﬁc to a particular instrument (e.g., [10], [14], [12], [13],
+Wine Screener, Juice Screener, dataChord and Vantera).
+
+It is often difﬁcult to access accuracy (4), as the descriptions
+of many software tools do not provide any assessment (e.g., Juice
+Screener, Wine Screener and Metabolic Proﬁler (Bruker Corpo-
+ration), [1], [11]) and many systems have been assessed merely
+on very simple mixtures (e.g.,
+[2], [9], [10],lipoproﬁler/Vantera
+(LipoScience Inc.)) or simple spike-in experiments [5], [12], [13].
+To summarize, BAYESIL is the only 1D 1H NMR interpretation
+system that is completely automated (both preprocessing and
+deconvolution)
+for a wide range of complex mixtures (i.e.,
+all mammalian bioﬂuids covered by its current library; see
+www.bayesil.ca),
+it is
+efﬁcient, general, accurate and publicly available.
+
+involving > 60 compounds. Moreover,
+
+APPENDIX
+
+IV. DETAILS OF BAYESIL’S APPROXIMATE INFERENCE
+This appendix provides details of BAYESIL’s inference proce-
+
+dure, using the factor-graph representation of the problem.
+
+Recall that ρI and δI denote the set of shift and concentration
+values for all the clusters and associated compounds that can
+appear in the region XI; we let µI = [ρI , δI ] denote the set
+of variables of both both types. Since the loss function (cid:96)(·,·) is
+additive over domain the X , we can rewrite the optimization of
+eq[3] in exponential form as:
+
+(cid:89)
+(cid:96)XI ( s(·),(cid:98)s(.; µI ) )
+
+fI (µI )
+
+I
+
+(cid:26)
+
+− 1
+T
+
+(cid:27)
+
+(7)
+
+APPENDIX
+
+II. BAYESIL’S LOSS FUNCTION
+
+∗
+µ
+
+= argµ max
+
+In the manuscript, we described a simple sum of squared error
+loss function (eq[2]) to explain the basic ideas behind BAYESIL’s
+
+fI (µI ) = exp
+
+For each n,
+
+(cid:98)s(x ; ρ[n], δ[n]) = (cid:80)
+
+where each factor fI is basically the exponential of the negative
+loss function (−(cid:96)XI ) over the region XI and T is the temperature.
+Here a factor node fI is connected to all of its associated variables
+µi ∈ µI in the factor-graph; see Figure 3. In the following, we
+use ∂µi = {fI | µi ∈ µI} to refer to all the factors that are
+adjacent to variable µi in the factor-graph.
+Inference in this factor-graph is challenging as its factors can
+each depend on a large number of continuous variables. This
+means that the most basic task of (conditional) sampling from a
+factor is unfeasible and we cannot use Glauber dynamics (e.g.,
+[18]). This is further complicated by multi-modality of the factors,
+which prevents the use of parametric densities and inference
+techniques such as Gaussian Belief Propagation [21] or (primal
+and dual) decomposition methods that require convex sub-
+problems [17]. BAYESIL uses a non-parametric sequential Monte
+Carlo method that is closely related to sequential importance
+sampling and particle ﬁlters. The following is a step-by-step
+explanation of this inference procedure.
+BAYESIL models a distribution P(µi) over individual variables,
+non-parametrically: as a set of “particles”. These particles, µi[n]
+for 1 ≤ n ≤ N, collectively serve to approximate the target
+distribution. In all the experiments described in the manuscript
+we use N = 10, 000 such particles, however using a larger
+number can increase accuracy at the cost of increased run-time.
+the joint set of particles for all variables,
+µ[n] = [ρ[n], δ[n]], corresponds to a complete spectrum – i.e.,
+
+M(cid:98)s(x ; M, ρM[n], δM[n]) – which means
+
+we can compute its loss (eq[2]). BAYESIL calculates the loss for
+each region XI, fI (µI [n]) (eq[7]). Since each variable µi appears
+in many regions ∂µi, we can “credit” each assignment µi[n]
+with the loss over all such regions. This allows us to compute a
+“weight” for each variable µi and for each particle n. BAYESIL
+then uses these weighted sets of particles to produce a new
+distribution for the variable µi, one that prefers values that have
+less loss. BAYESIL then iterates, using this new distribution, until
+convergence.
+More speciﬁcally, BAYESIL ﬁrst assigns each of the variables µi
+to an initial distribution of values P(0)(µi) – e.g., δL−Isoleucine(1)
+is drawn uniformly from its chemical shift range [0.9130, 0.9380]
+PPM, and ρL−Isoleucine(1) is drawn uniformly from its range [0,
+95] µM (see Appendix III for the procedure to estimate the upper
+bound ρL−Isoleucine(1) = 95µM). It then iterates t = 0, 1, 2, ...
+over the following four steps:
+Step1: It draws N =10,000 particles from each P(t)(µi) indepen-
+dently, producing 10,000 complete assignment to these variables
+µ(t)[n] = [ρ(t)[n], δ(t)[n]] (for n = 1, 2, ...,10,000), from its
+current product distribution.
+Step2: For each joint particle µ(t)[n]: For each factor I, BAYESIL
+computes the loss associated with this region, (cid:96)I (µI [n](t)), and
+then fI (µI [n](t)) using eq[7].
+Step3: Recall each variable µi belongs to a set of regions (each
+corresponding to a factor), ∂µi. BAYESIL then implicitly identiﬁes
+µi[n](t) with the loss associated with all corresponding regions.
+This is achieved by deﬁning a weight
+
+ω(µi[n](t)) ∝
+
+fI (µI [n](t))
+
+fI∈∂µi
+P(t)(µi[n](t))
+
+(8)
+
+(cid:81)
+
+where P(t)(·) is the distribution used for sampling – i.e., impor-
+tance sampling weight.
+Step4: Finally, BAYESIL produces a “new” distribution for each
+variable µi, using kernel density estimation (KDE) over a
+weighted set of the N particles µ[n](t) 1 ≤ n ≤ N to represent
+the marginal distribution P(t+1)(·) over each variable µi ∈ µ:
+
+P(t+1)(µi) ∝ N(cid:88)
+
+n=1
+
+ω(µi[n](t)) k
+
+(cid:18) µi − µi[n](t)
+
+(cid:19)
+
+h
+
+9
+
+where k(·) is a kernel function (e.g., a Gaussian) and the kernel
+bandwidth h is estimated from the data (e.g., [19]).
+BAYESIL then checks for convergence; if convergence occurs, it
+returns the mode of individual distribution as its approximation
+to the MAP assignment. If not, it returns to Step1.
+
+Note the temperature parameter T (used in eq[7] which
+appears in eq[8]) is gradually reduced from a large value towards
+zero per iteration. Figure 4 is basically showing the evolution
+of KDEs over the chemical shift variables (P(t)(δC) for t ∈
+{1, . . . , 6}) over 6 iterations of spectral deconvolution.
+In practice, BAYESIL ignores the importance sampling weights.
+This biases P(t+1)(µi) towards P(t)(µi), but signiﬁcantly reduces
+the variance and the computation time. Since we are interested
+in the mode (rather than the marginals) of P(µi), this trade-off is
+favourable, as the bias of the previous estimate is mostly towards
+more probable assignments.
+
+V. LIST OF NMR-DETECTABLE COMPOUNDS IN SERUM
+
+APPENDIX
+
+AND CSF
+
+Our serum library includes the following metabolites plus DSS:
+1-Methylhistidine, 2-Hydroxybutyric acid, Acetic acid, Betaine,
+Acetoacetic acid, L-Carnitine, Creatine, Citric acid, Choline,
+Ethanol, D-Glucose, Glycine, Glycerol, Formic acid, L-Glutamic
+acid, Hypoxanthine, L-Tyrosine, L-Phenylalanine, L-Alanine, L-
+Proline, L-Threonine, L-Asparagine, L-Isoleucine, L-Histidine,
+L-Lysine, L-Serine, L-Lactic acid, L-Aspartic acid, L-Cystine, Or-
+nithine, Pyruvic acid, Succinic acid, Urea, 3-Hydroxybutyric acid,
+L-Arginine, Creatinine, L-Cysteine, L-Glutamine, L-Leucine,
+Malonic acid, L-Methionine, Isopropyl alcohol, L-Valine, L-
+Tryptophan, Acetone, Isobutyric acid, Methanol, Propylene gly-
+col, Dimethyl sulfone.
+
+Our CSF library includes the following compounds plus DSS:
+2-Hydroxybutyrate, 2-Oxoisovalerate, 3-Hydroxyisobutyrate, Ac-
+etate, Ascorbic acid, Acetoacetate, Creatine, Dimethylamine,
+Citrate, Choline, Glucose, Glycerol, Formate, Glutamate, Ty-
+rosine, Phenylalanine, Alanine, Threonine, Mannose, Isoleucine,
+Histidine, Lysine, Serine, Lactate, 2-Oxoglutarate, myo-Inositol,
+Oxalacetate, Pyruvate, Succinate, Pyroglutamate, Xanthine,
+Urea, 3-Hydroxybutyrate, 2-Hydroxyisovalerate, Creatinine, Glu-
+tamine, Fructose, Leucine, Methionine, 3-Hydroxyisovalerate,
+Isopropanol, Valine, Tryptophan, Acetone, Methanol, Propylene
+glycol, 1,5-Anhydrosorbitol, Dimethylsulfone.
+
+REFERENCES
+
+[1] Robinette, S. L., Zhang, F., Bruschweiler-Li, L., Bruschweiler, R.
+(2008). Web server based complex mixture analysis by NMR. Anal
+Chem, 80(10), 3606-3611.
+
+[2] Xia, J., Bjorndahl, T. C., Tang, P., Wishart, D. (2008). MetaboMinersemi-
+automated identiﬁcation of metabolites from 2D NMR spectra of complex
+bioﬂuids. BMC bioinformatics, 9(1), 507.
+
+[3] Helmus, J. J., Jaroniec, C. P. (2013) Nmrglue: an open source Python
+package for the analysis of multidimensional NMR data. Journal of
+biomolecular NMR, 55(4), 355-367.
+
+[4] Delaglio, F. et al. (1995). NMRPipe: a multidimensional spectral pro-
+
+cessing system based on UNIX pipes. J Biomol NMR, 6(3), 277-293.
+
+[5] Zheng, C., Zhang, S., Ragg, S., Raftery, D., Vitek, O. (2011). Identiﬁca-
+tion and quantiﬁcation of metabolites in 1H NMR spectra by Bayesian
+model selection. Bioinformatics, 27(12), 1637-1644.
+
+[6] Zhao, Q., Stoyanova, R., Du, S., Sajda, P., Brown, T. R. (2006). HiResa
+tool for comprehensive assessment and interpretation of metabolomic
+data. Bioinformatics, 22(20), 2562-2564.
+
+[7] Mercier, P., Lewis, M. J., Chang, D., Baker, D., Wishart, D. (2011).
+Towards automatic metabolomic proﬁling of high-resolution one-
+dimensional proton NMR spectra. J Biomol NMR, 49(3-4), 307-323
+
+[8] Ravanbakhsh, S., Poczos, B., Greiner, R. (2010). A Cross-Entropy
+method that optimizes partially decomposable problems: a new way to
+interpret NMR spectra. Proc Conf AAAI Artif Intell
+
+10
+
+[9] Tulpan, D., Leger, S., Belliveau, L., Culf, A., Cuperlovic-Culf, M. (2011).
+MetaboHunter: an automatic approach for identiﬁcation of metabolites
+from 1H-NMR spectra of complex mixtures. BMC bioinformatics, 12(1),
+400.
+
+[10] Hao, J., Astle, W., De Iorio, M., Ebbels, T. M. (2012). BATMANan R
+package for the automated quantiﬁcation of metabolites from nuclear
+magnetic resonance spectra using a Bayesian model. Bioinformatics,
+28(15), 2088-2090.
+
+[11] Provencher, S. W. (1993). Estimation of metabolite concentrations from
+localized in vivo proton NMR spectra.Magnetic Resonance in Medicine,
+30(6), 672-679.
+
+[12] Mihaleva, V. V. et al. (2014). Automated quantum mechanical total
+line shape ﬁtting model for quantitative NMR-based proﬁling of human
+serum metabolites. Anal Bioanal Chem, 406(13), 3091-3102.
+
+[13] Crockford, D. J., Keun, H. C., Smith, L. M., Holmes, E., Nicholson, J.
+K. (2005). Curve-ﬁtting method for direct quantitation of compounds in
+complex biological mixtures using 1H NMR: application in metabonomic
+toxicology studies. Anal Chem, 77(14), 4556-4562.
+
+[14] Wishart et al. (2007). HMDB: the human metabolome database. Nucleic
+
+Acids Res, 35(suppl 1), D521-D526.
+
+[15] Eldon L. Ulrich et al. (2008) BioMagResBank, Nucleic Acids Res, 36,
+
+D402-D408
+
+[16] Q. Cui et al.
+
+(2008) Metabolite identiﬁcation via the Madison
+
+Metabolomics Consortium Database”, Nat Biotechnol, 26,162
+
+[17] Boyd, S. P., Vandenberghe, L. (2004). Convex optimization. Cambridge
+
+[18] Mezard, M., Montanari, A. (2009). Information, physics, and computa-
+
+[19] Silverman, B. W. (1986). Density estimation for statistics and data
+
+university press.
+
+tion. Oxford University Press.
+
+analysis (Vol. 26). CRC press.
+
+

@@ -1,0 +1,703 @@
+    An Algorithm for Alignment-free Sequence Comparison using Logical Match   
+ 
+ 
+ 
+  Sanil Shanker KP                                  Elizabeth Sherly                                     Jim Austin 
+   Department of Computer Science        Indian Institute of Information               Department of Computer Science 
+   University of Kerala , India                  Technology Management- Kerala         University of York, UK       
+   e-mail: sanilshankerkp@gmail.com    India . e-mail: sherly@iiitmk.ac.in         e-mail:  austin@cs.york.ac.uk 
+ 
+
+Abstract:  This paper proposes an algorithm for  alignment-
+free  sequence  comparison  using  Logical  Match.  Here,  we 
+compute  the  score  using  fuzzy  membership  values  which 
+generate  automatically  from  the  number  of  matches  and 
+mismatches.  We  demonstrate  the  method  with  both  the 
+artificial and real datum. The results show the uniqueness of 
+the  proposed  method  by  analyzing  DNA  sequences  taken 
+from NCBI databank with a novel computational time. 
+
+Key  words:  Alignment-free  sequence  comparison,  Fuzzy 
+membership, Logical Match, String match    
+
+ 
+
+                            I    INTRODUCTION  
+
+sequence 
+
+remains 
+
+comparison 
+
+Alignment-free 
+a 
+computational problem as the total number of  sequences  in 
+the  underlying  databases  grows  exponentially  with  the 
+progress  of  research[1].  Algorithms  devised  for 
+the 
+comparison  of  molecular  sequences  are  based  on  the 
+concept  of  string  matching[2].  The  newly  proposed 
+alignment-free  sequence  comparison  algorithm  is  based  on 
+the  concept  of  string  matching.  techniques.  In  Brute  Force 
+method,  the  string  matching  algorithm  compares  a  pattern 
+character by character in each and every location of the text. 
+It is possible to solve the problems of strings matching with 
+the help of finite automata[3]. Using  finite automata, string 
+matching  automation  is  built  from  the  pattern  as  a 
+preprocessing  step  before  matching.  The  text  is  then 
+scanned  through  the  automation  to  find  occurrences  of  the 
+pattern in the text. The Knuth-Morris-Pratt algorithm avoids 
+back-tracking  on  the  text  when  a  mismatch  occurs,  by 
+exploiting  the  knowledge  of  the  matched  substring  in  the 
+text  prior  to  the  mismatch[4].  The  main  peculiarity  of  the 
+Boyer-Moore algorithm is that some of the characters in the 
+text  can  be  skipped  completely  without  comparing  them 
+with  the  pattern  as  it  can  be  shown  that  they  can  never 
+contribute  to  an  occurrence  of  the  pattern  in  the  text[5].  In 
+Logical  Match,  the  sequence  is  arranged  so  that  each 
+element  in  the  pattern  are  encoded  as  binary  digits  and 
+coincides with it’s corresponding index  and then proceed to 
+
+ 
+
+match  logically  the  indices  of  the  pattern  with  those  of  the 
+text.  This  paper  presents  the  method  for  alignment-free 
+comparison  of  sequential  patterns  of  finite  length  using 
+automatically  generating  fuzzy  membership  values  by 
+Logical Match[6,7,8,9].      
+
+                        II     METHOD  
+
+ 
+
+The sequence pattern is arranged so that each characters are 
+encoded  as  binary  digits  and  coincide  with 
+the 
+corresponding  index    and  then  proceed  to  match  logically 
+the  indices  of  the  pattern  with  those  of  the  text.  The 
+algorithm  has  two  phases.  The  characters  in  the  sequence 
+pattern  are  pre-  processed  in  the  phase-  I.  The  information 
+from the phase- 1 is used in the phase- II in order to reduce 
+the total number of character comparisons.  We compute the 
+score  using  fuzzy  membership  values  which  generate  
+automatically  from the number of matches and mismatches. 
+
+Phase - I  
+
+i, Each characters are encoded as binary digits and generate  
+the indices of Text and Pattern using Logical Match  
+
+Phase - II  
+
+ii,  Compute 
+Mismatch(Text,Pattern) 
+
+number 
+
+of  Match(Text,Pattern) 
+
+and    
+
+iii,  Compute score,  S(Text,Pattrn)  
+
+             =  Match in Text *µMatch(Pattern)[Pattern]  – 
+
+                 Mismatch in Text*µMismatch(Pattern)[Pattern] , 
+
+ where, µMatch(Pattern)[Pattern] + µMismatch(Pattern)[Pattern] = 1  
+
+                                                               
+
+                                                                ( See Appendix ) 
+
+      
+
+   
+
+ 
+
+      III    SIMULATION  WITH  ARTIFICIAL DATUM 
+
+b)    Phase-II:  
+Compute    the  number  of  match  and  mismatch  using 
+Logical Match(Table 3). 
+
+ 
+ Text =>       <ATCAAGATCA> 
+ Pattern =>  <AAGAGGCTCA> 
+ 
+
+a)  Phase- I: Generating indices of Text and Pattern using 
+
+Logical Match  
+ 
+
+ Initialize {1000←A ,0100←T,0010←G,0001←C} 
+
+Shift  the  text(Table  1)  and  pattern(Table  2)  so  that  each 
+encoded  binary  digit  in  the  sequence  coincides  with  it’s 
+corresponding index in it’s respective column. 
+
+ 
+Text => < 1000(1,4,6,7,10);    
+                 0100(3,9);                                    
+                 0010(5);            
+                 0001(2,8) > 
+ 
+
+ 
+10 
+9 
+8 
+7 
+6 
+5 
+4 
+3 
+2 
+1 
+
+   0/1 
+1 
+0 
+0 
+1 
+1 
+0 
+1 
+0 
+0 
+1 
+
+  0/1 
+0 
+0 
+0 
+0 
+0 
+1 
+0 
+0 
+0 
+0 
+                     Table 1. Text(Phase- 1) 
+
+  0/1 
+0 
+1 
+0 
+0 
+0 
+0 
+0 
+1 
+0 
+0 
+
+   
+Pattern  => < 1000(1,7,9,10);  
+                       0100(3);                                    
+
+                 0010(5,6,8);       
+                 0001(2,4) > 
+ 
+
+  0/1 
+1 
+0 
+0 
+1 
+0 
+0 
+0 
+0 
+0 
+1 
+
+ 
+10 
+9 
+8 
+7 
+6 
+5 
+4 
+3 
+2 
+1 
+                         Table 2. Pattern(Phase- 1) 
+ 
+
+ 0/1 
+0 
+0 
+0 
+0 
+0 
+0 
+0 
+1 
+0 
+0 
+
+ 0/1 
+0 
+0 
+1 
+0 
+1 
+1 
+0 
+0 
+0 
+0 
+
+  0/1 
+0 
+0 
+1 
+0 
+0 
+0 
+0 
+0 
+1 
+0 
+
+ 0/1 
+0 
+1 
+0 
+1 
+0 
+0 
+1 
+0 
+1 
+0 
+
+ 
+9 
+
+ 
+
+ 
+
+ 
+
+ 
+7 
+
+ 
+
+ 
+
+ 
+
+ 
+1 
+
+ 
+2 
+
+ 
+7 
+
+ 
+4 
+
+ 
+9 
+
+ 
+8 
+
+ 
+6 
+
+ 
+5 
+
+ 
+1 
+
+ 
+3 
+
+ 
+1 
+
+ 
+10 
+
+ 
+10 
+
+ 
+Encoded                                                                    Match/  
+binary digits                    Indices                              Mismatch 
+ 
+1000 
+ 
+ 
+0001 
+ 
+ 
+0100 
+ 
+ 
+1000 
+ 
+ 
+0010 
+ 
+ 
+1000 
+ 
+ 
+1000 
+ 
+ 
+0001 
+ 
+ 
+0100 
+ 
+ 
+1000 
+ 
+  Table 3.  Alignment-free comparison using  Logical Match 
+ 
+Compute 
+membership values. 
+ 
+Score  =      
+
+ 
+1st Match 
+ 
+ 
+2nd Match 
+ 
+ 
+3rd Match 
+ 
+ 
+1st 
+Mismatch 
+ 
+4th Match 
+ 
+ 
+2nd 
+Mismatch 
+ 
+5th Match 
+ 
+ 
+3rd 
+Mismatch 
+ 
+4th 
+Mismatch 
+ 
+6th Match 
+ 
+
+automatically  generating 
+
+score  using 
+
+ 
+10 
+
+ 
+10 
+
+ 
+10 
+
+ 
+7 
+
+ 
+4 
+
+ 
+1 
+
+ 
+2 
+
+ 
+3 
+
+ 
+9 
+
+ 
+9 
+
+ 
+
+ 
+7 
+
+ 
+
+ 
+
+ 
+9 
+
+ 
+
+ 
+
+ 
+7 
+
+ 
+1 
+
+the 
+
+=  Match in Text *µMatch(Pattern)[Pattern]  – 
+
+Mismatch in Text *  µMismatch(Pattern)[Pattern]  
+
+= 6* 0.6  -  4* 0.4  = 3.6-1.6 = 2 
+
+                  IV  EXPERIMENTAL RESULTS 
+
+To  simulate,  alignment–free  sequence  comparison  using 
+Logical  Match,  the  program  has  been  written  in  C++ 
+language  under  Linux  platform.  The  method  was  tested 
+against    DNA  sequences,  the  inputs  have  taken  from  the 
+Locus  ACU90045  as  common 
+text  and  ACU90045, 
+PAU90054,  HSU90049,  LPU90051,  NAU90053,  DCU90047, 
+
+DPU90048 as patterns of common range 541-560 from NCBI 
+databank(Table 4). In the phase- I of the algorithm, the time 
+complexity  is  O(m+n)  and  in  the 
+  the 
+computational  time  depends  on  the  lengths  of  the  elements 
+in the pattern of the text. 
+
+  phase-  II, 
+
+                                V  CONCLUSION 
+
+We  have  presented 
+the  algorithm  for  alignment-free 
+sequence  comparison  using  Logical  Match.  The  method  
+provides  a  solution  to  find  alignment-  free  similarities 
+between two  finite sequences by calculating the score using 
+automatically  generating  fuzzy  membership  values.  This 
+procedure  can  possibly  be  implemented  in  the  applications 
+related  to  the  alignment-free  comparison  of  sequential 
+patterns.                    
+
+                                    Table  4 
+
+[2]  Gusfield  D.(1997).  Algorithms  on  Strings,  Trees  and 
+Sequences:  Computer  Science  and  Computational  Biology, 
+Cambridge University Press. 
+
+[3]  Alfred  V.Aho,  Margaret  J.Corasick.(1975).  Efficient  string 
+matching:  an  aid  to bibliographic  search.  Communications of    the 
+ACM. Volume 18, pp 333-340 
+
+ [4]  Knuth  D.E,  Morris  (Jr)  J.H.,  Pratt  V.R.(1977).    Fast  pattern 
+matching  in  strings,  SIAM  Journal  on  Computing  6(1),    pp  323-
+350. 
+
+[5]  Boyer  R.S,  Moore  J.S.(1977).    A  fast  string  searching 
+algorithm. Communications of the ACM. 20,   pp 762-772. 
+
+[6]  Norwich  A  M  and  Turksen  I  B(1984).    A  model  for  the 
+measurement of membership and the consequence of its empirical 
+implementation .Fuzzy Sets and Systems 12,  pp 1–25. 
+
+[7] Dombi J.(1990). Membership function as an  evaluation Fuzzy 
+Sets and Systems 35, pp 1-21.  
+
+[8]  Medasani  S,  Kim  J,Krishnapuram  R.(1998).  An  Overview  of 
+membership 
+for  pattern 
+recognition.  International  Journal  of  Approximate  Reasoning  19, 
+pp 391-471. 
+
+function  generation 
+
+techniques 
+
+ 
+
+[9]  James  C.  Bezdek,  James  Keller,  Raghu  Krisnapuram,  Nikhil 
+R.Pal.(1999). 
+for  Pattern 
+Recognition and Image Processing,  Kluwer Academic Publishers.  
+
+  Fuzzy  Models  and  Algorithm 
+
+[10]  www.ncbi.nlm.nih.gov 
+
+                                      
+
+                                                  
+
+                                                  
+
+Locus        Region: 541-560(20bp)     Score  Match(%)      
+ 
+T: ACU90045   cgacctctggacaggccact 
+P ACU90045    cgacctctggacaggccact     20     100%                          
+ 
+T: ACU90045   cgacctctggacaggccact 
+P: PAU90054   cgacccactgagaaacctct    -2       45%   
+ 
+T: ACU90045   cgacctctggacaggccact 
+P: HSU90049  cgaccaactgacaaggctct    -6       35%                           
+ 
+T: ACU90045  cgacctctggacaggccact 
+                                                  
+P: LPU90051  cgtcccactgacaagcctct      -8      30%                                  
+ 
+T:  ACU90045  cgacctctggacaggccact 
+P: NAU90053  cgcccaactgacaaggctct  -10     25%     
+ 
+T:  ACU90045  cgacctctggacaggccact 
+P: DCU90047  aggcctttggacaaacctct    -12    20%                           
+ 
+T:  ACU90045   cgacctctggacaggccact 
+P: DPU90048   agaccagttgacaaaccttt  -16    10% 
+ 
+  Where, T and P are  Text  and Pattern  respectively.   
+
+                                                  
+
+                                                  
+
+ 
+
+                               APPENDIX   
+
+Let T and P  be two strings of lengths n and m respectively, where 
+n ≥ m.  When P compares(alignment-free) with T  gives r matches 
+and s mismatches ,  r + s = m  
+
+                                                            
+
+Match(P) [P] +  Mismatch(P) [P]   = Match in P/|P| + Mismatch in P/|P| 
+
+                         =   (Match in P  + Mismatch in P)/|P| 
+
+                      =   (r + s) / m =  m / m  =  1 
+
+             
+
+                       ACKNOWLEDGMENT 
+
+SSKP  was  funded  in  part  by  European  Research  and 
+Educational Collaboration with Asia 
+
+                               REFERENCES 
+
+[1] Susana Vinga, Jonas Almeida.(2003). Alignment-free sequence 
+comparison- a review. Bioinformatics.Vol.19, pp  513-523. 
+
+Example  a) 
+
+              T    =>  0 1  0   1  0  0  1  0  
+                           |   |   |   #  #  |   #   | 
+              P     => 0  1  0  0  1 0  0  0 
+ 
+Match(Pattern) [P]  =  5/8 =  0.625, 
+ Mismatch(Pattern) [P]  =  3/8 = 0.375 
+
+ Score(T ,P) = Match in T *µMatch(P)[P]  – 
+
+                 Mismatch in T*µMismatch(P)[P]  
+
+ 
+ 
+ 
+ 
+Example c) 
+
+              T    =>  0 1  0   1  0  0  1  0  
+                           |   |   |   #  #  #  #  # 
+              P     => 0  1  0  0 --  -- -- --   
+ 
+Match(Pattern) [P]  =  3/4 =  0.75, 
+ Mismatch(Pattern) [P]  =  1/4 = 0.25 
+
+ Score(T ,P) = Match in T *µMatch(P)[P]  – 
+
+                 Mismatch in T*µMismatch(P)[P]  
+
+                    =  3*0.75  -  5* 0.25 =  2.25 -  1.25 
+                    = 1 
+ 
+
+                    =  5*0.625  -  3* 0.375 =  3.125 -  1.125 = 2 
+ 
+
+ 
+
+Example b) 
+
+              T    =>  0 1  0   1  0  0  1  0  
+                           |   |   |   #  #  |   #  # 
+              P     => 0  1  0  0  1 0  0   --  
+ 
+Match(Pattern) [P]  =  4/7 =  0.571 
+ Mismatch(Pattern) [P]  =  3/7 = 0.428 
+
+Score(T ,P) = Match in T *µMatch(P)[P]  – 
+
+                 Mismatch in T*µMismatch(P)[P]  
+
+                    =  4*0.571  -  4* 0.428  =  2.284  -  1.712 
+                    =  0.572  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+

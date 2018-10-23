@@ -1,0 +1,2826 @@
+2
+1
+0
+2
+
+ 
+t
+c
+O
+2
+1
+
+ 
+
+ 
+ 
+]
+
+.
+
+M
+R
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+2
+v
+4
+3
+5
+3
+
+.
+
+2
+0
+1
+1
+:
+v
+i
+X
+r
+a
+
+Applying hedging strategies to estimate model
+
+risk and provision calculation.
+
+Alberto Elices∗
+
+Eduard Gim´enez †
+
+May 31, 2018
+
+Abstract
+
+This paper introduces a relative model risk measure of a product
+priced with a given model, with respect to another reference model
+for which the market is assumed to be driven. This measure allows
+comparing products valued with diﬀerent models (pricing hypothesis)
+under a homogeneous framework which allows concluding which model
+is the closest to the reference. The relative model risk measure is
+deﬁned as the expected shortfall of the hedging strategy at a given
+time horizon for a chosen signiﬁcance level. The reference model has
+been chosen to be Heston calibrated to market for a given time horizon
+(this reference model should be chosen to be a market proxy). The
+method is applied to estimate and compare this relative model risk
+measure under volga-vanna and Black-Scholes models for double-no-
+touch options and a portfolio of forward fader options.
+
+1
+
+Introduction
+
+The optimistic situation during the years before the crisis in the second
+half of 2008 had trended from simple, marked to marked liquid products
+
+∗Head of Equity Model Validation, Risk Methodology, Divisi´on General de Riesgos,
+Santander, Ciudad Financiera Santander, Avda. Cantabria s/n, 28660 Boadilla del Monte,
+Spain, aelices@gruposantander.com.
+
+†Head of Model Development Group, Front Oﬃce, CaixaBank, Av. Diagonal, 621-629
+
+T.I. P13, Barcelona, Spain eduard.gimenez.f@lacaixa.es.
+
+1
+
+to progressively more complex and illiquid products which were marked to
+model. Although the degree of exoticity of products increased, they were
+still priced under considerably simple modeling assumptions. This led to a
+lot of reasonable but already limited variations of pricing models which in
+the very end were priced under reﬁned assumptions of simple models such as
+Black-Scholes, Hull-White, Gaussian copula and so on. Wrong use of these
+simple models was one of the reasons which led to the 2008 crisis. After
+the crisis the trend has evolved toward less exotic and more liquid products
+valued under more complex pricing assumptions. However, there is still a
+big concern about model risk and an increasing trend toward provision or
+reserve calculation as an internal policy of the ﬁnancial institution.
+
+Markets such as foreign exchange continue trading liquidly ﬁrst generation
+barrier products (barrier call/put, touch and no-touch options) which still
+exhibit a considerable model risk uncertainty. This means that although
+products are getting simpler, model risk estimation will be from now on a big
+concern anyway. Before the crisis, this ﬁrst generation of FX exotic products
+were valued with the volga-vanna (VV) model (see [15], [5], [6] and [21]).
+This is a heuristic analytical model based on the Black Scholes price with a
+smile correction given by the price diﬀerence of a portfolio of three vanilla
+options valued with smile and at-the-money volatilities. This portfolio of
+vanilla options is calculated to match the vega ( ∂P
+∂σ∂S ) and volga
+( ∂P 2
+∂σ2 ) of the barrier Black-Scholes price (P ) with at-the-money volatility. It
+has been justiﬁed (see [6]) that this model provides accurate results for non-
+path-dependent options (e.g. quanto options). However, nothing could be
+concluded for path-dependent options such as barriers.
+
+∂σ ), vanna ( ∂P 2
+
+A provision calculation philosophy should cover the expected hedging loss
+plus some of the uncertainty of that loss. Some characteristics of a good pro-
+vision policy is the fact that they should be transparent and easy to compute
+(so that both Front Oﬃce and Risk department can calculate them easily).
+They should be dynamic (change through time) and stable with a smooth
+decreasing evolution as expiry approaches (the closer to expiry the less un-
+certainty and therefore the less model risk provision). From a management
+perspective, provisions should balance risk mitigation with business limita-
+tion. This means that they can provide the means to approve marketing
+derivative products to customers using limited models with controllable risk.
+For instance, if a deal can be valued with a slow but accurate model but the
+number of deals is huge, product marketing could be approved with a sim-
+
+2
+
+pler less accurate model if the appropriate provision is applied. In addition,
+provisions introduce an incentive to improve models. A less accurate model
+may be charged a high provision so that when it gets improved, the provision
+is reduced1.
+
+Model Risk can arise out of many diﬀerent sources of uncertainty: unre-
+alistic model hypothesis, inaccurate calibration, diﬀerent calibration strate-
+gies, diﬀerent sets of calibration products or externally input parameters
+which are not calibrated to market (e.g. correlations, dividends, mean re-
+version). Therefore, model risk could be estimated on a deal-by-deal basis
+by calculating sets of prices varying these sources of uncertainty. For exam-
+ple, a set of prices can be calculated varying one or more of these sources of
+uncertainty: model hypothesis (e.g. change mean reversion, correlations or
+evaluate same deal with diﬀerent models), calibration sets, calibration strate-
+gies or externally-input parameters not calibrated to market. This set of
+prices gives an interval which could be interpreted as a bid-oﬀer spread (this
+bid-oﬀer spread would be theoretically composed by the set of arbitrage-free
+prices according to the arbitrage free measures given by all possible under-
+lying hypotheses or “models”). The absolute value of the diﬀerence between
+the highest price (oﬀer side) and the lowest price (bid side) would give an
+estimate for model risk for a single deal. The key question now would be
+which parameters to change and how much they should be changed. In addi-
+tion, this strategy is usually carried out on a deal-by-deal basis and portfolio
+diversiﬁcation is not considered. Furthermore, each product may have its
+own way of estimating model risk. In this context, the provision would be
+a fraction or multiplier of this model risk quantity. Through this approach,
+the senior management can clearly deﬁne their risk proﬁle.
+
+This “absolute” way of measuring model risk is formalized and analyzed
+In this reference, a given product is valued
+in a systematic way by [7].
+under diﬀerent arbitrage-free pricing measures which must satisfy certain
+properties. Each measure gives a diﬀerent price and all the prices are conﬁned
+in an interval (a bid-oﬀer spread). The model risk measure is then deﬁned as
+the diﬀerence between the oﬀer and bid prices. This can be regarded as an
+“absolute” model risk measure, because any pricing hypothesis can virtually
+be considered and the interval can get progressively broader as long as more
+
+1Provisions may only delay the realized proﬁt and loss of traders. They are subtracted
+from the expected earnings reported by the trader on a given deal to justify the objectives
+of the year. When the provision gets reduced through time, those earnings are released
+and the trader can report them for the objectives of the following years.
+
+3
+
+pricing measures are incorporated.
+In practice, only a limited number of
+measures can be considered (e.g. changing unobservable market parameters,
+calibration sets or hypotheses of the evolution of the underlying risk factors).
+This limited number of pricing measures allow estimating model risk. The
+portfolio eﬀect can be considered when the whole portfolio is priced with
+each measure and model risk is calculated from the bid-oﬀer spread obtained
+for the whole portfolio.
+
+This paper does not address this “absolute” model risk approach. Instead,
+it is concerned with a relative model risk measure of a particular product
+priced with a given model with respect to a reference model under which
+the market dynamics are assumed to be driven. The relative measure is
+deﬁned by the expected shortfall at a given signiﬁcance level of the hedging
+strategy of the product priced according to its model, assuming that the
+market is driven by the reference model. The advantage of the expected
+shortfall measure is the fact that it is coherent (see [1]). This means that it
+satisﬁes a number of properties which provide a framework to deal with model
+risk in a systematic way. This relative measure provides a homogeneous
+framework to compare products priced with diﬀerent models under the same
+reference. The products chosen are double-no-touch and fader options, the
+models under analysis are volga-vanna and Black-Scholes and the reference
+model is Heston. The ideal situation would be that the reference model is
+chosen to be a market proxy. The original motivation of this work was to
+have a reasonable criterion to decide from a list of models which one was
+the most appropriate to price and manage a product. If the risk department
+is worried because many double-no-touch deals are closed what would be
+your answer if your boss asks you: what would you use to manage these
+positions? A heuristic model such as the volga-vanna or the well-known
+Black-Scholes model but without skew pricing hypothesis? Getting back to
+basics, simulating the hedging strategy seemed a reasonable way to answer
+this question.
+
+Considering hedging strategies to contrast valuation models is not new
+(see for instance [14], [4] and [3]).
+In this context, the main goal of this
+paper is to estimate relative model risk in a way which could be consistent
+and robust, general purpose and applicable to a portfolio of deals. The ap-
+proach followed by this paper is to simulate the hedging strategy. Therefore,
+only analytical models can be considered in practice as the computational
+cost is very high. That’s why this study was carried out with the help of a
+grid of computers. Two assumptions are considered for the hedging strategy.
+
+4
+
+The ﬁrst one assumes that the market volatility surface is driven by Heston’s
+model (see [13]) calibrated to market at a given time horizon. The second one
+is the fact that hedging inaccuracies from using actual sensitivities provided
+by the pricing model or using several vanillas to hedge the movements of the
+volatility surface are eliminated. This is possible because market dynamics
+are known and the hedging ratios are calculated to hedge the two known fac-
+tor which drive the market. This methodology can be applied to a single deal
+or a portfolio of them. Every model is evaluated under the same framework
+and therefore, diﬀerent models and products can be quantitatively compared
+with each other. A reasonable provision would be equal to this relative model
+risk measure. This method will be applied to a single deal (double-no-touch
+option) and a portfolio of fader options with the aid of a grid of computers.
+The ﬁrst one will be valued under Black Scholes and volga-vanna hypothesis
+and the second one only using volga-vanna.
+
+Under the Black-Scholes [2] framework, i.e. the asset follows a lognormal
+distribution on the real world measure with drift µ, there exists a clear map-
+ping between the real world probability P and the risk neutral probability
+Q used for pricing and hedging. This is also true under Dupire’s framework
+[9]. Apart from these two models it is diﬃcult to ﬁnd other with such direct
+relationship. For example, Merton [16] jump diﬀusion model assumes that
+jumps are part of the ﬁrm idiosyncratic risk. Since the market portfolio can-
+cels all ﬁrm idiosyncratic risk by diversiﬁcation, according to Capital Asset
+pricing model [20], no risk premium should be taken into account. Heston
+[13] model needs to assume that investors have a very particular utility func-
+tion to derive the partial diﬀerential equation of the option price and ﬁnd a
+correspondance between pricing measures P and Q. Beyond these ideal cases
+authors have become more and more aware that a perfect hedging might not
+be possible either because the market is incomplete (a unique risk neutral
+probability does not exist) or because for practical reasons traders might
+want to use a simpler and faster model for pricing and hedging. The for-
+mer case has been extensively studied by Scheweizer [19], contributing to the
+mean-variance hedging technique and Zhou [22], embedding the problem into
+a “Markowitz” type problem. The latter case has been treated by Corielli
+[8] using Lp energy inequities for parabolic equations which allow estimating
+expected pricing and hedging errors between the “true” model and the one
+used by the trading desks. Our work could be regarded as a practitioner
+approach to this latter type of problem. Although Heston’s model has been
+used as “real world probability” it could be argued that as long as the Risk
+
+5
+
+department is able to provide a coherent evolution of the underlying and
+the vanilla options, the methodology would still hold. Nevertheless, the pre-
+sented methodology is not directly meant to solve the mean-variance hedging
+problem rather than to study for a given model developed by a Front Oﬃce
+team, how well will it behave as market conditions are stressed.
+
+The paper starts with the formulation of the hedging strategy in section
+2. Section 4 applies the methodology to double-no-touch options valued with
+Black Scholes and volga-vanna models. Section 3 deﬁnes the relative model
+risk measure which will allow comparing diﬀerent models in the following sec-
+tions. Section 4 applies the methodology to double-no-touch options valued
+with Black-Scholes and volga-vanna models. It is concluded that double-no-
+touch products have high model risk and hedging with volga-vanna is better
+than Black-Scholes. Section 5 applies the methodology to a portfolio of for-
+ward fader options using only the volga-vanna model. It is concluded that
+model risk is irrelevant for this product. Finally, section 6 ends with some
+conclusions.
+
+2 Formulation of the hedging strategy
+
+This section presents the formulation of the hedging strategy which will be
+used to compare diﬀerent products evaluated with diﬀerent models. Subsec-
+tion 2.1 shows the hypothesis assumed for the market and how to calculate
+the hedge ratios. Subsection 2.2 explains the implementation of the hedging
+strategy through an intuitive derivation. The rigorous derivation of the hedg-
+ing strategy is presented in subsection 2.3 justifying why model risk leads to
+a drift in the proﬁt or loss of the hedging strategy and quantifying it on
+average.
+
+2.1 Calculation of hedge ratios and market simulation
+
+The main and hardest assumption of this hedging strategy is that the market
+is driven by Heston’s process given by equation (1), where St is the underlying
+spot price at time t, rd
+t are the time-dependent domestic and foreign
+interest rates, vt is the variance process, θ is the long-term variance, dWt and
+dVt are correlated brownian motions with correlation ρ (d hWt, Vti = ρdt)
+and η is the volatility of the variance process.
+
+t and rf
+
+6
+
+dSt
+St
+
+t − rf
+
+=(cid:16)rd
+
+t(cid:17) dt + √vtdWt
+dvt = κ (θ − vt) dt + η√vtdVt
+
+(1)
+
+This model has two risk factors: the evolution of the underlying St and
+the variance vt. Therefore, on a given date, the set of model parameters
+(κ, θ, η and ρ) and these two factors completely deﬁne the market. This
+means that the spot and forward volatility surface (out of vanilla and forward
+start call and put options) are completely deﬁned (see [11] and [10] for a
+semi-analytical implementation of Heston’s pricing for spot and forward start
+vanilla options). This assumption that the market is driven by Heston’s
+process might not be realistic (even if it is calibrated to market for a given
+horizon). However, it will be seen in the following sections that in spite of
+this fact, this hypothesis provides a framework in which diﬀerent models can
+be compared.
+
+Under this assumption, the evolution of the market is obtained by sim-
+ulating the factors St and vt at each point of time using a set of model
+parameter which were obtained calibrating the model to real market on a
+particular date. From these factors, the implied volatility surface is calcu-
+lated for each day and path simulated by this hypothetical market. The
+hedging strategy is built in order to neutralize the uncertainty of these two
+factors. The hedging products used are the underlying and an at-the-money
+6 month vanilla call option. Thus, the sensitivities of the premium of the
+product being hedged and the hedging products (the 6 month vanilla option)
+are calculated with respect to St and vt as indicated by equation (2), where
+δS = St · 10−4 and δv = (10−3)2.
+
+∆ = ∂P
+∂St
+
+= P (St+δS)−P (St−δS )
+
+2δS
+
+ϑ = ∂P
+∂vt
+
+= P (vt+δv)−P (vt)
+
+δv
+
+(2)
+
+The premium P (vt +δv) is calculated by tweaking vt, rebuilding the whole
+volatility surface with an initial variance vt + δv and repricing the product
+with the rebuilt volatility surface (for the 6 month vanilla it is only neces-
+sary to change the initial variance leaving Heston’s parameters constant).
+The same should be done for P (St + δS). However, as the FX volatility sur-
+face is expressed in terms of delta (rather than strike), the volatility surface
+does not change when St is varied2. It is important to stress that ∆ is the
+standard FX delta (moving the spot without changing the implied volatility
+
+2As the delta points of the volatility surface are ﬁxed, the moneyness ratio (strike over
+forward) of those points is kept constant. Therefore, as the pricing formulas for Heston’s
+
+7
+
+surface). However, it would not be the standard delta in an equity context
+(the surface should be rebuilt changing St). Concerning ϑ, it is clearly not
+the standard vega (premium sensitivity under a parallel movement of the
+volatility surface). These sensitivities are “external” in the sense that they
+are not calculated by the pricing model itself but by the hedging algorithm
+to properly hedge the two factors driving the hypothetical market. In this
+context, the sensitivities given by the model are ignored, only the premium
+is used.
+
+ϑ =
+
+dP
+dvt
+
+=
+
+∂P
+∂σi
+
+∂σi
+∂vt
+
+(3)
+
+N
+
+Xi=1
+
+If vega sensitivities provided by the model were used to compute ϑ, equa-
+tion (3) should be used instead of equation (2), where ∂P
+is the actual vega
+∂σi
+returned by the model at diﬀerent maturity and delta buckets and ∂σi
+is the
+∂vt
+sensitivity of Heston’s implied volatility of each bucket with respect to the
+change of the initial variance vt. Under Heston’s model, implied volatility
+movements with respect to vt have only term structure (all delta buckets
+move parallel to each other). This means that to hedge the risk factor vt,
+only the term structure of vega returned by the model would be needed
+(the sum of equation (3) would be only across maturities).
+If the market
+were represented by a mixed volatility model (see [17]), the movements of
+the implied volatility surface would depend on both the spot level and the
+initial variance and the implied volatility sensitivities with respect to the ini-
+tial variance would not be equal across delta buckets. In addition, a vanna
+contribution ∂ 2P
+∂St∂vt
+
+should be added.
+
+The reason to calculate ϑ according to equation (2) instead of equation (3)
+is to avoid the hedging noise of the prediction error of the premium change
+obtained out of model sensitivities for the given movement of the implied
+volatility surface. However, comparing the ﬁnal distribution of the hedging
+cost when ϑ is calculated according to equations (2) and (3) would provide a
+quantitative measure of the quality of the sensitivities provided by the model
+and their capability of predicting premium change (this would be very useful
+for model validation purposes).
+
+See that a regular trader would only know ∂P
+∂σi
+
+provided by the model used to manage the position) but not ∂σi
+∂vt
+
+(the regular vega sensitivity
+because the
+
+model depend on moneyness, the prices will not change and neither will do the implied
+volatilities.
+
+8
+
+dynamics of the market are unknown for the trader. However, a regular
+trader would not use a single option (e.g. 6 month at-the-money) as the
+study presented here, but most likely three vanillas (to account for the level,
+steepness and convexity of the volatility surface) for a number of maturities.
+In the study presented in this paper, it is possible to hedge all movements of
+the volatility surface with a single vanilla because the dynamics of the market
+are known and therefore the movements of the volatility surface with respect
+to the market driving factors (St and vt). In a more realistic situation, the
+dynamics of the market would be unknown but several vanilla options would
+be used for hedging leading to a similar result. The more realistic approach
+is not followed here because the hedging would be worse and the purpose of
+this paper is to provide an estimation of the model risk premium, ﬁltering out
+the imperfections of hedging with several vanillas and using the sensitivities
+provided by the model. Comparing model risk when these imperfections are
+not ﬁltered out is also very interesting but will be left for a future research.
+As the foreign exchange implied volatility surface is expressed in terms of
+delta (and not strike), it is build through an iterative method. This method
+starts with an initial term structure of implied volatility given by the solution
+of the deterministic part of the variance process (dvt = κ (θ − vt) dt). The
+FX volatility surface conventions are converted into the simple Black Scholes
+setting (spot delta, premium not included in delta, ATM straddle, call and
+put on foreign currency). Strikes are calculated out of the surface delta
+buckets and the initial term structure of implied volatility. From the strikes,
+vanilla call option prices are calculated according to Heston’s model with the
+given set of parameters and their implied volatilities are calculated thereafter.
+Black Scholes call deltas are then calculated out of the strikes and implied
+volatilities. They will not coincide with the delta buckets of the surface
+expressed as call option deltas. Therefore, the implied volatilities of the
+delta buckets are interpolated from the just calculated delta versus implied
+volatility points and the process starts again. Strikes are calculated with
+the new volatilities, then prices, implied volatilities and deltas which get
+compared with those of the buckets. The process repeats until the deltas
+obtained in the iteration are close enough to the delta buckets of the surface.
+
+2.2
+
+Implementation of hedging strategy
+
+This section presents the implementation of the hedging strategy using an
+intuitive derivation. The rigorous justiﬁcation for continuous time will be
+
+9
+
+t
+
+provided in subsection 2.3 to interpret the ﬁndings of sections 4 and 5. Con-
+sider now a portfolio ΠT ot
+composed by the portfolio of options to hedge Πt
+(this is not cash but positions on option contracts) valued with the model
+under test and the hedging portfolio ΠHedge
+as indicated by equation (4).
+Equation (5) shows that the hedging portfolio is composed by a cash amount
+Bt in domestic currency which will get funded, an amount of underlying αt
+and βt units of the 6 month vanilla call option whose price is denoted by Ct.
+See that the underlying security is not just St but StBf
+is the
+process for the evolution of the foreign bank account given by equation (6)
+and rf
+is the foreign risk free rate (an equivalent “bank account” could be
+t
+deﬁned for dividend payments). This underlying is the real traded security
+(the foreign bank account Bf
+t expressed in domestic units) and that is why
+is is used as the underlying security.
+
+t , where Bf
+
+t
+
+t
+
+ΠT ot
+
+t = Πt + ΠHedge
+
+t
+
+ΠHedge
+
+t
+
+= Bt + αt · StBf
+
+t + βt · Ct
+
+(4)
+
+(5)
+
+(6)
+Consider a set of instants of time [t0, t1,· · · , tN ] up to a ﬁnal horizon tN
+(intervals are usually daily or even more frequent) where the hedging ratios
+αti and βti will change.
+
+t dt
+
+dBf
+
+t = rf
+
+t Bf
+
+Assuming no dependence of the product and the hedging porfolio with
+respect to time (time is frozen) the condition to derive αt and βt would be
+given by equation (7). Namely, there is neither gain nor loss in each time
+interval.
+
+∆Πt + ∆ΠHedge
+
+t
+
+= 0
+
+(7)
+
+t
+
+t and ∆C
+
+Equations (8) and (9) show an approximation of the change of Πt and
+ΠHedge
+, where ∆Π
+t are the deltas of the portfolio Πt and Ct, and ϑΠ
+t
+and ϑC
+t are their sensitivities with respect to the variance process vt. These
+sensitivities are calculated according to equation (2). Replacing equations
+(8) and (9) in (7) yields the values of αt and βt given by equation (10).
+
+∆Πt = ∆Π
+
+t ∆S + ϑΠ
+
+t ∆v
+
+(8)
+
+10
+
+∆ΠHedge
+
+t
+
+= αtBf
+
+=(cid:16)αtBf
+αt = − ∆Π
+See that the sensitivities ∆Π
+
+t +βt∆C
+t
+
+Bf
+t
+
+t ∆S + βt(cid:16)∆C
+
+t + βt∆C
+
+t ∆v(cid:17)
+
+t ∆v
+
+t ∆S + ϑC
+
+t (cid:17) ∆S + βtϑC
+βt = − ϑΠ
+
+t
+ϑC
+t
+
+(9)
+
+(10)
+
+t and ϑΠ
+
+t of equation (8) are calculated using
+the model under analysis, whereas the sensitivities ∆C
+t are calculated
+with a premium according to the model assumed for the market. Equation
+(11) shows the value of the hedging position (αti, βti) at time tj with hedge
+ratios calculated at time ti.
+
+t and ϑC
+
+tj = αti · Stj Bf
+Hti
+
+tj + βti · Ctj
+
+(11)
+
+The steps of the hedging strategy start with a given portfolio of deals or
+a new deal which is bought or sold. At a given point of time, the hedging
+strategy starts with the price Πt0 of a deal or portfolio. This price can
+be calculated with a range of models (local volatility, volga-vanna, Black
+Scholes, Heston and so on). This price is positive for a net long position and
+negative for a short position. The hedging portfolio would then start with a
+cash position, Bt0 = −Πt0, and no position in underlying or options (αt0 = 0
+and βt0 = 0). If Πt0 is positive, this means that a long position is held and
+it has to be ﬁnanced by borrowing money at the inter-bank prevailing rate3.
+If Πt0 is negative, a net short position would be considered instead and the
+equivalent amount of money would be received and it could be lent at the
+prevailing inter-bank lending rate4.
+
+Ignoring transaction costs, the implemented hedging routine process would
+
+be given by the following steps:
+
+• Sell the hedging position (αt, βt) bought in the previous instant (the
+
+ﬁrst time there is no position).
+
+3Although funding issues are beyond the scope of this paper, with a collateral agree-
+ment, this amount of money would be deposited by the counterparty into a collateral
+account which should be paid on a daily basis at the prevailing collateral rate (e.g. EO-
+NIA). This note is simply for information purposes. The hedging simulations carried out
+in this paper do not consider funding issues.
+
+4With a collateral agreement, the amount Πt0 should be deposited into the collateral
+account of the counterparty and the collateral prevailing rate (e.g. EONIA) would be
+received on a daily basis.
+
+11
+
+• Buy a new hedging position with the updated hedge ratios5.
+• Between selling and buying the hedging portfolio, management of coupon
+payments6, strike ﬁxings, barrier touching, cancellations, expiration of
+options and so on should be carried out (incoming payments are posi-
+tive in the cash account Bt and outgoing ones are negative).
+
+• Add interest earned (if cash amount is positive) or paid (when it is
+negative) on the cash amount in domestic currency and add foreign
+interest earned on the the underlying position in foreign currency.
+
+The last step accounts the ﬁnancing costs (depending whether the bal-
+ance is positive or negative or there is a collateral agreement). In an equity
+context, continuous dividend payments should be deposited into the cash
+account, causing a falling drift of the underlying process.
+
+ΠHedge
+
+t0
+
+= (cid:16)−Πt0 − Ht0
+
+t0(cid:17) + αt0St0Bf
+
+t0 + βt0Ct0
+
+ΠHedge
+
+t1
+
+= −
+
+ΠHedge
+
+tN
+
+Ht0
+t0
+P d
+
+Πt0
+t0,t1 −
+P d
+=  −Πt0
+
+P d
+
+t0,tN
+
+t0,t1
+
++
+
++αtN StN Bf
+
++ Ht0
+
+t1 − Ht1
+Pi=1  H
+
+ti,tN −
+tN + βtN CtN
+
+ti−1
+ti
+P d
+
+N
+
+t1! + αt1St1Bf
+
+t1 + βt1Ct1
+
+H
+
+ti−1
+ti−1
+
+ti−1,tN! − HtN
+tN!
+
+P d
+
+(12)
+
+(13)
+
+(14)
+
+Equation (12) shows the resulting hedging portfolio on the ﬁrst date (the
+amount in parenthesis is held in cash). See that the only thing which has been
+done is to buy the new hedge position (αt0, βt0) and its price, Ht0
+t0, has been
+subtracted from the cash account. Equation (13) shows the hedging portfolio
+at t1 which has been held one period and therefore the cash position gets
+accrued by (P d
+ti,tj is the bond value on ti of a bond expiring
+on tj. See that the hedging position is sold at the beginning of the second
+period with the positive income Ht0
+t1 of the hedging position of the previous
+instant t0 (valued at t1) and the negative outcome, Ht1
+t1, to buy the new
+hedging position (α1, β1). Finally, equation (14) shows the hedging portfolio
+
+t0,t1)−1, where P d
+
+5In practice, the hedging portfolio is not sold and bought again, but just rebalanced.
+6A Discrete dividend payment would not have impact as the income to the cash account
+
+would be compensated by a down jump move in the underlying spot.
+
+12
+
+for a generic instant tN . The summation term shows the cumulative proﬁt or
+loss of holding the hedging position from one instant to the following. The
+negative term HtN
+tN is the cash outﬂow to buy the hedging position (αtN , βtN )
+at time tN .
+
+The construction of the evolution of the hedging portfolio of equation (14)
+helps understanding how the implementation is carried out in discrete time.
+Although the derivation of the hedging ratios is intuitive but not rigorous,
+section 2.3 shows that the hedge ratios are indeed those obtained in equation
+(10). In addition, this section will also show that when the hedge ratios are
+calculated with a model whose pricing assumptions do not reﬂect the market
+driving factors, a consistent proﬁt or loss leakage will be seen on a daily basis
+in the cash account of the hedging portfolio.
+
+The formerly described hedging strategy is computationally expensive
+even if the underlying portfolio of options is priced with analytical models.
+This is so because Front Oﬃce pricing models require the underlying spot,
+interest curve and a detailed volatility surface as inputs. Therefore, at each
+point in time it is necessary to calculate the complete volatility surface consis-
+tent to Heston’s parameters for the hypothetical market from the simulated
+St and vt.
+
+request = [ (St1, vt1) ,· · · , (StN , vtN )| (Op1 · · · Opm)]
+
+(15)
+
+To perform this task a computer grid was set up. On the client side a set
+of paths (St, vt) was generated. Each one of these paths together with the
+portfolio of options under management, Πt, would become a request message
+as indicated by equation (15).
+
+result =h(cid:16)ΠT ot
+
+t1 , Πt1, ∆t1, ϑt1(cid:17) ,· · · ,(cid:16)ΠT ot
+
+tN
+
+On the server side, each (St, vt) path (the calculation of the volatility
+surface together with the hedging strategy) is executed in a single server
+computer out of the total number of servers of the grid. The result message
+would contain the evolution of the proﬁt and loss ΠT ot
+, the value of the whole
+portfolio Πt, ∆t and ϑt over time as showed by equation (16).
+
+t
+
+, ΠtN , ∆tN , ϑtN(cid:17)i
+
+(16)
+
+2.3 Rigorous derivation of hedging strategy
+
+Consider the change of value of the portfolio ΠT ot
+given by equation (17)
+which is composed by the options to hedge Πt and the hedging portfolio
+
+t
+
+13
+
+ΠHedge
+
+t
+
+given by equation (5).
+
+dΠT ot
+
+t = dΠt + dΠHedge
+
+t
+
+= rd
+
+t (cid:16)Πt + ΠHedge
+
+t
+
+(cid:17) dt
+
+(17)
+
+When the whole randomness has been hedged out, the portfolio, ΠT ot
+t ) as indi-
+
+should earn the risk free rate (in this example the domestic rate rd
+cated by equation (17).
+
+t
+
+df = ∂f
+
+∂St
+
+∂t dt + ∂f
++ 1
+2
+
+∂ 2f
+∂S 2
+t
+
+dSt + ∂f
+∂vt
+d hSt, Sti + 1
+
+dvt+
+∂ 2f
+∂v2
+t
+
+2
+
+d hvt, vti + ∂ 2f
+
+∂vt∂St
+
+d hvt, Sti
+
+d hSt, Sti = S2
+
+t vtdt d hvt, vti = η2vtdt d hvt, Sti = ρηStvtdt
+
+(18)
+
+(19)
+
+Equation (18) shows the dynamics of any pricing model, f , whose inputs
+are the spot price and the volatility surface given by the model assumed for
+the market (the function f only depends on the factors St and vt). The
+dynamics are obtained by applying Itˆo’s formula to the function f . The
+quadratic variations corresponding to the model assumed for the market are
+given by equation (19).
+
+dCt = LmktCtdt + ∆C
+
+t St√vtdWt + ϑC
+
+t η√vtdVt
+
+dΠt = LmktΠtdt + ∆Π
+
+t St√vtdWt + ϑΠ
+
+t η√vtdVt
+
+Lmkt = ∂
+
+∂ 2
+∂v2
+t
+
+2 S2
+
+∂t + 1
+t vt
++ κ (θ − vt) ∂
+
+∂vt
+
+∂ 2
+
+∂vt∂St
+
++ 1
+
+2 η2vt
+
+∂ 2
+∂v2
+t
+
++
+
++ ρηStvt
+∂
++ rd
+
+t St
+
+∂St
+
+(20)
+
+(21)
+
+(22)
+
+Equations (20) and (21) show the dynamics of the option to hedge, Πt,
+and the 6 month call option used for hedging, Ct. These expressions are
+obtained replacing the quadratic variations (19) and the market dynamics
+(1) in equation (18) for f = Πt and f = Ct. The coeﬃcients ∆C
+t and
+ϑΠ
+t are obtained using equation (2) and Lmkt given by equation (22) is the
+diﬀerential operator (inﬁnitesimal generator) of Heston’s process assumed for
+the market.
+
+t , ∆Π
+
+t , ϑC
+
+14
+
+dΠHedge
+
+t
+
+t dSt + StdBf
+
+t(cid:17) + βtdCt =
+= dBt + αtd(cid:16)StBf
+t(cid:17) + βtdCt
+t )Stdt + √vtStdWti + StdBf
+t h(rd
+t − rf
+t(cid:17) dt + αt√vtStBf
+
+= dBt + αt(cid:16)Bf
+= dBt + αt(cid:16)Bf
+= (cid:16)rd
+
+t dWt + βtdCt
+
+t Bt + αtrd
+
+t StBf
+
+t(cid:17) + βtdCt
+
+dΠt + dΠHedge
+
+t
+
+− rd
+= (cid:16)LmktΠt − rd
+(cid:16)∆Π
+
+t + αtBf
+
+(cid:17) dt
+
+t (cid:16)Πt + ΠHedge
+t Πt(cid:17) dt + βt(cid:16)LmktCt − rd
+t (cid:17) St√vtdWt +(cid:16)ϑΠ
+
+t + βt∆C
+
+t
+
+t Ct(cid:17) dt+
+
+t + βtϑC
+
+t (cid:17) η√vtdVt
+
+(23)
+
+(24)
+
+t
+
+Equation (23) shows the dynamics of the hedging portfolio, where dBf
+t
+is given by equation (6) and it is assumed that dBt = rd
+t Btdt. Replacing
+equations (20), (21), (23) and (5) in equation (17) and moving the right
+hand side of equation (17) to the left, yields equation (24). This equation
+represents the change of value of the total portfolio ΠT ot
+through time, taking
+out the domestic risk free return on the total portfolio. This change should be
+ideally equal to zero according to equation (17). The right hand side shows
+two stochastic terms multiplying dWt and dVt. The hedge ratios αt and βt
+should then be chosen to cancel these two terms to remove the uncertainty
+or randomness of the process. See that the hedge ratios which cancel these
+two terms are equal to those obtained in section 2.2 and given by equation
+(10). The expression Lmktf −rd
+t f is Heston’s partial diﬀerential equation (see
+[13]) which should be equal to zero for a derivative following the dynamics
+of the market. See that for the case f = Ct, the equation is satisﬁed and
+LmktCt − rd
+t Ct = 0 because the vanilla option used for hedging is valued
+according to the assumed market.
+
+dΠT ot
+
+t − rd
+
+t ΠT ot
+
+t dt =(cid:16)LmktΠt − rd
+
+t Πt(cid:17) dt
+
+(25)
+
+t
+
+t = Πt + ΠHedge
+
+Replacing ΠT ot
+
+in equation (24) and eliminating the terms
+equal to zero yields equation (25). If the premium Πt were calculated with
+the same model assumed for the market, the right hand side of equation (25)
+would be equal to zero and the change of the total portfolio, ΠT ot
+, minus
+the interest rate earnings would be zero (the desired result). This means
+that when the pricing model is not the same model assumed for the market
+
+t
+
+15
+
+dynamics, the right hand side of equation (25) will be diﬀerent from zero and
+the evolution of ΠT ot
+t will show a
+consistent loss through time. This is what happens in the example of section
+4. Section 5 shows the opposite case (the drift is positive) where a consistent
+gain is achieved through time.
+
+t will have a drift. For negative drifts, ΠT ot
+
+tN
+
+ΠT ot
+
+tN = ΠtN + ΠHedge
+
+(26)
+Consider now equation (26), where ΠtN represents the ﬁnal position of
+a portfolio of contracts (and not cash) and ΠHedge
+is the hedging portfolio
+whose initial value is equal to Πt0 valued with the model under test. Taking
+expectations, Emkt
+[·], conditioned on the information at t0 with respect to
+the risk free measure of the process assumed for the market and considering
+P d
+t,tN as numeraire (at tN it is equal to 1) yiels equation (27). This expression
+gives the expected value of ΠT ot
+tN or what would be lost or earned on average
+when the model under test is diﬀerent from the market model. The ﬁrst term
+is directly the price of the portfolio ΠtN according to the market model (the
+true value).
+
+tN
+
+t0
+
+Emkt
+
+t0
+
+hΠT ot
+tN i = P d
+
+t0,tN
+= Πmkt
+
+t0
+
+Emkt
+t0 − P d
+
+[ΠtN ] + P d
+
+t0,tN
+
+Πt0
+
+P d
+
+t0,tN
+
+t0,tN
+t0
+= Πmkt
+
+hΠHedge
+
+Emkt
+t0 − Πt0
+
+tN
+
+i
+
+(27)
+
+Equation (28) details the calculation of the expectation of the hedging
+strategy. This expression is obtained applying the tower law (or iterated
+expectations) to equation (14) (see that the cash amount HtN
+tN cancels the
+cash value of the position αtN on underlying and βtN on vanilla call). The
+expectation on the right hand side is equal to zero, because Hti−1
+over the
+ti,tN is a martingale as indicated by equation (29), because Hti−1
+numeraire P d
+is composed of two traded assets: the underlying StBf
+t and the vanilla call
+option Ct. Equation (30) shows the martingale condition for the underlying
+and the vanilla call.
+
+ti
+
+ti
+
+Equal to 0
+
+Emkt
+
+t0
+
+tN
+
+P d
+
+hΠHedge
+ti−1" Hti−1
+
+i = −Πt0
+ti,tN# = Emkt
+
+ti
+P d
+
+t0,tN
+
+Emkt
+
++
+
+Emkt
+
+z
+
+N
+
+t0 
+Xi=1
+
+
+ti−1" αti−1
+
+StiBf
+ti
+P d
+
+ti,tN
+
+ti
+P d
+
+}|
+
+ti−1" Hti−1
+ti,tN# −
+Emkt
+ti,tN!# =
+
+Cti
+P d
+
++ βti−1
+
+Hti−1
+ti−1
+P d
+
+ti−1,tN
+
+{
+
+
+
+
+
+
+Hti−1
+ti−1
+P d
+
+ti−1,tN
+
+(28)
+
+(29)
+
+16
+
+Emkt
+
+ti−1(cid:20) Sti Bf
+
+ti,tN(cid:21) =
+
+P d
+
+ti
+
+Sti−1 Bf
+P d
+
+ti−1,tN
+
+ti−1
+
+Emkt
+
+ti−1(cid:20) Cti
+
+ti,tN(cid:21) =
+
+P d
+
+Cti−1
+
+P d
+
+ti−1,tN
+
+(30)
+
+The conclusion of equation (27) cannot but be overstressed: the average
+proﬁt or loss of the hedging strategy is the diﬀerence of the market price
+minus the price of the model under test.
+If the price of the contract was
+bought at a lower price than the market, a proﬁt should be realized on
+average. On the other hand, if the position was sold for a lower price than
+the market, some loss must be realized on average (when a short position is
+considered, Πt0 and Πmkt
+are negative). This conclusion will be veriﬁed in
+section 4 for the ﬁrst case study. See that this conclusion does not depend
+on the hedging ratios αt and βt (they could be even random) because the
+hedging strategy is self-ﬁnancing (the hedging ratios are ﬁxed along each
+hedging period). This means that the impact of the hedging ratios are not on
+the average proﬁt or loss of the hedging strategy, but its uncertainty (e.g. the
+standard deviation) as will be seen in the coming sections. Therefore, hedge
+ratios given by a good model close to the market will reduce the uncertainty
+of the proﬁt or loss and hedge ratios given by another worse model will lead
+to more dispersion in the distribution of the hedging proﬁt or loss.
+
+t0
+
+When a deal is closed, the average hedging loss can be easily estimated
+through fair value adjustment (FVA) by comparing the price of the model
+used to manage the position (the model which gives the hedging ratios)
+with another better pricing model (perhaps too slow for management) which
+reﬂects better the hypothesis of the market. This provision needs to be cal-
+culated and accounted for only once when the operation is closed. However,
+the standard deviation of the hedging loss is considerably more diﬃcult to
+estimate and may have a bigger impact, depending on the quality of the
+hedging ratios given by the model. The following sections will estimate this
+standard deviation of the hedging error.
+
+3 Deﬁnition of relative model risk measure
+
+The relative model risk of a product priced according to a given model with
+respect to another reference model is deﬁned by the expected shortfall at a
+given signiﬁcance level of the proﬁt and loss given by the hedging strategy of
+the product priced with its model under the assumption that the market is
+driven by the dynamics of the reference model. Equation (31) presents the
+
+17
+
+mref
+pi,mj is the proﬁt
+deﬁnition of expected shortfall in a formal way, where X
+and loss of the hedging strategy of product pi, priced with model mj with
+respect to the market reference model mref , α is the signiﬁcance level for
+which the expected shortfall is calculated and xα is the quantile function
+given by equation (32).
+
+ρ(X mref
+
+pi,mj ) = −1
+
+α
+
+pi,mj
+
+mref
+pi,mj
+
+1{X
+
+E(cid:20)X mref
+≤xα}(cid:21) −
+xα = infn x ∈ R| P (cid:16)X mref
+
+xα
+
+α (cid:16)α − P hX mref
+< x(cid:17) ≥ αo
+
+pi,mj
+
+pi,mj ≤ xαi(cid:17)
+
+In simpler words, the expected shortfall for α = 0.35 is the expectation
+of the hedging proﬁt and loss of the worst 35% paths. See that the ex-
+pected shortfall is deﬁned as a positive number when losses (negative values
+of X
+
+mref
+pi,mj ) occur.
+
+(31)
+
+(32)
+
+(33)
+
+(34)
+
+(35)
+
+(36)
+
+X mref
+pi,m1 ≤ X mref
+
+pi,m1 + X mref
+
+ρ(cid:16)X mref
+
+pi,m2 ⇒ ρ(cid:16)X mref
+pi,m2(cid:17) ≤ ρ(cid:16)X mref
+
+pi,m2(cid:17)
+pi,m1(cid:17) ≥ ρ(cid:16)X mref
+pi,m2(cid:17)
+pi,m1(cid:17) + ρ(cid:16)X mref
+
+β > 0 ⇒ ρ(cid:16)βX mref
+ρ(cid:16)X mref
+
+pi,mj(cid:17) = βρ(cid:16)X mref
+pi,mj(cid:17)
+pi,mj(cid:17) − a
+
+pi,mj + a(cid:17) = ρ(cid:16)X mref
+
+The main advantage of this measure is the fact that it is coherent (see
+[1]). This means that some properties are satisﬁed which allow dealing with
+model risk in a more systematic way. These properties are monotonicity
+given by equation (33), sub-additivity (this property is not satisﬁed by the
+measure Value-at-risk and considers that diversiﬁcation can only reduce risk)
+by (34), positive homogeneity by (35) and translation invariance by (36).
+
+4 Case Study I: double-no-touch option
+
+This section applies the hedging methodology of section 2 to estimate the
+model risk of a double-no-touch (“DNT”) foreign exchange option when the
+initial valuation and the management throughout the life of the option is
+
+18
+
+carried out using two models with diﬀerent valuation hypothesis: the volga-
+vanna (“VV”) and Black Scholes7 (“BS”) models. A number of conclusions
+will be reached concerning model risk (what happens when a limited model
+is used to quote and manage a deal) and provision calculation. The selected
+framework is very appropriate to compare diﬀerent models because the mar-
+ket dynamics are known (Heston’s model) and therefore the correct price of
+the product. The comparison among models is homogeneous and provides
+an objective criterion to judge and measure which model is better.
+
+Calibrated vol surface on Aug 22th 2006−2D
+
+Calibrated vol surface on Aug 22th 2006−3D
+
+0.104
+
+0.102
+
+0.1
+
+0.098
+
+0.096
+
+)
+t
+i
+
+n
+u
+
+ 
+r
+e
+p
+(
+ 
+y
+t
+i
+l
+i
+t
+
+l
+
+a
+o
+V
+
+0.094
+0
+
+ 
+
+ 
+
+   1w
+   1m
+   3m
+   6m
+ 1.0y
+ 2.0y
+
+)
+t
+i
+
+n
+u
+
+ 
+r
+e
+p
+(
+ 
+y
+t
+i
+l
+i
+t
+
+l
+
+a
+o
+V
+
+0.105
+
+0.1
+
+0.095
+
+0.09
+2
+
+0.2
+
+0.4
+
+Deltas
+
+0.6
+
+0.8
+
+1
+
+1
+
+Maturities (y)
+
+0
+
+1
+
+0.5
+Deltas
+
+0
+
+Figure 1: Heston’s volatility surface calibrated to 1 year market on Aug 22nd
+2006 with v0 = 0.0097, κ = 1.1, θ = 0.0097, η = 0.14 and ρ = 0.14.
+
+The deal under test is a double-no-touch option maturing 1 year and 17
+days from present time. The underlying is the EUR/USD foreign exchange
+rate. This contract pays the notional in USD at maturity provided that the
+underlying does not breach two barrier levels (1.2130 and 1.3622). If any of
+the barriers get touched, the product cancels and pays out zero. Figure 1
+shows the volatility surface of the EUR/USD generated by Heston’s model
+with parameters calibrated to market on August 22nd, 2006 for a 1 year
+horizon. The market is skewed favoring out-of-the-money calls (they have
+higher volatility). The spot price is 1.2812 and interest rates have been set
+to zero (both domestic and foreign).
+Figure 2 shows the evolution of the underlying St and volatility (√vt)
+for 120 simulated paths according to Heston’s model with the parameters
+indicated in ﬁgure 1. When the barriers get touched, the path ends (the deal
+
+7This model refers to the valuation using Black Scholes with constant interest rates
+and a constant volatility equal to the at-the-money volatility chosen at the expiry of the
+option.
+
+19
+
+disappears) and the last live spot or volatility point is maintained up to the
+end of the contract drawing a straight line. The few straight lines which are
+not too close to the barrier levels are due to daily big movement events (up
+to 3 standard deviation).
+
+1y17d DNT VV: Spot price paths; HedgeFreq: 1.00 days
+1.4
+
+e
+c
+i
+r
+p
+
+ 
+t
+
+o
+p
+S
+
+1.35
+
+1.3
+
+1.25
+
+1y17d DNT VV: Volatility paths; HedgeFreq: 1.00 days
+
+0.25
+
+0.2
+
+0.15
+
+0.1
+
+0.05
+
+y
+t
+i
+l
+i
+t
+
+l
+
+a
+o
+V
+
+Aug06
+
+Nov06
+
+Feb07
+
+Jun07
+
+Sep07
+
+Dec07
+
+0
+
+Aug06
+
+Nov06
+
+Feb07
+
+Jun07
+
+Sep07
+
+Dec07
+
+Figure 2: Underlying (St) and volatility (√vt) paths simulated according to
+Heston’s model. Straight lines show a barrier breach on the following date.
+
+VV
+
+BS
+
+0.0839
+
+0.0466
+
+Heston
+0.1122
+
+Table 1: DNT premium per unit of notional according to diﬀerent models.
+
+Table 1 shows the premium per unit of notional in USD according to the
+three models under consideration. Heston’s price has been calculated by the
+same Monte Carlo method used to simulate the hedging paths (same Heston’s
+parameters) and applying a brownian bridge to account for the probability of
+touching the barriers in between two consecutive discrete observations (the
+volatility used for the brownian bridge in each interval is the average of √vt
+at the two time extremes of the interval). A total number 120 thousand
+paths were simulated. Model risk is signiﬁcant given how prices diﬀer from
+each other. Heston’s price is about 3 times the Black Scholes price and
+33% higher than volga-vanna price. Assuming that the market is driven by
+Heston’s model, the correct price of the deal is given by Heston’s price.
+
+Figure 3 shows the hedge ratios for both the volga-vanna (“VV”) and
+Black Scholes (“BS”) models. The same set of paths presented in ﬁgure 2
+has been used both models to allow for better comparison. The upper plots
+show the delta for “VV” (left) and “BS” (right) models. The lower plots show
+
+20
+
+1y17d DNT VV: Hedged delta paths; HedgeFreq: 1.00 days
+
+1y17d DNT BS: Hedged delta paths; HedgeFreq: 1.00 days
+
+50
+
+0
+
+−50
+
+a
+
+t
+l
+
+e
+D
+
+50
+
+0
+
+−50
+
+a
+
+t
+l
+
+e
+D
+
+−100
+
+Aug06
+
+Nov06
+
+Feb07
+
+Jun07
+
+Sep07
+
+Dec07
+
+−100
+
+Aug06
+
+Nov06
+
+Feb07
+
+Jun07
+
+Sep07
+
+Dec07
+
+1y17d DNT VV: Hedged vega paths; HedgeFreq: 1.00 days
+200
+
+1y17d DNT BS: Hedged vega paths; HedgeFreq: 1.00 days
+200
+
+150
+
+a
+g
+e
+V
+
+100
+
+50
+
+150
+
+a
+g
+e
+V
+
+100
+
+50
+
+0
+
+Aug06
+
+Nov06
+
+Feb07
+
+Jun07
+
+Sep07
+
+Dec07
+
+0
+
+Aug06
+
+Nov06
+
+Feb07
+
+Jun07
+
+Sep07
+
+Dec07
+
+Figure 3: Delta paths (upper plots) and vega paths (lower plots) for volga-
+vanna (left plots) and Black Scholes (right plots) for a 1y double-no-touch
+option -with barriers 1.2130 and 1.3622.
+
+21
+
+the premium sensitivity with respect to Heston’s initial variance vt (in the
+plot it is quoted as “vega”), again for “VV” (left) and “BS” (right) models.
+The premium proﬁle of the double-no-touch varying spot is similar to a semi-
+circle. Near the barriers the premium is equal to zero and in between the
+barriers the premium reaches its maximum. Therefore, in the middle point
+delta is close to zero, near the upper barrier delta is negative and near the
+lower barrier delta is positive. That is why delta paths start near zero and
+they progressively get either positive or negative depending on whether the
+spot approaches the lower or upper barrier levels. See that near expiry deltas
+can be very big when the spot price gets near the barrier levels. This is one
+of the major hedging problems of barrier options near expiry.
+
+Sentitivity of term structure of implied volatility varying v0
+16
+
+ 
+
+10
+1.0
+0.5
+0.1
+
+t
+i
+
+n
+u
+
+ 
+r
+e
+p
+
+ 
+
+n
+
+i
+ 
+0
+v
+d
+
+ 
+/
+ 
+
+t
+
+l
+
+o
+V
+d
+
+14
+
+12
+
+10
+
+8
+
+6
+
+4
+
+2
+
+ 
+
+0
+0
+
+t
+i
+
+n
+u
+
+ 
+r
+e
+p
+
+ 
+
+n
+
+i
+ 
+
+e
+c
+i
+r
+
+P
+
+0
+
+−5
+
+−10
+
+−15
+
+−20
+
+ 
+
+DNT vega profile varying spot and maturity
+
+ 
+
+1w
+3m
+1y
+
+1.25
+
+1.3
+Spot
+
+1.35
+
+1.4
+
+0.5
+
+1
+
+Maturity (years)
+
+1.5
+
+2
+
+Figure 4: Per unit sensitivity of Heston’s implied volatility with respect to
+initial variance vt (left) and of Black Scholes DNT vega varying spot and
+initial variance as a factor (10, 1, 0.5 and 0.1) of long term variance θ (right).
+
+The lower plots of ﬁgure 3 show the premium sensitivity with respect to
+the initial variance, ϑ, computed according to equation (2). The sensitivity
+ϑ should be negative (an increase in volatility rises the chances to touch the
+barriers and the price decreases). It appears positive because a short position
+is held. See that approaching expiry, big values of ϑ are reached for a few
+paths. If equation (3) is considered to calculate ϑ, the big levels are explained
+by the fact that near the barriers and close to expiration, the option vega
+may get rather high and so the sensitivity of Heston’s implied volatility to
+movements of vt for low values of vt. This is shown in ﬁgure 4 created for the
+path which reaches the 200 vega level. This level is attained 18 days before
+expiry with a spot level of St = 1.2193 and a variance level vt = 8.1894· 10−4
+(a volatility level of 2.86%). The left plot shows the sensitivity of the term
+
+22
+
+structure of implied volatility changing the initial variance when the initial
+variance varies by a factor (10, 1, 0.5 and 0.1) of the long term variance θ
+(for the path considered this factor is 0.0844 and the sensitivity is around
+15). The right plot shows the Black Scholes double-no-touch vega varying
+spot and time to expiry for a volatility level of 2.86% and zero interest rates.
+This plot presents how vegas concentrate close to the barriers near expiry (for
+the given path, the vega contribution is around 14). If both contributions
+are multiplied according to equation (3), the observed value is obtained:
+ϑ = 15 · 14 = 210.
+
+1y17d DNT VV: PnL Paths; HedgeFreq: 1.00 days
+
+1y17d DNT BS: PnL Paths; HedgeFreq: 1.00 days
+
+0.1
+
+0
+
+−0.1
+
+−0.2
+
+−0.3
+
+l
+
+a
+n
+o
+
+i
+t
+
+o
+n
+
+ 
+f
+
+o
+
+ 
+t
+i
+
+n
+u
+
+ 
+r
+e
+P
+
+0.1
+
+0
+
+−0.1
+
+−0.2
+
+−0.3
+
+l
+
+a
+n
+o
+
+i
+t
+
+o
+n
+
+ 
+f
+
+o
+
+ 
+t
+i
+
+n
+u
+
+ 
+r
+e
+P
+
+−0.4
+
+Aug06
+
+Nov06
+
+Feb07
+
+Jun07
+
+Sep07
+
+Dec07
+
+−0.4
+
+Aug06
+
+Nov06
+
+Feb07
+
+Jun07
+
+Sep07
+
+Dec07
+
+Figure 5: Comparison of P&L paths hedged with volga-vanna (left) and
+Black Scholes (right).
+
+1y17d DNT VV: Exp and Conf Int of PnL; HedgeFreq: 1 day
+
+1y17d DNT BS: Exp and Conf Int of PnL; HedgeFreq: 1 day
+
+0
+
+−200
+
+−400
+
+−600
+
+−800
+
+−1000
+
+−1200
+
+−1400
+
+l
+
+a
+n
+o
+
+i
+t
+
+o
+n
+
+ 
+f
+
+o
+
+ 
+s
+t
+
+i
+
+n
+o
+p
+
+i
+
+ 
+s
+s
+a
+B
+
+−1600
+
+ 
+
+Aug06
+
+ 
+
+ExpVal
+ConfInt
+Nov06
+
+Feb07
+
+Jun07
+
+Sep07
+
+Dec07
+
+0
+
+−200
+
+−400
+
+−600
+
+−800
+
+−1000
+
+−1200
+
+−1400
+
+l
+
+a
+n
+o
+
+i
+t
+
+o
+n
+
+ 
+f
+
+o
+
+ 
+s
+t
+
+i
+
+n
+o
+p
+
+i
+
+ 
+s
+s
+a
+B
+
+−1600
+
+ 
+
+Aug06
+
+ 
+
+ExpVal
+ConfInt
+Nov06
+
+Feb07
+
+Jun07
+
+Sep07
+
+Dec07
+
+Figure 6: Comparison of conﬁdence intervals at 35% signiﬁcance of the P&L
+hedged with volga-vanna (“VV” left) and Black Scholes (“BS” right) models.
+
+Figure 5 displays the evolution of the hedging earnings per unit of no-
+, calculated according to equation (14) for the volga-vanna model
+
+tional, ΠT ot
+
+t
+
+23
+
+(left) and the Black Scholes model (right). It is very remarkable that accord-
+ing to ﬁgure 3 the hedge ratios given by the volga-vanna model (left plots) and
+the Black Scholes model (right plots) are almost indistinguishable, whereas
+the evolution of the hedging earnings presented in ﬁgure 5 are very diﬀerent.
+Both models show consistent hedging losses (negative earnings) throughout
+the life of the option. Compared to the Black Scholes model, the volga-vanna
+model shows less losses on average and they are more concentrated (they are
+less uncertain).
+
+Figure 6 shows the evolution through time of the expected value (“Ex-
+pVal”) and two conﬁdence intervals (“ConfInt”) of the hedging loss for the
+volga-vanna (left) and Black Scholes (right) models. The conﬁdence inter-
+vals are calculated as the expectation of the tails of the distribution with
+a degree of signiﬁcance of 35%. The upper limit calculates through time
+the expectation of the proﬁt and loss paths above the 65% percentile (the
+average of the best 35% hedging paths) and the lower limit is the expecta-
+tion of the proﬁt and loss paths below the 35% percentile (the average of
+the worst 35% hedging paths). The lower conﬁdence limit is the negative
+of the expected shortfall deﬁned in section 3, for a signiﬁcance level of 35%.
+Depending on how small this degree of signiﬁcance is selected, the proﬁle of
+the user would become more risk averse. If both models are compared, it
+is very clear that the volga-vanna model has lower expected loss with less
+uncertainty. The uncertainty of the losses can be measured by the diﬀerence
+between the expectation of the hedging loss and the negative of the expected
+shortfall (lower limit of the conﬁdence interval). Figure 6 shows that the
+proﬁt and loss distribution is rather symmetric (the expected hedging loss is
+rather in between the conﬁdence interval). However, there is no argument to
+ensure this fact.
+
+VV
+
+BS
+
+Initial model price: P0
+
+Expected hedging cost: EHC
+
+Heston’s price
+
+0.0466
+0.0839
+0.0309
+0.0707
+0.1148 Price including hedging cost: P0 + EHC 0.1173
+0.1122
+0.1122
+0.1483
+0.0736
+0.1575
+0.1949
+
+Model Risk = expected shortfall
+
+Final price: P0 + M R
+
+Table 2: Compared summary of VV and BS in terms of pricing and hedging.
+
+Table 2 summarizes and interprets the study carried out in this section.
+
+24
+
+It presents quantities calculated with the volga-vanna (left hand side) and
+Black Scholes (right hand side) models. All quantities are expressed in USD
+per unit of notional. The ﬁrst row shows the initial premium. The second
+column presents the expected hedging cost taken from the path in between
+the conﬁdence intervals of ﬁgure 6. The third row shows the price which
+should have been charged to the client in order not to loose money on average
+when closing the deal: the initial premium plus the expected hedging cost
+(EHC). The forth row shows the correct price for the deal (Heston’s price).
+Now, equation (27) can be veriﬁed by the fact that the price which should
+have been charged to the client according to both models and the market price
+given by Heston’s model agree very well (having into account that only 120
+paths have been simulated). This obvious fact is expressed mathematically
+by equation (37) saying that the market price should be equal to the model
+price plus the expected hedging cost.
+
+Pmkt = Pmodel + Hedging cost
+
+(37)
+
+Rewriting equation (37) leads to equation (38) which states that the ex-
+pected hedging cost (loss) is given by the premium diﬀerence between the
+model assumed for the market and the model used for hedging. This equation
+is the same as equation (27) and it justiﬁes that whatever is the unknown
+model for the market, getting apart from it is worrying because it directly
+translates into potential hedging losses on average.
+
+Hedging cost = Pmkt − Pmodel
+
+(38)
+
+The expected hedging cost gives a reference of what on average might
+be lost. However, it might be necessary to add a cushion to consider the
+uncertainty of this loss (the diﬀerence between the expected loss and the
+negative of the expected shortfall). The ﬁfth row of table 2 shows the relative
+measure of model risk introduced in section 3 (the expected loss plus the
+cushion) for a 35% signiﬁcance level. See that the Black Scholes model
+has almost twice as much model risk than the volga-vanna model for this
+particular deal with a 35% signiﬁcance level. Finally, the last row of table 2
+shows the ﬁnal price which should have been given to this deal in order to be
+suﬃciently protected (the initial price plus the expected shortfall). See that
+this ﬁnal price is twice the price given by the volga-vanna model and more
+than four times the price given by the Black Scholes model. In this case, it
+is obvious that hedging with the volga-vanna model would be better than
+
+25
+
+using Black Scholes. However, the volga-vanna model still has a remarkable
+amount of model risk.
+
+5 Case Study II: portfolio of faders
+
+This section applies the same methodology to estimate model risk and cal-
+culate provisions for a portfolio of fader options when they are quoted and
+managed with the volga-vanna model. It will be seen that under the same
+assumptions the particular deals traded have very little model risk. A fader
+is a call or put option with a contingent notional. A number of monthly or
+weekly fading dates are considered between present time and the expiry of
+the option. An upper (“ULEVEL”) and lower (“DLEVEL”) fading level is
+deﬁned for each fading date (they are usually equal for all of them). The
+initial notional is equal to zero. When the underlying spot is in between
+the two fading levels on a given fading date, a fraction of the maximum
+notional is added to the current notional. If the spot goes in between the
+fading levels for all fading dates, the resulting product is a vanilla option
+with the maximum notional. In addition, it is possible to deﬁne knock-out
+barriers (they are continuously monitored). When the barriers are breached,
+the fader will no longer add any more notional. This helps to protect one of
+the counterparts in case the option gets highly in-the-money against them.
+
+Notional: 54%
+
+Notional: 29%
+
+Notional: 17%
+
+DBARR = 1.15
+
+DBARR = 1.15
+
+Spot = 1.2096
+
+Spot = 1.2096
+
+DLEVEL = 1.175
+
+K = 1.29
+
+K = 1.29
+
+DLEVEL = 1.175
+
+Spot
+
+DLEVEL = 1.175
+
+Spot
+
+Expiry: 1.5 years
+
+Fading frequency: 4 weeks
+
+Expiry: 0.8 years
+
+Fading frequency: 4 weeks
+
+K = 1.29 Spot
+
+Spot = 1.2096
+Expiry: 0.5 years
+
+Fading frequency: 2 weeks
+
+Figure 7: Comparison of the expected value (left) and standard deviation
+(right) of P&L for volga-vanna (“VV”) and Black Scholes (“BS”) models.
+
+Figure 7 shows the payout functions (bold red lines) varying spot (hori-
+zotal axis) of three fader deals which qualitatively represent a portfolio. The
+
+26
+
+underlying is the EUR/USD exchange rate with spot S0 = 1.2096. Each deal
+is in reality composed by a fader call and put with the same strike to build a
+forward contract with contingent notional. The left plot shows a short posi-
+tion of a forward fader with strike 1.29, a lower fading level of 1.175 (there is
+no upper fading level or it is very high), a lower barrier at 1.15 (there is no
+upper barrier) and monthly fading dates. The notional is 54% and it expires
+in 1.5 years. The middle plot of ﬁgure 7 is the same operation but with an
+expiry of 0.8 years and a notional of 29%. Finally, the right plot shows a long
+position on a forward fader without barriers, with strike 1.29, lower fading
+level of 1.175 and fading dates every two weeks, with a notional of 17% and
+expirying in 6 months.
+
+Fader portfolio: Hedged delta paths; HedgeFreq: 1.00 days
+1.5
+
+a
+
+t
+l
+
+e
+D
+
+1
+
+0.5
+
+0
+
+−0.5
+
+Fader portfolio: Hedged vega paths; HedgeFreq: 1.00 days
+
+3
+
+2
+
+1
+
+0
+
+−1
+
+−2
+
+−3
+
+a
+g
+e
+V
+
+−1
+Jan06 May06 Aug06 Nov06 Feb07 Jun07 Sep07
+
+−4
+Jan06 May06 Aug06 Nov06 Feb07 Jun07 Sep07
+
+Figure 8: Delta (left) and vega (right) paths for a portfolio of forward faders
+valued with volga-vanna.
+
+Figure 8 shows the delta paths on the left hand side and ϑ paths on the
+right hand side (the latter are labelled as “Vega”) of the portfolio of fader
+options. The delta paths show three clear periods of time which correspond
+to the diﬀerent expiry dates of the components of the portfolio. The ﬁrst
+period corresponds to a portfolio with the three deals until the expiry of the
+fader with 17% notional after 0.5 years. The second period goes from 0.5
+to 0.8 years with only two deals until the expiration of the fader with 29%
+notional. The last period goes up to the maturity of the fader with 54%
+notional (1.5 years). Some horizontal straight lines from a given point of
+time may appear. They occur when the portfolio of options does not add
+any more notional because the barrier level has been breached and the fader
+with 17% (and no barriers) has already expired. These straight lines appear
+because a forward contract with ﬁxed notional has constant delta, no vega
+
+27
+
+and a perfect hedge (hedging costs are zero). The left plot of ﬁgure 8 presents
+that deltas get conﬁned. The lower limit in the ﬁrst period is -0.66 (the sum
+of the deltas of the three plain forward deals: 17% -54% - 29% = 66%). The
+second period has a minimum delta of -0.83 (the sum of deltas of the living
+two deals: 54% + 29% = 83%). Finally the last period has a lower delta
+threshold of -0.54, corresponding to the only living deal with 54% notional.
+The upside of delta will depend on the position of the spot with respect to the
+barriers. The sensitivity ϑ (right plot of ﬁgure 8) is rather conﬁned (see that
+for the double-no-touch it could get up to 200). Therefore, model risk for
+this portfolio should be intuitively much lower than for the double-no-touch
+option of section 4.
+
+Fader portfolio: PnL Paths; HedgeFreq: 1.00 days
+
+Fader portfolio VV: Exp and Conf Int of PnL; HedgeFreq: 1 day
+
+0.01
+
+0.005
+
+0
+
+−0.005
+
+l
+
+a
+n
+o
+
+i
+t
+
+o
+n
+
+ 
+f
+
+o
+
+ 
+t
+i
+
+n
+u
+
+ 
+r
+e
+P
+
+ExpVal
+ConfInt
+
+ 
+
+60
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0
+
+l
+
+a
+n
+o
+
+i
+t
+
+o
+n
+
+ 
+f
+
+o
+
+ 
+s
+t
+n
+o
+p
+
+i
+
+i
+
+ 
+s
+s
+a
+B
+
+−0.01
+
+Jan06 May06 Aug06 Nov06 Feb07 Jun07 Sep07
+
+ 
+
+−10
+Jan06 May06 Aug06 Nov06 Feb07 Jun07 Sep07
+
+Figure 9: Comparison of the expected value (left) and standard deviation
+(right) of P&L for volga-vanna (“VV”) and Black Scholes (“BS”) models.
+
+t
+
+Figure 9 shows the paths with the evolution of the hedging earnings per
+unit of notional, ΠT ot
+(left plot), and the evolution of their expected value
+the two conﬁdence intervals (deﬁned in the same way as in section 4) with a
+degree of signiﬁcance of 35% (right plot). The straight lines of the left plot of
+ﬁgure 9 of the hedging earnings correspond to situations in which the knock-
+out barriers have already been touched and the notional is constant. In this
+situation, the portfolio is equivalent to a forward contract with constant delta
+and an exact replication portfolio (the hedging earnings keep constant). The
+right plot of ﬁgure 9 shows that the expected earnings are around 22 basis
+points whereas the uncertainty (diﬀerence between the expected value and
+expected shortfall) is very small (approximately 25 basis points). The relative
+measure of model risk deﬁned in section 3 or the expected shortfall is around
+3 basis points. This means that the expected earnings would compensate
+
+28
+
+the uncertainty of the hedging cost and the initial premium assigned to this
+portfolio would be just fair under the market assumptions.
+
+6 Conclusions
+
+This paper introduces a relative model risk measure of a given product priced
+with a particular model with respect to a reference model. It is based on
+the simulation of the hedging strategy of the product priced with its model
+assuming that the market is driven by the reference model (e.g. Heston
+model) calibrated to real market data. The relative model risk measure is
+calculated as the expected shortfall of the hedging cost for a given signiﬁcance
+level. This level allows setting the risk aversion. This model risk measure
+can be directly interpreted as the provision or amount of money to reserve
+in order to be safe from a risk management point of view.
+
+This methodology has been applied to foreign exchange double-no-touch
+options priced and managed with volga-vanna and Black Scholes models. It
+has been veriﬁed that the market price is approximately equal to the model
+price plus the expected hedging loss for both models (Black Scholes and volga-
+vanna). The method has concluded that the volga-vanna model shows around
+half the model risk compared to Black Scholes for a given deal. However,
+volga-vanna model still shows a remarkable amount of model risk for double-
+no-touch options. The same volga-vanna model has been thereafter used to
+value a portfolio of forward faders and the method has concluded that model
+risk is irrelevant (same model may involve diﬀerent model risk depending on
+the product).
+
+This methodology can also be applied to model validation. Model im-
+plementation errors or inappropriate market hypothesis will show up in the
+measure of model risk. In addition, jumps or estrange behaviour of the hedg-
+ing earnings, hedge ratios or premium can be easily identiﬁed for particular
+paths. This would allow identifying potential problems and understanding
+very well the risks of the product under consideration.
+
+When a deal is closed, the average hedging loss can be easily estimated
+through fair value adjustment (FVA) by comparing the price of the model
+used to manage the position (the model which gives the hedging ratios)
+with another better pricing model (perhaps too slow for daily management)
+which reﬂects better the hypothesis of the market. This provision needs to be
+calculated and accounted only once, when the operation is closed. However,
+
+29
+
+the uncertainty of the hedging loss is considerably more diﬃcult to estimate
+and may have a bigger impact.
+
+Ackknowledgement: The authors want to thank the discussions with
+Servando Arbol´ı and Francisco Amaya and their contribution to the im-
+provement of the paper.
+
+References
+
+[1] Artzner P., Delbaen F., Eber J. M., Heath D., “Coherent Measures of
+
+Risk”, Mathematical Finance, Vol. 9, No. 3, pp. 203-228, July 1999.
+
+[2] Black F., Scholes M., “The pricing of options and corporate liabilities”,
+
+Journal of Political Economy, Vol. 81, No. 3, pp. 637-654, 1973.
+
+[3] Carr P., Madan D., “Towards a Theory of Volatility Trading’, Volatility,
+Risk publications, Robert Jarrow, ed., pp. 417-427. 2002. Available at:
+http://www.math.nyu.edu/research/carrp/research.
+
+[4] Carr P., Sun J., “A new approach for option pricing under stochastic
+volatility’, Review of Derivatives Research, Vol. 10, No. 2, 87-150, May
+2007. Available at: http://www.math.nyu.edu/research/carrp/research.
+
+[5] Castagna A., Mercurio F., “The vanna-volga method for implied volatil-
+
+ities”, Risk Magazine, March 2007.
+
+[6] Castagna A., Mercurio F.,
+
+“Consistent pricing
+
+tions”,
+“www.fabiomercurio.it/consistentfxsmile2b.pdf”.
+
+Internal Report,
+
+Banca
+
+IMI,
+
+2005,
+
+of FX op-
+available
+at
+
+[7] Cont R., “Model uncertainty and its impact on the pricing of derivative
+instruments”, Mathematical Finance, Vol. 16, No. 3, pp. 519-547, July
+2006.
+
+[8] Corielli F., “Hedging with energy.”, Mathematical Finance, Vol. 16, No.
+
+3, pp. 495-517, July 2006.
+
+[9] Dupire B., “Pricing with a smile”, Risk Magazine, pp. 18-20, 1994.
+
+30
+
+[10] Elices A., “Models with time-dependent parameters using transform
+methods: application to Heston’s model”, arXiv:0708.2020v2 [q-ﬁn.PR],
+October 2010. Available at “http://arxiv.org/abs/0708.2020”.
+
+[11] Elices A., “Aﬃne concatenation”, Wilmott Journal, Vol. 1, No. 3, pp.
+
+155-162, June 2009.
+
+[12] Gatheral J., “The volatility surface: a practicioner’s guide”, John Wiley
+
+and Sons, Inc, 2006.
+
+[13] Heston S. L., “A closed-form solution for options with stochastic volatil-
+ity with applications to bond and currency options.”, The Review of
+Financial Studies, No. 6, pp. 327-343, 1993.
+
+[14] Kurpiel A., Roncalli T., “Option hedging with stochastic volatil-
+ity”, Social Science Research Network, December 2006. Available at:
+http://ssrn.com/abstract=1031927.
+
+[15] Lipton A., McGhee W., “Universal Barriers”, Risk Magazine, published
+
+on line, May 2002.
+
+[16] Merton R., “Option pricing when underlying stock returns are discon-
+tinuous.”, Journal of Financial Economics, Vol. 3, No. 1-2, pp. 125-144,
+1976.
+
+[17] Ren Y., Madan D., Quian M., “Calibrating and pricing with embedded
+
+local volatility models”, Risk Magazine, September 2007.
+
+[18] Schoutens W., Simons E., Tistaert J., “A Perfect Calibration! Now
+
+what?”, Wilmott Magazine, March 2004.
+
+[19] Schweizer M., “Mean-variance hedging for general claims.”, Annals of
+
+Applied Probability, Vol. 2, pp. 171-179, 1992.
+
+[20] Sharpe W., “Capital Asset Prices: A theory of market equilibrium under
+conditions of risk.”, The Journal of Finance, Vol. 19, No. 3, pp. 425-442,
+September 1964.
+
+[21] Wystup U., “The market price of one-touch options in foreign exchange
+
+markets”, Derivatives week, Vol. XII, No. 13, London 2003.
+
+31
+
+[22] Jin H., Zhou X., “Continuous-Time Markowitz’s problems in an incom-
+plete market, with no-shorting portfolios.”, Stochastic Analysis and Ap-
+plications, Vol. 2, pp. 435-459, 2007.
+
+32
+
+

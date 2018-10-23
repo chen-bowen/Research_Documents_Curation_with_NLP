@@ -1,0 +1,1251 @@
+A framework for protein and membrane interactions
+
+Giorgio Bacci
+University of Udine
+
+Davide Grohmann
+
+University of Udine
+
+Marino Miculan
+University of Udine
+
+giorgio.bacci@dimi.uniud.it
+
+grohmann@dimi.uniud.it
+
+miculan@dimi.uniud.it
+
+We introduce the Bioβ Framework, a meta-model for both protein-level and membrane-level interac-
+tions of living cells. This formalism aims to provide a formal setting where to encode, compare and
+merge models at different abstraction levels; in particular, higher-level (e.g. membrane) activities can
+be given a formal biological justiﬁcation in terms of low-level (i.e., protein) interactions.
+
+A Bioβ speciﬁcation provides a protein signature together a set of protein reactions, in the spirit
+of the κ-calculus. Moreover, the speciﬁcation describes when a protein conﬁguration triggers one of
+the only two membrane interaction allowed, that is “pinch” and “fuse”.
+
+In this paper we deﬁne the syntax and semantics of Bioβ , analyse its properties, give it an in-
+terpretation as biobigraphical reactive systems, and discuss its expressivity by comparing with κ-
+calculus and modelling signiﬁcant examples.
+
+Notably, Bioβ has been designed after a bigraphical metamodel for the same purposes. Hence,
+each instance of the calculus corresponds to a bigraphical reactive system, and vice versa (almost).
+Therefore, we can inherith the rich theory of bigraphs, such as the automatic construction of labelled
+transition systems and behavioural congruences.
+
+1 Introduction
+
+Cardelli in [5] has convincingly argued that the various biochemical toolkits identiﬁed by biologists can
+be described as a hierarchy of abstract machines, each of which can be modelled using methods and
+techniques from concurrency theory. Like other complex situations, it seems unlikely to ﬁnd a single
+notation covering all aspects of a whole organism; instead, several models, often presented as process
+calculi, have been proposed in literature, each focusing on speciﬁc aspects of the biological system, at
+different levels of abstractions. This arises the problem of how to integrate these models. Indeed, these
+machines operate in concert and are highly interdependent: “to understand the functioning of a cell, one
+must understand also how the various machines interact” [5]. To this end, we need a general metamodel,
+that is, a framework, where these models (possibly at different abstraction levels) can be encoded, and
+their interactions can be formally described. Eventually “we will need a single notation in which to
+describe all machines, so that a whole organism can be described” [5].
+
+As a step towards this long-term goal, in this paper we present Bioβ , a framework calculus for
+dealing with both protein-level and membrane-level interactions. Many speciﬁc models, with protein
+interactions and membrane trafﬁcking, can be encoded in Bioβ by providing a speciﬁcation. Notably,
+different speciﬁcations can be merged, which corresponds to “put together” different models and systems,
+often at different levels of abstraction. This allows to investigate the interactions between these models,
+which otherwise would be kept separate; for instance, this allows to foresee emerging properties, such
+as behaviours due to interactions of different abstraction levels, and which cannot be observed within a
+single machine model due to its intrinsic abstractions.
+
+A fundamental design choice is that this framework has to be biologically sound, i.e., it must admit
+only systems and reactions which are biologically meaningful, especially at lower level machines (i.e.
+protein). This is important because in this way, encoding a given model in the framework provides
+
+Gabriel Ciobanu (Ed.): Membrane Computing
+and Biologically Inspired Process Calculi 2009
+EPTCS 11, 2009, pp. 19–33, doi:10.4204/EPTCS.11.2
+
+c(cid:13) G. Bacci & D. Grohmann & M. Miculan
+This work is licensed under the Creative Commons
+Attribution-Noncommercial-No Derivative Works License.
+
+20
+
+A framework for protein and membrane interactions
+
+automatically a formal, biologically sound justiﬁcation for the model (or “implementation”) in terms of
+protein reactions and explains how its membrane-level interactions are realised by protein machinery.
+Also, the representation of a speciﬁc model is less error-prone.
+
+To this end, Bioβ has been designed after a bigraphical metamodel, called biobigraphs and biological
+bigraphical reactive systems (BioRS) and presented in a companion paper [3], for dealing with both
+protein-level and membrane-level interactions. Actually, Bioβ can be seen as a syntactic formalism for
+representing precisely biobigraphical reactive systems. However, for sake of simplicity and lack of space,
+in this paper we will not discuss the connection between Bioβ and biobigraphs, which will be presented
+in forthcoming work. For the purposes of the present paper, it sufﬁces to know that biobigraphs, and
+hence Bioβ , are adequate with respect to Danos and Laneve’s κ-calculus, one of the most accepted
+formal model of protein systems: we can describe all and only protein conﬁgurations and interactions of
+the κ-calculus. (Is important to notice, however, that our methodology is general, and can be applied to
+other formal protein models.) Hence, the Bioβ Framework can be seen somehow as an extension of the
+κ-calculus, adding biological compartments (that is membranes); however, this is a consequence of the
+fact that the underlying model, the biobigraphs, are adequate w.r.t. the κ-calculus.
+
+When membranes come into play one wants to deal also with membrane transport, hence, we have to
+take into consideration reactions like endocytosis, exocytosis, cellular fusion and vesiculation. Actually,
+as observed by biologists (see [1] and [2, Ch. 15]), membrane interactions present always a “preparation
+phase”, where some proteins (receptors and ligands) interact to get in place, followed by the actual
+“membrane reconﬁguration” phase, which can be either a pinch or a fuse [6]. Therefore, biobigraphs,
+and Bioβ , provide just two general rules for all membrane interactions, whilst the preparation phase
+depends on the speciﬁc proteins involved and hence left to the encoding of the speciﬁc model.
+
+Summarizing, for encoding a given model one has just to instantiate this general schema by specify-
+ing (a) a protein signature, that is a set of abstract proteins; (b) a set of protein rules, describing protein
+interactions ignoring compartments; (c) a set of protein conﬁgurations which trigger a mobility reaction.
+Then, all other reactions (mobility, in particular) are automatically provided by the framework, in a sound
+way. Hence, modelers can focus on protein-level aspects, leaving to the framework the burden to deal
+with biological compartments and membrane transport.
+
+A further motivation for our framework comes from the many general results provided by bigraphs.
+We mention here only the construction of compositional bisimilarities [10], allowing to prove that two
+systems are observational equivalent, that is, they can be exchanged in any organism without that the
+overall behaviour will change. Also for this application it is important to restrict the systems allowed by
+the framework to only those biologically meaningful.
+
+Synopsis
+In Section 2 we present the Bioβ framework: its syntax, a type system for characterizing
+well-formed (i.e., biologically meaningful) terms, and general operational semantics. As an example
+application of this framework, in Section 3 we model the mechanism of membrane trafﬁc. In Section 4
+we provide a formal connection between κ-calculus and Bioβ . Related work is discussed in Section 5,
+and in Section 6 we draw some conclusion and plan future work.
+
+2 The Bioβ Framework
+
+In this section we present the Bioβ framework. Although one should not think of Bioβ necessarily as an
+extension of the κ-calculus, its connections with that model are quite strong, and hence it is convenient
+to reuse notations and concepts from κ.
+
+G. Bacci & D. Grohmann & M. Miculan
+
+21
+
+pinch
+
+fuse
+
+vesciculation
+
+endocitosys
+
+fusion
+
+exocitosys
+
+Figure 1: Vesiculation and endocytosis can be generalized by means of an inward and outward pinch,
+and fusion and exocytosis by a horizontal and vertical fuse, respectively.
+
+2.1 Syntax
+The language of the Bioβ framework is parametric over a protein signature (P = Pp ∪ Pap,s : P →
+N), where P is a ﬁnite set of (abstract) proteins, partitioned into polar Pp and polar Pap. N is an
+enumerable set of edge names, and s: P → N assigns to every protein the number of its domain sites.
+A (protein) interface is a map from N to N +{h,v} (ranged over ρ, σ, . . .). Given an interface ρ
+and a protein name A ∈ P, a site (A,i) is visible if ρ(i) = v, hidden if ρ(i) = h, and tied if ρ(i) ∈ N .
+A site is free if it is visible or hidden. In the following, we will write ρ = 1 + ¯2 + 3x to mean ρ(1) = v,
+ρ(2) = h, and ρ(3) = x. Denote with |ρ,x| the number of occurrences of x in ρ, that is, |ρ,x| (cid:44) |{i ∈
+s(ρ) | ρ(i) = x}|.
+
+The syntax of Bioβ over a given protein signature, consists of systems, which can be nested, and
+membranes. Polar proteins can freely ﬂoat at the level of systems, while apolar proteins can be embedded
+into membranes. Let At ∈ Pt, for t ∈ {p,ap}, n ∈ N , and ρ : N → N +{h,v} be a protein interface.
+
+Systems are polar solutions (soluble in aqueous environments), which can be either the empty system
+
+(cid:5), or a polar protein Ap(ρ), or a compartment(cid:72)S(cid:42) P(cid:43)(cid:73), or a group of systems P∗ Q, or a system preﬁxed
+
+by a new name constructor νn.P. Membranes are apolar solutions (soluble in oily environments), which
+can be the empty membrane 0, or an apolar protein Aap(ρ), or a group of apolar solutions S (cid:63) T . Notice
+that membranes are not sequences of actions (as, e.g., in Brane calculus [4]) but simply a collection of
+proteins. As usual the “new” operator is a binder: in νn.P, P is the scope of the binder νn. Sharing of
+names on interfaces represent protein domain-domain bonds. For instance (x)(A(1x) , B(1 + 2x))) is a
+protein solution where there is a bond between sites (A,1) and (B,2).
+Finally, the special constructors pinch p and fuse f, together with their co-actions p⊥, f⊥, to represent
+when a compartment reconﬁguration takes place. These actions are inspired by the two basic membrane
+reconﬁguration processes, namely “pinch” and “fuse”. A membrane can be pinched (either outward or
+inward, Figure 1 left), forming a bubble that detaches producing a new compartment; or two membranes
+P waiting to complete, or commit, a pinch interaction with another system featuring the co-action p⊥
+n ;
+similarly for f. Thus, these actions are preﬁxes which freeze the continuation system/membrane until the
+compartment reconﬁguration is completed. The subscripts pair-up corresponding actions and co-actions.
+Let us deﬁne the co-action operator (·)⊥ mapping each mobility action to its dual, and such that
+((·)⊥)⊥ = id; this operator is extended to sets of actions as S⊥ (cid:44) {s⊥ | s ∈ S}. Moreover, for a set
+of names X ⊆ N , the restriction of a set of actions over X is S(cid:22)X (cid:44) {sx ∈ S | x ∈ X}. In the following,
+P,Q,R, . . . range over systems, S,T, . . . over membranes and K,L,H, . . . over both systems or membranes.
+
+can fuse, in either directions (Figure 1 right) mixing contents. Intuitively, pn(cid:35) P can be seen as a system
+
+P,Q ::= (cid:5) | Ap(ρ) |(cid:72)S(cid:42) P(cid:43)(cid:73) | P∗ Q | νn.P | pn(cid:35) P | fn(cid:35)(cid:72)S(cid:42) P(cid:43)(cid:73)
+
+S,T ::= 0 | Aap(ρ) | S (cid:63) T | p⊥
+
+(Systems)
+(Membranes)
+
+n (cid:35) S | f⊥
+
+n
+
+22
+
+A framework for protein and membrane interactions
+
+stands for(cid:83)n
+
+The set of free names f n(P) and f n(S) are deﬁned as usual, covering also subscripted names on
+mobility actions (clearly restriction on names binds also action names). In the following f n(K1, . . . ,Kn)
+n | n ∈ N } be the set of all mobility actions. We deﬁne the sets of occurring
+
+i=1 f n(Ki), for every Ki either a system or a membrane.
+
+Let ACT (cid:44) {pn, p⊥
+
+actions act(P), act(S) ⊆ ACT on systems and membranes, respectively, as follows:
+
+n , fn, f⊥
+
+act((cid:5)) = act(Ap(ρ)) = /0
+
+act((cid:72)S(cid:42) P(cid:43)(cid:73)) = act(S)∪ act(P)
+act(pn(cid:35) P) = {pn}∪ act(P) act(fn(cid:35) P) = {fn}∪ act(P) act(p⊥
+
+act(0) = act(Aap(ρ)) = /0
+
+act(νn.P) = act(P)
+
+n ) = {f⊥
+n }
+Bioβ terms can be rearranged according to a structural equivalence ≡, deﬁned to be the least equiv-
+
+act(S (cid:63) T ) = act(S)∪ act(T )
+n }∪ act(S) act(f⊥
+
+n (cid:35) S) = {p⊥
+
+act(P∗ Q) = act(P)∪ act(Q)
+
+alence closed under α-equivalence and satisfying the rules below:
+
+P∗(cid:5) ≡ P
+n (cid:54)= m
+
+νn.νm.P ≡ νm.νn.P
+op ∈ {∗, (cid:63)} K ≡ L
+K op H ≡ L op H
+
+S (cid:63) 0 ≡ S
+
+op ∈ {∗, (cid:63)}
+
+K op L ≡ L op K
+
+νn.(cid:5) ≡ (cid:5)
+P ≡ Q S ≡ T
+
+(cid:72)S(cid:42) P(cid:43)(cid:73) ≡(cid:72)T(cid:42) Q(cid:43)(cid:73)
+
+n /∈ f n(Q)
+
+νn.(P∗ Q) ≡ (νn.P)∗ Q
+
+t ∈ {p, p⊥, f} K ≡ L
+
+tn(cid:35) K ≡ tn(cid:35) L
+
+op ∈ {∗, (cid:63)}
+
+K op (L op H) ≡ (K op L) op H
+n /∈ f n(S)
+
+νn.(cid:72)S(cid:42) P(cid:43)(cid:73) ≡(cid:72)S(cid:42) νn.P(cid:43)(cid:73)
+νn.(tm(cid:35) P) ≡ tm(cid:35) νn.P
+
+t ∈ {p, f} n (cid:54)= m
+
+Well-formedness As for other languages for graph-like structures, the syntax above is too general,
+since many syntactically correct terms do not have a clear biological meaning. In this subsection give
+an informal description of the well-formedness conditions that terms must satisfy; in the next subsection
+we will present a type system enforcing these conditions.
+
+Unsurprisingly, these conditions are similar to those of related models, such as the κ-calculus, since
+
+they are motivated by biochemical properties of proteins and membranes.
+
+First, protein bonds can form only between exactly two active sites on protein surfaces. Hence, terms
+like (x)(A(1x)) or (x)(A(1x) , A(1x) , B(1x)) have to be discarded. This requirement is extended to action
+names, because we want to pair-up just a couple of actions at once. Furthermore, a pinch action can be
+connected only to co-pinch, and similarly for fuse and co-fuse1.
+
+Regarding membranes, we have to ensure the impermeability of membrane boundaries: complexa-
+tions cannot take place through membranes, hence protein bonds cannot cross them. Thus, terms like
+
+A(1x)∗(cid:72)0(cid:42) B(1x)(cid:43)(cid:73) have to be ruled out.
+
+Another (more technical) condition is that continuations after mobility actions cannot have other
+actions. The intuition is that a membrane engaged with a pinch or fuse interaction, has to complete it
+before initiating another one.
+
+We summarize these conditions in the follwing deﬁnition.
+
+Deﬁnition 2.1 (Well-formedness). A system P is well-formed if the following conditions hold:
+Graph-likeness: free names occurs at most twice in P, and every binder ties either 0 or 2 occurrences;
+Action pairing: for any occurrence of an action tn (t ∈ {p, f}), the name n can appear only in the co-
+
+Impermeability: for any occurrence of a compartment(cid:72)S(cid:42) Q(cid:43)(cid:73) in P, f n(Q) ⊆ f n(S) hold;
+
+action t⊥
+n .
+1Actually, it sufﬁce to disallow name sharing between actions and protein interfaces, but strengthening the condition will
+
+become useful in proving the subject reduction theorem.
+
+G. Bacci & D. Grohmann & M. Miculan
+
+23
+
+(empty)
+
+ε ∈ {0,(cid:5)}
+/0; /0 (cid:96) ε : /0
+
+A ∈ P ∀x ∈ f n(ρ). |ρ,x| ≤ 2
+
+{x ∈ f n(ρ) | |ρ,x| = 1};{x ∈ f n(ρ) | |ρ,x| = 2} (cid:96) A(ρ) : /0
+τ(cid:22){x} = /0
+
+Γ1;Γ2 (cid:96) P : τ
+
+act(K) = /0
+
+x /∈ Γ1
+
+(prot)
+
+(action)
+
+(co-f)
+
+t ∈ {p, p⊥, f} Γ1;Γ2 (cid:96) K : /0
+
+Γ1,x;Γ2 (cid:96) tx(cid:35) K : {tx}
+x : {f⊥
+x }
+
+x; /0 (cid:96) f⊥
+op ∈ {∗, (cid:63)} Γ1,Γ;Γ2 (cid:96) K : τ ∆1,Γ;∆2 (cid:96) L : σ
+
+t ∈ {p, f} Γ1;Γ2,x (cid:96) P : τ ∪{tx,t⊥
+x }
+Γ1;Γ2 (cid:96) νx.P : τ
+
+(par)
+
+oke(Γ1,Γ2,∆1,∆2) okt(Γ,τ,σ)
+Γ1,∆1;Γ2,∆2,Γ (cid:96) K op L : τ ∪ σ
+
+Γ1;Γ2 \{x} (cid:96) νx.P : τ
+x }∩ τ = /0
+
+{tx,t⊥
+
+(ν-prot)
+
+(ν-action)
+
+Γ1,Γ;Γ2 (cid:96) S : τ Γ;∆2 (cid:96) P : σ
+oke(Γ1,Γ2, /0,∆2) okt(Γ,τ,σ)
+
+Γ1;Γ2,∆2,Γ (cid:96)(cid:72)S(cid:42) P(cid:43)(cid:73) : τ ∪ σ
+
+(cell)
+
+Figure 2: Type system for Bioβ terms.
+
+Action preﬁx: for any occurrence of a preﬁx tn(cid:35) Q (t ∈ {p, p⊥, f}) in P, act(Q) = /0 hold.
+
+As expected, well-formedness is preserved by structural equivalence:
+
+Proposition 2.1 (Well-formedness is up to ≡). Let P, Q systems s.t. P ≡ Q, P is well-formed if it is Q.
+
+2.2 Type system
+In this subsection we present a type system for Bioβ terms, which provides a formal procedure for check-
+ing well-formedness. As usual in type theory, terms are typed by judgements w.r.t. some environment.
+Deﬁnition 2.2 (Judgement). A type τ ⊆ ACT is a ﬁnite set of mobility actions.
+A judgement for a Bioβ term K (a system or a membrane) is of the form Γ1;Γ2 (cid:96) K : τ, where the
+environment Γ1;Γ2 is formed by two sets of names, such that Γ1 ∩ Γ2 = /0, each of which is written as a
+list of the form x0, . . . ,xn.
+
+The two sets in the environment keep track of the free names in terms, and the number of times each
+name occurs: in our case, if n ∈ Γ1 it occurs once, if n ∈ Γ2 then it occurs twice. Types keep track of
+mobility actions/co-actions occurring with free names.
+
+Moreover, let oke and okt be two predicates deﬁned as follows:
+
+oke(Γ1,Γ2,∆1,∆2)
+
+(cid:52)⇐⇒ (Γ1 ∪ Γ2)∩ (∆1 ∪ ∆2) = /0
+
+okt(Γ,τ,σ)
+
+(cid:52)⇐⇒ (τ(cid:22)Γ)⊥ = σ(cid:22)Γ
+
+The ﬁrst predicate checks if two environments share no names. The second predicate checks if the two
+types τ, σ pair-up correctly, i.e., they create correct actions-coactions pairs using names in Γ.
+
+The Bioβ type system is shown in Figure 2. Intuitively, (empty) types empty systems and mem-
+branes, which have no names and no actions. (prot) deals with proteins (possibly) having free names
+which ﬁt in the environment, and no actions. The rule (co-f) types the singleton membrane containing a
+co-fuse, which has a name x of rank 1 and the set containing itself as type. (action) is for the remaining
+actions: this rule checks that the subsystem contains no actions (thus enforcing action preﬁx of Deﬁ-
+nition 2.1), adds a fresh name x for the action, and create a type containing the action itself. The rules
+(ν-prot) and (ν-action) manage the restriction, in the ﬁrst case ν binds a name used by proteins, so the
+rule removes eventually x from names with rank 2 (remind that only names with 0 or 2 occurrences can
+
+24
+
+A framework for protein and membrane interactions
+
+be tied); in the second case there is a name x of rank 2 which connects a pair action-co-action, so the rule
+removes x from Γ2 as in previous case, and removes the actions from the type (such actions have no free
+names anymore). Last two rules are for composing systems and membranes. (par) puts side by side two
+subsystem, checking that the global name rank is no greater then 2 by oke (enforcing graph-likeness)
+and that actions pairs with respective co-actions by okt (action pairing); notice that common names (Γ)
+are promoted from rank 1 to 2. For (cell) is similar: we build a cell from subsystems and, beside the
+previous checkings, we impose that all names of rank 1 of P are contained in the ranked 1 names of S,
+i.e, Γ2 is empty; this enforces impermeability.
+If Γ1;Γ2 (cid:96) K : τ and
+Proposition 2.2 (Unicity of type). Let K be a Bioβ system or a membrane.
+∆1;∆2 (cid:96) K : σ, then Γ1 = ∆1, Γ2 = ∆2 and τ = σ.
+Theorem 2.1 (Well-formedness). A Bioβ system P is well-formed if and only if Γ1;Γ2 (cid:96) P : τ, for some
+environment Γ1, Γ2 and type τ.
+Proposition 2.3 (Subject congruence). Let P, Q be two Bioβ systems and S, T two Bioβ membranes,
+such that P ≡ Q and S ≡ T , then Γ1;Γ2 (cid:96) P : τ if and only if Γ1;Γ2 (cid:96) Q : τ and ∆1;∆2 (cid:96) S : σ if and only
+if ∆1;∆2 (cid:96) T : σ, for some Γ1, Γ2, ∆1, ∆2 and τ, σ.
+
+From now on, we consider only well-formed terms, except when it is explicitly said.
+
+2.3 Semantics
+The operational semantics of a Bioβ system is given by a reaction relation → on systems, deﬁned by
+means of a rule system parametrized over basic protein reactions and mobility conﬁgurations.
+
+Deﬁning a reaction semantics by means of a set of rules is the simplest way for a biologist to look at
+protein reactions, since it resembles usual chemical reactions. Moreover, the rule-based modeling leaves
+biologists a great degree of freedom in deﬁning the behavior of a protein in solution. Such modeling
+freedom is somewhat limited by biochemical constraints. One of this was individuated and formalized
+by Danos and Laneve in [8]: the causality constraint.
+
+Biochemical reactions are either complexations (i.e. where low energy bonds are formed on two
+complementary sites) or decomplexations, possibly co-occurring with (de)activation of sites. Causality
+does not allow simultaneous complexations and decomplexations on the same site. This constraint is
+assured by the notion of (anti-)monotonicity, which forces reactions not to decrease (increase) the level of
+connections of a solution [8]. Moreover, protein reactions should be closed on all well-formed membrane
+contexts, so that we are able to model reactions for proteins located in different membranes and cells.
+
+Let us now discuss about membrane level interactions, that is, rearrangement of the membrane struc-
+ture. As observed by biologists, these interactions result from complex nets of signaling pathways which
+induce a mechanical reshaping of biological membranes, allowing for example the formation of new
+vesicles, and hence new compartments. However, as noticed before, actual membrane transformations
+are limited and can be either a fuse or a pinch [6]; what changes from situations to situations are the
+proteins involved in the signaling pathway, leading to the actual fuse or pinch. In order to formalize
+this situation we will distinguish between the effective membrane rearrangement, and what has trigger
+it. More precisely, a membrane reaction is split into two steps: a “preparation phase” where mobility
+actions (p or f) are introduced as preﬁxes in the system, and a “commitment phase” where the structural
+reconﬁguration of nested compartments is actually performed. The commitment phase is formalized by
+rules deﬁned once and for all by the framework, corresponding to the pinch and fuse processes of Fig-
+ure 1, but the preparation phase is speciﬁed by the modeler. In other words, one has only to describe
+when these interaction take place by indicating which are the suitable protein conﬁgurations that trigger
+a pinch or a fuse. In this way, each membrane interaction is given an explanation at the protein-level.
+
+G. Bacci & D. Grohmann & M. Miculan
+
+25
+
+2.3.1 Protein reactions across multiple localities
+
+When dealing with protein reactions it is useful to think at complexes as single entities which can be
+affected in all their protein sub-units. An example of protein reaction we want to model is the following:
+
+D(1)∗ A(1 + 2x)∗(cid:72)B(1x + 2y)(cid:42)C(1y + ¯2)(cid:43)(cid:73) → νz.(cid:0)D(1z)∗ A(1z + 2x)∗(cid:72)B(1x + 2y)(cid:42)C(1y + 2)(cid:43)(cid:73)(cid:1)
+
+A complexation reaction between protein D and the transmembrane ABC-complex has effect not only in
+the formation of a new protein bond between sites (D,1) and (A,1), but it toggles from hide to visible site
+(C,2), which is not local to protein D (promotor of the reaction). This is a very common situation in pro-
+tein signaling transduction, indeed transmembrane receptors (as ABC-complex) propagate extracellular
+signals (as protein D) into the intracellular environment according to this mechanism.
+
+C(1y + ¯2)∗(cid:72)B(1x + 2y)(cid:42) A(1 + 2x)∗ D(1)(cid:43)(cid:73) → νz.(cid:0)C(1y + 2)∗(cid:72)B(1x + 2y)(cid:42) A(1z + 2x)∗ D(1z)(cid:43)(cid:73)(cid:1)
+
+Let us now consider the following reaction:
+
+This reaction differs from the previous one only for the direction in which the “signal” is propagated.
+There is no biological reason to distinguish between these two forms of reactions, indeed they are exactly
+the same protein reaction. In this sense, membranes have to be taken into consideration only in the way
+they partition solutions into distinct locations.
+
+n (cid:35) S | f⊥
+
+E[(cid:126)Y ],F[(cid:126)Y ] ::= 0 | Aap(ρ) | p⊥
+
+In order to deﬁne protein interactions in nested systems we introduce (linear) contexts. Contexts
+generalize the Bioβ syntax introducing variables, which are sorted into two categories, systems variables
+X and membrane variables Y , used as “holes” for systems and membrane, respectively. Sequences
+K1, . . . ,Kn are denoted by (cid:126)K, and concatenation by (cid:126)K, (cid:126)K(cid:48) = K1, . . . ,Kn,K(cid:48)
+
+C[(cid:126)X;(cid:126)Y ],D[(cid:126)X;(cid:126)Y ] ::= (cid:5) | Ap(ρ) | X | pn(cid:35) P | fn(cid:35)(cid:72)S(cid:42) P(cid:43)(cid:73) |
+n | E[(cid:126)Y (cid:48)] (cid:63) F[ (cid:126)Y (cid:48)(cid:48)]
+
+1, . . . ,K(cid:48)
+m.
+C[(cid:126)X(cid:48); (cid:126)Y (cid:48)]∗ D[ (cid:126)X(cid:48)(cid:48); (cid:126)Y (cid:48)(cid:48)] | νn.C[(cid:126)X;(cid:126)Y ] |(cid:72)E[(cid:126)Y (cid:48)](cid:42)C[(cid:126)X; (cid:126)Y (cid:48)(cid:48)](cid:43)(cid:73)
+
+(System contexts)
+(Membrane contexts)
+where X ∈ (cid:126)X, Y ∈ (cid:126)Y , and let π,π(cid:48) denote permutations, (cid:126)X = π((cid:126)X(cid:48), (cid:126)X(cid:48)(cid:48)), (cid:126)Y = π(cid:48)((cid:126)Y (cid:48), (cid:126)Y (cid:48)(cid:48)). Context applica-
+tion C[(cid:126)P;(cid:126)S] is deﬁned as expected, for (cid:126)P and (cid:126)S two sequences of systems and membranes, respectively.
+As in the case of the κ-calculus, protein reactions can be of two kinds: monotone and anti-monotone.
+Monotonicity is deﬁned on a growing relation () over Bioβ protein solutions. Differently from κ-
+calculus, the notion of “protein solution” in the Bioβ Framework have to take into account system and
+membrane proteins, and the fact that they are in different locations. Thus, we deﬁne protein solutions as
+sequences of system groups and membrane groups of proteins, as follows:
+Deﬁnition 2.3 (Wide protein solutions). A group of system proteins is a Bioβ system P of the form
+A1(ρ1)∗ . . .∗ An(ρn), where Ai ∈ Pp (1 ≤ i ≤ n); similarly, a group of membrane proteins is a Bioβ
+membrane S of the form B1(σ1) (cid:63) . . . (cid:63) Bm(σm), where B j ∈ Pap (1 ≤ j ≤ m).
+which can be restricted on some names (cid:126)x, denoted as ν(cid:126)x.(cid:104)P1, . . . ,Pk | S1, . . . ,Sh(cid:105).
+
+A wide protein solution is a couple of sequences of system groups and membrane groups of proteins,
+
+Informally, a group of proteins is a local protein solution, that is, all proteins in that group reside in
+the same location. Wide protein solutions are non-local and are formed as sequences of protein groups
+of two kinds according with the syntactic separation of membranes and systems. Actually, wide protein
+solutions are not Bioβ terms, but we use them as speciﬁcations of how complexes are formed abstracting
+on localities. Often, we will shorten ν(cid:126)x.(cid:104)(cid:126)P | (cid:126)S(cid:105) as (cid:104)(cid:126)P | (cid:126)S(cid:105) when |(cid:126)x| = 0. Free names are deﬁned as
+f n(νx1, . . .xn.(cid:104)(cid:126)P | (cid:126)S(cid:105)) = f n((cid:126)P,(cid:126)S)\{x1, . . .xn}.
+
+26
+
+A framework for protein and membrane interactions
+
+We are interested in connected wide protein solutions, that is, wide solutions where exists a path
+of bonds linking all the proteins in the solution. Closed connected wide protein solutions are actually
+protein complexes. Formally:
+Deﬁnition 2.4 (Connectedness). The connected wide protein solutions are deﬁned inductively as:
+
+ν(cid:126)x.(cid:104)(cid:126)P | (cid:126)S(cid:105)
+νx(cid:126)x.(cid:104)(cid:126)P | (cid:126)S(cid:105)
+
+(cid:104)A(ρ) | (cid:105)
+
+(cid:104) | B(σ)(cid:105)
+
+(cid:104)(cid:126)P1,P, (cid:126)P2 | (cid:126)S(cid:105)
+
+(cid:104)Q | (cid:105)
+
+f n((cid:104)(cid:126)P1,P, (cid:126)P2 | (cid:126)S(cid:105))∩ f n((cid:104)Q | (cid:105)) (cid:54)= /0
+
+(cid:104)(cid:126)P1,P∗ Q, (cid:126)P2 | (cid:126)S(cid:105)
+
+(cid:104)(cid:126)P | (cid:126)S(cid:105)
+
+(cid:104)(cid:126)Q | (cid:126)T(cid:105)
+
+f n((cid:104)(cid:126)P | (cid:126)S(cid:105))∩ f n((cid:104)(cid:126)Q | (cid:126)T(cid:105)) (cid:54)= /0
+
+(cid:104)(cid:126)P, (cid:126)Q | (cid:126)S,(cid:126)T(cid:105)
+
+(cid:104)(cid:126)P | (cid:126)S1,S, (cid:126)S2(cid:105)
+
+(cid:104) | T(cid:105)
+
+f n((cid:104)(cid:126)P | (cid:126)S1,S, (cid:126)S2(cid:105))∩ f n((cid:104) | T(cid:105)) (cid:54)= /0
+
+(cid:104)(cid:126)P | (cid:126)S1,S∗ T, (cid:126)S2(cid:105)
+
+A wide protein solution ν(cid:126)x.(cid:104)(cid:126)P | (cid:126)S(cid:105) is a wide complex if it is connected and f n(ν(cid:126)x.(cid:104)(cid:126)P | (cid:126)S(cid:105)) = /0.
+Deﬁnition 2.5 (Growing relation ). Let ˜x be a set of fresh names. A growing relation  over interfaces
+is deﬁned inductively as follows:
+
+˜x (cid:96) ρ  σ
+˜x (cid:96) ρ(cid:48)  σ(cid:48)
+˜x (cid:96) ρ + ρ(cid:48)  σ + σ(cid:48)
+A growing relation  over wide protein solutions is deﬁned inductively as follows:
+
+˜x∩ f n(ρ) = /0
+˜x (cid:96) ρ  ρ
+
+x ∈ ˜x
+˜x (cid:96) i  ix
+
+˜x (cid:96) i  ¯i
+
+˜x (cid:96) ¯i  i
+
+(cid:126)x (cid:96) (cid:104)(cid:5) | (cid:105) (cid:104)(cid:5) | (cid:105)
+
+(cid:126)x (cid:96) (cid:104) | 0(cid:105) (cid:104) | 0(cid:105)
+(cid:126)x (cid:96) (cid:104)(cid:126)P,P | (cid:126)S(cid:105) (cid:104)(cid:126)Q,Q | (cid:126)T(cid:105)
+(cid:126)x (cid:96) ρ  σ
+(cid:126)x (cid:96) (cid:104)(cid:126)P,P∗ A(ρ) | (cid:126)S(cid:105) (cid:104)(cid:126)Q,Q∗ A(σ) | (cid:126)T(cid:105)
+(cid:126)x (cid:96) (cid:104)(cid:126)P | (cid:126)S(cid:105) (cid:104)(cid:126)Q,Q | (cid:126)T(cid:105)
+f n(ρ) ⊆(cid:126)x
+
+(cid:126)x (cid:96) (cid:104)(cid:126)P | (cid:126)S(cid:105) (cid:104)(cid:126)Q,Q∗ A(ρ) | (cid:126)T(cid:105)
+
+(cid:126)x (cid:96) (cid:104)(cid:126)P | (cid:126)S(cid:105) (cid:104)(cid:126)P(cid:48) | (cid:126)S(cid:48)(cid:105)
+
+(cid:126)x (cid:96) (cid:104)(cid:126)Q | (cid:126)T(cid:105) (cid:104)(cid:126)Q(cid:48) | (cid:126)T (cid:48)(cid:105)
+
+(cid:126)x (cid:96) (cid:104)(cid:126)P, (cid:126)Q | (cid:126)S,(cid:126)T(cid:105) (cid:104)(cid:126)P(cid:48), (cid:126)Q(cid:48) | (cid:126)S(cid:48), (cid:126)T (cid:48)(cid:105)
+
+(cid:126)x (cid:96) (cid:104)(cid:126)P | (cid:126)S,S(cid:105) (cid:104)(cid:126)Q | (cid:126)T ,T(cid:105)
+(cid:126)x (cid:96) ρ  σ
+(cid:126)x (cid:96) (cid:104)(cid:126)P | (cid:126)S,S (cid:63) B(ρ)(cid:105) (cid:104)(cid:126)Q | (cid:126)T ,T (cid:63) B(σ)(cid:105)
+(cid:126)x (cid:96) (cid:104)(cid:126)P | (cid:126)S(cid:105) (cid:104)(cid:126)Q | (cid:126)T ,T(cid:105)
+f n(σ) ⊆(cid:126)x
+
+(cid:126)x (cid:96) (cid:104)(cid:126)P | (cid:126)S(cid:105) (cid:104)(cid:126)Q | (cid:126)T ,T (cid:63) B(σ)(cid:105)
+
+Here, growing means possibly creating “new” bonds and/or proteins, and toggling sites from visible
+
+to hide or vice versa. Note that new bonds use names from (cid:126)x, that is, the following proposition holds:
+Proposition 2.4. If (cid:126)x (cid:96) (cid:104)(cid:126)P | (cid:126)S(cid:105) (cid:104)(cid:126)Q | (cid:126)T(cid:105), then f n((cid:104)(cid:126)Q | (cid:126)T(cid:105)) = f n((cid:104)(cid:126)P | (cid:126)S(cid:105))∪(cid:126)x and (cid:126)x∩ f n((cid:104)(cid:126)P | (cid:126)S(cid:105)) = /0.
+
+On the concept of growing we deﬁne monotonicity, which is very important to guarantee that the
+protein reactions respect the principle of causality.
+Deﬁnition 2.6 (Monotonicity and Anti-monotonicity). Let (cid:104)(cid:126)P | (cid:126)S(cid:105) and (cid:104)(cid:126)Q | (cid:126)T(cid:105) two wide protein so-
+lutions, we say that the pair ((cid:104)(cid:126)P | (cid:126)S(cid:105),ν(cid:126)x.(cid:104)(cid:126)Q | (cid:126)T(cid:105)) is monotone if (cid:126)x (cid:96) (cid:104)(cid:126)P | (cid:126)S(cid:105) (cid:104)(cid:126)Q | (cid:126)T(cid:105) and ν(cid:126)x.(cid:104)(cid:126)Q | (cid:126)T(cid:105) is
+connected. (ν(cid:126)x.(cid:104)(cid:126)Q | (cid:126)T(cid:105),(cid:104)(cid:126)P | (cid:126)S(cid:105)) is anti-monotone if ((cid:104)(cid:126)P | (cid:126)S(cid:105),ν(cid:126)x.(cid:104)(cid:126)Q | (cid:126)T(cid:105)) is monotone.
+
+We can now deﬁne what is a protein reaction speciﬁcation, and the induced protein reactions.
+
+Deﬁnition 2.7 (Protein reaction speciﬁcations). A protein reaction speciﬁcation is a set R of monotone
+and/or anti-monotone pairs of wide protein solutions.
+
+Given a protein reaction speciﬁcation R, the corresponding protein reactions are deﬁned as follows:
+
+((cid:104)(cid:126)P | (cid:126)S(cid:105),ν(cid:126)x.(cid:104)(cid:126)Q | (cid:126)T(cid:105)) ∈ R
+C[(cid:126)P;(cid:126)S] → ν(cid:126)x.C[(cid:126)Q;(cid:126)T ]
+
+(ν(cid:126)x.(cid:104)(cid:126)Q | (cid:126)T(cid:105),(cid:104)(cid:126)P | (cid:126)S(cid:105)) ∈ R
+ν(cid:126)x.C[(cid:126)Q;(cid:126)T ] → C[(cid:126)P;(cid:126)S]
+where C[(cid:126)X;(cid:126)Y ] is a context such that ν(cid:126)x.C[(cid:126)Q;(cid:126)T ] is well-formed (i.e., well-typed).
+(cid:126)S(cid:105) → ν(cid:126)x.(cid:104)(cid:126)Q | (cid:126)T(cid:105) for monotone reactions and, similarly, ν(cid:126)x.(cid:104)(cid:126)Q | (cid:126)T(cid:105) → (cid:104)(cid:126)P | (cid:126)S(cid:105) for anti-monotone ones.
+
+In virtue of the generality of context C[(cid:126)X;(cid:126)Y ], we can adopt a simpliﬁed notation for reactions: (cid:104)(cid:126)P |
+
+(anti-mon)
+
+(mon)
+
+G. Bacci & D. Grohmann & M. Miculan
+
+27
+
+2.3.2 Membrane transport
+
+Membrane transformations are sorted into two groups: pinch (p) and fuse (f). They occur only with the
+n (t ∈ {p, f}). Pinch and fuse can be applied with different
+interaction of an action tn and a co-action t⊥
+orientations, depending on where actions constructs are placed. Formally, the commitment rule are
+n (cid:35) S (cid:63) T(cid:42) Q(cid:43)(cid:73) →(cid:72)T(cid:42)(cid:72)S(cid:42) P(cid:43)(cid:73)∗ Q(cid:43)(cid:73)
+pn(cid:35) P∗(cid:72)p⊥
+n (cid:35) S (cid:63) T(cid:42) pn(cid:35) P∗ Q(cid:43)(cid:73) →(cid:72)S(cid:42) P(cid:43)(cid:73)∗(cid:72)T(cid:42) Q(cid:43)(cid:73)
+(cid:72)p⊥
+fn(cid:35)(cid:72)S(cid:42) P(cid:43)(cid:73)∗(cid:72)f⊥
+n (cid:63) T(cid:42) Q(cid:43)(cid:73) →(cid:72)S (cid:63) T(cid:42) P∗ Q(cid:43)(cid:73)
+n (cid:63) T(cid:42) fn(cid:35)(cid:72)S(cid:42) P(cid:43)(cid:73)∗ Q(cid:43)(cid:73) → P∗(cid:72)S (cid:63) T(cid:42) Q(cid:43)(cid:73)
+(cid:72)f⊥
+
+(pinch-in)
+(pinch-out)
+(fuse-hor)
+(fuse-ver)
+We can pinch inward or outward a sub-system depending on the direction where p and p⊥ are placed
+relatively to each other. Note that the continuations of p and p⊥ are used to form the new compartment,
+either in (pinch-in) or (pinch-out). Fusions can be either horizontal (fuse-hor) or vertical (fuse-ver)
+according to the relative positions of compartments to be merged. Notice that, even in these reactions, f
+and f⊥ continuations are used to select which part of the system has to be merged.
+
+Mobility reactions respect bitonality in the sense of [4, 6], in fact the parity of nesting of P and Q is
+
+preserved in all these reactions, hence they preserve the bitonal coloring of those subsystems.
+
+In nature, membrane transport occurs when a certain protein conﬁguration, allowing the mechanical
+reshaping of the membrane, is reached. Thus, in order to specify when a pinch or a fuse takes place, it is
+sufﬁcient to specify which are the protein conﬁgurations leading to the “appearing” of mobility controls.
+Deﬁnition 2.8 (Membrane reaction speciﬁcations). A pinching conﬁguration is a 5-tuple (P,P(cid:48),S(cid:48),S(cid:48),Q)∈
+Π× Π× Σ× Σ× Π, where Π, Σ are the sets of action-free systems and action-free membranes, respec-
+tively. A fusing conﬁgurations is 5-tuple (P,S,R,T,Q) ∈ Π× Σ× Π× Σ× Π.
+
+A membrane reaction speciﬁcation is a pair (Rp, Rf) where Rp is a set of pinching conﬁgurations,
+and Rf is a set of fusing conﬁgurations Given a membrane reaction speciﬁcation (Rp, Rf), the corre-
+sponding mobility introduction reactions are deﬁned as follows:
+
+f n(P) ⊆ f n(S)
+
+f n(S) ⊆ f n(P,Q)
+
+n fresh
+
+(P,P(cid:48),S,S(cid:48),Q) ∈ Rp
+
+P∗ P(cid:48) ∗(cid:72)S (cid:63) S(cid:48) (cid:63) T(cid:42) Q∗ R(cid:43)(cid:73) → νn.(pn(cid:35) P∗ P(cid:48) ∗(cid:72)p⊥
+Q∗(cid:72)S (cid:63) S(cid:48) (cid:63) T(cid:42) P∗ P(cid:48) ∗ R(cid:43)(cid:73) → νn.(Q∗(cid:72)p⊥
+
+n (cid:35) S (cid:63) S(cid:48) (cid:63) T(cid:42) Q∗ R(cid:43)(cid:73))
+n (cid:35) S (cid:63) S(cid:48) (cid:63) T(cid:42) pn(cid:35) P∗ P(cid:48) ∗ R(cid:43)(cid:73))
+
+f n(S) ⊆ f n(P,Q)
+
+f n(P) ⊆ f n(S)
+
+(P,P(cid:48),S,S(cid:48),Q) ∈ Rp
+
+n fresh
+
+(intro-p-in)
+
+(intro-p-out)
+
+(P,S,R,T,Q) ∈ Rf
+
+(cid:72)S (cid:63) S(cid:48)(cid:42) P∗ P(cid:48)(cid:43)(cid:73)∗ R∗(cid:72)T (cid:63) T (cid:48)(cid:42) Q∗ Q(cid:48)(cid:43)(cid:73) → νn.(fn(cid:35)(cid:72)S (cid:63) S(cid:48)(cid:42) P∗ P(cid:48)(cid:43)(cid:73)∗ R∗(cid:72)f⊥ (cid:63) T (cid:63) T (cid:48)(cid:42) Q∗ Q(cid:48)(cid:43)(cid:73))
+(cid:72)T (cid:63) T (cid:48)(cid:42) R∗(cid:72)S (cid:63) S(cid:48)(cid:42) P∗ P(cid:48)(cid:43)(cid:73)∗ Q∗ Q(cid:48)(cid:43)(cid:73) → νn.((cid:72)f⊥
+n (cid:63) T (cid:63) T (cid:48)(cid:42) R∗ fn(cid:35)(cid:72)S (cid:63) S(cid:48)(cid:42) P∗ P(cid:48)(cid:43)(cid:73)∗ Q∗ Q(cid:48)(cid:43)(cid:73))
+
+(P,S,R,T,Q) ∈ Rf
+
+n fresh
+
+n fresh
+
+(intro-f-hor)
+
+(intro-f-ver)
+
+Intuitively, the 5-tuples in Rp and Rf describe the systems conﬁgurations which trigger a mobility
+action. Notice that in the two pinch introduction rules, the ﬁrst two pairs of terms (P,P(cid:48)) and (S,S(cid:48))
+in the tuple correspond to two splits of sub-terms in the left hand side of the reaction rule: this is for
+distinguishing the part that is actually pinched (P and S) from the part that just helps triggering reaction
+but do not change its position (P(cid:48) and S(cid:48), which may be enzymes). The same holds for fuse introduction
+
+28
+
+A framework for protein and membrane interactions
+
+rules, where P and S will be fused with the compartment where T and Q occur, whereas R just helps
+the fusion but will not change its position. In practice, actions are used for “freezing” the state of the
+subsystem involved in the reconﬁguration, until the reconﬁguration actually takes place.
+
+Informally, Rp and Rf provide a template of suitable conditions, cause of which membrane recon-
+ﬁguration can happen. Such conditions are to be deﬁned by the modeler, who knows which are the
+requisites to make possible a pinch (either for vesiculation or endocytosis) or a fusion (either for fusion
+or endocytosis). This way of describing a model in the Bioβ framework gives biologists (in general,
+modelers) the possibility to justify membrane reconﬁgurations at the protein-level, providing only the
+essential characteristics that a sub-system must satisfy to perform a mobility reaction.
+
+Summing up, to deﬁne a Bioβ model, users have to provide the protein signature, the set of protein
+rules R, ignoring compartments, and two sets of conﬁgurations Rp and Rf describing the situations
+for which a mobility reaction can occur. All other reactions are automatically provided by the frame-
+work. Hence, modelers can focus on protein-level aspects, leaving the framework to deal with biological
+compartments and membrane transport.
+Deﬁnition 2.9 (Bioβ speciﬁcation). A Bioβ speciﬁcation is a quadruple (P, R, Rp, Rf) where P is a
+protein signature, R is a protein reaction specication, and (Rp, Rf) is a membrane reaction specication.
+Deﬁnition 2.10 (Bioβ reactive system). Let (P, R, Rp, Rf) be a speciﬁcation. The associated Bioβ
+reactive system is a pair (Πact,→), where Πact is the set of well-formed Bioβ systems over P, and →,
+called the reaction relation, is the least binary relation over Πact containing all protein reactions over R,
+mobility reactions pinch-in, pinch-out, fuse-hor, fuse-ver, and all introduction reactions over Rp and Rf,
+and it is closed under structural equivalence, system composition, restriction of names, and compartment
+nesting.
+
+Closure of → under system composition, restriction and compartment constructs, allow to focus on
+the actual “reacting parts” of the system. Clearly, → is not closed under action preﬁxes, because action
+preﬁxes “freeze” their continuation so reactions cannot happen in them.
+
+We can prove that for Bioβ reactive systems subject reduction holds, that is, well-formedness for
+
+systems is preserved by reaction steps.
+Proposition 2.5 (Subject reduction). Let P, Q be two Bioβ systems. If Γ1;Γ2 (cid:96) P : τ and P → Q, then
+Γ1;∆2 (cid:96) Q : σ where either Γ2 = ∆2 and τ = σ, or Γ2 = ∆2,n and τ = σ +{tn,t⊥
+n } for some t ∈ {p, f}.
+
+3 An example: Membrane Trafﬁc
+
+In this section we give a formal Bioβ description of how membrane trafﬁc works. Here we take two
+important processes into account, which are fundamental in many transport mechanisms in cells: vesicle
+formation and vesicle docking. Vesicles form by budding from membranes. Each bud has distinctive
+coat protein on cytosol surface, which shapes the membrane to form a bubble. The bud captures the
+correct molecules for outward transport by a selective bond with a cargo receptor attached through the
+double layer to the coat protein complex, which is lost after the budding completes (see Figure 3(a)).
+Vesicle contents are released in the target membrane by fusing vesicle with it.
+
+To ensure that membrane trafﬁc proceeds in an orderly way, transport vesicles must be highly selec-
+tive in recognizing the correct target membrane with which to fuse. Because of the diversity of membrane
+systems, a vesicle is likely to encounter many potential target membranes before it ﬁnds the correct one.
+Speciﬁcity in targeting is ensured displaying protein surface markers that identify them according to
+their origin and type of cargo (SNAREs). Vesicles are marked by v-SNAREs (vector SNAREs) which
+
+G. Bacci & D. Grohmann & M. Miculan
+
+29
+
+(a)
+
+(b)
+
+Figure 3: (a) Vesicle formation, (b) Vesicle docking. (Pictures taken from [2])
+
+i ,Rc
+
+i ,Ci,Adi,Cl,Sne
+
+Let Pp = {Re
+
+selectively bind with some corresponding t-SNAREs (target SNAREs) located on target membrane (see
+Figure 3(b)). SNARE proteins have a central role both in providing speciﬁcity and in catalyzing the
+fusion of vesicles with the target membrane.
+i }, for i ∈ {0,1}. Trans-
+i} and Pap = {Rm
+membrane proteins are represented by three sub-units in order to specify the direction they exhibit with
+respect to membranes into which are embedded. We denote with Rc
+i (1 + 2), Re
+i (1 + 2) the
+three cargo receptor sub-units, respectively for cytosolic, trans-membrane, and extra-cytosolic; SNAREs
+(Sn∗
+i ) are deﬁned in a similar way. Ci(1) denotes a cargo molecule, Adi(1+2) adaptin, and Cl(1)
+clathrin. Proteins are sub-scripted with an index i ∈ {0,1} to distinguish different families of proteins.
+We describe the Bioβ model for membrane trafﬁc giving the set of reaction rules for proteins and
+
+i (1 + 2), Rm
+
+i and tSn∗
+
+i ,tSne
+
+i ,Snm
+
+i ,tSnm
+
+i ,tSnc
+
+i ,Snc
+
+introduction of mobility. Protein reactions are deﬁned as follows:
+i (1x + 2y)(cid:105) rec−→ νz.(cid:104)Ci(1z)∗ Re
+(cid:104)Ci(1)∗ Re
+
+i (1 + 2x),Rc
+(cid:104)Rc
+
+i (1y + ¯2) | Rm
+i (1x + 2)∗ Adi(1 + ¯2) |(cid:105) adpt−−→ νy.(cid:104)Rc
+(cid:104)Adi(1x + 2)∗Cl(1) |(cid:105) coat−−→ νy.(cid:104)Adi(1x + 2y)∗Cl(1y) |(cid:105)
+
+i (1x + 2y)∗ Adi(1y + 2) |(cid:105)
+
+i (1z + 2x) , Rc
+
+νy.(cid:104)Rc
+
+i (1x + 2y)∗ Adi(1y + 2z)∗Cl(1z) |(cid:105) uncoat−−−−→ (cid:104)Rc
+
+i (1x + 2)∗ Adi(1 + 2z)∗Cl(1z) |(cid:105)
+
+(cid:104)Snc
+
+i (1x + 2)∗tSnc
+
+i (1 + 2z) |(cid:105) snare−−−→ νy.(cid:104)Snc
+
+i (1x + 2y)∗tSnc
+
+i (1y + 2z) |(cid:105)
+
+i (1y + 2) | Rm
+
+i (1x + 2y)(cid:105)
+
+Intuitively, (rec) describes the formation of a bond between the cargo molecule and the corresponding
+cargo receptor, which toggles to visible the hidden site of the receptor cytosolic sub-unit. (adpt) and
+(coat) allow for the creation of the clathrin coat which leads to the formation of the bud. (uncoat) frees
+the vesicle from the adaptin-clathrin coat. Finally, (snare) deals with the snare-mediated docking of the
+naked vesicle, by forming a bond between the v-SNARE and t-SNARE of the same family. Figure 3
+gives an informal idea of how protein reactions work.
+
+Introduction rules are deﬁned by the two sets of pinching and fusing conﬁgurations: Rp and Rf.
+
+Rp = {(P,P(cid:48),S,S(cid:48),Q)} where
+
+P = Ci(1x)∗ Re
+S = Rm
+Q = Rc
+
+i (1x + 2y)∗ Sne
+i (1z)
+i (1z + 2u)
+
+i (1y + 2w) (cid:63) Snm
+i (1w + 2a)∗ Adi(1a + 2b)∗Cl(1b)∗ Snc
+
+i (1u + 2)
+
+P(cid:48) = (cid:5)
+S(cid:48) = 0
+
+The conﬁguration (P,P(cid:48),S,S(cid:48),Q) allows the vesicle to detach when the adaptin-clathrin coat completely
+cover the forming bud. For sake of simplicity we consider coats of size one, i.e. with only one adaptin-
+clathrin complex (generalization to coat of size n is straightforward).
+
+30
+
+A framework for protein and membrane interactions
+
+Rf = {(P,S,R,T,Q)} where
+
+P = Ci(1x)∗ Re
+S = Rm
+R = Rc
+
+i (1y + 2z) (cid:63) Snm
+i (1z + 2)∗ Snc
+
+i (1a)
+
+i (1x + 2y)∗ Sne
+i (1a + 2b)
+i (1b + 2c)∗tSnc
+
+i (1c + 2d)
+
+T = tSnm
+Q = tSne
+
+i (1d + 2e)
+i (1e)
+
+The conﬁguration (P,S,R,T,Q) describe the situation when the vesicle is docked to the target membrane,
+hence the fusion can take place.
+
+One possible initial conﬁguration can be deﬁned as follows:
+
+Main = DOrg∗ Targ0 ∗ Targ1
+DOrg = Cl(1)∗Cl(1)∗ Ad0(1 + ¯2)∗ Ad1(1 + ¯2)∗ Rc
+
+0 (1x0 + 2y0) (cid:63) Rm
+
+(cid:72)Rm
+0(1 + 2d0)∗(cid:72)tSnm
+1(1 + 2d0)∗(cid:72)tSnm
+
+1 (1x0 + 2y1) (cid:63) Snm
+
+0 (1a0 + 2b0) (cid:63) Snm
+(cid:42) Re
+0(1 + 2x0)∗ Re
+0(1e0)(cid:43)(cid:73)
+0 (1d0 + 2e0)(cid:42)tSne
+1(1e1)(cid:43)(cid:73)
+1 (1d1 + 2e1)(cid:42)tSne
+
+Targ0 = tSnc
+Targ1 = tSnc
+
+0(1y0 + ¯2)∗ Rc
+
+1(1y1 + ¯2)∗ Snc
+
+1 (1a1 + 2b1)
+1(1 + 2x1)∗ Sne
+
+0(1a0)∗ Sne
+
+0(1b0 + 2)∗ Snc
+1(1b1 + 2)∗
+1(1a1)∗C0(1)∗C1(1)(cid:43)(cid:73)
+
+In this case we have a single donor organelle which is able to pinch out two vesicles (using two different
+type of SNAREs). Such vesicle can approach the corresponding docking membrane. In Figure 3(b) is
+depicted a possible run of computation.
+
+4 Comparing with κ-calculus
+
+In this section we give a formal connection between Bioβ and Danos and Laneve’s κ-calculus [8]. This
+calculus has been taken as the formal model protein interactions in the deﬁnition of biobigraphs, the
+bigraphical model underlying the Bioβ Framework.
+
+The syntax of κ-solutions is the following:
+
+S,T ::= 0 | A(ρ) | S , T | (x)(S)
+
+A κ-solution can be either the empty solution 0, or a protein A(ρ), or a group of solutions S , T , or a
+solution preﬁxed by name restriction (x)(S) with x ∈ N .
+As usual in process calculi, a structural equivalence (≡) over processes is introduced, which is the
+least structural containing α-equivalence and satisfying the abelian monoid on composition and the scope
+extension and extrusion laws. Moreover we deﬁne the sets of free edge names f n(ρ) and f n(S), on
+interfaces and solutions, deﬁned in the common way, where the new name constructor (x)(S) is the only
+name binder. We say a κ-solution S is closed iff f n(S) = /0.
+
+Connectedness of a κ-solutions is particular a simper case of the one seen before.
+
+Deﬁnition 4.1 (Connectedness and complexes). Connected κ-solutions are deﬁned inductively as:
+
+A(ρ)
+
+S
+
+(x)(S)
+
+S T
+
+f n(S)∩ f n(T ) (cid:54)= /0
+
+S , T
+
+S
+
+S ≡ T
+T
+
+A κ-solution S is a complex if it is closed, graph-like, and connected.
+
+The semantic of κ-calculus is deﬁned by means of a transition system built up by a user-deﬁned set
+
+of monotone and anti-monotone rules Rκ.
+
+G. Bacci & D. Grohmann & M. Miculan
+
+31
+
+Deﬁnition 4.2 (Growing relation). A growing relation  over κ-solutions is deﬁned inductively as:
+
+˜x (cid:96) 0  0
+
+˜x (cid:96) S  T
+˜x (cid:96) ρ  σ
+˜x (cid:96) S , A(ρ)  T , A(σ)
+
+˜x (cid:96) S  T
+
+f n(σ) ⊆ ˜x
+
+˜x (cid:96) S  T , A(σ)
+
+Again, monotonicity is a simpliﬁcation of the one shown for Bioβ .
+
+Deﬁnition 4.3 (Monotone reactions). Let L,R be two κ-solutions. L → ( ˜x)R is a monotone reaction if
+˜x (cid:96) L R, where L,( ˜x)R graph-like and R connected. ( ˜x)L → R is antimonotone if R → ( ˜x)L is monotone.
+
+Finally, we are able to characterize a protein transition system:
+
+Deﬁnition 4.4 (Protein transition systems). Given a set Rκ of monotone and antimonotone reactions,
+we deﬁne a protein transition system (PTS) as a pair (cid:104)S , ;(cid:105), such that S is a set of κ-solutions, and ;
+is the least binary relation over S such that Rκ ⊆ ;, closed w.r.t. ≡, composition and name restriction.
+Now we are able to establish formally a connection between the Bioβ framework and the κ-calculus,
+that is all protein reactions that can be take place in our systems are justiﬁably by means of protein
+reactions in a κ-solution. In order to do this, ﬁrst we show a way to translate Bioβ systems and reactions
+
+into κ solutions and reactions ((cid:74)−(cid:75)).(cid:74)−(cid:75) is deﬁned as follows:
+(cid:74)P∗ Q(cid:75) =(cid:74)P(cid:75) ,(cid:74)Q(cid:75)
+(cid:74)S (cid:63) T(cid:75) =(cid:74)S(cid:75) ,(cid:74)T(cid:75)
+(cid:74)p⊥
+n (cid:35) S(cid:75) =(cid:74)S(cid:75)
+
+(cid:74)Ap(ρ)(cid:75) = Ap(ρ)
+(cid:74)Aap(ρ)(cid:75) = Aap(ρ)
+(cid:74)fn(cid:35) P(cid:75) =(cid:74)P(cid:75)
+
+(cid:74)(cid:5)(cid:75) = 0
+(cid:74)0(cid:75) = 0
+(cid:74)pn(cid:35) P(cid:75) =(cid:74)P(cid:75)
+
+(cid:74)(cid:72)S(cid:42) P(cid:43)(cid:73)(cid:75) =(cid:74)S(cid:75) ,(cid:74)P(cid:75)
+(cid:74)νn.P(cid:75) = (n)((cid:74)P(cid:75))
+(cid:74)f⊥
+n(cid:75) = 0
+
+Such encoding induces a type system over the κ-solution for checking if the solutions are graph-like.
+
+It can be given as follows:
+
+(zero)
+
+/0; /0 (cid:96) 0
+Γ1;Γ2 (cid:96) S
+x /∈ Γ1
+Γ1;Γ2 \{x} (cid:96) (x)S
+
+A ∈ P ∀x ∈ f n(ρ).|ρ,x| < 2
+
+{x ∈ f n(ρ) | |ρ,x| = 1};{x ∈ f n(ρ) | |ρ,x| = 2} (cid:96) A(ρ)
+
+Γ1,Γ;Γ2 (cid:96) S ∆1,Γ;∆2 (cid:96) T
+
+(Γ1 ∪ Γ2)∩ (∆1 ∪ ∆2) = /0
+
+(prot)
+
+(res)
+
+Γ1,∆1;Γ2,∆2,Γ (cid:96) S , T
+The following properties stating a statical relation between Bioβ and κ hold.
+Proposition 4.1 (Syntax).
+
+1. For S a κ-solution, if Γ1;Γ2 (cid:96) S and ∆1;∆2 (cid:96) S then Γ1=∆1 and Γ2=∆2.
+
+(par)
+
+2. For S a κ-solution, S is graph-like iff Γ1;Γ2 (cid:96) S for some Γ1,Γ2.
+3. For S,T two κ-solutions, if S ≡ T , then Γ1;Γ2 (cid:96) S iff Γ1;Γ2 (cid:96) T .
+
+4. For P a Bioβ system, if Γ1;Γ2 (cid:96) P : τ, then Γ1;Γ2 (cid:96)(cid:74)P(cid:75).
+
+Finally, we can state and prove the following semantics/dynamic relation between Bioβ and κ:
+
+Proposition 4.2 (Semantics).
+
+1. For S,T two κ-solutions, if Γ1;Γ2 (cid:96) S and S ; T , then Γ1;Γ2 (cid:96) T .
+2. For a wide monotone protein reaction ((cid:104)(cid:126)P,(cid:126)S(cid:105),ν(cid:126)x.(cid:104)(cid:126)P(cid:48),(cid:126)S(cid:48)(cid:105)) ∈ R, and for every C[(cid:126)X,(cid:126)Y ] such that
+
+C[(cid:126)P,(cid:126)S] is well-formed, then(cid:74)C[(cid:126)P,(cid:126)S](cid:75) ;(cid:74)ν(cid:126)x.C[(cid:126)P(cid:48),(cid:126)S(cid:48)](cid:75).
+ν(cid:126)x.C[(cid:126)P,(cid:126)S] is well-formed, then(cid:74)ν(cid:126)x.C[(cid:126)P,(cid:126)S](cid:75) ;(cid:74)C[(cid:126)P(cid:48),(cid:126)S(cid:48)](cid:75).
+
+3. For a wide anti-monotone protein reaction (ν(cid:126)x.(cid:104)(cid:126)P,(cid:126)S(cid:105),(cid:104)(cid:126)P(cid:48),(cid:126)S(cid:48)(cid:105)) ∈ R, for every C[(cid:126)X,(cid:126)Y ] such that
+
+Intuitively, this proposition states that every protein transition performed in the Bioβ framework
+is justiﬁed by a corresponding transition in the κ-calculus. The converse does not hold, due to the
+compartment conﬁnements: not all reactions of the translation of a Bioβ system which are possible in κ-
+calculus, correspond effectively to some wide (anti)monotone protein reactions in the Bioβ framework.
+
+32
+
+A framework for protein and membrane interactions
+
+5 Related works
+
+In literature several other calculi, covering both protein reactions and membrane interactions, have been
+proposed. Two particularly interesting cases are the bioκ-calculus [9] and the C -calculus [7]. In this sec-
+tion we compare our framework with these calculi analyzing analogies and differences of the approaches.
+
+bioκ-calculus
+can be seen as a version of the κ-calculus extended with compartments. Compared
+to Bioβ , the most remarkable similarities are at the syntactic level. Both calculi have a compartment
+constructor which embeds proteins into membranes, and similar well-formedness conditions to restrict
+to only biological relevant processes. Both calculi are sound at protein level in the sense of the κ-calculus.
+In both cases preservation of well-formedness during reactions is proved, although bioκ-calculus does
+not have a formal type system as Bioβ .
+
+Several differences emerge at the semantic level, though. An important design choice distingushing
+bioκ and Bioβ concerns how the behaviour of a compartment is speciﬁed. In bioκ, the mobility capa-
+bilites of a compartment are indicated by its name, which appears explicitly in the rearrangement rules
+which can be applied. The result of a membrane interaction is one or more new membranes whose names
+have to be speciﬁed in the rearrangement rule. This means that the rule deﬁnes also the future (mobility)
+behaviour of the resulting systems; hence it is up to the modeller to specify correctly the evolutions of
+names of membranes.
+
+On the other hand, in Bioβ compartments have no names: membranes are just containers and their
+behaviour is completely determined by the interactions of proteins ﬂoating in the aqueous solutions and
+lipid bi-layers. Therefore, a modeller has only to provide protein-level rules and deﬁne the conﬁgurations
+which trigger a mobility reaction. One does not have to declare how a membrane will evolve (i.e., “which
+is the next name” in bioκ), because the behaviour is deﬁned by the rules of the framework.
+
+Due to these radically different design choices, a formal comparison at the semantic level between
+bioκ-calculus and Bioβ is not easy. Moreover, the bioκ semantics is given by means of an LTS, instead
+Bioβ has a reaction (reduction) relation. A possible future work is to derive an LTS with associated
+congruential bisimilarity, taking advantage of the theory of bigraphs.
+
+C -calculus Both C -calculus and Bioβ frameworks are founded on bigraphical reactive systems, which
+does not only confer a formal graphical representation but provides also a powerful categorical theory
+for automatically constructing labelled transition systems (LTSs) whose bisimilarities are always con-
+gruences. Even though C -calculus and Bioβ share common sources of inspiration, they differs in many
+aspects, one of which is the way compartment reconﬁguration are performed.
+
+C -calculus adopts meta-biological “gates” to represent a semi-fused intermediate state in membrane
+fusion or ﬁssion. Gates act like channels, allowing protein diffusion between compartments, and it does
+not allow for phagocytosis. Moreover, one of the aim of Bioβ framework is to characterize higher-level
+membrane interactions with lower-level protein reactions, and to be adequate with respect to the κ-
+calculus; a formal connection between C -calculus and κ-calculus has not been investigated yet. Finally,
+in the C -calculus, mobility and protein reactions are more intertwined, since membrane interactions are
+in many steps: introduction of gates, some protein diffusions, and deletion of gates. This mechanism does
+not provide an explicit, logical separation between compartment reconﬁguration and protein reactions.
+On the other hand, the Bioβ framework aims to an explicit distinction between protein reactions and
+mobility actions, as implemented by means of introduction rules, which freeze the subsystems involved
+in the rearrangement until the structural reconﬁguration is actually performed.
+
+G. Bacci & D. Grohmann & M. Miculan
+
+33
+
+6 Conclusion
+
+In this paper we have presented the Bioβ Framework, a language for both (lower-level) protein and
+(higher-level) membrane interactions of living cells. A typed language has been given for describing
+only biologically meaningful compartments and proteins.
+
+In the Bioβ framework membrane reconﬁgurations are logically different from protein reactions,
+but the connection between the two aspects is formally speciﬁed. In fact, membrane activities can be
+motivated by a formal biological justication in terms of protein interactions. Notably, protein interactions
+are adequate with respect to the κ-calculus.
+
+As an example application of this framework, we have modelled the mechanism of membrane trafﬁc,
+
+which consists in formation, transportation and docking of vesicles.
+Related and future work. Due to lack of space, we have omitted a formal connection between the pro-
+posed framework and its inspiring bigraphical model. Another interesting aspect to investigate is the
+bisimilarity deﬁnable via the IPO construction on bigraphs [10], which is always a congruence. This can
+be useful e.g. in synthetic biology, for instance, to verify if a synthetic protein (or even a subsystem to be
+implanted) behaves as the natural one. We plan to describe such results in a forthcoming work.
+
+Another interesting investigation is to give a formal comparison of Bioβ with the other two frame-
+work present in literature, such as bioκ and C -calculus. In particular, it could be useful to understand the
+differences of C -calculus rule generators and our introduction rules, even because they are both inspired
+by bigraphical wide reactions.
+
+As a next step, a stochastic version of the Bioβ framework should be analyzed for simulation pur-
+poses. One way could be trying to adapt the extended Gillespie simulation algorithm [11], that works for
+calculi with multi-compartments.
+
+References
+
+[1] Alan Aderem and David M. Underhill. Mechanisms of phagocytosis in macrophages. Annual Review of
+
+Immunology, 17(1):593–623, 1999. PMID: 10358769.
+
+[2] Bruce Alberts, Dennis Bray, Karen Hopkin, Alexander Johnson, Julian Lewis, Martin Raff, Keith Roberts,
+
+and Peter Walter. Essential Cell Biology, 2nd edition. Garland, 2003.
+
+[3] Giorgio Bacci, Davide Grohmann, and Marino Miculan. Bigraphical models for protein and membrane
+
+interactions. In Gabriel Ciobanu, editor, Proc. MeCBIC’09, EPTCS, 2009.
+
+[4] Luca Cardelli. Brane calculi. In Vincent Danos and Vincent Sch¨achter, editors, Proc. CMSB, volume 3082
+
+of Lecture Notes in Computer Science, pages 257–278. Springer, 2004.
+
+[5] Luca Cardelli. Abstract machines of systems biology. T. Comp. Sys. Biology, 3737:145–168, 2005.
+[6] Luca Cardelli. Bitonal membrane systems: Interactions of biological membranes. Theoretical Computer
+
+Science, 404(1-2):5 – 18, 2008. Membrane Computing and Biologically Inspired Process Calculi.
+
+[7] Troels Christoffer Damgaard, Vincent Danos, and Jean Krivine. A language for the cell. Technical Report
+
+TR-2008-116, IT University of Copenhagen, December 2008.
+
+[8] Vincent Danos and Cosimo Laneve. Formal molecular biology. Theoretical Computer Science, 325, 2004.
+[9] Cosimo Laneve and Fabien Tarissan. A simple calculus for proteins and cells. Theor. Comput. Sci., 404(1-
+
+2):127–141, 2008.
+
+[10] Robin Milner. Pure bigraphs: Structure and dynamics. Information and Computation, 204(1):60–122, 2006.
+[11] Cristian Versari and Nadia Busi. Stochastic simulation of biological systems with dynamical compartment
+structure. In Muffy Calder and Stephen Gilmore, editors, Proc. CMSB, volume 4695 of Lecture Notes in
+Computer Science, pages 80–95. Springer, 2007.
+
+

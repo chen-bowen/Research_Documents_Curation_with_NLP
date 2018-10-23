@@ -1,0 +1,1857 @@
+Approximated Computation of Belief Functions for 
+
+Robust Design Optimization 
+
+Massimiliano Vasile1 and Edmondo MInisci2 
+
+University of Strathclyde, G1 1XJ , Glasgow, UK 
+
+Quirien Wijnands3 
+
+ESA/ESTEC, 2200 AG, Noordwijk, The Netherlands 
+
+This  paper  presents  some  ideas  to  reduce  the  computational  cost  of  evidence-based 
+robust  design  optimization.  Evidence  Theory  crystallizes  both  the  aleatory  and  epistemic 
+uncertainties  in  the  design  parameters,  providing  two  quantitative  measures,  Belief  and 
+Plausibility,  of  the  credibility  of  the  computed  value  of  the  design  budgets.  The  paper 
+proposes  some  techniques  to  compute  an  approximation  of  Belief and  Plausibility  at  a  cost 
+that  is  a  fraction  of  the  one  required  for  an  accurate  calculation  of  the  two  values.  Some 
+simple  test  cases  will  show  how  the  proposed  techniques  scale  with  the  dimension  of  the 
+problem. Finally a simple example of spacecraft system design is presented. 
+
+Nomenclature 
+
+SA 
+ta 
+taq 
+SA 
+CMR 
+A 
+cell 
+b 
+PCU 
+ 
+ 
+f 
+Pl 
+A 
+A 
+AL 
+AML 
+ANTemp 
+aPCU 
+B 
+Bel 
+
+Bl,i 
+Cmin 
+c 
+Dant 
+D 
+DOD 
+d 
+
+=  solar array solar aspect angle, rad 
+=  access time, s 
+=  acquisition time, s 
+=  solar array specific mass, kg/m2 
+=  amplifier case mass fraction 
+=  antenna specific mass, kg/m2 
+=  solar cell efficiency 
+=  battery efficiency 
+=  PCU efficiency 
+=  generic threshold 
+=  focal element 
+=  Faraday rotation, rad 
+=  cumulative Plausibility function 
+=  generic proposition 
+=  archive 
+=  atmospheric losses, dB 
+=  antenna misalignment loss, dB 
+=  antenna noise temperature, K 
+=  PCU mass coefficient, kg/W 
+=  onboard data volume, bits 
+=  cumulative Belief function 
+
+ 
+
+=  generic box in 
+=  battery capacity, Wh 
+=  speed of light, m/s 
+=  antenna diameter, m 
+=  design space 
+=  Depth Of Discharge 
+=  design parameter vector 
+
+                                                           
+1 Reader, Mechanical & Aerospace Department, 75 Montrose Street. 
+2 Lecturer, Mechanical & Aerospace Department, 75 Montrose Street. 
+3 Senior staff, European Space Research & Technology Centre Postbus 2992200 AG. 
+
+American Institute of Aeronautics and Astronautics 
+
+ 
+1 
+
+ 
+ 
+
+UEd 
+e 
+FL 
+FSL 
+f,g,h 
+fT 
+GAMP 
+Gr 
+HG 
+Id 
+IL 
+Ld 
+P0 
+Pd 
+PL 
+PLd 
+Pe 
+PSA 
+Rt 
+RA 
+RaL 
+rGS 
+SLAT 
+T 
+TAMP 
+Tdata 
+U 
+u 
+Xe 
+Xd 
+
+inherent degradation 
+implementation loss, dB 
+time degradation 
+
+=  battery energy density, Wh/kg 
+=  elevation error, rad 
+=  feeder loss, dB 
+=  free space loss, dB 
+=  generic functions 
+=  carrier frequency, MHz 
+=  amplifier gain, dB 
+=  ground station gain, dB 
+=  ground station altitude, m 
+= 
+= 
+= 
+=  generated power per unit area, W/m2 
+=  power in daylight, W 
+=  polarization mismatch loss, dB 
+=  required transmission power, W 
+=  power in eclipse, W 
+= 
+=  data rate, dB 
+=  rain absorption 
+=  rain absorption loss, dB 
+=  distance from the ground station, km 
+=  horn lateral surface, m2 
+=  amplifier type 
+=  amplifier noise, K 
+= 
+=  uncertain space 
+=  uncertain parameter vector 
+=  power system efficiency in eclipse 
+=  power system efficiency in daylight 
+
+total required power, W 
+
+transmitted data, bits 
+
+I.  Introduction 
+
+I 
+
+N  recent  times,  Evidence  Theory  has  been  proposed  in  place  of  Probability  Theory  for  robust  design  of 
+engineering systems. Authors like Oberkampf et al.1 demonstrated the potentiality of Evidence Theory to model 
+both epistemic and aleatory uncertainties in the design of engineering systems. Similar examples can be found in the 
+work  of  Agarwal  et  al.2  or  in  the  work  of  Bae  et  al.3,  Fetz  et  al.4  He  et  al.5  and  Mourela  et  al.  6,  mainly  with 
+applications  to  structural  design.  Denoeux  proposed  a  technique  to  compute  an  inner  and  outer  approximation  of 
+Belief and Plausibility functions7. Helton et al.8,9,10  proposed a number of techniques to reduce the dimensionality of 
+problems  treated  with  Evidence-based  models.  More  recently  Vasile11  and  Croissard  et  al.12  provided  some 
+examples  of  application  of  Evidence  Theory  to  the  robust  optimal  design  of  space  systems  and  space  trajectories. 
+The uncertainties in the design parameters of the main spacecraft subsystems were modeled using Evidence Theory. 
+The design process was then formulated as an Optimization Under Uncertainties (OUU) and the Belief function was 
+optimized (maximized) together with all the other criteria that define the optimality of the system. 
+With Evidence Theory, also know as Dempster-Shafer’s theory13, both aleatory and epistemic uncertainties, coming 
+from a poor or incomplete knowledge of the design parameters, can be correctly modeled. The values of uncertain or 
+vague  design  parameters  can  be  expressed  by  means  of  intervals  with  associated  basic  belief  assignment  or  bpa. 
+Each expert participating in the design, assigns an interval and a  bpa according to their experience. Ultimately, all 
+the pieces of information associated to each interval are fused together to  yield two cumulative values, Belief and 
+Plausibility, that express the confidence range in the optimal design point. In particular, the value of Belief expresses 
+the  lower  limit  on  the  probability  that  the  selected  design  point  remains  optimal  (and  feasible)  even  under 
+uncertainties. The benefits coming from the use of Evidence Theory are considerable but the computation of Belief 
+and Plausibility requires running a number of optimizations that grows exponentially with the number of dimensions 
+and becomes intractable even for problems of moderate size. 
+
+American Institute of Aeronautics and Astronautics 
+
+ 
+2 
+
+ 
+ 
+
+This  paper presents  some  ideas  on  how  to  reduce  the  computational  cost  to  obtain  an  approximation  of  Belief 
+and Plausibility cumulative functions in  space system engineering. Some of the techniques presented in this paper 
+are not problem dependent others exploit the partial decomposability of space system engineering design problems. 
+The  paper  starts  with  a  brief  introduction  to  Evidence  Theory  and  its  use  in  the  context  of  robust  design 
+optimization.  It  then  presents  some  techniques  to  compute  an  optimal  design  solution  under  uncertainty  when 
+Evidence Theory is used for uncertainty quantification. A few ideas are then proposed to reduce the computational 
+cost  and  their  effectiveness  is  experimentally  proven  on  some  scalable  analytic  functions.  The  preliminary  robust 
+design of an integrated power and telecommunication system of a satellite is then used to illustrate the application of 
+Evidence-based  Robust  Design  Optimization  to  the  design  and  margin  quantification  of  space  systems.  A  final 
+section  introduces  a  problem  decomposition  technique  that  looks  promising  to  solve  large  scale  space  system 
+engineering problems in polynomial time.  
+ 
+
+II  EVIDENCE-BASED ROBUST DESIGN OPTIMISATION 
+
+Evidence  Theory,  developed  by  Shafer13,  belongs  to  the  class  of  imprecise  probability  theories  conceived  to 
+adequately  treat  both  epistemic  and  aleatory  uncertainty  when  no  information  of  probability  distributions  is 
+available. The theory does not require additional assumptions when the available information is poor or incomplete 
+and provides a nice framework to incorporate multiple pieces of evidence in support to a statement. In most current 
+engineering design applications of Evidence Theory, domain experts are expected to express their belief on the value 
+of an uncertain parameter u being within a certain set of intervals. Each interval can be considered as an elementary 
+proposition,  and  all  the  intervals  form  the  so-called  frame  of  discernment ,  which  is  a  set  of  mutually  exclusive 
+elementary propositions.  The  frame of discernment can be  viewed as the counterpart of  the  finite sample  space in 
+probability  theory.  The  power  set  of    is  U=2  or  the  set  of  all  the  subsets  of    (the  uncertain  space  in  the 
+following)  The  level  of  confidence  an  expert  has  in  an  element of  U  is  quantified  using  the  Basic  Probability 
+Assignment (bpa) m() that satisfies the axioms: 
+
+ 
+
+ 
+
+ (1) 
+
+Note that the bpa is actually a belief in the values of  rather than an actual probability. An element of U that has 
+a non-zero bpa is named a focal element . When more than one parameter is uncertain, the focal elements are the 
+result of the Cartesian product of all the intervals associated to each uncertain parameter. The  bpa of a given focal 
+element is then the product of the bpa of each interval. All the pieces of evidence completely in support of a given 
+proposition form the cumulative belief function  Bel while all the pieces of evidence partially in support of a given 
+proposition  from  the  cumulative  plausibility  function  Pl.  In  mathematical  terms  the  two  functions  are  defined  as 
+follows: 
+
+ 
+
+ 
+
+(2) 
+
+where  A  is  the  proposition  about  which  the  Belief  and  Plausibility  need  to  be  evaluated.  For  example,  the 
+proposition can be expressed as: 
+
+ 
+
+ 
+
+(3) 
+
+where  f  is  the  system  process  and  the  threshold    is  the  value  of  a  design  budget  (e.g.  the  mass).  Thus,  focal 
+elements intercepting the set A but not included in A are considered in Pl but not in Bel. It is important to note that 
+the  set  A  can  be  disconnected  or  present  holes,  likewise  the  focal  elements  can  be  disconnected  or  partially 
+overlapping. 
+
+A.  Robust Design Formulation 
+
+American Institute of Aeronautics and Astronautics 
+
+ 
+3 
+
+ 
+ 
+
+()0,2;   ()0,2;()0;   ()1UmUmUmm0()()()()iiiAiABelAmPlAm|()AUfuuThe  interest  is  in  a  general  function 
+
+  characterizing  an  engineering  system  to  be 
+
+optimized, where D is here called the available design space and U the uncertain space. The function f represents the 
+model of the system budgets  (e.g. power budget,  mass budget, etc.), and depends on some uncertain parameters  u 
+and design parameters d such that: 
+
+ 
+
+(4) 
+ 
+A bpa is associated to the frame of discernment U of the uncertain parameters u. From the definition of Bel and 
+Pl  and  from  Eq.  (3)  it  is  clear  that  the  maximum  and  minimum  of  f  over  every  focal  element  of  U  should  be 
+computed and compared to . The threshold  is the desired or expected value of the system budget. If the maximum 
+and minimum do not occur at one of the vertices of the focal element an  optimization problem has to be solved for 
+every focal element and for each new design vector. Because the number of focal elements increases exponentially 
+with  the  number  of  uncertain  parameters  and  associated  intervals  so  does  the  number  of  optimization  problems. 
+Furthermore,  what  designers  are  usually  interested  in  are:  a  design  solution  d  that  optimizes  performance  (i.e.  the 
+design  budgets)  and  minimizes  the  impact  of  uncertainty,  a  quantification  of  the  design  margins  on  the  system 
+budgets and a quantification of the reliability of the design solution. This information can be obtained for the worst 
+case scenario but that might lead to over conservative decisions. Therefore it is desirable to have also the  variation 
+of the design margins and reliability with the threshold , i.e. with the expected value of the design budgets Indeed, 
+it  may  be  relevant  to  take  a  little  more  risk  (a  slightly  lower  value  of  the  belief)  if  the  performance  gain  is 
+significant.  Therefore,  in  practice,  it  would  be  desirable  to  have  the  trade-off  curve,  solution  of  the  bi-objective 
+optimization problem: 
+
+ 
+
+ 
+
+(5) 
+
+In  previous  works7,7,  the  bi-objective  problem  (5)  was  approached  directly  with  a  multi-objective  evolutionary 
+optimizer working on the d and . The whole curve could be reconstructed with a population of agents converging 
+to the optimal pairs of values [Bel ]. However, the computational cost was driven by the identification of A and the 
+number of focal elements included in it. The assumption was that the maxima and minima of f were occurring only 
+at the corners of the focal element. The evaluation of the corners is in itself an operation that grows exponentially 
+with the number of dimensions and is, anyway, not applicable to a general case.  
+
+In this paper we propose a different way of approaching the problem. First of all, the computation of the Belief 
+
+function is performed by exploiting the following relationship: 
+
+ 
+
+ 
+
+(6) 
+
+According to (2), the calculation of 
+
+ is computationally cheaper than the calculation of  Bel(A). In fact, 
+
+any subset of U that contains at least one value (even a single sample) above the threshold  contributes to
+
+. 
+
+The computation of Bel(A) instead requires that all the elements of A are below the threshold. 
+
+III COMPUTATIONAL APPROACH 
+
+Problem  (5)  would  require  the  solution  of  a  number  of  optimization  problems  that  is  exponentially  increasing 
+with the number of focal elements. However, if one is interested only in the maximization of the Belief and in the f, 
+the  exponential  complexity  can  be  avoided  by  solving  the  following  two  distinct  problems  over  the  Cartesian 
+
+product of the unit hypercube 
+
+ and D: 
+
+ 
+
+ 
+
+ 
+
+ 
+
+(7) 
+
+(8) 
+
+ is the normalized collection of all the focal elements in U. In other words, all the focal elements in U are 
+where 
+normalized  with  respect  to  the  maximum  range  of  the  uncertain  parameters  and  collected  into  a  compact  unit 
+
+hypercube in which all the focal elements are adjacent and not overlapping. A point in the unit hypercube 
+mapped into the normal space U through the simple affine transformation: 
+
+ is then 
+
+  
+
+ 
+
+ 
+
+(9) 
+
+American Institute of Aeronautics and Astronautics 
+
+ 
+4 
+
+ 
+ 
+
+:mnfDU;   nmUDudmax(,,)minDUBelfdudu()1()BelAPlA()PlA()PlAUmaxminmax,DUfduminminmin(,)DUfduUU,,,,,,,,,,,,ululUiUiUiUillUiUiUiUiululUiUiUiUibbbbxxbbbbbbwhere 
+
+ and 
+
+ are the upper and lower boundaries of the i-th hypercube to which 
+
+ belongs and 
+
+ and 
+
+  are  the  upper  and  lower  boundaries  of  the  i-th  hypercube  to  which 
+
+  belongs.  The  transformation  is 
+
+relatively fast as it requires to scan only over the number of intervals per coordinate and not over the focal elements. 
+The computational complexity of the affine transformation is, therefore, linear with the number of dimensions. The 
+
+advantage  is  that  each  point  within 
+guaranteed to sample only the focal elements and not other parts of U.  
+
+  belongs  to  at  least  one  focal  element,  therefore  by  sampling 
+
+  one  is 
+
+Problem  (7)  looks  for  the  minimum  possible  threshold  value  max  such  that  the  entire  unit  hypercube  is 
+admissible, hence the Belief is 1. The solution of problem (7) does not require the exploration or even the generation 
+of the focal elements and sets an upper limit on the value of the cost function. Problem (8) looks for the minimum 
+threshold  value  min  above  which  the  Plausibility  is  different  from  0.  As  for  problem  (7),  problem  (8)  does  not 
+require the knowledge of the focal elements and sets a lower limit on the value of the cost function. Below that limit 
+the design is not feasible, given the current model and evidence on the design parameters.  
+
+The  min/max problem is solved  with a  nested evolutionary process: an outer loop  minimizes  f over  D and  the 
+
+.  For  each  di  vector  an  evolutionary  process  over 
+
+inner  loop  maximizes  f  over 
+  is  run  and  the  u  vector  with 
+maximum  f  is  associated  to  di.  The  outer  loop  then  proceeds  till  a  maximum  number  of  function  evaluations  is 
+reached.  For  the  inner  loop  a  Matlab  implementation  of  Inflationary  Differential  Evolution  (IDEA)  is  used  in  this 
+paper15. For the outer loop a modified version of  IDEA, called  IDEA, is used. The modification is  mainly in the 
+way the objective function is computed. Due to the stochastic nature of the inner loop and the possible presence of 
+multiple maxima the outcome of each inner loop might not be the global maximum or not even near to it. In order to 
+increase  the  chances  to  produce  optimal  results,  the  local  maximum 
+, 
+
+,  with  objective  value 
+
+computed  for 
+
+  is  compared  against  the  local  maximum 
+
+  ,  associated  to  design  vector 
+
+.  If 
+
+  then 
+
+  and  its  related  maximum  are  associated  to 
+
+.  The  underlying 
+
+ 
+assumption here is that the cost function is Lipschitz continuous. Furthermore, if the location of the maxima in 
+does  not  change  with  d  a  full  optimization  for  each  d  is  not  required.  If  instead  the  location  of  the  maxima  is 
+changing with d, then for every di either a local search or a complete optimization is started. In both cases, running a 
+full optimization or a simple local search depends on the vector difference between di at step k and at step k+1 of the 
+evolution. The probability of running a full optimization is 
+. The assumption here is that for small 
+
+variations of d there are small variations of the location of the local maxima. This assumption is generally verified in 
+the real-life applications the authors have encountered so far. A further level of verification of the global maximum 
+
+is  introduced  npop  inner  loop  calls  with  probability  pd  by  running  a  full  optimization  over  with  two  times  the 
+number of functions evaluations. IDEA implements a memetic type of evolutionary process in which a local search 
+is started when the population collapses to a small region of the search space. The population is then restarted after 
+the local  search is completed  and all the local  minima are  collected in an archive (for  more details on the  general 
+algorithm  implemented  in  IDEA  the  interested  reader  can  refer  to  Ref.  15).  In  the  inner  loop,  the  local  search  is 
+performed with a Quasi-Newton method and with a convergent Nelder-Mead approach in the outer loop. When the 
+Nelder-Mead algorithm calls the inner loop no global search is run. At every restart of the population the archive is 
+examined and the local minima are compared. As for the population, even for the archive the local maximum 
+, 
+
+with  objective  value 
+
+,  computed  for 
+
+  is  compared  against  the  local  maximum 
+
+  , 
+
+associated to local minimum design vector 
+
+. If 
+
+ then 
+
+ and its 
+
+related maximum are associated to 
+
+. When a given number of function evaluations for the inner and the outer 
+
+loop  is  exceeded,  the  search  terminates.  The  best  individual  of  the  final  population  is  added  to  the  archive,  the 
+
+archive  is  ranked  and  the  best  values  is  validated  running  a  final  global  optimization  over 
+  Because,  the 
+maximization and the minimization are based on stochastic processes a global convergence is not guaranteed unless 
+the optimizer is globally convergent. Nonetheless, by  using an evolutionary process the computational complexity 
+remains polynomial. The consequence of an incorrect estimation of the global maximum and global minimum is an 
+overestimation of the point  with  minimum Plausibility and an  underestimation of  the point  with  maximum Belief. 
+However,  on  could  argue  that  if  a  maximum  is  difficult  to  be  found  it  correspond  to  a  very  unlikely  event  that 
+legitimately  provide  little  support  to  the  evidence  of  a  given  proposition.  Evolutionary  process  and  uncertainty 
+
+American Institute of Aeronautics and Astronautics 
+
+ 
+5 
+
+ 
+ 
+
+,uUib,lUib,Uix,uUib,lUib,UixUUUU,maxiumax,max,iifduid,maxjujdmax,maxmax,max,,iiijffdudu,maxjuidU1kkdiiPpddU,maxiumin/max,min,max,iifdu,minid,maxju,minjdmin/max,min,maxmin/max,min,max,,iiijffdudu,maxju,minidUquantification are therefore closely entangled as the probability of sampling a particular uncertain value is directly 
+related to the probability of the realization of the event that corresponds to that uncertain value. 
+
+B.  Evolutionary Binary Tree (EBT) 
+
+Given a design vector d, the value of Bel and Pl, for any  value within [min max], can be computed by building 
+. 
+
+a binary tree in which a branch is pruned if the max of f associated to a leave is below (above) a given threshold 
+
+The binary tree is built as follows. The transformed  uncertain space  is partitioned by cutting every box 
+
+ (with 
+
+) in two halves along the longest edge. The cutting point is the boundary of the uncertain interval that is the 
+
+closest to the middle point of the edge. The tree is structured in levels with index l and at each level the tree has a 
+
+number of leaves each one identified by the index i. Now let 
+
+ and 
+
+ be respectively the left and right halves 
+
+deriving  from  the  partition  of  the  i-th  box  (or  leave) 
+
+  at  level  l.  If  one  box  contains  a  maximum  below  the 
+
+threshold or a minimum above the threshold the box is removed from the tree, otherwise it is added to the list of the 
+boxes (leaves) that need to be partitioned at the following iteration (see Figure 1). If no maximum or minimum is yet 
+
+computed either for 
+
+ or 
+
+ then the box is added to the list of those that need to be explored. The boxes that 
+
+need  to  be  explored  and  partitioned  are  said  to  be  undecidable  as  a  decision  cannot  be  made  on  whether  they 
+contribute  to  the  Belief  or  not.  The  exploration  of  an  undecidable  box  is  performed  by  running  a  global 
+maximization  and  a  global  minimization  of  f(d,u)  for  a  fixed  d  and  for 
+  respectively).  In  this 
+
+  (
+
+implementation, IDEA is used for both the global maximization and minimization. 
+
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+B00 
+
+r 
+
+B0
+
+B12 
+
+ 
+
+ 
+
+l 
+B0
+
+B11 
+
+ 
+
+ 
+
+B21 
+
+ 
+
+B22 
+
+ 
+
+B23 
+
+ 
+
+B24 
+
+ 
+
+Figure 1. EBRO Binary Tree 
+
+Figure  1  shows  a  simple  binary  tree  in  which  the  right  box  deriving  from  splitting  the  initial  uncertain  space 
+contains a maximum below the threshold or a minimum above the threshold. The whole branch of the tree is then 
+discarded. The left box instead is undecidable and the branch that descends from that box needs to be explored. The 
+branching  and  exploration  proceed  until  a  decision  can  be  made  for  all  the  boxes.  The  exploration  of  a  branch 
+generates smaller and smaller boxes that eventually coincide with the focal elements. The exploration and branching 
+process generates a  number of  focal elements clustered in  macro boxes and a  number of boxes that correspond to 
+individual  focal  elements.  All  the  discarded  boxes  with  minimum  above  the  threshold  and  all  the  boxes  with 
+maximum above the threshold are used to compute 
+. All the boxes with a minimum below the threshold are 
+
+used to compute 
+
+. The interesting aspect of this procedure is that 
+
+ and 
+
+ can be computed even if 
+
+all the maxima and minima are not identified exactly. In fact for a box to be included in the calculation of 
+
+it 
+
+is  enough  that  a  single  value  within  the  box,  even  not  the  actual  maximum,  is  above  the  threshold.  Likewise  the 
+calculation of 
+
+ requires that even s single value, not necessary the actual minimum, is below the threshold. 
+
+Note  that  the  collection  of  all  the  boxes  generated  for  a  given  threshold 
+
+  can  be  used  to  compute  the  Belief 
+].  In  fact,  the  min  and  max  values  computed  for  each  box  represent 
+
+(Plausibility)  values  in  the  interval  [
+
+ 
+
+additional  values within [
+
+ 
+
+]. However, while the value of Bel and Pl can be exactly computed for 
+
+ with the 
+
+selected  set  of  boxes,  any  other  value  within  [
+
+ 
+
+]  might  result  to  be  an  underestimation  of  Bel  and 
+
+overestimation of Pl because of a lack of resolution (i.e. each box includes an excessive number of focal elements). 
+
+American Institute of Aeronautics and Astronautics 
+
+ 
+6 
+
+ 
+ 
+
+,liB0,0BU,lliB,rliB,liB,lliB,rliB,lliBu,rliBu()PlA()PlA()PlA()PlA()PlA()PlAmaxmaxmaxTherefore, if the whole curve is required, a refinement process is run by iteratively applying the evolutionary binary 
+. This refinement process provides an exact value for each   but 
+tree to the boxes that contain a given 
+
+can lead to a number of optimizations that is equal to two times the number of focal elements, if the entire curve is 
+
+required. It is, however, interesting to note that if one takes an arbitrary 
+
+, the boxes generated 
+
+by the EBT can provide an approximation to the Bel and Pl curves that tend to be good in a neighborhood of 
+ and 
+close to max. This observation allows for the generation of a good estimation of the two curves at a fraction of the 
+computational  cost.  Further  to  this  approximation,  two  specific  mechanisms  have  been  devised  to  reduce  the 
+computational complexity and compute approximated  Bel and Pl curves: the integrated focal element filtering and 
+the approximated min and max evaluation. 
+
+1.  Integrated Focal Element filtering 
+
+The bpa associated to each focal element decreases in  magnitude as the number of dimensions increases. This 
+observation  suggests  that  an  approximation  to  the  value  of  Bel  and  Pl  can  be  computed  by  using  only  a  selected 
+subset  of  focal  elements.  The  reduction  in  Bel  or  increase  in  Pl  due  to  this  approximation  can  be  quantified  by 
+looking at the cumulative value of the discarded focal elements. Therefore, during the generation of the binary tree 
+boxes with a bpa below a given filter threshold are discarded until the cumulative bpa associated to those boxes is 
+below the required filter accuracy 
+
+2.  Approximated Min and Max Evaluation 
+ and 
+
+Because the calculation of 
+
+ does not always require the exam maximum and minimum, one 
+
+can  consider  using  an  approximation  of  the  min  and  max  values  for  each  subdomain  Bl,i  to  make  a  decision.  The 
+evolutionary search for a maximum and a minimum proceed through an optimal sampling of the uncertain space. A 
+selected  subset  of  all  the  samples  taken  during  the  global  exploration  can  be  saved  into  an  archive
+,  when 
+
+maximizing,  and  into  an  archive  into 
+
+when  minimizing,  Then  when  two  new  subdomains 
+
+  and 
+
+  are 
+
+generated by bisection of Bl,i, one can take the maximum element 
+
+ in 
+
+ (respectively 
+
+)and the 
+
+minimum  element 
+
+  in 
+
+  (respectively 
+
+)  instead  of  running  a  full  optimization  for  every  new 
+
+box.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+B00 
+
+r 
+
+B0
+
+B12 
+
+ 
+
+ 
+
+l 
+
+B0
+
+B11 
+
+ 
+
+ 
+
+B21 
+
+ 
+
+B22 
+
+ 
+
+B23 
+
+ 
+
+B24 
+
+ 
+
+Figure 2. Binary Tree with Approximated Min-Max Evaluation. 
+
+Figure  2  shows  a  modified  version  of  the  binary  tree  in  which  decisions  are  made  using  the  values  in  the  archive 
+instead  of  the  actual  maxima  and  minima.  This  technique  produces  a  substantial  reduction  in  the  number  of 
+optimizations  loops  required  to  build  the  Belief  and  Plausibility  curves  but  can  introduce  a  significant  error 
+
+depending on the archiving procedure. In order to preserve accuracy the values 
+
+,
+
+ ,
+
+ and 
+
+ are trusted 
+
+to  be  representative  of  the  minimum  and  maximum  values  contained  in  the  box  with  a  probability  ptrust  inversely 
+proportional to the bpa associated to the box, i.e. the higher the bpa the lower the trust in the values 
+ 
+
+ and 
+
+(respectively 
+
+  and 
+
+).  In  this  way  boxes  with  high  bpa  are  properly  explored  with  high  probability.  In 
+
+American Institute of Aeronautics and Astronautics 
+
+ 
+7 
+
+ 
+ 
+
+max[  ]maxminmin2()PlA()PlAuAlA,lliB,rliBsuplx,ulliAB,urliABinflx,llliAB,lrliABinflxsuplxinfrxsuprxinflxsuplxinfrxsuprxparticular, 
+
+ and 
+
+ are trusted if ptrust>(c+bpa), where c is a trust factor. The use of a this trust factor ensure 
+
+good accuracy for a single value of . During the refinement process, however, the EBT makes use of existing boxes 
+but  with  different  thresholds.  Boxes  that  are  correctly  decided,  on  the  basis  of  suboptimal  archive  values,  for  one 
+threshold  might  not  be  correctly  decided  for  a  different  threshold.  When  a  new  threshold  is  considered,  the  boxes 
+generated for previous thresholds for which maximum and minimum was not exactly identified, are ranked from the 
+one with highest bpa value to the one with the lowest. A maximization is then progressively run on each of them, 
+starting from the one with highest bpa, until the cumulative bpa of the remaining ones is above c. 
+
+IV TEST CASES 
+
+The effectiveness of the techniques to reduce the computational  cost has been put to the test on a set of simple 
+but representative, scalable problems (see Table 1). All the problems present a number of maxima and minima that 
+grows with the number of dimensions. Problem MV1 for example has a number of maxima in  U that grows as 2n. 
+Problem MV2 has maxima that change location with  d while MV8 is multimodal and has the maxima that change 
+with d. Table 2 represents the bpa structure for all the problems, with the intervals for each uncertain parameter and 
+the  associated  bpa.  Tests  are  run  considering  two  possible  different  bpa  structures:  with  a  uniform  distribution  of 
+bpa  (labeled  as  EQ)  and  one  with  a  non-uniform  distribution.  The  tests  in  this  paper  are  limited  to  three 
+disconnected uncertain intervals per parameter but the results can be generalized to a higher number of intervals and 
+also to overlapping intervals.  
+
+ID 
+MV1 
+
+MV2 
+
+MV8 
+
+Table 1. Standard Benchmark. 
+Function 
+
+Parameters 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+MV1, MV2 
+
+MV8 
+
+MV8EQ 
+
+Table 2.  BBA structure for the standard benchmark 
+[1 3] 
+0.65 
+[5 2] 
+0.65 
+[1 3] 
+0.34 
+[5 2] 
+0.34 
+
+Interval 
+bpa 
+Interval 
+bpa 
+Interval 
+bpa 
+Interval 
+bpa 
+
+MV1EQ,MV2EQ 
+
+[-5 -4] 
+0.1 
+[0 1] 
+0.1 
+[-5 -4] 
+0.33 
+[0 1] 
+0.33 
+
+[-3 0] 
+0.25 
+[2 4] 
+0.25 
+[-3 0] 
+0.33 
+[2 4] 
+0.33 
+
+Figure 3 presents the number of optimizations required to approximate the  Bel and Pl curves for problem MV1 
+as a function of the number of dimensions, while Figure 4 presents the same result but for function MV2. Figure 5 
+presents  the  number  of  optimizations  for  problem  MV8.  Different  trust  factors  and  for  a  combination  of  the 
+integrated focal element filtering, with a filter accuracy of 0.1, and the approximated min and max evaluation. The 
+use of the approximated min and max evaluation, even with a trust factor of 0.99, leads to a reduction of the number 
+of  optimizations  down  to  25-30%  of  the  number  of  optimizations  required  to  explore  all  the  focal  elements. 
+Reducing the trust factor to 0.90 leads to a further reduction and the combination with the integrated focal element 
+filtering  improves  the  reduction  by  5-10%.  The  reduction  is  more  limited  in  the  case  of  a  uniform  distribution  of 
+bpa’s. Figure 6 shows the Pl and Bel for problem MV1 with n=6. This problem has a Bel curve with a steep drop at 
+a  thresh  value  of  about  50.  The  figure  shows  the  approximated  curves  using  the  approximated  min  and  max 
+evaluation  and  the  combination  approximated  min  and  max  evaluation+  integrated  focal  element  filtering.  The 
+approximated  curves  well  represent  the  true  cumulative  Belief  curve  and  correctly  identify  the  steep  drop  with  an 
+error  of  maximum  0.1  in  the  Belief  values.  Plausibility  is  underestimated  but  the  approximation  technique  was 
+geared towards an accurate estimation of the Belief. Therefore, an underestimation of the Plausibility was expected. 
+The  reduction  in  computational  cost  however,  is  substantial  reaching  over  80%  (see  Bel90  with  filter  0.1,  that 
+corresponds  to  trust  factor  of  0.90  and  a  filter  accuracy  of  0.1).  Figure  7  shows  the  equivalent  result  for  problem 
+
+American Institute of Aeronautics and Astronautics 
+
+ 
+8 
+
+ 
+ 
+
+suplxsuprx21niiifdu[1,5];[5,3]nndu21niiifud[1,5];[5,3]nndu12cosniiiifuud[0,3];[0,2]nnduMV8. In this case the error in Belief for a trust factor of 0.90 is larger than 0.1 but for a very small difference in . 
+The overall error in the decision of the reliability the estimation of a design margin would be contained but with a 
+massive reduction in computational cost, up to 85%. It is also interesting to note that for all test cases the solution of 
+the  min/max  problem  returned  the  global  maximum  and  an  optimal  d.  IDEA  was  set  with  a  population  of  10 
+individuals  for  the  inner  loop  and  500n/2  number  of  function  evaluations.  The  population  was  restarted  when  the 
+maximum  distance  among  individuals  was  reaching  10%  of  the  maximum  distance  experienced  during  the  whole 
+search. IDEA  was  set  with  a population of 10 individuals and  5000n/2 function evaluations. The population  was 
+restarted when the maximum distance among individuals was reaching 10% of the maximum distance experienced 
+during the whole search, and the probability of running the global search in the inner loop was pd=0.5. 
+
+ 
+
+Figure 3. MV1: complexity reduction 
+
+ 
+
+a) 
+
+b) 
+
+Figure 4 MV2: complexity reduction a) non uniform bpa structure b) uniform bpa structure 
+
+a) 
+
+b) 
+
+Figure 5 MV8: complexity reduction a) non uniform bpa structure b) uniform bpa structure 
+
+American Institute of Aeronautics and Astronautics 
+
+ 
+9 
+
+ 
+ 
+
+ 
+
+ 
+
+ 
+Figure 6 MV1: Bel and Pl curves at different approximation levels 
+
+Figure 7 MV8: Bel and Pl curves at different approximation levels 
+
+ 
+
+C.  POWER-TELECOM INTEGRATED DESIGN PROBLEM 
+
+The techniques proposed in this paper were applied to the solution of a realistic case in which an integrated space 
+system made of a power generation unit and telecom subsystem need to be designed under uncertainty. This section 
+describes  the  power  and  telecom  models  used  in  this  paper.  The  tests  in  this  section  aim  to  show  how  to  use 
+Evidence-Based Robust Optimization can provide a more precise quantification of the design margins, compared to 
+a  more  traditional  approach  using  rule  of  the  thumb  margins.  The  models  in  this  section  are  derived  from  Ref. 
+16,17,18 and 19. 
+
+3.  Power System Model 
+
+The  power  system  (POW)  model  consists  of  a  solar  arrays  and  a  battery.  Starting  from  the  required  power  in 
+
+daylight and eclipse, the total required power is computed as: 
+
+ 
+
+ 
+
+(10) 
+
+where Pe is the power consumption during eclipse, Te is the orbital eclipse time, Xe is the energy transfer efficiency 
+during eclipse, Pd is the power consumption during daylight, Td is the orbital daylight time, Xd is the energy transfer 
+efficiency during daylight. The generated power at Beginning of Life (BOL)is: 
+
+ 
+
+ 
+
+ 
+
+ 
+
+(11) 
+
+(12) 
+
+where Po is the ideal power output per unit area of the solar arrays, cell the solar cell efficiency, GS is the solar flux, 
+Id is the inherent degradation and SA is the worst case angle of incidence of the Sun light. In order for the model to 
+
+American Institute of Aeronautics and Astronautics 
+
+10 
+
+ 
+
+ 
+ 
+
+eeddedsadPTPT+XXP=TocellSP=GcosBOLodSAP=PIcalculate the End of Life (EOL) power output per unit area, a solar array degradation over satellite lifetime factor Ld 
+is calculated as follows: 
+
+ 
+
+ 
+
+(13) 
+
+where cell is the array degradation per year, Life is the expected satellite lifetime. Once the satellite lifetime factor Ld 
+is computed, the power output during EOL, PEOL, can be calculated, based on the power output per unit area PBOL, as 
+follows: 
+
+ 
+
+ 
+
+Then the required solar array area Asa can be easily calculated as: 
+
+ 
+
+ 
+
+The solar array mass Msa is then derived from the solar array area Asa as follows: 
+ 
+
+ 
+
+(14) 
+
+(15) 
+
+(16) 
+
+where SA is the specific mass of the panel. The cell efficiency cell defines the type of solar cell that will be used 
+including its intrinsic characteristics. For every value of cell a database of cells, see Table 3, is used to obtain the 
+rest of the cell characteristics.  
+
+Table 3. Solar cell intrinsic characteristics. 
+
+  CdTe  p c-Si  u c-Si  3j GaAs  Conc. 
+
+Multijunc. cells 
+
+ηcell   0.165  0.203  0.25 
+
+0.30 
+
+cell  
+
+1 
+
+0.037  0.037 
+
+0.05 
+
+ 
+The PCU power output Ppcu is calculated as follows: 
+ 
+
+ 3j GaAs 
+
+0.38 
+
+0.05 
+
+ 
+
+0.41 
+
+0.05 
+
+(17) 
+
+where ηpcu is the PCU efficiency. Finally the PCU mass Mpcu is calculated as a fraction of the PCU power output: 
+
+ 
+
+ 
+
+(18) 
+
+where  apcu is a PCU  mass coefficient. The battery  mass  Mbat_pack, is computed  starting  from the energy density  Ed, 
+which defines the particular battery chemistry to be used (see Table 4). The efficiency depends on the type of battery 
+and  therefore  on  Ed.  The  efficiency  ηbatt    is  computed  by  linearly  interpolating  the  data  in  Table  4.  Furthermore, 
+using  a  simple  linear  relationship  in  logarithmic  scale,  the  depth  of  discharge  DOD  is  calculated  as  a  function  of 
+parameter  q  in  Table  4  and  the  number  of  cycles  Ncycles.  The  number  of  cycles  is  derived  from  the  orbital 
+characteristics and a fixed input in this analysis. 
+
+Table 4. Battery intrinsic characteristics 
+
+ 
+
+NiCd  NiH2 
+
+Ed (Wh/kg)  60  
+
+ηbatt (%) 
+
+85 
+
+75 
+
+86 
+
+q  
+
+145.8  176.3 
+
+ 
+The minimum required battery capacity Cmin can then be calculated as follows: 
+
+ 
+
+and the mass of the battery cells Mb is calculated as: 
+
+ 
+
+ 
+
+ 
+
+(19) 
+
+(20) 
+
+American Institute of Aeronautics and Astronautics 
+
+11 
+
+ 
+
+ 
+ 
+
+1LifedcellL=EOLBOLdP=PLsasaEOLPA=PsasasaM=A/pcusapcuP=PηpcupcupcuM=aPeeminbPTC=DODminbdCM=E4.  Telecom System Model 
+
+The  mass  and  power  of  the  telecom  system  (TTC)  are  computed  starting  from  the  link  budget.  The  required 
+communication link characteristics are the Bit Error Rate BER, the modulation, and ground station antenna gain Gr. 
+From the BER and modulation, one can compute the required energy per bit to noise ratio EbNo. The EbNo  plus the 
+data  rate  are  used  to  compute  the  Carrier  to  Noise  Ratio  CNratio  .  The  total  amount  of  data  to  be  transmitted  is 
+  where  B  is  the  total  amount  of  data  coming  from  the  C&DH  (Command  &  Data 
+assumed  to  be 
+
+Handling) system to telecom. Given the access time ta the required data rate Rt is calculated as follows: 
+
+ 
+
+ 
+
+where taq is the target acquisition time. Given the data rate and the bit to noise ratio, CNratio is simply: 
+
+ 
+
+ 
+
+With the Carrier to Noise Ratio one can compute the Equivalent Isotropic Radiated Power (EIRP) as follows: 
+
+ 
+
+ 
+
+(21) 
+
+(22) 
+
+(23) 
+
+where k = 228.6 dB, LTOTAL is the total signal loss and G/T is receiving system performance. The total signal loss is 
+computed adding  up all the  factors  that lead to a loss of signal energy  and an increase  of the  noise.  Here  most of 
+these losses or sources of noise have been modeled with simple equations or look-up tables. The free space losses 
+FSL are calculated from the distance from the ground station rGS as well as the frequency of the transmitter fT: 
+
+ 
+
+ 
+
+(24) 
+
+The  polarization  mismatch  (Ionospheric)  losses  PL  can  be  computed  from  the  Faraday  rotation  f  using  the 
+
+following relationship: 
+
+ 
+
+ 
+
+(25) 
+
+The atmospheric losses AL are a function of the ground station altitude HG, are collected in a look-up table (as in 
+Table  5)  and  interpolated.  The  dependency  of  the  atmospheric  losses  on  the  elevation  angle  is  modeled  by 
+introducing a simple sinusoidal function of the elevation angle e:  
+
+ 
+
+ 
+
+(26) 
+
+Table 5. Atmospheric losses' change with ground station altitude 
+
+HG (km) 
+ -2 to 2 
+ 2.1 to 6 
+ 6.1 to 10 
+ 10.1 to 14 
+ 14.1 to 18 
+
+AL (dB) 
+
+0.04 
+0.025 
+0.008 
+0.004 
+0.001 
+
+ 
+The Rain absorption losses RaL are then calculated by using the data in Ref 16 and 18. The worst case losses for 
+
+the Feeder loss FL, the Antenna misalignment loss AML and the implementation loss IL are reported in Table 6. 
+
+Table 6. Worst case losses 
+
+FL  [dB]  AML [dB] 
+
+IL  [dB] 
+
+2 
+
+0.5 
+
+2 
+
+ 
+
+Summing up all the individual losses provides the total loss LTOTAL: 
+ 
+
+ 
+
+(27) 
+
+The  system  noise  is  computed  from  the  antenna  noise  temperature  ANtemp  and  from  the  cabling  and  receiver 
+
+losses. The total noise gives the noise figure RNfig: 
+
+ 
+
+ 
+
+(28) 
+
+where TAMP is the amplifier noise, LA the cable loss, GAMP the low noise amplifier gain,  F the receiver noise figure 
+and  k0 = 290. The transmitter noise temperature Stemp is: 
+
+American Institute of Aeronautics and Astronautics 
+
+12 
+
+ 
+
+ 
+ 
+
+310dataT=B1010logdatataaqTR=t–t0ratiobtCNENR/ratioTOTALEIRPCNGTLk101032.420log20logSLGSTFrf1020logcosLfP=–LHsinLAA=eTOTALFSAMLLLLHLaLLL=+F++A+P+R+I/10/10/10/1010–11010–110AAAMPLLFoofigtempAMPGkkRNANT 
+
+ 
+
+(29) 
+
+Here ATtempT is the transmitter antenna noise temperature, TeT is the transmitter amplifier noise, LT is the transmitter 
+cable loss,  GT is the transmitter low  noise amplifier gain,  FT is the transmitter  noise  figure. The rain noise  Nrain is 
+then calculated as follows: 
+
+ 
+
+ 
+
+where RA is the rain absorption. The total system noise TSnoise then writes: 
+
+ 
+
+ 
+
+The receiving system performance G/T is then calculated as follows: 
+
+ 
+
+ 
+
+(30) 
+
+(31) 
+
+(32) 
+
+where Gr is the ground station receiver gain. The required transmission power Pld onboard the spacecraft is defined 
+as: 
+
+ 
+
+ 
+
+(33) 
+
+where Gt is the transmitter antenna gain. The spacecraft antenna type is chosen on the basis of the required antenna 
+gain Gt. It is well know that the best antenna for 5 dB ≤ gains ≤ 10 dB is the patch one, while the best for 10 dB < 
+gains ≤ 20 dB belongs to the horn type set, therefore the mass of the antenna is computed as follows. The antenna 
+characteristic  length  (it  is  the  diameter  of  the  normal  conical  section  for  conical  horns,  parabolas,  and  circular 
+patches, and an equivalent diameter for pyramidal horns and square/rectangular patches) is: 
+
+ 
+
+ 
+
+where ANT  is the antenna efficiency and c is the speed of light. If 5 ≤ Gt ≤ 10dB the mass of the patch is: 
+
+ 
+
+ 
+
+(34) 
+
+(35) 
+
+where  ρdiel  =  2000  kg/m3  and  ρcopper  =  8940  kg/m3  are  the  averaged  value  of  a  dielectric  material  density  and  the 
+copper  density,  respectively,  considering  a  2  mm  total  thickness,  with  1.5  mm  of  dielectric  material  and  0.5  mm 
+copper. If 10 dB < Gt ≤ 20 dB the lateral surface of the horn, SLAT, is computed as a conical surface: 
+
+ 
+
+and the mass, Mant,horn, is: 
+
+ 
+
+ 
+
+ 
+
+(36) 
+
+(37) 
+
+where Lhorn is the length of the horn antenna can be assumed equal to 2Dant from available data, and ρA is the areal 
+density, which has a mean value of approximately 15 kg/m2 (from available data18). If the gain of the antenna is > 
+20 dB, the parabola antenna is selected, the diameter of the antenna is computed with Eq.(34), and the mass of the 
+antenna, Mant,par, is: 
+
+ 
+
+ 
+
+(38) 
+
+where the surface density has a typical value of 10 kg/m2.  
+The  mass  of  the  amplifier  Mamp  is  a  function  of  PLd  (see  Ref.  17)  as  well  as  the  mass  of  the  case  Mcase.  An 
+identification parameter T  [0, 1] is used to identify the type of amplifier such that for TWTA type, T = 0 and for 
+solid state type T = 1. Finally, the casing mass Mcase is computed as a fraction of the amplifier mass: 
+
+ 
+
+ 
+
+(39) 
+
+where CMR is the ratio between the mass of the case and the amplifier mass. 
+
+American Institute of Aeronautics and Astronautics 
+
+13 
+
+ 
+
+ 
+ 
+
+/10/10/1010–11010–1/1010LLFTTTootemptempTeTGTkkSATTrain/1011–10oRAN=k1010lognoisefigtemprainTSRNSN/–rnoiseGTGTS–LdtPEIRPG0.51010tGantANTTcDf2,40.00150.0005antDantpatchdielcopperM2224antDantLAThornDSL,anthornLATAMS2,4antDantparAMcaseampCMRM=M5.  Test Results 
+
+The bpa structure and the design space for both the TTC and POW system are summarized in Table 7 and Table 
+8. The assumption for the integrated system is that the power demand for the TTC, PLd, is added to a fixed power 
+demand of 900W in daylight and 400W in eclipse. In these tests, it is assumed that the spacecraft spends half of the 
+time in eclipse and half in daylight with a maximum solar aspect angle of 15degrees. 
+
+ Figure  8  and  Figure  9  show  the  Bel  and  Pl  curves  for  the  TTC  system  and  a  comparison  to  the  margin 
+quantification  using  a  traditional  margin  approach.  The  cost  function  f  is  the  system  mass,  i.e.  the  mass  of  TTC. 
+Note that some intervals are overlapping. This is an interesting feature of Evidence Theory that allows one to deal 
+with what can be considered as the degree of ignorance on the bpa assignment. The assumption is that the spacecraft 
+is operating at 1.5e6 km from the Earth and has an access time of 1000s to a ground station with a receiving antenna 
+with a gain of 60dB. The volume of data is 120000 bits. The lifetime of the mission is assumed to be 4 years. The 
+Faraday rotation is assumed to be 9 degrees, the gain of the ground station antenna 60dB and the BER is 1e-6. The 
+ground station is assumed to be at altitude 0m with the spacecraft at 30 degrees of elevation angle. The gain of the 
+amplifier is 60dB with cable losses of 8dB, a noise temperature of 400K, and a noise figure of 10. The transmitter 
+amplifier  gain  is  assumed  to  be  20dB  with  noise  temperature  of  400K  and  noise  figure  of  10.  Note  that  the 
+characteristics of the POW and TTC subsystems were not selected to reflect a real mission scenario but only to test 
+the proposed methodology. With these values,  the difference between the optimal and robust solution is about 1kg 
+for the TTC.  
+
+ANT 
+
+CMR 
+
+Lt 
+
+Tant 
+
+Interval 
+ bpa 
+Interval 
+ bpa 
+Interval 
+ bpa 
+Interval 
+ bpa 
+
+Table 7. TTC bpa structure 
+
+[0.5 0.6] 
+
+[0.65 0.75] 
+
+[0.6 0.8] 
+
+[0.8 0.95] 
+
+0.2 
+
+0.5 
+
+0.2 
+
+[0.1 0.2] 
+
+[0.25 0.3] 
+
+[0.1 0.3] 
+
+0.1 
+
+ 
+
+0.5 
+[1 2] 
+0.2 
+
+0.35 
+[2 3] 
+0.3 
+
+0.15 
+[3 5] 
+0.5 
+
+[200 250] 
+
+[300 370] 
+
+[400 500] 
+
+0.1 
+
+0.6 
+
+ 
+
+0.3 
+
+Table 8. POW bpa structure 
+[0.65 0.7] 
+
+[0.5 0.6] 
+
+[0.72 0.75] 
+
+Xe 
+
+Xd 
+
+Id 
+
+PCU 
+
+Interval 
+ Bba 
+Interval 
+ Bba 
+Interval 
+ Bba 
+Interval 
+ Bba 
+
+0.1 
+
+0.6 
+
+0.3 
+
+[0.65 0.7] 
+
+[0.75 0.8] 
+
+[0.8 0.85] 
+
+0.2 
+
+0.6 
+
+0.2 
+
+[0.8 0.81] 
+
+[0.82 0.83] 
+
+[0.83 0.9] 
+
+0.7 
+
+0.2 
+
+0.1 
+
+[0.5 0.6] 
+
+[0.65 0.7] 
+
+[0.8 0.9] 
+
+0.1 
+
+0.6 
+
+0.3 
+
+ 
+
+ 
+
+Table 9. Design space for TTC and POW 
+
+Parameter 
+fT (MHz) 
+Mod 
+T 
+Gt (dB) 
+cell 
+sa (kg/m2) 
+aPCU (kg/W) 
+Ed (Wh/kg) 
+
+Low bound  Upper bound 
+
+7e3 
+
+0 
+0 
+5 
+0.1 
+1 
+
+0.01 
+60 
+
+11e3 
+
+1 
+1 
+20 
+0.3 
+2 
+
+0.02 
+100 
+
+The Bel margin curve in  Figure 8 was  generated assuming that a designer is taking the  min/min  solution (best 
+absolute performance) from problem (8) and adding a 25% margin to the required TTC power and to the mass of the 
+casing of the electronics. Then a system level margin is added to the total mass of the TTC. The system level margin 
+can range from 0% to 25% of the nominal mass of the TTC. For each mass plus system margin the value of Belief 
+and Plausibility was computed (see red and green thick solid lines). In Figure 9 a more conservative choice is made. 
+
+American Institute of Aeronautics and Astronautics 
+
+14 
+
+ 
+
+ 
+ 
+
+A 25% margin is added to the mass of antenna and amplifier and then a system level margin is added as before to 
+the  total  mass  of  the  TTC.  The  two  figures  show  that  the  margin  approach  either  underestimates  the  Belief  or 
+overestimates the margin. Figure 8, in fact, shows that the Belief of the mass corresponding to the maximum system 
+level margin is less than 60%. In the more conservative case, Figure 9, the Belief is 1 but the mass is overestimated 
+by about 0.5kg. 
+
+Figure 8. TTC system : margin approach vs. EBRO: best case margins. 
+
+ 
+
+ 
+
+Figure 9. TTC system: margin approach vs. EBRO: worst case margins. 
+
+Figure  10 shows the  Bel and  Pl curves computed  with different  c  from 0.7 to 0.99. The total number of focal 
+elements is 108 corresponding to 216 optimizations to compute the exact Bel and Pl. With c= 0.99 one can obtain a 
+reduction of the computational cost down to 26% and with no relevant error in Belief. A  c= 0.70 bring a reduction 
+down to 8% of the cost for an exact computation but with a limited error. In particular the error is very contained for 
+high  values  of  Belief  with  a  difference  of  about  0.1  kg  in  mass  for  the  same  Belief  of  less  than  0.1  difference  in 
+Belief for the same mass. 
+
+American Institute of Aeronautics and Astronautics 
+
+15 
+
+ 
+
+ 
+ 
+
+Figure 10. Approximated Bel and Pl curves for the Telecom system 
+
+ 
+
+Figure 11 shows a similar result for the integrated Power and Telecom system. The total number of focal elements in 
+this  case  is  8748  corresponding  to  17496  optimizations  for  an  exact  calculation.  The  simple  application  of  the 
+integrated  filtering  technique  beings  a  moderate  reduction  of  computational  effort  down  to  80%  of  the  cost  of  the 
+exact  computation.  The  resulting  Belief  is  underestimated  by  maximum  0.1.  The  application  of  the  approximated 
+min  and  max  evaluation  with  c=  0.90  brings  to  a  more  substantial  reduction,  down  to  22%  and  with  a  moderate 
+overestimation that reduces almost to zero close to the left and right extremes of the Belief curve. 
+
+Figure 11. Approximated Bel and Pl curves for the integrated Power and Telecom system. 
+
+ 
+
+VI PROBLEM DECOMPOSITION 
+
+The interesting aspect of space engineering systems is that although the overall design requires the contribution 
+of  all  the  subsystems,  some  subsystems  are  relatively  decoupled  and  exchange  information  only  through  their 
+specific design budgets. For example, the telecom system and the power system exchange information only through 
+the output power from the telecom system that becomes an input parameter to the power system. 
+
+Let us consider a function 
+
+with the following form: 
+
+ 
+
+  (40) 
+
+Now assume that the functional dependency of function f1 on design and uncertain parameters  di and ui is realized 
+through a function hi such that: 
+
+  (41) 
+
+American Institute of Aeronautics and Astronautics 
+
+16 
+
+ 
+
+ 
+ 
+
+:gDU113311132(,,...,,,,...,,,)(,,...,,,...,,)(,,)ffffffNiiiNNNiiNNiiiiigffduduuduududududuu113311132(,,...,,,,...,,,)(,,...,(,),...,(,))((,),)fffffffNiiiNNNiiiNNNiiiiiigfhhfhduduuduududududuuIf hi could be handled as independent variable the two functions f1 and fi could be decoupled and Bel(g<) could 
+
+be expressed as: 
+
+ 
+
+ 
+
+(42) 
+
+If  the  value  of  the  design  parameters  and  of  hi  is  fixed  then  the  two  functions  are  completely  decoupled  and  the 
+computation of the Belief associated to their sum requires the independent computation of the maxima and minima 
+. If the range of hi is well defined then one could compute the values of fi 
+of f1 and fi over the subspaces 
+
+and 
+
+for different values of hi by solving the following constrained problems: 
+
+ 
+
+ 
+
+(43) 
+
+If hi is fixed the computational complexity grows linearly Nf and the computation of the focal elements for each 
+function fi can be performed in parallel. If the vector ui contains a single uncertain parameter the result is an exact 
+representation of the Belief curve. If the vector ui contains multiple uncertain parameters then one can verify that the 
+belief function Beld is equal to the full belief curve Bel only for the  values for which the value of hi is verified. A 
+good  choice  to  fix  the  value  of  hi  is  to  take  the  solution  of  the  min-max  problem  (7).  As  an  illustrative  example 
+consider the following toy problem: 
+
+ 
+
+ 
+
+(44) 
+
+Each  uncertain  parameter  is  defined  over  the  three  intervals  [0  0.1],  [0.2  0.4]  and  [0.5  1]  with  two  different  bpa 
+assignments:  a)  0.3,  0.6  and  0.1  respectively  and  b)  0.3,  0.1  and  0.6  respectively.  Figure  12  shows  a  comparison 
+between the exact Bel and Pl curves and the approximated ones. The approximated Bel curves are very close to the 
+exact ones and are almost identical for some values of  The Pl approximation is instead very poor for low values 
+of  and  good  for  high  values  of    The  main  reason  is  that  only  one  value  of  h  as  used  and  it  was  the  one 
+corresponding  to  the  solution  of  the  min/max  problem.  All  minimum  values  within  the  focal  elements  of  the 
+decomposed problem are therefore overestimated while the maxima are exact for a large number of focal elements at 
+some specific . The main advantage of this approximation becomes clear when one looks at the computational cost. 
+The exact computation requires 162 optimizations, while the approximated computation requires two parallel sets of 
+optimizations with 3 optimizations per set, thus 6 in total. The computational cost of the approximation is therefore 
+3.7% of the cost of the exact computation and would grow linearly with the number of dimensions. 
+
+a) 
+
+b) 
+
+Figure 12. Decomposition approximation for bpa structure a) and bpa structure b) 
+
+ 
+
+American Institute of Aeronautics and Astronautics 
+
+17 
+
+ 
+
+ 
+ 
+
+11111133()()(),|,|fiiNdiAiAiiiiBelgmmAUUhgAhUUguu1U3iU33max,,,iiiiiihifhhududu222221221223221222131122fdduuuhuufduhgffVII  FINAL REMARKS 
+
+The  paper  presented  some  strategies  to  obtain  an  estimation  of  Belief  and  Plausibility  at  a  fraction  of  the 
+computational cost for their exact calculation. The approach presented in this paper provides the computation of the 
+optimal range of the design margin at a cost that is polynomial with the number of dimensions. An estimation of the 
+full Belief and Plausibility corves could be obtained with a cost reduction by over 80% but maintaining a contained 
+error. The effectiveness of the proposed strategies was proven on some benchmark problems, presenting a number 
+of  minima  and  maxima  exponentially  increasing  with  the  number  of  dimensions.  Furthermore,  two  space  system 
+design  cases  are  used  to  show  how  evidence-based  design  optimization  can  improve  the  design  of  space  systems 
+compared to a more traditional system margin approach.  From these test it appeared that, even in the ideal case in 
+which an optimal deterministic design solution is available, a traditional margin approach tend to underestimate the 
+reliability of the design margin or to overestimate their value, given the available information. This justifies the use 
+of  a  rigorous  margin  quantification.  Finally,  a  problem  decomposition  technique  was  proposed  to  reduce  the 
+computational complexity of space system design problems in which all the components contributing to the overall 
+design  budgets  are  only  weakly  coupled  through  a  single  function  (the  power  in  the  case  of  space  systems).  For 
+these  particular  problems,  it  seems  possible  to  obtain  massive  reductions  of  the  computational  cost  but,  more 
+importantly, a computational cost that increases linearly  with the number of integrated systems.  The results in this 
+paper, however, are only preliminary and a more in depth investigation is underway.  
+
+This work is partially supported through an ESA/ITI grant AO/1-5679/08/NL/CB 
+. 
+
+Acknowledgments 
+
+References 
+
+1 W.  Oberkampf  and  J.  C.  Helton.  Investigation  of  evidence  theory  for  engineering  applications.  In  4th  Non-Deterministic 
+
+Approaches Forum, volume 1569. AIAA, April 2002. 
+
+2 H.  Agarwal,  J.  E.  Renaud,  and  E.  L.  Preston.  Trust  region  managed  reliability  based  design  optimization  using  evidence 
+theory.  Collection  of  Technical  Papers  -  AIAA/ASME/ASCE/AHS/ASC  Structures,  Structural  Dynamics  and  Materials 
+Conference, 5:3449 – 3463, 2003. 
+
+3 H.-R.  Bae,  R.  V.  Grandhi,  and  R.  A.  Canfield.  Uncertainty  quantification  of  structural  response  using  evidence  theory. 
+Collection  of  Technical  Papers  -AIAA/ASME/ASCE/AHS/ASC  Structures,  Structural  Dynamics  and  Materials  Conference, 
+pages 2135 – 2145, 2002. 
+
+4 T. Fetz, M. Oberguggenberger, and S. Pittschmann. Applications of plausibility and evidence thoery in civil engineering. In 
+
+1st International Symposium on Imprecise Probabilities and Their Appplications, Ghent, Belgium, 29 June- 2 July 1999. 
+
+5 L.-P. He and F.-Z. Qu. Possibility and evidence theory-based design optimization: an overview. Kybernetes. 
+6 Z. P. Mourela  and  J.  Zho.  A  design  0ptimization  method  using  evidence  theory.  Journal of  Mechanical  Design,  128:901  – 
+
+908, 2006. 
+
+7 T. Denoeux. Inner and outer approximation of belief structures using a hierarchical clustering approach. International Journal 
+
+of Uncertainty, Fuzziness and Knowlege-Based Systems, 9(4):437 – 460, 2001. 
+
+8 J.  C.  Helton,  J.  Johnson,  W.  L.  Oberkampf,  and  C.  Sallaberry.  Sensitivity  analysis  in  conjunction  with  evidence  theory 
+
+representations of epistemic uncertainty.Reliability Engineering &amp; System Safety, 91(10-11):1414 – 34, October 2006. 
+
+9 J. C. Helton, J. Johnson, W. L. Oberkampf, and C. Storlie. A sampling-based computational strategy for the representation of 
+epistemic  uncertainty  in  model  predictions  with  evidence  theory.  Computer  Methods  in  Applied  Mechanics  and  Engineering, 
+196(37-40 SPEC ISS):3980 – 3998, August 2007. 
+
+10 
+
+J. C. Helton, J. Johnson, C. Sallaberry, and C. Storlie. Survey of sampling based methods for uncertainty and sensitivity 
+
+analysis. Reliability Engineering &amp; System Safety, 91(10-11):1175 – 209, October 2006. 
+
+11  M. Vasile. Robust mission design through evidence theory and multiagent collaborative search. Annals of the New York 
+
+Academy of Sciences, 1065:152–173, Dec. 2005. 
+
+12  N.  Croisard,  M.  Vasile,  S.  Kemble,  and  G.  Radice.  Preliminary  space  mission  design  under  uncertainty.  Acta 
+
+Astronautica, 66:5 – 6, 2010. 
+
+13  G. Shafer. A Mathematical Theory of Evidence. Princeton University Press, 1976. 
+14  B. Tessem. Approximations for efficient computation in the theory of evidence. Artificial Intelligence. 
+15  M. Vasile, E. Minisci, and M. Locatelli. An inflationary differential evolution algorithm for space trajectory optimization. 
+
+IEEE Transactions on Evolutionary Computation, 2011. 
+
+16  Dennis Roddy Satellite Communications 3rd ed.,  McGraw-Hill, 2001. 
+17 
+
+J.  Larson,  James  R.  Wertz  Space  Mission  Analysis  and  Design  3rd  ed.  ,  Microcosm  Press  &  Kluwer  Academic 
+
+Publishers. 
+
+18  Constantine A. Balanis Antenna Theory Analysis and Design 3rd ed. , Wiley-Interscience, 2005. 
+19  Mukund R. Patel. Spacecraft Power Systems,  CRC Press, 2004. 
+
+American Institute of Aeronautics and Astronautics 
+
+18 
+
+ 
+
+ 
+ 
+
+

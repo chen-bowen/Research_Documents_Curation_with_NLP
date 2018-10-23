@@ -1,0 +1,899 @@
+3
+1
+0
+2
+
+ 
+
+g
+u
+A
+6
+
+ 
+
+ 
+ 
+]
+S
+D
+.
+s
+c
+[
+ 
+ 
+
+2
+v
+1
+2
+8
+7
+
+.
+
+7
+0
+3
+1
+:
+v
+i
+X
+r
+a
+
+Algorithms for the Majority Rule (+) Consensus
+
+Tree and the Frequency Diﬀerence Consensus
+
+Tree
+
+Jesper Jansson1, Chuanqi Shen2, and Wing-Kin Sung3,4
+
+1 Laboratory of Mathematical Bioinformatics (Akutsu Laboratory),
+
+Institute for Chemical Research,
+
+Kyoto University, Gokasho, Uji, Kyoto 611-0011, Japan.
+
+E-mail: jj@kuicr.kyoto-u.ac.jp
+
+Funded by The Hakubi Project and KAKENHI grant number 23700011.
+2 Stanford University, 450 Serra Mall, Stanford, CA 94305-2004, U.S.A.
+
+3 School of Computing, National University of Singapore, 13 Computing Drive,
+
+E-mail: shencq@stanford.edu
+
+4 Genome Institute of Singapore, 60 Biopolis Street, Genome, Singapore 138672.
+
+Singapore 117417.
+
+E-mail: ksung@comp.nus.edu.sg
+
+Abstract. This paper presents two new deterministic algorithms for
+constructing consensus trees. Given an input of k phylogenetic trees with
+identical leaf label sets and n leaves each, the ﬁrst algorithm constructs
+the majority rule (+) consensus tree in O(kn) time, which is optimal
+since the input size is Ω(kn), and the second one constructs the frequency
+diﬀerence consensus tree in min{O(kn2), O(kn(k + log2 n))} time.
+
+1
+
+Introduction
+
+A consensus tree is a phylogenetic tree that summarizes a given collection of
+phylogenetic trees having the same leaf labels but diﬀerent branching struc-
+tures. Consensus trees are used to resolve structural diﬀerences between two or
+more existing phylogenetic trees arising from conﬂicts in the raw data, to ﬁnd
+strongly supported groupings, and to summarize large sets of candidate trees
+obtained by bootstrapping when trying to infer a new phylogenetic tree accu-
+rately [2,10,12,27].
+
+Since the ﬁrst type of consensus tree was proposed by Adams III [1] in 1972,
+many others have been deﬁned and analyzed. See, e.g., [5], Chapter 30 in [12],
+or Chapter 8.4 in [27] for some surveys. Which particular type of consensus
+tree to use in practice depends on the context. For example, the strict consensus
+tree [25] is very intuitive and easy to compute [9] and may be suﬃcient when there
+is not so much disagreement in the data, the majority rule consensus tree [21]
+is “the optimal tree to report if we view the cost of reporting an estimate of
+the phylogeny to be a linear function of the number of incorrect clades in the
+estimate and the number of true clades that are missing from the estimate and we
+
+Fig. 1. Let S = {T1, T2, T3, T4} as shown above with L = Λ(T1) = Λ(T2) = Λ(T3) =
+Λ(T4) = {a, b, c, d, e}. The only non-trivial majority cluster of S is {a, b}, the non-
+trivial majority (+) clusters of S are {a, b} and {a, b, c, d}, and the non-trivial frequency
+diﬀerence clusters of S are {a, b}, {a, b, c, d}, and {c, d}. The majority rule, majority
+rule (+), and frequency diﬀerence consensus trees of S are displayed.
+
+view the reporting of an incorrect grouping as a more serious error than missing
+a clade” [16], and the R* consensus tree [5] provides a statistically consistent
+estimator of the species tree topology when combining gene trees [10]. Therefore,
+scientists need eﬃcient algorithms for constructing a broad range of diﬀerent
+consensus trees.
+
+In a recent series of papers [8,17,18,19], we have developed fast algorithms
+for computing the majority rule consensus tree [21], the loose consensus tree [4]
+(also known in the literature as the combinable component consensus tree or
+the semi-strict consensus tree), a greedy consensus tree [5,13], the R* consensus
+tree [5], and consensus trees for so-called multi-labeled phylogenetic trees (MUL-
+trees) [20]. In this paper, we study two relatively new types of consensus trees
+called the majority rule (+) consensus tree [7,11] and the frequency diﬀerence
+consensus tree [14], and give algorithms for constructing them eﬃciently.
+
+1.1 Deﬁnitions and notation
+
+We shall use the following basic deﬁnitions. A phylogenetic tree is a rooted,
+unordered, leaf-labeled tree in which every internal node has at least two children
+and all leaves have diﬀerent labels. (Below, phylogenetic trees are referred to as
+“trees” for short). For any tree T , the set of all nodes in T is denoted by V (T )
+and the set of all leaf labels in T by Λ(T ). Any nonempty subset C of Λ(T ) is
+called a cluster of Λ(T ); if |C| = 1 or C = Λ(T ) then C is trivial, and otherwise,
+
+T :1abcdeT :2abcdeT :3abcedT :4cdbaeMajority rule:abcdeMajority rule (+):abcdeFrequency diff.:abcdecluster. The set C(T ) = (cid:83)
+
+C is non-trivial. For any u ∈ V (T ), T [u] denotes the subtree of T rooted at the
+node u. Observe that if u is the root of T or if u is a leaf then Λ(T [u]) is a trivial
+u∈V (T ){Λ(T [u])} is called the cluster collection of T ,
+and any cluster C ⊆ Λ(T ) is said to occur in T if C ∈ C(T ).
+Two clusters C1, C2 ⊆ Λ(T ) are compatible if C1 ⊆ C2, C2 ⊆ C1, or C1∩C2 =
+∅. If C1 and C2 are compatible, we write C1 (cid:94) C2; otherwise, C1 (cid:54)(cid:94) C2. A cluster
+C ⊆ Λ(T ) is compatible with T if C (cid:94) Λ(T [u]) holds for every node u ∈ V (T ).
+In this case, we write C (cid:94) T , and C (cid:54)(cid:94) T otherwise. If T1 and T2 are two trees
+with Λ(T1) = Λ(T2) such that every cluster in C(T1) is compatible with T2 then
+it follows that every cluster in C(T2) is compatible with T1, and we say that T1
+and T2 are compatible. Any two clusters or trees that are not compatible are
+called incompatible.
+Next, let S = {T1, T2, . . . , Tk} be a set of trees satisfying Λ(T1) = Λ(T2) =
+··· = Λ(Tk) = L for some leaf label set L. For any cluster C of L, denote the
+set of all trees in S in which C occurs by KC(S) and the set of all trees in S
+that are incompatible with C by QC(S). Thus, KC(S) = {Ti : C ∈ C(Ti)} and
+QC(S) = {Ti : C (cid:54)(cid:94) Ti}. Deﬁne three special types of clusters:
+• If |KC(S)| > k
+• If |KC(S)| > |QC(S)| then C is a majority (+) cluster of S.
+• If |KC(S)| > max{|KD(S)|
+
+2 then C is a majority cluster of S.
+
+diﬀerence cluster of S.
+
+: D ⊆ L and C (cid:54)(cid:94) D} then C is a frequency
+
+(Informally, a frequency diﬀerence cluster is a cluster that occurs more frequently
+than each of the clusters that is incompatible with it.) Note that a majority
+cluster of S is always a majority (+) cluster of S and that a majority (+) cluster
+of S is always a frequency diﬀerence cluster of S, but not the other way around.
+The majority rule consensus tree of S [21] is the tree T such that Λ(T ) = L
+and C(T ) consists of all majority clusters of S. Similarly, the majority rule (+)
+consensus tree of S [7,11] is the tree T such that Λ(T ) = L and C(T ) consists
+of all majority (+) clusters of S, and the frequency diﬀerence consensus tree
+of S [14] is the tree T such that Λ(T ) = L and C(T ) consists of all frequency
+diﬀerence clusters of S. See Fig. 1 for some examples.
+From here on, S is assumed to be an input set of identically leaf-labeled trees,
+and the leaf label set of S is denoted by L. To express the size of the input, we
+deﬁne k = |S| and n = |L|.
+
+1.2 Previous work
+
+Margush and McMorris [21] introduced the majority rule consensus tree in 1981,
+and a deterministic algorithm for constructing it in optimal O(kn) worst-case
+running time was presented recently in [18]. (A randomized algorithm with
+O(kn) expected running time and unbounded worst-case running time was given
+earlier by Amenta et al. [2].) The majority rule consensus tree has several de-
+sirable mathematical properties [3,16,22], and algorithms for constructing it
+
+have been implemented in popular computational phylogenetics packages like
+PHYLIP [13], TNT [15], COMPONENT [23], MrBayes [24], SumTrees in Den-
+droPy [26], and PAUP* [28]. Consequently, it is one of the most widely used con-
+sensus trees in practice [7, p. 450]. One drawback of the majority rule consensus
+tree is that it may be too harsh and discard valuable branching information. For
+example, in Fig. 1, even though the cluster {a, b, c, d} is compatible with 75% of
+the input trees, it is not included in the majority rule consensus tree. For this
+reason, people have become interested in alternative types of consensus trees
+that include all the majority clusters and at the same time, also include other
+meaningful, well-deﬁned kinds of clusters. The majority rule (+) consensus tree
+and the frequency diﬀerence consensus tree are two such consensus trees.
+
+The majority rule (+) consensus tree was deﬁned by Dong et al. [11] in 2010.
+It was obtained as a special case of an attempted generalization by Cotton and
+Wilkinson [7] of the majority rule consensus tree. According to [11], Cotton and
+Wilkinson [7] suggested two types of supertrees5 called majority-rule (-) and
+majority-rule (+) that were supposed to generalize the majority rule consensus
+tree. Unexpectedly, only the ﬁrst one did, and by restricting the second one to the
+consensus tree case, [11] arrived at the majority rule (+) consensus tree. Dong
+et al. [11] established some fundamental properties of this type of consensus tree
+and pointed out the existence of a polynomial-time algorithm for constructing it,
+but left the task of ﬁnding the best possible such algorithm as an open problem.
+As far as we know, no implementation for computing the majority rule (+)
+consensus tree is publicly available.
+
+Goloboﬀ et al. [14] initially proposed the frequency diﬀerence consensus tree
+as a way to improve methods for evaluating group support in parsimony analysis.
+Its relationships to other consensus trees have been studied in [11]. A method
+for constructing it has been implemented in the free software package TNT [15]
+but the algorithm used is not documented and its time complexity is unknown.
+We note that since the number of clusters occurring in S may be Ω(kn), a naive
+algorithm that compares every cluster in S to every other cluster in S directly
+would require Ω(k2n2) time.
+
+1.3 Organization of the paper and new results
+
+Due to space constraints, some proofs have been omitted from the conference
+version of this paper. Please see the journal version for the complete proofs.
+
+The paper is organized as follows. Section 2 summarizes some results from the
+literature that are needed later. In Section 3, we modify the techniques from [18]
+to obtain an O(kn)-time algorithm for the majority rule (+) consensus tree. Its
+running time is optimal because the size of the input is Ω(kn); hence, we resolve
+the open problem of Dong et al. [11] mentioned above. Next, Section 4 gives a
+min{O(kn2), O(kn(k + log2 n))}-time algorithm for constructing the frequency
+diﬀerence consensus tree (here, the second term is smaller than the ﬁrst term
+
+5 A supertree is a generalization of a consensus tree that does not require the input
+
+trees to have identical leaf label sets.
+
+if k = o(n); e.g., if k = O(1) then the running time reduces to O(n log2 n)).
+Our algorithms are fully deterministic and do not need to use hashing. Finally,
+Section 5 discusses implementations.
+
+2 Preliminaries
+
+2.1 The delete and insert operations
+
+The delete and insert operations are two operations that modify the structure
+of a tree. They are deﬁned in the following way.
+
+Let T be a tree and let u be any non-root, internal node in T . The delete
+operation on u makes all of u’s children become children of the parent of u,
+and then removes u and the edge between u and its parent. (See, e.g., Figure 2
+in [17] for an illustration.) The time needed for this operation is proportional
+to the number of children of u, and the eﬀect of applying it is that the cluster
+collection of T is changed to C(T ) \ {Λ(T [u])}. Conversely, the insert operation
+creates a new node u that becomes: (1) a child of an existing internal node v, and
+(2) the parent of a proper subset X of v’s children satisfying |X| ≥ 2; the eﬀect
+vi∈X Λ(T [vi]).
+
+is that C(T ) is changed to C(T ) ∪ {Λ(T [u])}, where Λ(T [u]) =(cid:83)
+
+2.2 Subroutines
+
+The new algorithms in this paper use the following algorithms from the litera-
+ture as subroutines: Day’s algorithm [9], Procedure One-Way Compatible [17],
+and Procedure Merge Trees [17]. Day’s algorithm [9] is used to eﬃciently check
+whether any speciﬁed cluster that occurs in a tree T also occurs in another
+tree Tref , and can be applied to ﬁnd the set of all clusters that occur in both T
+and Tref
+in linear time. Procedure One-Way Compatible takes as input two
+trees TA and TB with identical leaf label sets and outputs a copy of TA in which
+every cluster that is not compatible with TB has been removed. (The procedure is
+asymmetric; e.g., if TA consists of n leaves attached to a root node and TB (cid:54)= TA
+then One-Way Compatible(TA, TB) = TA, while One-Way Compatible(TB, TA)
+= TB.) Procedure Merge Trees takes as input two compatible trees with iden-
+tical leaf label sets and outputs a tree that combines their cluster collections.
+Their properties are summarized below; for details, see references [9] and [17].
+
+Lemma 1. (Day [9]) Let Tref and T be two given trees with Λ(Tref ) = Λ(T ) = L
+and let n = |L|. After O(n) time preprocessing, it is possible to determine, for
+any u ∈ V (T ), if Λ(T [u]) ∈ C(Tref ) in O(1) time.
+Lemma 2. ([17]) Let TA and TB be two given trees with Λ(TA) = Λ(TB) = L
+and let n = |L|. Procedure One-Way Compatible(TA, TB) returns a tree T with
+Λ(T ) = L such that C(T ) = {C ∈ C(TA) : C is compatible with TB} in O(n)
+time.
+
+Lemma 3. ([17]) Let TA and TB be two given trees with Λ(TA) = Λ(TB) = L
+that are compatible and let n = |L|. Procedure Merge Trees(TA, TB) returns a
+tree T with Λ(T ) = L and C(T ) = C(TA) ∪ C(TB) in O(n) time.
+
+3 Constructing the majority rule (+) consensus tree
+
+This section presents an algorithm named Maj Rule Plus for computing the
+majority rule (+) consensus tree of S in (optimal) O(kn) time.
+
+The pseudocode of Maj Rule Plus is given in Fig. 2. The algorithm has
+two phases. Phase 1 examines the input trees, one by one, to construct a set of
+candidate clusters that includes all majority (+) clusters. Then, Phase 2 removes
+all candidate clusters that are not majority (+) clusters.6
+
+During Phase 1, the current candidate clusters are stored as nodes in a tree T .
+Every node v in T represents a current candidate cluster Λ(T [v]) and has a
+counter count(v) that, starting from the iteration at which Λ(T [v]) became a
+candidate cluster, keeps track of the number of input trees in which it occurs
+minus the number of input trees that are incompatible with it. More precisely,
+while treating the tree Tj for any j ∈ {2, 3, . . . , k} in Step 3.1, count(v) for
+each current candidate cluster Λ(T [v]) is updated as follows: if Λ(T [v]) occurs
+in Tj then count(v) is incremented by 1, if Λ(T [v]) does not occur in Tj and is
+not compatible with Tj then count(v) is decremented by 1, and otherwise (i.e.,
+Λ(T [v]) does not occur in Tj but is compatible with Tj) count(v) is unchanged.
+Furthermore, if any count(v) reaches 0 then the node v is deleted from T so
+that Λ(T [v]) is no longer a current candidate cluster. Next, in Step 3.3, every
+cluster occurring in Tj that is not a current candidate but compatible with T is
+inserted into T (thus becoming a current candidate cluster) and its counter is
+initialized to 1. Lemma 4 below proves that the set of majority (+) clusters of S
+is contained in the set of candidate clusters at the end of Phase 1.
+Lemma 4. For any C ⊆ L, if C is a majority (+) cluster of S then C ∈ C(T )
+at the end of Phase 1.
+Proof. Suppose that C is a majority (+) cluster of S. Let Tx be any tree in QC(S)
+and consider iteration x in Step 3: If C is a current candidate at the beginning of
+iteration x then its counter will be decremented, cancelling out the occurrence
+of C in one tree Tj where 1 ≤ j < x; otherwise, C may be prevented from being
+inserted into T in at most one later iteration j (where x < j ≤ k and C ∈ C(Tj))
+because of some cluster occurring in Tx. It follows from |KC(S)| − |QC(S)| > 0
+that C’s counter will be greater than 0 at the end of Phase 1, and therefore
+C ∈ C(T ).
+(cid:117)(cid:116)
+In Phase 2, Step 5 of the algorithm computes the values of |KC(S)| and
+|QC(S)| for every candidate cluster C and stores them in K (v) and Q(v), re-
+spectively, where C = Λ(T [v]). Finally, Step 6 removes every candidate cluster C
+that does not satisfy the condition |KC(S)| > |QC(S)|. By deﬁnition, the clusters
+that remain in T are the majority (+) clusters.
+
+Theorem 1. Algorithm Maj Rule Plus constructs the majority rule (+) con-
+sensus tree of S in O(kn) time.
+6 This basic strategy was previously used in the O(kn)-time algorithm in [18] for
+
+computing the majority rule consensus tree.
+
+Algorithm Maj Rule Plus
+Input: A set S = {T1, T2, . . . , Tk} of trees with Λ(T1) = Λ(T2) = ··· = Λ(Tk).
+Output: The majority rule (+) consensus tree of S.
+
+/* Phase 1 */
+
+1 T := T1
+2 for each v ∈ V (T ) do count(v) := 1
+3 for j := 2 to k do
+3.1
+
+for each v ∈ V (T ) do
+
+if Λ(T [v]) occurs in Tj then count(v) := count(v) + 1
+else if Λ(T [v]) is not compatible with Tj then count(v) := count(v)−1
+
+endfor
+for each v ∈ V (T ) in top-down order do
+if count(v) = 0 then delete node v.
+
+for every C ∈ C(Tj) that is compatible with T but does not occur in T do
+
+3.2
+
+3.3
+
+Insert C into T .
+Initialize count(v) := 1 for the new node v satisfying Λ(T [v]) = C.
+
+endfor
+
+endfor
+
+/* Phase 2 */
+
+4 for each v ∈ V (T ) do K (v) := 0; Q(v) := 0
+5 for j := 1 to k do
+5.1
+
+for each v ∈ V (T ) do
+
+if Λ(T [v]) occurs in Tj then K (v) := K (v) + 1
+else if Λ(T [v]) is not compatible with Tj then Q(v) := Q(v) + 1
+
+endfor
+
+6 for each v ∈ V (T ) in top-down order do
+
+if K (v) ≤ Q(v) then perform a delete operation on v.
+
+7 return T
+End Maj Rule Plus
+
+Fig. 2. Algorithm Maj Rule Plus for constructing the majority rule (+) consensus tree.
+
+Proof. The correctness follows from Lemma 4 and the above discussion.
+
+The time complexity analysis is analogous to the proof of Theorem 4 in [18].
+First consider Phase 1. Step 3.1 takes O(n) time by: (1) running Day’s algorithm
+with Tref = Tj and then checking each node v in V (T ) to see if Λ(T [v]) occurs
+in Tj (according to Lemma 1, this requires O(n) time for preprocessing, and each
+of the O(n) nodes in V (T ) may be checked in O(1) time), and (2) computing
+X := One-Way Compatible(T, Tj) and then checking for each node v in V (T )
+if v does not exist in X to determine if Λ(T [v]) (cid:54)(cid:94) Tj (this takes O(n) time
+by Lemma 2). The delete operations in Step 3.2 take O(n) time because the
+nodes are handled in top-down order, which means that for every node, its
+
+parent will change at most once in each iteration. In Step 3.3, deﬁne Y :=
+One-Way Compatible(Tj, T ) and Z := Merge Trees(Y, T ). Then by Lemmas 2
+and 3, the cluster collection of Y consists of the clusters occurring in Tj that are
+compatible with the set of current candidates, and Z is the result of inserting
+these clusters into T . Thus, Step 3.3 can be implemented by computing Y and Z,
+updating T ’s structure according to Z, and setting the counters of all new nodes
+to 1, so Step 3.3 takes O(n) time. The main loop in Step 3 consists of O(k)
+iterations, and Phase 1 therefore takes O(kn) time in total.
+
+Next, Phase 2 also takes O(kn) time because Step 5.1 can be implemented in
+O(n) time with the same techniques as in Step 3.1, and Step 6 is performed in
+O(n) time by handling the nodes in top-down order so that each node’s parent
+(cid:117)(cid:116)
+is changed at most once, as in Step 3.2.
+
+4 Constructing the frequency diﬀerence consensus tree
+Here, we present an algorithm for ﬁnding the frequency consensus tree of S in
+min{O(kn2), O(kn(k + log2 n))} time. It is called Frequency Difference and is
+described in Section 4.1 below. The algorithm uses the procedure Merge Trees
+as well as a new procedure named Filter Clusters whose details are given in
+Section 4.2.
+For each tree Tj ∈ S and each node u ∈ V (Tj), deﬁne the weight of u as the
+value |KΛ(Tj [u])(S)|, i.e., the number of trees from S in which the cluster Λ(Tj[u])
+occurs, and denote it by w(u). For convenience, also deﬁne w(C) = w(u), where
+C = Λ(Tj[u]). The input to Procedure Filter Clusters is two trees TA, TB with
+Λ(TA) = Λ(TB) = L such that every cluster occurring in TA or TB also occurs
+in at least one tree in S, and the output is a copy of TA in which every cluster
+that is incompatible with some cluster in TB with a higher weight has been
+removed. Formally, the output of Filter Clusters is a tree T with Λ(T ) =
+L such that C(T ) = {Λ(TA[u]) : u ∈ V (TA) and w(u) > w(x) for every x ∈
+V (TB) with Λ(TA[u]) (cid:54)(cid:94) Λ(TB[x])}.
+
+4.1 Algorithm Frequency Difference
+
+of trees denote the union (cid:83)
+
+We ﬁrst describe Algorithm Frequency Difference. Refer to Fig. 3 for the
+pseudocode.
+The algorithm starts by computing the weight w(C) of every cluster C oc-
+curring in S in a preprocessing step (Step 1). Next, let C(S) for any set S
+Ti∈S C(Ti), and for any j ∈ {1, 2, . . . , k}, deﬁne a
+forward frequency diﬀerence consensus tree of {T1, T2, . . . , Tj} as any tree that
+includes every cluster C in C({T1, T2, . . . , Tj}) satisfying w(C) > w(X) for all
+X ∈ C({T1, T2, . . . , Tj}) with C (cid:54)(cid:94) X. Steps 2–3 use Procedure Filter Clusters
+from Section 4.2 to build a tree T that, after any iteration j ∈ {1, 2, . . . , k}, is
+a forward frequency diﬀerence consensus tree of {T1, T2, . . . , Tj}, as proved in
+Lemma 5 below. After iteration k, C(T ) contains all frequency diﬀerence clusters
+of S but possibly some other clusters as well, so Step 4 applies Filter Clusters
+again to remove all non-frequency diﬀerence clusters of S from T .
+
+Algorithm Frequency Difference
+Input: A set S = {T1, T2, . . . , Tk} of trees with Λ(T1) = Λ(T2) = ··· = Λ(Tk).
+Output: The frequency diﬀerence consensus tree of S.
+
+/* Preprocessing */
+
+1 Compute w(C) for every cluster C occurring in S.
+
+/* Main algorithm */
+
+2 T := T1
+3 for j := 2 to k do
+
+A := Filter Clusters(T, Tj); B := Filter Clusters(Tj, T )
+T := Merge Trees(A, B)
+
+endfor
+
+4 for j := 1 to k do T := Filter Clusters(T, Tj)
+5 return T
+End Frequency Difference
+
+Fig. 3. Algorithm Frequency Difference for constructing the frequency diﬀerence con-
+sensus tree.
+
+Lemma 5. For any j ∈ {2, 3, . . . , k}, suppose that T is a forward frequency dif-
+ference consensus tree of {T1, T2, . . . , Tj−1}. Let A := Filter Clusters(T, Tj)
+and B := Filter Clusters(Tj, T ). Then Merge Trees(A, B) is a forward fre-
+quency diﬀerence consensus tree of {T1, T2, . . . , Tj}.
+
+Proof. (Omitted from the conference version due to space constraints.)
+
+(cid:117)(cid:116)
+
+Theorem 2. Algorithm Frequency Difference constructs the frequency dif-
+ference consensus tree of S in min{O(kn2), O(k2n)} + O(k · f (n)) time, where
+f (n) is the running time of Procedure Filter Clusters.
+Proof. After completing iteration k of Step 3, C(T ) is a superset of the set of all
+frequency diﬀerence clusters of S by Lemma 5. Next, Step 4 removes all non-
+frequency diﬀerence clusters of S, so the output will be the frequency diﬀerence
+consensus tree of S.
+
+To analyze the time complexity, ﬁrst consider how to compute all the weights
+in Step 1. One method is to ﬁrst ﬁx an arbitrary ordering of L and represent every
+cluster C of L as a bit vector of length n (for every i ∈ {1, 2, . . . , n}, the ith bit is
+set to 1 if and only if the ith leaf label belongs to C). Then, spend O(kn2) time to
+construct a list of bit vectors for all O(kn) clusters occurring in S by a bottom-up
+traversal of each tree in S, sort the resulting list of bit vectors by radix sort, and
+traverse the sorted list to identify the number of occurrences of each cluster. All
+this takes O(kn2) time. An alternative method, which uses O(k2n) time, is to
+initialize the weight of every node in S to 1 and then, for j ∈ {1, 2, . . . , k}, apply
+Day’s algorithm (see Lemma 1) with Tref = Tj and T ranging over all Ti with
+1 ≤ i ≤ k, i (cid:54)= j to ﬁnd all clusters in T that also occur in Tj and increase the
+
+weights of their nodes in T by 1. Therefore, Step 1 takes min{O(kn2), O(k2n)}
+time. Next, Steps 3 and 4 make O(k) calls to the procedures Merge Trees and
+Filter Clusters. The running time of Merge Trees is O(n) by Lemma 3 and
+the running time of Filter Clusters is f (n) = Ω(n), so Steps 3 and 4 take
+O(k · f (n)) time.
+(cid:117)(cid:116)
+
+Lemma 7 in the next subsection shows that f (n) = O(n log2 n) is possible,
+
+which yields:
+
+Corollary 1. Algorithm Frequency Difference constructs the frequency dif-
+ference consensus tree of S in min{O(kn2), O(kn(k + log2 n))} time.
+
+4.2 Procedure Filter Clusters
+Recall that for any node u in any input tree Tj, its weight w(u) is |KΛ(Tj [u])(S)|.
+Also, w(C) = w(u), where C = Λ(Tj[u]). We assume that all w(u)-values have
+been computed in a preprocessing step and are available.
+Let T be a tree. For every nonempty X ⊆ V (T ), lca T (X) denotes the lowest
+common ancestor of X in T . To obtain a fast solution for Filter Clusters, we
+need the next lemma.
+
+Lemma 6. Let T be a tree, let X be any cluster of Λ(T ), and let rX = lca T (X).
+For any v ∈ V (T ), it holds that X (cid:54)(cid:94) Λ(T [v]) if and only if: (1) v lies on a path
+from a child of rX to some leaf belonging to X; and (2) Λ(T [v]) (cid:54)⊆ X.
+
+Proof. Given T , X, rX , and v as in the lemma statement, there are four possible
+cases: (i) v is a proper ancestor of rX or equal to rX ; (ii) v lies on a path from
+a child of rX to some leaf in X and all leaf descendants of v belong to X; (iii) v
+lies on a path from a child of rX to some leaf in X and not all leaf descendants
+of v belong to X; or (iv) v is a proper descendant of rX that does not lie on any
+path from a leaf in X to rX . In case (i), X ⊆ Λ(T [v]). In case (ii), Λ(T [v]) ⊆ X.
+In case (iii), Λ(T [v]) (cid:54)⊆ X while X ∩ Λ(T [v]) (cid:54)= ∅. In case (iv), X ∩ Λ(T [v]) = ∅.
+By the deﬁnition of compatible clusters, X (cid:54)(cid:94) Λ(T [v]) if and only if case (iii)
+(cid:117)(cid:116)
+occurs.
+
+Lemma 6 leads to an O(n2)-time method for Filter Clusters, which we now
+brieﬂy describe. For each node u ∈ V (TA) in top-down order, do the following:
+Let X = Λ(TA[u]) and ﬁnd all v ∈ V (TB) such that X (cid:54)(cid:94) Λ(TB[v]) in O(n) time
+by doing bottom-up traversals of TB to ﬁrst mark all ancestors of leaves belonging
+to X that are proper descendants of the lowest common ancestor of X in TB,
+and then unmarking all marked nodes that have no leaf descendants outside
+of X. By Lemma 6, X (cid:54)(cid:94) Λ(TB[v]) if and only if v is one of the resulting marked
+nodes. If w(u) ≤ w(v) for any such v then do a delete operation on u in TA.
+Clearly, the total running time is O(n2). (This simple method gives f (n) = O(n2)
+in Theorem 2 in Section 4.1, and hence a total running time of O(kn2) for
+Algorithm Frequency Difference.) Below, we reﬁne this idea to get an even
+faster solution for Filter Clusters.
+
+be written recursively as C(TA) = (cid:83)
+
+τ∈σ(π) C(τ ) ∪(cid:83)
+
+to get rid of any cluster in(cid:83)
+into a temporary tree Rs. Next, Steps 4–5 check all clusters in(cid:83)
+
+High-level description: We use the centroid path decomposition technique [6]
+to divide the nodes of TA into a so-called centroid path and a set of side trees. A
+centroid path of TA is deﬁned as a path in TA of the form π = (cid:104)pα, pα−1, . . . , p1(cid:105),
+where pα is the root of TA, the node pi−1 for every i ∈ {2, . . . , α} is any child
+of pi with the maximum number of leaf descendants, and p1 is a leaf. Given
+a centroid path π, removing π and all its incident edges from TA produces a
+set σ(π) of disjoint trees whose root nodes are children of nodes belonging to π
+in TA; these trees are called the side trees of π. Importantly, |Λ(τ )| ≤ n/2 for
+every side tree τ of π. Also, {Λ(τ ) : τ ∈ σ(π)} forms a partition of L \ {p1}.
+Furthermore, if π is a centroid path of TA then the cluster collection C(TA) can
+pi∈π{Λ(TA[pi])}. Intuitively,
+this allows the cluster collection of TA to be broken into smaller sets that can
+be checked more easily, and then put together again at the end.
+The fast version of Filter Clusters is shown in Fig. 4. It ﬁrst computes a
+centroid path π = (cid:104)pα, pα−1, . . . , p1(cid:105) of TA and the set σ(π) of side trees of π
+in Step 1. Then, in Steps 2–3, it applies itself recursively to each side tree of π
+τ∈σ(π) C(τ ) that is incompatible with some cluster
+in TB with a higher weight than itself, and the remaining clusters are inserted
+pi∈π{Λ(TA[pi])}
+to determine which of them are not incompatible with any cluster in TB with a
+higher weight, and create a temporary tree Rc whose cluster collection consists
+of all those clusters that pass this test. Finally, Step 6 combines the cluster
+collections of Rs and Rc by applying the procedure Merge Trees. The details of
+Procedure Filter Clusters are discussed next.
+Steps 2–3 (handling the side trees): For every nonempty C ⊆ Λ(T ), deﬁne
+T|C (“the subtree of T induced by C”; see, e.g., [6]) as the tree T (cid:48) with leaf label
+set C and internal node set {lca T ({a, b}) : a, b ∈ C} which preserves the ancestor
+relations from T , i.e., which satisﬁes lca T (C(cid:48)) = lca T (cid:48)
+(C(cid:48)) for all nonempty
+C(cid:48) ⊆ C. Now, let σ(π) be the set of side trees of the centroid path π computed
+in Step 1. For each τ ∈ σ(π), deﬁne a weighted tree TB||Λ(τ ) as follows. First,
+construct TB|Λ(τ ) and let the weight of each node in this tree equal its weight
+in TB. Next, for each edge (u, v) in TB|Λ(τ ), let P be the path in TB between u
+and v, excluding u and v; if P is not empty then create a new node z in TB|Λ(τ ),
+replace the edge (u, v) by the two edges (u, z) and (z, v), and set the weight of z
+to the maximum weight of all nodes belonging to P . Each such z is called a
+special node and has exactly one child. See Fig. 5 for an example. We extend
+the concept of “compatible” to special nodes as follows: if C ⊆ L and z is a
+special node in TB||Λ(τ ) then C (cid:94) z if and only if C and Λ((TB||Λ(τ ))[z]) are
+disjoint or (TB||Λ(τ ))[z] has no proper descendant that is a special node. The
+obtained tree TB||Λ(τ ) satisﬁes Λ(τ ) = Λ(TB||Λ(τ )) and has the property that
+for every cluster C in C(τ ), max{w(X) : X ∈ C(TB) and C (cid:54)(cid:94) X} is equal to
+max{w(X) : X ∈ C(TB||Λ(τ )) and C (cid:54)(cid:94) X}.
+After constructing TB||Λ(τ ), Filter Clusters is applied to (τ, TB||Λ(τ ))
+recursively to remove all bad clusters from τ . For each τ ∈ σ(π), the resulting
+tree is denoted by τ(cid:48). All the clusters of τ(cid:48) are inserted into the tree Rs by di-
+
+Algorithm Filter Clusters
+Input: Two trees TA, TB with Λ(TA) = Λ(TB) = L such that every cluster
+Output: A tree T with Λ(T ) = L such that C(T ) = {Λ(TA[u]) : u ∈ V (TA) and
+1 Compute a centroid path π = (cid:104)pα, pα−1, . . . , p1(cid:105) of TA, where pα is the root
+
+occurring in TA or TB also occurs in at least one tree in S.
+w(u) > w(x) for every x ∈ V (TB) with Λ(TA[u]) (cid:54)(cid:94) Λ(TB[x])}.
+
+of TA and p1 is a leaf, and compute the set σ(π) of side trees of π.
+
+/* Handle the side trees. */
+
+2 Let Rs be a tree consisting only of a root node and a single leaf labeled by p1.
+3 for each side tree τ ∈ σ(π) do
+
+τ(cid:48) := Filter Clusters(τ, TB||Λ(τ ))
+Attach the root of τ(cid:48) to the root of Rs.
+
+endfor
+
+/* Handle the centroid path. */
+4 Let Rc be a tree with Λ(Rc) = L where every leaf is directly attached to the
+root. Let BT be an empty binary search tree. For every x ∈ V (TB), initialize
+counter (x) := 0. Do a bottom-up traversal of TB to precompute |Λ(TB[x])| for
+every x ∈ V (TB). Preprocess TB for answering lca-queries. Let β1 := 0.
+
+5 for i := 2 to α do
+5.1
+5.2
+5.3
+5.4
+
+Let D be the set of leaves in Λ(TA[pi]) \ Λ(TA[pi−1]).
+Compute ri := lca TB ({ri−1}∪ D).
+/* ri now equals lca TB (Λ(TA[pi]). */
+Insert every node belonging to the path from ri to ri−1, except ri, into BT .
+for each x ∈ D do
+
+Insert x into BT .
+while (parent(x) is not in BT and parent(x) (cid:54)= ri) do
+
+x := parent(x ); insert x into BT .
+
+endfor
+for each x ∈ D do
+
+5.5
+
+counter (x) := counter (x) + 1
+while (counter (x) = |Λ(TB[x])|) do
+
+counter (parent(x)) := counter (parent(x)) + |Λ(TB[x])|
+Remove x from BT ; x := parent(x)
+
+endwhile
+
+endfor
+Let M := maximum weight of a node in BT ; if BT is empty then M := 0.
+Compute βi, and if βi > M then let M := βi.
+if (w(Λ(TA[pi])) > M ) then put Λ(TA[pi]) in Rc by an insert operation.
+
+5.6
+5.7
+5.8
+
+endfor
+
+/* Combine the surviving clusters. */
+
+6 T := Merge Trees(Rs, Rc)
+7 return T
+End Filter Clusters
+
+Fig. 4. The procedure Filter Clusters.
+
+Fig. 5. Let TB be the tree (with node weights) on the left. The tree TB||{a, g, h} is
+shown on the right.
+
+rectly attaching τ(cid:48) to the root of Rs. Since {Λ(τ(cid:48)) : τ ∈ σ(π)} forms a partition
+of L\{p1}, every leaf label in L appears exactly once in Rs and we have C(Rs) =
+{Λ(TA[u]) : u ∈ V (τ ) for some τ ∈ σ(π) and w(u) > w(x) for every x ∈
+V (TB) with Λ(TA[u]) (cid:54)(cid:94) Λ(TB[x])} ∪ {L} after Step 3 is ﬁnished.
+
+Steps 4–5 (handling the centroid path): The clusters(cid:83)
+
+pi∈π{Λ(TA[pi])} on
+the centroid path are nested because pi is the parent of pi−1, so Λ(TA[pi−1]) ⊆
+Λ(TA[pi]) for every i ∈ {2, 3, . . . , α}. The main loop (Step 5) checks each of these
+clusters in order of increasing cardinality.
+
+The algorithm maintains a binary search tree BT that, right after Step 5.5
+in any iteration i of the main loop is complete, contains every node x from TB
+with Λ(TA[pi]) (cid:54)(cid:94) Λ(TB[x]). Whenever a node x is inserted into BT , its key
+is set to the weight w(TB[x]). Using BT , Step 5.6 retrieves the weight M of
+the heaviest cluster in TB that is incompatible with Λ(TA[pi]) (if any). Then,
+Step 5.7 computes a value βi, deﬁned as the maximum weight of all special nodes
+in TB (if any) that are incompatible with the current TA[pi]; if βi > M then
+M is set to βi. Step 5.8 saves Λ(TA[pi]) by inserting it into the tree Rc if its
+weight is strictly greater than M . After Step 5 is done, C(Rc) = {Λ(TA[u]) : u ∈
+π and w(u) > w(x) for every x ∈ V (TB) with Λ(TA[u]) (cid:54)(cid:94) Λ(TB[x])}.
+In order to update BT correctly while moving upwards along π in Step 5, the
+algorithm relies on Lemma 6. In each iteration i ∈ {2, 3, . . . , α} of Step 5, ri is
+the lowest common ancestor in TB of Λ(TA[pi]). By Lemma 6, the clusters in TB
+that are incompatible with Λ(TA[pi]) are of the form TB[v] where: (1) v lies on a
+path in TB from a child of ri to a leaf in Λ(TA[pi]); and (2) Λ(T [v]) (cid:54)⊆ Λ(TA[pi]).
+Accordingly, BT is updated in Steps 5.3–5.5 as follows. Condition (1) is taken
+care of by ﬁrst inserting all nodes from TB between ri−1 and ri except ri into BT
+in Step 5.3 and then inserting all leaf descendants of pi that are not descendants
+of pi−1, along with any of their ancestors in TB that were not already in BT ,
+into BT in Step 5.4. Finally, Step 5.5 enforces condition (2) by using counters to
+locate and remove all nodes from BT (if any) whose clusters are proper subsets
+of Λ(TA[pi]). To do this, counter (x) for every node x in TB is updated so that
+
+gijbcdefha8399999976545299999gha8479999it stores the number of leaves in Λ(TB[x]) ∩ Λ(TA[pi]) for the current i, and if
+counter (x) reaches the value |Λ(TB[x])| then x is removed from BT .
+
+To compute βi in Step 5.7, take the maximum of: (i) βi−1; (ii) the weights
+of all special nodes on the path between ri and ri−1 in TB; and (iii) the weights
+of all special nodes that belong to a path between ri and a leaf in D.
+Lemma 7. Procedure Filter Clusters runs in O(n log2 n) time.
+
+Proof. (Omitted from the conference version due to space constraints.)
+
+(cid:117)(cid:116)
+
+5
+
+Implementations
+
+As noted in Section 1.2, there does not seem to be any publicly available imple-
+mentation for the majority rule (+) consensus tree. To ﬁll this void, we imple-
+mented Algorithm Maj Rule Plus from Section 3 in C++ and included it in the
+source code of the FACT (Fast Algorithms for Consensus Trees) package [17] at:
+
+http://compbio.ddns.comp.nus.edu.sg/~consensus.tree/
+
+To test the implementation, we repeatedly applied it to 10 random sets of trees
+for various speciﬁed values of (k, n), generated with the method described in
+Section 6.2 of [17]. The following worst-case running times (in seconds) were
+obtained using Ubuntu Nutty Narwhal, a 64-bit operating system with 8.00 GB
+RAM, and a 2.20 GHz CPU:
+
+(k, n) (100, 500) (100, 1000) (100, 2000) (100, 5000) (500, 100) (1000, 100) (2000, 100) (5000, 100) (1000, 2000)
+Time
+
+27.29
+
+0.63
+
+1.51
+
+6.78
+
+0.65
+
+1.29
+
+2.99
+
+2.72
+
+6.66
+
+The situation for the frequency diﬀerence consensus tree is less critical as
+there already exist implementations, e.g., in the software package TNT [15]. Nev-
+ertheless, it could be useful to implement our algorithm Frequency Difference
+from Section 4 in the future and compare its practical performance to TNT.
+Before doing that, one should try to simplify the procedure Filter Clusters.
+
+References
+
+1. E. N. Adams III. Consensus techniques and the comparison of taxonomic trees.
+
+Systematic Zoology, 21(4):390–397, 1972.
+
+2. N. Amenta, F. Clarke, and K. St. John. A linear-time majority tree algorithm. In
+Proceedings of WABI 2003, volume 2812 of LNCS, pages 216–227. Springer-Verlag,
+2003.
+
+3. J.-P. Barth´elemy and F. R. McMorris. The median procedure for n-trees. Journal
+
+of Classiﬁcation, 3(2):329–334, 1986.
+
+4. K. Bremer. Combinable component consensus. Cladistics, 6(4):369–372, 1990.
+5. D. Bryant. A classiﬁcation of consensus methods for phylogenetics.
+
+In M. F.
+Janowitz, F.-J. Lapointe, F. R. McMorris, B. Mirkin, and F. S. Roberts, editors,
+Bioconsensus, volume 61 of DIMACS Series in Discrete Mathematics and Theo-
+retical Computer Science, pages 163–184. American Mathematical Society, 2003.
+
+6. R. Cole, M. Farach-Colton, R. Hariharan, T. Przytycka, and M. Thorup. An
+O(n log n) algorithm for the maximum agreement subtree problem for binary trees.
+SIAM Journal on Computing, 30(5):1385–1404, 2000.
+
+7. J. A. Cotton and M. Wilkinson. Majority-rule supertrees. Systematic Biology,
+
+56(3):445–452, 2007.
+
+8. Y. Cui, J. Jansson, and W.-K. Sung. Polynomial-time algorithms for building a
+
+consensus MUL-tree. Journal of Computational Biology, 19(9):1073–1088, 2012.
+
+9. W. H. E. Day. Optimal algorithms for comparing trees with labeled leaves. Journal
+
+of Classiﬁcation, 2(1):7–28, 1985.
+
+10. J. H. Degnan, M. DeGiorgio, D. Bryant, and N. A. Rosenberg. Properties of
+consensus methods for inferring species trees from gene trees. Systematic Biology,
+58(1):35–54, 2009.
+
+11. J. Dong, D. Fern´andez-Baca, F. R. McMorris, and R. C. Powers. Majority-rule (+)
+
+consensus trees. Mathematical Biosciences, 228(1):10–15, 2010.
+
+12. J. Felsenstein. Inferring Phylogenies. Sinauer Associates, Inc., Sunderland, Mas-
+
+sachusetts, 2004.
+
+13. J. Felsenstein. PHYLIP, version 3.6. Software package, Department of Genome
+
+Sciences, University of Washington, Seattle, U.S.A., 2005.
+
+14. P. A. Goloboﬀ, J. S. Farris, M. K¨allersj¨o, B. Oxelman, M. J. Ram´ırez, and C. A.
+Improvements to resampling measures of group support. Cladistics,
+
+Szumik.
+19(4):324–332, 2003.
+
+15. P. A. Goloboﬀ, J. S. Farris, and K. C. Nixon. TNT, a free program for phylogenetic
+
+analysis. Cladistics, 24(5):774–786, 2008.
+
+16. M. T. Holder, J. Sukumaran, and P. O. Lewis. A justiﬁcation for reporting
+the majority-rule consensus tree in Bayesian phylogenetics. Systematic Biology,
+57(5):814–821, 2008.
+
+17. J. Jansson, C. Shen, and W.-K. Sung. Improved algorithms for constructing con-
+
+sensus trees. In Proceedings of SODA 2013, pages 1800–1813. SIAM, 2013.
+
+18. J. Jansson, C. Shen, and W.-K. Sung. An optimal algorithm for building the
+majority rule consensus tree. In Proceedings of RECOMB 2013, volume 7821 of
+LNCS, pages 88–99. Springer-Verlag, 2013.
+
+19. J. Jansson and W.-K. Sung. Constructing the R* consensus tree of two trees in
+
+subcubic time. Algorithmica, 66(2):329–345, 2013.
+
+20. M. Lott, A. Spillner, K. T. Huber, A. Petri, B. Oxelman, and V. Moulton. Inferring
+polyploid phylogenies from multiply-labeled gene trees. BMC Evolutionary Biology,
+9:216, 2009.
+
+21. T. Margush and F. R. McMorris. Consensus n-Trees. Bulletin of Mathematical
+
+Biology, 43(2):239–244, 1981.
+
+22. F. R. McMorris and R. C. Powers. A characterization of majority rule for hierar-
+
+chies. Journal of Classiﬁcation, 25(2):153–158, 2008.
+
+23. R. Page. COMPONENT, version 2.0. Software package, University of Glasgow,
+
+U.K., 1993.
+
+24. F. Ronquist and J. P. Huelsenbeck. MrBayes 3: Bayesian phylogenetic inference
+
+under mixed models. Bioinformatics, 19(12):1572–1574, 2003.
+
+25. R. R. Sokal and F. J. Rohlf. Taxonomic congruence in the Leptopodomorpha
+
+re-examined. Systematic Zoology, 30(3):309–325, 1981.
+
+26. J. Sukumaran and M. T. Holder. DendroPy: a Python library for phylogenetic
+
+computing. Bioinformatics, 26(12):1569–1571, 2010.
+
+27. W.-K. Sung. Algorithms in Bioinformatics: A Practical Introduction. Chapman &
+
+Hall/CRC, 2010.
+
+28. D. L. Swoﬀord. PAUP*, version 4.0. Software package, Sinauer Associates, Inc.,
+
+Sunderland, Massachusetts, 2003.
+
+

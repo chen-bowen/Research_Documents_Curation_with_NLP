@@ -1,0 +1,2530 @@
+8
+0
+0
+2
+
+ 
+t
+c
+O
+1
+
+ 
+
+ 
+ 
+]
+
+.
+
+R
+P
+h
+t
+a
+m
+
+[
+ 
+ 
+
+3
+v
+6
+1
+0
+9
+0
+5
+0
+/
+h
+t
+a
+m
+:
+v
+i
+X
+r
+a
+
+ABSOLUTELY CONTINUOUS LAWS OF JUMP-DIFFUSIONS IN
+
+FINITE AND INFINITE DIMENSIONS WITH APPLICATIONS
+
+TO MATHEMATICAL FINANCE
+
+BARBARA FORSTER, EVA L ¨UTKEBOHMERT, JOSEF TEICHMANN
+
+Abstract. In mathematical Finance calculating the Greeks by Malliavin
+weights has proved to be a numerically satisfactory procedure for ﬁnite-dimen-
+sional Itˆo-diﬀusions. The existence of Malliavin weights relies on absolute
+continuity of laws of the projected diﬀusion process and a suﬃciently regular
+density. In this article we ﬁrst prove results on absolute continuity for laws
+of projected jump-diﬀusion processes in ﬁnite and inﬁnite dimensions, and a
+general result on the existence of Malliavin weights in ﬁnite dimension. In both
+cases we assume H¨ormander conditions and hypotheses on the invertibility of
+the so-called linkage operators. The purpose of this article is to show that for
+the construction of numerical procedures for the calculation of the Greeks in
+fairly general jump-diﬀusion cases one can proceed as in a pure diﬀusion case.
+We also show how the given results apply to inﬁnite dimensional questions in
+mathematical Finance. There we start from the Vasiˇcek model, and add – by
+pertaining no arbitrage – a jump diﬀusion component. We prove that we can
+obtain in this case an interest rate model, where the law of any projection is
+absolutely continuous with respect to Lebesgue measure on RM .
+
+1. Introduction
+
+We shall consider in this article the question whether the law of l(X x
+
+t ), for a
+ﬁnite dimensional projection l : H → RM , is absolutely continuous with respect
+to Lebesgue measure on RM , where X x
+is the solution of the stochastic (partial)
+t
+diﬀerential equation
+
+(1.1)
+
+(1.2)
+
+dX x
+
+t = (AX x
+
+t− + α(X x
+
+t− ))dt +
+
+X x
+
+0 = x ∈ H,
+
+Vi(X x
+
+t− )dBi
+
+t +
+
+dXi=1
+
+δj(X x
+
+t−)dLj
+t ,
+
+mXj=1
+
+and H is a possibly inﬁnite dimensional separable Hilbert space. We refer to the
+previous equation loosely speaking as a jump-diﬀusion on the Hilbert space H point-
+ing out that the involved L´evy processes are of ﬁnite type. For sake of simplicity
+
+1991 Mathematics Subject Classiﬁcation. 60H07, 60H15, 62P05.
+Key words and phrases. Malliavin Calculus, compound Poisson process, H¨ormander condition,
+Greeks, Malliavin weight, stochastic partial diﬀerential equation, jump diﬀusion, Interest Rate
+Theory.
+
+The ﬁrst author acknowledges the support from the FWF-project P15889 ’Utility Maximiza-
+tion in Incomplete Financial Markets’ and from the FWF-Wissenschaftskolleg W 8 ’Diﬀerential
+Equation Models in Science and Engineering’. The third author acknowledges the support from
+the RTN network HPRN-CT-2002-00281 and from the FWF-grants Y328 and Z36. All authors
+are grateful to two unknown referees who helped to considerably improve the presentation and
+contents of this paper. In particular we are grateful for pointing out Corollary 3.25 of [21].
+
+1
+
+2
+
+BARBARA FORSTER, EVA L ¨UTKEBOHMERT, JOSEF TEICHMANN
+
+we shall always work with the c`agl`ad integrand t 7→ X x
+t−, even though for the dt
+and dBt integrals this is superﬂuous. In the inﬁnite dimensional setting we are not
+aware of results on absolute continuity of the projected process in the jump diﬀu-
+sion case. Related work has been done in [5] for the construction of ﬁrst variation
+processes. In the diﬀusion case we refer to the work [3] and the references therein,
+and in particular to the recently published inspiring results of Jonathan Mattingly,
+see for instance [1]. We point out that we deal here with stochastic partial diﬀer-
+ential equations (SPDEs) and stochastic diﬀerential equations (SDEs) at the same
+time, where the latter case appears in this setting when the state (Hilbert) space
+H is ﬁnite dimensional.
+
+Very satisfying results in the ﬁnite dimensional setting with L´evy processes of
+inﬁnite type have been obtained by in [11] through a generalization of the Norris
+Lemma to L´evy processes. These results have been built upon our results presented
+in this work for the ﬁnite activity case (see Section 7). Substantial work with
+respect to absolute continuity and smoothness of the density has been already
+published in the eighthies, where the most prominent ones are [7] and [6]. Therein
+several questions of extension of hypo-ellipticity results (and Malliavin Calculus)
+to jump-processes are discussed and completely solved, however, the problem of
+a hypo-elliptic diﬀusion together with a ﬁnite-activity jump-structure remained
+open.
+It has to be pointed out here that – in contrast to [6] – we do not need
+any extension of Malliavin Calculus to jump processes for our results (see also the
+discussion in Remark 5). This gap was ﬁlled by the announced results of [27], but
+several proofs therein are extremely short. Recently – motivated by questions from
+ﬁnancial mathematics, see Section 8 for an outline of the problem – there has been
+increasing interest in those results, see the the works [2], [13] and [14] and the
+references therein. This article aims to work out the most general ﬁnite activity
+case under H¨ormander conditions on the diﬀusion part.
+
+From the point of view of existence and uniqueness for jump-diﬀusions in inﬁnite
+dimensions our main reference is [15], and the references therein. Since we consider
+jump-diﬀusions as concatenated diﬀusions on Hilbert space we mention [12] as the
+main reference for existence and uniqueness results, but also [4] and [10] for many
+interesting constructions and ideas.
+
+There are two applications added to this work. The ﬁrst one is the HJM-equation
+(as presented in [15]), where we show that the innocent Vasiˇcek model (see for
+instance the seminal work of [9]) with a certain jump structure triggered by a one-
+dimensional Poisson process yields – under no-arbitrage assumptions – a model,
+where not only no ﬁnite dimensional realizations do exist, but where every projec-
+tion into a ﬁnite dimensional subspace admits a density (compare with the notion
+of generic interest rate evolutions from [3]). The second application is concerned
+with concrete formulas for the calculation of Malliavin weights. There our message
+is that one can think Poisson-trajectory-wise, i.e. the results from [18] or [17] can be
+literally applied by replacing the diﬀusion process by the respective jump-diﬀusion
+process.
+
+When we analyse jump-diﬀusions with values in Hilbert spaces then loosely
+
+speaking the following facts hold true:
+
+• between two consecutive jumps of the jump-diﬀusion we are given an ordi-
+
+nary diﬀusion.
+
+ABSOLUTE CONTINUITY OF JUMP-DIFFUSIONS
+
+3
+
+• at a jump we add to the left limit the jump size (which usually depends on
+the left limit, too). In [25], Chapter V.10, Hypothesis (H3), this operation
+is formalized by the so called linkage operators x 7→ x + µδj(x), which
+encode what happens at a jump of size µ at x. We shall apply this notion
+here, too.
+
+Hence the following picture arises:
+
+• In order to obtain absolute continuity of the projected diﬀusion process, we
+need the H¨ormander condition to be in force. Otherwise we cannot expect
+– conditioned on the event of positive probability that no jump occurs –
+that the law of l(X x
+t ) is absolutely continuous with respect to Lebesgue
+measure.
+
+• In order to preserve absolute continuity we need the linkage operators to
+
+be invertible in a proper sense.
+
+Remark 1. Both conditions are ’sine qua non’, since it is easy to imagine coun-
+terexamples.
+
+In Section 2 we ﬁx the general setting of this article. We shall deal with L´evy pro-
+cesses of ﬁnite type as drivers of the stochastic diﬀerential equations, even though
+we believe that one should be able to prove similar results in the case of many small
+jumps, too. We also state the main assumptions of this work in Section 2 for later
+use.
+
+In Section 3 we prove a “folklore” decomposition theorem, which tells that solv-
+ing a jump-diﬀusion S(P)DE is the same as solving associated diﬀusion S(P)DEs
+and concatenating the solutions by linkage operators at jumps.
+In Section 4 we
+show that we can also prove results on ﬁrst variation processes in the spirit of the
+decomposition theorem. We prove that under our analytic requirements there is in
+fact a suﬃciently regular ﬁrst variation process.
+
+In Section 5 we show by means of Malliavin calculus for a d-dimensional Brownian
+motion that the law of a projected jump-diﬀusion is absolutely continuous with
+respect to Lebesgue measure. In Section 6 we introduce a class of examples from
+mathematical Finance, where we see very directly the phenomenon of absolute
+continuity arising from the introduction of jumps and the no-arbitrage condition.
+This shows again that ﬁnite dimensional realizations, as constructed for instance
+in [8], are a rare case in inﬁnite dimensions. In Section 7 we restrict to the ﬁnite
+dimensional setting to show that the density of the absolutely continuous law is in
+fact smooth by proving that the inverse of the covariance matrix has p-th moments
+for all p ≥ 1. In Section 8 we apply the invertibility of the covariance matrix to
+the calculation of Greeks. Section 9, an Appendix, shows an important estimate
+implicitly present in the Norris Lemma as presented in D. Nualart’s book [24]. A
+similar result (which could be directly used in Section 7 for the proof of the main
+theorem) can be found in [21, Corollary 3.25]. The article [21] is most likely the
+source of the ﬁrst appearance of the precise polynomial time-dependence in the
+estimate of the Lp-norm of the inverse of the covariance matrix. We have been
+choosing here the path via the Norris lemma, we explain the estimate by re-doing
+its proof in the Appendix.
+
+4
+
+BARBARA FORSTER, EVA L ¨UTKEBOHMERT, JOSEF TEICHMANN
+
+2. Setting and Assumptions
+
+Let (Ω, F , P, (Ft)t≥0) be a ﬁltered probability space where the ﬁltration (Ft)t≥0
+satisﬁes the usual conditions. Let (Bt)t≥0 be a d-dimensional Brownian motion and
+(Lj
+
+t )t≥0, j = 1, . . . , m be m independent compound Poisson processes given by
+
+Lj
+
+t :=
+
+N j
+
+tXk=1
+
+Z j
+k,
+
+where N j
+k)k≥1
+is an i.i.d. sequence of random variables with distribution µj for j = 1, . . . , m, such
+that each µj admits all moments. The compensated compound Poisson process
+reads as follows,
+
+t denotes a Poisson process with jump intensityfλj > 0 and Z j = (Z j
+
+Lj
+
+t − E(Lj
+
+t ) = Lj
+
+t − λj t,
+
+where λj = E(Z j
+
+1)fλj is the average jump size times the jump rate.
+
+We could equally take an Rm-valued L´evy process of ﬁnite type, i.e. introduce
+a dependence structure between the jumps of the components and all theorems
+would equally hold true with slightly modiﬁed proofs, but we believe that this
+generalisation does not bring further insight.
+
+We assume that all sources of randomness are mutually independent and that
+the ﬁltration (Ft)t≥0 is the natural ﬁltration with respect to (Bt, L1
+t )t≥0.
+Let H be a separable Hilbert space. We ﬁx furthermore a strongly continuous
+semi-group S on H with generator A. Let α, V1, . . . , Vd, the diﬀusion vector ﬁelds,
+and δ1, . . . , δm, the jump vector ﬁelds, be C∞-bounded on H, that is, the vec-
+tor ﬁelds are inﬁnitely often diﬀerentiable with bounded partial derivatives of all
+proper orders n ≥ 1. We consider the mild c`adl`ag solution (X x
+t )t≥0 of a stochastic
+diﬀerential equation
+
+t , . . . , Lm
+
+(2.1)
+
+(2.2)
+
+dX x
+
+t = (AX x
+
+t− + α(X x
+
+t− ))dt +
+
+X x
+
+0 = x ∈ H.
+
+Vi(X x
+
+t− )dBi
+
+t +
+
+dXi=1
+
+δj(X x
+
+t−)dLj
+t ,
+
+mXj=1
+
+See [15] for all necessary details on existence and uniqueness of the previous equa-
+tion.
+
+The previous conditions are slightly more than standard for existence and unique-
+in [15] the authors need Lipschitz conditions on the
+ness of mild solutions, i.e.
+vector ﬁelds, whereas we assume them to be C∞-bounded.
+In order to speak
+about absolute continuity of projections to RM we shall need more assumptions,
+in particular for conclusions drawn from the geometry of the given vector ﬁelds
+α, V1, . . . , Vd, δ1, . . . , δm several quite strong analytic requirements are necessary.
+We group the assumptions in three groups and indicate in each section, which
+assumptions we shall need.
+
+Let l : H → RM be a projection, then we want to know whether the law of
+l(X x
+t ) is absolutely continuous with respect to Lebesgue measure and if – in case –
+the density is smooth. Following the short discussion in the introduction we need
+the H¨ormander conditions to be in force and we need to suppose invertibility on
+linkage operators.
+
+ABSOLUTE CONTINUITY OF JUMP-DIFFUSIONS
+
+5
+
+We apply the following notations for Hilbert spaces dom(Ak),
+
+:= (cid:8)h ∈ H| h ∈ dom(Ak−1) and Ak−1h ∈ dom(A)(cid:9) ,
+
+||Aih||2,
+
+dom(Ak)
+
+||h||2
+
+:=
+
+dom(Ak)
+
+kXi=0
+dom(A∞) = \k≥0
+
+dom(Ak),
+
+which we need in order to specify the analytic conditions.
+
+Assumption 1. We assume that the generator A of S generates a strongly continu-
+ous group. We assume furthermore that α, V1, . . . , Vd, the diﬀusion vector ﬁelds, and
+δ1, . . . , δm, the jump vector ﬁelds, are C∞-bounded on the Hilbert spaces dom(Ak)
+for k ≥ 0, that is, the vector ﬁelds are inﬁnitely often diﬀerentiable with bounded
+partial derivatives of all proper orders n ≥ 1 on the Hilbert space dom(Ak) for
+k ≥ 0.
+
+Assumption 2. We take Assumption 1 for granted, i.e. we can consider all vector
+ﬁelds on the space dom(Ak) for k = 0, . . . , ∞. For a proper statement of the
+H¨ormander condition we apply the “geometrically relevant” drift
+
+V0(x) = Ax + α(x) −
+
+T Vi(x) · Vi(x)
+
+for x ∈ dom(A) and call V0 the Stratonovich drift of the diﬀusion. Recall the
+(tangent) directional derivative operator T deﬁned through
+
+1
+2
+
+dXi=1
+dǫ(cid:12)(cid:12)(cid:12)ǫ=0
+
+d
+
+T V (x) · v =
+
+V (x + ǫv).
+
+Lie brackets can only be calculated on the Fr´echet space dom(A∞) and there we for-
+mulate the H¨ormander condition. We assume that the distribution D(x) generated
+by the vector ﬁelds
+
+(2.3)
+
+V1(x), . . . , Vd(x),
+[Vi(x), [Vj (x), Vk(x)]] (i, j, k = 0, 1, . . . , d),
+
+[Vi(x), Vj (x)] (i, j = 0, 1, . . . , d),
+
+. . . . . .
+
+is dense in H for one x ∈ dom(A∞).
+
+Assumption 3. We assume that the inverse of x 7→ x + zδj(x) exists and is C∞-
+bounded on each dom(Ak) for z ∈ supp(µj ), j = 1, . . . , m and k ≥ 0 (recall that µj
+was the distribution of the random variable Zj).
+
+Remark 2. As far as Assumption 1 is concerned we do believe that the assertions
+of this paper also hold true for (most) strongly continuous semigroups. A proof
+based on an application of the Szek˝ofalvi-Nagy theorem can be found in the recent
+preprint [26], therefore we could replace the assumption that A generates a strongly
+continuous group by the assumption that A generates a pseudo-contractive strongly
+continuous semigroup. This includes most of the second order partial diﬀerential
+operators. However, for this paper we do always assume the group property for the
+sake of simplicity.
+
+Remark 3. The H¨ormander condition could not be formulated without the ana-
+lytic part of Assumption 1.
+
+6
+
+BARBARA FORSTER, EVA L ¨UTKEBOHMERT, JOSEF TEICHMANN
+
+Example 1. In order to show examples of vector ﬁelds, which are C∞-bounded
+on dom(Ak) consider the following structure. Let H be a separable Hilbert space
+and A the generator of a strongly continuous semigroup. We know that dom(A∞)
+is a Fr´echet space and an injective limit of the Hilbert spaces dom(Ak) for k ≥ 0.
+Following the analysis as developed in [16] (see also [20] and [19] were the analytic
+concepts have been originally developed), we can consider the following vector ﬁelds
+V : U ⊂ H → dom(A∞). If V is smooth in the sense explained in [16] and has
+the property that its derivatives of proper order n ≥ 1 are bounded on U ⊂ H,
+then V is obviously a C∞-bounded vector ﬁeld and additionally V |dom(A∞) is a
+Banach-map-vector ﬁeld in the sense of [16]. Such vector ﬁelds constitute a class,
+where Assumptions 1–3 can be readily checked.
+
+3. Decomposition Theorem for Jump-Diffusions on Hilbert Spaces
+
+In order to properly understand how to apply the Malliavin calculus, we state
+the following rather obvious structure theorem on jump-diﬀusions, which simply
+takes into account that stochastic integration with respect to the Poisson process
+follows the rules of Lebesgue-Stieltjes integration (see for instance [25] for a general
+exposition). Here we only need that the vector ﬁelds are C∞-bounded on H in
+order to guarantee existence and uniqueness of the respective equations.
+
+Theorem 1. Let (Ω, F , P, (Ft)t≥0) be a ﬁltered probability space and let (Bt)t≥0 be
+a d-dimensional Brownian motion and (Lj
+t )t≥0 be m independent compound Pois-
+son processes for j = 1, . . . , m, such that the ﬁltration is the natural ﬁltration with
+respect to (Bt, L1
+t )t≥0. Let S be a strongly continuous semigroup with gener-
+ator A on H. Let α, V1, . . . , Vd, the diﬀusion vector ﬁelds, and δ1, . . . , δm, the jump
+vector-ﬁelds, be C∞-bounded on H and consider the c`adl`ag solution (X x
+t )0≤t≤T of
+a stochastic diﬀerential equation
+
+t , . . . , Lm
+
+(3.1)
+
+(3.2)
+
+dX x
+
+t = (AX x
+
+t− + α(X x
+
+t− ))dt +
+
+X x
+
+0 = x.
+
+Vi(X x
+
+t− )dBi
+
+t +
+
+dXi=1
+
+δj(X x
+
+t−)dLj
+t ,
+
+mXj=1
+
+Let η denote a piecewise constant, c`adl`ag trajectory η : R≥0 → Rm of the compound
+Poisson process L with ﬁnitely many jumps on compact intervals and starting at 0.
+We consider
+
+(3.3)
+
+(3.4)
+
+dY x,η
+
+s,t =(cid:16)AY x,η
+
+s,t− + α(Y x,η
+
+s,t− )(cid:17)dt +
+
+Vi(Y x,η
+
+s,t− )dBi
+
+t
+
+dXi=1
+
+δj(Y x,η
+
+s,t−)dηj (t),
+
++
+
+mXj=1
+
+Y x,η
+
+s,s = x.
+
+ABSOLUTE CONTINUITY OF JUMP-DIFFUSIONS
+
+7
+
+Then (Y x,η
+and the diﬀusion process between two consecutive jumps:
+
+s,t )s≥0 can be given explicitly in terms of the jump times τn of η for n ≥ 0
+
+for 0 ≤ t < τ1
+
++Pm
+
+j=1 δj (Y x,η
+
+0,τ
+
+−
+1
+
+)∆ηj(τ1)
+
+for τ1 ≤ t < τ2
+
+Y x,η
+t
+Y x,η
+t
+
+Y x,η
+t
+
+:= Y x,η
+0,t
+:= Y y,η
+
+...
+:= Y y,η
+
+0,τ
+
+−
+1
+
+τ1,t(cid:12)(cid:12)y=Y x,η
+τn−1,t(cid:12)(cid:12)y=Y x,η
+
+0,τ
+
++Pm
+
+j=1 δj (Y x,η
+
+0,τ
+
+−
+n−1
+
+)∆ηj (τn−1)
+
+for τn−1 ≤ t < τn.
+
+−
+n−1
+
+Here we write ∆η(t) := η(t) − η(t−) for t ≥ 0. We deﬁne the process (Y x,L
+inserting the compound Poisson process L for η in (Y x,η
+(Y x,L
+
+)t≥0 is then indistinguishable from (X x
+
+)t≥0 by
+)t≥0. The resulting process
+
+t
+
+t
+
+t )t≥0.
+
+t
+
+Proof. For the proof we refer to [25], Chapter V.10, Theorem 57, in particular with
+respect to the conditioning on the jump part. The proof remains unchanged in
+the inﬁnite dimensional setting, see [15] for the existence and uniqueness proof on
+separable Hilbert spaces.
+(cid:3)
+
+Remark 4. For future use we shall always assume that the ﬁrst jumping time
+of η is strictly positive τ1 > 0 and that each time corresponds to the jump of
+exactly one coordinate process Lj, which is both true for almost all trajectories of
+the compound Poisson process L. Notice that the dependence of (Y x,η
+)t≥0 on the
+jump times of η is continuous, but certainly not smooth since the jump times are
+inserted instead of time of a hypo-elliptic diﬀusion process.
+
+t
+
+Remark 5. Notice that one can also interpret the result in the following way:
+t )t≥0 of equation (3.1) as an element of L2(Ω1 × Ω2; H),
+consider the solution (X x
+where Ω1 carries the Brownian motion part (with natural ﬁltration), Ω2 carries the
+Poisson part (with natural ﬁltration) and Ω1 × Ω2 is equipped with the respective
+product σ-algebra. Then we know by Fubini’s Theorem that
+L2(Ω1 × Ω2; H) = L2(Ω2; L2(Ω1; H)).
+
+The previous theorem only clariﬁes the jump-diﬀusion structure of the dependence
+on Ω2. In other words, between jumps we have ordinary diﬀusions, and at a jump
+we link by linkage operators.
+
+4. First Variation Processes
+
+In order to calculate Malliavin derivatives, which is crucial for arguments on
+absolute continuity, we need precise statements on ﬁrst variation processes of jump
+diﬀusions. For later purposes, but also in order to see results on the inverse of the
+ﬁrst variation process easily, we write our equations in the Stratonovich notation.
+This is not innocent in inﬁnite dimensions, since mild solutions are in general not
+semi-martingales and therefore the Stratonovich notation fails to be applicable in
+general. However, by Assumption 1 we are able to determine whether we are given
+a semi-martingale or not by analysing the initial value of the process. Indeed –
+for ﬁxed k ≥ 0, if x ∈ dom(Ak+1), then there is a mild solution taking values in
+dom(Ak+1) of the Itˆo stochastic diﬀerential equation. However, this solution process
+has to coincide – by uniqueness – with the solution process obtained by considering
+the same equation on dom(Ak) with an initial value in dom(Ak+1). Therefore the
+
+8
+
+BARBARA FORSTER, EVA L ¨UTKEBOHMERT, JOSEF TEICHMANN
+
+mild solution in dom(Ak+1) is a strong solution in dom(Ak). Therefore we assume
+Assumptions 1 and 3 to be in force in this section.
+
+By the previous arguments for the given stochastic diﬀerential equation (3.1),
+
+we can switch to Stratonovich notation for x ∈ dom(A), and obtain
+
+dX x
+
+t = V0(X x
+
+t− )dt +
+
+dXi=1
+
+Vi(X x
+
+t−) ◦ dBi
+
+t +
+
+mXj=1
+
+δj(X x
+
+t−)dLj
+
+t
+
+with the Stratonovich drift given by
+
+V0(x) := Ax + α(x) −
+
+1
+2
+
+dXi=1
+
+T Vi(x) · Vi(x)
+
+for x ∈ dom(A). Recall the tangent (derivative) operator T
+
+T V (x) · v =
+
+V (x + ǫv).
+
+d
+
+dǫ(cid:12)(cid:12)(cid:12)ǫ=0
+
+We do also consider the stochastic diﬀerential equation (3.3) with respect to one
+trajectory η and switch to Stratonovich notation, too. The following theorem states
+the result on the ﬁrst variation process along one trajectory η, which yields in the
+sequel the same result by inserting the compound Poisson process L for η. Notice
+that the trajectory η is such that the ﬁrst jumping time is strictly positive and that
+at each jumping time τn for n ≥ 1 only one coordinate jumps.
+
+Theorem 2. Assume Assumptions 1 and 3. We ﬁx k ≥ 0. The ﬁrst variation
+process (Js→t(x, η))t≥s associated with (Y x,η
+)t≥0 on dom(Ak) is well deﬁned and
+t
+satisﬁes the stochastic diﬀerential equation
+
+dJs→t(x, η) · h =(cid:16)AJs→t−(x, η) · h + T α(Y x,η
+
+s,t− ) · Js→t− (x, η) · h(cid:17)dt
+
++
+
++
+
+dXi=1(cid:16) T Vi(Y x,η
+mXj=1(cid:16) T δj(Y x,η
+
+s,t−) · Js→t− (x, η) · h(cid:17)dBi
+s,t− ) · Js→t− (x, η) · h(cid:17)dηj(t),
+
+t
+
+(4.1)
+
+Js→s(x, η) · h = h,
+
+for h, x ∈ dom(Ak) and t ≥ s. The Itˆo equation has a unique global mild solution for
+h, x ∈ dom(Ak) and Js→t(x, η) deﬁnes a continuous linear operator on dom(Ak),
+which is invertible if x ∈ dom(Ak+1).
+The Stratonovich equation on dom(Ak) in turn is only well-deﬁned for h, x ∈
+dom(Ak+1). We apply the (formal) notation here
+
+T V0(x)v = Av + T α(x)v −
+
+1
+2
+
+T(x 7→
+
+dXi=1
+
+T Vi(x) · Vi(x))v
+
+ABSOLUTE CONTINUITY OF JUMP-DIFFUSIONS
+
+9
+
+for x ∈ dom(A) and v ∈ dom(A).
+
+dJs→t(x, η) · h =(cid:16) T V0(Y x,η
+
+s,t− ) · Js→t− (x, η) · h(cid:17)dt
+
+(4.2)
+
++
+
++
+
+dXi=1(cid:16) T Vi(Y x,η
+mXj=1(cid:16) T δj(Y x,η
+
+s,t− ) · Js→t− (x, η) · h(cid:17) ◦ dBi
+s,t− ) · Js→t− (x, η) · h(cid:17)dηj(t),
+
+t
+
+for h, x ∈ dom(Ak+1) and t ≥ s. The adjoint of the inverse
+
+Js→s(x, η) · h = h,
+
+Z x,h
+
+t
+
+if it exists, should satisfy the following Stratonovich equation at the point x in
+direction h,
+
+· h,
+
+:=(cid:0)Js→t(x, η)−1(cid:1)∗
+t− (cid:17)dt −
+t− (cid:17)dηj(t)
+·(cid:18)(cid:16)idH + ∆ηj(t) T δj(Y x,η
+
+dXi=1(cid:16) T Vi(Y x,η
+
+s,t− )∗ · Z x,h
+
+t− (cid:17) ◦ dBi
+
+t−
+
+s,t− )(cid:17)−1(cid:19)∗
+
+·
+
+dZ x,h
+
+(4.3)
+
+s,t− )∗ · Z x,h
+
+−
+
+s,t− )∗ · Z x,h
+
+t = −(cid:16) T V0(Y x,η
+mXj=1(cid:16) T δj(Y x,η
+s,t− )2(cid:17)∗
+mXj=1(cid:16)(cid:16)T δj(Y x,η
+t− (∆ηj(t))2(cid:17),
+
+· Z x,h
+
++
+
+for h, x ∈ dom(Ak+1) and t ≥ s ≥ 0 (Here we applied the notions of [25]).
+
+Remark 6. The completely analogous theorem holds when we replace η by a
+compound Poisson process L. We do not state this theorem again, but we point
+out that we even have moment estimates for the respective processes, which is
+the only additional relevant information. To be precise, the ﬁrst variation process
+Js→t(x) · h, which equals Js→t(x, L) by construction, has bounded second moments
+by [15].
+
+Proof. Under our Assumption 1 the regularity in the initial values is clear by well-
+known results from [12] and the chain rule on Hilbert spaces (recall that the linkage
+operators are smooth). We are allowed to pass to the Stratonovich decomposi-
+tion since we integrate semi-martingales by Itˆo’s formula on Hilbert spaces for
+x, h ∈ dom(Ak+1) due to the arguments of [3]: the core assertion is here that we
+can replace H by each dom(Ak) for some k ≥ 0, which means in turn if we start
+in dom(Ak+1) and obtain a mild solution there, it is indeed a strong solution con-
+sidered on dom(Ak), for k ≥ 0. It remains to show the invertibility results on the
+respective ﬁrst variation processes.
+
+Left invertibility of the ﬁrst variation Js→t(y, .) follows by Itˆo’s formula since we
+have c`adl`ag trajectories with ﬁnitely many jumps. Calculating the semi-martingale
+t )∗ · J0→t(x, η) given by equations (4.2) and (4.3) yields the
+decomposition of (Z y,.
+result
+
+(Z x,.
+
+t )∗
+
+J0→t(x, η) = iddom(Ak).
+
+10
+
+BARBARA FORSTER, EVA L ¨UTKEBOHMERT, JOSEF TEICHMANN
+
+Thus, the solution of equation (4.3) is the left inverse of Js→t.
+We prove that the left inverse is also the right inverse by the same reasoning as in
+the proof of Proposition 2 in [3]. Therefore, we choose an orthonormal basis (gi)i≥1
+of dom(Ak) which lies in dom(Ak+1). Then we can compute the semi-martingale
+decomposition of
+
+∗
+)
+
+, giidom(Ak)hgi, Js→t(x, η)∗ · h2idom(Ak) =
+
+hh1, Z x,gi
+
+t
+
+idom(Ak)hJs→t(x, η) · gi, h2idom(Ak),
+
+h(Z x,h1
+
+t
+
+NXi=1
+NXi=1
+
+for h1, h2 ∈ dom(Ak+1) and N ≥ 1. Applying the Stratonovich decomposition and
+by adjoining we can free the gi’s and pass to the limit, which yields vanishing ﬁnite
+variation and martingale part. Hence
+
+hJs→t(x, η)(Z x,h1
+
+t
+
+)
+
+∗
+
+, h2idom(Ak) =
+
+lim
+N→∞
+
+NXi=1
+
+h(Z x,h1
+
+t
+
+∗
+)
+
+, giidom(Ak)hgi, Js→t(x, η)∗ · h2idom(Ak)
+
+= hh1, h2, idom(Ak),
+
+which is what a right inverse should satisfy.
+
+(cid:3)
+
+5. Absolutely continuous laws in finite and infinite dimensions
+
+In this section we assume Assumptions 1, 2 and 3. We want to determine by
+) is absolutely continuous
+
+means of Malliavin calculus whether the law of l(Y x,η
+with respect to Lebesgue measure for t > 0.
+
+t
+
+For details on Malliavin calculus see [22] and [24], where in particular the de-
+rivative operator and the Skorohod integral for Malliavin calculus with respect
+to a d-dimensional Brownian motion are deﬁned. Notice that we do not need a
+Malliavin calculus with respect to the Poissonian trajectories, since we calculate
+Poisson-trajectory-wise.
+
+Our ﬁrst task is the calculation of the Malliavin derivative for a ﬁxed c`adl`ag
+path η.
+In a second step, we consider the composed problem, where we replace
+η by a compound Poisson process L as outlined before. Therefore, we ﬁrst ﬁx a
+piecewise constant, c`adl`ag trajectory η : R≥0 → Rm of the process (L1
+t )t≥0
+with ﬁnitely many jumps on compact intervals starting at 0.
+
+t , . . . , Lm
+
+Theorem 3. We take Assumptions 1, 2 and 3 for granted, where x ∈ dom(A∞)
+denotes the point where the H¨ormander condition (2.3) holds true. Let (Y x
+t )t≥0
+denote the unique c`adl`ag solution of equation (3.3). Then for projections l : H →
+RM the law of l(Y x
+t ) is absolutely continuous with respect to Lebesgue measure on
+RM for t > 0.
+
+Proof. Fix t > 0. We are able to write the Malliavin derivative of Y x
+t
+Poissonian trajectory η,
+
+for each
+
+Di
+
+s(l ◦ Y x,η
+
+t
+
+) = l ◦ J0→t(x)J0→s(x)−1Vi(Y x,η
+
+s− )1[0,t](s).
+
+ABSOLUTE CONTINUITY OF JUMP-DIFFUSIONS
+
+11
+
+We can calculate the Malliavin covariance matrix γ as
+
+hγ(l ◦ Y x,η
+
+t
+
+)ξ, ξi :=
+
+hl ◦ J0→t(x)J0→s(x)−1Vi(Y x,η
+
+s− ), ξi2ds.
+
+dXi=1Z t
+
+0
+
+Consequently, the covariance matrix γ(l ◦ Y x,η
+via the reduced covariance matrix
+
+t
+
+) can be calculated in the usual way
+
+hCtξ, ξi :=
+
+through the relation
+
+dXi=1Z t
+
+0 (cid:10)J0→s(x)−1Vi(Y x,η
+
+s− ), ξ(cid:11)2
+
+ds.
+
+γ(l ◦ Y x,η
+
+t
+
+) = (l ◦ J0→t(x))Ct(l ◦ J0→t(x))∗),
+
+where ∗ denotes the adjoint operator with respect to the Hilbert space structures
+on H and RM . We assume n jumps of η on [0, t] and we denote by 0 = τ0 < τ1 <
+. . . < τn ≤ t the sequence of jump times of η. For convenience, we denote the last
+point in time t by τn+1, even if τn+1 = τn, which can in principle happen. Hence
+we can decompose,
+
+hCtξ, ξi :=
+
+nXk=0
+
+dXi=1Z τk+1
+
+τk
+
+(cid:10)J0→s(x)−1Vi(Y x,η
+
+s− ), ξ(cid:11)2
+
+ds =
+
+hC k
+
+t ξ, ξi.
+
+nXk=0
+
+Each of the summands determines a symmetric matrix C k
+t and can be interpreted
+as a reduced covariance matrix coming from a diﬀusion between τk and τk+1 with
+initial value Y x
+for k = 0, . . . , n. We do not know whether the H¨ormander con-
+τ −
+k
+dition is true everywhere. Therefore, we do not know whether C k
+is a positive
+t
+deﬁnite operator for all k ≥ 0. From [3], Theorem 1, we do know, however, that
+C0
+0 the
+matrix C0
+) is absolutely continuous with
+respect to the Lebesgue measure on RM , since J0→t(x) is invertible and therefore
+γ(l ◦ Y x,η
+(cid:3)
+
+t is a positive deﬁnite operator and there exist null sets N0 such that on N c
+
+t is invertible. Hence the law of (l ◦ Y x,η
+
+) has empty kernel (Theorem 2.1.2 in [24], p. 86).
+
+t
+
+t
+
+Remark 7. The same conclusions hold for Y x,η
+t− , if there
+is no jump at t. Otherwise Y x,η
+0,t− )∆ηj (t), but invertible dif-
+feomorphisms transform absolutely continuous laws in absolutely continuous ones.
+
+t− : notice that Y x,η
+j=1 δj(Y x,η
+
+t = Y x,η
+
+t = Y x,η
+
+t− +Pm
+
+Now we extend this theorem to the jump-diﬀusion process (X x
+
+t )t≥0, which is
+easy since – conditioned on one trajectory η – we do have an absolutely continuous
+law and this property is not perturbed by integration due to Fubini’s Theorem.
+
+Theorem 4. We take Assumptions 1, 2 and 3 for granted, where x ∈ dom(A∞) de-
+notes the point where the H¨ormander condition (2.3) holds true. Let (X x
+t )t≥0 denote
+the unique c`adl`ag solution of equation (3.1). Then for projections l = (l1, . . . , lk) :
+H → RM the law of l(X x
+t ) is absolutely continuous with respect to Lebesgue measure
+on RM for t > 0. Notice that l(X x
+
+t−) have the same distribution.
+
+t ) and l(X x
+
+Proof. The proof applies the following simple corollary of Fubini’s theorem on RM
+with Lebesgue measure λ and a probability space (Ω, F , P ): let ν be a probability
+measure on RM × Ω such that there is random density p : RM × Ω → R≥0 with
+
+ZRM ×Ω
+
+f (x, η)p(x, η)(λ ⊗ P )(dx, dη) =ZRM ×Ω
+
+f (x, η)ν(dx, dη),
+
+12
+
+BARBARA FORSTER, EVA L ¨UTKEBOHMERT, JOSEF TEICHMANN
+
+then the marginal of ν on RM is absolutely continuous with respect to Lebesgue
+measure λ with density
+
+p(x) =ZΩ
+
+p(x, η)P (dη)
+
+In our case we know that the law of X x
+t
+
+for almost all x ∈ RM .
+is absolutely
+continuous for almost all trajectories η of the compound Poisson processes L (pre-
+cisely those where τ1 > 0 where only one coordinate jumps at each jumping time,
+and ﬁnitely many jumps occur on compact intervals), the probability measure ν
+corresponds to the distribution of (l(X x
+t ), L), where we choose Ω as the space of
+c`adl`ag trajectories on R≥0 with values in Rm. Finally we have that the law of X x
+t
+is p(x)λ(dx).
+(cid:3)
+
+6. Applications of the infinite dimensional result to Interest Rate
+
+Theory
+
+In mathematical Finance the theory of interest rates deals with the market of in-
+terest rate related products like swaps, bonds, bills, etc. If one considers default-free
+products one can crystallize from the data of real markets the prices of default-free
+zero-coupon bonds for any maturity. A zero coupon bond contract with maturity T
+(a calendar date) can be entered at calendar time t ≤ T and (certainly) pays 1 unit
+of currency at maturity time T . Therefore bonds reﬂect the level of interest rate
+between time t and maturity time T . No coupons are paid between t and T , which
+explains the notion zero-coupon bond. We denote the price of a default-free zero-
+coupon bond with maturity T at time t ≤ T by P (t, T ). Commonly one assumes
+that bond prices are at least C1 with respect to T , i.e.
+
+P (t, T ) = exp(−Z T
+
+t
+
+f (t, r)dr)
+
+for 0 ≤ t ≤ T . This leads to the concept of the short rate
+
+Rt = f (t, t)
+
+for t ≥ 0, which corresponds to the level of interest rate for instantaneous trans-
+actions from t to t + dt. As usual in mathematical Finance discounted default-free
+zero coupon bonds are modeled by semimartingales and one assumes the existence
+of an equivalent martingale measure for discounted price processes. This leads to
+the following fundamental formula with respect to the martingale measure
+
+E(cid:0)exp(−Z T
+
+t
+
+Rsds)|Ft(cid:1) = P (t, T ) = exp(−Z T
+
+t
+
+f (t, r)dr).
+
+The formula simply expresses the fact that the expected valued of discounted value
+of the payoﬀ P (T, T ) = 1 conditional on today’s information equals today’s price
+with respect to the martingale measure. Assuming a jump diﬀusion model for
+(f (t, T )0≤t≤T for T ≥ 0 for the forward rates together with Musiela’s parametriza-
+tion r(t, T − t) = f (t, T ) for 0 ≤ t ≤ T leads to the famous Heath Jarrow Morton
+(HJM) equation of interest rate theory, which is an SDE taking values in a Hilbert
+space of forward rate curves H (and therefore an SPDE). We quote here as leading
+reference [15], where the no arbitrage conditions for the HJM equation are discussed
+in all necessary details. A very readable introduction can also be found in [8], in
+particular for HJM equations with jumps.
+
+The HJM equation has been analysed from diﬀerent points of view:
+
+ABSOLUTE CONTINUITY OF JUMP-DIFFUSIONS
+
+13
+
+• The question, which HJM equations driven by ﬁnitely many Brownian mo-
+tions admit ﬁnite dimensional realizations has been treated in all detail
+in [16]. This research has been inspired by [9], where the geometric ap-
+proach has been introduced. The satisfying answer is that – under quite
+natural restrictions – ﬁnite dimensional realizations do exist if and only if
+the corresponding factor processes are aﬃne processes. This is the case for
+instance for Vasiˇcek’s model or for the Cox-Ingersoll-Ross model of interest
+rate theory.
+In both cases the ﬁnite dimensional realizations are in fact
+two dimensional. In [8] ﬁnite dimensional realizations are treated for HJM
+equations with jumps, however, under the strong restriction that the vector
+ﬁelds do not depend on the forward rate. In this case one can solve the
+HJM equation explicitly by variation of constants and read oﬀ the respec-
+tive geometric properties of the solution process.
+
+• The question whether the solution process of a HJM equation always ad-
+mits a density with respect to Lebesgue measure when projected to a ﬁnite
+dimensional subspace has been treated in [3] and could be answered aﬃr-
+matively under H¨ormander type conditions.
+
+We ask here the question – having the theory of the previous sections in mind –
+if a structure of ﬁnite dimensional realizations, such as for Vasiˇcek’s model, can be
+perturbed so strongly through the introduction of jumps that the resulting HJM
+evolution is “hypo-elliptic”, i.e. the assumptions of Theorem 3 are fulﬁlled. We can
+answer this question aﬃrmatively in the case of a Vasiˇcek model. In contrast to
+[8] we allow the vector ﬁelds to be state-dependent (therefore we cannot hope for
+explicit solutions of the HJM equation and we have to apply local methods from
+diﬀerential geometry to conclude).
+
+We consider the following HJM-model with jumps
+
+dx
+
+r0 = r∗ ∈ H
+
+drt = (cid:18) d
+
+on some Hilbert space H of forward rate curves as constructed in [3] and [15]. Here
+(Bt)t≥0 is a standard Brownian motion and (Nt)t≥0 is a standard Poisson process
+
+rt− + αHJM (rt− ) + βHJM (rt− )(cid:19) dt + σ(rt− )dBt + δ(rt− )dNt
+
+
+with intensityeλ > 0 and jump measure µ = δ1 (henceeλ = λ). Deﬁne
+Ψ1(z) ≡ ln E(cid:2)ezW1(cid:3) = ln(cid:16)e
+Ψ2(z) ≡ ln E(cid:2)ezN1(cid:3) = ln (exp (λ (ez − 1))) = λ (ez − 1) .
+
+Then we know from [15], equation (2.4), that
+
+2(cid:17) =
+
+z2
+2
+
+and
+
+z2
+
+αHJM (r)(x) = −σ(r)(x)Ψ′
+
+= σ(r)(x)Z x
+
+0
+
+1(cid:18)−Z x
+
+0
+
+σ(r)(y)dy(cid:19)
+
+σ(r)(y)dy
+
+and
+
+βHJM (r)(x) = −δ(r)(x)Ψ′
+
+2(cid:18)−Z x
+= −λδ(r)(x) exp(cid:18)−Z x
+
+δ(r)(y)dy(cid:19)
+δ(r)(y)dy(cid:19) .
+
+0
+
+0
+
+14
+
+BARBARA FORSTER, EVA L ¨UTKEBOHMERT, JOSEF TEICHMANN
+
+For an explicit example we choose
+
+σ(r)(x) = σ(x) > 0
+
+and δ(r)(x) = −
+
+d
+dx
+
+ln(B(r))(x),
+
+where the vector ﬁeld B will be determined later. Then we have
+
+αHJM (r)(x) = σ(x)Z x
+
+0
+
+σ(y)dy
+
+and
+
+βHJM (r)(x) = λ
+
+d
+dx
+
+ln(B(r))(x)
+
+(B(r))(x)
+(B(r))(0)
+
+= λ
+
+d
+dx (B(r))(x)
+(B(r))(0)
+
+.
+
+We choose B such that (B(r))(x) is positive on H, for x ∈ R and B(r)(0) = 1 for
+all r ∈ H, whence δ is well deﬁned. Thus, for such r ∈ U we have
+
+and
+
+βHJM (r)(x) = λ
+
+d
+dx
+
+(B(r))(x)
+
+δ(r)(x) = −
+
+d
+dx
+
+ln(B(r))(x).
+
+A particular choice in the spirit of Remark 1 is given through
+
+B(r)(x) = ψ(x, l(r)),
+
+dx ψ(., y) and y 7→ 1
+
+where the maps y 7→ d
+ψ(.,y) from R to dom(A∞) ⊂ H are
+supposed to be C∞-bounded with ψ(0, y) = 1 for all y ∈ R. The map l denotes
+here a non-vanishing linear functional l : H → R. Hence δ and β are well-deﬁned
+C∞-bounded vector ﬁelds on the whole Hilbert space and we have global existence
+of mild solutions.
+
+The Vasiˇcek model is deﬁned by
+
+σ(r) = ρ exp(−ax),
+
+for ρ, a > 0 without any jump component. By [9] and [16] we know that the
+Vasiˇcek-model admits ﬁnite dimensional realizations as for
+
+we have
+
+V0(r)(x) =
+
+d
+dx
+
+r(x) + αHJM (r)(x)
+
+dim({V0, σ}LA(r)) ≤ 2
+
+∞
+
+dx )
+
+and at any point r ∈ dom(( d
+). Here the index LA stands for the Lie algebra
+generated by the vector ﬁelds V0, V1 on dom(A∞).
+If we add a jump structure
+as described above and if we choose ψ generic, the two dimensional structure (a
+regular ﬁnite dimensional realization in the sense of [16]) is destroyed, since then
+the drift changes due to no-arbitrage. We obtain a dense Lie algebra if we choose
+the vector ﬁeld B generically.
+
+These results might be of interest for recent works in interest rate theory, see for
+instance [23], where under diﬀusion assumptions hypo-ellipticity has been tested
+empirically. If one allows for jumps in an HJM model the phenomenon of hypo-
+ellipticity seems to be more generic.
+
+ABSOLUTE CONTINUITY OF JUMP-DIFFUSIONS
+
+15
+
+7. Smooth densities for the law X x
+
+T on RM
+
+In the sequel we consider the case dim H = M and l = id and we choose a
+coordinate representation H = RM . We then want to show that the p-th power of
+the inverse of the Malliavin covariance matrix of X x
+for t > 0 can be integrated
+t
+even with respect to Poisson trajectory η. We therefore need an extension of the
+H¨ormander condition, which is called the uniform H¨ormander condition:
+
+Following [24], we deﬁne
+
+Σ′
+
+0 := {V1, . . . , Vd}
+
+n :=([Vk, V ], k = 1, . . . , d, V ∈ Σ′
+
+Σ′
+
+n−1; [V0, V ] +
+
+[Vi,[Vi, V ]], V ∈ Σ′
+
+n−1)
+
+1
+2
+
+dXi=1
+
+for n ≥ 1. We assume that there exists j0 and c > 0 such that
+
+(7.1)
+
+uniformly in x ∈ RM .
+
+inf
+
+ξ∈SM −1
+
+j0Xj=0 XV ∈Σ′
+
+j
+
+hV (x), ξi2 ≥ c
+
+Theorem 5. Assume that dim H < ∞. We take Assumptions 2 and 3 for granted,
+but assume that the H¨ormander condition (2.3) holds true uniformly on RM in the
+sense of (7.1). Let (X x
+t )t≥0 denote the unique c`adl`ag solution of equation (3.1) and
+ﬁx t > 0. Then the random variable X x
+t admits a smooth density with respect to
+Lebesgue measure on RM . Furthermore, the covariance matrix of X x
+is invertible
+t
+with p-integrable inverse for all p ≥ 1.
+
+Proof. We write the Malliavin derivative of X x
+t ,
+
+Di
+
+sX x
+
+t = J0→t(x)J0→s(x)−1Vi(X x
+
+s− )1[0,t](s).
+
+and calculate the reduced covariance matrix
+
+hCtξ, ξi =
+
+dXi=1Z t
+
+0 (cid:10)J0→s(x)−1Vi(X x
+
+s−), ξ(cid:11)2
+
+ds.
+
+We now apply the result from Theorem 1 and condition on the trajectories of the
+compound Poisson process (2)
+
+(7.2)
+
+sup
+
+P (hCtξ, ξi < ǫ)
+
+ξ∈SM −1
+
+= sup
+
+ξ∈SM −1 Xn1,...,nm≥0h mYk=1
+
+P (N k
+
+t = nk)iP (hCtξ, ξi < ǫ|N j
+
+t = nj for j = 1, . . . , m).
+
+As in the proof of Theorem 3, we can decompose hCtξ, ξi into
+
+hCtξ, ξi =
+
+∞Xk=0
+
+dXi=1Z τk+1∧t
+
+τk∧t
+
+(cid:10)J0→s(x)−1Vi(X x
+
+s− ), ξ(cid:11)2
+
+ds,
+
+P (hCtξ, ξi < ǫ|N j
+
+t = nj, j = 1, . . . , m) ≤
+
+sup
+
+ξ∈SM −1
+
+sup
+
+ξ∈SM −1
+
+P  dXi=1Z τk+1∧t
+
+τk∧t
+
+16
+
+BARBARA FORSTER, EVA L ¨UTKEBOHMERT, JOSEF TEICHMANN
+
+where τ0 = 0 < τ1 < . . . < τn ≤ . . . denotes the sequence of jump times of
+(Nt)0≤t≤T . Hence, we obtain for n = n1 + · · · + nm
+
+(cid:10)J0→s(x)−1Vi(X x
+
+s− ), ξ(cid:11)2
+
+ds < ǫ(cid:12)(cid:12)(cid:12)N j
+
+t = nj, j = 1, . . . , m! ,
+
+n )K(p) (after all
+for all 0 ≤ k ≤ n. Observing that max0≤k≤n(τk+1 − τk)K(p) ≥ ( t
+we only have n jumps, so the maximal distance between two consecutive jumps is
+bigger than t
+
+n ), we ﬁnally obtain
+
+P (hCtξ, ξi < ǫ|N j
+
+t = nj for j = 1, . . . , m) ≤ ǫp
+
+for 0 ≤ ǫ ≤ ( t
+n )K(p)ǫ0(p) due to the calculations outlined in the Appendix. Note
+that we can apply the calculations from the Appendix, since J0→s(x)−1 is well-
+deﬁned and bounded due to boundedness of (id + zdδj)−1 for z ∈ supp(µj) and
+j = 1, . . . , m. Hence integration with respect to the measures µj is possible and
+t is Lp
+yields ﬁnite bounds. Recall also that µj has moments of all orders, hence X x
+and so is J0→s(x)−1 (see [25] for all necessary details on SDEs).
+
+Let Λ = inf ξ∈SM −1 hCtξ, ξi be the smallest eigenvalue of the reduced covariance
+
+matrix Ct. Following the steps of [24], Lemma 2.3.1, we know that
+
+P (Λ < ǫ | N j
+
+t = nj for j = 1, . . . , m) ≤ const · ǫp
+
+for any p ≥ 2 and 0 ≤ ǫ ≤ (cid:0) t
+
+ǫ0(p + 2M ) =: ǫmax, where the constant
+depends on the p-norm of Ct. In the sequel we shall denote any constant of this
+type by D. We denote by ρ the law of Λ conditioned on N j
+t = nj for j = 1, . . . , m.
+Consequently, for j = 1, . . . , m, we have by Fubini’s Theorem
+
+E(cid:18) 1
+Λp−1 (cid:12)(cid:12)(cid:12) N j
+
+n(cid:1)K(p+2M)
+t = nj(cid:19) = E(cid:18) 1
+t = nj(cid:19)
+Λp−1 · 1{Λ>ǫmax} (cid:12)(cid:12)(cid:12) N j
++ E(cid:18) 1
+t = nj(cid:19)
+Λp−1 · 1{Λ≤ǫmax} (cid:12)(cid:12)(cid:12) N j
++Z ǫmax
+(p − 1)Z ∞
++Z ǫmax
+zpZ z
++ (p − 1)Z ǫmax
++ (p − 1)Z ∞
+zpZ ǫmax
+{z
+|
+
++ DZ ǫmax
+
+1
+ǫp−1
+max
+1
+ǫp−1
+max
+1
+ǫp−1
+max
+
+0
+1
+zp zpdz
+
+)K(p+2M)ǫ0(p + 2M )+
+
+D
+ǫp−1
+max
+
+ρ(dt)dz
+
+≤ D(
+
+ρ(dz)
+
+≤
+
+=
+
+=
+
+1
+tp
+
+1
+
+zp−1
+
+0
+
+1
+
+=ǫmax
+
+ǫmax
+
+0
+
+0
+
+0
+
+z
+1
+
+}
+
+≤
+
+dtρ(dz)
+
+ρ(dt)dz+
+
+0
+
+t
+n
+
++
+
+D
+
+[( t
+
+n )K(p+2M)ǫ0(p + 2M )]p−1
+
+.
+
+ABSOLUTE CONTINUITY OF JUMP-DIFFUSIONS
+
+17
+
+0 ρ(dt) ≤ constzp as previously proved. Hence through the de-
+
+composition (7.2),
+
+Here we applied R z
+Λp−1(cid:19) ≤ Xn1,...,nm>0
+E(cid:18) 1
+mYk=1
+n(cid:17)K(p+2M)
+
+· D ·(cid:20)(cid:16) t
+
+P (N k
+
+t = nk)·
+
+ǫ0(p + 2M ) +
+
+n )K(p+2M)ǫ0(p + 2M )]p−1(cid:21) < ∞
+
+1
+
+[( t
+
+the result follows by n = n1 +· · ·+nm and by the following fact for any real number
+K,
+
+Xn1,...,nm>0eλn1
+
+m
+n1! · · · nm!
+
+1 · · ·eλnm
+
+e−teλ1n1−···−teλmnm tn(n1 + · · · + nm)K < ∞.
+
+(cid:3)
+
+Remark 8. We could have also applied the beautiful results of [21, Corollary 3.25]
+to evaluate the Lp norm of the inverse of the covariance matrix between two jumps.
+Both ways lead to the same result. We have been choosing our approach since we
+could it root it is much as possible in the standard reference [24].
+
+8. Calculating the Greeks in finite dimension
+
+In the sequel we consider the case dim H = M and l = id as in the previ-
+ous section. Once we are given an invertible Malliavin covariance matrix with
+p-integrable inverse such as in Theorem 5, we can easily calculate derivatives with
+respect to initial values and obtain explicit formulas for so-called Malliavin weights
+(see [17] for successful applications of this method in mathematical Finance). We
+sum up quickly the main idea: in mathematical Finance the gradient of the function
+x 7→ E(f (X x
+t )) has the meaning of hedging ratios, which control the hedging port-
+folios away from jumps. Hence for any hedging portfolio corresponding to prices
+E(f (X x
+t ))
+to perform hedging oﬀ jumps.
+
+t )) of a certain derivative at maturity t > 0 it is crucial to know ∇E(f (X x
+
+Very often pricing results in the applications of weak-approximation-scheme for
+the process X, for instance the Euler-Maruyama scheme. For the calculation of
+∇E(f (X x
+t )) in the direction of some vector v ∈ H basically three methods can be
+applied:
+
+• a ﬁnite diﬀerence method to approximate ∇E(f (X x
+
+t )) · v resulting in the
+(v ∈ H denotes some vector) for small
+
+calculation of E(f (X x+ǫv
+ǫ > 0.
+
+t
+
+))−E(f (X x
+ǫ
+
+t ))
+
+• a pathwise method applying the formula
+t )) · v = E(df (X x
+
+t )J0→t(x) · v)
+resulting in the weak numerical approximation of (X x
+• the method of Malliavin weights applying the formula
+
+∇E(f (X x
+
+t , J0→t(x)).
+
+∇E(f (X x
+
+t )) · v = E(f (X x
+
+t )πv)
+
+results in the weak numerical approximation of (X x
+
+t , πv).
+
+The ﬁrst method is the most robust one in the sense that it can be applied
+under very weak assumptions both on X x
+t and on the payoﬀ f , but the rate of
+convergence might be very slow since the errors of Monte-Carlo evaluations are
+ampliﬁed. The second method works for all reasonable jump-diﬀusion processes
+
+18
+
+BARBARA FORSTER, EVA L ¨UTKEBOHMERT, JOSEF TEICHMANN
+
+but one needs Lipschitz conditions on the payoﬀ f . The third method needs the
+assumptions of Theorem 5 on X x
+t , but no restrictions on the payoﬀ f , which makes
+the third method attractive for several problems from mathematical Finance, where
+measurable, non-Lipschitz payoﬀs (e.g. digital options) are quite usual and hypo-
+ellipticity assumptions as in Theorem 5 are common, too.
+
+The implementation of procedures for all three methods have been outlined in
+[18] in the pure diﬀusion case. We shall not work on this issue here, since our main
+message is that one can implement precisely the same methods as in pure diﬀusion
+cases for jump-diﬀusions. The important point is that the formulas have the same
+structure in both cases, a fact, on which we shall point in this section at several
+occasions.
+
+We denote in this sequel the Skorohod integral (resp. the divergence operator)
+
+by δ and its domain by dom(δ).
+
+Deﬁnition 1. Assume that H = RM , ﬁx t > 0 and a direction v ∈ RM . We deﬁne
+a set of Skorohod-integrable processes
+
+At,x,v =(cid:26)a ∈ dom(δ) such that
+
+dXi=1Z t
+
+0
+
+J0→s(x)−1Vi(X x
+
+s− )ai
+
+sds = v(cid:27)
+
+and call it the set of path-perturbations with target-value v.
+
+Remark 9. In the previous deﬁnition such as in the whole section assertions on
+Skorohod-integrability are meant Poissonian-trajectory-wise.
+
+Proposition 1. Assume that H = RM . We take Assumption 3 for granted. Fix
+t > 0 and a direction v ∈ RM . Assume furthermore uniform ellipticity, i.e. M = d
+and there is c > 0 such that
+
+hVk(x), ξi2 ≥ c.
+
+inf
+
+ξ∈SM −1
+
+MXk=1
+
+Then At,x,v 6= ∅ and there exists an integrable, real valued random variable πv
+(which depends linearly on v) such that for all bounded random variables f we
+obtain
+
+d
+dǫ
+
+|ǫ=0E(f (X x+ǫv
+
+t
+
+)) = E(f (X x
+
+t )πv).
+
+Such a random variable πv is called a Malliavin weight and can be obtained through
+an Itˆo integral.
+
+Remark 10. The assertion of this theorem corresponds to Assumption (E) in [18]
+and to the assumptions of [17]. The assumptions are seen as too restrictive since
+not every problem in mathematical Finance has an elliptic volatility matrix. The
+formulas of [18] and [17] correspond precisely to the formulas obtained here, which
+leads to the assertion that even in the presence of jumps one can apply the same
+(numerical) methods for the calculation of greeks.
+
+Proof. Here the proof is particularly simple, since we can take a matrix σ(x) :=
+(V1(x), . . . , VM (x)), which is uniformly invertible with bounded inverse. We deﬁne
+
+as :=
+
+1
+t
+
+σ(X x
+
+s− )−1 · J0→s(x) · v
+
+ABSOLUTE CONTINUITY OF JUMP-DIFFUSIONS
+
+19
+
+for 0 ≤ s ≤ t and obtain that a ∈ At,x,v. Furthermore – as in [17] and [13] – we
+obtain
+
+πv =
+
+MXi=1Z t
+
+0
+
+ai
+sdBi
+s,
+
+since the Skorohod integrable process a is in fact adapted, left-continuous and hence
+Itˆo-integrable.
+(cid:3)
+
+Theorem 6. Assume that H = RM . We take Assumptions 2 and 3 for granted,
+but assume that the H¨ormander condition (2.3) holds true uniformly on RM (see
+Section 7). Fix t > 0 and a direction v ∈ RM . Then At,x,v 6= ∅ and there exists an
+integrable, real valued random variable πv (which depends linearly on v) such that
+for all bounded random variables f we obtain
+
+d
+dǫ
+
+|ǫ=0E(f (X x+ǫv
+
+t
+
+)) = E(f (X x
+
+t )πv).
+
+We can choose πv to be the Skorohod integral of any element a ∈ At,x,v 6= ∅ and
+call it a Malliavin weight. Moreover, by the explicit construction of a in the proof,
+we can assert that πv is the sum of an Itˆo integral and an integral with respect to
+Lebesgue measure, see for instance [18].
+
+Remark 11. The assertion of this theorem corresponds to Assumption (E’) in [18].
+The assumptions (E) and (E’) are fundamental for the third method in [18]. Again
+the formulas of [18] correspond to the formulas obtained here.
+
+Proof. We take f bounded with bounded ﬁrst derivative, then we obtain
+
+d
+dǫ
+
+|ǫ=0E(f (X x+ǫv
+
+t
+
+)) = E(df (X x
+
+t )J0→t(x) · v).
+
+If there is a ∈ At,x,v, we obtain
+
+E(df (X x
+
+t )J0→t(x) · v) = E(df (X x
+t )
+
+= E(
+
+= E(
+
+0
+
+dXi=1Z t
+dXi=1Z t
+
+dXi=1Z t
+
+0
+
+J0→t(x)J0→s(x)−1Vi(X x
+
+s−)ai
+
+sds)
+
+df (X x
+
+t )J0→t(x)J0→s(x)−1Vi(X x
+
+s−)ai
+
+sds)
+
+Di
+
+sf (X x
+
+t )ai
+
+sds)
+
+0
+= E(f (X x
+
+t )δ(a)).
+
+Here we cannot assert that the strategy is Itˆo-integrable, since it will be anticipative
+in general. In order to see that At,x,v 6= ∅ we construct an element, namely
+
+ai
+
+s :=(cid:10)J0→s(x)−1Vi(X x
+
+s− ), (Ct)−1v(cid:11) ,
+
+20
+
+BARBARA FORSTER, EVA L ¨UTKEBOHMERT, JOSEF TEICHMANN
+
+where Ct denotes the reduced covariance matrix from Theorem 5. Indeed
+
+0
+
+=
+
+J0→s(x)−1Vi(X x
+
+dXi=1(cid:28)Z t
+dXi=1Z t
+0 (cid:10)J0→s(x)−1Vi(X x
+=(cid:10)ξ, Ct(Ct)−1v(cid:11) = hξ, vi
+dXi=1Z t
+
+hξ, Ctξi =
+
+for ξ ∈ RM .
+
+set, namely
+
+Bt,x,v =(cid:26)b ∈ dom(δ)|
+
+dXi=1Z t
+
+0
+
+s−)ai
+
+sds, ξ(cid:29)
+s− ), ξ(cid:11)(cid:10)J0→s(x)−1Vi(X x
+
+s−), (Ct)−1v(cid:11) ds
+
+0 (cid:10)J0→s(x)−1Vi(X x
+
+s− ), ξ(cid:11)2
+
+ds
+
+(cid:3)
+
+J0→s(x)−1Vi(X x
+
+s− )bi
+
+sds = J0→t(x)−1 d
+dǫ
+
+|ǫ=0X x,ǫ
+
+t (cid:27).
+
+for all ξ ∈ RM , since Ct is a symmetric random operator deﬁned via
+
+For any other derivative with respect to parameters ǫ, we consider a modiﬁed
+
+bi
+
+s :=(cid:28)J0→s(x)−1Vi(X x
+
+This is a consequence of the following reasoning,
+
+Here we are given a parameter-dependent process X x,ǫ
+, where all derivatives with
+respect to ǫ can be calculated nicely. Also in this case we can construct – if the
+reduced covariance matrix is invertible and regular enough – an element, namely
+
+t
+
+s− ), (Ct)−1J0→t(x)−1 d
+dǫ
+
+|ǫ=0X x,ǫ
+
+t (cid:29) .
+s− ), ξE·
+0 DJ0→s(x)−1Vi(X x
+t E,
+
+dXi=1Z t
+t Eds
+t E =Dξ, J0→t(x)−1 d
+
+|ǫ=0X x,ǫ
+
+|ǫ=0X x,ǫ
+
+dǫ
+
+sds, ξE =
+
+|ǫ=0X x,ǫ
+
+s− ), (Ct)−1J0→t(x)−1 d
+dǫ
+
+s−)bi
+
+0
+
+J0→s(x)−1Vi(X x
+
+dXi=1DZ t
+·DJ0→s(x)−1Vi(X x
+=Dξ, Ct(Ct)−1J0→t(x)−1 d
+
+dǫ
+
+due to symmetry of Ct.
+
+9. Appendix
+
+Theorem 7. Let (Ω, F , P, (Ft)t≥0) be a ﬁltered probability space and let (Bt)t≥0 be
+a d-dimensional Brownian motion adapted to the ﬁltration (which is not necessarily
+generated by the Brownian motion). Let V, V1, . . . , Vd, the diﬀusion vector ﬁelds be
+C∞-bounded on RM and consider the continuous solution (X x
+t )0≤t≤T of a stochas-
+tic diﬀerential equation (in Stratonovich notation). V0 denotes the Stratonovich
+corrected drift term,
+
+(9.1)
+
+(9.2)
+
+dX x
+
+t = V0(X x
+
+t )dt +
+
+X x
+
+0 = x.
+
+Vi(X x
+
+t ) ◦ dBi
+t,
+
+dXi=1
+
+ABSOLUTE CONTINUITY OF JUMP-DIFFUSIONS
+
+21
+
+Assume that the uniform H¨ormander condition holds true (see the proof for the
+precise statement). Then for any p ≥ 1 there exist numbers ǫ0(p) > 0 and an
+integer K(p) ≥ 1 such that for each 0 < t < T
+
+sup
+
+P (hCtξ, ξi < ǫ) ≤ ǫp
+
+ξ∈SM −1
+
+holds true for 0 ≤ ǫ ≤ tK(p)ǫ0(p). The result holds uniformly in x.
+
+Remark 12. The time-dependence of the estimate 0 ≤ ǫ ≤ tK(p)ǫ0(p) is best
+explained by re-doing the proof. It is heavily applied in Section 7 and the main
+technical ingredient of the given proof. We could have also used directly the results
+from [21].
+
+Proof. The proof of the theorem is a careful re-reading of the Norris Lemma and
+the classical proof of the H¨ormander theorem in probability theory (see [22] or [24]).
+We shall sketch this path in the sequel (see [24], pp.120–123):
+
+(1) Consider the random quadratic form
+
+hCtξ, ξi =
+
+dXi=1Z t
+
+0 (cid:10)J0→s(x)−1Vi(X x
+
+s ), ξ(cid:11)2
+
+ds.
+
+Following [24], we deﬁne
+
+Σ′
+
+0 := {V1, . . . , Vd}
+
+n :=([Vk, V ], k = 1, . . . , d, V ∈ Σ′
+
+Σ′
+
+n−1; [V0, V ] +
+
+[Vi,[Vi, V ]], V ∈ Σ′
+
+n−1)
+
+1
+2
+
+dXi=1
+
+for n ≥ 1. We assume that there exists j0 and c > 0 such that
+
+inf
+
+ξ∈SM −1
+
+j0Xj=0 XV ∈Σ′
+
+j
+
+hV (x), ξi2 ≥ c
+
+uniformly in x ∈ RM .
+
+(2) We deﬁne m(j) := 2−4j for 0 ≤ j ≤ j0 and the sets
+
+jZ t
+Ej :=n XV ∈Σ′
+0 (cid:10)J0→s(x)−1V (X x
+
+s ), ξ(cid:11)2
+
+ds ≤ ǫm(j)o.
+
+We consider the decomposition
+
+E0 = {hCtξ, ξi ≤ ǫ} ⊂ (E0 ∩ Ec
+F = E0 ∩ · · · ∩ Ej0 .
+
+1) ∪ (E1 ∩ Ec
+
+2) ∪ · · · ∪ (Ej0−1 ∩ Ec
+
+j0 ) ∪ F,
+
+and proceed with
+
+P (F ) ≤ Cǫ
+
+qβ
+
+2 ,
+
+for ǫ ≤ ǫ1 and any q ≥ 2 with a constant C depending on q and the norms of
+the derivatives of the vector ﬁelds V0, . . . , Vd. Furthermore 0 < β < m(j0).
+The number ǫ1 is determined by the following two (!) equations
+
+(j0 + 1)ǫm(j0)
+
+1
+
+<
+
+cǫβ
+1
+4
+ǫβ
+1 < t.
+
+,
+
+22
+
+BARBARA FORSTER, EVA L ¨UTKEBOHMERT, JOSEF TEICHMANN
+
+Hence ǫ1 depends on j0, c, t and the choice of β, via
+
+ǫ1 < min t
+
+1
+
+β ,(cid:18)
+
+c
+
+4(j0 + 1)(cid:19) 1
+
+m(j0 )−β! .
+
+This little observation additional to the proof in [24] is key for our proof.
+
+(3) We obtain furthermore that
+
+P (Ej ∩ Ec
+
+0
+
+0
+
+hJ0→s(x)−1V (X x
+
+hJ0→s(x)−1V (X x
+
+s ), ξi2ds ≤ ǫm(j),
+
+j+1) = P(cid:18) XV ∈Σ′
+jZ t
+s ), ξi2ds > ǫm(j+1)(cid:19)
+j+1Z t
+XV ∈Σ′
+P Z t
+≤ XV ∈Σ′
+s ), ξ(cid:11)2
+0 (cid:10)J0→s(x)−1V (X x
+dXk=1Z t
+s ), ξ(cid:11)2
+0 (cid:10)J0→s(x)−1[Vk, V ](X x
+[Vi, [Vi, V ]](cid:17)(X x
+
++Z t
+0 DJ0→s(x)−1(cid:16)[V0, V ] +
+quadratic variation part of the martingale ((cid:10)J0→s(x)−1V (X x
+
+s ), ξE2
+
+where n(j) = #Σ′
+
+1
+2
+
+dXi=1
+
+ds ≤ ǫm(j),
+
+ds+
+
+j
+
+ds >
+
+ǫm(j+1)
+
+n(j) !,
+s ), ξ(cid:11))0≤s≤t in
+
+j. Since we can ﬁnd the bounded variation and the
+
+the above expression, we are able to apply Norris Lemma (see [24], Lemma
+2.3.2). We observe that 8m(j + 1) < m(j), hence we can apply it with
+q = m(j)
+
+m(j+1) .
+
+(4) We obtain for p ≥ 2 – still by the Norris Lemma – the estimate
+
+P (Ej ∩ Ec
+
+j+1) ≤ d1(cid:18) ǫm(j+1)
+n(j) (cid:19)rp
+
++ d2 exp(cid:18)−(cid:16) ǫm(j+1)
+
+n(j) (cid:17)−ν(cid:19)
+
+for ǫ ≤ ǫ2. Furthermore r, ν > 0 with 18r + 9ν < q − 8, the numbers d1, d2
+depend on the vector ﬁelds V0, . . . , Vd, and on p, T . The number ǫ2 can be
+chosen as ǫ2 = ǫ3tk1, where ǫ3 does not depend on t anymore.
+
+(5) Putting all together we take the minimum of ǫ1 and ǫ2 to obtain the desired
+(cid:3)
+
+dependence on t.
+
+References
+
+[1] Yuri Bakhtin and J. Mattingly. Malliavin calculus for inﬁnite-dimensional systems with ad-
+
+ditive noise. Journal of Functional Analysis, 249(2):307–353, 2007.
+
+[2] Vlad Bally, Marie-Pierre Bavouzet, and Marouen Messaoud. Integration by parts formula
+for locally smooth laws and applications to sensitivity computations. Ann. Appl. Probab.,
+17(1):33–66, 2007.
+
+[3] Fabrice Baudoin and Josef Teichmann. Hypoellipticity in inﬁnite dimensions and an applica-
+
+tion in interest rate theory. Ann. Appl. Probab., 15(3):1765–1777, 2005.
+
+[4] Ya. I. Belopolskaya and Yu. L. Dalecky. Stochastic equations and diﬀerential geometry, vol-
+ume 30 of Mathematics and its Applications (Soviet Series). Kluwer Academic Publishers
+Group, Dordrecht, 1990. Translated from the Russian.
+
+ABSOLUTE CONTINUITY OF JUMP-DIFFUSIONS
+
+23
+
+[5] Ya. I. Belopolskaya and Yu. L. Daletsky. Smoothness of transition probabilities of Markov
+processes described by stochastic diﬀerential equations in Hilbert space. Dopov. Dokl. Akad.
+Nauk Ukraini, (9):40–45, 1994.
+
+[6] Klaus Bichteler, Jean-Bernard Gravereaux, and Jean Jacod. Malliavin calculus for processes
+with jumps, volume 2 of Stochastics Monographs. Gordon and Breach Science Publishers,
+New York, 1987.
+
+[7] Jean-Michel Bismut. Calcul des variations stochastique et processus de sauts. Z. Wahrsch.
+
+Verw. Gebiete, 63(2):147–235, 1983.
+
+[8] Tomas Bj¨ork and Andrea Gombani. Minimal realizations of interest rate models. Finance
+
+Stoch., 3(4):413–432, 1999.
+
+[9] Tomas Bj¨ork and Lars Svensson. On the existence of ﬁnite-dimensional realizations for non-
+
+linear forward rate models. Math. Finance, 11(2):205–243, 2001.
+
+[10] Rene A. Carmona and Boris Rozovskii, editors. Stochastic partial diﬀerential equations: six
+perspectives, volume 64 of Mathematical Surveys and Monographs. American Mathematical
+Society, Providence, RI, 1999.
+
+[11] Thomas Cass. Smooth densities for stochastic diﬀerential equations with jumps. 2007.
+
+arXiv:math/0702364v3, to appear in Stoch. Proc. Appl.
+
+[12] Giuseppe Da Prato and Jerzy Zabczyk. Stochastic equations in inﬁnite dimensions, vol-
+ume 44 of Encyclopedia of Mathematics and its Applications. Cambridge University Press,
+Cambridge, 1992.
+
+[13] Mark H. A. Davis and Martin P. Johansson. Malliavin Monte Carlo Greeks for jump diﬀusions.
+
+Stochastic Process. Appl., 116(1):101–129, 2006.
+
+[14] Youssef El-Khatib and Nicolas Privault. Computations of Greeks in a market with jumps via
+
+the Malliavin calculus. Finance Stoch., 8(2):161–179, 2004.
+
+[15] Damir Filipovic and Stefan Tappe. Existence of L´evy term structure models. Finance and
+
+Stochastics, 12:83–115, 2008.
+
+[16] Damir Filipovi´c and Josef Teichmann. Existence of invariant manifolds for stochastic equa-
+
+tions in inﬁnite dimension. J. Funct. Anal., 197(2):398–432, 2003.
+
+[17] Eric Fourni´e, Jean-Michel Lasry, J´erˆome Lebuchoux, Pierre-Louis Lions, and Nizar Touzi. Ap-
+plications of Malliavin calculus to Monte Carlo methods in ﬁnance. Finance Stoch., 3(4):391–
+412, 1999.
+
+[18] Emmanuel Gobet and R´emi Munos. Sensitivity analysis using Itˆo-Malliavin calculus and mar-
+tingales, and application to stochastic optimal control. SIAM J. Control Optim., 43(5):1676–
+1713 (electronic), 2005.
+
+[19] Richard S. Hamilton. The inverse function theorem of Nash and Moser. Bull. Amer. Math.
+
+Soc. (N.S.), 7(1):65–222, 1982.
+
+[20] Andreas Kriegl and Peter W. Michor. The convenient setting of global analysis, volume 53
+of Mathematical Surveys and Monographs. American Mathematical Society, Providence, RI,
+1997.
+
+[21] S. Kusuoka and D. Stroock. Applications of the Malliavin calculus. II. J. Fac. Sci. Univ.
+
+Tokyo Sect. IA Math., 32(1):1–76, 1985.
+
+[22] Paul Malliavin. Stochastic analysis, volume 313 of Grundlehren der Mathematischen Wis-
+
+senschaften. Springer-Verlag, Berlin, 1997.
+
+[23] Paul Malliavin, Maria Elvira Mancino, and Maria Cristina Recchioni. A non-parametric
+calibration of the HJM geometry: an application of Itˆo calculus to ﬁnancial statistics. Jpn.
+J. Math., 2(1):55–77, 2007.
+
+[24] David Nualart. The Malliavin calculus and related topics. Probability and its Applications
+
+(New York). Springer-Verlag, New York, 1995.
+
+[25] Philip Protter. Stochastic integration and diﬀerential equations, volume 21 of Applications
+
+of Mathematics (New York). Springer-Verlag, Berlin, 1990. A new approach.
+
+[26] Josef Teichmann. Existence of densities for spdes. Preprint, 2008.
+[27] Xian Yin Zhou. On the existence of solutions with smooth density of stochastic diﬀeren-
+tial equations in plane. Acta Math. Sinica (N.S.), 8(4):432–446, 1992. A Chinese summary
+appears in Acta Math. Sinica 36 (1993), no. 5, 720.
+
+24
+
+BARBARA FORSTER, EVA L ¨UTKEBOHMERT, JOSEF TEICHMANN
+
+Vienna University of Technology, Department of mathematical methods in Econom-
+ics, Research Group e105 Financial and Actuarial Mathematics, Wiedner Hauptstrasse
+8-10, A-1040 Wien, Austria
+
+E-mail address: bforster@fam.tuwien.ac.at, eva.luetkebohmert@uni-bonn.de
+E-mail address: jteichma@fam.tuwien.ac.at
+
+

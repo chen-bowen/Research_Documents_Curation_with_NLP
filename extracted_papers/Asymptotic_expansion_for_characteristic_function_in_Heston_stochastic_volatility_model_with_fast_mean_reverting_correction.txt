@@ -1,0 +1,725 @@
+3
+1
+0
+2
+
+ 
+t
+c
+O
+4
+1
+
+ 
+
+.
+
+ 
+ 
+]
+P
+C
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+2
+7
+5
+3
+
+.
+
+0
+1
+3
+1
+:
+v
+i
+X
+r
+a
+
+Asymptotic expansion for characteristic function in Heston
+
+stochastic volatility model with fast mean-reverting correction
+
+Ankush Agarwal∗
+
+August 20, 2018
+
+Abstract
+
+In this note, we derive the characteristic function expansion for logarithm of the under-
+
+lying asset price Xτ in corrected Heston model as proposed by Fouque and Lorig [1].
+
+1
+
+Introduction
+
+Heston model [3] has been the most widely used stochastic volatility model as it provides an
+explicit formula for calculating European option prices. But as noted by Fouque and Lorig [1] ,
+the model fails to capture the implied volatility skew in far in-the-money and out-of-the-money
+European options. A suggested explanation for this shortcoming is the single factor of volatility
+in the model which is not suﬃcient for describing the dynamics of the observed volatility process.
+In [1], the authors proposed a fast mean-reverting correction to the Heston model which
+still preserves the explicitness of the formula for European option price. It is demonstrated that
+the corrected Heston model captures the market implied volatility skew better than the original
+Heston model.
+
+In this note, we use similar singular perturbative expansion to derive a correction to the
+
+characteristic function of the logarithm of underlying asset price in the Heston model.
+
+2 Multi-Scale Model and Characteristic function PDE
+
+Under the pricing risk-neutral probability measure P, consider the price St of an asset whose
+dynamics is described by the following system of stochastic diﬀerential equations:
+
+dSt = rStdt + ΣtStdW x
+t ,
+Σt = pZtf (Yt),
+
+Zt
+ǫ
+
+dYt =
+
+(m − Yt)dt + ν√2r Zt
+dYt = κ(θ − Zt)dt + σpZtdW z
+
+ǫ
+t .
+
+dW y
+t ,
+
+Here, W x
+
+t , W y
+
+t and W z
+
+t are one-dimensional Brownian motions with the correlation structure
+
+dhW x, W yit = ρxydt,
+dhW x, W zit = ρxzdt,
+dhW y, W zit = ρyzdt,
+
+∗School of Technology and Computer Science, Tata Institute of Fundamental Research, Mumbai MA 400005;
+
+ankush@tcs.tifr.res.in
+
+1
+
+where the correlation coeﬃcients ρxy, ρxz and ρxy are constants satisfying ρ2
+xz < 1,
+yz < 1, and ρ2
+ρ2
+yz − 2ρxyρxzρyz < 1 in order to ensure positive deﬁniteness of
+the covariance matrix of the three Brownian motions. Next, we set Xt = log St and get the
+corresponding stochastic diﬀerential equation which describes the dynamics of Xt:
+
+xy < 1, ρ2
+
+xy + ρ2
+
+xz + ρ2
+
+dXt = (cid:16)r −
+
+1
+2
+
+f 2(Yt)Zt(cid:17)dt + ΣtdW x
+
+t .
+
+Let us deﬁne the characteristic function of logarithm of the underlying asset price at expiry as
+
+ψǫ(t, x, y, z) := E(cid:2)eisXT |Xt = x, Yt = y, Zt = z(cid:3)
+
+where we have used the Markov property of (Xt, Yt, Zt) and deﬁned the characteristic function
+ψǫ(t, x, y, z), the superscript ǫ denoting the dependence on the small parameter ǫ. Using the
+Feynman-Kac formula for ψǫ(t, x, y, z), a conditional expectation, we get the following PDE and
+boundary conditions:
+
+Lǫψǫ(t, x, y, z) = 0,
+∂
+∂t
+ψǫ(T, x, y, z) = eisx
+
+Lǫ =
+
++ L(X,Y,Z),
+
+where the operator L(X,Y,Z) is the inﬁnitesimal generator of the process (Xt, Yt, Zt):
+1
+2
+
+L(X,Y,Z) = (cid:16)r −
+
+f 2(y)z(cid:17) ∂
+
+1
+2
+
+∂2
+
++
+
+1
++
+∂x
+2
++ ν2 ∂2
+
+f 2(y)z
+∂y2(cid:17) +
+
+∂2
+∂x2 + ρxzσf (y)z
+√ǫ(cid:16)ρyzσν√2
+∂2
+
+∂y∂z
+
+z
+
++ k(θ − z)
+∂x∂z
++ ρxyν√2f (y)
+
+∂
+∂z
+∂2
+
+∂x∂y(cid:17).
+
++
+
+z
+
+ǫ(cid:16)(m − y)
+
+∂
+∂y
+
+(1)
+
+(2)
+
+(3)
+
+σ2z
+
+∂2
+∂z2
+
+We separate Lǫ into groups of like-powers of 1/√ǫ. To this end, we deﬁne the operators L0, L1
+and L2 as follows:
+
+∂y2 + (m − y)
+
+∂
+∂y
+
+,
+
+L0 := ν2 ∂2
+L1 := ρyzσν√2
+L2 :=
++
+
+∂
+∂t
+1
+2
+
+σ2z
+
++
+
+∂2
+
+∂y∂z
+
++ ρxyν√2f (y)
+∂2
+
+∂x2 +(cid:16)r −
+
+f 2(y)z
+
+1
+2
+∂2
+∂z2 + k(θ − z)
+
+∂
+∂z
+
+∂2
+
+∂x∂y
+
+,
+
+1
+2
+
+f 2(y)z(cid:17) ∂
+
++ ρxzσf (y)z
+
+∂x
+∂2
+
+∂x∂z
+
+With these deﬁnitions, Lǫ is expressed as:
+z
+Lǫ =
+ǫL0 +
+
+z
+√ǫL1 + L2.
+
+3 Asymptotic analysis
+
+.
+
+(4)
+
+In order to achieve an approximation for the characteristic function ψǫ, we perform a singular
+perturbation with respect to the small parameter ǫ, expanding the solution in powers of √ǫ
+
+ψǫ(t, x, y, z) = ψ0(t, x, y, z) + √ǫψ1(t, x, y, z) + ǫψ2(t, x, y, z) + . . . .
+
+(5)
+
+We plug (5) and (4) into (1) and (3), and collect terms of equal powers of √ǫ.
+
+2
+
+Order 1/ǫ terms. Collecting terms of order 1/ǫ we have the following PDE:
+
+As L0 takes derivatives with respect to only y, the ﬁrst equation implies that ψ0 is independent
+of y.
+In fact, L0 is an inﬁnitesimal generator and consequently zero is an eigenvalue with
+constant eigenfunctions. Thus, we seek ψ0 of the form
+
+zL0ψ0 = 0.
+
+ψ0 = ψ0(t, x, z).
+
+Order 1/√ǫ terms. Collecting terms of order 1/√ǫ leads to the following PDE:
+
+0 = zL0ψ1 + zL1ψ0,
+= zL0ψ1.
+
+where we have used the result that ψ0 is independent of y. For the same reasons as ψ0, ψ1 is
+also independent of y. Thus, we seek ψ1 of the form
+
+ψ1 = ψ1(t, x, z).
+
+Order 1 terms. Matching terms of order 1 leads to the following PDE and boundary
+
+condition:
+
+0 = zL0ψ2 + zL1ψ1 + L2ψ0,
+= zL0ψ2 + L2ψ0,
+
+eisx = ψ0(T, x, z),
+
+(6)
+
+(7)
+
+where we have used the independence of ψ1 on y.
+
+We note that (6) is a Poisson equation for ψ2 with respect to the inﬁnitesimal generator L0.
+A solution for ψ2 exists if and only if L2ψ0 is centered with respect to the invariant distribution
+of the diﬀusion whose inﬁnitesimal generator is L0. Thus, the centering condition becomes
+
+hL2ψ0i = 0,
+
+where the angled brackets indicate taking the average of the argument with respect to the
+invariant distribution of the diﬀusion whose inﬁnitesimal generator is L0. Since ψ0 does not
+depend on y, the centering condition becomes
+
+hL2iψ0 = 0.
+
+(8)
+
+We note that the PDE (8) along with the boundary condition (7) jointly deﬁne a Cauchy
+problem that ψ0(t, x, z) must satisfy. As we show later, this is equivalent to solving the PDE
+for characteristic function in Heston model.
+
+Using (6) and the centering condition we can show
+
+ψ2 = −
+
+1
+2L−1
+
+0 (cid:16)L2 − hL2i(cid:17)ψ0.
+
+(9)
+
+Order √ǫ terms. Collecting terms of order √ǫ, we obtain the following PDE and boundary
+
+condition:
+
+0 = zL0ψ3 + zL1ψ2 + L2ψ1,
+0 = ψ1(T, x, z).
+
+(10)
+
+(11)
+
+3
+
+We note that ψ3 solves the Poisson equation in y with respect to L0. Thus, we impose the
+
+corresponding centering condition on the source zL1ψ2 + L2ψ1, leading to
+
+Plugging ψ, given by (9) into the above equation, we get
+
+hL2iψ1 = −zhL1ψ2i.
+
+hL2iψ1 = Aψ0,
+A := (cid:28)zL1
+
+1
+zL−1
+
+o (L2 − hL2i)(cid:29) .
+
+(12)
+
+Note that the PDE (12) and the boundary condition (11) deﬁne a Cauchy problem that
+ψ1(t, x, z) must satisfy.
+
+4 Calculation of leading order terms
+
+Calculation of ψ0. Our previous analysis shows that ψ0 is the solution of the following Cauchy
+problem
+
+hL2iψ0 = 0,
+
+ψ0(T, x, z) = eisx.
+
+(13)
+
+(14)
+
+Like in [1], without loss of generality, we normalize f so that hf 2i = 1. Thus, we can write,
+
+∂2
+
+∂x2 +(cid:16)r −
+
+z(cid:17) ∂
+
+∂x
+
++
+
+1
+2
+
+σ2z
+
+∂2
+∂z2
+
+hL2i =
+
+∂
+∂t
+
++
+
+1
+2
+
+z
+
++ κ(θ − z)
+
+∂
+∂z
+
+1
+2
+∂2
+
+∂x∂z
+
++ ρσz
+
+,
+
+(15)
+
+where ρ := ρxzhfi. It is clear that hL2i in (15) is a Heston model operator modulated with
+eﬀective correlation term ρxz ¯f with ¯f := hfi. Thus, we choose the solution ψ0 of the following
+form
+
+Plugging back the solution form into the PDE (13), we get the following equations:
+
+ψ0 = exp(C(T − t) + zD(T − t) + isx).
+
++ ris + κθD,
+
+0 =
+
+0 =
+
+∂C
+∂t
+∂D
+∂t −
+
+(s2 + is) +
+
+1
+2
+
+1
+2
+
+σ2D2 − (κ − iρσs)D
+
+subject to C(0) = 0 and D(0) = 0. These equations can be solved to provide the following
+expressions
+
+C(τ ) = irsτ +
+
+κθ
+
+σ2(cid:16)(κ − ρiσs + d)τ − 2 log(cid:16) 1 − g(s)eτ d(s)
+1 − g(s)
+
+(cid:17)(cid:17),
+
+D(τ ) =
+
+κ − ρiσs + d
+
+(cid:16) 1 − eτ d(s)
+1 − g(s)eτ d(s)(cid:17),
+d(s) = p(ρσis − κ)2 + σ2(is + s2),
+
+σ2
+
+g(s) =
+
+κ − ρσis + d
+κ − ρσis − d
+
+,
+
+τ = T − t.
+
+4
+
+Calculation of ψ1. We ﬁrst evaluate the operator A.
+
+0
+
+A = (cid:28)zL1
+1
+zL−1
+= (cid:28)zL1
+1
+zL−1
++(cid:28)zL1
+1
+zL−1
+= z(cid:28)L1φ(y)
+
+0 (L2 − hL2i)(cid:29)
+(f 2 − hf 2i)
+
+z
+2
+
+0 ρxzσz(f − hfi)
+∂x2(cid:29) − z(cid:28)L1φ(y)
+
+∂2
+
+1
+zL−1
+
+0
+
+z
+2
+
+(f 2 − hf 2i)
+
+∂
+
+∂x(cid:29)
+
+∂2
+
+∂x2(cid:29) −(cid:28)zL1
+∂x∂z(cid:29)
+
+∂2
+
+∂
+
+∂x(cid:29) + ρxzσz(cid:28)L1ξ(y)
+
+∂2
+
+∂x∂z(cid:29) .
+
+The functions φ(y) and ξ(y) solve the following Poisson equations in y with respect to the
+operator L0:
+
+1
+2
+
+(f 2 − hf 2i),
+
+L0φ =
+L0ξ = f − hfi.
+
+We use the deﬁnition of L1 to calculate the ﬁnal expression for A:
+∂3
+
+∂2
+
++ V2z
+
+∂z2∂x
+
+∂3
+∂z∂x2 ,
+
+∂z∂x
+
+A = V1z
++ V3z
+
+∂3
+∂z∂x2 − V1z
+∂2
+∂3
+∂x3 − V3z
+∂x2 + V4z
+V1 = ρyzσν√2hφ′i,
+V2 = ρxzρyzσ2ν√2hξ ′i,
+V3 = ρxyν√2hf φ′i,
+V4 = ρxyρxzσν√2hf ξ ′i.
+
+We go back to Equation (12) and (10) to get the PDE with boundary condition:
+
+hL2iψ1 = Aψ0,
+
+ψ1(T, x, z) = 0.
+
+Ansatz:
+
+ψ1 = (κθf0(t, s) + zf1(t, s))ψ0.
+
+We substitute our choice of ansatz into the PDE and boundary condition. After comparing
+the same order of z terms, we can show that f0(t, s) and f1(t, s) satisfy the following system of
+ODEs:
+
+∂f0
+∂t
+
+= −f1,
+
+f1(T, s) = 0,
+
+∂f1
+∂t
+
+= a(t, s)f1(t, s) + b(t, s),
+
+f0(T, s) = 0,
+a(t, s) = −σ2D(t, s) + (κ − ρσis),
+b(t, s) = −(cid:0)V1D(s2 + is) − V2isD2 + V3(is3 − s2) + V4s2D(cid:1).
+
+5
+
+As shown in [1], f0 and f1 are given as follows:
+
+f1(u, s)du,
+
+f0(τ, s) = Z τ
+f1(τ, s) = Z τ
+A(τ, s, u) = (κ − ρσis + d(s))
+
+0
+
+0
+
+b(u, s)eA(τ,s,u)du,
+
+1 − g(s)
+d(s)g(s)
+d(s) = p(ρσis − κ)2 + σ2(is + s2),
+
+g(s) =
+
+κ − ρσis + d
+κ − ρσis − d
+
+,
+
+log(cid:16) g(s)eτ d(s) − 1
+
+g(s)euτ d(s) − 1(cid:17) + d(s)(τ − u),
+
+b(τ, s) = −(cid:0)V1D(−s2 − is) + V2isD2 + V3(−is3 + s2) − V4s2D(cid:1).
+
+5 Future work
+
+As shown here, a correction to the characteristic function of Xt, logarithm of the underlying
+asset price, in the Heston model can be easily obtained in the new model of Fouque and Lorig.
+[2] have proposed asymptotics of the implied volatility in the Heston model which
+Friz et al.
+use saddle point approximation for the characteristic function of Xt. The next step is to use
+the corrected characteristic function formula to derive improved implied volatility asymptotics
+in the corrected Heston model which capture the observed market skew more eﬃciently.
+
+Acknowledgements
+
+I would sincerely like to thank Prof. Jean-Pierre Fouque and Prof. Sandeep Juneja for remarks
+and helpful discussion.
+
+References
+
+[1] J.-P. Fouque and M. J. Lorig. A fast mean-reverting correction to Heston’s stochastic
+
+volatility model. SIAM Journal on Financial Mathematics, 2(1):221–254, 2011.
+
+[2] P. Friz, S. Gerhold, A. Gulisashvili, and S. Sturm. On reﬁned volatility smile expansion in
+
+the Heston model. Quantitative Finance, 11(8):1151–1164, 2011.
+
+[3] S. Heston. A closed-form solution for options with stochastic volatility with applications to
+
+bond and currency options. Review of Financial Studies, 6(2):327–343, 1993.
+
+6
+
+

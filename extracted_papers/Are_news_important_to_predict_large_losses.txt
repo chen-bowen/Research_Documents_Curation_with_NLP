@@ -1,0 +1,8513 @@
+4
+1
+0
+2
+
+ 
+t
+c
+O
+8
+2
+
+ 
+
+.
+
+ 
+ 
+]
+T
+S
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+2
+v
+8
+9
+8
+6
+
+.
+
+0
+1
+4
+1
+:
+v
+i
+X
+r
+a
+
+Are news important to predict large losses?
+
+M. Bernardia, L. Cataniab, L. Petrellaa,∗
+
+aDepartment of Methods and Models for Economics, Territory and Finance, Sapienza
+
+bDepartment of Economics and Finance, University of Rome Tor Vergata
+
+University of Rome
+
+Abstract
+
+In this paper we investigate the impact of news to predict extreme ﬁnancial
+returns using high frequency data. We consider several model speciﬁcations dif-
+fering for the dynamic property of the underlying stochastic process as well as
+for the innovation process. Since news are essentially qualitative measures, they
+are ﬁrstly transformed into quantitative measures which are subsequently intro-
+duced as exogenous regressors into the conditional volatility dynamics. Three
+basic sentiment indexes are constructed starting from three list of words deﬁned
+by historical market news response and by a discriminant analysis. Models
+are evaluated in terms of their predictive accuracy to forecast out–of–sample
+Value–at–Risk of the STOXX Europe 600 sectors at diﬀerent conﬁdence levels
+using several statistic tests and the Model Conﬁdence Set procedure of Hansen
+et al. (2011). Since the Hansen’s procedure usually delivers a set of models hav-
+ing the same VaR predictive ability, we propose a new forecasting combination
+technique that dynamically weights the VaR predictions obtained by the models
+belonging to the optimal ﬁnal set. Our results conﬁrms that the inclusion of ex-
+ogenous information as well as the right speciﬁcation of the returns’ conditional
+distribution signiﬁcantly decrease the number of actual versus expected VaR
+violations towards one, as this is especially true for higher conﬁdence levels.
+
+Keywords: GARCH models, extreme loss, sentiment analysis, Model
+Conﬁdence Set, Value–at–Risk forecast combination.
+
+1. Introduction
+
+The interaction between news and market volatility plays an important role in
+risk management and asset pricing.
+Indeed, there are no doubts that infor-
+mation about individual institutions’ health conditions as well as the general
+macroeconomic situation move investors decisions. As theorised by the eﬃcient
+market hypothesis, a direct relation may exist between news arrival and the
+
+∗Corresponding author, MEMOTEF Department, Sapienza University of Rome, Via del
+
+Castro Laurenziano, 9, 00166 Rome, e-mail: lea.petrella@uniroma1.it
+
+Preprint submitted to
+
+September 17, 2018
+
+conditional variance of observed stock returns. More precisely, looking at the
+semi–strong form of the “Eﬃcient Market Hypothesis” (EMH) of Fama (1969),
+stock prices adjust to publicly available news information very rapidly and in an
+unbiased fashion. The “Mixture of Distribution Hypothesis” (MDH) of Clark
+(1973) also points out a direct linkage between risk and information, arguing
+that there exists a serially correlated mixing variable, measuring the rate at
+which information arrives to the market, that drives the volatility of stock re-
+turns. The enduring interest in return predictability using news information
+reﬂects its enormous implications. For practitioners, predictable asset returns
+can aﬀect the asset allocation and hedging decisions of investors and the tim-
+ing of security issuances by ﬁrms. For academics, the existence of predictable
+returns has implications for market eﬃciency and for how aggregate ﬂuctua-
+tions in the economy are transmitted to and from ﬁnancial markets. Moreover,
+recent advances in asset pricing theory and a huge empirical literature have pro-
+vided a strong evidence that conditional variance of stock prices is predictable,
+to some extent, using publicly available information. Numerous recent papers
+provide evidence that the predictability results from business cycle movements
+and changes in investors’ perceptions of risk that are reﬂected in time–varying
+risk premiums. Others, however, provide evidence that predictability reﬂects
+an ineﬃcient market populated with overreacting and irrational investors (see
+e.g. Mitra and Mitra, 2010; Kalev et al., 2011; Chopra et al., 1992; De Bondt
+and Thaler, 1985; Lehmann, 1990).
+
+A related unstressed important question, which has not been deeply investi-
+gated, is whether the inclusion of news as exogenous regressors helps to forecast
+extreme returns frequently observed in ﬁnancial time series sampled at high fre-
+quencies. This paper adopts this point of view and investigates the impact of
+information to predict extreme ﬁnancial returns using high frequency data in an
+extensive study conducted on nineteen sectors built from the STOXX Europe
+600 constituents according to the “FactSet” classiﬁcation. By extreme ﬁnancial
+returns we mean events that adversely aﬀect the value of investor’s assets or
+portfolios, violating the Value–at–risk (VaR) measure at 1% conﬁdence level.
+From a risk management point of view, more accurate VaR forecasts result in
+several beneﬁts such as a better prediction of future losses and less capital to
+hold for regulatory requirements as pointed out in Basel (1996). Moreover, since
+the VaR forecast is often linked with the volatility prediction, it follows that also
+derivative and asset pricing, can beneﬁt from more accurate VaR predictions.
+
+To evaluate the relevance of the news information to predict the conditional
+distribution of large returns, we include exogenous covariates into the speciﬁ-
+cation of several dynamic volatility models diﬀering for the dynamic property
+of the underlying stochastic process as well as for the innovation assumption.
+Dynamic conditional volatility models have become one of the most popular risk
+management tool for modelling the variability of stock returns. For our empir-
+ical analysis we refer to the class of autoregressive conditional heteroskedastic
+(ARCH) models introduced by Engle (1982). ARCH–type models of Engle
+(1982) and Bollerslev (1986) oﬀer a simple and eﬀective method to empirically
+investigate the relevance of including exogenous regressors accounting for the
+
+2
+
+news.
+
+When dealing with information, a ﬁrst challenge is to ﬁnd an appropriate
+proxy for the news process. The intrinsic qualitative nature of news implies the
+necessity of a model which transforms this stream of information into quanti-
+tative measures. Although seminal studies use volumes and quotes as proxies
+for news (see e.g. Lamoureux and Lastrapes, 1990; Ito and Roley, 1986), many
+researchers argues that these kind of proxies are biased and are not appropri-
+ated, see e.g. Kalev et al. (2011). More recent studies (see Hafez 2009, which
+refers to RavenPack’s technique) use alternative proxies which account also for
+some measures of goodness or badness which are normally referred to “senti-
+ment” indicators. For a comprehensive and up to date survey on news analytics
+techniques, see Das (2011).
+
+Througout this paper the empirical investigation is conduced using ﬁve re-
+gressors: the lagged volumes, the number of words in news headlines referred
+to speciﬁc companies and three basic sentiment indicators which accounts for
+“good”, “bad”, and “high” number of volatility words in companies related news
+headlines. Moreover, since high frequency data are necessary in order to link the
+news to extreme ﬁnancial losses, we use ﬁve minutes data to build exogenous
+regressors.
+
+Several alternative models obtained by combining the conditional volatility
+speciﬁcation, the diﬀerent exogenous regressors accounting for news, and the
+diﬀerent error distribution assumption, are considered. Forecasted VaRs deliv-
+ered by competing models are then backtested using several criteria. We use
+the actual over expected exceedance ratio, the mean and the maximum absolute
+deviations of violating return of McAleer and da Veiga (2008), the conditional
+and unconditional coverage test of Christoﬀersen (1998) and Kupiec (1995), and
+the dynamic quantile (DQ) test of Engle and Manganelli (2004). As pointed out
+by Chen et al. (2012) these measures go beyond assessing violation rates and
+allow risk management to incorporate loss magnitudes. Despite their recognised
+relevance to compare VaR violations, those tests fail to discriminate alternative
+models on the basis of the predictive accuracy of the VaRs. For model selection
+purposes, we consider the Model Conﬁdence Set procedure (MCS) recently de-
+veloped by Hansen (2003), Hansen and Lunde (2005), and Hansen et al. (2011)
+adapted to the case where VaR forecasts’ performance have to be assessed. The
+Hansen’s procedure consists of a sequence of statistic tests which permits to
+construct a set of “superior” models (SSM), where the null hypothesis of equal
+predictive ability (EPA) is not rejected. Since our goal is to obtain a SSM con-
+sisting of models that are statistically equivalent to predict future VaR levels,
+throughout the model selection procedure we propose to use a loss function ex-
+plicitly tailored to penalise returns above and below the forecasted VaR in an
+asymmetric way. The loss function has been previously used by Gonzales et al.
+(2004) for for backtesting purposes.
+
+The presence of several models with the same predictive power in terms of the
+VaR forecasting, open the question of pooling the information contained in each
+model forecast. Since the seminal works of Reid (1968, 1969) on forecast com-
+binations, several motivations have been put forward to justify such technique.
+
+3
+
+Stock and Watson (1999, 2001, 2004), for example, found that combining fore-
+casts usually produces better results than simpler model selection techniques.
+Hoeting et al. (1999) deal with “model uncertainty” in a Bayesian framework
+by averaging diﬀerent model speciﬁcations. Within a decision–theoretical ap-
+proach, combining forecasts can be seen as a procedure aiming at diversifying
+and then reducing the risk of selecting a single model to produce forecasts. The
+recent surveys of Timmermann (2006) and Aiolﬁ et al. (2011) provide further
+motivations for combining forecasts.
+
+In this paper, we propose a dynamic procedure that combines VaR forecasts
+delivered by the models belonging to the superior set. As argued by Giacomini
+and Komunjer (2005), the combination for VaR models is beneﬁcial since the
+VaR is a small coverage quantile model which is sensitive to the few observa-
+tions below the quantile estimate. Moreover, combining diﬀerent VaR models
+can also robustify individual VaR forecasts, since estimated model parameter
+are particularly unstable over time. We propose to combine VaR predictions by
+a dynamic weighting scheme using a new exponential smoothing moving average
+process. The smoothing process we propose for the weights considers an asym-
+metric innovation distribution accounting also for the parameter uncertainty
+problem.
+
+Our empirical results conﬁrm that the information news signiﬁcantly im-
+proves the prediction of extreme values in an extensive out–of–sample analysis.
+Moreover, we show that the combination of an “ad hoc” model selection pro-
+cedure with an optimal dynamic VaR combination technique provides a better
+VaR prediction. Finally, as additional consideration, we ﬁnd that the introduc-
+tion of exogenous regressors explains the seasonal volatility patterns up to a
+weekly period which characterise high frequency ﬁnancial data, see Gencay et
+al. (2001).
+
+The remaining of the paper is organised as follows.
+
+In Section 2 we sys-
+tematically review the empirical literature on the relevance of news to predict
+ﬁnancial returns. Section 3 details the model speciﬁcations, while Section 4 de-
+scribes the Hansen et al. (2011) model selection procedure. Section 5 describes
+the dynamic VaR combination technique developed to pool VaR forecasts. Sec-
+tion 6 describes the data, provides insights about the construction of exogenous
+regressors, and discusses the main empirical results. Section 7 concludes.
+
+2. Literature review
+
+Since the seminal work of Clark (1973), which is normally referred to as the
+Mixture of Distribution Hypothesis (MDH), a relevant number of research works
+appeared in the ﬁnancial econometric literature focusing on the relationship be-
+tween stock’s volatility and news, one of the major problem being the choice of
+an adequate proxy for the news arrival process. The ﬁrst natural answer to this
+relevant question was to use volumes and quotes (see e.g. Ito and Roley 1986
+and Lamoureux and Lastrapes 1990). The recent work of Kalev et al. (2004)
+argues that there are three main factors to be taken into account using trading
+volumes as proxy for the informations: the endogenous nature of volumes, the
+
+4
+
+presence of diﬀerent kind of traders having diﬀerent news interpretations (for
+example, noise trader versus liquidity trader), and the fact that volumes could
+not account for private information. Another stream of literature in early 90’s
+focused instead on news classiﬁcation. Jones et al. (1998), for example, used
+scheduled versus unscheduled news in a EGARCH model ﬁnding signiﬁcative
+results modelling the ﬁrst two moments of the USD/AUD exchange rate. Many
+other studies instead model the impact of news in the conditional volatility
+equation using speciﬁc dummy variables: Blasco et al. (2002) use four dum-
+mies (respectively for a combination of good–bad news and high–low relevance
+news) in a GJR–GARCH speciﬁcation showing that bad news could be used
+to capture the asymmetric volatility response of negative shocks. The related
+work of Kim (1998) uses similar proxies in a EGARCH model for the USD/AUD
+exchange rate ﬁnding signiﬁcative results even for the conditional mean spec-
+iﬁcation. In a multivariate framework, Fornari et al. (2002) used newspaper
+headlines as exogenous variables in a Markov switching vector autoregressive
+model with GARCH innovations. As a consequence of the technology innova-
+tion and computer power improvement, the last decade has seen a rapid increase
+of the number of works focusing on the use of publicly available information.
+DeGennaro and Shrieves (1997) and Ederington and Lee (1993) use the num-
+ber of macroeconomic news to explain foreign exchange conditional volatility,
+a technique that in recent years is referred to the naive classiﬁcation (see also
+Das (?), for an extensive survey on news analytics technique). The use of more
+sophisticated news analytic technique, gives rise to the big challenge of moving
+from text to context. In other words, this means that it is really diﬃcult to
+quantify the message behind new headline stamps. The common approach is
+to create an index accounting for some news measures. This index could be a
+simple news–related words counter or a more sophisticated sentiment index (see
+Hafez 2009, which refers to RavenPack’s technique). Kalev and Duong (2011)
+and Kalev et al. (2004) use an EGARCH model where the number of news
+enters the conditional volatility equations as exogenous regressor, to explain in-
+tradaily volatility patterns of the S&P/ASX 200 Index. They ﬁnd that the rate
+of information arrivals has a positive impact on volatility. Mitchell and Harold
+(1994) provide similar results using a weekly timeframe, while Berry and Howe
+(1994) do not ﬁnd any signiﬁcant relation between number of news releases by
+Reuter’s News Service and the S&P500 index volatility.
+
+In this paper, we approach the problem of quantifying the impact of news in-
+formation from the diﬀerent point of view of measuring extreme ﬁnancial losses.
+To this end, we employ the word counter approach, i.e. the sentiment indexes
+are function of the number of speciﬁc words class, using a new information
+supplier (the FactSet workstation), and the new classiﬁcation of “high” words
+associated with the the well know “good, bad” scheme.
+
+3. Model speciﬁcations
+
+As detailed in the Introduction,
+in this paper we investigate and compare
+VaR forecasts obtained using a list of popular autoregressive conditional het-
+
+5
+
+eroskedastic (ARCH) models introduced by Engle (1982) and subsequently gen-
+eralised to the GARCH family by Bollerslev (1986). In order to account for the
+well known stylised facts about ﬁnancial returns we consider several speciﬁca-
+tions diﬀering for the conditional volatility dynamics as well as the distributions
+of the error term. Furthermore, a ﬁrst–order autoregressive term is included into
+the conditional mean speciﬁcation of all the competing models to capture the
+negative ﬁrst order autocorrelation frequently displayed by high frequency data,
+as documented by Gencay et al. (2001) among others.
+
+Formally, let rt the logarithmic return at time t, for t = 1, 2, . . . , T , we
+
+consider the following general model speciﬁcation
+
+rt = µ + φrt−1 + εt,
+
+εt = σtζt,
+
+ζt ∼ D (0, 1) ,
+
+where ζt is a sequence of independently and identically distributed random
+variables with general distribution D (0, 1) having mean zero and variance 1, σt
+is the conditional standard deviation of rt and φ is the autoregressive parameter
+assumed to be |φ| < 1 to preserve stationarity. Regarding the speciﬁcation of the
+error distribution D (0, 1), we consider the usual thin–tailed Gaussian N (0, 1)
+assumption and the two alternatives, i.e.
+degrees of freedom and the Generalised Error distribution (GED), being able
+to reproduce the high level of kurtosis frequently observed empirically. The
+standardised GED, i.e. GE (0, 1, ν) has conditional density given by
+
+the Student–t Tν(cid:0)0, ν−2
+
+ν (cid:1), with ν
+
+f (0, 1, ν) =
+
+ν exp(cid:26)− 1
+q22/ν Γ(ν−1)
+
+2(cid:16)q22/ν Γ(ν−1)
+
+Γ(3ν−1) |ǫt|(cid:17)ν(cid:27)
+
+Γ(3ν−1) 21+ν−1Γ(ν−1)
+
+1(−∞,∞) (ǫt) ,
+
+(1)
+
+where the shape parameter ν ∈ (0, ∞) regulates the tail behaviour: ν = 2
+corresponds to the Gaussian density while ν = 1 correspond to the Laplace
+distribution of Kotz et al. (2001).
+
+We complete the model speciﬁcations by introducing a dynamics for the con-
+ditional volatility term σ2
+t belonging to the family of GARCH models. ARCH–
+type models are ﬂexible and powerful tools for conditional volatility modelling;
+they are able to consider the volatility clustering phenomena, the excess of
+kurtosis and the asymmetry of the data. Moreover, they permit to introduce
+exogenous information in the speciﬁcation of the conditional volatility dynamics
+in an eﬃcient and eﬀective way. The simplest conditional volatility dynamics
+we consider as a benchmark is the GARCH(1,1) speciﬁcation introduced by
+Bollerslev (1986)
+
+t = ω + δT
+σ2
+
+xt + αε2
+
+t−1 + βσ2
+
+t−1,
+
+(2)
+
+where ω > 0 and 0 ≤ α, β < 1 with α + β < 1 to preserve weak ergodic
+stationarity of the conditional variance. To account for asymmetric response
+(leverage eﬀect, see Black 1976) we also consider two additional speciﬁcations,
+i.e. the EGARCH(1,1) of Nelson (1991)
+
+log(cid:0)σ2
+
+t(cid:1) = ω + δTxt + g (ζt−1) + β log(cid:0)σ2
+
+t−1(cid:1) ,
+
+(3)
+
+6
+
+where g (ζt) = αζt + γ (|ζt| − E|ζt|), and the GJR-GARCH(1,1) of Glosten et al.
+(1993)
+
+t−1 + γ 1(−∞,0] (εt−1) ε2
+
+(4)
+
+t−1(cid:1) + βσ2
+
+t−1,
+
+σ2
+
+t = ω + δTxt +(cid:0)αε2
+
+where ω > 0, 0 ≤ α, β, γ < 1 with α + β + γP (ζt < 0) < 1, P (ζt < 0) represents
+the probability to observe a negative event under the chosen distribution for ζt,
+and 1(a,b) (x) denotes the indicator function having non–zero values for x in the
+interval (a, b). In all the considered volatility speciﬁcations, xt denotes a vector
+of exogenous variables at time t, which measures the impact of news on the
+conditional volatility process, and δ denotes the associated regression parameter.
+Details on the procedure used to build exogenous quantitative regressors from
+recorded ﬁnancial and macroeconomics news are provided in Section 6. To
+estimate model parameters we consider the maximum likelihood approach, see
+e.g. Francq and Zakoian (2010).
+
+4. Model selection procedure
+
+The availability of several alternative model speciﬁcations being able to ad-
+equately describe the unobserved data generating process (DGP) opens the
+question of selecting the “best ﬁtting model” according to a given optimality
+criterion. The deﬁnition of the optimality criterion requires the prior speciﬁca-
+tion of a target with respect to which the ability of each model to replicate that
+characteristic is evaluated. Since in this paper we are interested in comparing
+several model speciﬁcations on the basis of their predictive ability of large losses,
+a natural candidate would be the A/E violation rate or the usual conditional
+and unconditional coverage tests combined with a selection procedure. Despite
+their recognised relevance to compare VaR violations, those tests fail to discrim-
+inate alternative model speciﬁcations on the basis of the predictive accuracy of
+the VaRs. To overcome this problem and to present results less sensitive to the
+low number of theoretical violations, we apply the Model Conﬁdence Set (MCS)
+procedure recently developed by Hansen et al. (2011). The Hansen’s procedure
+consists of a sequence of statistic tests which permits to build the “Superior Set
+of Models” (SSM), where the null hypothesis of equal predictive ability (EPA)
+is not rejected at a certain conﬁdence level. The EPA statistic tests requires the
+speciﬁcation of a loss function summarising the ﬁnal target of the comparison
+procedure. According to the target of predicting extreme losses, we propose
+to use as loss function the asymmetric VaR function of Gonzales et al. (2004)
+which penalises for each model j = 1, 2, . . . , m more heavily observations below
+the τ –th quantile level, i.e. rt+1 < VaRτ
+j,t+1|t than observation above it, where
+VaRτ
+j,t+1|t denotes the τ –level predicted VaR. In our contest, the loss function
+for model j becomes
+
+ℓ(cid:16)rt+1, VaRτ
+
+j,t+1|t(cid:17) = n−1ρτ(cid:16)rt+1 − VaRτ
+
+j,t+1|t(cid:17) ,
+
+(5)
+
+where ρτ (z) = z(cid:0)τ − 1(−∞,0) (z)(cid:1), is the τ –th quantile loss function and T is
+
+the length of the out of sample rolling forecast.
+
+7
+
+We now brieﬂy describe how the MCS procedure is implemented. The pro-
+cedure starts from an initial set of models M0 of dimension m encompassing
+all the model speciﬁcations described in Section 3, and results in a hopefully
+smaller set of ˆM∗
+1−α of dimension m∗ ≤ m for a given conﬁdence level 1 − α.
+The best scenario, of course, would be when the ﬁnal set consists of a single
+mode, i.e. m∗ = 1.
+
+Formally, let dij,t+1 denotes the loss diﬀerence between models i and j, at
+
+time t + 1
+
+dij,t+1 = ℓ(cid:16)rt+1, VaRτ
+
+i,t+1|t(cid:17) − ℓ(cid:16)rt+1, VaRτ
+
+j,t+1|t(cid:17) ,
+
+(6)
+
+for i, j = 1, . . . , m, and t = 0, . . . , n − 1, under stationarity assumptions for the
+dij series, the null hypothesis, for a given set of model is
+
+H0 : E (dij ) = 0,
+
+∀i, j = 1, 2, . . . , m
+
+tested versus the alternative hypothesis
+
+H1 : E (dij) 6= 0,
+
+for some
+
+i, j = 1, . . . , m.
+
+The appropriate test statistic is
+
+(7)
+
+(8)
+
+(9)
+
+TR = max
+i,j∈M
+
+| ¯dij |
+
+q ˆvar(cid:0) ¯dij(cid:1) ,
+
+deﬁned in Hansen et al.
+
+(2011), where, ¯dij = n−1Pn
+
+relative sample loss between the i–th and j–th models, while ˆvar(cid:0) ¯dij(cid:1) is a boot-
+strapped estimate of var(cid:0) ¯dij(cid:1). According to Hansen (2011), the bootstrapped
+variances ˆvar(cid:0) ¯di,·(cid:1), are calculated performing a block–bootstrap procedure de-
+
+tailed in Appendix A of this paper. The block length p is chosen as the max-
+imum number of signiﬁcants autoregressive parameters resulting after ﬁtting a
+stationary AR(p) process on all the dij series.
+
+t=1 dij,t measures the
+
+The MCS procedure sequentially eliminates the worst model until the null
+hypothesis of EPA is accepted for each model in the set, the elimination rule
+coherent with (9) is
+
+eR = arg max
+
+i
+
+sup
+
+j
+
+.
+
+(10)
+
+Since the SSM ˆM∗
+1−α delivered by the Hanen’s procedure usually contains a large
+number of models characterised by the same VaR predictive ability, in the next
+section, we describe how to implement a procedure that combines the obtained
+VaRs forecast.
+
+
+
+
+¯dijq ˆvar(cid:0) ¯dij(cid:1)
+
+
+
+
+8
+
+5. Combining VaRs
+
+1−α, for which all the forecasted VaRs, VaRτ
+
+In general the SSM procedure detailed in the previous section delivers, for a
+given conﬁdence level α, a set of models with superior predictive ability i.e.
+ˆM∗
+j,t+1|t, ∀t = 1, 2, . . . , T and
+∀j = 1, 2, . . . , m∗are available. The presence of several models with the same
+VaR predictive ability, open the question of pooling the information contained in
+each model forecast. The theory of combining forecasts dates back to the work
+of Bates and Granger (1969) and Reid (1968, 1969) that inspired subsequent
+theoretical and empirical investigations on this topic. From the empirical point
+of view, Stock and Watson (1999, 2001, 2004) ﬁnd that combining forecasts
+usually produces better results than a simpler model selection procedure that
+considers only the “best” model to produce forecast. Several motivations had
+been put forward to justify such empirical evidence. The main justiﬁcation relies
+upon the consideration that each alternative model speciﬁcation provides only
+a “local approximation” of the true unknown DGP without over performing all
+the outstanding ones, uniformly over the period of time where the competing
+models are evaluated. From a Bayesian perspective, the pioneer work of Hoeting
+et al. (1999) support the idea of dealing with “model uncertainty” by averaging
+diﬀerent model speciﬁcations. Furthermore, within a decision–theoretical ap-
+proach, combining forecasts can be seen as a procedure that aims to diversify
+and then reduce the “model selection” risk. The works of Timmermann (2006)
+and Aiolﬁ et al.
+(2011) provide excellent surveys of recent developments on
+forecast combination.
+
+In this work we instead consider the related topic of combining VaR forecasts
+at the same conﬁdence level τ . As argued by Giacomini and Komunjer (2005),
+the combination for VaR models is beneﬁcial since the VaR is a small coverage
+quantile which is sensitive to the few observations below the quantile estimate.
+Within the general framework of conditional quantile estimate, Christoﬀersen
+et al. (1999) provide some motivations for combining VaRs in order to obtain a
+single statistically superior measure but they do not give any method to select
+the weights associated to each model. Giacomini and Komunjer (2005) instead
+construct an encompassing test to compare conditional quantile forecasts ob-
+tained from non–nested models in an out–of–sample framework. However, their
+work relies on a simple “tick” loss function which does not penalise more heavily
+observations far from the estimated quantile. Here instead we ﬁrst determine
+the SSM using the MCS procedure of Hansen et al. (2011) based on an “ad
+hoc” loss function explicitly tailored to discriminate quantile–based risk mea-
+sures, and then we dynamically weight the VaR predictions to produce better
+VaR forecasts at each point in time. The proposed dynamic VaR combination
+method can be seen as a method to optimally choose the model weights which
+also accommodates parameter uncertainty problem. Moreover, since estimated
+model parameters are particularly unstable over time, combining diﬀerent VaR
+models can robustify individual VaR forecasts.
+
+In particular, we propose to pool the information coming from the individ-
+j,t+1|t, j = 1, 2, . . . , m∗ estimates considering the following convex linear
+
+ual VaRτ
+
+9
+
+combination
+
+VaRτ,dyn
+
+t+1|t =
+
+m∗Xj=1
+
+̟j,t+1|tVaRτ
+
+j,t+1|t,
+
+(11)
+
+where ̟j,t+1|t, for j = 1, 2, . . . , m∗ is a set of model speciﬁc weights. In principle
+the weights ̟j,t+1|t, for j = 1, 2, . . . , m∗ can be chosen by some optimality
+criterion based on the past history of the VaR violations. We propose to use
+the following exponential smoothing moving average process
+
+̟t+1,j = κj̟t,j + (1 − κj) ˜π(cid:16)rt, VaRτ
+
+j,t|t−1, ˆσj,t(cid:17) ,
+
+with κj ∈ (0, 1), and ˜π(cid:16)rt, VaRτ
+
+j,t|t−1, ˆσj,t(cid:17) is the exponential of the τ –quantile
+
+loss kernel deﬁned in equation (5) normalised over all the possible models be-
+longing to the ﬁnal set M∗
+
+1−α, i.e.
+
+(12)
+
+(13)
+
+˜π(cid:16)rt, VaRτ
+
+j,t|t−1, ˆσj,t(cid:17) =
+
+expnℓ(cid:16)rt, VaRτ
+expnℓ(cid:16)rt, VaRτ
+Pm∗
+
+j,t|t−1(cid:17) /ˆσj,to
+j,t|t−1(cid:17) /ˆσj,to ,
+
+j
+
+where ˆσj,t, is the predicted conditional variance at time t of model j = 1, 2, . . . , m∗.
+Equation (13) coincides with the relative loss of model j = 1, 2, . . . , m∗ with re-
+spect to the weighted average loss of the VaR combinations and it guarantees
+an asymmetric penalisation of returns above and below the forecasted VaRs ac-
+counting also for the magnitude of VaR violations. Moreover, it can be shown
+that equation (13) satisﬁes some optimality criteria because it is robust against
+model misspeciﬁcations, i.e. it minimizes the Kullback–Leibler divergence with
+respect to the probability density function having generated the observed data,
+see Sriram et al. (2013).
+
+The initial weighs at time t = 1 are set to ̟1,j = 1
+
+which guarantees that Pm∗
+t+1|t ∈(cid:16)minjnVaRτ
+
+m∗ , for all j = 1, 2, . . . , m∗
+j=1 ̟t,j = 1 for all t = 2, 3, . . . , T . In this way, the
+convex linear combination (12) enforces the resulting VaR (11) to belong to
+the interval deﬁned by the minimum and the maximum of estimated VaRs, i.e.
+VaRτ,dyn
+1−α.
+Finally, we estimate the autoregressive parameters κj for j = 1, 2, . . . , m∗ by
+minimising the average asymmetric VaR loss function of Gonzales et al. (2004)
+over the forecast horizon.
+
+j,t+1|to(cid:17), in the optimal set ˆM∗
+
+j,t+1|to , maxjnVaRτ
+
+6. Empirical Analysis
+
+In this section we describe how we empirically investigate the impact of the news
+regressors to predict large losses. In particular, we describe the procedure used
+to build the exogenous regressors accounting for the news arrival process. Then,
+we present the results concerning the application of the Hanen’s MCS procedure
+highlighting the ability of the procedure to discriminate the diﬀerent model
+speciﬁcations. We also discuss the results obtained using the VaR combination
+technique proposed in the previous section.
+
+10
+
+6.1. The Data
+
+Our dataset is made by all the STOXX Europe 600 constituents 1–minute prices
+and volumes from 17/08/2012 09:00:00 to 01/02/2013 09:40:00 comprising of
+87120 observations per ﬁrm, recorded from the Bloomberg workstation. Starting
+from the 1–minute series, we construct two series at 2 and 5–minutes frequency
+for prices and volumes, where volumes’ aggregation is made by sum. Then,
+we cross–sectionally aggregate individual return series into nineteen sectors ac-
+cording with the “FactSet” classiﬁcation. Aggregation is done by averaging
+log–returns and by summing volumes, excluding 30 series which present miss-
+ing values. The 2–minutes original dataset are used to preliminary investigate
+on market news response, as discussed in the following Section 6.2, while the
+5–minutes sectorial log–returns are used to build the model and to investigate
+the ability of the diﬀerent models to predict large losses.
+
+The descriptive statistics for the log–returns are provided in Table B.2 for
+all the considered sectors. In line with stylised facts of ﬁnancial time series, the
+returns are skewed and leptokurtic, indicating that their unconditional distri-
+bution is not Normal as documented by the Jarque–Bera (JB) statistics.
+
+The news information we consider come from the “FactSet” news archive
+which collects news from about 35 diﬀerent agencies. From this database we
+record 81425 company related and time stamped headlines excluding duplicated
+ones. The headlines we consider contain various type of news: these are macroe-
+conomics and institution speciﬁc, scheduled (such as earnings report, conference
+call, central banks or politics announcement) and unscheduled. The collected
+headlines are then cleaned from not relevant news, such as, for example, own-
+ership update and conference calendar announces. At the end of this procedure
+we remain with 51266 headlines. The exogenous regressor building procedure is
+detailed in the next section.
+
+6.2. Exogenous Regressors and model speciﬁcations
+
+The analysis of the relevance of information to predict large losses starts by
+constructing a dictionary of “relevant volatility words”, which is subsequently
+used to deliver sentiment indicators for each sector we analyse. Sentiment in-
+dicators are then included as exogenous regressors in the models speciﬁed in
+Section 3. To this end, the 2–minutes dataset is divided into two equal parts:
+the ﬁrst part is used to build the dictionary while the second one is used to
+perform the out–of–sample analysis. By “relevant volatility words”, we mean
+those words belonging to three diﬀerent sentiment categories named: “Positive”,
+“Negative” and “High”. In particular, accordingly to our taxonomy, “Positive”,
+or “Negative” volatility words are those that generate positive or negative mar-
+ket reactions, respectively. Those words generating high volatility reactions are
+instead classiﬁed as “High”.
+
+The dictionary building up procedure consists of two main steps. The ﬁrst
+step classiﬁes each in–sample headline into three diﬀerent categories: “Positive”,
+“Negative” or “High”. According to Koppel and Shtrimberg (2004) procedure,
+we search for which response the market had consequently to the headlines
+
+11
+
+publishing. Headlines that are followed by a strong positive or negative market
+movement are classiﬁed as “Positive” or “Negative” news respectively, and those
+involving subsequently large squared log–returns are classiﬁed as “High”. The
+evaluation of the market response is based on a two–minutes time frame instead
+of daily returns as suggested by Koppel and Shtrimberg (2004). We decide to in-
+vestigate the market news reaction using the successive two minute log–returns
+because, as described in the Introduction, the semi strong form of the EMH
+states that stock prices will adjust to publicly available new information very
+rapidly. While it is possible that ﬁnancial markets are not aligned with the semi
+strong form of the EMH, the high number of spikes frequently observed by high
+frequency ﬁnancial returns, suggests to use a short time frame. Regarding the
+choice of two minutes time span, we observe that the two–minutes return series
+have more accentuate spikes compared with the one, three and four minutes
+series.
+
+Formally, we associate the two minutes log–return rt prior to the headline
+stamp, of the corresponding asset, to each in–sample headline lj, for all j =
+1, 2, . . . , nh, where nh is the number of the in–sample headlines. Then, for given
+threshold levels, ¯rneg, ¯rpos, ¯rhigh, we associate the two classes S={“Positive”,
+“Negative”, “Neutral”}, and Q={“High”, “Low”} to each headline lj for j =
+1, 2, . . . , nh, according to the following rules:
+
+- lj,S =“Negative”, if rj ∈ (−∞, ¯rneg], “Positive”, if rj ∈ [¯rpos, ∞), “Neu-
+
+tral”, if rj ∈ (¯rneg, ¯rpos),
+
+- lj,Q =“High”, if r2
+
+j ∈ [¯rhigh, ∞) and “Low”, if r2
+
+j ∈ [0, ¯rhigh).
+
+Threshold levels ¯rpos, ¯rneg and ¯rhigh, are deﬁned as the quantiles of the uncondi-
+tional return distribution, i.e. P (rt < ¯rneg) = 0.025, P (rt > ¯rpos) = 0.025, and
+
+P(cid:0)r2
+
+t < ¯rhigh(cid:1) = 0.025.
+
+The second part of the regressor building procedure consists in categorising
+each word belonging to the news archive of 51266 headlines collected by FactSet
+for the in–sample period. As for the headlines classiﬁcation, we ﬁrst look for
+“Positive” and “Negative” volatility words, and then we search for “High” and
+“Low” volatility words. A preliminary classiﬁcation was made by applying to
+each word the most frequent class of the headlines it belongs to. Formally, we
+assign to each word w in every headline lj, j = 1, 2, . . . , nh the modality of S and
+Q associated to the headlines in which each word ω appears most frequently.
+According to Das (?), in order to remain with only signiﬁcant words, each word
+is subsequently scored using the Fisher discriminant statistic. Let i be a class
+of the two categories S={“Positive”, “Negative”, “Neutral”}, and Q={“High”,
+“Low”}, and let µi be the average number of times the word w appears in an
+headline of category i and let mi,j be the number of times the word w appears
+in a message j of category i, then the Fisher discriminant statistic is deﬁned as
+
+F (w) =
+
+(1/3)Pi6=k (µi − µk)2
+
+(cid:16)PiPj (mi,j − µj)2(cid:17) / (Pi ni)
+
+,
+
+12
+
+(14)
+
+for any word w previously categorised. The Fisher discriminant statistic delivers
+a score for each word which accounts for the level of category aﬃliation and we
+keep words with an acceptable level of F (w). At the end of this procedure we
+classiﬁed 259 words as “Good”, 239 as “Bad” and 366 as “High”. We remark
+that words which are “Good”, or “Bad” could also be “High” but words that
+are “High” are not necessary “Good” or “Bad”.
+
+Based on the previous word classiﬁcation, we built the following three re-
+gressors: “POS”, “NEG” and “HIGH”, measuring changes in the market sen-
+timent. Each of the three regressors represents the number of words, of each
+categories, which appears in the interval (t − 1, t]. It follows that, the inclu-
+sion of these regressors in the conditional variance dynamic allows it to change
+according to the new sentiment information coming from the news. We also
+considered two additional covariates: “LAGVOL” representing the lagged vol-
+umes and “NUMB” representing the total number of words in the interval
+(t − 1, t]. While “POS”, “NEG” and “HIGH” are proxies for the market senti-
+ment, “NUMB” and “LAGVOL” are a proxies for the information volume. The
+regressor “NUMB” simply considers the total number of words as a proxy for
+the information arrival. It should be noticed that it does not coincide with the
+sum of the regressors “POS”, “NEG” and “HIGH” because even not categorised
+words are considered in the total number of words. The regressor “NUMB” ac-
+counts also for the news activism of a speciﬁc institution or sector.
+Indeed,
+it does not give any information about the nature of the news, but instead it
+simply considers the market interest into a speciﬁc institution or sector. The
+regressor “LAGVOL” instead is simply the aggregated lagged volumes at time
+t and accounts for the market activism. In particular, it represents a measure
+of investors’ interest into a speciﬁc institution or sector. Lagged volumes are
+also used in Kalev and Duong (2004). In order to use these regressors into the
+conditional volatility dynamics, the regressors’ timestamp must be aligned with
+the 5–minute log–returns series. It follows that each regressor “POS”, “NEG”,
+“HIGH”, “NUMB and “LAGVOL”, at time t should account for the informa-
+tion arrival in the interval (t − 1, t] that generated the log–return a time t, rt.
+For all the considered distribution errors and volatility speciﬁcations, we build
+the MIV (Information Volumes) model which includes the variables “NUMB”
+and “LAGVOL” , and the MSE (sentiment) model, which includes “POS” ,
+“NEG” and “HIGH”covariates. The MIV speciﬁcation represents the volume of
+the information ﬂow, and can be considered as a measure of the investor inter-
+est in the institution or sector. Moreover, MIV is a good candidate to improve
+the prediction of large market movements. The MSE speciﬁcation instead is a
+measure of sentiment and is useful to account for diﬀerent market reactions to
+diﬀerent kind of news. These two speciﬁcations are compared with the naive
+model MN which does not consider any exogenous information.
+
+Tables B.3 and B.4 report descriptive statistics for all the built regressors.
+The high level of kurtosis in the regressors’ series (see for example the regressor
+“NUMB” in Table B.3) could be linked with the high level of kurtosis usually
+reported by ﬁnancial time series. In fact, according with the MDH hypothesis
+of Clark (1973), the variance of returns is a function of the rate of information
+
+13
+
+ﬂow. More interesting, regressors exhibit even high level of autocorrelation, es-
+pecially at lag 95 which coincides with one trading day at 5–minutes frequency.
+This phenomenon is probably due to the open–market imputation of overnight
+news. Indeed, in a high frequency timeframe, the news process has quite similar
+seasonal patterns as that of the volatility process: see e.g. Gencay et al. (2001)
+and Kalev e.al (2011) for a more comprehensive discussion.
+
+6.3. Empirical results
+In this section we discuss the results obtained by ﬁtting the models to our
+dataset consisting of the 19 sectors of the STOXX Europe 600 index. For each
+sector, the models belonging to the initial set M0 obtained by combining the
+diﬀerent volatility dynamics, the distributions for the error term and the covari-
+ates speciﬁcations discussed in Section 6.2, are compared.
+
+A simple method to compare VaR forecasts is the actual versus expected
+rate (A/E), deﬁned as the ratio between the realised VaR exceedances over a
+given time horizon and their “a priori” expected values. Table B.5 reports the
+A/E ratio for all the ecompassing models at two VaR conﬁdence levels τ = 1%
+and τ = 0.1%. Table B.5 shows that high levels of A/E for τ = 0.1% are usually
+associated to the Gaussian speciﬁcation, reﬂecting its inadequacy to capture
+large price movements. Conversely, for the Student–t error distribution we ob-
+serve levels of A/E closer to one. Moreover, for both the quantile conﬁdence
+levels τ = (1%, 0.1%), models accounting for the information volume (MIV) or
+the market sentiment (MSE) report value of the A/E ratio closer to one. A
+more deeper inspection reveals that, for τ = 1% the MN model outperforms
+others only in 3 cases, while accounting for information volumes improves the
+VaR forecast ability in 12 cases. Moreover, as reported in Table B.5, even for
+τ = 0.1% the naive model MN outperforms the speciﬁcations which include
+covariates in only two cases, while MIV and MSE report more accurate A/E
+levels 15 times over 19.
+
+The magnitude of violating returns (AD) is also important, since it pro-
+vides a measure of the expected loss given a VaR violation. Table B.6 reports
+the maximum AD of violating returns, as considered by McAleer and da Veiga
+(2008). We can see that, for all the considered sectors, the MIV and MSE
+speciﬁcations exhibit lower maximum AD values with respect to the naive spec-
+iﬁcation MN. This means that accounting for information helps to reduce the
+maximum AD loss at both high (τ = 1%) and extreme (τ = 0.1%) conﬁdence
+levels. More interesting is to note how this result would be independent to the
+choice of the volatility dynamics or the error distribution speciﬁcation. From a
+not reported analysis we found that the inclusion of the information ﬂow also
+improves the general goodness–of–ﬁt, according to both the AIC and BIC in-
+formation criteria (those results are available upon request). For each of the six
+combinations of the GARCH–dynamics and the error distribution, the MIV and
+MSE speciﬁcations report lower levels of AIC and BIC. Moreover, the ACF of
+the standardised absolute residuals of the models MIV and MSE shows that the
+daily seasonal patterns are signiﬁcantly reduced compared with the model MN.
+Once again accounting for the information ﬂow helps to explain the volatility
+
+14
+
+patterns which usually aﬀects the high frequency ﬁnancial time series.
+
+Tables B.7, B.8 and B.9 instead report the unconditional coverage (UC) test
+of Kupiec (1995), the conditional coverage (CC) test of Christoﬀersen (1998)
+and the dynamic quantile (DQ) test of Engle and Manganelli (2004), at the 5%
+conﬁdence level. The inclusion of news information does not report any discrim-
+inant result at the conﬁdence level τ = 1%. Conversely, the results reported in
+tables B.7, B.8 and B.9 for the extreme VaR conﬁdence level τ = 0.1% conﬁrm
+that the choice of a heavy tailed distribution for the error term, is strongly dis-
+criminant. Furthermore, for τ = 0.1%, the rejection of the null hypothesis of
+both tests is more frequent for the naive speciﬁcation MN.
+
+From an unreported in–the–sample parameter estimation analysis (available
+to the authors upon request) we found that for some sectors, the parameters
+associated to the conditional mean dynamic appear to be not statistically sig-
+niﬁcant. This essentially means that for those series the well know stylised fact
+of negative serial autocorrelation frequently displayed by high frequency data
+is not present. As described by Gencay et al. (2001), this phenomenon can
+be associated to the procedure employed to construct the high frequency se-
+ries. In addiction, our results showed that some parameters associated with the
+exogenous regressors appear to be not statistically signiﬁcant which does not
+represent a problem for this study since our focus is on extreme loss prediction
+and not on describing the whole returns behaviour.
+
+Concerning the speciﬁcation of the error distribution, we also test for the
+presence of asymmetry by estimating the Skew–GARCH speciﬁcations already
+introduced by De Luca and Loperﬁdo (2004). In particular, we considered the
+skewing mechanism of Fernandez and Steel (1998) which guarantees a regular
+behaviour of the likelihood function. The estimated shape parameters are equal
+to one for all the considered sectors, indicating that the skewed distributions
+collapse to the symmetric counterparts.
+
+In next section we report results for the Model Conﬁdence Set procedure.
+
+6.4. Application of the MCS procedure
+In this section we discuss the results we obtained applying the MCS procedure
+of Hansen (2003) and Hansen et al. (2011). In Table B.1 we report, for each
+sector and each covariate speciﬁcation, the number of models belonging to the
+SSM at the end of the MCS procedure, i.e. ˆM∗
+1−α. Clearly, a small ﬁnal set of
+models means that the procedure has been highly discriminant, i.e. models that
+performs poorly were eliminated. Conversely, a large ﬁnal set of models means
+that there were not statistical evidence of diﬀerent performances among the
+competing models. As shown in Table B.1 the MCS procedure reports highly
+discriminant results for most of the sectors and for both the VaR conﬁdence
+levels τ = (1%, 0.1%). Comparing the results for the two conﬁdence levels we
+observe that the ﬁnal set contains only 7 occurrences for τ = 0.1%, while even
+16 for τ = 1%. This means that, using the MCS procedure, the set of models
+that adequately predicts extreme VaR levels, such those implied by a conﬁdence
+level of 0.1% is lower than that predict higher conﬁdence levels VaR. This result
+is in line with the idea that only few models are able to predict large losses.
+
+15
+
+Moreover, it is clear from table B.1 that, performing the MCS procedure, the
+model that most appears in the ﬁnal set ˆM∗
+1−α is MIV. This means that adding
+information volume proxies in the volatility dynamics, improve models ability
+to predict large losses.
+
+Table B.10 reports, for each covariate speciﬁcation, the Actual over Expected
+(A/E) exceedance ratio and the maximum AD violating returns averaged across
+the models belonging to the optimal ﬁnal set ˆM∗
+1−α delivered by the MCS pro-
+cedure. We observe that, for those cases where the MCS procedure does not
+discriminate models, the average A/E ratio reports inconclusive results, while
+the averaged maximum AD violating loss shows that the speciﬁcation MIV is
+preferred for most of the considered sectors. Finally, we observe that the spec-
+iﬁcation MIV corresponds always to the best performing model under the AD
+metric for all the considered sectors.
+
+6.5. VaR combination results
+The main aim of the VaR combination technique introduced in Section 5 is to
+provide a practical tool that combines VaR forecasts at a given quantile level
+τ delivered by diﬀerent models. The MCS procedure ensures the availability
+of a set of model having the same ability to predict the VaR at the desired
+quantile level, under the chosen loss function. The VaR forecast delivered by
+those models can subsequently be used as the main ingredients of the VaR
+combination technique previously detailed.
+
+In order to test the beneﬁts of using the proposed technique and the MCS
+procedure we report a simple comparison using two diﬀerent VaR forecasts
+combinations. The ﬁrst VaR forecast simply averages the individual VaRs across
+the models belonging to the MCS
+
+VaRτ,avg
+
+t+1|t =
+
+1
+m∗
+
+m∗Xj=1
+
+VaRτ
+
+j,t+1|t,
+
+(15)
+
+for t = 1, 2, . . . , T . The second model VaR forecast results by applying the
+VaR combination technique proposed in equations (11) and (12). Table B.11,
+reports the mean and the maximum AD for the two forecasting combination
+methods and the two VaR conﬁdence levels τ = (1%, 0.1%). Inspecting Table
+B.11 it is possible to see the beneﬁt of using the MCS procedure along with the
+proposed VaR combination technique instead of simply averaging the available
+models. For all the considered sectors and for both the conﬁdence levels, the
+dynamic VaR combination approach VaRτ,dyn
+t+1|t reports values of the max AD
+being almost the 50% lower than those reported by the simple VaR average
+VaRτ,dyn
+t+1|t . This suggests that the proposed VaR combination technique helps
+in reducing the large and extreme absolute deviations of VaR violating returns.
+Looking at columns 6 to 9 of Table B.11 it is possible to note that the proposed
+technique helps also in reducing the mean AD of VaR violating returns which
+is particularly relevant from a risk management point of view, since reducing
+the mean AD corresponds to a lower expected loss when a VaR violation oc-
+curs. In Figures C.1 and C.2 we report an illustrative comparison between the
+
+16
+
+VaRs delivered by individual model VaRτ
+forecast obtained by the static average VaRτ,avg
+VaRτ,din
+
+j,t+1|t, for j = 1, 2, . . . , m∗, the VaR
+t+1|t and the dynamic VaR forecasts
+
+t+1|t series.
+As previously detailed, the VaR combination technique provides a dynamic
+linear convex combination of the available VaR series; this is showed by Fig-
+ure C.1 and C.2, where several VaR forecast series along with the VaRτ,avg
+t+1|t
+(grey dotted line) and the VaRτ,dyn
+t+1|t (red dotted line) are reported. Since the
+autoregressive parameters of the dynamic VaR combination are estimated by
+minimizing the asymmetric loss function of Gonzalez–Riviera et al. (2004), it
+follows that the resulting combined VaR series is more robust against outliers
+than the static VaRτ,avg
+t+1|t series. We note for example that models which are
+highly non linear and strongly sensitive to outliers, such as the EGARCH (thin
+blue line, in Figure C.1), sometimes results in wrong VaR predictions. How-
+ever, since they can be useful to describe others complex ﬁnancial dynamics
+of the conditional variance process it is important to use them in the dynamic
+VaR averaging. Our proposed VaR combination technique results therefore in a
+practical tool to account for several models preventing the outlier consequences
+on VaR forecasts. Moreover, Figure C.2 compares the static VaR combination
+(grey dotted line) with those obtained by using our dynamic technique in the
+cases where all the models belonging to the initial set M0 (red dotted line) or
+only the model belonging to the MCS ﬁnal set M∗
+1−α (dark dotted line) are con-
+sidered. Figure C.2 reveals that the dynamic method combined with the MCS
+procedure (dark dotted line) provides more conservative VaR estimate especially
+in presence of extreme drop-downs.
+
+7. Conclusion
+
+In this study we investigate whether the inclusion of quantitative measures of in-
+formation news could improve volatility models to predict the extreme ﬁnancial
+returns frequently observed in ﬁnancial time series sampled at high frequencies.
+To address this problem, we construct three basic sentiment indexes to measure
+the impact of “positive”, “negative”and “high” volatility words, starting from
+the raw information ﬂow provided by “FactSet”. The study considers all the
+STOXX Europe 600 index constituents sampled at high–frequency, subsequently
+aggregated in sectors according to the “FactSet” classiﬁcation. For each sector,
+we consider 27 competing models obtained by combining three GARCH- dynam-
+ics speciﬁcations (GARCH, EGARCH, GJR–GARCH), three error distributions
+(Gaussian, Student–t and GED), and three exogenous covariates models: MIV
+accounting for the information volume, MSE accounting for sentiment indexes
+and MN where no exogenous regressors are considered. The predictive ability
+of each model speciﬁcation is then tested using several criteria. We observe that
+the inclusion of information volumes MIV improve the VaR forecast ability, the
+general goodness–of–ﬁt, and reduce the maximum loss after a VaR violation
+compared to the naive model MN. Statistics for the A/E ratio, AIC and BIC
+information criteria (not reported to save space), and maximin AD losses are
+
+17
+
+considered for each sector at both VaR conﬁdence levels τ = 1% and τ = 0.1%.
+We also observe that the introduction of exogenous regressors accounting for
+the information ﬂow, helps also to explain the seasonal volatility patterns witch
+are present in ﬁnancial data sampled at high frequency. Moreover, since dif-
+ferent models are available to describe the same data generating process, we
+adapt the sequential testing procedure MSC of Hansen (2011) to deliver a set
+of statistically equivalent models in terms of their ability to forecast one–step–
+ahead VaRs. To achieve this goal we propose to use a loss function penalising
+in an asymmetric way returns above and below the forecasted VaR proposed by
+Gonzalez–Riviera et al. (2004) for backtesting purposes. Our results conﬁrms
+that the MCS provides evidence in favour of MIV models showing that adding
+information volume proxies in the volatility dynamics, improves models ability
+to predict large losses. Unfortunately, in particular for small conﬁdence levels,
+we can not uniquely conclude for the superior VaR forecasting performances of
+the models including information, because the MCS ﬁnal set does not contains
+only MIV models. For those circumstances we propose a new VaR estimator
+that combines the VaRs delivered by those models belonging to the SSM using
+a smoother moving average process that guarantees an asymmetric penalisation
+of returns above and below the forecasted VaRs which account for the magni-
+tude of VaR violations. We show that the MCS procedure along with the VaR
+combination technique results in a reduced mean and maximum AD of VaR
+violations suggesting that the VaR combination technique helps to reduce the
+magnitude of large and extreme VaR violations.
+
+The analysis carried out throughout this paper can be further extended to
+account for additional proxies measuring diﬀerent news aﬀecting the stock mar-
+ket. In particular, general macroeconomic news can be distinguished by those
+aﬀecting only individual institutions. Moreover, it may be interesting to inves-
+tigate the impact of information during diﬀerent periods of market turbulence.
+
+Acknowledgments
+
+This research is supported by the Italian Ministry of Research PRIN 2013–
+2015, “Multivariate Statistical Methods for Risk Assessment” (MISURA), and
+by the “Carlo Giannini Research Fellowship”, the “Centro Interuniversitario di
+Econometria” (CIdE) and “UniCredit Foundation”. A special thank goes to
+Riccardo Sucapane for his constructive comments and helps in particular to
+parallelise the R–code.
+
+Appendix A. Bootstrap resampling
+
+In this appendix we detail the algorithm used to perform the block–bootstrap
+
+to obtain the bootstrapped estimates of var(cid:0) ¯dij(cid:1) and the p–values of the MCS
+
+statistics of Hansen (2011) described in Section 4. The bootstrap procedure
+returns B clones that mimic the structure of the original data. In order to do
+this, we ﬁrst estimate the block–length k, using the maximum number of signif-
+icant parameters of an AR(p) ﬁtted on the original series; obviously a diﬀerent
+
+18
+
+criteria can be used, or diﬀerent lengths can be tested to verify that results is
+not too sensitive to the chosen length k. The procedure can be summarised as
+follow.
+
+1. Set the maximum number of block v = ⌊n/k⌋ − 1, where ⌊a⌋ denotes the
+
+smallest integer greater or equal to a.
+
+2. For each j = 1, 2, . . . , v, extract ξb
+
+uniform distribution on {1, 2, . . . , n} and the vector ξb = (cid:0)ξb
+
+of length v contains the starting index of each block.
+
+j ∼ U (1, . . . , n), where U is a discrete
+2, . . . , ξb
+
+v(cid:1)
+
+1, ξb
+
+3. Construct the (k × v) matrix Ξb in such a way that the ﬁrst row contains
+the vector ξb and subsequent elements are determined as follows: set
+Ξb
+i−1,j + 1 for i = 2, . . . , k and j = 1, . . . , v, using the convention
+that Ξb
+
+i,j − n for those Ξb
+
+i,j = Ξb
+
+i,j = Ξb
+
+i,j > n.
+
+5. Concatenate each column of Ξb in a vector bb = vec(cid:0)Ξb(cid:1) of length
+
+(kv × 1) and if l = n − kv > 0 add l new indexes extracting from
+U (1, . . . , n).
+
+6. Extract, from the original series, the observation having the indexes con-
+
+tained in bb and store it.
+
+7. Repeat steps 2–6, for b = 2, 3, . . . , B.
+
+Using the B bootstrap samples obtained from the bootstrap procedure previ-
+
+ously described, it is possible to estimate var(cid:0) ¯di·(cid:1) and var(cid:0) ¯dij(cid:1) that are neces-
+
+sary to construct the statistic tests, in the following way:
+
+1. deﬁne the bootstrap re–samples averages for ¯dij as follows
+
+¯db
+ij =
+
+1
+n
+
+nXt=1
+
+db
+ij,t
+
+2. estimate the bootstrapped variance as
+
+cvar(cid:0) ¯dij(cid:1) =
+
+1
+B
+
+BXb=1(cid:0) ¯db
+
+ij − ¯dij(cid:1) .
+
+Obviously, the asymptotic distribution of the statistic test Tmax under the null
+hypothesis of the model conﬁdence set test deﬁned in Section 4, is nonstandard
+and it could be estimated using the empirical cdfs obtained from the previous
+bootstrap replications:
+
+Tb
+
+R,M = max
+i,j∈M
+
+| ¯db
+
+ij − ¯dij |
+
+qcvar(cid:0) ¯dij(cid:1) .
+
+19
+
+Finally, the p–values could be calculated as:
+
+PR,M =
+
+1
+B
+
+BXb=1
+
+1TR,M>Tb
+
+R,M
+
+.
+
+20
+
+Appendix B. Tables
+
+τ
+
+Sector
+
+1%
+
+0.1%
+
+MIV MSE MN # MIV MSE MN #
+
+Commercial services
+Communications
+Consumer durables
+Consumer non-durables
+Consumer services
+Distribution services
+Electronic Technology
+Energy Minerals
+Finance
+Health Services
+Health Technology
+Industrial Services
+Non-Energy Minerals
+Process Industries
+Producer Manufacturing
+Retail Trade
+Technology Services
+Transportation
+Utilities
+
+100
+100
+100
+25
+32
+100
+26
+100
+
+0
+
+100
+
+0
+
+100
+100
+100
+100
+100
+25
+100
+100
+
+0
+0
+0
+38
+32
+0
+39
+0
+18
+0
+36
+0
+0
+0
+0
+0
+38
+0
+0
+
+0
+0
+0
+38
+37
+0
+35
+0
+82
+0
+64
+0
+0
+0
+0
+0
+38
+0
+0
+
+1
+6
+1
+24
+19
+2
+23
+1
+11
+1
+11
+4
+1
+1
+5
+1
+24
+5
+6
+
+100
+100
+100
+33
+35
+100
+38
+32
+33
+33
+33
+30
+100
+35
+100
+37
+38
+40
+42
+
+0
+0
+0
+33
+29
+0
+31
+41
+33
+33
+28
+35
+0
+30
+0
+32
+25
+27
+26
+
+0
+0
+0
+33
+35
+0
+31
+27
+33
+33
+39
+35
+0
+35
+0
+32
+38
+33
+32
+
+4
+1
+5
+18
+17
+6
+16
+22
+18
+18
+18
+20
+5
+23
+1
+19
+16
+15
+19
+
+Table B.1: Total number and percentage composition of models belonging to the SSM,
+ˆM∗
+1−α, at the end of the MCS procedure, for each sector and covariate speciﬁcation. We
+consider two conﬁdence levels τ = 0.1% and τ = 1%.
+
+21
+
+Name
+Electronic Technology
+Non-Energy Minerals
+Health Technology
+Distribution services
+Finance
+Technology Services
+Process Industries
+Commercial services
+Utilities
+Health Services
+Retail Trade
+Energy Minerals
+Consumer services
+Consumer non-durables
+Producer Manufacturing
+Industrial Services
+Communications
+Transportation
+Consumer durables
+
+Min
+-1.401
+-2.316
+-0.959
+-1.549
+-1.004
+-1.415
+-1.044
+-1.058
+-0.555
+-1.088
+-0.647
+-1.258
+-1.097
+-0.778
+-1.204
+-1.351
+-1.967
+-1.288
+-1.126
+
+Max Mean×103
+1.892
+2.457
+1.103
+1.203
+1.183
+1.510
+1.271
+1.382
+0.762
+1.746
+1.275
+1.094
+1.546
+0.827
+2.031
+1.573
+3.856
+1.269
+3.027
+
+0.324
+0.336
+1.436
+1.182
+1.580
+0.675
+1.378
+1.624
+0.019
+1.609
+0.607
+1.296
+1.601
+0.747
+1.546
+0.905
+0.436
+0.864
+2.192
+
+Std. Dev.
+
+Skewness Kurtosis
+
+1% Str. Lev.
+
+JB
+
+0.107
+0.174
+0.073
+0.077
+0.087
+0.094
+0.087
+0.084
+0.073
+0.083
+0.082
+0.123
+0.091
+0.063
+0.100
+0.108
+0.117
+0.094
+0.111
+
+0.712
+0.372
+0.431
+-0.203
+0.365
+-0.542
+0.221
+0.883
+0.215
+1.269
+0.638
+0.190
+1.611
+0.728
+1.715
+0.291
+3.00
+-0.198
+2.696
+
+34.187
+27.24
+23.514
+42.982
+21.263
+36.129
+20.02
+35.355
+10.556
+46.001
+17.235
+12.471
+39.201
+22.188
+46.850
+19.142
+161.957
+27.070
+73.858
+
+-0.291
+-0.431
+-0.188
+-0.184
+-0.218
+-0.234
+-0.223
+-0.205
+-0.207
+-0.201
+-0.220
+-0.309
+-0.218
+-0.162
+-0.244
+-0.278
+-0.282
+-0.235
+-0.279
+
+425303.609
+269749.330
+201117.210
+671177.482
+164436.848
+474597.978
+145674.251
+455194.806
+40552.287
+771047.391
+108503.601
+56553.002
+562015.749
+179610.301
+801616.206
+133230.915
+9541186.331
+266254.814
+1992147.898
+
+2
+2
+
+Table B.2: Summary statistics of each sector log–returns in percentage points, for the period 17/08/2012 09:00:00 to 01/02/2013 09:40:00. The
+seventh column, denoted by “1% Str. Lev.” is the 1% empirical quantile of the returns distribution, while the last column, denoted by “JB” is the
+value of the Jarque-Ber´a test–statistics.
+
+2
+3
+
+Name
+
+Max
+
+Mean
+
+Std. Dev. Skewness Kurtosis JB×10−6 Max Mean Std. Dev. Skewness Kurtosis JB×10−6
+
+LAGVOL
+
+NUMB
+
+47789.1
+
+14435.57
+
+80542954 430265.82 1364898.01
+Electronic Technology
+4772977
+120300.14
+Non-Energy Minerals
+31536002 173898.02 672731.54
+Health Technology
+1553772
+33421.05
+Distribution services
+45639830 442359.14 1145068.11
+Finance
+58768687 198602.17 908170.62
+Technology Services
+113420.64
+3574375
+Process Industries
+24117.66
+369917
+Commercial services
+7148018
+174961.72
+Utilities
+4330320
+87986.03
+Health Services
+15952647 147346.78 340712.62
+Retail Trade
+12117418 115305.52 263236.58
+Energy Minerals
+Consumer services
+26011209 149917.34 493367.72
+Consumer non-durables 17447157 137296.42 381029.69
+Producer Manufacturing 22102513 117743.99 424997.45
+Industrial Services
+142155.51
+Communications
+Transportation
+Consumer durables
+
+66441.23
+57034.49
+27104.64
+81704.94
+
+51038.8
+18613.36
+76344.43
+32169.87
+
+7168024
+6464633
+2705466
+8070407
+
+164533
+65832.05
+196434.14
+
+38.23
+17.87
+32.78
+21.97
+22.48
+47.17
+17.3
+5.76
+20.75
+31.45
+25.36
+24.94
+38.38
+22.94
+31.07
+24.67
+20.41
+22.33
+19.71
+
+1889.12
+496.12
+1286.22
+754.79
+723.57
+2643.35
+427.37
+44.28
+637.42
+1316.22
+926.35
+920.34
+1780.23
+765.24
+1275.47
+951.03
+616.6
+689.5
+594.8
+
+1298.64 2355 11.65
+249
+1.06
+89.88
+1343 6.72
+602.58
+269
+0.59
+207.67
+190.94
+3476 14.66
+2541.67 2138 8.09
+2.20
+66.79
+0.92
+0.76
+2.73
+148.23
+1.68
+630.82
+5.67
+312.68
+308.62
+3.90
+1153.49 1408 6.91
+711
+3.63
+1164 3.77
+1.60
+406
+0.96
+188
+0.98
+213
+555
+2.13
+
+213.5
+592.41
+329.46
+138.73
+173.44
+129.09
+
+591
+215
+836
+345
+942
+636
+
+94.39
+9.68
+52.97
+6.14
+
+114.54
+68.63
+18.01
+8.15
+23.20
+13.90
+47.34
+31.65
+54.71
+29.27
+32.68
+13.22
+8.19
+8.93
+18.33
+
+10.52
+12.68
+10.82
+21.05
+11.66
+12.00
+12.66
+12.26
+14.98
+11.70
+10.88
+10.69
+10.79
+10.92
+13.40
+13.32
+11.79
+13.10
+12.02
+
+129.45
+198.61
+140.37
+659.37
+182.00
+193.73
+224.37
+181.72
+322.98
+163.72
+135.44
+127.30
+140.27
+141.44
+267.79
+234.39
+162.91
+208.70
+191.27
+
+6.25
+14.56
+7.33
+158.59
+12.23
+13.84
+18.52
+12.21
+38.22
+9.94
+6.84
+6.05
+7.32
+7.44
+26.31
+20.22
+9.84
+16.07
+13.50
+
+Table B.3: Summary statistics of the exogenous regressors belonging to the Information Volumes MIV regressor set.
+
+HIGH
+
+POS
+
+NEG
+
+Name
+
+Max Mean Std. Dev. Skewness Kurtosis JB×10−6 Max Mean Std. Dev. Skewness Kurtosis JB×10−6 Max Mean Std. Dev. Skewness Kurtosis JB×10−6
+
+Electronic Technology
+Non-Energy Minerals
+Health Technology
+Distribution services
+Finance
+Technology Services
+Process Industries
+Commercial services
+Utilities
+Health Services
+Retail Trade
+Energy Minerals
+Consumer services
+Consumer non-durables
+Producer Manufacturing
+Industrial Services
+Communications
+Transportation
+Consumer durables
+
+178
+31
+105
+40
+320
+146
+53
+31
+71
+38
+132
+90
+99
+78
+99
+50
+53
+29
+69
+
+0.96
+0.13
+0.53
+0.06
+1.44
+0.53
+0.22
+0.07
+0.19
+0.12
+0.61
+0.42
+0.46
+0.31
+0.33
+0.16
+0.11
+0.09
+0.22
+
+7.93
+1.27
+4.57
+0.81
+12.12
+4.46
+2.08
+0.75
+1.96
+1.18
+5.59
+
+4
+
+3.86
+2.86
+3.15
+1.59
+1.22
+0.95
+2.11
+
+11.1
+13.23
+12.28
+24.82
+11.51
+12.83
+14.36
+18.43
+18.67
+15.25
+12.68
+12.85
+11.54
+13.79
+14.72
+16.6
+21.1
+16.26
+14.25
+
+144.6
+204.89
+178.44
+879.51
+160.96
+231.45
+256.42
+491.65
+461.07
+304.95
+194.57
+186.96
+160.65
+237.36
+281.97
+356.19
+643.89
+332.13
+270.56
+
+7.78
+15.51
+11.79
+281.92
+
+9.6
+19.7
+24.19
+88.31
+77.74
+34.12
+13.99
+12.94
+9.57
+20.74
+29.2
+46.49
+151.27
+40.46
+26.89
+
+87
+18
+69
+8
+140
+66
+21
+13
+69
+22
+63
+32
+66
+35
+47
+32
+44
+13
+24
+
+0.49
+0.07
+0.32
+0.02
+0.69
+0.3
+0.09
+0.04
+0.09
+0.07
+0.33
+0.15
+0.26
+0.15
+0.14
+0.07
+0.09
+0.04
+0.09
+
+4.22
+0.65
+2.84
+0.29
+5.75
+2.62
+0.87
+0.42
+1.07
+0.69
+3.11
+1.39
+2.24
+1.31
+1.31
+0.74
+0.91
+0.46
+0.87
+
+10.87
+13.38
+12.18
+15.79
+11.58
+11.75
+13.59
+15.28
+36.35
+15.06
+
+12
+
+13.53
+11.87
+12.14
+14.54
+21.03
+23.24
+16.63
+13.46
+
+130.93
+221.72
+173.96
+295.05
+161.62
+164.91
+223.37
+290.35
+2046.68
+288.78
+164.65
+218.3
+181.43
+180.09
+302.54
+623.38
+840.77
+336.18
+231.23
+
+6.4
+18.12
+11.21
+31.99
+9.68
+10.08
+18.4
+30.97
+
+1523.71
+
+30.63
+10.06
+17.58
+12.16
+
+12
+
+33.56
+141.82
+257.59
+41.46
+19.69
+
+88
+18
+32
+16
+177
+90
+19
+12
+25
+13
+47
+40
+55
+36
+39
+18
+11
+23
+24
+
+0.44
+0.06
+0.19
+0.02
+0.71
+0.3
+0.09
+0.03
+0.08
+0.06
+0.24
+0.19
+0.23
+0.12
+0.16
+0.07
+0.03
+0.05
+0.08
+
+3.72
+0.62
+1.69
+0.28
+6.06
+2.59
+0.85
+0.40
+0.75
+0.56
+2.24
+1.79
+1.94
+1.15
+1.49
+0.69
+0.36
+0.54
+0.78
+
+10.89
+15.92
+11.04
+29.91
+12.25
+13.46
+12.85
+16.44
+16.13
+13.35
+12.31
+13.10
+11.73
+14.34
+13.11
+15.17
+16.21
+20.90
+14.30
+
+136.66
+303.92
+135.17
+1321.7
+195.93
+261.15
+192.73
+335.07
+339.99
+207.19
+177.21
+203.21
+174.29
+261.66
+208.06
+282.6
+330.23
+615.66
+258.08
+
+6.96
+33.92
+6.82
+635.93
+14.16
+25.04
+13.73
+41.18
+42.37
+15.85
+11.63
+15.25
+11.24
+25.17
+15.98
+29.35
+40.00
+138.34
+24.49
+
+2
+4
+
+Table B.4: Summary statistics of the exogenous regressors belonging to the Sentiment MSE regressor set.
+
+τ = 1%
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+GED
+
+Gaussian
+
+Student–t
+
+MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN
+0.77
+0.60
+Commercial services
+0.60
+Communications
+0.77
+0.72
+0.67
+Consumer durables
+1.09
+0.58
+Consumer non-durables
+0.72
+Consumer services
+0.86
+0.84
+0.58
+Distribution services
+0.84
+0.81
+Electronic Technology
+0.42
+Energy Minerals
+0.74
+0.88
+0.58
+Finance
+0.53
+0.44
+Health Services
+0.63
+Health Technology
+1.07
+0.56
+0.47
+Industrial Services
+0.51
+0.37
+Non-Energy Minerals
+0.58
+Process Industries
+0.70
+0.58
+Producer Manufacturing 0.53
+1.23
+0.86
+Retail Trade
+0.70
+Technology Services
+0.91
+1.07
+0.77
+Transportation
+1.51
+Utilities
+1.09
+
+0.86
+0.79
+0.84
+0.98
+0.91
+0.72
+1.19
+1.02 0.60
+0.86
+0.95
+1.14
+0.67 1.00
+0.98
+1.12
+0.63
+1.37
+1.09
+0.67
+0.93
+1.14
+0.77
+0.77
+0.93
+0.49
+0.98
+0.72
+0.49
+0.70
+0.88
+0.51
+0.88
+0.86
+0.72
+0.70
+0.67
+0.44
+0.67
+1.07
+0.72
+1.07
+0.63 0.72
+0.67
+0.79
+1.30
+1.30
+0.63 1.05
+0.86
+1.09
+1.09
+1.30
+1.42
+1.51
+1.58
+
+0.58
+0.60 0.93
+4.63
+4.40 1.14
+4.65
+4.21 0.74
+0.93
+0.74 0.86
+1.37
+2.77 0.95
+1.14
+2.95 0.81
+0.79
+0.81 0.84
+0.60
+0.58 0.77
+0.60
+0.77 0.49
+0.49
+0.51 0.53
+0.88
+2.65 0.58
+0.47 0.74
+0.49
+2.58 0.67 0.91
+0.65 0.84
+0.63
+0.49
+0.56 0.63
+1.16
+0.86 0.84
+0.77
+0.72 0.86
+1.49
+3.56 1.35
+1.19 1.60
+1.23
+
+0.60
+0.65 0.81
+2.84
+2.67 0.70
+2.65
+2.42 1.16
+0.77
+0.67 0.74
+0.70
+0.67 0.77
+0.83
+0.86 0.67
+0.78
+0.81 0.70
+0.60
+0.58 0.74
+0.58
+0.74 0.47
+0.49
+0.44 0.49
+0.79
+0.72 0.49
+0.47
+0.47 0.65
+0.37
+0.42 0.51
+0.60
+0.60 0.77
+0.51 0.58
+0.51
+0.84 0.79 0.98
+0.70
+0.74 0.65
+0.79
+0.88 1.14
+1.16 1.26
+1.23
+
+0.88
+0.81
+0.74
+0.93
+0.84
+0.91
+0.88
+0.65
+1.00
+0.77
+0.88
+0.51
+0.49
+0.67
+0.67
+1.14
+0.84
+0.98
+1.30
+
+0.74
+0.84
+0.74
+0.70
+1.00
+0.65
+0.47
+0.56
+0.21
+0.51
+0.56
+0.42
+0.49
+0.63
+0.42
+1.09
+0.56
+1.00
+1.26
+
+0.77
+1.00
+1.37
+0.98
+1.02
+1.16
+0.93
+0.79
+0.93
+0.56
+0.98
+0.79
+0.84
+1.02
+0.72
+1.21
+0.91
+1.21
+1.79
+
+0.70
+0.79
+0.77
+0.84
+0.86
+0.79
+0.95
+0.65
+0.88
+0.58
+0.77
+0.53
+0.51
+0.60
+0.67
+1.02
+0.86
+1.00
+1.28
+
+0.77
+0.74
+0.72
+0.98
+0.91
+0.72
+0.86
+0.72
+0.88
+0.56
+0.93
+0.56
+0.53
+0.67
+0.58
+1.14
+0.81
+0.93
+1.44
+
+0.84
+1.16
+1.37
+1.12
+1.00
+1.49
+1.09
+1.19
+0.77
+0.60
+0.84
+0.95
+0.84
+1.07
+0.65
+1.37
+0.93
+1.21
+1.47
+
+0.67
+0.67
+0.79
+0.56
+0.88
+0.65
+0.84
+0.56
+0.60
+0.47
+0.67
+0.47
+0.44
+0.65
+0.56
+0.98
+0.84
+0.81
+0.91
+
+0.77
+0.88
+1.16
+0.81
+1.07
+0.72
+0.95
+0.72
+0.88
+0.65
+0.81
+0.63
+0.44
+0.98
+0.67
+1.44
+0.88
+1.12
+1.58
+
+0.77
+0.91
+1.12
+1.23
+1.40
+0.91
+0.51
+0.98
+0.63
+0.70
+0.91
+0.84
+0.72
+1.23
+0.70
+1.35
+0.77
+1.51
+1.81
+
+0.81
+0.93
+1.23
+0.86
+1.05
+0.79
+0.93
+0.91
+0.93
+0.63
+0.81
+0.67
+0.49
+0.98
+0.67
+1.44
+0.88
+1.14
+1.53
+
+0.58
+0.65
+0.67
+0.56
+0.74
+0.63
+0.79
+0.65
+0.60
+0.47
+0.63
+0.44
+0.44
+0.65
+0.49
+0.93
+0.72
+0.79
+1.00
+
+0.98
+0.88
+0.72
+0.98
+0.84
+0.84
+0.72
+0.88
+0.56
+0.51
+0.65
+0.74
+0.63
+0.84
+0.67
+0.98
+0.72
+1.19
+1.91
+
+0.58
+0.51
+0.63
+0.67
+0.77
+0.65
+0.65
+0.44
+0.47
+0.37
+0.47
+0.42
+0.28
+0.67
+0.53
+0.74
+0.67
+0.74
+0.95
+
+0.67
+0.74
+0.79
+0.53
+0.81
+0.70
+0.79
+0.70
+0.67
+0.49
+0.67
+0.56
+0.49
+0.58
+0.56
+0.93
+0.79
+0.86
+0.86
+
+0.58
+0.53
+0.58
+0.58
+0.72
+0.65
+0.70
+0.44
+0.40
+0.37
+0.53
+0.42
+0.35
+0.51
+0.51
+0.70
+0.60
+0.84
+0.72
+
+0.72
+0.77
+0.58
+0.70
+0.95
+0.67
+0.00
+0.67
+0.26
+0.53
+0.26
+0.40
+0.49
+0.65
+0.37
+1.26
+0.00
+1.02
+1.12
+
+GED
+
+Gaussian
+
+Student–t
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+2
+5
+
+τ = 0.1%
+
+3.00
+
+3.00 3.50
+
+Commercial services
+Communications
+Consumer durables
+Consumer non-durables
+Consumer services
+Distribution services
+Electronic Technology
+Energy Minerals
+Finance
+Health Services
+Health Technology
+Industrial Services
+Non-Energy Minerals
+Process Industries
+Producer Manufacturing 3.00
+Retail Trade
+3.75
+3.00
+Technology Services
+2.25
+Transportation
+Utilities
+3.75
+
+MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN
+2.00
+2.25
+2.50
+1.75
+2.00
+2.25
+2.00
+0.50
+2.75
+2.25
+2.75
+2.50
+2.50
+3.00
+1.50
+2.50 1.00
+2.75
+2.00
+3.25
+0.00
+2.00 1.00
+1.00
+2.25
+0.50
+3.25
+0.75
+2.50
+1.00
+2.50
+2.50
+0.75
+2.00 1.00
+1.00
+1.50
+1.75 1.00
+2.75 1.25
+2.00
+2.00
+1.50
+3.50
+1.75
+0.00
+2.50
+1.75
+2.25
+3.25
+2.00
+
+3.00 3.50
+3.25
+13.00 3.50 14.50 22.75 5.50 23.75
+10.75 3.50 12.50 19.50 2.50 22.50
+3.00
+3.25 3.50
+4.75
+3.00 2.75
+5.00
+5.75 3.25
+3.25
+3.50 3.25
+2.00 2.50
+2.50
+3.25
+3.25 3.00
+2.00
+2.25 3.00
+2.75
+2.25 2.25
+1.75
+2.00 2.25
+3.50
+2.00 2.00
+2.75
+3.00 4.00
+2.75
+3.25 2.50
+3.50 3.25
+4.25
+2.75
+3.00 3.50
+5.25
+2.00 3.25
+4.00 3.50
+4.00
+
+2.50 3.75
+24.00 3.00
+24.50 3.25
+3.50 3.50
+2.00 2.25
+3.50 3.00
+2.00 3.00
+23.25 2.00
+2.00 2.75
+22.00 2.50
+3.00 3.25
+2.75 2.75
+4.00 3.25
+2.75 4.50
+31.25 4.75
+4.25 3.75
+
+2.00
+1.75
+2.00
+1.50
+2.00
+2.00
+1.50
+1.00
+1.75
+1.00
+1.00
+1.00
+1.50
+1.75
+1.50
+3.00
+2.00
+1.75
+1.25
+
+2.25
+1.75
+2.50
+1.25
+2.25
+2.00
+2.00
+1.50
+2.00
+1.25
+1.25
+1.50
+1.75
+1.75
+1.75
+3.00
+2.50
+2.00
+1.75
+
+2.00
+1.75
+2.25
+2.75
+2.25
+2.25
+2.00
+1.00
+2.25
+1.25
+2.50
+1.00
+1.50
+2.00
+2.00
+3.50
+2.00
+2.00
+3.25
+
+3.25
+3.00
+2.50
+3.75
+5.25
+2.25
+1.00
+3.50
+1.75
+2.25
+3.75
+1.50
+1.75
+3.50
+2.00
+4.25
+3.00
+4.50
+5.75
+
+1.50
+1.00
+0.75
+0.75
+1.75
+0.50
+1.75
+0.50
+1.75
+0.50
+0.50
+0.50
+1.00
+1.50
+1.00
+1.25
+1.25
+1.00
+1.00
+
+1.75
+1.00
+0.25
+1.25
+1.75
+0.75
+1.25
+0.25
+1.25
+0.50
+1.00
+0.50
+1.00
+0.75
+1.00
+1.25
+1.00
+1.00
+1.00
+
+1.25
+1.25
+0.75
+1.50
+1.00
+0.75
+0.50
+0.50
+0.75
+0.75
+1.25
+1.00
+0.75
+0.75
+1.00
+1.00
+0.50
+1.00
+1.50
+
+3.50
+3.50
+2.25
+4.00
+3.25
+3.75
+3.25
+2.75
+3.25
+3.00
+2.25
+2.50
+2.25
+3.75
+3.25
+3.75
+4.50
+3.50
+4.50
+
+4.50
+4.75
+6.25
+5.00
+5.25
+7.00
+5.50
+4.75
+4.50
+3.25
+4.75
+3.50
+3.75
+4.50
+4.75
+6.25
+4.75
+5.50
+6.25
+
+4.75
+4.75
+6.75
+4.75
+5.00
+7.25
+5.75
+4.00
+6.00
+3.50
+4.25
+4.25
+3.75
+4.50
+4.25
+7.00
+5.25
+5.00
+8.50
+
+4.25
+4.50
+5.50
+5.00
+5.25
+7.00
+5.75
+3.75
+6.00
+3.25
+4.00
+3.75
+4.00
+4.75
+4.50
+6.25
+4.50
+5.25
+6.00
+
+4.75
+4.25
+4.75
+4.00
+4.75
+4.75
+5.75
+4.25
+4.25
+3.00
+4.00
+3.50
+3.00
+4.00
+4.50
+6.25
+4.75
+6.00
+6.75
+
+5.00
+5.00
+7.00
+4.50
+5.50
+7.50
+5.50
+4.75
+4.50
+3.25
+4.75
+3.50
+3.50
+4.25
+3.75
+7.00
+4.50
+7.00
+7.25
+
+3.50
+3.75
+3.00
+4.75
+3.75
+4.00
+3.50
+3.00
+3.75
+3.25
+2.25
+2.25
+2.50
+3.50
+3.00
+4.75
+4.25
+4.75
+5.50
+
+3.00
+2.25
+2.50
+2.25
+2.25
+2.00
+2.25
+1.75
+3.00
+2.75
+2.75
+1.75
+1.75
+2.25
+2.00
+3.25
+2.50
+1.75
+2.75
+
+2.00
+2.25
+2.50
+2.00
+2.50
+1.75
+2.00
+1.75
+2.50
+1.25
+1.75
+1.50
+1.75
+2.00
+2.50
+2.75
+2.50
+1.75
+3.00
+
+2.75
+2.25
+3.00
+2.50
+3.25
+2.25
+3.00
+2.25
+3.25
+2.00
+2.75
+1.75
+1.75
+2.75
+3.00
+3.50
+2.75
+2.50
+3.50
+
+4.25
+3.75
+4.75
+4.00
+4.25
+4.25
+5.00
+3.50
+4.00
+3.25
+4.00
+3.25
+3.00
+4.50
+4.50
+5.75
+4.75
+5.00
+5.50
+
+2.75
+3.00
+4.20
+3.25
+2.50
+3.50
+2.00
+2.50
+1.75
+2.00
+3.00
+2.75
+3.75
+2.75
+2.00
+3.75
+
+Table B.5: Actual over expected (A/E) VaR exceedance rates for all models at conﬁdence levels τ = (1%, 0.1%). For each sector, in bold we
+denote the A/E value closest to one.
+
+τ = 1%
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+GED
+
+Gaussian
+
+Student–t
+
+0.53
+
+0.77
+0.30
+0.31
+
+0.32
+0.41
+1.19
+1.14
+
+MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN
+0.76 0.71 0.72 0.73 0.72 0.69 0.82 0.49 0.42 0.75 0.72 0.60 0.71 0.60 0.53 0.75 0.74
+0.76
+0.73
+0.78 0.82
+Commercial services
+1.04 0.76 1.03 1.17 1.04 1.17 1.20 1.02 1.20 1.06
+Communications
+1.02 1.06 1.02 1.07 1.08 1.01 1.11 1.06
+1.08
+1.07 1.09
+0.64 0.63
+0.64 0.66 0.44 0.68 0.66 0.50 0.70 0.65
+0.64 0.28 0.63 0.70 0.62 0.70 0.72 0.49 0.78 0.64
+0.63
+Consumer durables
+0.31 0.32 0.26 0.32
+0.32 0.28 0.29 0.30 0.30 0.28 0.32 0.33
+0.32
+0.33 0.29 0.28 0.32 0.31 0.28 0.33 0.32
+Consumer non-durables
+0.87 0.88 0.85 0.87 0.90 0.80 0.89 0.90 0.35 0.89 0.91 0.78 0.91 0.88 0.78 0.89 0.89
+0.88
+Consumer services
+0.90
+0.89 0.91
+1.43
+1.43 1.45
+1.40 1.42 1.39 1.34 1.43 1.34 1.42 1.42 1.10 1.42 1.43 1.35 1.43 1.42 1.40 1.42 1.41
+1.41
+Distribution services
+1.16
+1.14 1.16 0.69 0.72 1.16 0.72 1.13 1.18 0.12 1.18 1.18 0.68 1.17 1.19 0.68 1.17 1.17
+Electronic Technology
+1.15 1.17
+1.15
+0.91
+0.91 0.82
+0.91 0.82 0.72 0.91 0.82 0.71 0.91 0.88
+0.76 0.53 0.90 0.80 0.73 0.89 0.80 0.71 0.89 0.88
+Energy Minerals
+0.59 0.39 0.59 0.63 0.59 0.61 0.64 0.59 0.61 0.61
+Finance
+0.62
+0.62 0.66
+0.61 0.64 0.59 0.62 0.65 0.58 0.61 0.60
+0.55 0.27 0.74 0.64 0.58 0.77 0.61 0.57 0.76 0.52
+Health Services
+0.78
+0.79 0.73
+0.75 0.55 0.59 0.76 0.64 0.59 0.79 0.62
+0.28
+0.29 0.28
+0.34 0.32 0.29 0.31 0.27 0.30 0.31 0.31
+0.31
+0.30 0.26 0.28 0.28 0.34 0.29 0.31 0.34
+Health Technology
+0.59 0.28 0.63 0.45 0.38 0.63 0.52 0.40 0.62 0.58
+Industrial Services
+0.65
+0.66 0.50
+0.64 0.42 0.46 0.65 0.48 0.38 0.67 0.62
+2.01 1.99 1.82 2.00 2.04 1.88 1.96 1.97 0.39 1.99 1.96 1.55 1.96 1.92 1.50 1.92 2.03
+2.00
+Non-Energy Minerals
+2.04
+2.03 2.04
+0.54 0.31 0.65 0.58 0.51 0.65 0.55 0.46 0.65 0.58
+0.67 0.56 0.47 0.67 0.58 0.47 0.67 0.55
+0.66 0.53
+0.66
+Process Industries
+Producer Manufacturing 0.77 0.30 0.75 0.61 0.46 0.76 0.58 0.46 0.75 0.79
+0.77
+0.78 0.61
+0.77 0.64 0.47 0.78 0.78 0.44 0.78 0.78
+0.46 0.31 0.45 0.44 0.43 0.43 0.43 0.42 0.42 0.49
+Retail Trade
+0.43
+0.45 0.42
+0.49 0.49 0.43 0.49 0.43 0.42 0.48 0.46
+0.96 0.97 0.68 0.96 0.96 0.76 0.96 0.97 0.34 0.97 0.98 0.67 0.96 0.98 0.66 0.98 0.98
+0.96
+Technology Services
+0.97
+0.97 0.97
+0.50 0.39 0.50 0.49 0.48 0.49 0.57 0.52 0.50 0.51
+Transportation
+0.50
+0.49 0.49
+0.52 0.51 0.48 0.51 0.51 0.47 0.52 0.97
+0.40 0.28 0.39 0.36 0.36 0.37 0.39 0.36 0.39 0.41
+0.41 0.37 0.36 0.40 0.40 0.36 0.41 0.40
+0.38 0.39
+0.40
+Utilities
+
+0.73
+0.78
+1.09
+1.06
+0.65
+0.64
+0.30
+0.32
+0.91
+0.87
+1.43
+1.41
+1.18
+1.15
+0.81
+0.91
+0.65
+0.60
+0.76
+0.65
+0.30 0.26
+0.56
+0.65
+2.04
+2.04
+0.65
+0.56
+0.66
+0.76
+0.43
+0.45
+0.99
+0.97
+0.51
+0.50
+0.39
+0.37
+
+0.50
+0.98
+0.43
+0.31
+0.81
+1.33
+0.72
+0.68
+0.60
+0.55
+0.29
+0.36
+1.50
+0.47
+0.44
+0.42
+0.68
+0.45
+0.34
+
+0.56
+0.78
+0.28
+0.28
+0.49
+1.26
+0.43
+0.58
+0.42
+0.36
+0.29
+0.29
+0.56
+0.33
+0.39
+0.39
+0.69
+0.40
+0.28
+
+0.79
+1.30
+0.67
+0.65
+0.58
+0.53
+0.27
+0.35
+1.39
+0.42
+0.41
+0.42
+0.66
+0.44
+0.33
+
+0.55
+0.59
+0.28
+0.44
+0.31
+
+0.31
+0.55
+0.61
+
+0.51
+0.99
+0.42
+
+0.41
+0.30
+
+0.28
+
+0.47
+
+0.98
+
+2
+6
+
+τ = 0.1%
+
+GED
+
+Gaussian
+
+Student–t
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+0.33
+0.59
+0.18
+0.26
+
+0.40
+0.51
+0.08
+0.24
+0.25
+1.02
+0.99
+0.33
+0.20
+0.15
+0.20
+0.11
+
+MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN
+0.66 0.62 0.46 0.60 0.47 0.45 0.65 0.46
+0.53
+0.60 0.51 0.59 0.55 0.53 0.56 0.69 0.43
+0.49
+0.56
+0.29 0.55 0.64
+Commercial services
+0.92 0.98 0.92 0.98 1.00 0.91 1.03 0.82 0.45 0.80
+0.86 1.12 0.93 1.12 1.16 0.90 1.16 0.98
+0.87
+Communications
+0.84
+0.84 0.87
+0.66
+0.56 0.59 0.29 0.61 0.53 0.31 0.57 0.44 0.03 0.41
+0.49 0.64 0.54 0.64 0.65 0.27 0.68 0.56
+0.50
+Consumer durables
+0.41 0.41
+0.07
+0.40
+0.16
+0.23 0.19 0.21 0.21 0.19 0.21 0.23 0.28
+0.28 0.23 0.22 0.27 0.26 0.22 0.28 0.17
+0.17 0.18 0.07 0.20
+0.16
+0.23
+Consumer non-durables
+0.72 0.74 0.75 0.73 0.89 0.69 0.75 0.83 0.22 0.82 0.85 0.67 0.84 0.81 0.68 0.82 0.65
+0.73
+Consumer services
+0.62
+0.52
+0.65 0.71
+0.67
+1.28
+1.32 1.34 1.32 1.34 1.36 1.26 1.34 1.38 0.96 1.38 1.39 1.29 1.39 1.38 1.35 1.38 1.28
+1.32
+1.30 1.35
+1.12
+1.33
+Distribution services
+0.88
+0.99 1.01 0.57 1.01 1.01 0.62 0.95 1.11 0.07 1.10 1.11 0.58 1.10 1.12 0.58 1.10 0.93
+0.88 0.93
+0.39
+0.88
+1.01
+Electronic Technology
+0.84 0.71 0.63 0.83 0.72 0.61 0.83 0.64
+0.76 0.64 0.62 0.76 0.63 0.60 0.75 0.80
+0.69
+0.70 0.62 0.31 0.70
+0.36
+0.62
+Energy Minerals
+0.54 0.58 0.52 0.57 0.60 0.51 0.55 0.38 0.13 0.37
+0.47 0.53 0.52 0.51 0.54 0.51 0.49 0.55
+0.47
+Finance
+0.43
+0.44 0.52
+0.42
+0.70 0.43 0.48 0.71 0.54 0.48 0.74 0.33 0.12 0.60
+0.67 0.55
+0.20
+0.64
+0.64 0.48 0.44 0.67 0.42 0.43 0.67 0.39
+0.34
+Health Services
+0.14 0.15 0.03 0.14
+0.07
+0.28 0.26 0.21 0.24 0.21 0.23 0.24 0.10
+0.18 0.14 0.19 0.15 0.33 0.20 0.19 0.29
+0.08
+0.19
+Health Technology
+0.47 0.29 0.30 0.48 0.31 0.29 0.45 0.48
+0.56 0.33 0.31 0.56 0.35 0.29 0.59 0.34 0.09 0.38
+0.42
+Industrial Services
+0.14
+0.40 0.23
+0.39
+1.80 0.16 1.82 1.79 1.63 1.80 2.02 1.71 1.72 1.86
+Non-Energy Minerals
+1.75
+1.74 1.76
+0.72
+1.88 1.85 1.30 1.85 1.79 1.24 1.79 1.74
+1.74
+0.48 0.23
+0.23
+0.61 0.46 0.39 0.61 0.50 0.38 0.62 0.28 0.09 0.47
+0.54 0.42 0.43 0.55 0.38 0.36 0.54 0.49
+Process Industries
+0.37
+0.48
+0.59 0.31 0.10 0.59
+0.16
+0.56
+0.71 0.54 0.38 0.72 0.72 0.34 0.72 0.61
+0.64 0.40 0.35 0.65 0.37 0.35 0.64 0.74
+Producer Manufacturing 0.67
+0.31 0.26 0.20 0.29
+0.21
+0.25
+0.35 0.33 0.34 0.31 0.31 0.33 0.34 0.44
+0.35
+Retail Trade
+0.44 0.44 0.36 0.44 0.36 0.35 0.43 0.27
+0.78 0.77
+0.42
+0.78
+0.84 0.86 0.58 0.84 0.85 0.69 0.84 0.92 0.16 0.91 0.92 0.58 0.90 0.93 0.56 0.92 0.80
+0.85
+Technology Services
+0.79
+0.31 0.31 0.18 0.31
+0.21
+0.31
+0.46 0.46 0.41 0.46 0.45 0.40 0.46 0.79
+0.39 0.38 0.39 0.38 0.56 0.45 0.38 0.46
+0.39
+Transportation
+Utilities
+0.31
+0.30 0.27 0.28 0.27 0.30 0.29 0.30 0.37
+0.36 0.32 0.30 0.36 0.35 0.30 0.36 0.25
+0.24
+0.14
+0.25 0.26 0.13 0.29
+
+0.45
+0.88
+0.46
+0.16
+0.71
+1.33
+0.96
+0.60
+0.50
+0.42
+0.10
+0.25
+1.76
+0.31
+0.40
+0.23
+0.84
+0.35
+0.21
+
+0.40
+0.53
+0.20
+0.43
+0.19
+0.24
+0.23
+0.49
+0.61
+
+0.16
+0.15
+0.20
+0.85
+0.25
+0.19
+
+0.10
+0.29
+1.06
+0.20
+0.32
+
+0.11
+0.20
+0.46
+0.19
+0.15
+
+0.30
+0.68
+0.09
+
+0.11
+0.50
+0.14
+
+0.50
+1.07
+0.38
+
+0.38
+0.16
+
+0.31
+0.25
+
+0.38
+
+0.36
+
+0.09
+
+0.16
+
+Table B.6: Maximum AD in percentage points at conﬁdence level τ = 1%. For each sector, in bold we denote the minimum AD.
+
+τ = 1%
+
+Commercial services
+Communications
+Consumer durables
+Consumer non-durables
+Consumer services
+Distribution services
+Electronic Technology
+Energy Minerals
+Finance
+Health Services
+Health Technology
+Industrial Services
+Non-Energy Minerals
+Process Industries
+Producer Manufacturing
+Retail Trade
+Technology Services
+Transportation
+Utilities
+
+τ = 0.1%
+
+2
+7
+
+Commercial services
+Communications
+Consumer durables
+Consumer non-durables
+Consumer services
+Distribution services
+Electronic Technology
+Energy Minerals
+Finance
+Health Services
+Health Technology
+Industrial Services
+Non-Energy Minerals
+Process Industries
+Producer Manufacturing
+Retail Trade
+Technology Services
+Transportation
+Utilities
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GED
+
+Gaussian
+
+Student–t
+
+GJR-GARCH
+
+GARCH
+
+9.27
+
+MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN
+0.38
+9.27
+0.38
+9.27
+4.36
+1.82
+0.21
+60.61
+4.36
+30.44
+0.21
+23.47
+23.47
+17.67
+0.00
+6.45
+0.21
+38.59
+0.06
+0.00
+0.67
+71.39
+0.11
+0.01
+0.00
+0.03
+2.86
+0.21
+0.21
+0.06
+16.49
+30.44
+2.86
+47.87
+71.39
+9.27
+0.24
+60.61
+
+0.21
+9.27
+17.67 23.47 12.97 30.44 9.27 80.99 23.47
+38.59 47.87 58.15 47.87 4.36 80.99 93.07 38.59 33.88
+0.00
+0.00
+33.88 50.69 16.49 94.79 0.38 27.07 2.58
+2.58
+58.15 17.67 16.49 30.44 69.27 30.44 41.76 80.99 80.99 50.69
+2.58
+71.39
+4.36
+41.76
+12.97 69.27
+4.36
+0.38
+9.27 41.76 12.97 38.59 27.07
+0.38
+9.27
+38.59
+0.01
+0.38
+1.12
+38.59 17.67 47.87 17.67 38.59 0.03 38.59 80.99 1.12 23.47
+4.36 30.44 12.97 6.45 69.27
+0.01
+0.67
+0.00
+0.00
+1.82 23.47 0.67 23.47
+47.87
+0.67
+80.99 16.49 80.99 71.39 4.36 71.39 94.79 23.47 71.39
+1.82
+1.82
+0.01
+1.12
+0.83
+6.99 12.97 6.99 21.29 80.99 2.58
+33.88
+38.59
+9.27
+0.36
+50.69
+0.06
+16.49
+
+1.82
+1.82
+12.97
+0.11
+82.85 80.99 1.82 93.07 94.79 23.47 93.07 38.59
+1.12
+58.15 58.15 1.82 60.61 58.15 4.36 60.61 23.47
+0.11
+0.38
+0.01
+1.82
+0.01
+0.00
+1.12
+0.11
+1.82
+0.83
+80.99
+38.59 30.44 0.67 82.85 47.87 4.36 58.15 23.47
+41.76 6.99 60.61 60.61 21.29 27.07 21.29 17.67
+0.15
+47.87
+
+1.80
+47.87 12.97 50.69 0.67
+0.03
+80.99 47.87 9.27
+0.67
+2.86
+
+0.21
+0.06
+0.21
+0.21
+4.36
+1.12
+2.86
+0.00
+0.00
+0.00
+0.06
+0.00
+0.00
+0.03
+0.03
+2.86
+0.38
+23.47
+4.36
+
+2.86
+12.97
+9.27
+23.47
+30.44
+12.97
+69.27
+1.12
+38.59
+0.21
+9.27
+0.06
+0.03
+0.38
+1.82
+94.79
+30.44
+93.07
+9.45
+
+0.21
+1.12
+1.82
+0.11
+6.45
+0.67
+12.97
+1.12
+0.38
+0.01
+0.67
+0.00
+0.00
+1.12
+0.01
+58.15
+4.36
+12.97
+93.07
+
+1.12
+0.00
+0.00
+1.82
+1.82
+30.44
+17.67
+0.21
+6.45
+0.00
+4.36
+0.01
+0.00
+0.38
+0.03
+23.47
+6.45
+38.59
+33.88
+
+0.38
+0.00
+0.00
+9.27
+2.86
+0.00
+0.00
+0.38
+0.21
+0.01
+12.97
+0.01
+0.00
+0.38
+0.03
+80.99
+2.86
+12.97
+16.49
+
+4.36
+9.27
+0.21
+2.86
+69.27
+1.82
+0.00
+1.82
+0.00
+0.06
+0.00
+0.00
+0.01
+1.12
+0.00
+12.58
+0.00
+94.79
+50.69
+
+9.27
+6.45
+4.36
+80.99
+47.87
+4.36
+30.44
+4.36
+38.59
+0.11
+58.15
+0.11
+0.06
+1.82
+0.21
+41.76
+17.67
+58.15
+0.83
+
+1.82
+6.45
+12.97
+0.06
+17.67
+2.86
+12.97
+2.86
+1.82
+0.01
+1.82
+0.11
+0.01
+0.21
+0.11
+58.15
+12.97
+30.44
+30.44
+
+0.38
+0.00
+0.00
+6.45
+0.00
+0.00
+17.67
+0.21
+9.27
+0.03
+0.00
+0.01
+0.00
+1.12
+0.11
+30.44
+4.36
+0.00
+27.07
+
+58.15
+41.76
+6.45
+30.44
+69.27
+17.67
+23.47
+9.27
+0.01
+0.06
+0.21
+6.45
+1.82
+23.47
+0.67
+23.47
+30.44
+3.65
+0.04
+
+0.21
+0.03
+0.67
+1.82
+9.27
+1.12
+1.12
+0.00
+0.01
+0.00
+0.01
+0.00
+0.00
+1.82
+0.06
+6.45
+1.82
+6.45
+69.27
+
+38.59
+17.67
+6.45
+58.15
+23.47
+47.87
+38.59
+1.12
+93.07
+9.27
+38.59
+0.03
+0.01
+1.82
+1.82
+41.76
+23.47
+80.99
+6.99
+
+17.67
+2.86
+33.88
+6.45
+9.27
+1.82
+2.86
+6.45
+0.01
+0.01
+0.01
+1.12
+0.03
+9.27
+0.21
+12.97
+1.12
+41.76
+12.58
+
+6.45
+23.47
+6.45
+2.86
+93.07
+1.12
+0.01
+0.11
+0.00
+0.03
+0.11
+0.00
+0.01
+0.67
+0.00
+60.61
+0.11
+93.07
+12.58
+
+58.15 80.99 0.01 58.15 58.15 0.11
+0.67
+0.03
+
+2.86
+3.65
+9.27
+0.24
+0.00
+
+2.58 33.88 23.47 0.36
+
+23.47
+4.36
+
+2.86
+1.82
+
+1.82
+0.01
+
+1.23
+
+2.86
+
+4.36
+
+4.36
+
+4.36
+
+0.11
+
+0.06
+
+0.00
+
+0.00
+
+0.55
+
+1.82
+
+4.36
+
+0.01
+
+0.67
+
+0.24
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GED
+
+Gaussian
+
+Student–t
+
+GJR-GARCH
+
+GARCH
+
+MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN
+2.09
+5.20
+24.47
+5.20
+0.77
+11.83
+2.09
+0.77
+2.09
+0.26
+2.09
+0.77
+0.08
+11.83
+11.83
+86.22
+0.08
+5.20
+2.09
+86.22
+2.09
+2.09
+86.22
+11.83
+45.66
+24.47
+0.77
+11.83
+0.26
+11.83
+0.02
+0.01
+0.26
+2.09
+24.47
+5.20
+0.01
+0.08
+
+0.26
+5.20
+2.09
+5.20
+5.20
+11.83
+5.20
+24.47
+0.26
+0.77
+0.77
+24.47
+24.47
+5.20
+11.83
+0.08
+2.09
+24.47
+0.77
+
+0.26
+0.00
+0.00
+0.08
+0.26
+0.00
+0.02
+11.83
+0.08
+5.20
+5.20
+11.83
+11.83
+0.26
+0.08
+0.02
+0.26
+11.83
+0.00
+
+0.26
+0.00
+0.00
+0.77
+0.26
+0.00
+0.00
+2.09
+0.02
+11.83
+2.09
+24.47
+11.83
+0.26
+0.77
+0.01
+0.77
+11.83
+0.01
+
+0.26
+0.00
+0.00
+2.09
+0.00
+0.00
+0.02
+11.83
+0.02
+11.83
+0.00
+11.83
+0.00
+0.26
+0.77
+0.00
+0.77
+0.00
+0.00
+
+0.77
+5.20
+0.26
+2.09
+0.08
+5.20
+0.26
+5.20
+0.08
+11.83
+0.77
+24.47
+24.47
+0.77
+0.26
+0.02
+0.77
+2.09
+0.02
+
+0.02
+0.02
+0.02
+0.02
+0.77
+0.08
+0.08
+2.09
+0.26
+0.26
+5.20
+5.20
+11.83
+0.00
+2.09
+0.08
+0.02
+0.08
+0.02
+
+0.02
+0.00
+2.09
+0.01
+0.26
+0.08
+0.02
+5.20
+0.26
+0.26
+11.83
+0.77
+2.09
+0.08
+0.77
+0.08
+0.00
+0.00
+0.01
+
+0.08
+0.00
+0.00
+0.26
+0.00
+0.00
+0.08
+2.09
+0.08
+11.83
+0.77
+24.47
+0.02
+0.77
+0.77
+0.00
+0.77
+0.00
+0.00
+
+0.08
+0.26
+2.09
+0.01
+0.00
+5.20
+86.22
+0.02
+24.47
+5.20
+0.01
+45.66
+24.47
+0.02
+11.83
+0.00
+0.26
+0.00
+0.00
+
+11.83
+5.20
+2.09
+11.83
+2.09
+24.47
+11.83
+24.47
+2.09
+76.34
+24.47
+45.66
+24.47
+11.83
+2.09
+0.77
+2.09
+24.47
+0.26
+
+11.83
+24.47
+5.20
+0.77
+5.20
+5.20
+11.83
+86.22
+5.20
+76.34
+2.09
+86.22
+45.66
+11.83
+11.83
+0.02
+11.83
+11.83
+0.08
+
+11.83
+24.47
+11.83
+45.66
+11.83
+11.83
+45.66
+86.22
+24.47
+86.22
+86.22
+86.22
+45.66
+24.47
+45.66
+0.26
+11.83
+24.47
+76.34
+
+76.34
+76.34
+49.05
+45.66
+86.22
+49.05
+20.58
+20.58
+49.05
+49.05
+76.34
+86.22
+49.05
+49.05
+86.22
+86.22
+20.58
+86.22
+45.66
+
+24.47
+86.22
+5.21
+76.34
+24.47
+49.05
+76.34
+5.21
+76.34
+20.58
+86.22
+20.58
+86.22
+49.05
+86.22
+76.34
+86.22
+86.22
+86.22
+
+45.66
+86.22
+49.05
+49.05
+24.47
+20.58
+24.47
+20.58
+24.47
+20.58
+20.58
+20.58
+86.22
+45.66
+86.22
+76.34
+76.34
+86.22
+86.22
+
+5.20
+24.47
+2.09
+76.34
+5.20
+11.83
+11.83
+45.66
+11.83
+76.34
+76.34
+45.66
+24.47
+24.47
+24.47
+0.26
+2.09
+11.83
+24.47
+
+11.83
+11.83
+20.58
+5.20
+45.66
+86.22
+0.32
+86.22
+20.58
+49.05
+49.05
+86.22
+86.22
+76.34
+45.66
+24.47
+0.32
+5.20
+11.83
+
+0.02
+0.02
+5.20
+0.00
+0.08
+0.01
+0.08
+0.77
+0.08
+0.26
+5.20
+2.09
+5.20
+0.01
+0.08
+0.01
+0.00
+0.02
+0.00
+
+0.02
+0.01
+0.26
+0.00
+0.01
+0.00
+0.02
+0.26
+0.01
+0.08
+5.20
+5.20
+2.09
+0.02
+0.26
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.08
+0.00
+0.02
+0.02
+0.00
+0.01
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.26
+0.00
+0.02
+0.26
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.01
+0.00
+0.00
+0.00
+0.00
+0.00
+0.02
+0.00
+0.08
+0.00
+0.08
+0.26
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.02
+0.00
+0.00
+0.01
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.08
+0.00
+0.02
+0.01
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.01
+0.00
+0.08
+0.00
+0.01
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+Table B.7: p–values of the unconditional coverage test of Kupiec (1995) for the conﬁdence level τ = 1%. For each sector, in bold we denote the
+rejections of the null hypothesis at 5% conﬁdence level.
+
+τ = 1%
+
+Commercial services
+Communications
+Consumer durables
+Consumer non-durables
+Consumer services
+Distribution services
+Electronic Technology
+Energy Minerals
+Finance
+Health Services
+Health Technology
+Industrial Services
+Non-Energy Minerals
+Process Industries
+Producer Manufacturing
+Retail Trade
+Technology Services
+Transportation
+Utilities
+
+τ = 0.1%
+
+Commercial services
+Communications
+Consumer durables
+Consumer non-durables
+Consumer services
+Distribution services
+Electronic Technology
+Energy Minerals
+Finance
+Health Services
+Health Technology
+Industrial Services
+Non-Energy Minerals
+Process Industries
+Producer Manifacturing
+Retail Trade
+Technology Services
+Transportation
+Utilities
+
+2
+8
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GED
+
+Gaussian
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+Student–t
+
+GJR-GARCH
+
+GARCH
+
+MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN
+1.31
+12.65
+1.31
+18.91
+0.85
+2.60
+0.77
+52.43
+6.15
+7.27
+0.77
+36.57
+36.57
+30.23
+0.11
+0.01
+1.10
+0.29
+0.00
+0.08
+2.13
+23.82
+0.44
+0.03
+0.00
+0.12
+0.77
+7.40
+0.77
+0.24
+14.83
+36.35
+54.70
+7.40
+57.22
+18.91
+0.00
+52.43
+
+1.31
+0.00
+0.00
+18.91
+7.40
+0.00
+0.00
+0.54
+0.29
+0.02
+17.27
+0.03
+0.00
+1.31
+0.12
+70.72
+7.40
+24.27
+3.58
+
+0.29
+0.00
+0.00
+59.30
+0.27
+4.55
+24.27
+0.05
+0.54
+0.02
+9.28
+0.06
+11.50
+2.13
+0.06
+55.41
+18.91
+0.56
+0.01
+
+1.31
+0.00
+0.00
+14.28
+0.00
+0.00
+30.23
+0.29
+1.99
+0.04
+0.00
+0.03
+0.00
+3.34
+0.44
+36.35
+10.45
+0.00
+0.07
+
+9.28
+30.23
+1.32
+59.30
+29.23
+51.51
+49.15
+1.60
+20.44
+0.01
+43.89
+0.12
+0.06
+2.60
+5.06
+22.28
+36.57
+64.54
+0.06
+
+12.65
+14.28
+0.85
+64.54
+51.51
+10.45
+42.99
+0.06
+9.28
+0.15
+13.85
+0.44
+0.24
+5.06
+0.77
+22.28
+30.23
+59.30
+0.14
+
+36.57
+20.80
+0.04
+47.00
+3.16
+1.46
+52.43
+0.64
+1.99
+0.54
+29.23
+0.01
+0.58
+23.82
+3.34
+8.14
+13.85
+41.64
+0.45
+
+12.65
+3.16
+4.31
+64.54
+3.58
+55.41
+59.30
+17.27
+13.85
+0.01
+18.45
+0.27
+0.58
+63.69
+10.45
+16.97
+11.50
+16.97
+0.00
+
+42.99
+64.54
+4.23
+41.23
+20.44
+3.71
+23.86
+22.28
+13.85
+0.85
+43.89
+7.27
+2.60
+23.82
+10.45
+18.40
+61.07
+52.43
+0.19
+
+0.77
+0.24
+0.03
+0.77
+10.45
+3.34
+7.40
+0.00
+0.00
+0.00
+0.24
+0.01
+0.00
+0.12
+0.12
+7.40
+1.31
+36.57
+6.15
+
+0.29
+0.04
+0.10
+5.06
+18.91
+3.34
+3.34
+0.00
+0.03
+0.00
+0.03
+0.01
+0.00
+5.06
+0.24
+14.28
+5.06
+14.28
+16.20
+
+17.27
+10.45
+0.54
+42.99
+5.06
+2.13
+5.06
+12.65
+0.06
+0.06
+0.12
+10.45
+0.01
+10.45
+2.13
+24.27
+2.13
+52.43
+0.24
+
+29.23
+54.70
+22.06
+62.65
+18.45
+47.00
+59.30
+12.65
+70.72
+0.52
+49.15
+7.40
+2.60
+57.22
+5.06
+18.40
+42.99
+9.33
+1.83
+
+18.91
+49.15
+20.80
+30.23
+23.82
+10.45
+62.65
+10.45
+43.89
+1.60
+30.23
+2.13
+0.01
+64.54
+5.06
+1.26
+49.15
+47.00
+0.27
+
+70.72
+1.10
+6.15
+70.72
+36.57
+36.57
+10.45
+9.28
+0.15
+0.12
+3.34
+14.28
+2.13
+29.23
+5.06
+70.72
+10.45
+29.79
+0.00
+
+22.82
+59.30
+14.83
+42.99
+23.21
+24.27
+59.30
+1.44
+13.85
+0.94
+30.23
+5.06
+0.06
+64.54
+5.06
+3.05
+49.15
+41.23
+0.65
+
+0.77
+3.34
+0.31
+0.44
+8.97
+2.13
+24.27
+0.18
+0.54
+0.01
+2.13
+0.01
+0.01
+3.34
+0.06
+58.80
+10.45
+24.27
+64.89
+
+3.34
+0.00
+0.00
+5.06
+5.06
+42.99
+30.23
+0.29
+8.97
+0.00
+10.45
+0.03
+0.01
+1.31
+0.12
+29.23
+14.28
+49.15
+55.41
+
+58.80
+4.55
+8.97
+42.99
+62.65
+30.23
+36.57
+1.99
+0.06
+0.24
+0.77
+14.28
+5.06
+5.52
+2.13
+36.57
+42.99
+5.13
+0.05
+
+22.82
+7.40
+55.41
+14.28
+18.91
+5.06
+7.40
+8.97
+0.03
+0.06
+0.06
+3.34
+0.12
+18.91
+0.77
+24.27
+3.34
+41.23
+3.19
+
+18.91
+54.70
+67.65
+19.85
+5.98
+54.70
+0.12
+70.72
+2.13
+7.40
+1.44
+29.23
+10.45
+19.85
+7.40
+5.57
+18.91
+0.37
+0.00
+
+7.40
+24.27
+1.99
+36.57
+36.35
+24.27
+62.65
+1.60
+43.89
+0.29
+18.91
+0.24
+0.12
+1.31
+5.06
+76.75
+42.99
+64.89
+23.25
+
+5.06
+14.28
+2.89
+0.24
+22.82
+7.40
+24.27
+0.52
+0.31
+0.02
+5.06
+0.44
+0.06
+0.77
+0.44
+58.80
+24.27
+42.99
+42.99
+
+14.28
+36.57
+14.28
+7.40
+64.89
+3.34
+0.03
+0.15
+0.00
+0.12
+0.44
+0.01
+0.06
+2.13
+0.01
+52.43
+0.44
+64.89
+12.70
+
+5.06
+5.06
+17.27
+0.44
+43.89
+3.34
+36.57
+0.44
+0.54
+0.01
+2.60
+0.03
+0.01
+3.34
+0.44
+70.72
+36.57
+30.23
+54.70
+
+10.45
+18.91
+0.77
+7.40
+62.65
+5.06
+0.00
+2.60
+0.00
+0.24
+0.00
+0.00
+0.06
+3.34
+0.00
+15.73
+0.00
+63.69
+23.33
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GED
+
+Gaussian
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+Student–t
+
+GJR-GARCH
+
+GARCH
+
+MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN
+14.85
+6.78
+50.26
+14.85
+2.80
+29.10
+2.80
+6.78
+1.05
+6.78
+2.80
+6.78
+0.36
+29.10
+98.14
+29.10
+0.36
+14.85
+98.14
+6.78
+6.78
+6.78
+98.14
+29.10
+75.17
+50.26
+2.80
+29.10
+1.05
+29.10
+0.01
+0.03
+1.05
+6.78
+14.85
+50.26
+0.36
+0.03
+
+1.05
+14.85
+6.78
+14.85
+14.85
+29.10
+14.85
+50.26
+1.05
+0.19
+2.80
+50.26
+50.26
+14.85
+29.10
+0.36
+6.78
+50.26
+2.80
+
+0.12
+0.03
+0.09
+0.00
+0.03
+0.01
+0.12
+0.09
+0.03
+0.36
+14.85
+14.85
+6.78
+0.12
+1.05
+0.00
+0.00
+0.00
+0.00
+
+0.12
+0.12
+0.67
+0.01
+0.36
+0.03
+0.36
+0.19
+0.36
+1.05
+14.85
+6.78
+14.85
+0.03
+0.36
+0.03
+0.00
+0.12
+0.00
+
+1.05
+0.00
+0.00
+0.36
+1.05
+0.00
+0.12
+29.10
+0.36
+14.85
+14.85
+29.10
+29.10
+1.05
+0.36
+0.12
+1.05
+29.10
+0.01
+
+2.80
+14.85
+0.09
+6.78
+0.36
+14.85
+1.05
+0.67
+0.36
+29.10
+2.80
+50.26
+50.26
+2.80
+1.05
+0.12
+2.80
+6.78
+0.12
+
+1.05
+0.00
+0.00
+6.78
+0.00
+0.00
+0.12
+29.10
+0.12
+29.10
+0.00
+29.10
+0.00
+1.05
+2.80
+0.00
+2.80
+0.00
+0.00
+
+1.05
+0.00
+0.00
+2.80
+1.05
+0.00
+0.00
+0.38
+0.12
+29.10
+6.78
+50.26
+29.10
+1.05
+2.80
+0.03
+2.80
+29.10
+0.03
+
+0.12
+0.00
+0.38
+0.03
+1.05
+0.36
+0.12
+14.85
+1.05
+1.05
+29.10
+2.80
+6.78
+0.36
+2.80
+0.36
+0.00
+0.00
+0.00
+
+0.12
+0.12
+0.01
+0.12
+2.80
+0.36
+0.36
+6.78
+1.05
+1.05
+14.85
+14.85
+29.10
+0.01
+6.78
+0.36
+0.12
+0.36
+0.12
+
+0.36
+0.00
+0.00
+1.05
+0.00
+0.00
+0.36
+0.38
+0.36
+29.10
+2.80
+50.26
+0.12
+2.80
+2.80
+0.00
+2.80
+0.00
+0.01
+
+0.36
+1.05
+6.78
+0.03
+0.00
+14.85
+98.14
+0.01
+50.26
+14.85
+0.00
+75.17
+50.26
+0.12
+29.10
+0.00
+1.05
+0.00
+0.00
+
+29.10
+14.85
+6.78
+29.10
+6.78
+50.26
+29.10
+50.26
+6.78
+95.02
+50.26
+75.17
+50.26
+29.10
+6.78
+2.80
+6.78
+50.26
+1.05
+
+29.10
+50.26
+14.85
+2.80
+14.85
+14.85
+29.10
+98.14
+14.85
+95.02
+6.78
+98.14
+75.17
+29.10
+29.10
+0.12
+29.10
+29.10
+0.36
+
+50.26
+98.14
+15.16
+95.02
+50.26
+78.68
+95.02
+15.16
+95.02
+44.88
+98.14
+44.88
+98.14
+78.68
+98.14
+95.02
+98.14
+98.14
+98.14
+
+95.02
+95.02
+78.68
+75.17
+98.14
+78.68
+44.88
+44.88
+78.68
+78.68
+95.02
+98.14
+78.68
+78.68
+98.14
+98.14
+44.88
+98.14
+75.17
+
+29.10
+50.26
+29.10
+75.17
+29.10
+29.10
+75.17
+98.14
+50.26
+98.14
+98.14
+98.14
+75.17
+50.26
+75.17
+1.05
+29.10
+50.26
+95.02
+
+75.17
+98.14
+78.68
+78.68
+50.26
+44.88
+50.26
+44.88
+50.26
+44.88
+44.88
+44.88
+98.14
+75.17
+98.14
+95.02
+95.02
+98.14
+98.14
+
+14.85
+50.26
+6.78
+95.02
+14.85
+29.10
+29.10
+75.17
+29.10
+95.02
+95.02
+75.17
+50.26
+50.26
+50.26
+1.05
+6.78
+29.10
+50.26
+
+29.10
+29.10
+44.88
+14.85
+75.17
+98.14
+1.28
+98.14
+44.88
+78.68
+78.68
+98.14
+98.14
+95.02
+75.17
+50.26
+1.28
+14.85
+29.10
+
+0.00
+0.00
+0.00
+0.01
+0.00
+0.00
+0.00
+0.00
+0.00
+0.09
+0.01
+0.12
+1.05
+0.01
+0.00
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.03
+0.00
+0.01
+0.00
+0.00
+0.00
+0.12
+0.01
+0.04
+0.01
+0.36
+1.05
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.04
+0.00
+0.01
+0.12
+0.00
+0.03
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.03
+0.00
+0.04
+0.01
+0.03
+0.01
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.04
+0.00
+0.01
+0.03
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.01
+0.00
+0.01
+0.00
+0.00
+0.03
+0.00
+0.00
+0.00
+0.00
+0.00
+
+-
+
+Table B.8: p–values of the conditional coverage test of Christoﬀersen (1998) for τ = 1%. For each sector, in bold we denote the rejections of the
+null hypothesis at 5% conﬁdence level.
+
+τ = 1%
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GED
+
+Gaussian
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+MSE MIV
+Commercial services
+8.44
+18.52
+Communications
+27.91
+7.03
+1.50
+Consumer durables
+11.68
+Consumer non-durables 13.50
+45.35
+Consumer services
+87.30
+30.22
+Distribution services
+37.85
+14.40
+Electronic Technology
+0.00
+47.60
+0.80
+Energy Minerals
+8.88
+0.00
+4.59
+Finance
+2.06
+0.22
+Health Services
+0.02
+Health Technology
+23.64
+0.57
+2.29
+Industrial Services
+3.56
+0.31
+Non-Energy Minerals
+Process Industries
+13.83
+30.90
+0.34
+Producer Manifacturing
+7.32
+Retail Trade
+18.71
+48.46
+Technology Services
+0.00
+22.67
+Transportation
+85.98
+52.03
+Utilities
+86.12
+27.41
+
+MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV
+11.78
+14.04
+49.27
+14.10
+0.30
+21.74
+9.34
+45.34
+89.54
+37.06
+30.83
+24.66
+0.00
+46.27
+0.93
+0.17
+0.00
+6.80
+1.27
+0.42
+10.57
+22.55
+0.94
+1.48
+3.56
+1.51
+30.98
+24.56
+0.12
+3.48
+28.72
+46.10
+8.03
+29.23
+84.41
+70.26
+86.59
+17.89
+
+36.28
+6.89
+45.01
+9.74
+76.54
+30.88
+48.92
+1.75
+5.77
+0.41
+17.10
+2.26
+1.28
+30.92
+9.80
+10.93
+56.79
+55.51
+76.78
+
+26.87
+0.00
+0.00
+20.42
+28.85
+13.01
+33.12
+3.94
+13.63
+0.22
+41.79
+2.27
+0.61
+17.22
+4.84
+14.78
+55.01
+89.44
+6.47
+
+2.74
+0.00
+0.00
+91.81
+0.00
+0.00
+36.20
+0.06
+5.76
+0.73
+10.79
+3.57
+0.03
+21.69
+3.44
+30.63
+35.18
+0.00
+0.00
+
+34.21
+0.22
+0.00
+50.79
+0.14
+18.71
+38.76
+28.09
+2.04
+0.02
+17.40
+0.00
+0.02
+86.43
+22.37
+2.44
+0.07
+0.00
+0.00
+
+73.73
+29.00
+0.00
+79.52
+0.33
+0.36
+79.22
+0.00
+2.12
+0.03
+64.05
+0.00
+0.02
+19.49
+30.93
+1.94
+0.21
+0.53
+0.25
+
+0.00
+69.26
+31.24
+18.76
+5.09
+0.00
+0.00
+3.48
+10.22
+24.72
+0.00
+0.00
+52.93
+23.12
+0.00
+0.00
+27.89
+0.01
+0.00
+
+57.40
+73.57
+21.81
+84.59
+25.23
+73.77
+16.27
+0.04
+15.51
+9.69
+57.94
+36.93
+3.40
+76.76
+37.93
+4.58
+77.58
+1.21
+2.11
+
+65.91
+53.28
+13.89
+39.60
+20.88
+6.23
+7.22
+24.21
+14.78
+0.63
+89.97
+45.36
+8.81
+87.52
+37.87
+4.94
+71.98
+0.02
+2.62
+
+86.83
+83.65
+0.00
+63.49
+19.42
+0.51
+2.25
+10.11
+11.10
+1.27
+71.46
+8.50
+15.78
+20.58
+50.32
+5.11
+87.62
+0.20
+0.07
+
+39.07
+0.02
+28.91
+61.46
+82.31
+2.92
+27.36
+8.06
+0.16
+3.78
+22.07
+21.66
+2.91
+48.25
+0.49
+0.11
+52.90
+25.41
+0.00
+
+0.00
+61.80
+6.10
+79.16
+0.00
+53.02
+17.42
+20.27
+0.00
+3.76
+61.01
+0.00
+1.47
+69.02
+37.72
+2.94
+77.31
+0.00
+0.78
+
+13.01
+45.63
+6.65
+79.02
+37.44
+5.38
+36.66
+26.27
+3.07
+3.14
+4.51
+29.07
+0.49
+41.91
+0.17
+0.01
+24.58
+84.40
+0.02
+
+29.48
+40.77
+52.23
+52.33
+32.22
+15.91
+38.92
+21.55
+1.94
+3.21
+3.31
+25.23
+2.20
+67.46
+0.05
+0.01
+29.89
+71.05
+0.33
+
+16.56
+0.00
+0.00
+61.76
+36.13
+0.00
+0.00
+6.09
+3.89
+0.74
+43.16
+2.34
+0.31
+15.89
+4.97
+19.00
+17.31
+59.72
+0.07
+
+15.35
+0.00
+0.00
+43.42
+0.00
+0.00
+24.23
+0.94
+0.47
+1.16
+0.00
+2.20
+0.00
+27.64
+10.13
+8.55
+26.92
+0.00
+0.00
+
+40.33
+0.27
+35.85
+77.31
+68.55
+3.06
+47.96
+1.68
+0.57
+6.81
+11.39
+32.23
+32.37
+4.97
+0.16
+4.35
+71.44
+11.30
+0.00
+
+τ = 0.1%
+
+2
+9
+
+Commercial services
+Communications
+Consumer durables
+Consumer non-durables
+Consumer services
+Distribution services
+Electronic Technology
+Energy Minerals
+Finance
+Health Services
+Health Technology
+Industrial Services
+Non-Energy Minerals
+Process Industries
+Producer Manifacturing
+Retail Trade
+Technology Services
+Transportation
+Utilities
+
+EGARCH
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+GED
+
+Gaussian
+
+GJR-GARCH
+
+GARCH
+
+EGARCH
+
+MSE MIV
+6.88
+18.61
+67.82
+39.30
+3.41
+93.74
+3.52
+40.56
+0.62
+98.51
+100.00
+18.44
+0.14
+0.00
+100.00
+64.11
+0.28
+49.44
+1.40
+99.46
+99.46
+14.16
+100.00
+66.63
+100.00
+75.22
+99.98
+6.46
+0.94
+98.51
+0.00
+89.30
+1.19
+0.00
+21.62
+40.58
+0.01
+67.65
+
+MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV MN MSE MIV
+13.22
+6.54
+99.98
+40.38
+0.00
+99.46
+98.51
+8.26
+0.15
+100.00
+99.46
+39.30
+0.88
+80.73
+0.00
+93.68
+0.24
+79.83
+99.46
+64.14
+99.98
+5.07
+100.00
+89.17
+99.46
+78.15
+99.46
+6.55
+1.16
+100.00
+0.00
+100.00
+4.05
+93.13
+14.41
+100.00
+0.05
+98.47
+
+1.36
+0.00
+0.00
+18.68
+0.00
+0.00
+0.01
+66.94
+0.03
+31.75
+0.00
+60.11
+0.00
+1.54
+2.92
+0.00
+1.81
+0.00
+0.00
+
+1.68
+0.00
+0.00
+0.10
+0.37
+0.00
+0.01
+66.88
+0.24
+19.81
+19.05
+54.16
+37.99
+1.14
+0.15
+0.00
+0.87
+33.68
+0.00
+
+0.21
+0.00
+0.00
+1.42
+0.00
+0.00
+0.07
+0.00
+0.31
+64.00
+5.40
+89.17
+0.00
+5.11
+1.61
+0.00
+2.37
+0.00
+0.00
+
+0.01
+0.01
+0.00
+0.05
+3.22
+0.01
+0.33
+4.85
+1.00
+0.00
+39.58
+14.07
+32.63
+0.00
+15.65
+0.19
+0.06
+0.33
+0.04
+
+0.00
+0.00
+0.00
+0.00
+0.34
+0.00
+0.21
+0.00
+0.19
+0.00
+40.20
+0.23
+18.07
+0.00
+0.23
+0.00
+0.00
+0.03
+0.00
+
+1.59
+0.00
+0.00
+6.38
+0.17
+0.00
+0.00
+0.00
+0.06
+66.65
+13.43
+88.73
+52.24
+1.03
+1.58
+0.00
+2.86
+32.24
+0.00
+
+0.00
+0.00
+0.00
+0.00
+1.08
+0.00
+0.05
+0.18
+0.98
+0.00
+66.81
+2.83
+9.91
+0.11
+3.14
+0.22
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.03
+0.00
+0.00
+0.00
+37.43
+1.48
+0.25
+0.00
+1.20
+0.00
+0.00
+0.00
+0.00
+
+0.00
+1.75
+18.64
+0.01
+0.00
+0.00
+0.00
+0.00
+89.10
+40.57
+0.00
+0.00
+89.30
+0.05
+67.81
+0.00
+1.74
+0.00
+0.00
+
+40.62
+89.19
+4.67
+99.95
+10.48
+65.81
+34.66
+96.70
+66.17
+98.92
+99.97
+98.42
+72.57
+89.24
+81.85
+0.78
+9.02
+44.23
+83.91
+
+0.00
+0.01
+0.00
+0.00
+0.00
+0.00
+0.00
+0.04
+0.00
+0.00
+0.00
+0.00
+1.32
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.05
+1.64
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+0.00
+
+Student–t
+
+GJR-GARCH
+
+GARCH
+
+MN MSE MIV
+7.43
+37.57
+6.04
+21.00
+0.04
+1.14
+6.49
+13.50
+42.59
+58.30
+13.24
+45.38
+28.14
+44.46
+0.04
+0.41
+0.48
+0.39
+0.25
+0.73
+5.71
+36.79
+0.48
+10.53
+0.14
+3.35
+13.02
+5.04
+4.39
+10.35
+16.59
+44.08
+17.88
+46.98
+54.03
+80.33
+63.40
+16.25
+
+30.27
+26.25
+1.48
+39.92
+60.28
+61.96
+37.84
+3.50
+22.53
+4.74
+49.71
+6.05
+0.62
+13.76
+34.33
+3.12
+57.56
+74.03
+1.61
+
+MN MSE MIV
+0.38
+23.49
+0.27
+16.00
+0.16
+0.48
+85.58
+35.90
+60.30
+53.82
+10.44
+41.46
+29.67
+50.26
+0.03
+0.00
+0.31
+3.93
+0.21
+3.13
+2.15
+14.71
+0.39
+9.99
+0.02
+7.30
+30.39
+19.01
+0.01
+13.46
+1.76
+2.57
+37.79
+41.38
+38.26
+71.77
+0.00
+17.23
+
+0.27
+35.53
+0.85
+50.80
+53.22
+20.23
+42.08
+3.11
+2.45
+0.00
+22.71
+4.70
+2.85
+8.28
+35.18
+0.01
+51.75
+77.90
+0.00
+
+Student–t
+
+GJR-GARCH
+
+GARCH
+
+MN MSE MIV
+93.33
+64.36
+89.59
+89.27
+92.37
+16.47
+99.45
+98.43
+79.47
+37.47
+91.89
+63.80
+87.91
+90.11
+93.70
+97.72
+89.27
+55.01
+77.98
+99.98
+91.74
+99.94
+93.68
+99.36
+73.66
+79.87
+91.30
+86.31
+99.18
+93.28
+0.09
+99.88
+99.97
+46.20
+60.34
+100.00
+99.94
+97.23
+
+64.37
+32.54
+4.06
+43.24
+1.20
+13.73
+28.29
+82.81
+6.39
+99.97
+40.81
+98.52
+75.71
+52.44
+7.90
+0.28
+4.92
+48.96
+0.10
+
+MN MSE MIV
+6.06
+61.50
+78.34
+88.21
+74.99
+5.51
+99.66
+6.08
+83.20
+11.77
+99.46
+9.41
+99.96
+36.19
+75.96
+98.17
+39.40
+98.15
+66.46
+99.85
+99.34
+13.07
+93.22
+99.58
+31.05
+72.92
+90.83
+41.37
+97.84
+50.99
+0.00
+99.92
+100.00
+40.98
+31.12
+99.99
+0.12
+100.00
+
+0.08
+30.19
+4.21
+31.24
+10.50
+5.30
+16.66
+78.42
+0.81
+0.00
+0.12
+88.90
+66.97
+32.09
+62.35
+0.00
+6.17
+49.86
+1.00
+
+MN
+6.27
+20.70
+0.20
+79.91
+4.36
+68.54
+37.88
+0.00
+0.03
+2.02
+22.46
+10.17
+4.52
+39.88
+12.48
+0.33
+66.06
+52.66
+0.00
+
+MN
+36.86
+80.74
+16.74
+18.49
+3.17
+0.79
+39.19
+98.77
+36.30
+99.99
+16.67
+99.53
+71.27
+42.10
+52.44
+0.00
+8.52
+57.86
+0.27
+
+Table B.9: Out–of–sample Dynamic Quantile (DQ) test of Engle and Manganelli (2004), for τ = 1%. For each sector, in bold we denote rejections
+of the null hypothesis at 5% conﬁdence level.
+
+τ
+
+Sector
+
+Commercial services
+Communications
+Consumer durables
+Consumer non-durables
+Consumer services
+Distribution services
+Electronic Technology
+Energy Minerals
+Finance
+Health Services
+Health Technology
+Industrial Services
+Non-Energy Minerals
+Process Industries
+Producer Manufacturing
+Retail Trade
+Technology Services
+Transportation
+Utilities
+
+A/E
+
+AD
+
+1%
+
+0.1%
+
+1%
+
+0.1%
+
+MIV MSE MN MIV MSE MN MIV MSE MN MIV MSE MN
+
+0.72
+0.75
+0.72
+0.78
+0.79
+0.83
+0.71
+0.88
+
+–
+
+0.51
+
+–
+
+0.66
+0.63
+0.84
+0.61
+0.98
+0.69
+1.10
+1.33
+
+–
+–
+–
+
+–
+–
+–
+
+0.79
+0.83
+
+–
+
+0.89
+0.87
+
+–
+
+0.88
+
+0.90
+
+–
+
+–
+
+0.59
+
+0.76
+
+–
+
+–
+
+0.75
+
+0.83
+
+–
+–
+–
+–
+–
+
+–
+–
+–
+–
+–
+
+0.82
+
+0.84
+
+–
+–
+
+–
+–
+
+1.63
+1.00
+1.75
+3.00
+2.71
+2.58
+2.75
+1.75
+2.67
+2.21
+1.71
+1.79
+1.80
+2.34
+1.00
+2.64
+3.17
+3.04
+2.84
+
+–
+–
+–
+
+2.33
+2.60
+
+–
+
+2.60
+2.47
+2.92
+2.00
+2.10
+2.07
+
+–
+
+–
+–
+–
+
+2.50
+2.96
+
+–
+
+2.35
+1.71
+2.71
+1.54
+2.57
+1.68
+
+–
+
+2.75
+
+2.81
+
+–
+
+3.38
+2.63
+1.94
+3.15
+
+–
+
+3.58
+2.46
+2.00
+3.17
+
+0.53
+1.01
+0.50
+0.28
+0.80
+1.37
+0.69
+0.71
+
+–
+
+0.59
+
+–
+
+0.40
+1.50
+0.47
+0.45
+0.42
+0.68
+0.48
+0.35
+
+–
+–
+–
+
+–
+–
+–
+
+0.31
+0.89
+
+–
+
+0.32
+0.89
+
+–
+
+1.17
+
+1.16
+
+–
+
+–
+
+0.60
+
+0.61
+
+–
+
+–
+
+0.32
+
+0.31
+
+–
+–
+–
+–
+–
+
+–
+–
+–
+–
+–
+
+0.97
+
+0.97
+
+–
+–
+
+–
+–
+
+0.34
+0.68
+0.20
+0.18
+0.64
+1.23
+0.52
+0.50
+0.48
+0.36
+0.16
+0.24
+1.16
+0.27
+0.10
+0.28
+0.54
+0.34
+0.22
+
+–
+–
+–
+
+0.19
+0.71
+
+–
+
+0.97
+0.67
+0.49
+0.42
+0.14
+0.31
+
+–
+
+–
+–
+–
+
+0.20
+0.69
+
+–
+
+0.92
+0.73
+0.45
+0.65
+0.16
+0.45
+
+–
+
+0.35
+
+0.54
+
+–
+
+0.29
+0.81
+0.36
+0.26
+
+–
+
+0.31
+0.81
+0.34
+0.27
+
+3
+0
+
+Table B.10: A/E exceedances ratio and maximum AD averaged across the optimal MCS, ˆM∗
+means that no models remained in the MCS at the end of the procedure. The maximum AD values are reported in percentage points.
+
+1−α, grouped by regressors and conﬁdence levels: “–”
+
+τ
+
+1%
+
+0.1%
+
+1%
+
+0.1%
+
+ADMax
+
+ADMean
+
+3
+1
+
+Sector
+Commercial services
+Communications
+Consumer durables
+Consumer non-durables
+Consumer services
+Distribution services
+Electronic Technology
+Energy Minerals
+Finance
+Health Services
+Health Technology
+Industrial Services
+Non-Energy Minerals
+Process Industries
+Producer Manifacturing
+Retail Trade
+Technology Services
+Transportation
+Utilities
+
+–
+
+–
+
+–
+
+–
+
+–
+
+–
+
+–
+
+–
+
+0.367
+
+1.010
+
+1.664
+
+0.183
+
+0.774
+1.372
+1.887
+1.722
+1.356
+1.145
+
+0.299
+0.851
+1.333
+0.956
+0.728
+0.600
+
+VaRdyn VaRavg VaRdyn VaRavg VaRdyn VaRavg VaRdyn VaRavg
+0.247
+0.250
+0.253
+0.244
+0.249
+0.246
+0.252
+0.255
+0.248
+0.246
+0.246
+0.250
+0.266
+0.248
+0.249
+0.249
+
+0.133
+0.217
+0.168
+0.085
+0.147
+0.124
+0.209
+0.156
+0.164
+0.158
+0.085
+0.146
+0.344
+0.121
+0.118
+0.106
+
+0.877
+1.516
+1.038
+0.577
+1.203
+1.733
+1.553
+1.217
+1.006
+0.828
+0.677
+0.818
+2.513
+0.868
+0.898
+0.810
+
+0.511
+0.995
+0.546
+0.300
+0.844
+1.378
+0.934
+0.745
+0.608
+0.646
+0.285
+0.453
+1.461
+0.450
+0.415
+0.428
+
+0.085
+0.145
+0.119
+0.197
+0.148
+0.142
+
+0.362
+0.366
+0.364
+0.369
+0.370
+0.364
+
+0.086
+
+0.219
+
+–
+
+–
+
+–
+
+–
+
+–
+
+–
+
+–
+
+–
+
+–
+
+–
+
+–
+
+–
+
+0.287
+
+0.845
+
+1.490
+
+2.661
+
+0.363
+
+0.379
+
+0.366
+0.366
+0.366
+
+0.436
+0.450
+0.741
+
+1.065
+0.977
+1.472
+
+–
+
+–
+
+0.346
+
+0.880
+
+0.107
+0.110
+0.201
+
+–
+
+0.453
+0.338
+
+–
+
+0.873
+0.712
+
+–
+
+–
+
+0.067
+
+0.365
+
+–
+
+0.087
+0.082
+
+–
+
+0.249
+0.248
+
+Table B.11: Comparison between the dynamic VaR combination VaRdynamic and the static average VaRavg in terms of mean and maximum AD
+at both the considered conﬁdence level τ = 1% and τ = 0.1%. All values expressed in percentage points. The symbol “–” means that there remains
+only one model in the SSM.
+
+Appendix C. Figures
+
+0.01
+
+0.005
+
+0
+
+−0.005
+
+−0.01
+
+−0.015
+
+−0.02
+
+−0.025
+
+0.005
+
+0
+
+−0.005
+
+−0.01
+
+−0.015
+
+−0.02
+
+−0.025
+
+−0.03
+
+−0.035
+
+−0.04
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+350
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+350
+
+0.01
+
+0
+
+−0.01
+
+−0.02
+
+−0.03
+
+−0.04
+
+−0.05
+
+−0.06
+
+−0.07
+
+0.015
+
+0.01
+
+0.005
+
+0
+
+−0.005
+
+−0.01
+
+−0.015
+
+−0.02
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+350
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+350
+
+Figure C.1: Time series plot of the log–returns (grey bullets) along with the estimated
+VaR at τ = 1% for diﬀerent sectors: communications (upper, left), utilities (upper, right),
+distribution services (bottom, left), health technology (bottom, right). In all panels, thin lines
+denote VaR forecast delivered by individual models VaRτ
+j,t+1|t, ∀j = 1, 2, . . . , M0, while the
+grey dotted line denotes the VaRτ,avg
+t+1|t obtained
+by averaging the model speciﬁcations belonging to the MCS set M∗
+
+t+1|t and the red dotted line denotes the VaRτ,dyn
+
+1−α.
+
+32
+
+0.01
+
+0.005
+
+0
+
+−0.005
+
+−0.01
+
+−0.015
+
+4
+
+2
+
+0
+
+−2
+
+−4
+
+−6
+
+−8
+
+−10
+
+−12
+
+−3
+
+x 10
+
+6
+
+4
+
+2
+
+0
+
+−2
+
+−4
+
+−6
+
+−8
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+350
+
+−10
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+350
+
+−3
+
+x 10
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+350
+
+0.015
+
+0.01
+
+0.005
+
+0
+
+−0.005
+
+−0.01
+
+−0.015
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+350
+
+Figure C.2: Time series plot of the log–returns (grey bullets) along with the estimated
+VaR at τ = 1% for diﬀerent sectors: communications (upper, left), utilities (upper, right),
+distribution services (bottom, left), health technology (bottom, right). In all panels the grey
+dotted line denotes the VaRτ,avg
+t+1|t obtained by
+averaging all the model speciﬁcations in the initial set M0, and the dark dotted line denotes
+the VaRτ,dyn
+1−α.
+
+t+1|t obtained by averaging the model speciﬁcations belonging to the MCS set M∗
+
+t+1|t, the red dotted line denotes the VaRτ,dyn
+
+33
+
+References
+
+Aiolfi, M., Capistr´an C. and Timmermann, A., (2011). Forecast Combi-
+nations. In The Oxford Handbook of Economic Forecasting, edited by Michael
+P. Clements and David F. Hendry (eds). Oxford University Press, pp. 355–
+390.
+
+Berry, T.D. and Howe, K.M., (1994). Public information arrival. The
+
+Journal of Finance, 49, pp. 1331–1346.
+
+Black, F., (1976) Studies of Stock Price Volatility Changes, In Proceedings of
+the 1976 American Statistical Association, Business and Economical Statis-
+tics Section, Alexandria, VA: American Statistical Association, pp. 177–181.
+
+Basel Committee on Banking Supervision, (1996). Supervisory frame-
+work for the use of “backtesting” in conjunction with the internal models
+approach to market risk capital requirements. BIS: Basel.
+
+Bates, J.M. and Granger, C.W.J., (1969). The combination of forecasts.
+
+Operations Research Quarterly, 20, pp. 451–468.
+
+Blasco, N., Corredor, P. and Santamara, R., (2002).
+
+Is bad news
+cause of asymmetric volatility response? A note. Applied Economics, 34, pp.
+1227–1231.
+
+Bollerslev, T., (1986). Generalized autoregressive conditional heteroskedas-
+
+ticity. Journal of Econometrics, 31, pp. 307–327.
+
+Chen, C.W.S., Gerlach, R., Lin, E.M.H., and Lee, W.C.W., (2012).
+Bayesian forecasting for ﬁnancial risk management, pre and post the global
+ﬁnancial crisis. Journal of Forecasting, 31, pp. 661–687.
+
+Clark, P., (1973). A subordinated stochastic process model with ﬁnite vari-
+
+ance for speculative prices. Econometrica, 41, pp. 135–155.
+
+Chopra, N., Lakonishok, J. and Ritter, J., (1992). Measuring abnormal
+performance: do stocks overreact? Journal of Financial Economics, 31, pp.
+235–259.
+
+Christoffersen, P. (1998). Evaluating interval forecasts. International Eco-
+
+nomic Review, 39, pp. 841–862.
+
+Christoffersen, P., Hahn, J. and Inoue, A., (1999). Testing, Comparing
+and Combining Value at Risk Measures. The Wharton school University Of
+Pennsylvania. Working paper n. 44.
+
+Das, S.R., (2011). News analytics:
+
+framework, techniques and metrics. In
+The Handbook of News Analytics in Finance, edited by Gautam Mitra and
+Leela Mitra (eds). John Wiley & Sons, pp. 43–72.
+
+34
+
+DeBondt, W., and Thaler, R., (1985). Does the stock market overreact?
+
+Journal of Finance, 40, pp. 793–805.
+
+DeGennaro, R.P. and Shrieves, R.E, (1997). Public information releases,
+private information arrival and volatility in the foreign exchange market.
+Journal of Empirical Finance, 4, pp. 295–315.
+
+De Luca G. and Loperfido N., (2004). A skew-in-mean GARCH model for
+ﬁnancial returns. In Skew-Elliptical Distributions and Their Applications: a
+Journey Beyond Normality, Genton, M.G. (Ed.), CRC/Chapman & Hall, pp.
+205–222.
+
+Ederington, L.H. and Lee, J.H., (1993). How markets process information:
+
+news releases and volatility. The Journal of Finance, 48, pp. 1161–119.
+
+Engle, R.F. and Manganelli, S., (2004). CAViaR: Conditional autoregres-
+sive value at risk by regression quantiles. Journal of Business and Economic
+Statistics, 22, pp. 367–381.
+
+Engle, R.F., (1982). Autoregressive conditional heteroscedasticity with es-
+timates of the variance of united kingdom inﬂation. Econometrica, 50, pp.
+987–1008.
+
+Fama, E.F., (1969). Eﬃcient capital market: a review of theory and empirical
+
+work. The Journal of Finance, 25, 383–417.
+
+Fern´andez, C. and Steel, M.F.J., (1998). On Bayesian modeling of fat
+tails and skewness Journal of the American Statistical Association, 93, pp.
+359–371.
+
+Fornaria, F., Monticelli, C., Pericoli, M. and Tivegna, M., (2002).
+The impact of news on the exchange rate of the lira and long-term interest
+rates. Economic Modelling, 19, pp. 611–639.
+
+Francq, C. and Zako¨ıan, J.M., (2010). GARCH Models, structure, esti-
+
+mation and Finance applications. John Wiley & Sons.
+
+Genc¸ay, R., Dacorogna, M., Muller, U.A., Pictet, O., Olsen, R.,
+
+(2001). An introduction to high–frequency ﬁnance. Academic Press.
+
+Giacomini, R. and Komunjer, I., (2005). Evaluation and combination of
+conditional quantile forecasts. Journal of Business & Economic statistics, 23,
+pp. 416–431.
+
+Glosten, L.R., Jagannathan, R. and Runkle, D.E., (1993). On the
+relation between the expected value and the volatility of the nominal excess
+return on stock. Journal of Finance, 48, pp. 1779–1801.
+
+35
+
+Gonzalez-Rivera, G., Lee, T.H., and Mishra, S. (2004). Forecasting
+volatility: A reality check based on option pricing, utility function, value–
+at–risk, and predictive likelihood. International Journal of Forecasting, 20,
+629–645
+
+Hafez, P.A., (2009). Construction of Market Sentiment Indices Using News
+
+Sentiment. RavenPack International S.L..
+
+Hansen, P. R.
+
+Asymptotic Tests of Composite Hypothe-
+ses, Working Paper 03–09, Brown University Economics, available at
+http://ssrn.com/abstract=399761.
+
+(2003).
+
+Hansen, P. R. and Lunde, A., (2005). A forecast comparison of volatility
+models: does anything beat a GARCH(1,1)? Journal of Applied Economet-
+rics, 20, pp. 873–889.
+
+Hansen, P.R., Lunde, A., Nason, J.M. (2011). The Model Conﬁdence Set.
+
+Econometrica, 79, pp. 453-497.
+
+Hoeting, J.A., Madigan, D., Raftery, A.E. and Volinsky, C.T.,
+(1999). Bayesian model averaging: a tutorial. Statistical Science, 14, pp.
+382–417.
+
+Ito, T. and Roley, V., (1986). News from the U.S. and Japan: which moves
+
+the Yen/Dollar exchange rate? NBER Working Paper No. 1853.
+
+Jones, C.M., Lamont, O. and Lumsdaine, R.L., (1998). Macroeconomic
+news and bond market volatility. Journal of Financial Economics, 47, pp.
+315–337.
+
+Kalev, P.S., Liu, W.-M., Pham, P.K. and Jarnecic, E., (2004). Pub-
+lic information arrival and volatility of intraday stock returns. Journal of
+Banking & Finance, 28, pp. 1441–1467.
+
+Kalev, P.S. and Duong, H.N., (2011). Firm–speciﬁc news arrival and the
+volatility of intraday stock index and futures returns. In The Handbook of
+News Analytics in Finance, edited by Gautam Mitra and Leela Mitra (eds).
+John Wiley & Sons, pp. 299–288.
+
+Kim, S.J., (1998). Do Australian and the US macroeconomic news announce-
+ments aﬀect the USD/AUD exchange rate? Some evidence from E–GARCH
+estimations. Journal of Multinational Financial Management, 8, pp. 233–248.
+
+Koppel, M. and Shtrimberg, I., (2004). Good News or Bad News? Let
+
+the Market Decide. Working Paper.
+
+Kotz, S., Kozubowski, T.J. and Podg´orski, K. (2001), The Laplace dis-
+tribution and generalizations. A revisit with Applications to Communications,
+Economics, Engineering, and Finance, Birkh¨auser.
+
+36
+
+Kupiec, P.H., (1995). Techniques for verifying the accuracy of risk measure-
+
+ment models. Journal of Derivates, 3, pp. 73–84.
+
+Lamoureux, C.G. and Lastrapes, W.D., (1990). Heteroskedasticity in
+stock return data: volume versus GARCH eﬀects. The Journal of Finance,
+45, pp. 221–229.
+
+Lehmann, B., (1990). Fads, martingales, and market eﬃciency, Quarterly
+
+Journal of Economics, 105, pp. 1–28.
+
+McAleer, M. and da Veiga, B., (2008). Single–index and portfolio models
+for forecasting value–at–risk thresholds. Journal of Forecasting, 27, pp. 217–
+235.
+
+Mitchell, M.L. and Harold, J., (1994). The impact of public information
+on the stock market. The Journal of Finance, 49, pp. 923–950. Papers and
+Proceedings of the Fifty–Fourth Annual Meeting of the American Finance
+Association, Boston, Massachusetts, January 3–5.
+
+Mitra, G. and Mitra, L., (2010). Handbook of news analytics in ﬁnance,
+
+http://site.ebrary.com/lib/karachi/docDetail.action?docID=10488518.
+Wiley Series in Finance, John Wiley & Sons.
+
+Nelson, D.B., (1991). Conditional heteroskedasticity in asset returns: a new
+
+approach. Econometrica, 59, pp. 347–370.
+
+Reid, D.J., (1968). Combining three estimates of gross domestic product.
+
+Economica, 35, pp. 431–444.
+
+Reid, D.J., (1969). A comparative study of time series prediction techniques
+
+on economic data. Ph.D. Thesis University of Nottingham, Nottingham.
+
+Sriram, K., Ramamoorthi, R.W. and Ghosh, P. (2013). Posterior Consis-
+tency of Bayesian Quantile Regression Based on the Misspecﬁed Asymmetric
+Laplace Density. Bayesian Analysis, 8, pp. 479–504.
+
+Stock, J.H. and Watson, M., (1999). Forecasting inﬂation. Journal of
+
+Monetary Economics, 44, pp. 293–335.
+
+Stock, J.H. and Watson, M., (2001). A comparison of linear and nonlin-
+ear univariate models for forecasting macroeconomic time Series. In Coin-
+tegration, Causality, and Forecasting A Festschrift in Honour of Clive W.J.
+Granger R.F. Engle and H. White (eds.), Oxford University Press, Oxford.
+
+Stock, J.H. and Watson, M., (2004). Combination forecasts of output
+growth in a seven–country data set. Journal of Forecasting, 23, pp. 405–430.
+
+Timmermann, A., (2006). Forecast Combination. In Graham Elliott, Clive
+W.J. Granger and Allan Timmermann (eds.), Handbook of Economic Fore-
+casting. Elsevier, pp. 135–196.
+
+37
+
+

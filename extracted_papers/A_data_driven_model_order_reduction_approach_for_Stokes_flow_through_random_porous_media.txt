@@ -1,0 +1,220 @@
+Proceedings in Applied Mathematics and Mechanics, 22 June 2018
+
+A data-driven model order reduction approach for Stokes ﬂow through
+random porous media
+Constantin Grigo1,∗ and Phaedon-Stelios Koutsourelakis1,∗∗
+1 Department of Mechanical Engineering, Technical University of Munich, Boltzmannstr. 15, 85748 Garching
+
+Direct numerical simulation of Stokes ﬂow through an impermeable, rigid body matrix by ﬁnite elements requires meshes
+ﬁne enough to resolve the pore-size scale and is thus a computationally expensive task. The cost is signiﬁcantly ampliﬁed
+when randomness in the pore microstructure is present and therefore multiple simulations need to be carried out. It is well
+known that in the limit of scale-separation, Stokes ﬂow can be accurately approximated by Darcy’s law [1] with an effective
+diffusivity ﬁeld depending on viscosity and the pore-matrix topology. We propose a fully probabilistic, Darcy-type, reduced-
+order model which, based on only a few tens of full-order Stokes model runs, is capable of learning a map from the ﬁne-scale
+topology to the effective diffusivity and is maximally predictive of the ﬁne-scale response. The reduced-order model learned
+can signiﬁcantly accelerate uncertainty quantiﬁcation tasks as well as provide quantitative conﬁdence metrics of the predictive
+estimates produced.
+
+1
+
+Introduction
+
+Copyright line will be provided by the publisher
+
+Numerical simulations of physical or engineering systems are hampered by the presence of high-dimensional uncertainties in
+their input parameters, such as external loads, material- or geometric properties. Monte Carlo estimators, while dimension-
+independent, can lead to a large amount of forward model evaluations which are not computationally affordable in many
+cases.
+
+A prominent approach to reduce the computational cost is by replacing the forward model by a much cheaper, yet inac-
+curate surrogate or emulator trained on only a small number of forward runs. Machine learning methods such as Gaussian
+Processes or Deep Neural Networks have grown into prominence but suffer from the curse of dimensionality and/or require
+an excessively large amount of data to be trained.
+
+In this work, we introduce a fully Bayesian surrogate to Stokes ﬂow through random porous media, which is utilizing
+a simpliﬁed physics emulator (Darcy ﬂow) as its core unit and is therefore capable of dealing with large-dimensional input
+uncertainties (thousands) whilst only requiring few (tens) forward model runs for training.
+
+2 Methodology
+2.1 The full-order model: Stokes ﬂow through random porous media
+
+Fig. 1: FE mesh (left), pressure response p (middle) and norm of velocity ﬁeld |v| for Stokes ﬂow through a typical porous medium
+realization with non-overlapping polydisperse circular exclusions.
+
+We consider porous microstructures described as perforated unit square domains with impermeable inclusions. Assuming
+
+unit viscosity µ = 1, the strong form of the fully resolved Stokes ﬂow problem is given by
+
+8
+1
+0
+2
+
+ 
+
+n
+u
+J
+ 
+
+1
+2
+
+ 
+ 
+]
+L
+M
+
+.
+t
+a
+t
+s
+[
+ 
+ 
+
+1
+v
+7
+1
+1
+8
+0
+
+.
+
+6
+0
+8
+1
+:
+v
+i
+X
+r
+a
+
+−∇ · ∇v + ∇P = 0
+∇ · v = 0
+
+(1c)
+(1d)
+(1e)
+where ΩF is the pore domain, Γp, Γv, Γint denote external Neumann, Dirichlet and interfacial (Dirichlet) boundaries and v,
+P , and t are the ﬂow velocity, pressure ﬁeld and Cauchy tractions, respectively. We use Taylor-Hood elements and call
+U f =
+
+the FE solution to the pressure and velocity ﬁelds p and v evaluated on a regular 128 × 128 grid.
+
+t = n · (∇v − IP ) = −P0n on Γp
+on Γv
+v = v0
+on Γint
+v = 0
+
+(cid:17)
+
+(cid:16) P f
+
+V f
+
+in ΩF
+in ΩF
+
+(1a)
+(1b)
+
+∗ Corresponding author: e-mail constantin.grigo@tum.de, phone +49 (89) 289 - 15218
+∗∗ e-mail p.s.koutsourelakis@tum.de
+
+Copyright line will be provided by the publisher
+
+2
+
+PAMM header will be provided by the publisher
+
+2.2 A fully Bayesian reduced-order model
+
+We propose a fully Bayesian, three-component reduced-order model [2], [3] comprising:
+
+• a probabilistic map from the high-dimensional vector λf characterizing the random microstructure/domain (e.g. a list
+of centers and radii of circular exclusions) to a much lower dimensional vector λc representing an effective diffusivity
+random ﬁeld; this probabilistic mapping is denoted with pc(λc|λf , θc), where θc parametrized by θc;
+
+• a deterministic ﬁnite element solver for Darcy’s equation,
+
+−∇ · (λc∇Pc) = 0
+
+(2)
+
+mimicking Stokes ﬂow on a much coarser scale; We call P c = P c(λc) the Darcy FE pressure response and V c =
+V c(λc) the corresponding ﬂux ﬁeld, both evaluated on the same grid as the ﬁne scale data;
+
+(cid:16) P c(λc)
+
+(cid:17)
+
+(cid:17)
+
+(cid:16) P f
+
+V f
+
+• a probabilistic coarse-to-ﬁne mapping from U c =
+mapping pcf (U f|U c, θcf ), parametrized by θcf ;
+We pursue a fully Bayesian approach and marginalize all model parameters θc, θcf to get the predictive distribution
+
+to the ﬁne scale response U f =
+
+V c(λc)
+
+. We call this
+
+p(U f|λf ) =
+
+pcf (U f|U c(λc), θcf )pc(λc|λf , θc)pθcf (θcf )pθc (θc)dλcdθcdθcf ,
+
+(3)
+
+(cid:90)
+
+where the effective Darcy diffusivity λc appears as a latent variable. Model training is performed using an adapted form of
+the Variational Relevance Vector Machine [4] suitable for latent variable models.
+
+3 Example
+
+Fig. 2: Predictive examples on the Stokes ﬂow pressure response p for N = 8 training samples and Darcy emulator resolution 2 × 2 (left)
+and N = 80 using a 4 × 4 emulator mesh (right). The blue surface is the predictive mean ± 1 standard deviation (transparent grey). The
+colored surface is the true response of a test sample.
+
+For training/testing our model, we use microstructures with totally impenetrable polydisperse spherical exclusions (see also
+Figure 1). The number and radii of exclusions are sampled from a (discretized) log-normal distribution. Predictive examples
+for low/high number of training data and different Darcy emulator discretizations are shown in Figure 2.
+
+4 Conclusion
+
+We have introduced a fully Bayesian, three-component probabilistic surrogate model for Stokes ﬂow through random porous
+media using a much cheaper model emulator based on Darcy ﬂow on a much coarser spatial discretization as the key compo-
+nent. Model evaluations on test samples show tight distributions centered around the true solution. Predictive errors improve
+with the number of training data and with the resolution of the Darcy-based emulator.
+
+References
+
+[1] S. Whitaker, Transport in Porous Media 1(1), 3–25 (1986).
+[2] C. Grigo and P. S. Koutsourelakis, Probabilistic Reduced-Order Modeling For Stochastic Partial Differential Equations, in: Proceed-
+ings of the 2nd International Conference on Uncertainty Quantiﬁcation in Computational Sciences and Engineering (UNCECOMP
+2017), (Eccomas Proceedia, 2017).
+
+[3] C. Grigo and P. S. Koutsourelakis, Bayesian model and dimension reduction for uncertainty propagation: applications in random
+
+media, forthcoming, November 2017.
+
+[4] C. M. Bishop and M. E. Tipping, Variational Relevance Vector Machines, in: Proceedings of the 16th Conference on Uncertainty in
+
+Artiﬁcial Intelligence, , UAI ’00 (Morgan Kaufmann Publishers Inc., San Francisco, CA, USA, 2000), pp. 46–53.
+
+Copyright line will be provided by the publisher
+
+

@@ -1,0 +1,1450 @@
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+6
+0
+0
+2
+
+ 
+
+n
+u
+J
+ 
+
+9
+1
+
+.
+
+ 
+ 
+]
+T
+S
+h
+t
+a
+m
+
+[
+ 
+ 
+
+1
+v
+1
+7
+4
+6
+0
+6
+0
+/
+h
+t
+a
+m
+:
+v
+i
+X
+r
+a
+
+An Algorithmic Approach to Non-self-ﬁnancing Hedging in a
+
+Discrete-Time Incomplete Market
+
+N. Josephy, L. Kimball, V. Steblovskaya
+
+Mathematical Sciences, Bentley College, 175 Forest Street
+
+Waltham, MA 02452-4705, USA
+
+njosephy@bentley.edu, lkimball@bentley.edu, vsteblovskay@bentley.edu
+
+A. Nagaev
+
+Nicolaus Copernicus University, Torun, Poland
+
+M. Pasniewski
+
+ABS Analytics Bank Of America, New York, New York,
+
+Michal.Pasniewski@bankofamerica.com
+
+We present an algorithm producing a dynamic non-self-ﬁnancing hedging strategy in an
+incomplete market corresponding to investor-relevant risk criterion. The optimization is
+a two stage process that ﬁrst determines admissible model parameters that correspond
+to the market price of the option being hedged. The second stage applies various merit
+functions to bootstrapped samples of model residuals to choose an optimal set of model
+parameters from the admissible set. Results are presented for options traded on the New
+York Stock Exchange.
+
+1. Introduction
+
+Pricing and hedging of ﬁnancial assets in incomplete markets is an active research
+area in mathematical ﬁnance. One of the possible ways to produce a model of an
+incomplete market in discrete time setting is to assume that stock price relative
+changes (jumps) can take more that two values as opposed to the classical binomial
+model of Cox-Ross-Rubinstein. In [1], [2], and [3] an incomplete market in which
+stock price jumps follow a multinomial distribution is studied. In [1] the no-arbitrage
+option price interval is studied, [2] and [3] discuss risk minimization aspects in option
+pricing and hedging.
+
+The multinomial model has been further extended to the case where stock price
+jumps are distributed over a bounded interval and options under consideration have
+convex pay-oﬀ functions. In [4], the upper and lower bounds for no-arbitrage prices
+of a European contingent claim with convex pay-oﬀ are obtained. The series of works
+by A. Nagaev et al. (see [5], [6], [7], and [8]) are devoted to asymptotic behavior of
+the residual value of a minimum cost super-hedge. The residual value occurs as a
+result of non-self-ﬁnancing dynamic hedging strategy of an option seller introduced
+and discussed in [5].
+
+1
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+2
+
+A signiﬁcant proportion of research on option pricing and hedging in incom-
+plete markets constructs self-ﬁnancing trading strategies that satisfy both a pri-
+mary no-arbitrage condition and secondary conditions on portfolio risk and return.
+A comprehensive survey of modern methodologies can be found in [9]. A number
+of articles that deal with frictions in markets, shortfall risks and quadratic hedging
+(all producing incomplete markets) can be found in the recent compendium [10].
+
+Less prevalent is the study of non-self-ﬁnancing trading strategies in similar
+economic environments. The encyclopedic reference [11] and the more modest [12]
+both illuminate option pricing with consumption, the model which is similar to the
+work presented here. Our work is an initial investigation in the algorithmic study
+of non-self-ﬁnancing strategies discussed in [5] and [8]. We explore the short term
+behavior of the residual value of a minimum cost super-hedge, whose long term
+behavior was studied by Nagaev et al.
+
+Assuming independent and identically distributed jumps in the underlying stock
+process, we use historical data and a bootstrap simulation process to develop an
+algorithm producing a dynamic non-self ﬁnancing hedging strategy. The resulting
+hedging strategy constructs a residual sequence with improved investor risk crite-
+ria as compared to other possible hedging strategies. No additional assumptions
+are placed on the underlying stock price jump process other than having bounded
+support. An algorithmic approach similar to our use of bootstrap simulation, but
+having a diﬀerent theoretical foundation and goals can be found in [13].
+
+The remainder of the paper is organized as follows. We develop the discrete
+time ﬁnancial model in section 2. The notion of the residual value of a minimum
+cost super-hedge is developed in sections 3 through 5. The algorithm is described in
+section 6. Algorithm implementation and illustrative results are presented in 7. We
+conclude with some remarks in section 8 and directions for further study in section
+9.
+
+2. Discrete Time Financial Model
+
+Following the theoretical development in [5], our discrete time ﬁnancial model con-
+sists of two fundamental assets and a derivative security.
+
+(1) A risk-free bond with ﬁxed interest rate r, evolving from an initial value b0 > 0
+
+at time t = 0 to bk at time t = k as
+
+bk = b0(1 + r)k
+
+(2) A risky stock evolving from an initial value s0 at time t = 0 to sk at time t = k
+
+as
+
+sk = s0ξ1ξ2 · · · ξk
+
+where ξk = sk
+are assumed to be independent and identically distributed ran-
+sk−1
+dom variables with probability distribution having support equal to a bounded
+interval [D, U ]. No further assumptions are made on the distribution function
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+3
+
+for the ξk. However, this assumption is suﬃcient to render our ﬁnancial market
+incomplete.
+
+(3) A derivative security with convex payoﬀ function f . For our numerical investi-
+gations, we use a European call option on the stock. We take the position of an
+option seller who wishes to hedge the potential liability of the sold derivative
+being exercised.
+
+Our goal is to develop and evaluate an algorithm that will determine a dy-
+namic, non-self-ﬁnancing hedging strategy consisting of a portfolio of our stock and
+bond assets in our incomplete market. The portfolio will approximately hedge the
+derivative security and will satisfy additional criteria, based on the deviation of the
+portfolio value from the required hedging value, that are meaningful to the investor.
+
+3. Super-hedging Portfolio
+
+Based on a convexity argument, [5] showed that when the parameters D and U are
+known, there is a minimum cost super-hedge whose value at every time instant t = k
+is greater than or equal to the value of the derivative security. This super-hedge is
+a portfolio of γk stocks and βk bonds at time t = k described by
+
+γk(U, D) =
+
+gk+1(U, D, skU ) − gk+1(U, D, skD)
+
+sk (U − D)
+
+βk(U, D) =
+
+U gk+1(U, D, skD) − Dgk+1(U, D, skU )
+
+(1 + r)bk(U − D)
+
+(3.1)
+
+(3.2)
+
+where
+
+gk(U, D, s) = (1 + r)−(n−k)
+
+n−k
+
+X
+
+j=0
+
+C j
+
+n−k[p(U, D)]j[1 − p(U, D)]n−k−j f (sU jDn−k−j )
+
+p(U, D) =
+
+(1 + r) − D
+
+U − D
+
+(3.3)
+
+(3.4)
+
+n is the number of periods to expiration, C j
+n−k is the binomial coeﬃcient, and f is a
+convex pay-oﬀ function. At each time instant k, the dynamic super-hedge portfolio
+constructed in the prior period is liquidated and the proceeds are used to construct
+a new portfolio for the current period. The liquidation value of the prior period
+portfolio is given by
+
+vk(U, D) = γk−1(U, D)sk + βk−1(U, D)bk
+
+=
+
+U − ξk
+U − D
+
+gk(U, D, sk−1D) +
+
+ξk − D
+U − D
+
+gk(U, D, sk−1U )
+
+(3.5)
+
+The funds required to construct the new period portfolio, or set-up cost, is given
+by
+
+X k(U, D) = gk(U, D, sk−1ξk)
+
+(3.6)
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+4
+
+(see section 4 for more detail). The liquidation value (3.5) will exceed the set-up
+cost (3.6) producing a residual amount δk
+
+δk(U, D) =
+
+U − ξk
+U − D
+
+gk(U, D, sk−1D) +
+
+gk(U, D, sk−1U ) − gk(U, D, sk−1ξk).
+
+ξk − D
+U − D
+
+(3.7)
+In this case where U and D are known, and consequently D ≤ ξk ≤ U, it follows
+from the convexity of the pay-oﬀ function f that the residual is non-negative:
+
+δk(U, D) ≥ 0,
+
+k = 1, . . . , n.
+
+(3.8)
+
+In this fashion, each stock price process path {sk} maps to a corresponding se-
+quence of non-negative residuals {δk(U, D)}, which are withdrawn after each port-
+folio liquidation prior to the construction of the next time period super-hedge. The
+accumulated value of the withdrawn residuals at maturity is given by
+
+∆n(U, D) = δ1(U, D)(1 + r)n−1 + δ2(U, D)(1 + r)n−2 + · · · + δn(U, D).
+
+(3.9)
+
+For the remainder of this paper we will assume a European call option pay-oﬀ
+
+function f,
+
+f (s) = (s − K)+
+
+(3.10)
+
+where K is the option strike price.
+
+4. Model Properties
+
+Ruschendorf [4] and Nagaev [5] document a number of properties of our ﬁnancial
+market model which will illuminate our algorithmic design approach. In particular,
+the incompleteness of the market model is manifested in an open interval (xk, X k)
+(k = 0, . . . , n − 1) of no-arbitrage option prices. The end points of the interval are
+shown to be
+
+X k(U, D) = gk(U, D, sk)
+xk(U, D) = (1 + r)−(n−k) (cid:0)sk(1 + r)n−k − K(cid:1)+
+
+where K is the option strike price and gk is deﬁned in (3.3).
+
+At every time instant t = k (k = 0, . . . , n − 1), the open interval
+(xk(U, D), X k(U, D)) is the set of no-arbitrage option prices. For the option seller,
+the upper bound X k(U, D) is the demarcation between risk sharing with the option
+buyer (if the option sale price is below X k(U, D)) and the potential for arbitrage
+proﬁt (if the option sale price is at or above X k(U, D)).
+
+Let us now replace the parameters U, D with a pair of numbers u, d such that
+
+D ≤ d < u ≤ U
+
+and let us construct the portfolio with the time t = k set-up cost
+
+xk(u, d) = gk(u, d, sk),
+
+(4.1)
+
+(4.2)
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+5
+
+where gk is deﬁned in (3.3). It is straightforward to show that for any choice of
+d and u satisfying (4.1), the resulting portfolio set-up cost (4.2) falls within the
+no-arbitrage option price interval
+
+xk(U, D) ≤ xk(u, d) ≤ X k(U, D), k = 0, . . . , n.
+
+We will refer to the value xk(u, d) as a rational price of the option.
+
+5. Choice of (u, d) Pair
+
+As a practical matter, we do not know the actual values of D and U . Suppose we
+choose a (u, d) pair that is within the D and U values:
+
+D ≤ d < u ≤ U
+
+and suppose that for any given stock price process {sk}, we deﬁne the hedging
+portfolio strategy
+
+(γk(u, d), βk(u, d)), k = 0, . . . , n − 1
+
+(5.1)
+
+where γk(u, d) and βk(u, d) are deﬁned in (3.1) and (3.2) respectively, with the
+boundary parameters U, D replaced with the values u, d. The above portfolio strat-
+egy will produce a residual sequence
+
+δk(u, d), k = 1, . . . , n
+
+(5.2)
+
+where δk(u, d) is deﬁned in (3.7), with U, D replaced by u, d. It is straightforward
+to show that
+
+• δk(u, d) > 0 if d < ξk < u
+• δk(u, d) = 0 if ξk = d or ξk = u
+• δk(u, d) < 0 if D < ξk < d or u < ξk < U.
+
+In order to maintain the dynamic portfolio strategy deﬁned by (5.1), at each time
+step k = 1, . . . , n the investor will withdraw the residual (5.2) from the liquidated
+proceeds when δk(u, d) > 0 and add the amount when δk(u, d) < 0. The risk-free
+growth of the local residuals δk(u, d) produces an accumulated residual deﬁned by
+
+∆n(u, d) = δ1(u, d)(1 + r)n−1 + δ2(u, d)(1 + r)n−2 + · · · + δn(u, d).
+
+(5.3)
+
+We would like to stress here that the hedging portfolio strategy constructed
+above is in general non-self-ﬁnancing. An investor who utilizes our dynamic hedging
+strategy will want to choose values for d and u that determine a residual sequence
+with desirable statistical characteristics. It is the choice of the model parameter
+values d and u based on the statistical characteristics of the residual sequence that
+constitutes our algorithm design.
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+6
+
+6. Risk Minimization on (u, d) Contours
+
+We propose a two-stage algorithm for choosing a (u, d) pair. The ﬁrst stage reduces
+the set of (u, d) pairs under consideration by imposing a market calibration con-
+straint. The second stage chooses from this reduced set a pair that optimizes one
+of a number of investor-relevant statistical properties of the residual sequence.
+
+6.1. Market Calibrated Price Contour
+
+The ﬁrst stage of our proposed risk minimization procedure is the selection of a set
+of (u, d) pairs consistent with the quoted market option price.
+
+Each (u, d) pair uniquely determines a portfolio strategy that is dependent upon
+the realized values of the stock and bond processes. At the initial time t = 0, the
+portfolio strategy determined by a (u, d) pair speciﬁes an initial portfolio consisting
+of β0(u, d) bonds and γ0(u, d) stocks where β0(u, d) and γ0(u, d) are deﬁned in (3.2)
+and (3.1) with k = 0, U = u and D = d. At time t = 0 the set-up cost of the so
+constructed portfolio is
+
+g0(u, d, s0) = (1 + r)−n
+
+n
+
+X
+
+j=0
+
+C j
+
+n[p(u, d)]j[1 − p(u, d)]n−j(s0ujdn−j − K)+
+
+(6.1)
+
+where p(u, d) is given by (3.4) (with U, D replaced by u, d) and s0 is the stock price
+at t = 0. To calibrate the choice of (u, d) pairs to the market price of the option,
+we need to set g0(u, d, s0) equal to the option time t = 0 market price x0 :
+
+g0(u, d, s0) = x0.
+
+While the choice of (u, d) uniquely determines a portfolio set-up cost, specifying a
+portfolio set-up cost determines a contour of (u, d) pairs since there are a multiplicity
+of portfolios with identical set-up costs. This contour consists of the set
+
+Σ = {(u, d) : c0(u, d) = c∗},
+
+c∗ =
+
+x0
+s0
+
+(6.2)
+
+where c0 is the normalized value surface
+
+c0(u, d) =
+
+g0(u, d, s0)
+
+s0
+
+=
+
+n
+
+X
+
+j=0
+
+(see Figure 1).
+
+C j
+
+n[p(u, d)]j[1 − p(u, d)]n−j(ujdn−j − R)+,
+
+R =
+
+K
+s0
+
+(6.3)
+
+Computationally, we utilize contour construction software to compute a ﬁnite
+number of (u, d) pairs satisfying (6.2). It is this set of (u, d) pairs that is used by
+the second stage of our algorithm.
+
+6.2. Investor-relevant Choice Criteria
+
+The second stage of the two-stage algorithm selects a unique (u, d) pair on the
+market calibrated contour Σ deﬁned in (6.2) that optimizes one of several investor
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+7
+
+c
+
+d
+
+u
+
+0.5
+
+1.0
+
+1.5
+
+2.0
+
+d
+
+0.998
+
+0.996
+
+0.994
+
+0.992
+
+2.5
+
+3.0
+
+3.5
+
+4.0
+
+5.0
+
+4.5
+
+5.5
+
+6.0
+
+6.5
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+1.02
+
+1.04
+
+1.06
+
+1.08
+
+u
+
+Fig. 1. Value Surface and Contours
+
+risk criteria. Each (u, d) pair on the market-calibrated contour Σ determines a
+dynamic hedging portfolio strategy. For a given stock price process {sk}, the (u, d)-
+determined portfolios produce a sequence of residuals δk(u, d), each representing a
+residual proﬁt/loss for an investor (see section 5 for details). This sequence is an
+economic measure of the consequence of choosing model parameters (u, d) and the
+associated dynamic hedging portfolio.
+
+There are several criteria that convert this sequence into a scalar measure of
+investor risk, each reﬂecting some aspect of the option seller attitude towards risk.
+We thus have the following situation. Fix a (u, d) pair at time t = 0. Each poten-
+tial stock price time series {sk}, k = 1, · · · , n determines a sequence of residuals
+{δk(u, d), k = 1, · · · , n}. A particular choice of a risk criterion reduces the sequence
+{δk(u, d)} to a single scalar value of risk. To judge the acceptability of the (u, d)
+pair under the chosen risk measure, we simulate a number of stock price time series
+and collect the corresponding sample of scalar risk values. An appropriate sample
+statistic (mean value or probability of a desirable event) is then computed from the
+sample as the utility value of the (u, d) pair. The behavior of the sample statistic as
+the (u, d) pair is varied over the market-calibrated contour determines the optimal
+choice of (u, d).
+
+There are four criteria that we consider for choosing a unique (u, d) pair.
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+8
+
+• Maximize the likelihood of a positive accumulated residual:
+
+max
+
+(u,d)∈ Σ
+
+prob(∆n(u, d) > 0)
+
+(6.4)
+
+• Minimize expected shortfall:
+
+min
+
+(u,d)∈ Σ
+
+E(shortf all) = min
+
+(u,d)∈ Σ
+
+E( max
+1≤k≤n
+
+(−δk(u, d)))
+
+(6.5)
+
+• Minimize the expected accumulated squared residuals:
+
+min
+
+(u,d)∈ Σ
+
+n
+
+E(
+
+X
+
+(δk(u, d))2)
+
+k=1
+
+• Maximize the expected accumulated proﬁt
+
+max
+
+(u,d)∈ Σ
+
+E(∆n(u, d))
+
+(6.6)
+
+(6.7)
+
+The ﬁrst criterion (6.4) interprets a positive residual as a proﬁt, and chooses
+a (u, d) pair that has the highest probability of a net proﬁt. In the absence of
+arbitrage a large accumulated proﬁt is not attainable with high probability. There
+is the possibility, however, of an investor achieving a small positive proﬁt. The
+optimization problem presented here produces a market calibrated hedging strategy
+that maximizes the likelihood of a positive accumulated proﬁt.
+
+The second criterion (6.5) reﬂects an investor’s desire to minimize the amount
+of single period additional funding needed to rebalance the portfolio over the life of
+the option. A negative residual δk(u, d) represents the cash shortfall of the portfolio
+value at time k. The largest negative δk(u, d) is the largest shortfall value. Optimiz-
+ing this criterion produces a hedging portfolio with minimal expected single period
+additional funding.
+
+In (6.6) the residual δk(u, d) represents an economic measure of model error.
+Concern for minimizing model risk would motivate weighting equally positive and
+negative δk(u, d) residuals. Indiﬀerence to the sign of δk(u, d) can be achieved by
+using squared residuals in the risk criterion.
+
+Our ﬁnal criterion (6.7) maximizes the expected accumulated residual, which
+reﬂects total net proﬁt from using the dynamic portfolio based on the chosen (u, d).
+It was shown in [5] that the expected accumulated proﬁt is asymptotically constant
+on contours of constant rational price. We thus anticipate minimal diﬀerences in
+the expected accumulated proﬁt at each (u, d) pair on our constant rational price
+contours when n is large. For small n, empirical results show it is possible to have
+a market contour with non-constant expected accumulated proﬁt.
+
+In summary, our model provides a measure of the economic impact of market
+incompleteness by the construction of the residuals δk(u, d). The criteria presented
+here can be optimized to determine hedging strategies that mitigate investor risk.
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+7. Algorithm Implementation and Numerical Results
+
+In this section, we present an implementation of our two-stage algorithm for pro-
+ducing an optimal hedging strategy as measured by the risk criteria presented in
+section 6.2. Following this is a presentation of illustrative results from applying the
+algorithm to real market data.
+
+9
+
+7.1. Two-stage Algorithm
+
+The choice of an optimal (u, d) pair proceeds in two stages.
+
+• Reduction by market calibration of the population of (u, d) pairs to a contour
+
+given by (6.2) corresponding to the quoted market option price.
+
+• Imposition of a ranking criterion, based on a bootstrap estimated statistic of
+
+the residual sequence.
+
+The numerical procedures to be described are implemented in the R computer
+
+language ([14]). The ﬂow of computation proceeds as follows.
+
+(1) The contour creation function in R is applied to the normalized value surface
+given in (6.3). Contours deﬁned by (6.2) with r = 0 are identiﬁed as depicted
+in Figure 1. The contour matching the market option price x0 is chosen. The
+software typically identiﬁes between 80 and 100 (u, d) pairs on the market cal-
+ibrated contour.
+
+(2) Historical daily stock price data is used to create a sequence of daily stock price
+jumps. The jumps are separated into groups by day count of successive price
+data: next day jumps (e.g. Monday to Tuesday price jump) and weekend jumps
+(i.e. Friday to Monday price jump) constitute the majority of jumps. There are
+a few single day mid-week holiday jumps and long weekend jumps. A typical
+stock price process and jump process are depicted in Figure 2.
+
+(3) Each of the next day and weekend groups are sampled with replacement to
+form bootstrap jump sequences (four next-day jumps followed by one weekend
+jump, repeated for however many weeks of bootstrap data are needed). Each
+jump sequence uniquely determines a stock price sequence. A set of bootstrap
+jump and price processes are depicted in Figure 3.
+
+(4) For each (u, d) pair on the chosen contour, the sequence of residuals δk are
+computed for each bootstrap stock price sequence. A residual sequence for a
+bootstrap sample with 30 days to expiration is shown in Figure 4. The distri-
+bution of the corresponding aggregated residual is given in Figure 5.
+
+(5) Each criteria is applied to the bootstrap sample of residual sequences and the
+
+appropriate statistic (expected value or probability) is estimated.
+
+(6) The (u, d) pair with the best criterion value is chosen. This results in four
+
+optimal (u, d) pairs, one for each of the four criteria described previously.
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+10
+
+Stock Price Process
+
+6
+4
+
+0
+4
+
+4
+3
+
+8
+9
+
+.
+
+0
+
+0
+9
+
+.
+
+0
+
+10/14/02
+
+05/19/03
+
+12/21/03
+
+07/28/04
+
+Jump Process
+
+10/14/02
+
+05/19/03
+
+12/21/03
+
+07/28/04
+
+Stock Price Time Series
+
+Price Jump Box Plots
+
+p
+m
+u
+J
+ 
+
+e
+c
+i
+r
+
+P
+
+2
+0
+
+.
+
+1
+
+0
+0
+
+.
+
+1
+
+8
+9
+
+.
+
+0
+
+6
+9
+
+.
+
+0
+
+4
+9
+
+.
+
+0
+
+2
+9
+
+.
+
+0
+
+0
+9
+0
+
+.
+
+1
+
+2
+
+3
+
+4
+
+Time Interval (days) For Jump
+
+Jump Distributions
+
+Fig. 2. Stock Price Process and Price Jump Process
+
+7.2. Illustrative Results
+
+In this section we present results representative of the insight obtained from apply-
+ing the risk evaluation tools developed in previous sections. Results are shown for
+several call options traded on the New York Stock Exchange expiring on October
+15, 2004. The selected options are as follows
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+11
+
+Price Jumps
+
+5
+
+10
+
+Time
+
+15
+
+20
+
+Price Process
+
+p
+m
+u
+
+j
+ 
+
+e
+c
+i
+r
+
+P
+
+1
+0
+1
+
+.
+
+8
+9
+
+.
+
+0
+
+e
+c
+i
+r
+
+P
+
+6
+0
+.
+1
+
+8
+9
+.
+0
+
+5
+
+10
+
+15
+
+20
+
+Time
+
+Fig. 3. Bootstrap Stock Price Processes
+
+• Walmart corporation option WMT+JJ, strike price $50
+• Exxon Mobil corporation option XOM+JV, strike price $42.50
+• Intel corporation option INQ+JE strike, price $25.
+
+Data collected included historical stock price data, option strike price and market
+option price. Over 500 daily stock prices were recorded and used in constructing
+
+a
+
+t
+l
+
+e
+d
+
+4
+0
+0
+
+.
+
+0
+
+3
+0
+0
+
+.
+0
+
+2
+0
+0
+
+.
+
+0
+
+1
+0
+0
+
+.
+
+0
+
+0
+0
+0
+
+.
+
+0
+
+1
+0
+0
+0
+−
+
+.
+
+2
+0
+0
+.
+0
+−
+
+0
+
+5
+
+10
+
+20
+
+25
+
+30
+
+15
+
+k
+
+Fig. 4. Local residual (δk) distribution
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+12
+
+bootstrap samples of the stock price jump process. The market option price data for
+a period of 40 days prior to expiration was collected and used in selecting market
+calibrated contours (as described in section 7.1) with varying time to expiration.
+The market option price n days prior to expiration was used in identifying the
+appropriate contour for each of the reported values of n.
+
+Selecting a market calibrated contour produces a set of approximately 80 (u, d)
+pairs each corresponding to a potential hedging portfolio. The risk criteria (6.4)
+through (6.7) are evaluated for each hedging portfolio and the optimal is chosen.
+Table 1 presents results for the Exxon-Mobil option with n = 30 days to expiration.
+The algorithm produces a hedging portfolio where the probability of a positive proﬁt
+is 1. This is consistent with the theoretical results presented in section 5. When the
+sequence of relative stock price jumps ξk fall within the interval (u, d), we are guar-
+anteed the local residual proﬁts δk will be positive. The optimal expected shortfall
+and expected squared deviation are both essentially zero. For this particular data
+the objective values along the contour did not vary dramatically. The advantage of
+utilizing the algorithm is seen in the expected shortfall computation where the opti-
+mal expected shortfall is approximately 3 times as small as other possible shortfall
+values.
+
+Results for the Walmart option are presented in tables 2 through 4. Examining
+the results we see that for n = 30 and n = 20 days to expiration, the optimal
+
+0
+5
+
+0
+4
+
+0
+3
+
+0
+2
+
+0
+1
+
+0
+
+−0.06
+
+−0.04
+
+−0.02
+
+0.00
+
+0.02
+
+D 30
+
+Fig. 5. Aggregated Residual (∆n) Distribution
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+13
+
+Risk criterion Optimal (u,d) Objective value
+
+P (∆n) > 0
+E(shortfall)
+E(Pn
+k=1 δ2
+k)
+
+E(∆n)
+
+(1.0112,0.9792)
+(1.0146,0.9834)
+(1.0130,0.9822)
+(1.0100,0.9961)
+
+1.0
+
+-0.0042
+0.0053
+0.2066
+
+Table 1. Exxon-Mobil optimal results with n = 30 days to expiration
+
+Risk criterion Optimal (u,d) Objective value
+
+P (∆n) > 0
+E(shortfall)
+E(Pn
+k=1 δ2
+k)
+
+E(∆n)
+
+(1.0156,0.9897)
+(1.0140,0.9889)
+(1.0134,0.9881)
+(1.0076,0.9804)
+
+1.0
+
+-0.0548
+0.0225
+0.3097
+
+Table 2. Walmart optimal results n = 30 days to expiration
+
+Risk criterion Optimal (u,d) Objective value
+
+P (∆n) > 0
+E(shortfall)
+E(Pn
+k=1 δ2
+k)
+
+E(∆n)
+
+(1.0171,0.9901)
+(1.0136,0.9878)
+(1.0136,0.9878)
+(1.0052,0.9718)
+
+1.0
+
+-0.0355
+0.0220
+0.2372
+
+Table 3. Walmart optimal results n = 20 days to expiration
+
+(u, d) pair produces with probability 1.0 a small positive aggregated proﬁt. It is
+interesting to note that over all (u, d) pairs on the contour, the probability of a
+positive aggregated proﬁt ranged from approximately 0.6 to 1.0 when n = 30 and
+n = 20 and from approximately 0.3 to 0.99 when n = 7. In other words, an investor
+can increase the probability of achieving a small positive proﬁt from 0.3 to 0.99 by
+following the hedging strategy produced by the algorithm.
+
+Similar results were seen in comparing the values of the other risk criteria for the
+optimal hedging portfolio as compared to other hedging portfolios associated with
+(u, d) pairs on the contour. In particular, considering the Walmart data with n = 30
+days to expiration, the values for the expected shortfall E(max(−δk(u, d))) ranged
+from -0.0548 (see the second column of 2) to approximately -0.4. The shortfall is
+more than 7 times as large as the optimal for some hedging portfolios. The values of
+the expected squared deviation E((δk(u, d))2) ranged from the minimum of 0.0225 to
+a maximum of approximately 0.18 and the expected aggregated proﬁt E(∆n(u, d))
+ranged from approximately 0 to 0.3. These results illustrate the value of following
+the hedging strategy suggested by the algorithm.
+
+Comparing tables 2 through 4 we see that the optimal objective function value
+for most of the risk criteria does not change much as the length of time to expiration
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+14
+
+Risk criterion Optimal (u,d) Objective value
+
+P (∆n) > 0
+E(shortfall)
+E(Pn
+k=1 δ2
+k)
+
+E(∆n)
+
+(1.0238,0.9882)
+(1.0178,0.9857)
+(1.0116,0.9820)
+(1.0068,0.9747)
+
+0.99
+
+-0.0018
+0.0054
+0.0215
+
+Table 4. Walmart optimal results n = 7 days to expiration
+
+Risk criterion Optimal (u,d) Objective value
+
+P (∆n) > 0
+E(shortfall)
+E(Pn
+k=1 δ2
+k)
+
+E(∆n)
+
+(1.0140,0.9640)
+(1.0130,0.9616)
+(1.0160,0.9696)
+(1.0127,0.9608)
+
+0.8
+
+-0.0378
+0.0104
+0.0429
+
+Table 5. Intel optimal results with n = 30 days to expiration
+
+Risk criterion Optimal (u,d) Objective value
+
+P (∆n) > 0
+E(shortfall)
+E(Pn
+k=1 δ2
+k)
+
+E(∆n)
+
+(1.0193,0.9624)
+(1.0182,0.9600)
+(1.0229,0.9703)
+(1.0197,0.9632)
+
+0.83
+
+-0.0098
+0.0045
+0.0253
+
+Table 6. Intel optimal results with n = 20 days to expiration
+
+changes with the exception of the expected aggregated proﬁt. The value for n = 30 is
+more than 10 times larger than the value for n = 7. The diﬀerence could be explained
+by the fact that given more time to expiration, there are more opportunities to
+withdraw a small positive proﬁt (at each k = 1, 2, · · · , 30). If we consider the results
+produced for the Intel option for n = 30, n = 20 and n = 10 presented in tables 5
+through 7, we do not see the same change in the value of the expected aggregated
+proﬁt. In this case, however, the probability of achieving a positive proﬁt is more
+variable with the length of time to expiration increasing from 0.8 to 0.93 as n
+decreases from n = 30 to n = 10. Clearly, the behavior of the optimal objective
+values vary with each chosen option.
+
+8. Conclusions
+
+We have developed an algorithm that produces a non-self-ﬁnancing hedging strat-
+egy in an incomplete market corresponding to one of several investor risk criteria.
+The algorithm provides the opportunity to evaluate the economic consequences of
+choosing a particular hedging strategy in an incomplete market. The two-stage al-
+gorithm optimizes one of a number of investor-relevant statistical properties of a
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+15
+
+Risk criterion Optimal (u,d) Objective value
+
+P (∆n) > 0
+E(shortfall)
+E(Pn
+k=1 δ2
+k)
+
+E(∆n)
+
+(1.0339,0.9600)
+(1.0130,0.9616)
+(1.0160,0.9696)
+(1.0127,0.9608)
+
+0.93
+
+-0.0034
+0.0062
+0.0475
+
+Table 7. Intel optimal results with n = 10 days to expiration
+
+local residual proﬁt or shortfall.
+
+The algorithm was tested on several options traded on the New York stock
+exchange. The results illustrate that following the portfolio strategy produced by
+the algorithm is beneﬁcial to an investor, improving the value of the investor risk
+criterion by as much as a factor of ten compared to the results associated with
+other, non-optimal hedging portfolio strategies.
+
+9. Future Research
+
+In this paper we investigate non-self ﬁnancing hedging strategies for a short-term
+European call option (time to expiration, n, is at most 30 days). Our algorithm
+builds a short-term portfolio strategy that optimizes one of the investor-related
+criteria. Our research was inspired by theoretical investigations of A. Nagaev et
+al. (see [5], [6], [7], [8]) where the long-term behavior (large n) of the accumulated
+residual (5.3) has been studied.
+
+In [5], [6], and [7], asymptotic properties of the so-called riskless proﬁt of an
+investor (∆n(U, D) deﬁned in (3.9) with the boundary parameters U and D) have
+been studied. The case of independent identically distributed (i.i.d.) stock price
+jumps is presented in [5]; in [6] the jumps are assumed to follow a discrete Markov
+chain; [7] studies the case of independent, but not identically distributed jumps. In
+all three cases, by means of suitable diﬀusion approximations, asymptotic formulas
+for the mean accumulated residuals in terms of the original model parameters have
+been obtained.
+
+In [8], A. Nagaev considers the accumulated residual (5.3) for the case of non-
+boundary parameters u and d satisfying (4.1) (the so-called risky proﬁt of an in-
+vestor). In this case, under the i.i.d. assumptions on the stock price jumps, the
+asymptotic formula for the mean accumulated residual has been obtained and
+asymptotic connections (as time to expiration n tends to inﬁnity) between E(∆n)
+and the set-up cost g0(u, d, s0) have been established.
+
+The present paper is an initial study of the short-term accumulated residuals.
+We assume here that the relative stock price jumps are i.i.d. random variables
+and build our bootstrap simulation procedure accordingly. In the future we will
+investigate the consequences of more realistic assumptions on stock price jumps
+using methods of time series analysis and/or advanced model ﬁtting (e.g. Levy
+processes based probability models). We also plan to extend our investigations to
+
+September 15, 2018 2:20 WSPC/INSTRUCTION FILE
+
+algorithmic˙paper
+
+16
+
+other derivative securities with convex pay-oﬀ functions. An additional direction
+of future research is numerical testing of the asymptotic formulas obtained by A.
+Nagaev et al., more speciﬁcally, exploring the consequences of the ﬁnite number of
+time steps to expiration on asymptotic results.
+
+10. Acknowledgements
+
+We would like to dedicate this paper to our colleague, Alexander Nagaev. Alexan-
+der was an insightful mathematician, creative thinker and a true friend. He died
+unexpectedly in 2005 and we truly miss him.
+
+This work is partially supported by Bentley College Enterprise Risk Manage-
+
+ment Research Grants.
+
+References
+
+[1] G. Tessitore and J. Zabczyk, “Pricing options for multinomial models,” Bulletin of
+
+the Polish Academy of Sciences Mathematics, vol. 44, no. 3, pp. 363–380, 1996.
+
+[2] G. Wolczynska, “An explicit formula for option pricing in discrete incomplete mar-
+kets,” International Journal of Theoretical and Applied Finance, vol. 1, no. 2, pp.
+283–288, 1998.
+
+[3] O. Hammarlid, “On minimizing risk in incomplete markets,” International Journal
+
+of Theoretical and Applied Finance, vol. 1, no. 2, pp. 227–233, 1998.
+
+[4] L. Ruschendorf, “On upper and lower prices in discrete time models,” Proc. Steklov
+
+Math. Inst., vol. 237, pp. 134–139, 2002.
+
+[5] A. Nagaev and S. Nagaev, “Asymptotics of riskless proﬁt under selling of discrete
+
+time call options,” Applicationnes Mathematicae, vol. 30, no. 2, pp. 173–191, 2003.
+
+[6] S. Nagaev, A.V. Nagaev and R. Kunst, “A diﬀusion approximation to the Markov
+chain model of the ﬁnancial market and the expected riskless proﬁt under selling of
+call and put options,” Preprint 164, Economics Series, Institute for Advanced Studies,
+Vienna, January 2005.
+
+[7] ——, “A diﬀusion approximation to the riskless proﬁt under selling of discrete time
+call options: Non-identically distributed jumps,” Preprint 164, Economics Series, In-
+stitute for Advanced Studies, Vienna, January 2005.
+
+[8] A. Nagaev, “A diﬀusion approximation of the expected risky proﬁt on an investor
+
+under selling of discrete time options (manuscript in Russian).”
+
+[9] J. Staum, “Incomplete markets,” preprint submitted to Elsevier Science available
+
+http://users.iems.northwestern.edu/ staum/IncompleteMarkets.pdf.
+
+[10] M. M. E. Jouini, J. Cvitanic, Ed., Option Pricing, Interest Rates and Risk Manage-
+
+ment. Cambridge University Press, 2001.
+
+[11] A. N. Shiryaev, Essentials of Stochastic Finance: Facts, Models, Theory. World
+
+Scientiﬁc, 1999.
+
+[12] A. Melnikov, S. Volkov, and M. Nechaev, Mathematics of Financial Obligations.
+
+American Mathematical Society, 2002.
+
+[13] S. Sergey and S. Uryasev, “Pricing derivative securities in incomplete markets,” in
+
+Proceedings of the 2004 Winter Simulation Conference, 2004.
+
+[14] R. D. C. Team, R: A Language and Environment for Statistical Computing, 2005.
+
+[Online]. Available: www.R-project.org
+
+

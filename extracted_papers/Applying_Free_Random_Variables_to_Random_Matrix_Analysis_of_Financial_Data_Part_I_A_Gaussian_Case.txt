@@ -1,0 +1,3192 @@
+0
+1
+0
+2
+
+ 
+
+n
+a
+J
+ 
+
+8
+1
+
+ 
+ 
+]
+h
+p
+-
+c
+o
+s
+.
+s
+c
+i
+s
+y
+h
+p
+[
+ 
+ 
+
+2
+v
+4
+2
+0
+3
+0
+6
+0
+/
+s
+c
+i
+s
+y
+h
+p
+:
+v
+i
+X
+r
+a
+
+Applying Free Random Variables
+
+to Random Matrix Analysis of Financial Data
+
+Part I: A Gaussian Case
+
+Zdzis law Burda,1, ∗ Andrzej Jarosz,2, † Jerzy Jurkiewicz,1, ‡
+Maciej A. Nowak,1, § G´abor Papp,3, ¶ and Ismail Zahed4, ∗∗
+
+1Marian Smoluchowski Institute of Physics and Mark Kac Complex Systems Research Centre,
+
+Jagiellonian University, Reymonta 4, 30–059 Krak´ow, Poland
+
+2Clico Ltd., Oleandry 2, 30–063 Krak´ow, Poland
+
+3Institute for Physics, E¨otv¨os University, 1518 Budapest, Hungary
+
+4Department of Physics and Astronomy, SUNY Stony Brook, NY 11794, USA
+
+(Dated: March 8, 2018)
+
+We apply the concept of free random variables to doubly correlated (Gaussian) Wishart ran-
+dom matrix models, appearing for example in a multivariate analysis of ﬁnancial time series, and
+displaying both inter–asset cross–covariances and temporal auto–covariances. We give a compre-
+hensive introduction to the rich ﬁnancial reality behind such models. We explain in an elementary
+way the main techniques of the free random variables calculus, with a view to promote them in the
+quantitative ﬁnance community. We apply our ﬁndings to tackle several ﬁnancially relevant prob-
+lems, such as of an universe of assets displaying exponentially decaying temporal covariances, or the
+exponentially weighted moving average, both with an arbitrary structure of cross–covariances.
+
+PACS numbers: 89.65.Gh (Economics; econophysics, ﬁnancial markets, business and management), 02.50.Sk
+(Multivariate analysis), 02.60.Cb (Numerical simulation; solution of equations), 02.70.Uu (Applications of
+Monte Carlo methods)
+
+Keywords: random matrix theory, free random variables, risk management, noise, cross–correlations, auto–
+correlations, delay correlation matrix, RiskMetrics, EWMA, factor models
+
+I.
+
+INTRODUCTION
+
+A. Financial Cross–Correlations and Auto–Correlations From Gaussian Random Matrix Theory
+
+1. Financial Correlations and Portfolio Optimization
+
+Cross–correlations between assets traded on the markets play a critical role in the practice of modern–day ﬁnancial
+institutions. For example, correlated moves of assets diminish a possibility of optimal diversiﬁcation of investment
+portfolios, and precise knowledge of these correlations is fundamental for optimal capital allocation: in the classical
+Markowitz mean–variance optimization theory [1], all the correlations must be perfectly known. Not only so, but a
+future forecast of the correlations would be highly desirable. However, the information about cross–correlations and
+their temporal dynamics is typically inferred from historical data, stored in the memories of computers (usually in
+the form of large matrices); the material decoded from past time series is inevitably marred by measurement noise,
+and it is a constant challenge to unravel signal from noise.
+
+∗Electronic address: zdzislaw.burda@uj.edu.pl
+†Electronic address: andrzej.jarosz@clico.pl
+‡Electronic address: jerzy.jurkiewicz@uj.edu.pl
+§Electronic address: nowak@th.if.uj.edu.pl
+¶Electronic address: pg@ludens.elte.hu
+∗∗Electronic address: zahed@zahed.physics.sunysb.edu
+
+2
+
+One may argue that from the point of view of practical portfolio optimization, cross–correlations are only a
+“second–order eﬀect,” since they represent ﬂuctuations around a certain trend described by the average returns of
+assets. Now it is well–known that the future returns are to a great extent impossible to determine from the historical
+returns (one would need to take a very long time series to account for volatilities, which would manifest a highly
+non–stationary nature of the returns’ distribution), and are thus subject to individual assessment by managers. We
+will disregard this problem in the present analysis, and assume that investors have some expectations of the future
+returns, recalling at the same time that volatilities and cross–correlations should be much more stable in time (due to
+the phenomenon of heteroscedasticity, i.e., time–dependence of volatility), hence allowing some level of predictability
+of their future values from historical data, once the measurement noise has been properly cleaned.
+
+Another reservation (see for example [2]) may be that optimization leads to a solution for the portfolio weights
+dependent on the covariance matrix in a stable way (in the sense that a small modiﬁcation of the covariances leads to
+only a small change in the portfolio composition and risk) only in simplest cases of linear constraints on the weights,
+while for non–linear constrains (present for example on futures markets) the problem becomes equivalent to ﬁnding
+the energy minima of a spin glass system, and there is an exponentially large (in the number of assets) number of these
+local minima with an unstable (chaotic) dependence on the covariance matrix. Again, we will restrict our interest
+to portfolios with linear constraints on the weights, in which case the estimation noise of the covariance matrix is
+already troublesome enough for special techniques of its elimination to be unavoidable.
+
+Keeping these limitations in mind, we conclude that correlations between assets necessarily have to be included
+in any risk analysis (portfolio optimization, option pricing). Even more importantly than investment purposes, one
+should investigate the covariance matrix out of a theoretical motivation, as its structure mirrors the interdependencies
+of companies, as well as possesses a non–trivial temporal dynamics; both qualities crucial for better understanding of
+the underlying mechanisms governing the behavior of ﬁnancial markets.
+
+2. The Gaussian Approximation
+
+The primary way to describe not only the volatilities but also cross–correlations in a universe of some N assets is
+
+through the two–point covariance function,
+
+Cia,jb ≡ hRiaRjbi .
+
+(1)
+
+We deﬁne ria ≡ log Si,a+1 − log Sia ≈ (Si,a+1 − Sia)/Sia to be the return of an asset i = 1, . . . , N over a time interval
+a = 1, . . . , T , i.e., (approximately) the relative change of the asset’s price Sia between the moments of time aδt and
+(a + 1)δt, where δt is some elementary time step. (We disregard the known small “leverage eﬀect” of anomalous
+skewness in the distribution of the returns: that the price increments, rather than the returns, behave as additive
+random variables.) Moreover, we denote Ria ≡ ria − hriai, which describe the ﬂuctuations (with zero mean) of the
+returns around the trend, and collect them into a rectangular N × T matrix R. The average h. . .i is understood as
+taken according to some probability distribution whose functional shape is stable over time, but whose parameters
+may be time–dependent.
+
+In this paper, we will employ a very simpliﬁed form of the two–point covariance function (1), namely with cross–
+
+covariances and auto–covariances factorized and non–random,
+
+Cia,jb = Cij Aab
+
+(2)
+
+(we will collect these coeﬃcients into an N × N cross–covariance matrix C and a T × T auto–covariance matrix A;
+both are taken symmetric and positive–deﬁnite). We will discover that the matrix of “temporal covariances” A is a
+way to model two temporal eﬀects: the (weak, short–memory) lagged correlations between the returns (see par. I C 1),
+as well as the (stronger, long–memory) lagged correlations between the volatilities (heteroscedasticity; par. I C 2). On
+the other hand, the matrix of cross–covariances (“spatial covariances,” using a more physical language) C models the
+hidden factors aﬀecting the assets, thereby reﬂecting the structure of mutual dependencies of the market companies
+(par. I B 2). Importantly, both contributions are decoupled: the temporal dependence of the distribution of each asset
+is the same, and the structure of cross–correlations does not evolve in time; this is quite a crude approximation. Also,
+these are all ﬁxed numbers; only in a subsequent work do we plan to explore another known way (a “random parametric
+deformation”) of modeling temporal dependence of cross–covariances, that is, considering C to be a random matrix
+of a given probability distribution.
+
+For our approach to be valid, both covariance matrices obviously must be ﬁnite. In fact, the current article deals
+exclusively with the multivariate Gaussian distribution for the assets’ returns which displays the two–point covariances
+(2),
+
+3
+
+1
+
+=
+
+1
+
+Nc.G.
+
+(3)
+
+1
+2
+
+Nc.G.
+
+Pc.G.(R)DR =
+
+exp−
+TXa,b=1
+NXi,j=1
+exp(cid:18)−
+TrRTC−1RA−1(cid:19) DR,
+the normalization constant Nc.G. = (2π)N T /2(DetC)T /2(DetA)N/2,
+
+Ria(cid:2)C−1(cid:3)ij Rjb(cid:2)A−1(cid:3)ba DR =
+
+1
+2
+
+where
+
+and the
+
+integration measure
+DR ≡Qi,a dRia; the letters “c.G.” stand for “correlated Gaussian,” and the expectation map w.r.t.
+this dis-
+tribution will be denoted by h. . .ic.G., while “T” denotes matrix transposition. In this case, the covariance matrices
+are ﬁnite, and moreover they are suﬃcient to fully characterize the dependencies of the Ria’s. However, in more
+realistic situations, such as of ﬁnancially relevant distributions having heavy power–law tails (with an exponent µ),
+the two–point covariance (in particular C) may not exist. The precise answer boils down to how these correlated
+non–Gaussian distributions are deﬁned (one can exploit a variety of methods: a linear model, a copula, a random
+deformation of some kind, a method based on freeness, on radial measures, etc.; see for example [3], sections 9.2,
+12.2.3, 12.2.4, and [4–6]), and we will postpone this discussion to forthcoming communications. Let us just mention
+that in some cases (such as a linear model of L´evy stable variables, i.e., with µ < 2), C diverges, and another
+measure of covariance should be devised (for example, the “tail covariance,” which quantiﬁes the amplitude of the
+tail and asymmetry of the power–law product variable RiaRjb); even for µ > 2, when C exists, it is informative
+(especially from the point of view of portfolio optimization in the sense of minimizing value–at–risk) to use the tail
+covariance, as it focuses on large negative events. However, we henceforth restrict our attention to only the correlated
+Gaussian distribution (3); on this simplest (and admittedly quite distant from reality) example we wish to advocate
+our approach, with a view to further generalize it to heavy–tailed distributions.
+
+3. Free Random Variables
+
+A decade ago, Bouchaud et al. and Stanley et al. [7, 8] suggested the use of Gaussian random matrix theory
+(RMT) for addressing the issue of noise in ﬁnancial correlation matrices. Since then, a number of results regarding
+the quantiﬁcation of noise in ﬁnancial covariances have been derived using this tool [9–25], some of which maybe of
+relevance to risk management.
+
+In this work, we would like to advertise the concepts of the free random variables (FRV) calculus as a powerful
+alternative to standard random matrix theory, both for Gaussian and non–Gaussian noise. FRV may be thought of as
+an abstract non–commutative generalization of the classical (commutative) probability calculus, i.e., a mathematical
+framework for dealing with random variables which do not commute, examples of which are random matrices. (Indeed,
+FRV was initiated by Voiculescu et al. and Speicher [26, 27] as a rather abstract approach to von Neumann algebras,
+but it has a concrete realization in the context of RMT, since large random matrices can be regarded as free random
+variables.)
+Its centerpiece is a mathematical construction of the notion of freeness, which is a non–commutative
+counterpart of classical independence of random variables. As such, it allows for extending many classical results
+founded upon the properties of independence into the non–commutative (random matrix) realm, particularly the
+algorithms of addition and multiplication of random variables, or the ideas of stability, inﬁnite divisibility, etc.
+This introduces a new quality into RMT, which simpliﬁes, both conceptually and technically, many random matrix
+calculations, especially in the macroscopic limit (the bulk limit, i.e., random matrices of inﬁnite size), which is of
+main interest in practical problems.
+
+Several years ago, we suggested that FRV is very useful for addressing a much larger class of noise (L´evy) in the
+context of ﬁnancial covariance matrices in a way that is succinct and mostly algebraic [28–33]. These results have
+now seen further applications to ﬁnancial covariances [34–36] and macroeconomy [37]. Also, FRV has been already
+applied to a number of problems ranging from physics [38–40] to wireless telecommunication [41–44].
+
+The primary aim of this publication is to advertise the framework of FRV to the audience of quantitative ﬁnance
+(QF) by re–deriving several known results obtained earlier through other (more laborious) methods of Gaussian RMT,
+as well as solving a few problems for the ﬁrst time. This illustrates the ﬂuency of the FRV calculus for noisy ﬁnancial
+
+4
+
+covariances. In particular, we show how an FRV–based back–of–an–envelope calculation leads to a simple equation
+(61) for a function M ≡ Mc(z) (32) that generates all the moments (i.e., contains all the spectral information) of a
+historical estimator c (22) of the cross–covariance matrix C (2), in the presence of arbitrary “true” cross–covariance
+and auto–covariance matrices C and A,
+
+z = rM NA(rM )NC(M ).
+
+(4)
+
+Here the N ’s are certain functions (34), computable once C and A are known; and r ≡ N/T .
+(The unrealistic
+assumption about the Gaussian statistics of the ﬁnancial assets’ returns will be relaxed only in subsequent papers,
+where generalizations of the current ﬁndings, among them (4), to the L´evy FRV calculus will be presented; although
+randomly sampled L´evy matrices have one or even no ﬁnite spectral moments, FRV permits a straightforward analysis
+of the pertinent moments’ generating functions and thus the corresponding spectral distributions.)
+
+This article is organized as follows:
+
+• The remainder of this section I is devoted to discussing the motivations, meaning, and applicability of our results
+to the ﬁnancial reality. Our working assumption of Gaussianity, its limitations and possible extensions, have
+already been touched upon in par. I A 2. In subsec. I B, various commonly used models for the cross–covariance
+matrix C are presented, which may be used as an input for equation (4). This application is however limited
+by the appearance of large eigenvalues in the spectrum of C, for which we give a brief justiﬁcation; it calls for a
+more reﬁned analysis than currently allowed by FRV. Subsec. I C deals with auto–covariances A. We show that
+our method is well–poised to investigate the weak short–ranged auto–correlations observed on ﬁnancial markets,
+triggered by non–zero transaction costs and the presence of bonds or interest rates, and included in modern
+risk evaluation methodologies, but fails at this stage to handle more involved auto–covariances between diﬀerent
+assets, such as required for example to explain the Epps eﬀect. We describe also the much more important long–
+memory auto–correlations between the random volatility of the returns (heteroscedasticity), and introduce some
+corresponding weighting schemes, mainly the exponentially weighted moving average (EWMA). In subsec. I D,
+we deﬁne and discuss several standard historical estimators of the covariance matrices (Pearson, time–lagged,
+weighted).
+
+• Section II is the centerpiece of this work. It commences in subsec. II A with a crash course in free random
+variables, with a particular focus on the addition and multiplication algorithms of free random matrices; the
+latter constitutes the chief tool we exploit. It has a more operational ﬂavor, designed to aid practical applications
+by the QF community rather than to delve into the mathematics behind the scenes. Subsec. II B gives a
+foretaste of the power of the FRV approach by re–computing in an algebraic way the famous Marˇcenko–Pastur
+distribution. The salient part comes in subsec. II C, where equation (4), along with its variations, is derived and
+presented.
+
+• Section III contains two examples of how the main formula (4) can be used to tackle ﬁnancially relevant problems.
+Namely, we ﬁnd equations for the moments’ generating functions M of the standard and time–delayed historical
+estimators in the presence of exponentially decaying temporal auto–covariances and arbitrary cross–covariances
+(subsec. III A), as well as of the EWMA with arbitrary cross–covariances (subsec. III B). In the simplest case
+of no underlying cross–covariances, we reinforce our analytical ﬁndings with numerical simulations.
+
+• The article terminates with short conclusions and some possible prospects for the future in section IV (more are
+
+actually given inside the body of the article), as well as a list of references.
+
+B. Modeling Cross–Correlations
+
+1. Principal Component Analysis
+
+In this subsection, we consider a ﬁxed moment in time, a, and investigate the cross–correlations between the
+assets; assuming the decoupling (2), their structure C does not depend on time. Being symmetric and positive–
+deﬁnite, C can be diagonalized, Cvk = λkvk, with N real and positive eigenvalues (they can be ordered decreasing,
+λ1 ≥ . . . ≥ λN > 0), and N orthogonal and normalized eigenvectors. This diagonalization is called a “principal com-
+ponent analysis” (PCA), because the knowledge of the eigenvectors of C allows to linearly transform the N correlated
+
+entities Ria into N uncorrelated ones (referred to as “principal components” or “explicative factors”) eka, whose
+variances are given by the eigenvalues of C,
+
+eka ≡
+
+NXi=1
+
+vk,iRia,
+
+or conversely,
+
+Ria =
+
+NXk=1
+
+vk,ieka,
+
+where
+
+hekaelai = λkδkl.
+
+(5)
+
+In other words, the PCA unravels the uncorrelated (not necessarily independent) factors aﬀecting the collection of
+assets, and orders them w.r.t. their decreasing volatility. Since a factor is a certain mix of the assets (i.e., a portfolio),
+we can restate it yet diﬀerently by that the PCA derives a set of uncorrelated investment portfolios, and orders them
+w.r.t. their decreasing risk.
+
+5
+
+2. Factor Models
+
+There have been put forth models of the structure of the covariance matrix (see for example [3], section 9.3). They
+are to reﬂect the structure of the spectra of its estimators built from historical ﬁnancial data (see subsec. I D), which
+typically consist of one very large eigenvalue, several smaller but still large ones, and a sea of small eigenvalues, whose
+distribution can be very accurately ﬁtted with the Marˇcenko–Pastur distribution [45] of the eigenvalues of a purely
+random matrix belonging to the (uncorrelated) Wishart ensemble [46]. As we discuss in more detail in subsec. I D,
+an estimator of the covariance matrix will necessarily contain a lot of measurement noise, and these decade–old
+results [7, 8], pioneering the use of random matrix theory in ﬁnancial applications, suggest that actually most of the
+spectrum is purely random, with the exception of the largest eigenvalues “leaking out” of the bulk Marˇcenko–Pastur
+distribution, which do carry some information about the true correlations between the assets. For example, the
+appearance of one very large eigenvalue λ1 (c.a. 25 times greater than the upper bound of the noise distribution for
+the S&P500 data in [7]) has the following meaning: Since e1 ﬂuctuates with such a dominating volatility, the PCA (5)
+can be approximated as Ri ≈ v1,ie1 (we skip the index a in this paragraph), which means that the dynamics of all the
+assets is governed practically by just one factor. The corresponding eigenvector has roughly all the components equal,
+which thus represents a portfolio with approximately the same allocation in all the assets, i.e., with no diversiﬁcation;
+this portfolio will therefore be strongly correlated with the market index, and is thus called the “market factor.” Its
+presence in the empirical spectrum may be understood for instance in terms of the herding phenomenon (a collective
+behavior of the investors). Similarly, other large eigenvalues seen in the spectra of historical covariance matrices
+can be attributed to the clustering of individual companies into industrial sectors (constructed by investigating the
+relevant eigenvectors), within which the correlations are strong.
+
+Consequently, one may attempt to model the matrix C in order to reproduce such empirical observations; this
+program goes under a name of “factor component analysis” (FCA), since it aims at describing a large number of
+cross–correlations between assets in terms of their correlations with a much smaller number of factors. To begin with,
+one considers a “one–factor model” (“market model”) [47], where it is assumed that each return Ri is impacted by
+the market return φ0 with some strength βi (named the “market beta” of this asset), and besides that there is no
+correlation between assets; namely, it approximates Ri = βiφ0 + ei, where φ0 and the ei’s (called the “idiosyncratic
+noise”; their presence implies that the underlying factors cannot be directly observed as they are marred by random
+errors) are uncorrelated and have the volatilities Σ and σi respectively; the model is described by (2N + 1) parameters.
+The covariance matrix thus reads
+
+Cij = Σ2βiβj + σ2
+
+i δij.
+
+(6)
+
+It can be easily diagonalized under an additional simpliﬁcation that all the σi’s are equal to some σ0, in which case
+there is one large (∝ N ; we generically assume N to be large, see (18)) eigenvalue λ1 = Σ2β2 + σ2
+0, corresponding
+to v1 ∝ β (the “market”), and an (N − 1)–degenerate eigenvalue σ2
+0 (if the σi’s are unequal but of comparable size,
+there is a large market eigenvalue and a sea of (N − 1) small ones).
+sumes that the idiosyncratic (non–market) parts ei are exposed to K hidden factors φα, namely ei =PK
+
+A more reﬁned “multi–factor model” [18, 48, 49], describing increased correlations within industrial sectors, as-
+α=1 βiαφα + ǫi,
+where all the factors and the new idiosyncratic terms are uncorrelated and have the volatilities Σα and σi respectively.
+In this case,
+
+Cij = Σ2βiβj +
+
+KXα=1
+
+Σ2
+
+αβiαβjα + σ2
+
+i δij.
+
+(7)
+
+6
+
+α, with Nα assets belonging to sector α (PK
+
+To further (quite drastically) simplify this model, we may consider that each asset i is exposed to only one factor
+, where the
+index i is split into a double–index (α′¯i), with α′ enumerating sectors and ¯i assets within sector α′. Also we consider
+the exposures to the market negligible as compared to the industrial ones (βi = 0), and the idiosyncratic volatilities
+depending only on the sector, σi = σ(α¯i) = σα. Then C acquires a block–diagonal form, which is easily diagonalized
+to give K “large” eigenvalues λα = Σ2
+α plus K “small” (Nα − 1)–degenerate eigenvalues σ2
+It mirrors
+α.
+more properly the existence of several large eigenvalues. The form of the covariance matrix can also be speciﬁed along
+analogous lines in more complex ways, such as in the “hierarchically nested factor model” (HNFM) [50].
+
+αβ(α)2 + σ2
+
+α=1 Nα = N ), which translates into βiα = β(α′¯i)α = δα′αβ(α′)
+
+¯i
+
+Any such model can be used as a non–statistical input for equation (4). In this way, the number of parameters
+to be estimated (for which the Pearson’s chi–square method may be used) is typically greatly reduced, however on
+the cost of a speciﬁcation error. Another problem with the above models is that their generic feature is the existence
+of isolated “large” eigenvalues (i.e., proportional to the size of the portfolio N and with a microscopic degeneracy,
+typically singlets), while the FRV tools seem not adequate enough to tackle such situations yet, being restricted to
+the bulk of the distribution, and thus other methods should be employed (see for example [51]). This is why in this
+article we refrain from using our main formula (4) for any nontrivial cross–covariance matrix C, focusing rather on
+temporal covariances; this obstacle should certainly be dealt with.
+
+C. Modeling Auto–Correlations
+
+1. Lagged Correlations Between the Returns
+
+Let us now discuss which empirical facts concerning temporal correlations can be modeled (and how) within
+our very simpliﬁed framework (2). First, it is well–known that the returns are weakly auto–correlated on short
+time scales: the delayed correlation function (see (23) for its deﬁnition) is signiﬁcantly diﬀerent from zero (and, for
+example, negative for stocks, but positive for stock indices) for the time lags less than c.a. 30 minutes for liquid and
+free–ﬂoating assets (longer on less liquid markets; this decay lag also decreases with time), see [3], sections 6.2, 13.1.3.
+The simplest and most natural model for such a behavior, for a single asset i, is an exponential decay,
+
+hRiaRibi
+hR2
+iai
+
+= e−|b−a|/τ ,
+
+(8)
+
+with the characteristic time τ (given here in the units of δt) of the order of several minutes.
+
+Let us emphasize that we are talking about correlation functions here, i.e., normalized by the variance. The
+variance have completely diﬀerent, stronger, long–memory temporal dynamics (heteroscedasticity; see par. I C 2),
+allowing forecasts of future volatilities from past data. From this point of view, heteroscedasticity is a “ﬁrst–order
+correction” to an iid of the returns, while the auto–correlation of the returns (such as (8)) is a “second–order eﬀect.”
+Consequently, any long–term forecast of the mean returns seems impossible, and we will focus on forecasting the
+volatility, used then to assess the short–term risk of a portfolio. Anyway, on short time horizons (such as one business
+day), the mean return is negligible (say, a small fraction of a percent for stocks) as compared to its volatility (a few
+percent).
+
+These weak auto–correlations should not however be disregarded. Actually, they may persist on longer time
+scales, such as days, but to reveal that, one would need to consider much longer (decades) historical time series in
+order to decrease the estimation noise; there might even be auto–correlations over time spans of a few years, reﬂecting
+the existence of economic cycles. If detectable auto–correlations were present for longer lags, they could be used to
+devise a proﬁtable trading strategy until arbitrage would remove them; this is the eﬃcient market hypothesis. But
+even such weak and short–memory auto–correlations allow in principle to attain large proﬁts in high–frequency (HF)
+trading; however, when transaction costs are taken into account, these proﬁts are precisely discounted, and this is
+one reason that a non–zero decay lag is allowed without contradicting the eﬃciency of the markets. Another reason
+is the existence of riskless assets (bonds), which implies that stocks should gain on average the riskless rate of return
+and additionally a risk premium; moreover, short–term interest rates are not free–ﬂoating (they are set by the central
+banks and are usually quite predictable). For these reasons, the auto–correlations, albeit weak, begin to be included
+into new risk evaluation methodologies, such as RiskMetrics 2006 [52], which even attempts to predict the mean
+returns (and thus risks) for long–time horizons, up to one year. Our approximation (2) should be able to handle
+
+7
+
+eﬀects like (8), and in subsec. III A we indeed show an application of equation (4) to a model with an exponentially
+decaying auto–covariance matrix A.
+
+However, this phenomenon of non–zero lagged correlations should be extended from a single asset to multiple
+variables: the returns of diﬀerent assets are correlated between diﬀerent time moments. This is crucial, for example,
+for gaining insight into the dynamics of the cross–correlations as we progress from the HF time scale to longer time
+scales. The strength of the equal–time cross–correlation between assets i 6= j was long ago observed to grow with
+increasing δt (when moving from higher to lower sampling frequencies, the equal–time inter–asset correlations rapidly
+rise on the scales of several minutes, to saturate on the scales of days), which is called the “Epps eﬀect” [53]. Not only
+this, but the entire structure of cross–correlations (depicted through the maximum spanning tree of the market [54])
+evolves as an embryo which expands and diﬀerentiates as δt enlarges. This change of strength and structure of cross–
+correlations is, for instance, critical for the possibility of increasing the sampling frequency in order to obtain longer
+time series, and as a result, less noisy historical estimators (see par. I D 1): one cannot probe too deep into the HF
+regime (far from the saturation level of the Epps curve) since then the entire tree of cross–correlations looks totally
+diﬀerent. This is yet another reason for developing noise–cleaning procedures, such as the one advocated in this paper.
+In order to explain the Epps eﬀect, a causal relation must be present between the time evolution of the return of asset
+i at a certain time and the returns of all the other assets j 6= i at all the previous moments. For example, in [55, 56],
+the equal–time cross–correlations are expressed through delayed cross–correlations over shorter time scales, and the
+latter are modeled by a direct analog of the exponential decay (8), just with separate i and j,
+
+hRiaRjbi
+hRiaRjai
+
+= e−|b−a|/τ ;
+
+(9)
+
+this eventually proves to provide an analytical shape of the Epps curve which is remarkably close to the experimental
+one. Another, more complex model of linear causal inﬂuence is presented in [35],
+
+ri(t) = ei(t) +
+
+NXj=1Z +∞
+
+−∞
+
+dt′Kij (t − t′) rj (t′) ,
+
+(10)
+
+where ei(t) is an idiosyncratic part, and Kij(t − t′) is called the “inﬂuence kernel.” However, these models cannot
+be captured by our current simple framework (2), (4), and it certainly is an interesting challenge to extend the FRV
+approach so that it could be helpful in an analytical treatment of such more involved correlations, responsible among
+other things for the Epps eﬀect.
+
+2. Heteroscedasticity
+
+A well–established “stylized fact” observed in all ﬁnancial time series is that the (say, daily) volatility of an asset’s
+return depends on time, displaying a “long memory,” namely that periods of high or low volatility tend to persist
+over time; this property is known as “heteroscedasticity,” “volatility clustering,” or “intermittence” (by analogy with
+turbulent ﬂows of ﬂuids, where a similar phenomenon of persistent intertwined periods of laminar and turbulent
+behavior occurs). A standard approach to describe mathematically this experimental fact is to suppose that not only
+is the demeaned and normalized return ǫia (the “residual”) a random variable, but so is the volatility σia,
+
+Ria = σiaǫia.
+
+(11)
+
+These two sources of randomness are to a great extent inseparable, and it becomes a matter of choice how to model
+them in order to jointly arrive at results which comply with empirical data; for example, a Student distribution for
+the return can originate from an inverse–gamma randomness of the variance superimposed on a Gaussian iid of the
+residuals. Such a very general depiction (11), with the ǫia’s assumed to be iid with zero mean and unit volatility and
+the σia’s some random variables possibly correlated with each other and also with the residuals, is named a “stochastic
+volatility model”; see [3], section 7.
+
+Indeed, the volatilities at diﬀerent time moments are correlated. These lagged correlations are not strong (several
+percent, depending on the volatility proxy used and the time lag chosen), but stretch over much longer periods than
+the lagged correlations of the residuals, discussed in par. I C 1: their slow decay (long–memory) can be modeled well
+by a power law, 1/|b − a|ν, where a ﬁt of the exponent ν typically lies in the range 0.2÷ 0.4 (depending on the domain
+of the time lags considered). In other words, the temporal dynamics of the volatility is a multi–scale phenomenon.
+
+8
+
+Moreover, the probability distribution of (an estimator, such as the “high–frequency proxy,” being the daily average
+of HF returns, of) the volatility may be approximated by an inverse–gamma or a log–normal shape.
+
+A basic idea, founded upon the presence of the long–memory lagged volatility correlations, is to regard the
+volatility as undergoing a certain stochastic process. A convenient feature of this approach is its consistency: the
+volatility process should be constructed from historical time series (in particular, it should reﬂect a power–law–like
+decay of the lagged correlations), and thus obtained parameters are then used to make forecasts (through evaluating
+conditional averages) for the value of the volatility over some future time horizon ∆t. In other words, even long–
+time horizons become available for meaningful risk assessment; although of course for long ∆t the deﬁciency of past
+data excludes a possibility of backtesting of these forecasts. There exists a plethora of propositions for volatility
+processes. One selecting requirement is actually computational accessibility of forecasting, which practically reduces
+the possible choices to quadratic processes only, i.e., where the variance depends linearly on the past squared returns,
+see below. This still yields a very broad class of processes, falling under the name of “auto–regressive conditional
+heteroscedasticity” (ARCH).
+
+A standard textbook example, reﬂecting to some extent the behavior of ﬁnancial time series, is the GARCH(1, 1)
+
+model [57–59],
+
+(12)
+
+hist.,a,
+
+σ2
+hist.,a = ασ2
+
+σ2
+a = w∞σ2
+
+mean + (1 − w∞) σ2
+
+a−1 and its mean value σ2
+
+hist.,a−1 + (1 − α)R2
+a−1
+(the asset index i is skipped here and in the remainder of this paragraph). In the above, σ2
+mean is the unconditional
+mean variance, representing the average long–run value of the variance, and σ2
+hist.,a is a “historical (auto–regressive)
+variance,” depending linearly on both itself and the realized squared return at the preceding time moment (the daily
+frequency is typically used). The constant w∞ is a “coupling,” while α ∈ [0, 1] may be thought of as measuring the
+responsiveness of the variance to the recent realized variance R2
+a−1: α close to 1 means that the variance responds
+quite slowly to the news. (We may also write (12) diﬀerently, σ2
+a−1),
+where g1 ≡ 1 − w∞(1 − α) and g2 ≡ (1 − w∞)(1 − α), in order to see that the process tries to revert the volatility
+to its mean value with strength g1, and also incorporates a feedback of the diﬀerence between the realized squared
+return R2
+a−1 on the next–day value of the variance, to which eﬀect a magnitude g2 is given.)
+There are two problems with this traditional model. First, it is an “aﬃne” (“mean–reverting”) process, i.e.,
+containing the additive term w∞σ2
+mean, whose meaning is that in the long run, the average volatility will converge
+to the value σmean regardless of the initial conditions. To every aﬃne process, there exists a corresponding “linear”
+(“integrated”) process, which simply removes the unconditional expectation by setting w∞ = 0, in which case the
+long–term mean volatility depends on the initial conditions or may even not converge; for example, (12) will yield a
+model called I–GARCH(1). Only the integrated processes can be successfully harnessed for risk forecasts. The reason
+is that an integrated model is described by two parameters less than its mean–reverting counterpart (namely, w∞ and
+σmean), and the latter of these is strongly time series dependent; in other words, for a portfolio of N assets, an aﬃne
+model would contribute a large number N of mean unconditional volatilities for estimation, which would produce a
+huge measurement error. In I–GARCH(1), on the other hand, there is only one parameter α accounting for all the
+assets that requires estimation.
+
+a = σ2
+
+mean + g1(σ2
+
+mean) + g2(R2
+
+a−1 − σ2
+
+a−1 − σ2
+
+More importantly, both GARCH(1, 1) and I–GARCH(1) (let us henceforth focus on the integrated versions only)
+fail to reproduce the observed power–law decay of the time–lagged volatility correlations, leading instead (the cal-
+culation is doable analytically) to an exponential decay, with the characteristic time (in the units of δt = one day)
+τ = −1/ log α,
+
+aσ2
+
+(cid:10)σ2
+
+b(cid:11) −(cid:10)σ2
+
+a(cid:11)(cid:10)σ2
+
+b(cid:11) ∝ e−|b−a|/τ .
+
+(13)
+
+This may be seen in yet another way by unwinding the second part of (12), thus casting the variance as a linear
+function of the past squared returns,
+
+σ2
+a =
+
+1 − α
+1 − αT
+
+TXb=1
+
+αb−1R2
+
+a−b,
+
+(14)
+
+where a necessary cutoﬀ T is introduced. The “weights” with which the past squared returns impact the today’s
+variance, scale exponentially as we move backward in time (∝ αb−1); this short–memory scheme is called the “ex-
+ponentially weighted moving average” (EWMA), see for example [60], chapter 21, and [61, 62]. Despite this evident
+shortcoming, the I–GARCH(1) (EWMA) volatility process has very successfully transpired into the every–day prac-
+tice of many ﬁnancial institution by being woven into the commonly accepted risk evaluation methodology, RiskMet-
+rics 1994 [63, 64]. It was probably due to its simplicity, as it is described by just one parameter α shared by a wide
+
+range of securities (its value found to yield forecasts which come closest to the realized variance is α = 0.94, i.e.,
+τ = 16.2 business days), which is critical since the methodology is to be applied to a great many time series; and
+moreover, it utilizes only the one previous–day observation to update the volatility (so little data needs to be stored).
+
+Let us brieﬂy mention that the framework of integrated models can be extended to accommodate for the long–
+
+memory correlations [65, 66], culminating in the fresh RiskMetrics 2006 [52]. Such processes are still quadratic,
+
+9
+
+TXb=1
+
+σ2
+a =
+
+wbR2
+
+a−b,
+
+(15)
+
+b=1 wb = 1. For example, RiskMetrics 2006 argues that
+
+where the weights wb are positive and obey the “sum rule,”PT
+
+a logarithmic decay consistently proves to be an even better ﬁt to ﬁnancial data than a power law,
+
+wb ∝ 1 −
+
+log(bδt)
+log τ0
+
+,
+
+(16)
+
+where again one parameter τ0 ∼ 3 ÷ 6 years is enough to capture the long memory of diverse time series.
+(For
+small time lags, the power–law and log–decay are very similar, with their parameters related approximately through
+ν = 1/ log(τ0/δt). But for longer lags, say beyond one month, the logarithmic ﬁt visibly stands out in quality.)
+
+Our FRV technique is not yet suited for handling ARCH models like discussed above. However, the FRV calculus
+does bring considerable simpliﬁcation into working with historical estimators of cross–covariance matrices which
+incorporate weighting schemes (15), such as the EWMA (14) or log–decay (16). They will be deﬁned in par. I D 3,
+and the case of the EWMA (with all its defects and advantages just highlighted) will be addressed in subsec. III B.
+
+D. Historical Estimation of the Covariance Matrices
+
+1. Estimators of Equal–Time Cross–Covariances
+
+A fundamental problem is how to reliably estimate the covariance matrices from the available historical data [67,
+68]. One obstacle lies in the ﬁniteness of the time series, due to which any estimator will contain an amount of
+measurement noise. Let us focus for deﬁniteness on estimating C: since there are N (N + 1)/2 independent entries
+in C, and we have at our disposal N time series of length T each (collected in a historical realization R; we will not
+distinguish in notation between random variables and their actual realizations), thus the level of the estimation noise
+may be quantiﬁed by the “rectangularity ratio”
+
+N
+T
+
+.
+
+r ≡
+
+(17)
+
+If r → 0 (thanks to T → ∞ with ﬁxed N , which is a limit commonly used in statistics), any empirical covariance
+matrix should approach the exact one (i.e., it should be asymptotically unbiased). However, r close to zero is usually
+far from ﬁnancial reality, in which both T and N are large and of comparable size; for example, one may have daily
+data from several years (each of about 260 business days) and may want to consider a major bank’s portfolio consisting
+of several hundred of even thousands of assets; hence, the relevant regime is rather the “thermodynamical limit,”
+
+N → ∞,
+
+T → ∞,
+
+such that
+
+r = ﬁxed.
+
+(18)
+
+Therefore, any estimator will be (seriously, for realistic values of r) dressed with the measurement noise, and it is of
+paramount importance (from the point of view of risk management, for example) to devise methods which detect in
+the noised estimators information about the true covariances (“cleaning” of the measurement errors); these de–noised
+estimators can then serve for practical purposes (such as evaluating the risk of a portfolio). (Remark that (18) is also
+precisely the limit in which the standard techniques of random matrix theory are applicable to the random matrix R;
+to be used below.)
+
+The matrices C and A can be estimated from the past time series R by, for example,
+
+1
+T
+
+c ≡
+
+RRT,
+
+1
+N
+
+a ≡
+
+RTR,
+
+(19)
+
+which may be called their Pearson estimators (the usual prefactors 1/(T − 1) and 1/(N − 1) are replaced in the above
+by 1/T and 1/N , respectively, since we can approximately disregard the average value of the returns in comparison
+with their volatilities over the considered time horizons; see par. I C 1). For any probability distribution of the returns
+such that (2) holds with ﬁnite C and A, it is easily checked that the Pearson estimators (19) are, up to rescalings,
+unbiased,
+
+10
+
+hci = MA,1C,
+
+hai = MC,1A,
+
+(20)
+
+where MC,1 ≡ 1
+T TrA are the ﬁrst moments of the matrices C and A, see below (30). For the
+correlated Gaussian distribution (3), the Pearson estimators are proportional to the respective maximum likelihood
+estimators.
+
+N TrC and MA,1 ≡ 1
+
+T PT
+NPN
+
+It is clear that cij = 1
+
+a=1 RiaRja represents the equal–time covariance between assets i and j averaged over
+time; similarly, aab = 1
+i=1 RiaRib shows how the measurements at moments a and b are correlated on average for
+all the assets. These two seemingly very diﬀerent quantities are in fact very closely related: since RRT and RTR have
+the same non–zero eigenvalues (the larger one has additionally |T − N| zero modes), thus c and a have also identical
+non–zero eigenvalues up to the factor of r (the latter are 1/r times the former). In other words, the information
+content of c and a is equivalent, describing the structure of equal–time correlations between the assets; we will thus
+abandon a henceforth. We will state this point in more quantitative terms (47) in par. II B 2.
+
+As is well–known, it is possible to describe the N × T correlated Gaussian random variables R in terms of N × T
+symmetric and positive–deﬁnite, therefore their square roots exist), which transforms the correlated Gaussian measure
+(3) into the uncorrelated one,
+
+uncorrelated Gaussian variables eR; this is achieved through the change R = √CeR√A (the covariance matrices are
+
+exp(cid:18)−
+
+1
+2
+
+1
+NG.
+
+PG.(eR)DeR =
+
+exp −
+
+1
+2
+
+NXi=1
+
+ia! DeR,
+TXa=1eR2
+
+with NG. = (2π)N T /2, and h. . .iG. denoting the expectation map w.r.t. this probability distribution. Correspondingly,
+the estimator c becomes in the new language more involved,
+
+1
+NG.
+
+TreRTeR(cid:19) DeR =
+√CeRAeRT√C.
+
+1
+T
+
+c =
+
+(21)
+
+(22)
+
+With eR a random matrix drawn from the distribution (21), the estimator c (22) is called a “doubly correlated
+
+Wishart” random matrix.
+
+2. Estimators of Time–Delayed Cross–Covariances
+
+It is of course desirable to ﬁnd an estimator of temporal correlations, i.e., correlations between two assets at two
+diﬀerent moments in time. It is commonly done through the “lagged covariance matrix estimator,” which represents
+non–equal–time (with a time lag d, an integer divisor of the total time series length T , t ≡ T /d = 2, 3, . . .) covariance
+between assets i and j averaged over time,
+
+c(d)
+ij ≡
+
+1
+T
+
+T−dXa=1
+
+RiaRj,a+d,
+
+i.e.,
+
+c(d) =
+
+1
+T
+
+RD(d)RT,
+
+where
+
+D(d)
+ab ≡ δa+d,b.
+
+(23)
+
+This matrix is non–symmetric, and it will be very interesting to develop a method to deal with it (see [69] for a solution,
+based on the circular symmetry of the problem and the Gaussian approximation, in the simplest case of C = 1N and
+A = 1T ; here 1K denotes the unit K × K matrix). In the present paper, however, we will not attempt this more
+challenging task, leaving it for future work, but only resort to the simpliﬁcation [70] of considering a symmetrized
+version of (23),
+
+csym.(d) ≡
+
+1
+T
+
+RDsym.(d)RT,
+
+where
+
+Dsym.(d)
+
+ab
+
+1
+2
+
+≡
+
+(δa+d,b + δa−d,b) ,
+
+(24)
+
+which becomes symmetric, and therefore tractable within our present approach, but still carries some information
+about delayed correlations between assets. In terms of the uncorrelated Gaussian variables (21) it reads
+
+csym.(d) =
+
+1
+T
+
+√CeR√ADsym.(d)√AeRT√C.
+
+(25)
+
+This is also a doubly correlated Wishart random matrix, akin to c, albeit with a modiﬁed underlying auto–covariance
+
+matrix, A → √ADsym.(d)√A.
+
+11
+
+3. Estimators with Weighting Schemes
+
+The standard Pearson estimator cij of the cross–covariance between assets i and j (19) is deﬁned as the average
+of the realized cross–covariances RiaRja over the past time moments a.
+In this way, all these past values of the
+realized cross–covariance have an equal impact on the estimator of the today’s cross–covariance. However, when
+discussing an analogous problem for the estimates of the variance in par. I C 2, we discovered that the phenomenon of
+heteroscedasticity, modeled by some quadratic ARCH stochastic process (15), implies the presence in ﬁnancial time
+series of a long memory, described by the weights wa (of a power–law or logarithmic decay, but frequently used as
+well is an exponential decay, i.e., the EWMA). In other words, the older the realized variance R2
+ia, the more obsolete
+it is, i.e., the more suppressed its contribution to the estimator of the today’s variance is, as given by the weight wa.
+(Here we will adopt a convention that in our time series, enumerated by a = 1, . . . , T , the most recent observation is
+a = 1, and moving backward in time as a increases.) Now, it is a common practice to set up the updating schemes for
+the cross–covariances by simply mimicking the schemes for the variances; see [60], compare also the discussion in [66].
+Therefore, we will consider the following general class of “weighted estimators” of the cross–covariances,
+
+cweight
+ij
+
+≡
+
+TXa=1
+
+waRiaRja,
+
+i.e.,
+
+cweight =
+
+1
+T
+
+RWRT,
+
+where W ≡ T diag (w1, . . . , wT ) .
+
+(26)
+
+leads to an expression analogous to (25),
+
+Again, it is convenient to convert the correlated Gaussian random variables R into the uncorrelated ones eR, which
+
+(27)
+which is the doubly correlated Wishart ensemble with the underlying covariance matrices C and √AW√A. In this
+way, also the weighted estimators have been grasped by our general framework.
+
+√CeR√AW√AeRT√C,
+
+cweight =
+
+1
+T
+
+II. FREE RANDOM VARIABLES: A PROMISING APPROACH TO THE ESTIMATION OF
+
+COVARIANCE MATRICES
+
+A. The Free Random Variables Calculus in a Nut–Shell
+
+1. The Basic Notions of Random Matrix Theory
+
+When studying (see for example [71, 72]) a real symmetric (or complex Hermitian) K × K random matrix H,
+drawn from some probability distribution P (H), perhaps a most natural question is about the probability distribution
+of its (real) eigenvalues λ1, . . . , λK , which is quantiﬁed by the “mean spectral density,”
+
+ρH(λ) ≡
+
+1
+K
+
+KXi=1
+
+hδ (λ − λi)i =
+
+1
+K hTr (λ1K − H)i ,
+
+(28)
+
+where δ(λ) is the real Dirac delta function, the expectation map h. . .i is performed w.r.t. P (H), and we recall that
+1K denotes the unit K × K matrix.
+
+This statistical information about the spectrum is equivalently encoded in the “Green’s function” (also called
+
+“resolvent,” “Cauchy transform” or “Stieltjes transform”), which is a complex function of a complex variable z,
+
+GH(z) ≡
+
+1
+K
+
+KXi=1(cid:28) 1
+
+z − λi(cid:29) =
+
+1
+
+K(cid:28)Tr
+
+1
+
+z1K − H(cid:29) =Zcuts
+
+dλρH(λ)
+
+1
+
+z − λ
+
+.
+
+(29)
+
+GH(z) =Xn≥0
+
+MH,n
+zn+1 ,
+
+MH,n ≡
+
+1
+
+K hTrHni =Zcuts
+
+dλρH(λ)λn,
+
+12
+
+(30)
+
+(31)
+
+For ﬁnite K, this is a meromorphic function, with the poles at the λi’s on the real axis. On the other hand, in
+the usually considered limit of an inﬁnitely large random matrix (K → ∞), the mean eigenvalues tend to merge
+into continuous intervals (“cuts”; they can be inﬁnite or ﬁnite, connected or not), and the Green’s function becomes
+holomorphic everywhere on the complex plane except the cuts on the real line. As such, it can typically be expanded
+into a power series around z → ∞,
+
+where the coeﬃcients are called the “moments” of H. In particular, in the strict limit z → ∞, it must obey
+
+GH(z) →
+
+1
+z
+
+,
+
+for
+
+z → ∞.
+
+The above expansion (30) suggests working with an alternative object to the Green’s function, namely the “generating
+function of the moments” (or the “M –transform”), simply related to the former,
+
+MH(z) ≡ zGH(z) − 1 =Xn≥1
+
+MH,n
+zn .
+
+(32)
+
+We will be using both, depending on convenience, but chieﬂy (32). However, we stress that even if the moments do
+not exist, and thus the expansions (30), (32) are not valid, the knowledge of the analytical structure of the Green’s
+function (29) is suﬃcient to extract the statistical spectral properties of the random matrix.
+
+Namely, once the Green’s function has been derived, the corresponding mean spectral density is found by using
+
+the Sokhotsky’s formula, limǫ→0+ 1/(λ + iǫ) = pv(1/λ) − iπδ(λ), which yields
+
+ρH(λ) = −
+
+1
+π
+
+lim
+ǫ→0+
+
+ImGH(λ + iǫ).
+
+(33)
+
+In other words, the density is inferred from the behavior of the Green’s function in the imaginary vicinity of the
+eigenvalues’ cuts on the real axis.
+
+Finally, let us introduce the functional inverses of the Green’s function and the moments’ generating function,
+
+GH (BH(z)) = BH (GH(z)) = z,
+
+MH (NH(z)) = NH (MH(z)) = z.
+
+(34)
+
+The former has somewhat fancifully been named [73] the “Blue’s function” (known also under other names in liter-
+ature), while the latter will more conservatively be called the “N –transform.” These two functions are fundamental
+objects within the FRV approach, see below. Additionally, the Blue’s function can be expanded into a power series
+around z = 0: it must start from a singular term 1/z due to (31) plus a regular expansion,
+
+BH(z) =
+
+1
+z
+
++Xn≥0
+
+KH,n+1zn,
+
+(35)
+
+where the coeﬃcients, for the reason explained below, are referred to as “free cumulants.” (Let us mention that
+there is another commonly exploited object equivalent to the Blue’s function, which subtracts the singular term from
+the above expansion, and is named the “R–transform,” RH(z) ≡ BH(z) − 1/z. We will however adhere to using the
+Blue’s function.)
+
+2. The Basic Notions of the Free Random Variables Calculus
+
+Let us now detail the key features of the so–called “free random variables” (FRV) calculus, presented parallel to
+
+the corresponding notions in the standard probability calculus.
+
+An important problem in classical probability [74]
+
+is to ﬁnd the probability density function (PDF) of
+the sum of two random variables, x1 + x2, provided they are independent, and we are given their separate
+PDFs, Px1 and Px2 . This is readily solved by applying the Newton’s formula to the moments of the sum,
+
+13
+
+Mx1+x2,n = h(x1 + x2)ni =Pn
+
+k=0(cid:0)n
+
+k(cid:1)Mx1,kMx2,n−k. The moments are conveniently encoded in terms of the “charac-
+
+teristic function,” which is a Fourier transform of the PDF,
+
+gx(z) ≡Xn≥0
+
+Mx,n
+
+n!
+
+zn = hezxi.
+
+(36)
+
+(Here z must be a purely imaginary number on account of convergence of the sum over n, but we will not explicitly
+print this for the sake of future reference.) The above addition rule for the moments can be re–stated as that the
+characteristic function is multiplicative under the addition of independent random variables.
+In other words, its
+logarithm,
+
+is additive,
+
+rx(z) ≡ log gx(z),
+
+rx1+x2 (z) = rx1 (z) + rx2 (z),
+
+for independent x1, x2.
+
+(37)
+
+(38)
+
+This may be named the “classical addition law”; it shows that the addition problem for classical independent random
+variables is solved by (i) forming the Fourier transforms of the PDFs Px1 and Px2, i.e., the characteristic functions, (ii)
+taking their logarithms, (iii) using the fact that the logarithms of the characteristic functions are additive, (iv) removing
+the logarithm, which yields the characteristic function, and so also the moments and the PDF, of the sum x1 + x2.
+
+(The logarithm of the characteristic function can be expanded in a power series around z = 0, rx(z) =Pn≥1 kx,nzn.
+
+Its coeﬃcients are called the “cumulants,” and are obviously additive, kx1+x2,n = kx1,n + kx2,n, upon the addition of
+two independent random variables.)
+
+It is very far from trivial how to extend these steps into the case of random matrices, i.e., from the commutative
+to non–commutative level, and it is the FRV theory of Voiculescu et al. and Speicher [26, 27] that develops a precise
+answer to this question. First of all, FRV puts forth a powerful concept of “freeness,” which is a non–commutative
+analog of independence. We will not delve too deep into explaining its construction, but let us show how it diﬀers
+from classical independence. Namely, in classical probability, x1 and x2 are independent if their demeaned versions,
+X1,2 ≡ x1,2 − hx1,2i, obey hX1X2i = 0. In non–commutative probability, the m non–commutative random variables
+(random matrices) x1, . . . , xm are called “free” if their demeaned versions Xj ≡ xj − hxji satisfy
+
+hp1 (Xj1 ) . . . pn (Xjn )i = 0,
+
+(39)
+
+for all positive integers n, all polynomials p1, . . . , pn, and all indices j1, . . . , jn = 1, . . . , m such that j1 6= j2 6= . . . 6= jn.
+For example, if x1 and x2 are free, there will be hx2
+2i, i.e., just like for independent classical variables,
+but also hx1x2x1x2i = hx2
+2i − hx1i2hx2i2, much diﬀerently than in the commutative situation. In
+other words, the mixed moments of free non–commutative random variables generally do not factorize into separate
+moments, as it is the case for independence. Freeness is therefore a much more involved property. To give a practical
+summary, let us state that random matrices drawn from factorized distributions exhibit (asymptotically, i.e., when
+their sizes tend to inﬁnity) freeness. (Borrowing a picture from physics, we may say that freeness is equivalent to
+planarity in the limit of a large number of colors in ﬁeld theory [75, 76].)
+
+1ihx2i2 + hx1i2hx2
+
+2i = hx2
+
+1ihx2
+
+1x2
+
+Freeness is a relevant idea because the problem of adding two free non–commutative random variables, x1 + x2,
+can be solved in a way analogous to its classical counterpart. Without any proofs (which are not very complicated
+but lengthy), we will just describe the resulting procedure:
+
+Step 1: The moments of the free random matrices, x1 and x2, are conveniently encoded in the Green’s functions
+
+Gx1(z) and Gx2 (z) (29), (30).
+
+Step 2: The Green’s functions are inverted functionally to obtain the respective Blue’s functions Bx1(z) and Bx2(z)
+
+(34).
+
+Step 3: The Blue’s functions obey the “non–commutative addition law,”
+
+Bx1+x2(z) = Bx1(z) + Bx2 (z) −
+
+1
+z
+
+,
+
+for free x1, x2.
+
+(40)
+
+(Equivalently, this means that the R–transforms are additive, Rx1+x2(z) = Rx1(z) + Rx2(z). Trivially, the free
+cumulants (35) are additive as well, Kx1+x2,n = Kx1,n + Kx2,n. Let us also mention, for the readers familiar
+with the Feynman diagrammatic techniques, that the additivity of the R–transform can be explained in terms
+of the additivity of the self–energy.)
+
+Step 4: Invert functionally Bx1+x2(z) to ﬁnd the Green’s function of the sum, Gx1+x2 (z), and subsequently, its mean
+
+spectral density ρx1+x2(λ) through the Sokhotsky formula (33).
+
+We recognize that it parallels the classical construction: the Green’s function is an analog of the characteristic
+function (36), functional inversion and forming the R–transform replaced taking the logarithm (37), and the addition
+law is a direct generalization of the classical one (38). The correspondence between the classical probability calculus
+and matrix probability calculus (FRV) is thus summarized in the following chart:
+
+14
+
+characteristic function
+
+PDF
+↓
+↓
+↓
+
+↔
+↔
+↔
+↔
+
+spectral density
+
+Green’s function
+
+↓
+↓
+↓
+
+logarithm of characteristic function
+
+R–transform
+
+additivity for independent variables
+
+additivity for free variables
+
+(41)
+
+A closely related problem is how to deduce a composition law for the multiplication of free random matrices. The
+distribution of a product of independent random variables is not widely discussed in textbooks on classical probability
+theory, since it can be derived from the relation exp x1 exp x2 = exp(x1 + x2), which reduces the multiplication problem
+to the addition one by a change of variables. However, this is not the case for random matrices, which do not
+commute: in general, exp x1 exp x2 6= exp(x1 + x2). This notwithstanding, there exists [26] a transformation (called
+the “S–transformation”) which allows one to calculate the resolvent of a product of free random matrices x1x2 from
+the resolvents of each separate term, just like there is the R–transformation for the sum. Again without proofs, the
+multiplication algorithm is:
+
+Step 1: The moments of the free random matrices, x1 and x2, are conveniently encoded in the moments’ generating
+
+functions Mx1(z) and Mx2(z) (32).
+
+Step 2: The moments’ generating functions are inverted functionally to obtain the respective N –transforms Nx1(z)
+
+and Nx2(z) (34).
+
+Step 3: The N –transforms obey the “non–commutative multiplication law,”
+
+Nx1x2(z) =
+
+z
+
+1 + z
+
+Nx1(z)Nx2(z),
+
+for free x1, x2.
+
+(42)
+
+(Equivalently, this means that the so–called “S–transforms,” Sx(z) ≡ (1 + z)/(zNx(z)), are multiplicative,
+Sx1x2(z) = Sx1(z)Sx2(z).)
+
+Step 4: Invert functionally Nx1x2(z) to ﬁnd the moments’ generating function of the product, Mx1x2(z), and subse-
+
+quently, its Green’s function and mean spectral density.
+
+Let us close with a few comments:
+
+• There is a one–to–one correspondence between classical and free random variables, which in particular allows
+one to map probability densities of random variables into the corresponding eigenvalues’ densities of large free
+random matrices [77].
+
+• Also, one can deﬁne the analog of the concept of stability [78], which in the FRV calculus assumes the form of
+
+spectral stability.
+
+• A consequence of the above two observations is that the eigenvalues’ distribution of a properly normalized sum of
+many random matrices for which the second spectral moment is ﬁnite tends to a universal limiting distribution
+known in RMT as Wigner’s semicircle law [79]. The Wigner’s distribution in the FRV calculus corresponds to
+the Gaussian distribution in the standard probability calculus.
+
+• Another consequence is that there exists a counterpart of the L´evy stable distributions for FRV. Since large
+random matrices asymptotically represent free random variables, one can expect the existence of large free
+random matrices in the L´evy stability class. We will exploit this fact in a forthcoming publication.
+
+• Recently, it has been proven that FRV exhibits central theorems for extreme values [80], again in a one–to–one
+correspondence with the extreme values’ distributions known in classical probability from the Fisher–Tippet
+theorem, i.e., the Fr´echet, Weibull and Gumbel distributions.
+
+• For completeness, let us also mention that FRV can also generate dynamical stochastic processes [81–83], alike
+Gaussian distributions generate random walks in classical probability. We will not discuss them in this work,
+restricting our attention to stationary properties of FRV only.
+
+15
+
+B. The Uncorrelated Wishart Ensemble From FRV
+
+1. The Estimator c for C = 1N and A = 1T
+
+As a ﬁrst display of the eﬃciency of the FRV method, we re–derive the Green’s function (equivalently, the
+moments’ generating function; consequently, the density) of the so–called uncorrelated Wishart ensemble [46], that
+is, the random matrix c (22) in which C = 1N and A = 1T has been set,
+
+c =
+
+a =
+
+1
+
+T eReRT,
+
+1
+
+N eRTeR,
+
+with the uncorrelated Gaussian probability distribution PG.(eR) (21). These are the Pearson estimators of the cross–
+
+covariance and auto–covariance matrices, respectively, with the trivial underlying covariance structure Cia,jb = δij δab.
+We hope that this short, simple, and entirely algebraic calculation of the result which is relatively well–known in the
+quantitative ﬁnance community (the Marˇcenko–Pastur distribution [45]), but found previously only with aid of more
+involved tools (such as the planar diagrammatic expansion or the replica trick), will convince the reader about the
+obvious advantages of the FRV calculus.
+
+We will show that the N –transform of c, for any value of r > 0, reads
+
+Nc(z) =
+
+(1 + z)(1 + rz)
+
+z
+
+,
+
+(44)
+
+which after functional inversion (solving a quadratic equation; the proper one of the two solutions is chosen so to
+satisfy (31), which implies the minus sign before the principal square root) yields the moments’ generating function
+(which we will not print), and upon using (32), also the Green’s function,
+
+(43)
+
+(45)
+
+(46)
+
+The Sokhotsky formula (33) then ﬁnally leads to the celebrated Marˇcenko–Pastur spectral density,
+
+Gc(z) =
+
+,
+
+where
+
+2rz
+
+z + r − 1 −p(z − λ+) (z − λ−)
+ρc(λ) = p(λ+ − λ) (λ − λ−)
+
+2πrλ
+
+,
+
+λ± ≡(cid:0)1 ± √r(cid:1)2
+
+.
+
+for
+
+λ ∈ [λ−, λ+] .
+
+2. The Duality
+
+Before we proceed to the derivation, it is important to express in a quantitative way the relation (a “duality”)
+between c and a announced already in par. I D 1; this argumentation is valid for arbitrary C and A. Indeed, the
+moments satisfy Mc,n = rn−1Ma,n, for any n ≥ 1 and regardless of the value of r > 0, due to the cyclic property of
+the trace (and Mc,0 = Ma,0 = 1). In terms of their generating functions, and consequently the Green’s functions, this
+relation reads
+
+Ma(z) = rMc(rz),
+
+or equivalently
+
+Ga(z) = r2Gc(rz) +
+
+1 − r
+z
+
+.
+
+(47)
+
+These formulae can obviously be inverted to yield c in terms of a: it amounts to simultaneously exchanging c ↔ a,
+C ↔ A and r ↔ 1/r. Also, they remain intact even when the measure is not Gaussian, and even when the moments
+do not exist; in this case, a proof features a simple algebraic manipulation using the deﬁnition of the Green’s function
+(29). As mentioned before, (47) means that the information carried by c and a is equivalent, and we may safely forget
+about one of them, say a. Also, we will use (47) in the following.
+
+3. An FRV Derivation of (44)
+
+16
+
+We will now present a purely algebraic computation [84, 85] of the N –transforms of both the uncorrelated Wishart
+
+matrices c and a (43) based on the multiplication property of the N –transform for free random matrices (42).
+
+It is convenient to start from assuming N ≤ T (i.e., r ≤ 1) and considering the random T × T matrix (1/T )eRTeR.
+The following trick is exploited in order to work with square matrices instead of rectangular: We introduce a square T ×
+T random matrix X with real uncorrelated Gaussian entries, PG.(X) ∝ exp(−(1/2)Pab X 2
+ab) = exp(−(1/2)TrXTX).
+Next, we use the projector
+
+P ≡ diag (1N , 0T−N ) ,
+
+(48)
+
+to cut from X an N × T rectangle, eR0 ≡ PX. More precisely, this is a square T × T matrix whose all the entries are
+zero but the “upper” N × T rectangle. This rectangle may be called eR, since all its entries are uncorrelated Gaussian
+
+random variables. Hence,
+
+(49)
+
+1
+
+T eRTeR =
+
+1
+
+T eRT
+0 eR0 =
+
+1
+T
+
+XTPX.
+
+Furthermore, thanks to the cyclic property of the trace, all the moments of this matrix are equal to the moments
+of (1/T )PXXT, so also their N –transforms coincide. Now, this is a product of two free matrices, P and (1/T )XXT,
+therefore, the multiplication law (42) allows to write
+
+N 1
+T
+
+XTPX(z) = N 1
+
+T
+
+PXXT (z) =
+
+z
+
+1 + z
+
+NP(z)N 1
+T
+
+XXT(z).
+
+The N –transform of the projector is easily computed,
+
+NP(z) = 1 +
+
+r
+z
+
+,
+
+(50)
+
+(51)
+
+because all its moments MP,n = (1/T )TrPn = (1/T )TrP = r, n ≥ 1, hence MP(z) = r/(z − 1), whose functional
+inversion is the above.
+
+It remains therefore to ﬁnd the N –transform of (1/T )XXT. We recognize that this is an uncorrelated Wishart
+random matrix with r = 1; in other words, the projector trick and the FRV multiplication law reduced the problem
+with an arbitrary r to solving the r = 1 case. Now, this simpliﬁed problem is handled by noticing that the spectral
+properties of the r = 1 Wishart ensemble are equivalent to that of the squared Gaussian Orthogonal Ensemble
+(GOE). The argumentation is more clear in the case of complex entries in X; and at the leading order in the large–T
+limit there is no diﬀerence between the real and complex versions. Namely, X can be decomposed as a sum of its
+Hermitian and anti–Hermitian parts, X = H1 + iH2, which implies TrXX† = Tr(H2
+2). This means that the
+Gaussian measure for X factorizes, i.e., H1 and H2 are two independent Hermitian random matrices (GUEs). More
+generally, Tr(XX†)n = Tr(H2
+2)n, for any integer n ≥ 1, hence the random matrix XX† is equivalent to a sum of
+two squared GUEs. Returning to real matrices, and taking into account the corresponding rescaling of the variance,
+we arrive at the conclusion that
+
+1 + H2
+
+1 + H2
+
+The spectral properties of the square of a matrix are related to those of the matrix by a simple algebraic manipu-
+lation, 1/(z21T − H2) = (1/(z1T − H) + 1/(z1T + H))/2z, which implies, in the relevant situation when all the odd
+moments vanish,
+
+N 1
+
+T
+
+XXT(z) = NGOE2(z).
+
+(52)
+
+The moments’ generating function of the GOE is well–known and given by the Wigner’s formula [79],
+
+MH2(cid:0)z2(cid:1) = MH(z).
+
+(53)
+
+(54)
+
+MGOE(z) =
+
+z
+
+2(cid:16)z −pz2 − 4(cid:17) − 1.
+
+These ingredients (52), (53), (54) assembled together lead to the N –transform of the r = 1 uncorrelated Wishart,
+
+N 1
+
+T
+
+XXT (z) =
+
+(1 + z)2
+
+z
+
+.
+
+(55)
+
+Plugging (51) and (55) into (50), and using (49), ﬁnally yields
+
+N 1
+
+T
+
+eRT eR(z) =
+
+(1 + z)(r + z)
+
+z
+
+,
+
+17
+
+(56)
+
+which we recall has been derived for r ≤ 1. The scaling relation NgH(z) = gNH(z), true for any random matrix H
+and non–zero complex constant g, implies further that
+
+Moreover, the cyclic property of the trace applied in these formulae provides us with
+
+N 1
+
+N
+
+eRT eR(z) =
+
+(1 + z)(r + z)
+
+rz
+
+.
+
+and
+
+N 1
+
+T
+
+eR eRT(z) =
+
+(1 + z)(1 + rz)
+
+z
+
+N 1
+N
+
+eR eRT(z) =
+
+(1 + z)(1 + rz)
+
+rz
+
+,
+
+.
+
+(57)
+
+(58)
+
+(59)
+
+Although we originally assumed that r ≤ 1, we observe that (56) and (59) transform into each other as we exchange
+for any r > 0. This completes the derivation, since (58) is the desired N –transform of c (44).
+
+r ↔ 1/r and eR ↔ eRT, as do (57) and (58); this is precisely the duality (47). It means that all these results hold true
+
+C. The Doubly Correlated Wishart Ensemble From FRV
+
+1. The Estimator c for Arbitrary C and A (the Main Result)
+
+In this
+
+subsection, which constitutes
+
+the
+
+bly correlated Wishart
+
+csym.(d) = (1/T )√CeR√ADsym.(d)√AeRT√C (25), and show how a back–of–an–envelope calculation, founded upon
+
+the FRV multiplication law (42), leads to expressions for the N –transforms of these estimators; through functional
+inversions, these expressions will yield equations for the moments’ generating functions of c and csym.(d), which in
+turn carry the full information about the spectral properties of these estimators.
+
+random matrix c = (1/T )√CeRAeRT√C (22), as well as
+
+central piece of our work, we will
+its
+
+consider
+the dou-
+time–lagged version
+
+The N –transform of the estimator c in the case of arbitrary underlying covariance matrices will be found in
+
+par. II C 3 to be
+
+In other words, this is an equation for the moments’ generating function M ≡ Mc(z),
+
+z = rM NA(rM )NC(M ).
+
+Nc(z) = rzNA(rz)NC(z).
+
+(60)
+
+(61)
+
+A few comments are in place:
+
+• When C is arbitrary, but there are no auto–covariances, A = 1T , we have NA(z) = 1 + 1/z, hence equation
+
+(61) becomes
+
+M = MC(cid:18)
+
+z
+
+1 + rM(cid:19) .
+
+(62)
+
+• A similar simpliﬁcation occurs when A is arbitrary, but there are no cross–covariances, C = 1N , in which case
+
+rM = MA(cid:18)
+
+z
+
+r(1 + M )(cid:19) .
+
+(63)
+
+2. The Estimator csym.(d) for Arbitrary C and A
+
+18
+
+A one–line computation presented in par. II C 4 leads from (60) to a formula for the N –transform of the time–
+
+lagged estimator csym.(d), since the latter is a version of the former with a modiﬁed auto–covariance matrix A,
+
+Ncsym.(d) (z) =
+
+r2z2
+1 + rz
+
+NDsym.(d) (rz)NA(rz)NC(z).
+
+Equivalently, this is an equation obeyed by the moments’ generating function M ≡ Mcsym.(d) (z),
+
+z =
+
+r2M 2
+1 + rM
+
+NDsym.(d) (rM )NA(rM )NC(M ),
+
+(64)
+
+(65)
+
+In par. II C 4 we derive an explicit expression for the Green’s function of the symmetrized delay matrix Dsym.(d)
+
+(24), which allows to ﬁnd its N –transform. Recalling that t ≡ T /d is an integer ≥ 2, there is
+
+GDsym.(d=T /t)(z) =
+
+1
+t
+
+tX˙a=1
+
+1
+
+z − cos π ˙a
+
+t+1
+
+for t even,
+
+for t odd.
+
+(66)
+
+1
+
+z2−cos2 πl
+
+t+1
+
+=
+
+2z
+
+t Pt/2
+
+tz + 2z
+
+1
+
+1
+
+t+1
+
+l=1
+
+z2−cos2 πl
+l=1
+
+t P(t−1)/2
+
+Notice that this result (66) does not depend on T or d separately, but only on their ratio t. In particular, it remains
+true in the limit
+
+T → ∞,
+
+d → ∞,
+
+such that
+
+t = ﬁxed,
+
+(67)
+
+in which we have a very long time series divided into a ﬁxed number of very long lags. Such a situation may be
+ﬁnancially relevant: Indeed, a natural choice for the lag d would be the scale τ of the true temporal correlations existing
+in the system (in the units of δt). And for example, if one assumes that the proper description of heteroscedasticity
+is through the I–GARCH(1) process with the parameter α (see par. I C 2), there appears a characteristic time τ =
+−1/ log α. A ﬁnancially justiﬁed limit (99), which we discuss later, can then be taken in which τ ∼ T ; hence, (67)
+seems to be able to probe a relevant regime.
+
+Another interesting limit would be of a very long time series with a ﬁnite time lag,
+
+in which case the sum in (66) can be approximated by an integral,
+
+T → ∞,
+
+t → ∞,
+
+such that
+
+d = ﬁxed,
+
+GDsym.(d=fixed) (z) =Z 1
+
+0
+
+dx
+
+1
+
+z − cos(πx)
+
+=
+
+1
+
+√z2 − 1
+
+,
+
+hence,
+
+NDsym.(d=fixed) (z) =
+
+(68)
+
+.
+
+(69)
+
+1 + z
+
+pz(2 + z)
+
+(This can be checked to be equivalent to the inﬁnite symmetrized delay matrix with d = 1, i.e., with the “nearest–
+neighbor” delay. A ﬁnite d compared to an inﬁnite T is just like d = 1. We remark that (69) may as well be obtained
+through the method sketched in par. III A 1.) Equation (65) acquires the form
+
+z = rMr rM
+
+2 + rM
+
+NA(rM )NC(M ).
+
+(70)
+
+Formally,
+
+it is equivalent to the corresponding one for the usual estimator c (61) with the substitution
+
+z → zp1 + 2/(rM ). Let us however print some of its special cases:
+
+• When there are no underlying covariances, C = 1N and A = 1T , (70) becomes a fourth–order polynomial
+
+(Ferrari) equation for M ,
+
+r2M 4 + 2r(1 + r)M 3 +(cid:0)1 + 4r + r2 − z2(cid:1) M 2 + 2(cid:18)1 + r −
+
+It coincides with the result presented without proof in [70].
+
+z2
+
+r (cid:19) M + 1 = 0.
+
+(71)
+
+• For C arbitrary and A = 1T ,
+
+• For A is arbitrary and C = 1N ,
+
+M = MC  z
+
+1 + rMr1 +
+
+2
+
+rM! .
+
+rM = MA 
+
+z
+
+r(1 + M )r1 +
+
+2
+
+rM! .
+
+3. An FRV Derivation of (60)
+
+19
+
+(72)
+
+(73)
+
+The idea behind the following proof is to reduce the problem in the case of arbitrary underlying covariance matrices
+C and A to the uncorrelated version (solved in par. II B 3) by successive use of the cyclic property of the trace and
+the FRV multiplication formula for the N –transforms (42). Indeed, the cyclic property allows to write
+
+Being a product of two free random matrices, the multiplication law gives further
+
+Nc(z) = N 1
+T
+
+eRA eRTC(z) = . . . .
+
+. . . =
+
+z
+
+1 + z
+
+N 1
+T
+
+eRA eRT(z)NC(z) = . . . .
+
+Again, the cyclic property applied to the ﬁrst of these matrices implies
+
+. . . =
+
+z
+
+1 + z
+
+N 1
+T
+
+eRT eRA(rz)NC(z) = . . . ,
+
+(74)
+
+(75)
+
+(76)
+
+where the argument rz appeared because the cyclic shift changed an N ×N matrix into a T ×T one, which accordingly
+rescaled the moments. The ﬁrst N –transform here is of a product of two free random matrices, hence further
+
+. . . =
+
+z
+
+rz
+
+1 + z
+
+1 + rz
+
+N 1
+T
+
+eRT eR(rz)NA(rz)NC(z) = . . . .
+
+(77)
+
+In this way, exploiting twice the cyclic property of the trace and twice the FRV multiplication law, the problem has
+been boiled down to the uncorrelated case, solved in (56), which ﬁnally produces the announced result (60),
+
+. . . = rzNA(rz)NC(z),
+
+(78)
+
+equivalent to equation (61) for Mc(z).
+
+Let us make a few comments:
+
+• The method is remarkably simpler than other known approaches (planar Feynman diagrams, the replica trick).
+Equation (61) has been found through diagrammatics in [23, 25], and even earlier, in the case of A = 1T ,
+in [21, 22].
+
+• It does not rely on the existence of the moments.
+• It is not speciﬁed to Gaussian randomness. In particular, it may be extended to the more general instance of
+
+the L´evy randomness.
+
+• It can be generalized to longer strings of free random matrices.
+• It is valid (as is the entire FRV calculus) only in the thermodynamical limit (18) of N , T large with r = N/T
+ﬁxed. For ﬁnite values of N , T , there will in general be ﬁnite–size corrections O(1/N p), where p depends on the
+type of randomness.
+
+4. An FRV Derivation of (64) and (66)
+
+20
+
+As stated in par. I D 2, the estimator of the symmetrized time–delayed cross–covariance matrix csym.(d) (25) has
+
+the same form as the usual estimator c (22), only with a modiﬁed true auto–covariance matrix, A → √ADsym.(d)√A.
+
+Therefore, the formula (64) for the N –transform of csym.(d) is proven by using the result (60) for c with this modiﬁcation
+included. Now, the N –transform for the modiﬁed underlying auto–covariance matrix is obtained through the cyclic
+property of the trace and the FRV multiplication law,
+
+N√ADsym.(d)√A(z) = NDsym.(d)A(z) =
+
+z
+
+1 + z
+
+NDsym.(d) (z)NA(z),
+
+(79)
+
+which readily justiﬁes (64).
+
+ab
+
+The obstacle we are facing at this point is to evaluate the N –transform of the symmetrized delay matrix
+Dsym.(d)
+= (1/2)(δa+d,b + δa−d,b) (24). This is a symmetric T × T matrix, and we recall that the lag d is an in-
+teger such that t ≡ T /d is an integer ≥ 2; as for now, these numbers are ﬁnite. For this purpose, the delay matrix
+should be diagonalized.
+
+First, we remark that Dsym.(d) can be regarded as a t× t block matrix, with blocks of size d× d, each proportional
+to the unit matrix 1d, and the block matrix having the structure of the so–called “nearest–neighbor delay matrix,”
+which is Dsym.(d=1) but of size t × t, Dn.n.(t)
+
+˙a˙b
+
+≡ (1/2)(δ ˙a+1,˙b + δ ˙a−1,˙b), ˙a, ˙b = 1, . . . , t. Concisely,
+Dsym.(d) = Dn.n.(t) ⊗ 1d.
+
+We infer from (80) that the eigenvalues of Dsym.(d) are just the eigenvalues of Dn.n.(t), denote them by λn.n.(t)
+one taken d times. Consequently,
+
+˙a
+
+(80)
+
+, each
+
+(81)
+
+GDsym.(d) (z) =
+
+1
+td
+
+tX˙a=1
+
+d
+
+z − λn.n.(t)
+
+˙a
+
+=
+
+1
+t
+
+tX˙a=1
+
+1
+
+z − λn.n.(t)
+
+˙a
+
+= GDn.n.(t) (z).
+
+i.e., the two Green’s functions are equal. The task is thus reduced to diagonalizing the t × t nearest–neighbor delay
+matrix.
+
+This can be done analytically. For simplicity, consider the nearest–neighbor delay matrix without the prefactor 1/2,
+2Dn.n.(t). Its characteristic determinant, D(t)(γ) ≡ Det(2Dn.n.(t) − γ1d), is straightforwardly computed inductively
+w.r.t. t by expanding w.r.t. the ﬁrst row, D(t)(γ) = −γD(t−1)(γ) − D(t−2)(γ), for t ≥ 2, where we assume D(0)(γ) ≡ 1.
+This recurrence relation (which generates the Fibonacci series) can be solved for example by the generating function
+technique [86], and gives
+
+D(t)(γ) =
+
+1
+
+s2 − s1(cid:18) 1
+1 −
+st+1
+
+1
+
+2 (cid:19) ,
+
+st+1
+
+(82)
+
+where s1, s2 are the two roots of the quadratic equation 1 + γs + s2 = 0, and we must constrain s1 6= s2 (i.e., |γ| 6= 2),
+since it can be veriﬁed that otherwise there are no solutions to the characteristic equation. The characteristic equation
+D(t)(γ) = 0 is therefore equivalent to
+
+(83)
+If s1, s2 were real (i.e., |γ| > 2), this would imply s1 = s2, which is impossible. Hence, there must be |γ| < 2, and s1,
+s2 complex and mutually conjugate,
+
+2
+
+st+1
+1 = st+1
+
+.
+
+s1,2 = −
+
+γ
+
+2 ± ip4 − γ2
+
+2
+
+= e±iφ,
+
+where
+
+tan φ = −p4 − γ2
+
+γ
+
+,
+
+φ ∈ [−π, π).
+
+(84)
+
+Then (83) means that s1/s2 is a (t + 1)–th root of unity; there are (t + 1) such roots, but we must exclude the one
+equal to 1, so there remain t roots, and the characteristic equation becomes
+
+s1
+s2
+
+= exp
+
+2πi ˙a
+t + 1
+
+,
+
+for
+
+˙a = 1, . . . , t.
+
+Comparing (84) and (85) ﬁnally provides the eigenvalues of the t × t nearest–neighbor delay matrix,
+
+λn.n.(t)
+˙a
+
+= cos
+
+π ˙a
+t + 1
+
+,
+
+for
+
+˙a = 1, . . . , t.
+
+The formula for the Green’s function (66) is then immediately recovered.
+
+(85)
+
+(86)
+
+III. EXAMPLES
+
+A. An Exponentially Decaying Auto–Covariance
+
+1.
+
+Introduction: Inﬁnite Translationally–Invariant Matrices
+
+21
+
+In this subsection, we will choose a particular model for the underlying auto–covariance matrix A. It will have
+one generic feature, “translational invariance,” which means that the value of a matrix element depends only on the
+distance between its indices, and not on their separate values,
+
+Such a dependence is natural for a matrix describing temporal correlations between measurements. Moreover, we will
+consider A to be inﬁnite, such that its indices range over both positive and negative values, a, b ∈ Z.
+
+Aab = A(a − b).
+
+(87)
+
+There exists a convenient framework for dealing with inﬁnite matrices (not necessarily fulﬁlling (87)):
+
+it is to
+perform the Fourier transformation of the matrix’ indices a, b, replacing them in this way with continuous variables
+p, q ∈ [−π, π),
+
+ei(ap−bq)Aab,
+
+or conversely,
+
+Aab =
+
+dpdqe−i(ap−bq) ˆA(p, q).
+
+(88)
+
+1
+
+4π2Z π
+
+−πZ π
+
+−π
+
+For instance, the Kronecker delta δab is mapped to the Dirac delta 2πδ(p− q), and matrix multiplication is translated
+to the integration 1
+−π dp(. . .). In particular, the Fourier transform (88) of a translationally–invariant (87) matrix
+is proportional to the Dirac delta and reads
+
+ˆA(p, q) ≡ Xa,b∈Z
+2πR π
+
+ˆA(p, q) = 2πδ(p − q) ˆA(p),
+
+where
+
+eidpA(d)
+
+or conversely,
+
+A(d) =
+
+dpe−idp ˆA(p).
+
+(89)
+Knowing the Fourier transform ˆA(p) allows to evaluate the moments’ generating function of the matrix A. Indeed,
+consider the matrix GA ≡ 1/(z1T − A). In other words, GA(z1T − A) = 1T . After the Fourier transformation, this
+equation can be solved as follows, ˆGA(p, q) = 2πδ(p − q)/(z − ˆA(q)). Transforming back,
+
+ˆA(p) ≡Xd∈Z
+
+1
+
+2πZ π
+
+−π
+
+−π
+and taking trace yields the Green’s function of A,
+
+[GA]ab =
+
+dpe−ip(a−b)
+
+1
+
+1
+
+2πZ π
+
+GA(z) =
+
+1
+T
+
+TrGA = [GA](0) =
+
+z − ˆA(p) ≡ [GA](a − b),
+2πZ π
+
+z − ˆA(p)
+
+−π
+
+dp
+
+1
+
+1
+
+,
+
+(90)
+
+(91)
+
+where we made use of the property (1/T )TrB = B(0), true for a translationally–invariant T × T (T → ∞) matrix B.
+Finally,
+
+MA(z) =
+
+1
+
+2πZ π
+
+−π
+
+dp
+
+ˆA(p)
+z − ˆA(p)
+
+.
+
+(92)
+
+2. An Exponentially Decaying A and an Arbitrary C
+
+Let us now assume a particular translationally–invariant model of temporal covariances, namely, an exponential
+
+decay,
+
+Aab = A(a − b) ≡ e−|a−b|/τ ,
+
+(93)
+
+2.5
+
+2.0
+
+Τ = 8
+
+Τ = 4
+Τ = 2
+
+Τ = 1
+
+Τ = 0
+
+1.5
+
+1.0
+
+0.5
+
+0.0
+
+r = 0.2
+
+1.0
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0.0
+
+22
+
+r = 0.2
+
+Τ = 2
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+2.0
+
+2.5
+
+3.0
+
+FIG. 1: LEFT: The theoretical eigenvalue density of the empirical cross–covariance matrix c for N → ∞ identical normally
+distributed degrees of freedom, mutually uncorrelated but exponentially correlated in time (93), for r = 0.2 and τ = 0, 1, 2, 4, 8.
+RIGHT: A comparison of the theoretically predicted eigenvalue density with a Monte–Carlo–generated spectrum, for N = 100,
+r = 0.2, τ = 2, obtained by diagonalizing 4000 matrices. Finite–size eﬀects appear only at the edges of the spectrum.
+
+where τ is a correlation time (in the units of the elementary time step δt), and it will be convenient to denote
+γ ≡ coth(1/τ ). It is a natural model, aiming for example at sketching the temporal behavior described in par. I C 1.
+
+We start from calculating the Fourier transform (89) of A,
+
+which leads (92) to its moments’ generating function and N –transform,
+
+ˆA(p) =
+
+1 − e−2/τ
+
+1 − 2e−1/τ cos p + e−2/τ ,
+
+MA(z) =
+
+1
+
+p1 − 2γz + z2
+
+,
+
+hence,
+
+NA(z) = γ +rγ2 − 1 +
+
+1
+z2 .
+
+Let the true cross–covariance matrix C be completely arbitrary. The pertinent equation for the moments’ gen-
+erating function of the estimator c, M ≡ Mc(z), is (61), and for the exponentially decaying A (93) it assumes the
+form
+
+(94)
+
+(95)
+
+(96)
+
+(97)
+
+For example, if C = 1N , (96) becomes a fourth–order polynomial (Ferrari) equation,
+
+M = MC 
+
+z
+
+rγM +pr2 (γ2 − 1) M 2 + 1! .
+
+r2M 4 + 2r(r − γz)M 3 +(cid:0)z2 − 2rγz + r2 − 1(cid:1) M 2 − 2M − 1 = 0.
+
+This result has been derived by diagrammatic methods in [23]. It can be appropriated numerically to yield M = Mc(z),
+translated next to the Green’s function (32), and ﬁnally to the mean spectral density (33), plotted in ﬁg. 1.
+
+As mentioned before, if we want to consider instead the symmetrized time–lagged estimator csym.(d), in the limit
+
+(68), the resulting equation will diﬀer from (96) only by formally replacing z → zp1 + 2/(rM ), so we will not print
+
+it explicitly. Then, for C = 1N , an eight–order polynomial equation is found.
+
+B. The Exponentially Weighted Moving Average
+
+As extensively explained in par. I C 2 and I D 3, an implication of assuming that the heteroscedasticity is modeled
+by the I–GARCH(1) process, is that one should use a weighted estimator for the cross–covariance matrix (27) with
+the EWMA scheme (14),
+
+Wab ≡ T
+
+1 − α
+1 − αT αa−1δab.
+
+(98)
+
+Here α ∈ [0, 1] is a constant, typically close to 1 (for example, α = 0.94 in RiskMetrics 1994 [63, 64]), and we will
+actually consider the following double–scaling limit,
+
+N, T → ∞,
+
+α → 1−,
+
+such that
+
+r =
+
+N
+T
+
+= ﬁxed,
+
+β ≡ T (1 − α) = ﬁxed.
+
+(99)
+
+In this limit, the range of the EWMA suppression τ = −1/ log α ∼ 1/(1 − α) ∼ T . (Note that the deﬁnition of β
+diﬀers from the one used in [35], and is more natural for relating the time cutoﬀ τ to the length of the time series T .)
+
+The moments’ generating function of W can be explicitly calculated in the limit (99),
+
+23
+
+MW(z) =
+
+1
+T
+
+TXa=1
+
+1
+
+z
+
+T wa − 1
+
+=
+
+1
+T
+
+TXa=1
+
+=Xn≥1
+
+zn(cid:0)1 − αT(cid:1)n(cid:0)1 − α−nT(cid:1)
+T n+1 (1 − α)n (α−n − 1) − 1 =Xn≥1
+
+1
+z(1−αT )
+T (1−α)αa−1 − 1
+
+T n+1(1 − α)n
+
+zn(cid:0)1 − αT(cid:1)n
+T−1Xa′=0
+= −Xn≥1
+α−a′n − 1 =
+r(cid:19)n(cid:18)1 −(cid:16)1 − rβ
+r (cid:19)
+zn(cid:18)1 −(cid:16)1 − rβ
+N(cid:17) N
+N(cid:17)− nN
+r N(cid:18)(cid:16)1 − β
+− 1(cid:19)
+N(cid:17)−n
+
+βn
+
+− 1 = . . . ,
+
+which for N → ∞ (capturing the double–scaling limit after everything has been expressed through N , r, β) simpliﬁes
+to
+
+. . . =Xn≥1
+
+zn(cid:0)1 − e−β(cid:1)n(cid:0)1 − eβn(cid:1)
+
+βn+1n
+
+− 1 = −1 +
+
+1
+β
+
+log
+
+Inverting it functionally yields the N –transform,
+
+NW(z) = β
+
+eβ(1+z) − 1
+
+(eβ − 1) (eβz − 1)
+
+.
+
+β(cid:0)eβ − 1(cid:1) z
+
+β (1 − e−β) z
+
+1 − 1
+1 − 1
+
+.
+
+(100)
+
+(101)
+
+Let us assume that the underlying cross–covariance matrix C is arbitrary, and there are no auto–covariances,
+A = 1T . Then, the weighted estimator cEWMA (27) is the doubly correlated Wishart random matrix with the
+covariance matrices C and W, respectively. Having derived the N –transform of the latter (101), we may write
+equation (61) for the moments’ generating function M ≡ McEWMA (z),
+
+In particular, for C = 1N , this acquires the form
+
+M = MC  z(cid:0)eβ − 1(cid:1)(cid:0)eβrM − 1(cid:1)
+rβM(cid:0)eβ(1+rM) − 1(cid:1)! .
+rβ(1 + M )(cid:0)eβ(1+rM) − 1(cid:1)
+
+(eβ − 1) (eβrM − 1)
+
+z =
+
+.
+
+(102)
+
+(103)
+
+It is an entangled equation. In ﬁg. 2, we present its numerical solution for r = 0.2 and diﬀerent values of β: Since
+a general eﬀect of exponential weighting is to eﬀectively reduce the length of the sample (short memory), hence,
+increasing β amounts to increasing the noise–to–signal ratio r, which results in broadening of the spectrum.
+
+In order to compare (103) with the results known from literature, we rewrite it as an expression for the Blue’s
+
+function (34) of c,
+
+Bc(z) =
+
+1
+
+z 1 −
+
+1
+rβ
+
+log 1 −
+
+eβ−1!! ,
+
+rβz
+1 − rβz
+
+(104)
+
+which is slightly more general than the one recently obtained in [35, 61], where the authors ﬁrst took the limit r → 0,
+before taking the double–scaling limit (99), and here we have an arbitrary r. Having a ﬁnite r allows us to consistently
+consider the limit β → 0, which reproduces the Marˇcenko–Pastur spectrum,
+
+Bc(z) →
+
+1
+z
+
++
+
+1
+
+1 − rz
+
+,
+
+as
+
+β → 0.
+
+(105)
+
+ 6
+
+ 4
+
+)
+λ
+(
+ρ
+π
+
+ 
+
+ 2
+
+β=10
+
+β=3
+
+β=1
+
+β=0
+
+ 4
+
+)
+λ
+(
+ρ
+π
+
+ 
+
+r=0.2
+
+ 2
+
+24
+
+analytical
+numerical
+
+r=0.2
+β=5
+
+ 0
+
+ 0
+
+ 1
+
+ 2
+
+λ
+
+ 3
+
+ 4
+
+ 0
+
+ 0
+
+ 5
+
+ 1
+
+ 2
+λ
+
+ 3
+
+ 4
+
+FIG. 2: LEFT: The spectral density for r = 0.2 and β = 0, 1, 3, 10.
+RIGHT: Comparison of the theoretical prediction for the mean spectral density from (103) with numerical calculations, for
+r = 0.2, β = 5, with N = 100, T = 500, α = 0.99, over 1000 samples.
+
+The limit r → 0 also exists, deﬁning the pole of the Green’s function at 1, independently of β. To recover the ﬁndings
+of [35, 61], we deﬁne q ≡ rβ and take r → 0 with q ﬁxed,
+e−q/r
+
+1
+
+as
+
+r → 0,
+
+q = ﬁxed,
+
+(106)
+
+Bc(z) →
+
+log(1 − qz) −
+
+q
+
+z(cid:18)1 −
+
+1
+q
+
+(1 + qz)(cid:19) ,
+
+with the ﬁrst two terms reproducing [35, 61], and the third term converging exponentially fast toward zero. Equation
+(104) is also useful to obtain the support of the underlying spectrum; following [40, 73], the endpoints are deﬁned as
+
+The problem, for generic r and β, may only be solved numerically; the dependence of the upper and lower endpoints
+of the support is shown in ﬁg 3.
+
+x∗ = Bc (z∗) ,
+
+where
+
+B′c (z∗) = 0.
+
+(107)
+
+IV. CONCLUSIONS
+
+Equation (61) generalizes the standard result for the eigenvalue density of large–dimensional empirical covariance
+matrices to the case of simultaneous “vertical” and “horizontal” covariances. This set–up, however simpliﬁed, does
+capture many real–life problems. For example, the “vertical” covariances can be interpreted as between degrees of
+freedom present on ﬁnancial markets, and the “horizontal” ones as temporal between the measured samples. Equation
+(61) provides an elegant solution to the task of estimation of the covariance matrix from historical ﬁnancial time series,
+in a variety of ways (Pearson, time–delayed, weighted) and under diverse circumstances (with temporal correlations
+between the volatilities or between the residual returns, with nontrivial inter–asset correlations). Furthermore, our
+method has also a natural interpretation in terms of information theory, for the multiple–input–multiple–output
+(MIMO) systems in wireless telecommunication, where the “vertical” correlations are in the input and the “horizontal”
+ones in the output. Being very general and natural, this description is certainly extendable to other problems in more
+than few areas of science.
+
+We attempted to introduce to the reader, in a pedagogical and practical fashion, a powerful machinery of the free
+random variables calculus, which is a non–commutative version of classical probability theory. It ushers in tools, based
+on the notion of freeness (which is non–commutative independence), which are ﬁt to handle, in a purely algebraic and
+
+25
+
+102
+
+101
+
+100
+
+r=0.3
+r=0.8
+
+*
+
+x
+
+10-1
+
+10-2
+
+10-3
+
+10-4
+
+ 0
+
+ 2
+
+ 4
+
+rβ
+
+ 6
+
+ 8
+
+ 10
+
+FIG. 3: The endpoints of the support of the mean spectrum as a function of β, for r = 0.3, 0.8.
+
+remarkably simple way, the setting of multivariate data displaying both mentioned types of covariances, without any
+recourse to other better known techniques of random matrix theory. Not only so, but there exist very straightforward
+paths to generalize FRV to situations where many of the standard RMT methods are limited, such as of heavy–tailed
+multivariate distributions.
+
+We hope that this paper will have a sizable impact on the quantitative ﬁnance community, communicating the
+potential which lies in FRV and encouraging its applications to modeling and analyzing of ﬁnancial data under involved
+conditions encountered in real–world problems.
+
+Acknowledgments
+
+We thank A. G¨orlich, R. A. Janik and B. Wac law for many interesting discussions on the subject.
+
+This work was supported by the Marie Curie ToK project “COCOS,” No. MTKD–CT–2004–517186, the EC–RTN
+Network “ENRAGE,” No. MRTN–CT–2004–005616, and the Polish Ministry of Science Grant No. N N202 229137
+(2009–2012). AJ acknowledges the support of Clico Ltd.
+
+[1] Markowitz H., Portfolio Selection, The Journal of Finance 7 (1952) 77.
+[2] Galluccio
+
+J.–P.,
+
+Potters M., Rational Decisions, Random Matrices
+
+S., Bouchaud
+[arXiv:cond-mat/9801209].
+
+and Spin Glasses
+
+[3] Bouchaud J.–P., Potters M., Theory of Financial Risk and Derivative Pricing: From Statistical Physics to Risk Manage-
+
+ment, Cambridge University Press, 2003.
+
+[4] Burda Z., G¨orlich A., Wac law B., Spectral properties of empirical covariance matrices for data with power–law tails, Phys.
+
+Rev. E 74 (2006) 041129 [arXiv:physics/0603186].
+
+[5] Biroli G., Bouchaud J.–P., Potters M., The Student ensemble of correlation matrices: eigenvalue spectrum and Kullback–
+
+Leibler entropy, Acta Phys. Pol. B 38 (2007) 4009 [arXiv:0710.0802].
+
+[6] Burda Z., Jurkiewicz J., Heavy–tailed random matrices, to appear in The Handbook of Random Matrix Theory, Oxford
+
+University Press [arXiv:0909.5228].
+
+[7] Laloux L., Cizeau P., Bouchaud J.–P., Potters M., Noise Dressing of Financial Correlation Matrices, Phys. Rev. Lett. 83
+
+(1999) 1467 [arXiv:cond-mat/9810255].
+
+26
+
+[8] Plerou V., Gopikrishnan P., Rosenow B., Amaral L. A. N., Stanley H. E., Universal and non–universal properties of
+
+cross–correlations in ﬁnancial time series, Phys. Rev. Lett. 83 (1999) 1471 [arXiv:cond-mat/9902283].
+
+[9] Laloux L., Cizeau P., Potters M., Bouchaud J.–P., Random Matrix Theory and Financial Correlations, Int. J. Theor. App.
+
+Finance 3 (2000) 391.
+
+[10] Plerou V., Gopikrishnan P., Rosenow B., Amaral L. A. N., Guhr T., Stanley H. E., A Random Matrix Approach to
+
+Cross–Correlations in Financial Data, Phys. Rev. E 65 (2002) 066126 [arXiv:cond-mat/0108023].
+
+[11] Dro˙zd˙z S., Kwapie´n J., Gr¨ummer F., Ruf F., Speth J., Quantifying dynamics of the ﬁnancial correlations, Physica A 299
+
+(2001) 144 [arXiv:cond-mat/0102402].
+
+[12] Lillo F., Mantegna R. N., Noise dressing of the correlation matrix of factor models [arXiv:cond-mat/0305546].
+[13] Repetowicz P., Richmond P., The Wick theorem for non–Gaussian distributions and its application for noise ﬁltering of
+
+correlated q–Exponentialy distributed random variables [arXiv:math-ph/0411020].
+
+[14] Utsugi A.,
+
+Ino K., Oshikawa M., Random Matrix Theory Analysis of Cross Correlations in Financial Markets
+
+[arXiv:cond-mat/0312643].
+
+[15] Pafka S., Kondor I., Noisy Covariance Matrices and Portfolio Optimization, Eur. Phys. J. B 27 (2002) 277
+
+[arXiv:cond-mat/0111503].
+
+[16] Pafka S., Kondor I., Noisy Covariance Matrices and Portfolio Optimization II, Physica A 319 (2003) 487
+
+[arXiv:cond-mat/0205119].
+
+[17] Pafka S., Kondor I., Estimated Correlation Matrices and Portfolio Optimization, Physica A 343 (2004) 623
+
+[arXiv:cond-mat/0305475].
+
+[18] Papp G., Pafka S., Nowak M. A., Kondor I., Random Matrix Filtering in Portfolio Optimization, Acta Phys. Pol. B 36
+
+(2005) 2757 [arXiv:physics/0509235].
+
+[19] Guhr T., K¨alber B., A new method to estimate the noise in ﬁnancial correlation matrices, J. Phys. A 36 (2003) 3009.
+[20] Malevergne Y., Sornette D., Collective origin of the coexistence of apparent random matrix theory noise and of factors in
+
+large sample correlation matrices, Physica A 331 (2004) 660.
+
+[21] Burda Z., G¨orlich A., Jarosz A., Jurkiewicz J., Signal and Noise in Correlation Matrix, Physica A 343 (2004) 295
+
+[arXiv:cond-mat/0305627].
+
+[22] Burda Z., Jurkiewicz J., Signal and Noise in Financial Correlation Matrices, Physica A 344 (2004) 67
+
+[arXiv:cond-mat/0312496].
+
+[23] Burda Z., Jurkiewicz J., Wac law B., Spectral Moments of Correlated Wishart Matrices, Phys. Rev. E 71 (2005) 026111
+
+[arXiv:cond-mat/0405263].
+
+[24] Burda Z., G¨orlich A., Jurkiewicz J., Wac law B., Correlated Wishart Matrices and Critical Horizons, Eur. Phys. J. B 49
+
+(2006) 319 [arXiv:cond-mat/0508341].
+
+[25] Burda Z., Jurkiewicz J., Wac law B., Eigenvalue density of empirical covariance matrix for correlated samples, Acta Phys.
+
+Pol. B 36 (2005) 2641 [arXiv:cond-mat/0508451].
+
+[26] Voiculescu D. V., Dykema K. J., Nica A., Free Random Variables, CRM Monograph Series, Vol. 1, Am. Math. Soc.,
+
+Providence, 1992.
+
+[27] Speicher R., Multiplicative functions on the lattice of non–crossing partitions and free convolution, Math. Ann. 298 (1994)
+
+611.
+
+[28] Burda Z., Janik R. A., Jurkiewicz J., Nowak M. A., Papp G., Zahed I., Free Random L´evy Matrices, Phys. Rev. E 65
+
+(2002) 021106 [arXiv:cond-mat/0011451].
+
+[29] Burda Z., Jurkiewicz J., Nowak M. A., Papp G., Zahed I., L´evy Matrices and Financial Covariances, Acta Phys. Pol. B
+
+34 (2003) 4747 [arXiv:cond-mat/0103108].
+
+[30] Burda Z., Jurkiewicz J., Nowak M. A., Papp G., Zahed I., Free L´evy Matrices and Financial Correlations, Physica A 343
+
+(2004) 694 [arXiv:cond-mat/0103109].
+
+[31] Burda Z., Jurkiewicz J., Nowak M. A., Papp G., Zahed I., Free Random L´evy Variables and Financial Probabilities, Physica
+
+A 299 (2001) 181 [arXiv:cond-mat/0103140].
+
+[32] Burda Z., Jurkiewicz J., Nowak M. A.,
+
+Is Econophysics a Solid Science?, Acta Phys. Pol. B 34 (2003) 87
+
+[arXiv:cond-mat/0301096].
+
+[33] Burda Z., Jurkiewicz J., Nowak M. A., Papp G., Zahed I., Random L´evy Matrices Revisited, Phys. Rev. E 75 (2007)
+
+051126 [arXiv:cond-mat/0602087].
+[34] Nowak M. A., unpublished talks at:
+
+Exystence, Budapest, June 2004.
+Noise in Condensed Matter and Complex Systems, Citta del Mare, July 2004.
+Applications of Random Matrices to Economy and Other Complex Systems, Krak´ow, May 2005.
+
+[35] Potters M., Bouchaud J.–P., Laloux L., Financial Applications of Random Matrix Theory: Old Laces and New Pieces,
+
+Acta Phys. Pol. B 36 (2005) 2767 [arXiv:physics/0507111].
+
+[36] Bouchaud J.–P., Potters M., Financial Applications of Random Matrix Theory: a short review, to appear in The Handbook
+
+of Random Matrix Theory, Oxford University Press [arXiv:0910.1205].
+
+[37] Bouchaud J.–P., Laloux L., Augusta Miceli M., Potters M., Large dimension forecasting models and random singular value
+
+spectra, Eur. Phys. J. B 55 (2007) 201 [arXiv:physics/0512090].
+
+[38] Neu P., Speicher R., Spectra of Hamiltonians with generalized single–site dynamical disorder, Z. Phys. B 95 (1994) 101.
+[39] Gopakumar R., Gross D., Mastering the master ﬁeld, Nucl. Phys. B 451 (1995) 379.
+[40] Janik R. A., Nowak M. A., Papp G., Zahed I., Various Shades of Blue’s Functions, Acta Phys. Pol. B 28 (1997) 2949,
+
+and references therein.
+
+27
+
+[41] Tse D. N. C., Hanly S. V., Linear multiuser receivers: eﬀective interference, eﬀective bandwidth and user capacity, IEEE
+
+Trans. Inf. Theor. 45 (1999) 641.
+
+[42] M¨uller R. R., A random matrix model of communication via antenna arrays, IEEE Trans. Inf. Theor. 48 (2002) 2495.
+[43] Tulino A. M., Verd´u S., Random Matrix Theory and Wireless Communications, Found. and Trends in Comm. and Inf.
+
+Theory 1 (2004) 1.
+
+[44] Simon S. H., Moustakas A. L., Eigenvalue density of correlated complex random Wishart matrices, Phys. Rev. E 69 (2004)
+
+065101.
+
+[45] Marˇcenko V. A., Pastur L. A., Distribution of Eigenvalues for Some Sets of Random Matrices, Math. USSR Sb. 1 (1967)
+
+457.
+
+[46] Wishart J., The Generalized Product Momemnt Distribution in Samples from a Normal Multivariate Population, Biometrika
+
+A 20 (1928) 32.
+
+[47] Sharpe W. F., Capital asset prices: A theory of market equilibrium under conditions of risk, Journal of Finance 19 (1964)
+
+425.
+
+[48] Brinner B. G., Connor G., How much structure is best? A comparison of market model, factor model and unstructured
+
+equity covariance matrices, The Journal of Risk 10 (2008) 3.
+
+[49] Noh J. D., Model for correlations in stock markets, Phys. Rev. E 61 (2000) 5981.
+[50] Tumminello M., Lillo F., Mantegna R. N., Hierarchically nested factor model from multivariate data, Europhys. Lett. 78
+
+(2007) 30006 [arXiv:cond-mat/0511726].
+
+[51] Baik J., Ben Arous G., P´ech´e S., Phase transition of the largest eigenvalue for non–null complex sample covariance matrices,
+
+Ann. Probab. 33 (2005) 1643 [arXiv:math/0403022].
+
+[52] Zumbach G., The RiskMetrics 2006 methodology, RiskMetrics Group Inc., March 2007 [http://www.riskmetrics.com].
+[53] Epps T., Comovement of stock prices in the very short run, J. Am. Stat. Assoc. 74 (1979) 291.
+[54] Bonanno G., Vandewalle N., Mantegna R. N., Taxonomy of Stock Market Indices, Phys. Rev. E 62 (2000) R7615
+
+[arXiv:cond-mat/0001268].
+
+[55] T´oth B., T´oth B., Kert´esz J., Modeling the Epps eﬀect of cross correlations in asset prices, Proc. SPIE 6601 (2007) 66010J
+
+[arXiv:0704.3798].
+
+[56] T´oth B., Kert´esz J., The Epps eﬀect revisited [arXiv:0704.1099].
+[57] Engle R. F., Autoregressive Conditional Heteroscedasticity with Estimates of Variance of United Kingdom Inﬂation, Econo-
+
+metrica 50 (1982) 987.
+
+[58] Engle R. F., Bollerslev T., Modelling the persistence of conditional variances, Econometric Reviews 5 (1986) 1.
+[59] Bollerslev T., Generalized autoregressive conditional heteroskedasticity, Journal of Econometrics 31 (1986) 307.
+[60] Hull J. C., Options, Futures, and Other Derivatives, Prentice Hall, Seventh International Edition, 2008.
+[61] Pafka S., Potters M., Kondor I., Exponential Weighting and Random–Matrix–Theory–Based Filtering of Financial Covari-
+
+ance Matrices for Portfolio Optimization [arXiv:cond-mat/0402573].
+
+[62] Svensson J., The asymptotic spectrum of the EWMA covariance estimator, Physica A 385 (2007) 621.
+[63] J. P. Morgan & Reuters, RiskMetrics — Technical Document, RiskMetrics Group Inc., Fourth Edition, December 1996
+
+[http://www.riskmetrics.com].
+
+[64] Mina J., Xiao J. Y., Return to RiskMetrics: The Evolution of a Standard, RiskMetrics Group Inc., April 2001
+
+[http://www.riskmetrics.com].
+
+[65] Zumbach G., Volatility processes and volatility forecast with long memory, Quantitative Finance 4 (2004) 70.
+[66] Zumbach G., The Empirical Properties of Large Covariance Matrices, The RiskMetrics Journal 9 (2009) 31.
+[67] Silverstein J. W., Bai Z. D., On the Empirical Distribution of Eigenvalues of a Class of Large Dimensional Random
+
+Matrices, Journal of Multivariate Analysis 54 (1995) 175.
+
+[68] Silverstein J. W., Bai Z. D., Spectral Analysis of Large Dimensional Random Matrices, Science Press, Beijing, 2006.
+[69] Thurner S., Biely C., The Eigenvalue Spectrum of Lagged Correlation Matrices, Acta Phys. Pol. B 38 (2007) 4111.
+[70] Mayya K. B. K., Amritkar R. E., Analysis of delay correlation matrices [arXiv:cond-mat/0601279].
+[71] Mehta M. L., Random Matrices, Elsevier Ltd., 2004.
+[72] Eynard B., Random Matrices, lecture notes, 2000 [Saclay-T01/014, CRM-2708].
+[73] Zee A., Law of addition in random matrix theory, Nucl. Phys. B 474 (1996) 726 [arXiv:cond-mat/9602146].
+[74] Feller W., An Introduction to Probability Theory and Its Applications, Vols. 1 and 2, John Wiley & Sons, Inc.
+[75] Cvitanovi´c P., Lauwers P. G., Scharbach P. N., The planar sector of ﬁeld theories, Nucl. Phys. B 203 (1982) 385.
+[76] ’t Hooft G., A planar diagram theory for strong interactions, Nucl. Phys. B 72 (1974) 461.
+[77] Bercovici H., Pata V., Stable laws and domains of attraction in free probability theory, Ann. of Math. 149 (1999) 1023;
+
+appendix by Biane P.
+
+[78] Bercovici H., Voiculescu D. V., Free Convolution of Measures with Unbounded Support, Ind. Univ. Math. J. 42 (1993) 733.
+[79] Wigner E. P., Characteristic vectors of bordered matrices with inﬁnite dimensions, Ann. Math. 62 (1955) 548.
+[80] Ben Arous G., Voiculescu D. V., Free extreme values, Annals of Probability 34 (2006) 2037 [arXiv:math/0501274].
+[81] Biane P., Speicher R., Free diﬀusions, free entropy and free Fisher information, Annales de l’Institut Henri Poincar´e B 37
+
+(2001) 581.
+
+[82] Janik R. A., Wieczorek W., Multiplying unitary random matrices — universality and spectral properties, J. Phys. A 37
+
+(2004) 6521 [arXiv:math-ph/0312043].
+
+[83] Gudowska–Nowak E., Janik R. A., Jurkiewicz J., Nowak M. A., On diﬀusion of large matrices, New J. Phys. 7 (2005) 54.
+[84] Janik R. A., Nowak M. A., Papp G., Wambach J., Zahed I., Non–Hermitian random matrix models: Free random variable
+
+approach, Phys. Rev. E 55 (1997) 4100 [arXiv:hep-ph/9609491].
+
+[85] Voiculescu D. V., Limit laws for random matrices and free products, Invent. Math. 104 (1991) 201.
+[86] Graham R., Knuth D., Patashnik O., Concrete Mathematics: A Foundation for Computer Science, Addison–Wesley, 1994.
+
+28
+
+

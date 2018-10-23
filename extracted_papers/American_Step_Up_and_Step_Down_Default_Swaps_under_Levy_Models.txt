@@ -1,0 +1,4167 @@
+2
+1
+0
+2
+
+ 
+
+p
+e
+S
+6
+1
+
+ 
+
+ 
+ 
+]
+
+.
+
+R
+P
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+4
+v
+4
+3
+2
+3
+
+.
+
+2
+1
+0
+1
+:
+v
+i
+X
+r
+a
+
+.
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS UNDER L ´EVY MODELS*
+
+TIM S.T. LEUNG† AND KAZUTOSHI YAMAZAKI‡
+
+ABSTRACT. This paper studies the valuation of a class of default swaps with the embedded option to switch
+to a different premium and notional principal anytime prior to a credit event. These are early exercisable
+contracts that give the protection buyer or seller the right to step-up, step-down, or cancel the swap position.
+The pricing problem is formulated under a structural credit risk model based on L´evy processes. This leads
+to the analytic and numerical studies of several optimal stopping problems subject to early termination due
+to default. In a general spectrally negative L´evy model, we rigorously derive the optimal exercise strategy.
+This allows for instant computation of the credit spread under various speciﬁcations. Numerical examples
+are provided to examine the impacts of default risk and contractual features on the credit spread and exercise
+strategy.
+
+Keywords: optimal stopping; credit default swaps; step-up and step-down options; L´evy processes; scale func-
+tions
+JEL Classiﬁcation: G13, G33, D81, C61
+Mathematics Subject Classiﬁcation (2010): 60G51 91B25 91B70
+
+1. INTRODUCTION
+
+Credit default swaps (CDSs) are among the most liquid and widely used instruments for managing and trans-
+ferring credit risks. Despite the recent market turbulence, their market size still exceeds US$30 trillions1. In a
+standard single-name CDS, the protection buyer pays a pre-speciﬁed periodic premium (the CDS spread) to the
+protection seller to cover the loss of the face value of an asset if the reference entity defaults before expiration.
+The contract stipulates that both the buyer and seller have to commit to their respective positions until the default
+time or expiration date. To modify the initial CDS exposure in the future, one common way is to acquire appropri-
+ate positions later from the market, but it is subject to credit spread ﬂuctuations and market illiquidity, especially
+during adverse market conditions.
+
+To provide additional ﬂexibility to investors, credit default swaptions and other derivatives on CDSs have
+emerged. For instance, the payer (receiver) default swaption is a European option that gives the holder the right to
+
+Date: Accepted: September 6, 2012. First submission: December 25, 2010.
+† IEOR Department, Columbia University, New York NY 10027, USA. Email: leung@ieor.columbia.edu.
+‡ Center for the Study of Finance and Insurance, Osaka University, 1-3 Machikaneyama-cho, Toyonaka City, Osaka 560-8531, Japan. Email:
+
+k-yamazaki@sigmath.es.osaka-u.ac.jp .
+
+*The authors would like to thank Prof. Goran Peskir and the anonymous referees for reading the draft and for their helpful remarks and suggestions.
+This work is partially supported by NSF grant DMS-0908295, by Grant-in-Aid for Young Scientists (B) No. 22710143, the Ministry of Education, Culture,
+Sports, Science and Technology, and by Grant-in-Aid for Scientiﬁc Research (B) No. 2271014, Japan Society for the Promotion of Science.
+
+1According to the ISDA Market Survey, the total CDS outstanding volume in 2009 is US$30,428 billions.
+
+1
+
+2
+
+T. LEUNG AND K. YAMAZAKI
+
+buy (sell) protection at a pre-speciﬁed strike spread at expiry, given that default has not occurred. Otherwise, the
+swaption is knocked out. See, for example, [25]. By appropriately combining a default swaption with a vanilla
+CDS position, one can create a callable or putable default swap. A callable (putable) CDS allows the protection
+buyer (seller) to terminate the contract at some ﬁxed future date. Hence, as described here, the callable/putable
+CDSs are in fact cancellable CDSs. Typically, the callable feature is paid for through incremental premium on top
+of the standard CDS spread, so selling a callable CDS can enhance the yield from the seller’s perspective.
+
+In this paper, we consider a class of default swaps embedded with an option for the investor (protection buyer or
+seller) to adjust the premium and notional amount once for a pre-speciﬁed fee prior to default. Speciﬁcally, these
+non-standard contracts equip the standard default swaps with the early exercisable rights such as (i) the step-up
+option that allows the investor to increase the protection and premium at exercise, and (ii) the step-down option to
+reduce the protection and premium. By deﬁnition, these contracts are indeed generalized versions of the callable
+and putable CDSs mentioned above, and thus are more ﬂexible credit risk management tools. Henceforth, we shall
+use the more general meaning of the terminology callable and putable default swaps, rather than limiting them to
+cancellable CDSs.
+
+The main contribution of our paper is to determine the credit spread for these default swaps under a L´evy
+model, and analyze the optimal strategy for the buyer or seller to exercise the step-up/down option. Speciﬁcally,
+we model the default time as the ﬁrst passage time of a L´evy process representing some underlying asset value.
+We decompose the default swap with step-up/down option into a combination of an American-style credit default
+swaption and a vanilla default swap. From the investor’s perspective, this gives rise to an optimal stopping problem
+subject to possible sudden early termination from default risk. Our formulation is based on a general L´evy process,
+and then we solve analytically for a general spectrally negative L´evy process. By employing the scale function and
+other properties of L´evy processes, we derive analytic characterization for the optimal exercising strategy. This
+in turn allows for a highly efﬁcient computation of the credit spread for these contracts. We provide a series of
+numerical examples to illustrate the credit spread behavior and optimal exercising strategy under various contract
+speciﬁcations and scenarios.
+
+We adopt a L´evy-based structural credit risk model that extends the original approach introduced by Black
+and Cox [10] where the asset value follows a geometric Brownian motion. Other structural default models based
+on L´evy and other jump processes can also be found in [12, 22, 44]. To our best knowledge, the valuation of
+American step-up and step-down default swaps has not been studied elsewhere. For L´evy-based pricing models
+for other credit derivatives, such as European credit default swaptions and collateralized debt obligations (CDOs),
+we highlight [3, 17, 27], among others.
+
+L´evy processes have been widely applied in derivatives pricing. Some well-known examples of L´evy pricing
+models include the variance gamma (VG) model [36], the normal inverse Gaussian (NIG) model [7], the CGMY
+model [14] as well as a number of jump diffusion models (see [29, 37]). In this paper, instead of focusing on a
+particular type of L´evy process, we consider a general class of L´evy processes with only negative jumps. This is
+called the spectrally negative L´evy process and has been drawing much attention recently, as a generalization of
+the classical Cram´er-Lundberg and other compound-Poisson type processes. A number of ﬂuctuation identities
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+3
+
+can be expressed in terms of the scale function and are used in a number of applications. We refer the reader to
+[1, 5] for derivatives pricing, [32] for optimal capital structure, [8, 9] for stochastic games, [6, 31, 35] for optimal
+dividend problem, and [19] for optimal timing of capital reinforcement. For a comprehensive account, see [30].
+
+A key part of our analysis focuses on a non-standard American option subject to default risk (see Proposition
+2.1). We discuss both the perpetual and ﬁnite-maturity cases. The former is related to some existing work on
+perpetual early exercisable options under various L´evy models, for example [2, 5, 11, 34, 38]. The inﬁnite horizon
+nature provides signiﬁcant convenience for analysis and sometimes leads to explicit solutions. Working under a
+general spectrally negative L´evy model, we provide analytic results for the timing strategies and contract values.
+For numerical examples, we select the phase-type (and hyperexponential) ﬁtting approach by Egami and Yamazaki
+[18] to illustrate the cases when the process is a mixture of Brownian motion and a compound Poisson process
+with Pareto-distributed jumps. We then apply our formulation and results to study the ﬁnite-maturity case. For
+ﬁnite-maturity American options under L´evy models, the pricing problem typically requires numerical solutions
+to the underlying partial integral differential equation (PIDE), or other simulation methods; see, among others,
+[4, 24, 26]. In our paper, we illustrate how to approximate the ﬁnite-maturity case using our analytical solutions to
+the perpetual case.
+
+The rest of the paper is organized as follows. In Section 2, we formulate the default swap valuation problems
+under a general L´evy model. In Section 3, we focus on the spectrally negative L´evy model and provide a complete
+solution and detailed analysis. Section 4 provides the numerical results. In Section 5, we apply the results to the
+ﬁnite-maturity case. Section 6 concludes the paper and presents some extensions of our model. Most proofs are
+included in the Appendix.
+
+2. PROBLEM OVERVIEW
+
+Let (Ω,F, P) be a complete probability space, where P is the risk-neutral measure used for pricing. We assume
+there exists a L´evy process X = {Xt; t ≥ 0}, and denote by F = (Ft)t≥0 the ﬁltration generated by X. The value
+of the reference entity (a company stock or other assets) is assumed to evolve according to an exponential L´evy
+process St = eXt, t ≥ 0. Following the Black-Cox [10] structural approach, the default event is triggered by S
+crossing a lower level D, so the default time is given by the ﬁrst passage time: θD := inf{ t ≥ 0 : Xt ≤ log D }.
+Without loss of generality, we can take log D = 0 by shifting the initial value x. Henceforth, we shall work with
+the default time:
+
+θ := inf{ t ≥ 0 : Xt ≤ 0},
+
+where we assume inf ∅ = ∞. Throughout this paper, we denote by Px the probability law and Ex the expectation
+under which X0 = x.
+
+2.1. Credit Default Swaps and Swaptions. In preparation for default swaps with step-up/down options, let us
+start with the basic concepts of credit default swaps and swaptions. Under a T -year CDS on a unit face value,
+the protection buyer pays a constant premium payment $p continuously over time until default time θ or maturity
+T , whichever comes ﬁrst. If default occurs before T , the buyer will receive the default payment α := 1 − R at
+
+4
+
+T. LEUNG AND K. YAMAZAKI
+
+time θ, where R is the assumed constant recovery rate (typically 40%). From the buyer’s perspective, the expected
+discounted payoff is given by
+
+(2.1)
+
+¯C(x, T ; p, α) := Ex
+
+e−rtp dt + αe−rθ1{θ≤T}
+
+,
+
+(cid:20)
+
+−
+
+(cid:90) θ∧T
+
+0
+
+(cid:21)
+
+where r > 0 is the positive constant risk-free interest rate. The quantity ¯C(x, T ; p, α) can be viewed as the market
+price for the buyer to enter (or long) a CDS with an agreed premium p, default payment α and maturity T . On the
+opposite side of the trade, the protection seller’s expected cash ﬂow is − ¯C(x, T ; p, α) = ¯C(x, T ;−p,−α) ∈ R.
+In standard practice, the CDS spread ¯p is determined at inception such that ¯C(x, T ; ¯p, α) = 0, yielding zero
+
+expected cash ﬂows for both parties. Direct calculations show that the credit spread can be expressed as
+
+ζT (x) := Ex(cid:104)
+
+(cid:105)
+
+e−rθ1{θ≤T}
+
+.
+
+(2.2)
+
+¯p(x, T ; α) =
+
+α r ζT (x)
+
+1 − ζT (x) − e−rT Px{θ > T} , where
+
+For most L´evy models, due to the lack of explicit formulas, the computation of the CDS spread is based on
+simulation or other approximation methods (see, for example, [12]). Alternatively, one can consider the perpetual
+case as an approximation and to obtain analytic or explicit bounds. This is a popular approach adopted for equity
+derivatives, especially American options, for which the ﬁnite-maturity contracts do not admit closed-form solutions
+while the perpetual versions often do (see [11, 34, 38] for some examples under L´evy models).
+
+To illustrate, we set T = +∞ and express the buyer’s CDS price as
+
+(2.4)
+The seller’s CDS price is −C(x; p, α) = C(x;−p,−α) ∈ R. Solving C(x; p, α) = 0 yields the credit spread:
+
+.
+
+(2.5)
+
+p(x; α) =
+
+α r ζ(x)
+1 − ζ(x)
+
+.
+
+Therefore, the credit spread calculation reduces to computing the Laplace transform ζ(x), which admits an explicit
+analytic formula under some well-known L´evy models (see (3.5) below for the spectrally negative case). It is clear
+from (2.5) that the CDS spread scales linearly in α: p(x; α) = α p(x; 1).
+
+Next, we introduce a perpetual American payer and receiver default swaptions, which give the holder the right
+to, respectively, buy and sell protection on a perpetual CDS with default payment a at a pre-speciﬁed spread κ for
+the strike price K upon exercise. If default occurs prior to exercise, then the swaption is knocked out and becomes
+worthless. The payer and receiver swaption holder is required to pay an upfront fee, which is given by respectively
+
+(2.6)
+
+(2.7)
+
+v(x; κ, a, K) := sup
+τ∈S
+u(x; κ, a, K) := sup
+τ∈S
+
+Ex(cid:2)e−rτ (C(Xτ ; κ, a) − K)+ 1{τ <θ}(cid:3) ,
+Ex(cid:2)e−rτ (−C(Xτ ; κ, a) − K)+ 1{τ <θ}(cid:3) ,
+
+and
+
+(2.3)
+
+where
+
+C(x; p, α) := Ex
+
+(cid:21)
+
+−
+
+(cid:20)
+(cid:90) θ
+(cid:17)
+(cid:16) p
+ζ(x) := Ex(cid:104)
+
++ α
+
+r
+
+0
+
+=
+
+e−rtp dt + α e−rθ
+ζ(x) − p
+r
+
+,
+
+e−rθ(cid:105)
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+5
+
+where
+
+(2.8)
+is the set of all F-stopping times smaller than or equal to the default time. The two price functions are related by
+
+S := {F-stopping time τ : τ ≤ θ a.s. }
+
+v(x; κ, a, K) = u(x;−κ,−a, K).
+
+(2.9)
+In summary, v(x; κ, a, K) is the payer default swaption price when κ, a ≥ 0, and it is the receiver default swaption
+price when κ, a ≤ 0.
+Remark 2.1. We remark that the perpetual American payer and receiver default swaptions introduced above are
+non-standard option contracts, but they bear similarity to the traditional European-style default swaptions. In
+Section 5, we will discuss the ﬁnite-maturity version of these contracts.
+
+2.2. American Callable Step-Up and Step-Down Default Swaps. Next, we consider a default swap contract
+with an embedded option that permits the protection buyer to change the face value and premium once for a fee.
+We discuss the perpetual case here, and the ﬁnite-maturity case in Section 5. Beginning from initiation, the buyer
+pays a premium p for a protection of a unit face value. At any time prior to default, the buyer can select a time
+τ to switch to a new contract with a new premium ˆp and face value q for a fee γ ≥ 0. The default payment then
+changes from α to ˆα = qα after the exercise time τ. Here, p, α, ˆp, ˆα, and γ are constant non-negative parameters
+pre-speciﬁed at time zero. The buyer’s maximal expected cash ﬂow is given by
+(2.10)
+
+(cid:18)
+
+(cid:90) θ
+
+τ
+
+−
+
+(cid:19)(cid:21)
+e−rt ˆp dt − e−rτ γ1{τ <θ} + e−rθ(ˆα1{τ <θ} + α1{τ =θ})
+
+,
+
+V (x; p, ˆp, α, ˆα, γ)
+
+(cid:20)
+
+(cid:90) τ
+
+0
+
+Ex
+
+−
+
+e−rtp dt + 1{τ <∞}
+
+:= sup
+τ∈S
+
+with S deﬁned in (2.8).
+
+This formulation covers default swaps with the following provisions:
+
+(1) Step-up Option: if ˆp > p and ˆα > α, then the buyer is allowed to increase the coverage once from α to ˆα
+
+by paying the fee γ and a higher premium ˆp thereafter.
+
+(2) Step-down Option: when ˆp < p and ˆα < α, then the buyer can reduce the coverage once from α to ˆα by
+
+paying the fee γ and a reduced premium ˆp thereafter.
+
+(3) Cancellation Right: as a special case of the step-down option with ˆp = ˆα = 0, the resulting contract
+
+allows the buyer to terminate the default swap at time τ.
+
+In addition, the perpetual vanilla CDS corresponds to the case with γ = 0, p = ˆp and α = ˆα, and the CDS spread is
+given by (2.5). We ignore the contract speciﬁcations with (ˆp− p)(ˆα− α) ≤ 0 since they would mean paying more
+(less) premium in exchange for a reduced (increased) protection after exercise. In summary, we study the valuation
+of the (perpetual) American callable step-up/down default swaps. For any ﬁxed parameters (p, ˆp, α, ˆα, γ), the
+value V (x) is referred to as the buyer’s price, so the seller’s price is −V (x). The credit spread p∗ is determined
+from the equation V (x; p∗, ˆp, α, ˆα, γ) = 0 so that no cash transaction occurs at inception.
+
+6
+
+T. LEUNG AND K. YAMAZAKI
+
+In preparation for our solution procedure, we ﬁrst provide a useful representation of the buyer’s value V . Deﬁne
+
+(2.11)
+
+˜α := α − ˆα and
+
+˜p := p − ˆp.
+
+Here, ˜α > 0 and ˜p > 0 hold for a step-down default swap and ˜α < 0 and ˜p < 0 for a step-up default swap.
+
+Proposition 2.1. The perpetual American callable step-up/down default swap can be decomposed into a perpetual
+vanilla CDS plus a perpetual American payer/receiver swaption. Precisely, we have
+V (x; p, ˆp, α, ˆα, γ) = C(x; p, α) + v(x;−˜p,−˜α, γ),
+
+(2.12)
+where C(·) and v(·) are given in (2.3) and (2.6), respectively.
+
+Proof. First, by a rearrangement of integrals, the expression inside the expectation in (2.10) becomes
+
+1{τ <∞}
+
+e−rt ˜p dt −
+
+e−rtp dt − e−rτ γ1{τ <θ} − e−rθ ˜α1{τ <θ} + e−rθα
+
++ 1{τ =∞}
+
+(cid:19)
+
+(cid:18)
+
+−
+
+(cid:90) ∞
+
+(cid:19)
+
+e−rtp dt
+
+0
+
+e−rt ˜p dt − e−rτ γ1{τ <θ} − e−rθ ˜α1{τ <θ}
+
+= 1{τ <∞}
+since τ = ∞ implies θ = ∞ by the deﬁnition of S. Because the last two terms do not depend on τ, we can rewrite
+the buyer’s value function as
+
+e−rtp dt + e−rθα
+
+−
+
+0
+
+τ
+
+(cid:19)
+
+(cid:90) θ
+
+(cid:18)(cid:90) θ
+(cid:18)(cid:90) θ
+
+τ
+
+(cid:20)
+
+(2.13)
+
+V (x) = sup
+τ∈S
+
+(cid:124)
+
+Ex
+
+(cid:90) θ
+
+0
+
+(cid:18)(cid:90) θ
+
+τ
+
+Here, the last two terms in fact constitute C(x; p, α). Next, using the fact {τ < θ, τ < ∞} = {Xτ > 0, τ < ∞}
+for every τ ∈ S and the strong Markov property of X at time τ, we rewrite the ﬁrst term as
+
+(2.14)
+
+with
+
+(2.15)
+
+(cid:18)
+
+Ex
+
+h(x) := 1{x>0}
+
+(cid:20)(cid:90) θ
+
+0
+
+f (x) = sup
+τ∈S
+
+(cid:21)
+
+(cid:19)
+
+= 1{x>0}(cid:0)C(x;−˜p,−˜α) − γ(cid:1).
+
+e−rt ˜p dt − e−rθ ˜α
+
+− γ
+
+Since θ ∈ S and h(Xθ) = 0 a.s. on {θ < ∞}, it follows from (2.14) that f (x) ≥ 0. Therefore, it is never
+optimal to exercise at any τ if h(Xτ ) < 0. Consequently, we can replace h(x) with (h(x))+ in (2.14). As a result,
+with −˜p,−˜α > (<) 0, the function f (x) is indeed the price of a perpetual American payer (receiver) default
+swaption written on the buyer’s (seller’s) CDS price with strike γ ≥ 0. This implies that f (x) = v(x;−˜p,−˜α, γ)
+∀x ∈ R, and therefore (2.12) follows.
+(cid:3)
+
+The decomposition (2.12) in Proposition 2.1 yields a static replication of the American callable step-up/down
+default swap. To this end, one may also verify the result by a no-arbitrage argument. We summarize the buyer’s
+and seller’s positions in the American callable step-up/down default swaps in Table 1. As we shall discuss in
+Section 5 below, this also holds for the ﬁnite-maturity case.
+
+1{τ <∞}
+
+e−rt ˜p dt − e−rτ γ1{τ <θ} − e−rθ ˜α1{τ <θ}
+
+−Ex
+
+e−rtp dt
+
+(cid:20)(cid:90) θ
+
+0
+
+(cid:21)
+
++ α Ex(cid:104)
+
+e−rθ(cid:105)
+
+.
+
+(cid:123)(cid:122)
+
+=:f (x)
+
+(cid:19)(cid:21)
+(cid:125)
+Ex(cid:2)e−rτ h(Xτ )1{τ <∞}(cid:3) ,
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+7
+
+As an illustrative example, let us consider the step-up case where the premium and protection are doubled after
+exercise, i.e. ˆp = 2p and ˆα = 2α. For any candidate exercise time τ, the observable market prevailing vanilla CDS
+spread is given by p(Xτ ; α) in (2.5), and C(Xτ ; p(Xτ ; α), α) = 0 by deﬁnition. Hence, if p(Xτ ; α) ≤ −˜p = p at
+τ, then h(Xτ ) ≤ −γ ≤ 0, and the buyer will not exercise. This is intuitive because the buyer is better off giving
+up the step-up option and doubling his protection by entering a separate CDS at the lower market spread p(Xτ ; α)
+at time τ.
+
+2.3. The American Putable Step-Up and Step-Down Default Swaps. Applying the ideas from the previous
+subsection, we formulate the pricing problem for the perpetual American putable step-up/down default swaps.
+These default swaps allow the protection seller (and not the buyer) to change the protection premium and default
+payment for a fee anytime prior to default. Let p and α be the initial premium and default payment. The seller
+may select a time τ to switch to a new premium ˆp and default payment ˆα for a switching fee γ ≥ 0. The seller’s
+maximal expected cash ﬂow is
+
+(2.16)
+
+U (x; p, ˆp, α, ˆα, γ)
+
+Ex
+
+(cid:20)(cid:90) τ
+(cid:20)
+(cid:20)(cid:90) θ
+
+Ex
+
+0
+
+:= sup
+τ∈S
+
+= sup
+τ∈S
++ Ex
+
+e−rtp dt + 1{τ <∞}
+(cid:18)
+(cid:21)
+
+(cid:90) θ
+− α Ex(cid:104)
+
+e−rθ(cid:105)
+
+−
+
+τ
+
+.
+
+1{τ <∞}
+
+e−rtp dt
+
+(cid:18)(cid:90) θ
+
+τ
+
+(cid:19)(cid:21)
+e−rt ˆp dt − e−rτ γ1{τ <θ} − e−rθ(ˆα1{τ <θ} + α1{τ =θ})
+
+(cid:19)(cid:21)
+
+e−rt ˜p dt − e−rτ γ1{τ <θ} + e−rθ ˜α1{τ <θ}
+
+0
+
+In particular, we will study the American putable default swap with a step-up option (i.e. p < ˆp and α < ˆα) or
+step-down option (i.e. p > ˆp and α > ˆα). Again, the credit spread p∗ is chosen so that the seller’s value function
+is zero, i.e. U (x; p∗, ˆp, α, ˆα, γ) = 0.
+
+Following the procedure in the proof of Proposition 2.1 or by a no-arbitrage argument, we can simplify the
+
+seller’s value U as follows:
+
+Proposition 2.2. The perpetual American putable step-up/down default swap can be decomposed into a short
+perpetual vanilla CDS and a long perpetual American receiver/payer default swaption. Precisely, we have
+
+(2.17)
+where C(·) and u(·) are given in (2.3) and (2.7), respectively.
+
+U (x; p, ˆp, α, ˆα, γ) = −C(x; p, α) + u(x;−˜p,−˜α, γ),
+
+We summarize the buyer’s and seller’s positions in the American putable step-up/down default swaps in Table
+1. To gain intuition on the seller’s exercise decision, let us look at the step-down case where ˆp = 0.5p and
+ˆα = 0.5α. Recall that C(x; p, α) is decreasing in p and C(Xτ , p(Xτ ; α), α) = 0 for any stopping time τ.
+If the market prevailing CDS spread is p(Xτ ; α) ≤ p at some τ, then the seller’s default swaption payoff is
+−C(Xτ ; ˜p, ˜α) − γ ≤ −γ ≤ 0. The seller will not exercise at τ since the protection of 0.5α can be purchased from
+a separate CDS at the lower prevailing spread 0.5p(Xτ ; α) ≤ 0.5p.
+
+8
+
+T. LEUNG AND K. YAMAZAKI
+
+Default Swap Types Protection Buyer’s Position:
+
+Callable Step-Up
+Callable Step-Down
+Putable Step-Up
+Putable Step-Down
+
+Protection Seller’s Position:
+(−) a vanilla CDS and
+(−) an American payer default swaption
+
+(+) a vanilla CDS and
+(+) an American payer default swaption
+(+) an American receiver default swaption (−) an American receiver default swaption
+(−) an American receiver default swaption (+) an American receiver default swaption
+(−) an American payer default swaption
+
+(+) an American payer default swaption
+
+TABLE 1. Positions of American callable/putable step-up/down default swaps and their decom-
+positions ((+)/(−) stands for long/short). The seller’s position is the opposite of the buyer’s.
+These decompositions hold for both the perpetual and ﬁnite-maturity cases (see Propositions 2.1
+and 5.3 below).
+
+2.4. Symmetry Between Callable and Putable Default Swaps. By Propositions 2.1 and 2.2, along with (2.9),
+we observe the following “put-call parity” and symmetry identities:
+
+V (x; p, ˆp, α, ˆα, γ) − U (x; p, 2p − ˆp, α, 2α − ˆα, γ) = 2 C(x; p, α),
+V (x; p, ˆp, α, ˆα, γ) + U (x; p, 2p − ˆp, α, 2α − ˆα, γ) = 2 v(x; ˆp − p, ˆα − α, γ).
+
+The ﬁrst equality means a long position in an American callable step-up (step-down) default swap and a short
+position in an American putable step-down (step-up) default swap result in a double long position in a vanilla
+CDS. From the second equality, a long position in both an American callable step-up (step-down) default swap
+and an American putable step-down (step-up) default swap yields a double long position in an American payer
+(receiver) default swaption. As we see in Section 5, this also holds for the ﬁnite-maturity case.
+
+Furthermore, according to (2.12) and (2.17), the optimal exercise times for V (x) and U (x) are determined from
+v(x) and u(x) which depend on the triplet (˜p, ˜α, γ) but not directly on p and α. Consequently, by (2.9), the same
+optimal exercising strategy applies for both
+
+(1) the protection buyer of an American callable default swap with a step-up (step-down) option with (−˜p,−˜α, γ),
+
+and
+
+(2) the protection seller of an American putable default swap with a step-down (step-up) option with (˜p, ˜α, γ).
+
+This observation means that it sufﬁces to solve for two cases instead of four. Speciﬁcally, we shall solve for (i) the
+buyer’s callable step-down case in (2.12) and (ii) the seller’s putable step-down case in (2.17), both with ˜p > 0 and
+˜α > 0. In view of (2.14) and the proof of Proposition 2.1, this amounts to solving the following optimal stopping
+problems:
+
+(2.18)
+
+(2.19)
+
+v(x) := v(x;−˜p,−˜α, γ) = sup
+τ∈S
+u(x) := u(x;−˜p,−˜α, γ) = sup
+τ∈S
+
+Ex(cid:2)e−rτ h(Xτ )1{τ <∞}(cid:3) ,
+Ex(cid:2)e−rτ g(Xτ )1{τ <∞}(cid:3) ,
+
+where ˜p, ˜α > 0 and
+
+(2.20)
+
+h(x) :=
+
+(cid:18)(cid:18) ˜p
+(cid:18)(cid:18)
+
+(cid:19)
+
+−
+
+(cid:19)
+
+− γ
+
+r
+− ˜p
+r
+
+− γ
+
+(cid:18) ˜p
+(cid:18) ˜p
+
+r
+
+(cid:19)
+
+(cid:19)
+
+(cid:19)
+
+(cid:19)
+
++ ˜α
+
+ζ(x)
+
+1{x>0},
+
+ζ(x)
+
+1{x>0},
+
+(2.21)
++ ˜α
+for x ∈ R. Here, h(x) and g(x) are computed using formula (2.3).
+
+g(x) :=
+
++
+
+r
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+9
+
+˜p
+r
+
+By inspecting (2.18), it follows from (2.20) that h(x) ≤ 0 ∀x ∈ R if γ ≥ ˜p/r. Financially, this means that the
+fee γ to be paid exceeds the maximum beneﬁt of stepping down, i.e. perpetual annuity with premium p− ˆp > 0. It
+is clear that choosing τ = θ is optimal and the protection buyer will never exercise the step-down option. Hence,
+we only need to study the non-trivial case with the condition
+0 ≤ γ <
+
+(2.22)
+
+.
+
+For (2.19), we have g(x) ≤ 0 ∀x ∈ R if g(0+) ≤ 0 because g is decreasing in x on (0,∞). Again, this means
+that θ is automatically optimal for the protection seller. Therefore, we shall focus on the case with g(0+) > 0
+which also implies
+
+(2.23)
+
+0 ≤ γ < ˜α.
+
+The intuition behind this is that the fee should not exceed the reduction in liability.
+
+.
+
+2.5. Solution Methods via Continuous and Smooth Fit. We conclude this section by describing our solution
+procedure for the optimal stopping problems under a general L´evy model. In the next section, we shall focus on
+the spectrally negative L´evy model and derive an analytical solution.
+
+For our ﬁrst problem (2.18), the protection buyer has an incentive to step-down when default is less likely, or
+
+equivalently when X is sufﬁciently high. Following this intuition, we denote the threshold strategy
+
+B := inf {t ≥ 0 : Xt /∈ (0, B)} , B ≥ 0.
+τ +
+
+(2.24)
+
+Clearly, τ +
+
+B ∈ S. The corresponding expected payoff is given by
+)1{τ +
+
+vB(x) := Ex(cid:104)
+
+B h(Xτ +
+
+e−rτ +
+
+(cid:105)
+
+(2.25)
+Note that vB(x) = h(x) = 0 for x ≤ 0. Sometimes it is more intuitive to consider the difference
+
+B <∞}
+
+B
+
+,
+
+x ∈ R.
+
+∆B(x) := vB(x) − h(x),
+
+x ∈ R.
+
+One common solution approach for many optimal stopping problems is continuous and smooth ﬁt (see [39, 41,
+
+42, 43]). Applying to our problem, it involves two main steps:
+
+(a) obtain B∗ that satisﬁes the continuous or smooth ﬁt condition: ∆B∗(B∗−) = 0 or ∆(cid:48)
+(b) verify the optimality of τ +
+
+B∗ by showing (i) vB∗(x) ≥ h(x) for x ∈ R and (ii) the process Mt
+
+B∗(B∗−) = 0, and
+:=
+
+e−r(t∧θ)vB∗(Xt∧θ), t ≥ 0, is a supermartingale.
+
+To this end, an analytical expression for vB or ∆B would be useful.
+
+10
+
+Lemma 2.1. Fix B > 0. The function ∆B is given by
+
+(cid:19)
+
+(cid:18) ˜p
+
+r
+
+
+
+T. LEUNG AND K. YAMAZAKI
+
+(cid:19)
+
+(cid:18) ˜p
+and Λ2(x; B) := Ex(cid:104)
+
++ ˜α
+
+r
+
+(cid:105)
+
+− γ
+
+Λ1(x; B) +
+
+Λ2(x; B) + γ − ˜p
+r
+
+, x ∈ (0, B),
+x /∈ (0, B),
+
+(cid:105)
+
+.
+
+e−rτ +
+
+B 1{τ +
+
+B =θ<∞}
+
+∆B(x) =
+
+(2.26)
+
+where Λ1(x; B) := Ex(cid:104)
+
+0,
+e−rτ +
+
+B 1{τ +
+
+B <θ, τ +
+
+B <∞}
+
+As we shall see in Section 3, the functions Λ1(· ; B) and Λ2(· ; B) can be computed via the scale functions for a
+
+spectrally negative L´evy model; see (3.4) below.
+
+In our second problem (2.19), the protection seller tends to exercise the step-down option when default is likely,
+or equivalently when X is sufﬁciently small. Suppose the seller exercises at the ﬁrst time X reaches or goes below
+some ﬁxed threshold A ≥ 0; namely,
+
+Then, the corresponding expected payoff is given by
+e−rτ−
+
+uA(x) := Ex(cid:104)
+
+τ−
+A := inf{t ≥ 0 : Xt ≤ A}.
+(cid:105)
+
+A g(Xτ−
+
+A
+
+)1{τ−
+
+A <∞}
+
+x ∈ R.
+
+,
+
+Again, we denote the difference between continuation and exercise by ∆A(x) := uA(x) − g(x) for x ∈ R.
+
+For this problem, the continuous and smooth ﬁt solution approach is to
+(a) obtain A∗ that satisﬁes the continuous or smooth ﬁt condition: ∆A∗(A∗+) = 0 or ∆(cid:48)
+(b) verify the optimality of τ−
+
+A∗ by showing (i) uA∗(x) ≥ g(x) for x ∈ R and (ii) the process (cid:102)Mt
+A∗(A∗+) = 0, and
+:=
+
+e−r(t∧θ)uA∗(Xt∧θ), t ≥ 0, is a supermartingale.
+
+This method requires some expression for ∆A, which is summarized as follows:
+
+Lemma 2.2. Fix A > 0. The function ∆A is given by
+
+(cid:19)
+
+
+
+(cid:18)
+
+0,
+
+∆A(x) =
+
+(2.27)
+
+where
+
+(2.28)
+
+γ +
+
+˜p
+r
+
+(1 − ζ(x − A)) − (˜α − γ) Γ(x; A), x > A,
+x ≤ A,
+
+(cid:20)
+
+(cid:21)
+
+Γ(x; A) := Ex
+
+e−rτ−
+
+A 1{X
+
+<0, τ−
+
+A <∞}
+
+.
+
+τ−
+
+A
+
+The function Γ(· ; A) and Laplace transform ζ(·) can be also expressed in terms of the scale function for a
+
+spectrally negative L´evy model; see (3.5) and Lemma 3.4 below.
+
+3. SOLUTION METHODS UNDER THE SPECTRALLY NEGATIVE L ´EVY MODEL
+
+We proceed to solve the optimal stopping problems v(x) and u(x) in (2.18) and (2.19) for spectrally negative
+L´evy processes. Our main results are Theorems 3.1 and 3.2 which provide the optimal solutions for v(x) and u(x),
+respectively. In turn, the American callable/putable step-up/down default swap can be immediately priced in view
+of Propositions 2.1 and 2.2.
+
+(1 ∧ x2)Π(dx) < ∞.
+
+(0,∞)
+
+(cid:90)
+
+(cid:90)
+
+See, e.g. Theorem 1.6 of [30]. The risk neutral condition requires that ψ(1) = r so that the discounted value of the
+reference entity is a P-martingale. By Lemma 2.12 of [30], if further we have
+
+then the Laplace exponent can be expressed as
+
+(1 ∧ x) Π(dx) < ∞,
+
+(0,∞)
+
+ψ(s) = µs +
+
+σ2s2 +
+
+1
+2
+
+(cid:90)
+
+(0,∞)
+
+(e−sx − 1) Π(dx),
+
+s ∈ C,
+
+(3.2)
+
+where µ := c +(cid:82)
+
+(0,1) x Π(dx). Recall that the process has paths of bounded variation if and only if σ = 0 and
+(3.2) holds. A special example is a compound Poisson process with Π(R) = λ, where λ is the ﬁnite rate of jumps.
+We ignore the negative subordinator case (X decreasing a.s.). This means that we require µ to be strictly positive
+when X is of bounded variation.
+
+By Theorem 8.1 of [30], for any spectrally negative L´evy process, there exists an (r-)scale function W (r) : R (cid:55)→
+
+R, r ≥ 0 such that W (r)(x) = 0 on (−∞, 0), and is characterized on [0,∞) by the Laplace transform:
+
+(3.3)
+
+e−sxW (r)(x)dx =
+
+1
+
+ψ(s) − r
+
+,
+
+s > Φ(r),
+
+where Φ(r) := sup{λ ≥ 0 : ψ(λ) = r}.
+
+The properties of the scale function [30, Theorem 8.1] allow us to derive the analytic formulas for Λ1(x; B) and
+
+Λ2(x; B) from Lemma 2.1. Precisely, for 0 < x < B,
+
+(cid:90) ∞
+
+0
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+11
+
+3.1. The Spectrally Negative L´evy Process and Scale Function. Let X be a spectrally negative L´evy process
+with the Laplace exponent
+
+ψ(s) := log E0(cid:2)esX1(cid:3) = cs +
+
+(3.1)
+
+(cid:90)
+
+σ2s2 +
+
+1
+2
+
+(0,∞)
+
+(e−sx − 1 + sx1{0<x<1}) Π(dx),
+
+s ∈ C,
+
+where c ∈ R, σ ≥ 0 is called the Gaussian coefﬁcient, and Π is a measure on R such that Π(−∞, 0] = 0 and
+
+Λ1(x; B) = Ex(cid:104)
+Λ2(x; B) = Ex(cid:104)
+
+(cid:105)
+
+(cid:105)
+
+e−rτ +
+
+B 1{τ +
+
+B <θ, τ +
+
+B <∞}
+
+=
+
+W (r)(x)
+W (r)(B)
+
+,
+
+e−rτ +
+
+B 1{τ +
+
+B =θ<∞}
+
+= Z(r)(x) − Z(r)(B)
+
+W (r)(x)
+W (r)(B)
+
+,
+
+(3.4)
+
+where Z(r)(x) := 1 + r(cid:82) x
+
+0 W (r)(y)dy, x ∈ R. Notice that Z(r)(x) = 1 for x ∈ (−∞, 0]. The Laplace transform
+
+of θ in (2.4) is given by
+
+(3.5)
+
+ζ(x) = Z(r)(x) − r
+Φ(r)
+
+W (r)(x),
+
+x ∈ R\{0}.
+
+(3.7)
+
+vB(x) =
+
+ h(x),
+
+x ∈ [B,∞),
+h(x) + ∆B(x), x ∈ (0, B),
+x ∈ (−∞, 0],
+0,
+
+(cid:41)
+
+(cid:17)
+
+(cid:16)
+
+12
+
+T. LEUNG AND K. YAMAZAKI
+
+Henceforth, we assume that Π does not have atoms, which guarantees that W (r) is C1 on (0,∞) (see [15]).
+
+Moreover, as in (8.18) of [30],
+
+(3.6)
+
+W (r)(cid:48)
+(y)
+W (r)(y)
+
+≤ W (r)(cid:48)
+
+(x)
+W (r)(x)
+
+,
+
+y > x > 0.
+
+From Lemmas 4.3 and 4.4 of [32], we also summarize the behavior in the neighborhood of zero.
+Lemma 3.1. For every r ≥ 0, we have
+
+W (r)(0) =
+
+unbounded variation
+
+0,
+µ , bounded variation
+1
+
+and W (r)(cid:48)
+
+(0+) =
+
+2
+σ2 ,
+∞,
+r+Π(0,∞)
+
+µ2
+
+,
+
+σ > 0
+σ = 0 and Π(0,∞) = ∞
+compound Poisson
+
+3.2. Callable Step-Down Default Swap. We proceed to solve for v(x) in (2.18) for the callable step-down default
+swap. First, we consider the expected payoff function vB(x) in (2.25) with some threshold B:
+
+ .
+
+
+
+(cid:40)
+
+(cid:19)
+
+(cid:21)
+
+− γ
+
+1{x>0},
+
+for 0 ≤ B < ∞. If B = ∞, then vB(x) = 0, x ∈ R. If B = 0, then vB(x) = h(x), x ∈ R. Applying (3.4) and
+(3.5) and Lemma 2.1 to the stopping value h(x) and difference function ∆B(x), we can express them in terms of
+the scale function, namely,
+
+(cid:16)
+
+(cid:18) 1
+(cid:16)
+
+(cid:20)
+(cid:34)
+
+˜p
+
+˜p
+r
+
+1 − Z(r)(x)
+
+(cid:17)
+
+r
+Z(r)(x) − 1
+
+(3.8)
+
+h(x) =
+
+(3.9)
+
+∆B(x) =
+
+where
+
++
+
+1
+
+Φ(r)
+
+W (r)(x)
+
+− ˜α
+
++ ˜αZ(r)(x) − W (r)(x)
+W (r)(B)
+
+Z(r)(x) − r
+Φ(r)
+
+(cid:35)
+
+W (r)(x)
+
+G(r)(B) + γ
+
+1{0<x<B},
+
+(cid:19)
+
+(cid:18)
+
+(cid:17)
+
+G(r)(B) :=
+
+(3.10)
+Remark 3.1. From (3.9), we observe that ∆B(B−) = 0. This implies that continuous ﬁt vB(B−) = vB(B) must
+hold for all B > 0.
+
+Z(r)(B) − 1
+
++ ˜αZ(r)(B) + γ, B ≥ 0.
+
+˜p
+r
+
+To obtain the candidate optimal threshold, we consider the smooth ﬁt condition ∆(cid:48)
+
+B(B−) = 0. To this end, we
+
+compute from (3.9) the derivatives
+
+(3.11)
+
+(3.12)
+
+(B) := ∆(cid:48)
+
+(cid:48)(B) = −
+
+B(B−) = (˜p + ˜αr) W (r)(B) − W (r)(cid:48)
+(cid:32)
+
+(cid:33)
+
+(B)
+W (r)(B)
+
+G(r)(B),
+
+W (r)(cid:48)
+(B)
+W (r)(B)
+
+∂
+∂B
+
+G(r)(B), B > 0.
+
+Here (B) is continuous on (0,∞) and (3.12) holds at which the second derivative of W (r)(B) exists (which holds
+for Lebesgue-a.e. B > 0).
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+13
+Observing from (3.10) that G(r)(B) ≥ ˜α + γ > 0 for B ≥ 0 and by (3.6), we deduce that (B) is increasing
+in B. Therefore, there exists at most one B∗ ∈ (0,∞) satisfying the smooth ﬁt condition, which by (3.11) is
+equivalent to
+
+(3.13)
+
+(B∗) = 0.
+
+(cid:34)
+
+(3.14)
+
+vB(x) =
+
+∂
+∂B
+
+If it exists, then this is our candidate optimal threshold, and vB∗(x) is the candidate value function for (2.18).
+
+The smooth ﬁt condition fails if (a) (B) ≥ 0 ∀B > 0, or (b) (B) < 0 ∀B > 0. Under each of these
+scenarios, we need another way to deduce the candidate optimal threshold. To this end, let us consider the derivative
+of vB(x) with respect to B. For 0 < x < B,
+∆B(x) = − W (r)(x)
+W (r)(B)
+
+(B).
+Under scenario (a), (B) ≥ 0 in (3.14) implies that vB(x) is decreasing in B for any x < B, so we choose
+B∗ = 0 as our candidate optimal threshold. In this case, the buyer will stop immediately (τ +
+0 = 0), and the
+corresponding expected payoff is vB∗(x) = h(x) (see (2.25)). As we show next, B∗ = 0 is possible only when X
+is of bounded variation.
+Lemma 3.2. We have B∗ = 0 if and only if σ = 0 and ˜p − rγ − (˜α + γ)Π(0,∞) ≥ 0.
+
+(r ˜α + ˜p) W (r)(B) − W (r)(cid:48)
+
+= − W (r)(x)
+W (r)(B)
+
+(B)
+W (r)(B)
+
+G(r)(B)
+
+∂
+∂B
+
+(cid:35)
+
+As for scenario (b), it follows from (3.14) that vB(x) is increasing in B for any x < B. Therefore, we set B∗ =
+∞, meaning that the buyer will never exercise (τ +∞ = θ), and the corresponding expected payoff is v∞(x) = 0 (see
+(2.25)). In fact, this corresponds to the case where the payoff h(x) ≤ 0∀x ∈ R. To see this, we deduce from (3.14)
+and continuous ﬁt in Remark 3.1 that, for any arbitrarily ﬁxed x > 0, lim inf B→∞ vB(x) ≥ vx(x) = h(x). Then,
+B↑∞−−−→ θ a.s., we obtain lim supB→∞ vB(x) ≤ 0, and thus 0 ≥ h(x).
+applying Fatou’s lemma and because τ +
+B
+Therefore, under condition (2.22), we have already ruled out scenario (b).
+
+To summarize, we propose the candidate value function vB∗(x) corresponding to the candidate optimal threshold
+B∗ from (3.13) for 0 < B∗ < ∞, or B∗ = 0 otherwise. By direct computation using (3.7)-(3.9), the value function
+is
+
+(cid:32)
+
+ W (r)(x)
+
+h(x),
+
+(cid:33)
+
+˜p + ˜αr
+Φ(r)
+
+− G(r)(B∗)
+W (r)(B∗)
+
+1{x(cid:54)=0}, −∞ < x < B∗,
+
+x ≥ B∗.
+
+(3.15)
+
+vB∗(x) =
+
+Here, on (−∞, 0), vB∗(x) = 0 because W (r)(x) = 0.
+
+The next step is to verify the optimality of vB∗. We shall show that (i) vB∗ dominates h and (ii) the stochastic
+
+process
+
+(3.16)
+
+Mt := e−r(t∧θ)vB∗(Xt∧θ),
+
+t ≥ 0
+
+is a supermartingale.
+
+We address the ﬁrst part as follows. When B∗ = 0, it follows from (2.25) or the arguments above that vB∗(x) =
+h(x). When B∗ ∈ (0,∞), (B) is monotonically increasing and attains 0 at B∗. Therefore, vB(x) is increasing
+
+14
+
+T. LEUNG AND K. YAMAZAKI
+
+FIGURE 1. Continuous and smooth ﬁts of the value function vB∗(·) (solid curve) and stopping
+value h(·) (dashed curve). Notice that vB∗(0+) = 0 in the unbounded variation case (left) while
+vB∗(0+) > 0 in the bounded variation case (right).
+
+in B for B ∈ [x, B∗] by (3.14). Then, by continuous ﬁt in Remark 3.1, for any arbitrarily ﬁxed x, taking B = x,
+we have vB∗(x) ≥ vx(x) = h(x). Moreover, vB∗(x) = h(x) on x ≤ B∗ by deﬁnition. Hence, we conclude that:
+(3.17)
+
+vB∗(x) ≥ h(x),
+
+for x ∈ R.
+
+We now pursue the supermartingale property of the process M in (3.16). Deﬁne the generator L of X by
+
+Lf (x) = cf(cid:48)(x) +
+
+1
+2
+for the unbounded variation case and
+
+σ2f(cid:48)(cid:48)(x) +
+
+Lf (x) = µf(cid:48)(x) +
+
+(cid:90) ∞
+(cid:2)f (x − z) − f (x) + f(cid:48)(x)z1{0<z<1}(cid:3) Π(dz)
+(cid:90) ∞
+
+0
+
+[f (x − z) − f (x)] Π(dz)
+
+for the bounded variation case. The supermartingale property of M is due to the following lemma (see the Appen-
+dix for a proof):
+Lemma 3.3. The function vB∗(·) satisﬁes
+
+0
+
+(L − r)vB∗(x) ≤ 0,
+
+x ∈ (0,∞)\{B∗}.
+
+In summary, inequality (3.17) and Lemma 3.3 prove the optimality of vB∗(x), leading to our main result:
+
+Theorem 3.1. The candidate function vB∗(x), with threshold B∗ given by (3.13), is optimal for (2.18). Precisely,
+
+Ex(cid:2)e−rτ h(Xτ )1{τ <∞}(cid:3) ,
+
+and τ +
+
+B∗ is the optimal stopping time.
+
+vB∗(x) = v(x) = sup
+τ∈S
+
+The proofs and related technical details are provided in the Appendix. As a result, we have solved for the
+callable step-down and putable step-up default swaps in view of the decompositions by Propositions 2.1 and 2.2.
+
+00.511.522.53-1-0.8-0.6-0.4-0.200.20.40.60.81x00.511.522.53-1-0.8-0.6-0.4-0.200.20.40.60.81xAMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+15
+
+3.3. Putable Step-Down Default Swap. We now turn our attention to the putable step-down default swap, which
+amounts to solving u(x) in (2.19) with ˜p > 0 and ˜α > 0. Under the spectrally negative L´evy model, the function
+Γ(· ; A) in (2.28) can be expressed explicitly by scale functions as shown in Lemma 3.4 below. This together with
+(3.5) expresses explicitly ∆A(·) in (2.27), which is needed to apply continuous and smooth ﬁt principle.
+
+Deﬁne
+
+(cid:90) ∞
+
+(cid:16)
+
+1 − e−Φ(r)(u−A)(cid:17)
+
+(3.18)
+It is clear that ρ(A) decreases monotonically in A. Next, we express Γ(· ; A) using ρ(A) and the scale function.
+For its proof, we refer to Lemma 4.3 of [19].
+
+, A > 0.
+
+ρ(A) :=
+
+Π(du)
+
+A
+
+Lemma 3.4. Fix A > 0, we have
+
+Γ(x ; A) =
+
+1
+
+Φ(r)
+
+W (r)(x − A)ρ(A) − 1
+r
+
+and Γ(x ; A) = 0 for x < A.
+
+(cid:90) ∞
+
+A
+
+(cid:16)
+
+Π(du)
+
+Z(r)(x − A) − Z(r)(x − u)
+
+(cid:17)
+
+for x ≥ A,
+
+,
+
+We proceed to consider the continuous ﬁt condition. First, it follows from (2.27) that, for every A > 0,
+
+(3.19)
+
+∆A(A+) =
+
+=
+
+((rγ + ˜p) − (˜α − γ)ρ(A)) .
+
+(cid:19)
+
+(cid:18) 1
+
+Φ(r)
+
+W (r)(0)
+
+− (˜α − γ)
+
+W (r)(0)ρ(A)
+
+(cid:19)
+
+(cid:19)(cid:18) r
+
+Φ(r)
+
+(cid:18)
+
+γ +
+
+˜p
+r
+W (r)(0)
+
+Φ(r)
+
+If X is of unbounded variation, then W (r)(0) = 0 by Lemma 3.1, and therefore continuous ﬁt holds for every
+A > 0. Nevertheless, for the bounded variation case, we can apply the continuous ﬁt condition: ∆A(A+) = 0,
+which is equivalent to
+
+(3.20)
+
+(˜α − γ)ρ(A) = γr + ˜p.
+
+(cid:12)(cid:12)(cid:12)(cid:12)x=A+
+
+(cid:12)(cid:12)(cid:12)(cid:12)x=A+
+
+For the unbounded variation case, we apply the smooth ﬁt condition. By differentiation, we have
+
+ζ(x − A)
+
+= − r
+∂
+∂x
+Φ(r)
+(0+) > 0 (in particular, W (r)(cid:48)
+
+where W (r)(cid:48)
+
+∆(cid:48)
+A(A+) =
+Consequently, the smooth ﬁt condition, ∆(cid:48)
+
+Φ(r)
+
+W (r)(cid:48)
+
+(0+)
+
+and
+
+∂
+∂x
+
+Γ(x; A)
+
+=
+
+ρ(A)
+Φ(r)
+
+W (r)(cid:48)
+
+(0+),
+
+(0+) = ∞ if σ = 0 and Π(0,∞) = ∞ by Lemma 3.1). Therefore,
+W (r)(cid:48)
+
+(0+)
+
+((γr + ˜p) − (˜α − γ)ρ(A)) .
+
+A(A+) = 0, is also equivalent to (3.20).
+
+In summary, we look for the solution to (3.20), denoted by A∗, which will be our candidate optimal threshold.
+Since ρ(A) is monotonically decreasing, there exists at most one A∗ that satisﬁes (3.20). If it does not exist, we
+set the threshold A∗ = 0.
+
+When X has paths of bounded variation, we must have A∗ > 0 under assumption (2.23). Indeed, if A∗ = 0,
+then it follows from (3.19) that ∆A(A+) > 0 for every A > 0. This implies that there exists ε > 0 such that
+
+16
+
+T. LEUNG AND K. YAMAZAKI
+
+uε(ε+) > g(0+). However, since g(0+) attains the global maximum (because g(0+) > 0 by (2.23)), this is a
+contradiction. Hence A∗ = 0 is impossible when X is of bounded variation.
+
+In the case with A∗ > 0, we take A∗ to be our candidate optimal threshold, and the corresponding stopping time
+A∗. The candidate value function is given by
+
+is τ−
+
+g(x),
+
+ g(x) + ∆A∗(x), x > A∗,
+(cid:18)
+(cid:105)(cid:19)
+
+0,
+
+0 < x ≤ A∗,
+x ≤ 0.
+
+uA∗(x) =
+
+(cid:104)
+
+Π(du)
+
+Z(r)(x − A∗) − Z(r)(x − u)
+
+−
+
+γ +
+
+For x > 0, we can apply (3.20) to express it as
+
+(3.21)
+uA∗(x) = (˜α − γ)
+
+(cid:18) 1
+
+(cid:90) ∞
+
+r
+
+A∗
+
+(cid:19)
+
+˜p
+r
+
+Z(r)(x − A∗) +
+
+(cid:19)
+
++ ˜α
+
+ζ(x).
+
+(cid:18) ˜p
+
+r
+
+When A∗ = 0, we consider the candidate value function deﬁned by (see (2.21) and (2.27))
+
+(3.22)
+
+uA∗(x) := lim
+A↓0
+
+uA(x)
+
+= −(˜α − γ)Γ(x; 0) −
+γ +
+= (˜α − γ)(ζ(x) − Γ(x; 0))
+
+(cid:18)
+
+(cid:19)
+
+˜p
+r
+
+ζ(x) +
+
+(cid:18) ˜p
+
+r
+
+(cid:19)
+
++ ˜α
+
+ζ(x)
+
+for all x > 0 and uA∗(x) = 0 for every x ≤ 0. Here Γ(x; 0) := limA↓0 Γ(x; A) is well-deﬁned according to
+Lemma 3.4 since ρ(0) := limA↓0 ρ(A) < ∞ if A∗ = 0; see (3.20).
+
+This implies a strategy by which the seller will delay until X is arbitrarily close to zero, and exercise at a
+sufﬁciently small level ε > 0. This can be realized by monitoring X as it creeps downward through zero (see
+Section 5.3 of [30]). The seller may lose the opportunity to exercise prior to default if X suddenly jumps across
+
+(below) zero. In fact, ζ(x) − Γ(x; 0) = Ex(cid:2)e−rθ(cid:3) − Ex(cid:2)e−rθ1{Xθ<0, θ<∞}(cid:3) = Ex(cid:2)e−rθ1{Xθ=0, θ<∞}(cid:3) ≥ 0 and
+
+this is strictly positive if and only if σ > 0 (see Exercise 7.6 of [30]). The optimality result below implies that
+A∗ = 0 can happen only when X has a diffusion component by our assumption g(0+) > 0.
+
+For optimality veriﬁcation, we shall show (i) uA∗ ≥ g and (ii) e−r(t∧θ)uA∗(Xt∧θ), t ≥ 0, is a supermartingale.
+
+We shall ﬁrst show (i) via:
+
+Lemma 3.5. For every 0 < A < x, we have
+
+(3.23)
+
+∂
+∂A
+
+uA(x) =
+
+∂
+∂A
+
+∆A(x) < 0 ⇐⇒ (˜α − γ)ρ(A) − (γr + ˜p) < 0 ⇐⇒ A > A∗.
+
+Suppose A∗ > 0. For the unbounded variation case, we apply Lemma 3.5 for any ﬁxed x ≥ A∗, along with the
+continuous ﬁt, to obtain the inequality: uA∗(x) ≥ ux(x) = g(x), x ≥ A∗. When X is of bounded variation, we
+observe from (3.19) that ∆x(x+) ≥ 0 for x ≥ A∗, which implies that
+
+(3.24)
+
+uA∗(x) ≥ lim
+A↑x
+
+uA(x) = g(x) + lim
+A↑x
+
+∆A(x) ≥ g(x),
+
+x ≥ A∗.
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+17
+
+FIGURE 2. Continuous and smooth ﬁts of the value function uA∗(·) (solid curve) and stopping
+value g(·) (dashed curve). Notice that uA∗(·) is C1 at A∗ in the unbounded variation case (left)
+while it is C0 in the bounded variation case (right).
+
+This domination also holds for A∗ = 0 in the same way by its deﬁnition as a limit in (3.22) and because (3.23)
+holds for every A > 0. Finally for x ∈ (−∞, A∗), the equality uA∗(x) = g(x) holds by deﬁnition. As a result, we
+conclude that
+
+(3.25)
+
+uA∗(x) ≥ g(x)
+
+for x ∈ R.
+
+For the supermartingale property, we shall use the following result (see Appendix for a proof):
+
+Lemma 3.6. We have (L − r)uA∗(x) ≤ 0 for every x ∈ (0,∞)\{A∗}.
+
+Finally, inequality (3.25) and Lemma 3.6 yield the optimality of uA∗ similarly to Theorem 3.1. Hence, we have
+
+Theorem 3.2. The candidate function uA∗(x), with A∗ given by (3.20), is optimal for (2.19). That is,
+
+Ex(cid:2)e−rτ g(Xτ )1{τ <∞}(cid:3) .
+
+uA∗(x) = u(x) = sup
+τ∈S
+
+With this result, we have solved for the putable step-down and callable step-up default swaps in view of the
+
+decompositions by Propositions 2.1 and 2.2.
+
+In this section, we numerically illustrate the investor’s optimal exercise strategy and the credit spread behaviors,
+
+4. NUMERICAL EXAMPLES
+
+where the underlying spectrally negative L´evy process is assumed to have hyperexponential jumps of the form
+
+(4.1)
+
+Xt − X0 = µt + σBt − Nt(cid:88)
+
+n=1
+
+Zn,
+
+0 ≤ t < ∞.
+
+00.511.522.53-0.4-0.200.20.40.60.81x00.511.522.53-0.4-0.200.20.40.60.81x18
+Here B = {Bt; t ≥ 0} is a standard Brownian motion, N = {Nt; t ≥ 0} is a Poisson process with arrival rate λ,
+and Z = {Zn; n = 1, 2, . . .} are i.i.d. hyperexponential random variables with density function
+
+T. LEUNG AND K. YAMAZAKI
+
+m(cid:88)
+
+f (z) =
+
+αiηie−ηiz,
+
+z > 0,
+
+for some 0 < η1 < ··· < ηm < ∞.
+
+i=1
+
+As discussed in [18], the scale function of the L´evy process of the form (4.1) admits analytic form and can
+approximate that of any spectrally negative L´evy process with a completely monotone L´evy measure. For our
+numerical examples, we consider the process in the form (4.1) with Z replaced by Pareto random variables with
+distribution function F (t) = 1−(1+5t)−1.2 for t ≥ 0. We use the approximation to its scale function computed in
+[18] where they adopted the hyperexponential ﬁtting algorithm given by [21]. We refer to [18, 21] for the detailed
+ﬁtting procedure and ﬁtted parameters.
+
+For both callable and putable default swaps, we consider the following cases:
+
+• Step-Down default swap with ˆp/p = ˆα/α = 0.5,
+• Step-Up default swap with ˆp/p = ˆα/α = 1.5.
+
+Hence, there are in total 4 cases. The model parameters are r = 0.03, σ = 0.2, α = 1, x = 1.5 and γ = 50bps,
+unless speciﬁed otherwise. We shall adjust the values of λ and µ so that the risk-neutral condition ψ(1) = r holds.
+By symmetry (see Section 2.4), the optimal stopping problems for callable step-down and putable step-up default
+swaps are equivalent, while callable step-up and putable step-down default swaps are equivalent. Figure 3 shows
+the optimal thresholds B∗ for callable step-down/putable step-up default swaps and A∗ for callable step-up/putable
+step-down default swaps. Both B∗ and A∗ are decreasing in the premium p, as is intuitive. Also, A∗ and B∗ rise
+as default risk λ increases.
+
+FIGURE 3. (Left): optimal thresholds for the callable step-down/putable step-up default swap.
+(Right): optimal thresholds for the callable step-up/putable step-down default swap.
+
+(cid:17)(cid:22)(cid:17)(cid:17)(cid:18)(cid:17)(cid:17)(cid:17)(cid:18)(cid:22)(cid:17)(cid:17)(cid:19)(cid:17)(cid:17)(cid:17)(cid:17)(cid:17)(cid:15)(cid:22)(cid:18)(cid:18)(cid:15)(cid:22)(cid:19)(cid:19)(cid:15)(cid:22)(cid:20)(cid:20)(cid:15)(cid:22)(cid:21)(cid:21)(cid:15)(cid:22)(cid:22)(cid:35)(cid:11)(cid:81)(cid:1)(cid:9)(cid:74)(cid:79)(cid:1)(cid:67)(cid:81)(cid:84)(cid:10)(cid:1)(cid:1)λ(cid:30)(cid:17)(cid:15)(cid:18)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:17)(cid:20)(cid:22)(cid:10)λ(cid:30)(cid:17)(cid:15)(cid:22)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:18)(cid:20)(cid:22)(cid:10)λ(cid:30)(cid:18)(cid:15)(cid:17)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:19)(cid:23)(cid:17)(cid:10)(cid:17)(cid:22)(cid:17)(cid:17)(cid:18)(cid:17)(cid:17)(cid:17)(cid:18)(cid:22)(cid:17)(cid:17)(cid:19)(cid:17)(cid:17)(cid:17)(cid:17)(cid:17)(cid:15)(cid:22)(cid:18)(cid:18)(cid:15)(cid:22)(cid:19)(cid:19)(cid:15)(cid:22)(cid:20)(cid:20)(cid:15)(cid:22)(cid:21)(cid:21)(cid:15)(cid:22)(cid:22)(cid:34)(cid:11)(cid:81)(cid:1)(cid:9)(cid:74)(cid:79)(cid:1)(cid:67)(cid:81)(cid:84)(cid:10)(cid:1)(cid:1)λ(cid:30)(cid:17)(cid:15)(cid:18)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:17)(cid:20)(cid:22)(cid:10)λ(cid:30)(cid:17)(cid:15)(cid:22)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:18)(cid:20)(cid:22)(cid:10)λ(cid:30)(cid:18)(cid:15)(cid:17)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:19)(cid:23)(cid:17)(cid:10)AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+19
+Figure 4 shows the credit spread p∗ as a function of the distance-to-default x for the callable and putable step-
+down default swaps, with the vanilla CDS as benchmark (see (2.5)). We ﬁrst compute the contract values, which
+are monotone in p, and then determine p∗ by a bisection method. As x increases, meaning lower default risk, the
+credit spread p∗ reduces. The callable step-down default swap spreads are naturally higher than the vanilla case
+due to the embedded step-down option. In contrast, the putable step-down spreads are lower than the vanilla case
+because the buyer is subject to the step-down exercise by the seller.
+
+FIGURE 4. Credit spreads vs distance-to-default for the callable step-down (top-left), putable
+step-down (top-right) and vanilla (bottom) default swaps.
+
+5. THE FINITE-MATURITY CASE
+
+We now consider the ﬁnite-maturity case, and study how the solutions can be approximated using the results
+obtained in the previous sections. We ﬁrst formulate the ﬁnite-maturity American callable/putable step-up/down
+default swaps by modifying the results in Sections 2.2 and 2.3. We then show that their value functions, optimal
+strategies, and credit spreads can be efﬁciently approximated by our analytical results on the perpetual case.
+
+(cid:17)(cid:15)(cid:22)(cid:18)(cid:18)(cid:15)(cid:22)(cid:19)(cid:19)(cid:15)(cid:22)(cid:20)(cid:17)(cid:19)(cid:17)(cid:17)(cid:21)(cid:17)(cid:17)(cid:23)(cid:17)(cid:17)(cid:25)(cid:17)(cid:17)(cid:18)(cid:17)(cid:17)(cid:17)(cid:18)(cid:19)(cid:17)(cid:17)(cid:18)(cid:21)(cid:17)(cid:17)(cid:18)(cid:23)(cid:17)(cid:17)(cid:18)(cid:25)(cid:17)(cid:17)(cid:19)(cid:17)(cid:17)(cid:17)(cid:81)(cid:11)(cid:1)(cid:9)(cid:74)(cid:79)(cid:1)(cid:67)(cid:81)(cid:84)(cid:10)(cid:89)(cid:1)(cid:1)λ(cid:30)(cid:17)(cid:15)(cid:18)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:17)(cid:20)(cid:22)(cid:10)λ(cid:30)(cid:17)(cid:15)(cid:22)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:18)(cid:20)(cid:22)(cid:10)λ(cid:30)(cid:18)(cid:15)(cid:17)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:19)(cid:23)(cid:17)(cid:10)(cid:17)(cid:15)(cid:22)(cid:18)(cid:18)(cid:15)(cid:22)(cid:19)(cid:19)(cid:15)(cid:22)(cid:20)(cid:17)(cid:19)(cid:17)(cid:17)(cid:21)(cid:17)(cid:17)(cid:23)(cid:17)(cid:17)(cid:25)(cid:17)(cid:17)(cid:18)(cid:17)(cid:17)(cid:17)(cid:18)(cid:19)(cid:17)(cid:17)(cid:18)(cid:21)(cid:17)(cid:17)(cid:18)(cid:23)(cid:17)(cid:17)(cid:18)(cid:25)(cid:17)(cid:17)(cid:19)(cid:17)(cid:17)(cid:17)(cid:81)(cid:11)(cid:1)(cid:9)(cid:74)(cid:79)(cid:1)(cid:67)(cid:81)(cid:84)(cid:10)(cid:89)(cid:1)(cid:1)λ(cid:30)(cid:17)(cid:15)(cid:18)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:17)(cid:20)(cid:22)(cid:10)λ(cid:30)(cid:17)(cid:15)(cid:22)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:18)(cid:20)(cid:22)(cid:10)λ(cid:30)(cid:18)(cid:15)(cid:17)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:19)(cid:23)(cid:17)(cid:10)(cid:17)(cid:15)(cid:22)(cid:18)(cid:18)(cid:15)(cid:22)(cid:19)(cid:19)(cid:15)(cid:22)(cid:20)(cid:17)(cid:19)(cid:17)(cid:17)(cid:21)(cid:17)(cid:17)(cid:23)(cid:17)(cid:17)(cid:25)(cid:17)(cid:17)(cid:18)(cid:17)(cid:17)(cid:17)(cid:18)(cid:19)(cid:17)(cid:17)(cid:18)(cid:21)(cid:17)(cid:17)(cid:18)(cid:23)(cid:17)(cid:17)(cid:18)(cid:25)(cid:17)(cid:17)(cid:19)(cid:17)(cid:17)(cid:17)(cid:81)(cid:11)(cid:1)(cid:9)(cid:74)(cid:79)(cid:1)(cid:67)(cid:81)(cid:84)(cid:10)(cid:89)(cid:1)(cid:1)λ(cid:30)(cid:17)(cid:15)(cid:18)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:17)(cid:20)(cid:22)(cid:10)λ(cid:30)(cid:17)(cid:15)(cid:22)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:18)(cid:20)(cid:22)(cid:10)λ(cid:30)(cid:18)(cid:15)(cid:17)(cid:1)(cid:9)(cid:1)μ(cid:30)(cid:17)(cid:15)(cid:19)(cid:23)(cid:17)(cid:10)20
+5.1. Finite-Maturity Formulation. Let T ∈ (0,∞) be a given ﬁnite maturity and deﬁne
+
+T. LEUNG AND K. YAMAZAKI
+
+(5.1)
+be the set of all stopping times smaller than or equal to θ ∧ T . The buyer’s and seller’s maximal expected cash
+ﬂows, respectively, are given by,
+
+ST := {F-stopping time τ : τ ≤ θ ∧ T a.s. }
+
+¯V (x, T ; p, ˆp, α, ˆα, γ)
+
+Ex
+
+:= sup
+τ∈ST
+
+0
+¯U (x, T ; p, ˆp, α, ˆα, γ)
+
+−
+
+(cid:20)
+(cid:90) τ
+(cid:20)(cid:90) τ
+
+e−rtp dt −
+
+(cid:90) θ∧T
+(cid:90) θ∧T
+
+(cid:21)
+e−rt ˆp dt − e−rτ γ1{τ <θ∧T} + e−rθ1{θ<T}(ˆα1{τ <θ} + α1{τ =θ})
+(cid:21)
+e−rt ˆp dt − e−rτ γ1{τ <θ∧T} − e−rθ1{θ<T}(ˆα1{τ <θ} + α1{τ =θ})
+
+.
+
+τ
+
+,
+
+Ex
+
+:= sup
+τ∈ST
+
+e−rtp dt +
+
+0
+
+τ
+
+Here, the contract is terminated at default θ or maturity T , whichever comes ﬁrst. For the callable case, the buyer
+can exercise anytime (strictly) before the contract termination. Since P{θ = T} = 0 for any x > 0, we may
+interpret {τ = T} as the event that the option expires without being exercised. When default happens before
+maturity (on {θ < T}), the default payment is ˆα if the buyer has exercised (τ < θ) and is α otherwise (τ = θ).
+The interpretation for the putable case is similar.
+
+5.2. Symmetry and Decomposition. As we shall describe below, the symmetry and decomposition we attained
+in Section 2 for the perpetual case can be extended to the ﬁnite-maturity case.
+To see this, we can decompose the buyer’s maximal expected cash ﬂow as
+
+(cid:90) θ∧T
+
+(cid:21)
+e−rtp dt − e−rτ γ1{τ <θ∧T} + e−rθ1{θ<T}(−˜α1{τ <θ} + α)
+
+e−rt ˜p dt −
+
+e−rt ˜p dt − e−rτ γ1{τ <θ∧T} − e−rθ ˜α1{τ <θ<T}
+
++ ¯C(x, T ; p, α),
+
+(5.2)
+
+Ex
+
+Ex
+
+¯V (x, T ) = sup
+τ∈ST
+
+= sup
+τ∈ST
+
+(cid:124)
+
+(cid:20)(cid:90) θ∧T
+(cid:20)(cid:90) θ∧T
+
+τ
+
+τ
+
+0
+
+(cid:123)(cid:122)
+
+=:f (x,T )
+
+(cid:21)
+(cid:125)
+
+where ˜p and ˜α are the same as in (2.11) and ¯C is the value of a standard ﬁnite-maturity CDS deﬁned as in (2.1).
+By {τ < θ ∧ T} = {Xτ > 0, τ < T} for every τ ∈ ST ,
+
+Ex(cid:2)e−rτ h(Xτ , T − τ )(cid:3) ,
+
+f (x, T ) = sup
+τ∈ST
+
+with
+
+h(x, t) := 1{x>0,t>0}
+
+(cid:18)
+
+Ex
+
+(cid:20)(cid:90) θ∧t
+
+0
+
+e−rs ˜p ds − e−rθ ˜α1{θ<t}
+
+(cid:21)
+
+(cid:19)
+
+− γ
+
+= 1{x>0,t>0}(cid:0) ¯C(x, t;−˜p,−˜α) − γ(cid:1).
+
+The case for the seller is similar. Consequently, Propositions 2.1 and 2.2 can be extended to the ﬁnite-maturity
+case.
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+21
+
+Proposition 5.1. For all x, T > 0, we have the decomposition
+
+(5.3)
+
+where
+
+Clearly,
+
+(5.4)
+
+¯V (x, T ; p, ˆp, α, ˆα, γ) = ¯C(x, T ; p, α) + ¯v(x, T ;−˜p,−˜α, γ),
+¯U (x, T ; p, ˆp, α, ˆα, γ) = − ¯C(x, T ; p, α) + ¯u(x, T ;−˜p,−˜α, γ),
+
+Ex(cid:104)
+Ex(cid:104)
+
+(cid:105)
+e−rτ(cid:0) ¯C(Xτ , T − τ ; κ, a) − K(cid:1)+ 1{τ <θ∧T}
+e−rτ(cid:0)− ¯C(Xτ , T − τ ; κ, a) − K(cid:1)+ 1{τ <θ∧T}
+
+,
+
+(cid:105)
+
+and
+
+.
+
+¯v(x, T ; κ, a, K) := sup
+τ∈ST
+
+¯u(x, T ; κ, a, K) := sup
+τ∈ST
+
+¯v(x, T ; κ, a, K) = ¯u(x, T ;−κ,−a, K),
+
+and Table 1 holds for the ﬁnite-maturity case as well. Moreover, “put-call parity” and symmetry identities also
+hold simply by replacing C(x) with ¯C(x, T ). To summarize,
+
+¯V (x, T ; p, ˆp, α, ˆα, γ) − ¯U (x, T ; p, 2p − ˆp, α, 2α − ˆα, γ) = 2 ¯C(x, T ; p, α),
+¯V (x, T ; p, ˆp, α, ˆα, γ) + ¯U (x, T ; p, 2p − ˆp, α, 2α − ˆα, γ) = 2 ¯v(x, T ; ˆp − p, ˆα − α, γ).
+
+While these identiﬁcations are analogous to the perpetual case, the computation of the value function for the
+ﬁnite-maturity case (5.3) is signiﬁcantly more difﬁcult. Whereas ¯C can be computed using standard techniques
+such as Laplace inversion and simulation, the computation of ¯v and ¯u must involve a free-boundary problem of
+PIDE. Moreover, in light of the non-standard nature of our problem such as the discontinuity of the payoff function
+and early termination due to default, it is not clear if any standard numerical method can achieve reasonable
+accuracy. It is also noted that one needs to focus on a certain type of L´evy process (and its inﬁnitesimal generator),
+and the results are signiﬁcantly limited compared to our results on the perpetual case, which are applicable to a
+general spectrally negative L´evy process. For this reason, we take an analytical approach by utilizing greatly our
+analytical solutions for the perpetual case.
+
+5.3. Analytical Bounds and Asymptotic Optimality. In view of the computational challenges involving ¯v(x, T )
+and ¯u(x, T ), here we discuss how these can be approximated using the analytical value functions from the perpetual
+case, namely, v(x) and u(x) (see (3.15), (3.21) and (3.22)).
+
+As in the perpetual case, in order to compute the value function for all four cases (callable/putable and step-
+up/down), it sufﬁces to obtain ¯v(x, T ) := ¯v(x, T ;−˜p,−˜α, γ) and ¯u(x, T ) := ¯u(x, T ;−˜p,−˜α, γ) for ˜p, ˜α > 0
+thanks to (5.4). As in (5.2), we have the identities:
+
+(5.5)
+
+(5.6)
+
+¯v(x, T ) = sup
+τ∈ST
+
+¯u(x, T ) = sup
+τ∈ST
+
+Ex
+
+Ex
+
+τ
+
+(cid:20)(cid:90) θ∧T
+e−rt ˜p dt − e−rτ γ1{τ <θ∧T} − e−rθ ˜α1{τ <θ<T}
+(cid:20)
+(cid:90) θ∧T
+
+e−rt ˜p dt − e−rτ γ1{τ <θ∧T} + e−rθ ˜α1{τ <θ<T}
+
+(cid:21)
+
+−
+
+τ
+
+,
+
+(cid:21)
+
+.
+
+22
+
+T. LEUNG AND K. YAMAZAKI
+
+We shall ﬁrst show that the function
+
+˜v(x, T ) := v(x) − Ex
+
+(cid:20)
+
+1{θ≥T}
+
+(cid:21)
+
+e−rt ˜p dt
+
+(cid:90) θ
+
+T
+
+can approximate ¯v(x, T ), for x, T > 0, with some suitable analytical bounds.
+
+Lemma 5.1. For ˜p, ˜α > 0 and γ ≥ 0, we have
+
+˜v(x, T ) ≤ ¯v(x, T ) ≤ ˜v(x, T ) + Ex(cid:104)
+
+1{θ≥T}
+
+(cid:16)
+
+(cid:17)(cid:105)
+
+,
+
+e−rT γ + e−rθ ˜α
+
+for x, T > 0.
+
+Proof. Using (5.5) and that τ ≤ T a.s. for any τ ∈ ST by (5.1), we write
+
+(cid:20)(cid:90) θ
+
+τ
+
+¯v(x, T ) = sup
+τ∈ST
+
+Ex
+
+Observing that, for any τ ∈ ST ,
+
+(cid:90) θ
+
+T
+
+e−rt ˜p dt − 1{θ≥T}
+
+e−rt ˜p dt − e−rτ γ1{τ <θ∧T} − e−rθ ˜α1{τ <θ<T}
+
+(cid:21)
+
+.
+
+(5.7)
+e−rτ 1{τ <θ∧T} = e−rτ 1{τ <θ} − e−rτ 1{T =τ <θ} = e−rτ 1{τ <θ} − e−rT 1{T =τ <θ} ≥ e−rτ 1{τ <θ} − e−rT 1{θ≥T},
+and 1{τ <θ<T} ≥ 1{τ <θ} − 1{θ≥T}, we obtain the inequality
+
+(cid:21)
+
+(cid:21)
+
+(cid:20)(cid:90) θ
+(cid:18)
+
+τ
+
+(5.8)
+
+¯v(x, T ) ≤ sup
+τ∈ST
+
+Ex
+
+(cid:20)
+
++ Ex
+
+1{θ≥T}
+
+e−rt ˜p dt − e−rτ γ1{τ <θ} − e−rθ ˜α1{τ <θ}
+(cid:19)(cid:21)
+(cid:90) θ
+
+e−rt ˜p dt + e−rT γ + e−rθ ˜α
+
+−
+
+.
+
+T
+
+Recall from (2.13) that
+
+(5.9)
+
+v(x) = sup
+τ∈S
+
+Ex
+
+(cid:20)
+
+1{τ <∞}
+
+(cid:18)(cid:90) θ
+
+τ
+
+e−rt ˜p dt − e−rτ γ1{τ <θ} − e−rθ ˜α1{τ <θ}
+
+(cid:19)(cid:21)
+
+and ST ⊂ S, v(x) dominates the ﬁrst expectation of the right hand side in (5.8). Hence we have the desired upper
+bound.
+
+For the lower bound, by (5.9),
+
+v(x) ≤ sup
+τ∈S
+
+Ex
+
+(cid:20)
+
+(cid:90) θ
+
+τ
+
+1{τ <∞}
+
+e−rt ˜p dt − e−rτ γ1{τ <θ∧T} − e−rθ ˜α1{τ <θ<T}
+
+.
+
+In view of the integrand on the right hand side, in the event the contract has not been terminated until T , it is
+optimal to exercise at T because waiting further would simply reduce the cash ﬂow at rate ˜p. Therefore, the
+
+optimal stopping time must be in ST and
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+(cid:21)
+
+v(x) ≤ sup
+τ∈ST
+
+= sup
+τ∈ST
+
+Ex
+
+Ex
+
+e−rt ˜p dt − e−rτ γ1{τ <θ∧T} − e−rθ ˜α1{τ <θ<T}
+
+e−rt ˜p dt − e−rτ γ1{τ <θ∧T} − e−rθ ˜α1{τ <θ<T}
+
+(cid:21)
+
++ Ex
+
+(cid:20)(cid:90) θ
+
+θ∧T
+
+(cid:21)
+
+e−rt ˜p dt
+
+(cid:21)
+
+(cid:20)(cid:90) θ
+(cid:20)(cid:90) θ∧T
+(cid:20)(cid:90) θ
+
+τ
+
+τ
+
+23
+
+(cid:3)
+
+(cid:19)(cid:21)
+
+˜u(x, T ) := u(x) + Ex
+
+1{θ≥T}
+
+(cid:90) θ
+
+(cid:21)
+
+e−rt ˜p dt
+
+.
+
+T
+
+(cid:20)
+(cid:19)(cid:21)
+
+≤ ¯u(x, T ) ≤ ˜u(x, T ) + Ex(cid:2)1{θ≥T}e−rT γ(cid:3) ,
+
+e−rt ˜p dt + 1{θ≥T}
+
+e−rt ˜p dt − e−rτ γ1{τ <θ∧T} + e−rθ ˜α1{τ <θ<T}
+
+(cid:21)
+
+.
+
+(cid:90) θ
+
+T
+
+= ¯v(x, T ) + Ex
+
+e−rt ˜p dt
+
+,
+
+θ∧T
+
+which gives the lower bound.
+
+Similarly, to approximate ¯u(x, T ), we deﬁne
+
+Lemma 5.2. For ˜p, ˜α > 0 and γ ≥ 0,
+
+˜u(x, T ) − Ex
+
+1{θ≥T}
+
+e−rt ˜p dt + e−rθ ˜α
+
+for every x > 0 and T > 0.
+Proof. By (5.6) and τ ≤ T a.s. for any τ ∈ ST by (5.1),
+
+(cid:20)
+
+(cid:18)(cid:90) θ
+
+T
+
+(cid:20)
+
+−
+
+(cid:90) θ
+
+τ
+
+(cid:90) θ
+
+¯u(x, T ) = sup
+τ∈ST
+
+Ex
+By (5.7) and that ST ⊂ S,
+¯u(x, T ) ≤ sup
+τ∈ST
+≤ sup
+τ∈S
+
+(cid:20)
+(cid:20)
+
+Ex
+
+Ex
+
+−
+
+1{τ <∞}
+
+τ
+
+τ
+which is the desired upper bound.
+
+(cid:21)
+
++ Ex
+
+(cid:20)
+(cid:19)(cid:21)
+
+1{θ≥T}
+
+(cid:18)(cid:90) θ
+(cid:20)
+
+T
+
+e−rt ˜p dt + e−rT γ
+
+(cid:18)(cid:90) θ
+
+T
+
++ Ex
+
+1{θ≥T}
+
+e−rt ˜p dt + e−rT γ
+
+(cid:19)(cid:21)
+
+,
+
+On the other hand, because {τ < θ} ⊂ {τ < θ < T} ∪ {θ ≥ T},
+
+e−rt ˜p dt − e−rτ γ1{τ <θ} + e−rθ ˜α1{τ <θ}
+(cid:18)
+
+(cid:90) θ
+
+−
+
+e−rt ˜p dt − e−rτ γ1{τ <θ} + e−rθ ˜α1{τ <θ}
+(cid:90) θ
+
+−
+
+τ
+
+e−rt ˜p dt − e−rτ γ1{τ <θ} + e−rθ ˜α1{τ <θ}
+(cid:21)
+
+(cid:20)
+(cid:20)
+
+(cid:18)
+(cid:90) θ∧T
+
+1{τ <∞}
+
+Ex
+
+(cid:19)(cid:21)
++ Ex(cid:104)
+
+u(x) = sup
+τ∈S
+≤ sup
+τ∈S
+
+−
+
+Ex
+
+(5.10)
+Because in the integrand on the right-hand side, the payoff after T is uniformly zero, we can replace S with ST
+(cid:3)
+and this gives the lower bound.
+
+e−rt ˜p dt − e−rτ γ1{τ <θ∧T} + e−rθ ˜α1{τ <θ<T}
+
+e−rθ ˜α1{θ≥T}
+
+.
+
+τ
+
+(cid:105)
+
+Deﬁne the error functions
+
+v(x, T ) := ¯v(x, T ) − ˜v(x, T ),
+u(x, T ) := ¯u(x, T ) − ˜u(x, T ),
+
+24
+
+T. LEUNG AND K. YAMAZAKI
+
+for every x > 0 and T > 0. By Lemmas 5.1 and 5.2, these have bounds:
+
+(5.11)
+
+(5.12)
+
+(cid:20)
+
+1{θ≥T}
+
+(cid:18)(cid:90) θ
+
+T
+
+−Ex
+
+e−rt ˜p dt + e−rθ ˜α
+
+0 ≤v(x, T ) ≤ Ex(cid:104)
+(cid:19)(cid:21)
+≤u(x, T ) ≤ Ex(cid:2)1{θ≥T}e−rT γ(cid:3) ,
+
+1{θ≥T}
+
+(cid:16)
+
+e−rT γ + e−rθ ˜α
+
+(cid:17)(cid:105)
+
+,
+
+for every x > 0 and T > 0. If the exercise fee γ is set zero or sufﬁciently small (recall that the exercise fee γ
+is supposed to be much smaller than the change in default payment ˜α), the bound (5.11) is expected to be small.
+
+Indeed, in light of the expectation Ex(cid:2)1{θ≥T}e−rθ(cid:3), the discount e−rθ and the indicator function 1{θ≥T} keep its
+of the expectation Ex[1{θ≥T}(cid:82) θ
+
+value small when θ is large and when it is small, respectively. The bound (5.12) is in comparison less tight because
+T e−rt ˜p dt] on the lower bound. In the analytical proof of Lemma 5.2 (in particular
+(5.10)), this term cannot be removed, but u(x, T ) is expected to be closer to its upper bound than to its lower
+bound in (5.12).
+
+We shall show that the error functions vanish in the limit as T ↑ ∞ which also implies that ¯v(x, T ) converges to
+the perpetual value function v(x). We further show upon some suitable conditions that these error functions also
+converge to zero as x ↑ ∞ and x ↓ 0.
+
+The ﬁrst convergence result as T ↑ ∞ is immediate because
+
+(cid:20)
+
+Ex
+
+(cid:90) θ
+
+(cid:21)
+
+lim
+T↑∞
+
+= lim
+T↑∞
+Proposition 5.2. For every ﬁxed x > 0, as T ↑ ∞,
+
+1{T≤θ}
+
+T
+
+e−rt ˜p dt
+
+Ex(cid:2)e−rT γ1{θ≥T}(cid:3) = lim
+
+T↑∞
+
+(cid:104)
+
+(cid:105)
+
+e−rθ ˜α1{θ≥T}
+
+= 0.
+
+(1) v(x, T ) → 0 and u(x, T ) → 0,
+(2) ¯v(x, T ) → v(x) and ˜v(x, T ) → v(x),
+(3) ¯u(x, T ) → u(x) and ˜u(x, T ) → u(x).
+This proposition shows, for each of the callable/putable step-up/down cases, the asymptotic optimality as T ↑ ∞
+
+of the value functions V (x) and U (x) of the perpetual case; namely,
+
+(5.13)
+
+V (x, T ) → V (x),
+U (x, T ) → U (x),
+
+(cid:34)(cid:90) θ∧T
+(cid:34)(cid:90) θ∧T
+
+B∗∧T
+τ +
+
+B∗∧T
+τ +
+
+(5.14)
+as T ↑ ∞ for every ﬁxed x > 0. This also implies the effectiveness of the approximation using the strategies
+B∗ ∧ T ∈ ST and τ−
+B∗ ∧ T )
+τ +
+and ¯U (x, T, τ−
+A∗ ∧ T . Observing that
+B∗ ∧T < θ∧T} = {τ +
+{τ +
+B∗ < θ < T}
+B∗ ≤ θ implies τ +
+(since τ +
+
+A∗ ∧ T ) be the expected values corresponding to the strategy τ +
+B∗ < θ∧T} and {τ +
+
+B∗ < θ∧T}∪{T < θ∧T} = {τ +
+B∗ < T on {θ < T}), we can write
+
+A∗ ∧ T ∈ ST . To this end, let ¯v(x, T, τ +
+
+B∗ ∧ T and τ−
+B∗ ∧T < θ < T} = {τ +
+
+A∗ ∧ T ), ¯V (x, T, τ +
+
+B∗ ∧ T ), ¯u(x, T, τ−
+
+(5.15)
+
+¯v(x, T, τ +
+
+B∗ ∧ T ) = Ex
+
+= Ex
+
+e−rt ˜p dt − e−r(τ +
+
+B∗∧T )γ1{τ +
+
+B∗∧T <θ∧T} − e−rθ ˜α1{τ +
+
+B∗∧T <θ<T}
+
+e−rt ˜p dt − e−r(τ +
+
+B∗∧T )γ1{τ +
+
+B∗ <θ∧T} − e−rθ ˜α1{τ +
+
+B∗ <θ<T}
+
+.
+
+(cid:35)
+
+(cid:35)
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+Similarly, we conclude that
+
+¯u(x, T, τ−
+
+A∗ ∧ T ) = Ex
+
+(cid:90) θ∧T
+
+(cid:34)
+
+−
+
+τ−
+A∗∧T
+
+e−rt ˜p dt − e−r(τ−
+
+A∗∧T )γ1{τ−
+
+A∗ <θ∧T} + e−rθ ˜α1{τ−
+
+A∗ <θ<T}
+
+25
+
+(cid:35)
+
+.
+
+(cid:34)
+
+(cid:32)(cid:90) θ∧T
+
+B∗∧T
+τ +
+
+By (5.3) and (5.4), ¯V (x, T, τ +
+
+B∗ ∧ T ) and ¯U (x, T, τ−
+
+A∗ ∧ T ) can be obtained by adding/subtracting ¯C(x, T ).
+
+Proposition 5.3. The asymptotic optimality of τ +
+
+B∗ ∧ T and τ−
+
+A∗ ∧ T holds. That is, for every x > 0,
+
+(1) ¯v(x, T, τ +
+(2) ¯u(x, T, τ−
+(3) ¯V (x, T, τ +
+(4) ¯U (x, T, τ−
+
+B∗ ∧ T )/¯v(x, T ) → 1,
+A∗ ∧ T )/¯u(x, T ) → 1,
+B∗ ∧ T )/ ¯V (x, T ) → 1,
+A∗ ∧ T )/ ¯U (x, T ) → 1,
+
+as T ↑ ∞.
+
+Proof. By the deﬁnition of ¯v(x, T ) in (5.5) as a supremum and because τ +
+¯v(x, T ) for any T > 0. By this and Proposition 5.2,
+
+B∗ ∧ T ∈ ST , we have ¯v(x, T, τ +
+
+B∗ ∧ T ) ≤
+
+¯v(x, T, τ +
+
+B∗ ∧ T ) ≤ lim
+
+lim sup
+
+T↑∞
+
+T↑∞ ¯v(x, T ) = v(x).
+B∗ ∧ T → τ +
+
+B∗ on {τ +
+
+On the other hand, applying Fatou’s lemma in (5.15) and because τ +
+on {θ < ∞} as T ↑ ∞,
+
+B∗ < ∞} and θ ∧ T → θ
+(cid:33)(cid:35)
+
+T↑∞ ¯v(x, T, τ +
+lim inf
+
+B∗ ∧ T ) ≥ Ex
+
+lim inf
+T↑∞
+
+e−rt ˜p dt − e−r(τ +
+
+B∗∧T )γ1{τ +
+
+B∗ <θ∧T} − e−rθ ˜α1{τ +
+
+B∗ <θ<T}
+
+= v(x).
+
+Hence we have (1). The proof of (2) is similar. Since ¯C(x, T ) → C(x) as T ↑ ∞, (3) and (4) are also immediate.
+(cid:3)
+
+We now analyze the asymptotic behavior of the error functions in terms of x for every ﬁxed T > 0. In view of
+(5.11) and (5.12), each error bound contains the indicator function 1{θ≥T} and this tends to decrease as θ decreases
+(or equivalently, as x decreases). In particular, if x is sufﬁciently small and X ﬂuctuates rapidly, these tend to
+vanish. The following result is immediate by the regularity of a L´evy process of unbounded variation; we refer the
+reader to page 142 of [30].
+Proposition 5.4. Fix T > 0 and suppose X is of unbounded variation. Then v(x, T ) → 0 and u(x, T ) → 0 as
+x ↓ 0.
+
+We now consider the limit as x ↑ ∞ as an approximation for the case the maturity T is small in comparison to
+the default time θ. In (5.11) and (5.12), while the error bounds do not converge to zero when γ > 0, we can obtain
+the convergence for the case γ = 0. By (3.5) and Exercise 8.5(i) of [30],
+
+Ex(cid:104)
+
+lim
+x→∞
+
+e−rθ ˜α1{θ≥T}
+
+(cid:105) ≤ ˜α lim
+
+x→∞
+
+Ex(cid:104)
+
+e−rθ(cid:105)
+
+(cid:18)
+
+= ˜α lim
+x→∞
+
+Z(r)(x) − r
+Φ(r)
+
+W (r)(x)
+
+= 0.
+
+(cid:19)
+
+26
+
+T. LEUNG AND K. YAMAZAKI
+
+Hence, we can conclude the following limits.
+
+Proposition 5.5. Suppose γ = 0 and ﬁx T > 0. Then,
+
+(1) v(x, T ) → 0 as x ↑ ∞,
+(2) lim supx↑∞ u(x, T ) ≤ 0.
+
+5.4. Limits as T ↓ 0 and Approximation of Stopping Boundaries. The analytical bounds of the value function
+obtained above are certainly practical and are indeed tight depending on the chosen parameters. Next, we consider
+taking T ↓ 0 and also analyze the stopping boundary as a function of T .
+
+We ﬁrst consider the case γ = 0, or there is no exercise fee. Consider the callable case with ˜p, ˜α > 0:
+
+¯v(x, δ) := sup
+τ∈Sδ
+
+Ex
+
+τ
+
+e−rt ˜p dt − e−rθ ˜α1{τ <θ<δ}
+
+(cid:21)
+
+(cid:20)(cid:90) θ∧δ
+
+(cid:21)
+
+for any small δ > 0. Intuitively, for sufﬁciently small δ, because the movement of the process X until the contract
+termination can be made arbitrarily small by choosing δ sufﬁcient small (see (5.16) below), the investor’s strategy
+is constant; either waiting until contract termination (τ = δ ∧ θ) or exercising immediately (τ = 0). The former
+gives a zero value. As for the latter case, we observe that
+
+(5.16)
+
+e−rt ˜p dt − e−rθ ˜α1{θ<δ}
+
+= δ(˜p − ˜αΠ(x,∞)) + o(δ)
+
+as δ ↓ 0
+
+because, as in page 247 of Hilberink and Rogers [23],
+
+(5.17)
+
+and
+
+(cid:20)(cid:90) θ∧δ
+
+0
+
+Ex
+
+e−rθ1{θ<δ}
+(cid:21)
+
+= Ex
+
+e−rt ˜pdt
+
+= Px {θ < δ} + o(δ) = δΠ(x,∞) + o(δ),
+
+as δ ↓ 0,
+
+(cid:21)
+
+e−rt ˜pdt
+
+(cid:20)
+
+− Ex
+
+1{θ≤δ}
+
+(cid:90) δ
+
+θ
+
+(cid:21)
+
+e−rt ˜pdt
+
+= ˜pδ + o(δ),
+
+as δ ↓ 0,
+
+(cid:105)
+(cid:20)(cid:90) δ
+
+0
+
+Ex
+
+(cid:20)(cid:90) θ∧δ
+Ex(cid:104)
+
+0
+
+where the last relation holds by (5.17). Consequently, τ = 0 if and only if (5.16) is positive. More precisely, let
+C∗ be such that
+
+˜p − ˜αΠ(C∗,∞) = 0,
+
+(5.18)
+if it exists; otherwise, we set C∗ to be zero. Then the strategy to stop if and only if x > C∗ is asymptotically
+optimal as δ goes to zero. By symmetry, for ¯u(x, δ), the strategy to stop if and only if x < C∗ is asymptotically
+optimal. As a trivial example, suppose X does not have jumps (i.e. Brownian motion with drift), then C∗ = 0 and
+exercising immediately is optimal for ¯v while waiting until contract termination is optimal for ¯u at a time close to
+maturity.
+
+The asymptotic behavior as T ↓ 0 for the case γ > 0, on the other hand, is trivial. In this case, for both parties,
+it is never optimal to exercise at a time sufﬁciently close to the maturity. This is because as in (5.16) the premium
+payment until maturity and the default probability both converge to zero, while the exercise fee is strictly positive.
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+27
+
+Using the asymptotic results obtained above, we now analyze the stopping boundary as a function of T . The
+
+Markov property of (t, Xt) suggests that the optimal stopping times of ¯v and ¯u admit the forms
+
+inf {t ≥ 0 : Xt ≥ B∗(T − t)}
+
+and
+
+inf {t ≥ 0 : Xt ≤ A∗(T − t)} ,
+
+for some deterministic functions A∗(t) and B∗(t) that map from [0, T ) to [0,∞). Thanks to the asymptotic analysis
+as T ↑ ∞ and T ↓ 0 obtained above, we can actually obtain the asymptotics of B∗(T ) and A∗(T ) as T ↑ ∞ and
+T ↓ 0. As T ↑ ∞, the optimal strategies for the perpetual case, τ +
+A∗ ∧ T , are asymptotically optimal
+for ¯v and ¯u, respectively. Regarding the asymptotics as T ↓ 0, the asymptotically optimal strategies depend on
+C∗ ∧ T are asymptotically optimal for ¯v and ¯u, respectively.
+whether γ = 0 or γ > 0. When γ = 0, τ +
+When γ > 0, θ ∧ T is asymptotically optimal for both ¯v and ¯u. In summary,
+
+B∗ ∧ T and τ−
+
+C∗ ∧ T and τ−
+
+(1) A∗(T ) → A∗ and B∗(T ) → B∗ as T ↑ ∞;
+(2) A∗(T ) → C∗ and B∗(T ) → C∗ as T ↓ 0 when γ = 0;
+(3) A∗(T ) → 0 and B∗(T ) → ∞ as T ↓ 0 when γ > 0.
+
+FIGURE 5. Illustration of B∗(T ) and A∗(T ): (left) no exercise fee (γ = 0), and (right) with
+exercise fee (γ > 0).
+
+In light of these asymptotic behaviors, Figure 5 illustrates the shapes of the stopping boundaries for the cases
+γ = 0 and γ > 0. When γ = 0, B∗(T ) tends to increase as T (or the time until maturity) increases while A∗(T )
+tends to decrease as T increases. This is commonly observed in ﬁnite horizon optimal stopping problems; see
+Shiryaev and Peskir [41] for the cases of American options, sequential detection and sequential hypothesis testing.
+Intuitively speaking, if one has more time till maturity, he does not have to rush to exercise, and hence continuation
+region tends to increase (decrease) in width as the remaining time increases (decreases). We can conﬁrm this
+monotonicity because by the deﬁnitions of A∗ and C∗ as in (3.20) and (5.18)
+
+C∗ > A∗.
+
+On the other hand, these monotonicities fail once an exercise fee is introduced (γ > 0).
+
+This observation is particular useful. Notice that a numerical lower bound can be attained by choosing any
+feasible strategy and computing its corresponding expected value via simulation. With this and the analytical
+upper bounds obtained above, one may obtain a tighter error bound. In particular, for the case γ = 0, we can focus
+
+(cid:0)(cid:2)(cid:3)(cid:2)(cid:4)(cid:3)(cid:4)(cid:0)(cid:3)(cid:0)(cid:2)(cid:3)(cid:2)(cid:4)(cid:3)(cid:4)(cid:0)(cid:3)T. LEUNG AND K. YAMAZAKI
+
+28
+on the set of monotone functions B∗(·) and A∗(·) connecting B∗/A∗ and C∗. It is possible to approximate their
+shapes parametrically or non-parametrically. For a related technique where non-parametric regression is applied
+to approximate convex stopping regions, we refer the reader to, e.g., Section 6 of Dayanik et al. [16]. Regarding
+the continuity, monotonicity and smooth/continuous ﬁt for the ﬁnite-horizon optimal stopping problem, we refer
+the reader to [41].
+
+5.5. Term Structure of Credit Spreads. We now consider the credit spread p∗(x, T ) that makes V (x, T ) = 0.
+We assume here that ˆp is always proportional to p and set as we did in our numerical examples ˆp = qp for some
+constant q ≥ 0. Because the payoff function is monotone in p, it is expected that there exists a unique value
+of credit spread as we have conﬁrmed in our numerical results in Section 4 for the perpetual case. The function
+p∗(x, T ) is potentially highly nonlinear both in terms of x and T . Nonetheless, we can obtain some asymptotic
+behaviors as T ↓ 0 and T ↑ ∞ for every ﬁxed x > 0 as we describe below.
+
+We ﬁrst consider the asymptotic behavior of p∗(x, T ) as T ↑ ∞ as an approximation to the credit spread for a
+long maturity. While the convergence is not guaranteed, the credit spread p∗(x) of the perpetual case can be used
+as an approximation. The following holds immediately because both (5.13) and (5.14) hold for the case p = p∗(x)
+and ˆp = qp∗(x).
+
+Proposition 5.6. For every x > 0,
+
+as T ↑ ∞.
+
+¯V (x, T ; p∗(x), qp∗(x), α, ˆα, γ) → 0,
+¯U (x, T ; p∗(x), qp∗(x), α, ˆα, γ) → 0,
+
+We now consider the asymptotic behavior as T ↓ 0. Suppose γ > 0, then it is optimal never to exercise close to
+the maturity. Therefore, the asymptotic credit spread for all cases (callable/putable and step-up/down) is that of the
+standard CDS limT↓0 ¯p(x, T ; α). As in (2.2), the credit spread of the standard CDS with ﬁnite-maturity is given by
+
+ζT (x) := Ex(cid:104)
+
+(cid:105)
+
+e−rθ1{θ≤T}
+
+.
+
+¯p(x, T ; α) =
+
+α r ζT (x)
+
+1 − ζT (x) − e−rT Px{θ > T} , where
+
+As in page 247 of [23], we obtain
+
+¯p(x, T ; α) → αΠ(x,∞),
+
+as T ↓ 0,
+
+and this is the limit of the credit spread of our default swap as the maturity goes to zero.
+
+The case γ = 0 is harder to analyze because the boundary C∗ depends on ˜p = (1 − q)p which also depends on
+how the premium p is chosen. However, because for any p and ˆp either stopping immediately or never exercising is
+asymptotically optimal as T ↓ 0 as we discussed in Section 5.4, the credit spread is expected to converge to either
+limT↓0 ¯p(x, T ; ˆα) = ˆαΠ(x,∞) or limT↓0 ¯p(x, T ; α) = αΠ(x,∞).
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+29
+
+6. CONCLUDING REMARKS
+
+In summary, the incorporation of American step-up and step-down options give default swap investors the
+additional ﬂexibility to manage and trade credit risks. The valuation of these contracts requires solving for the
+optimal timing to step-up/down for the protection buyer/seller. The perpetual nature of the contract allows us to
+compute analytically the investor’s optimal exercise threshold under quite general L´evy credit risk models. Using
+the symmetry properties between step-up and step-down contracts, we gain better intuition on various contract
+speciﬁcations, and drastically simplify the procedure to determine the credit spreads. The approximation for the
+ﬁnite-maturity case can be efﬁciently conducted using our analytical solutions on the perpetual case.
+
+There are a number of avenues for future research. For instance, it would be interesting to value a default
+swap where both the protection buyer and seller can terminate the contract early. Then, the valuation problem can
+be formulated as a modiﬁed game option as introduced by Kifer [28]. In this case, we conjecture that threshold
+strategies will again be optimal for both parties and constitute Nash or Stackelberg equilibrium [20, 40]. Another
+direction for future research is to consider derivatives with multiple early exercisable step-up/down options. This
+is related to some optimal multiple stopping problems arising in other ﬁnancial applications, such as swing options
+[13] and employee stock options [33].
+
+APPENDIX A. PROOFS
+
+A.1. Proof of Lemma 2.1. Applying the deﬁnitions of ∆B(x) and h(x) (see (2.15)) and noting that θ = ∞
+whenever τ +
+
+B = ∞, we obtain, for every x ∈ (0, B),
+
+(cid:33)(cid:35)
+
+(cid:20)(cid:90) θ
+
+0
+
+− Ex
+
+e−rt ˜p dt − e−rθ ˜α
+
+(cid:21)
+
++ γ
+
+− 1{τ +
+
+B =∞}
+
+e−rt ˜p dt − e−rθ ˜α
+
+(cid:18)(cid:90) θ
+
+0
+
+(cid:19)(cid:35)
+
++ γ
+
+(cid:34)
+(cid:34)
+(cid:34)
+(cid:20)
+
+∆B(x)
+
+= Ex
+
+= Ex
+
+= Ex
+
+= Ex
+
+τ +
+B
+
+(cid:32)(cid:90) θ
+(cid:32)
+(cid:90) τ +
+(cid:16)
+(cid:18)(cid:18) ˜p
+
+−
+
+0
+
+B
+
+1{τ +
+
+B <∞}
+
+1{τ +
+
+B <∞}
+
+e−rt ˜p dt − e−rτ +
+
+B γ1{τ +
+
+e−rt ˜p dt − e−rτ +
+
+B γ1{τ +
+
+B
+
+B <∞}e−rτ +
+B <∞}e−rτ +
+
+B
+
+1{τ +
+
+1{τ +
+
+˜α1{τ +
+
+B =θ} − γ1{τ +
+(cid:19)
+
+B <θ}
+
++ ˜α
+
+r
+
+1{τ +
+
+B =θ} +
+
+B <θ}
+
+B <θ} − e−rθ ˜α1{τ +
+(cid:33)
+B <θ} + e−rθ ˜α1{τ +
+(cid:33)(cid:35)
+(cid:32)(cid:90) τ +
+(cid:17) −
+(cid:19)(cid:21)
+(cid:19)
+(cid:18) ˜p
+
+e−rt ˜p dt
+
+B =θ}
+
+0
+
+B
+
+− γ
+
+r
+
+1{τ +
+
+B <θ}
+
++ γ
+
++ γ − ˜p
+r
+
+.
+
+A.2. Proof of Lemma 2.2. The proof follows from the same arguments for Lemma 2.1, and is thus omitted.
+A.3. Proof of Lemma 3.2. When X is of unbounded variation, we have (0+) = −∞ because W (r)(cid:48)
+(0+) > 0
+and W (r)(0) = 0 by Lemma 3.1. This implies that it must be of bounded variation for B∗ = 0. Then, again by
+Lemma 3.1, we have after some algebra
+
+Since (·) is increasing, the second condition is equivalent to (·) ≥ 0 (i.e. scenario (a)) or B∗ = 0.
+
+(0+) =
+
+(˜p − rγ − (˜α + γ)Π(0,∞)) .
+
+1
+µ
+
+(cid:110)
+
+30
+A.4. Proof of Lemma 3.3. As discussed in p.228-229 of [30], for every ﬁxed 0 < x ≤ B < ∞, the stochastic pro-
+are Px-martingales. Consequently,
+cesses
+we have
+
+T. LEUNG AND K. YAMAZAKI
+
+B )W (r)(Xt∧τ +
+
+B )Z(r)(Xt∧τ +
+
+e−r(t∧τ +
+
+e−r(t∧τ +
+
+); t ≥ 0
+
+(cid:111)
+
+); t ≥ 0
+
+B
+
+(cid:110)
+
+(cid:111)
+
+and
+
+B
+
+(L − r)W (r)(x) = (L − r)Z(r)(x) = 0,
+
+(A.1)
+With this and the deﬁnition of vB∗ in (3.15), if 0 < B∗ < ∞, it follows that
+(L − r)vB∗(x) = 0 x ∈ (0, B∗).
+
+(A.2)
+
+x > 0.
+
+It remains to show that (L − r)vB∗(x) ≤ 0 for every x > B∗. We do so via Lemmas A.1-A.3 below.
+
+Lemma A.1. If B∗ = 0, then we have (L − r)vB∗(0+) = (L − r)h(0+) ≤ 0.
+Proof. Using (A.1), we have (L − r)h(0+) = (L − r)L(0+), where L(x) := ( ˜p
+Now, with L(cid:48)(0+) = 0, plus σ = 0 and Π(0,∞) < ∞ by Lemma 3.2, we obtain
+
+(cid:90) ∞
+
+(L − r)L(0+) =
+
+(L(0 − z) − L(0)) Π(dz) − r
+Recalling Lemma 3.2, we conclude that (L − r)h(0+) ≤ 0.
+Lemma A.2. If σ > 0 and 0 < B∗ < ∞, then we have ∆(cid:48)(cid:48)(B∗−) ≥ 0.
+
+− γ
+
+r
+
+0
+
+(cid:18) ˜p
+
+(cid:19)
+
+r − γ) + (˜α + γ) 1{x≤0}, x ∈ R.
+
+= (˜α + γ)Π(0,∞) − (˜p − γr) .
+
+(cid:3)
+
+Proof. By (3.13) and direct computation, we get
+(B∗) − W (r)(cid:48)(cid:48)
+
+∆(cid:48)(cid:48)(B∗−) = (r ˜α + ˜p) W (r)(cid:48)
+
+(B∗)
+W (r)(B∗)
+
+G(r)(B∗) = − (r ˜α + ˜p)
+
+(W (r)(B∗))2
+(B∗)
+W (r)(cid:48)
+
+W (r)(cid:48)
+(B)
+W (r)(B)
+
+,
+
+∂
+∂B
+
+Suppose 0 < B∗ < ∞. Since vB∗(·) and v(cid:48)
+
+which is non-negative by (3.6). Here W (r) is twice differentiable since σ > 0.
+
+(cid:3)
+B∗(·) are continuous at B∗ by the continuous and smooth ﬁt
+conditions, it follows from Lemma A.2 that (L − r)vB∗(B∗−) ≥ (L − r)vB∗(B∗+), and then by (A.2) that
+(L − r)vB∗(B∗+) ≤ 0. Suppose B∗ = 0, we have (L − r)vB∗(B∗+) ≤ 0 by Lemma A.1. Now, in order to show
+(L− r)vB∗(x) ≤ 0 on (B∗,∞), it is sufﬁcient to prove that (L− r)vB∗(x) is decreasing on (B∗,∞). To this end,
+we rewrite vB∗ as
+
+(cid:16)(cid:101)h(x) +(cid:101)∆(x)
+(cid:17)
+
+vB∗(x) =
+
+1{x(cid:54)=0},
+
++ ˜α
+
+Z(r)(x) − r
+Φ(r)
+
+W (r)(x)
+
+x ∈ R
+
+x ∈ R,
+
+,
+
+(cid:19)
+
+Z(r)(x) − W (r)(x)
+W (r)(B∗)
+
+G(r)(B∗), x ∈ (−∞, B∗),
+
+x ∈ [B∗,∞).
+
+where
+
+(A.3)
+
+(cid:101)h(x) = −
+
+(cid:101)∆(x) =
+
+(cid:18) ˜p
+(cid:18) ˜p
+
+r
+
+(cid:19)(cid:18)
+(cid:19)
+
++ ˜α
+r
+− γ,
+
+˜p
+r
+
+By (A.1), (L − r)(cid:101)h(x) = 0 for every x > 0. Furthermore, (cid:101)∆(cid:48)(x) = (cid:101)∆(cid:48)(cid:48)(x) = 0 on x > B∗, and hence
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+31
+
+(L − r)vB∗(x) = (L − r)(cid:101)∆(x) =
+
+(cid:90) ∞
+
+0
+
+(cid:16)(cid:101)∆(x − z) −(cid:101)∆(x)
+
+(cid:17)
+
+Π(dz) − (˜p − rγ) ,
+
+x > B∗.
+
+constant on (B∗,∞).
+
+In order to show that this is decreasing in x on (B∗,∞), it is sufﬁcient to show that the integrand in the right-hand
+
+side is decreasing in x or equivalently (cid:101)∆(x − z) is decreasing in x for every ﬁxed z by noting that (cid:101)∆(x) is a
+Lemma A.3. The function (cid:101)∆(·) is decreasing on R and is uniformly bounded below by ˜p/r − γ > 0.
+Proof. It is clear that(cid:101)∆(·) in (A.3) is monotonically decreasing when B∗ = 0 because(cid:101)∆(0−) = ˜p
+(cid:101)∆(0+). Suppose 0 < B∗ < ∞. By differentiating (cid:101)∆(·), for 0 < x < B∗, we get
+(cid:34)
+(cid:101)∆(cid:48)(x) = (˜p + ˜αr) W (r)(x) − W (r)(cid:48)
+Note that (cid:101)∆(cid:48)(·) is non-positive because (3.6) implies that
+Furthermore, at zero, we have(cid:101)∆(0+)−(cid:101)∆(0−) = − W (r)(0)
+continuous ﬁt implies that (cid:101)∆(B∗−) = (cid:101)∆(B∗+) = ˜p
+
+≤ W (r)(B∗)
+⇐⇒ W (r)(x)
+(B∗)
+W (r)(cid:48)
+(x)
+G(r)(B∗) ≤ 0. As for uniform (lower) boundedness,
+
+r − γ > 0 (see (2.22)). Since (cid:101)∆ is constant on (−∞, 0) ∪
+
+− W (r)(B∗)
+(B∗)
+W (r)(cid:48)
+
+r − γ =
+(cid:35)(cid:41)
+
+(B∗,∞), we conclude.
+
+(cid:3)
+We therefore have (L − r)vB∗(x) ≤ 0 for every x > B∗, with 0 ≤ B∗ < ∞. Along with (A.2), the proof of
+
+≥ W (r)(cid:48)
+
+(B∗)
+W (r)(B∗)
+
+G(r)(B∗) = W (r)(cid:48)
+
+W (r)(cid:48)
+(x)
+W (r)(x)
+
+(x)
+W (r)(B∗)
+
+W (r)(x)
+W (r)(cid:48)
+(x)
+
+W (r)(cid:48)
+
+W (r)(B∗)
+
+x ≤ B∗.
+
+,
+
+(x)
+
+(r ˜α + ˜p)
+
+.
+
+r + ˜α > ˜p
+
+(cid:40)
+
+Lemma 3.3 is complete.
+
+A.5. Proof of Theorem 3.1. Due to the potential discontinuity and non-smoothness of the value function at zero,
+we need to proceed carefully. Before showing the main result, we ﬁrst prove that 0 = vB∗(0) ≤ vB∗(0+) as
+illustrated in Figure 1.
+
+(cid:16) ˜p+ ˜αr
+Suppose 0 < B∗ < ∞. Both h(x) and vB∗(x) are both increasing in x (see (2.20) and (3.15)). Since W (r) is in-
+Φ(r) − G(r)(B∗)
+creasing and non-negative, we must have ˜p+ ˜αr
+W (r)(B∗)
+0, and this is strictly positive if and only if X has paths of bounded variation by Lemma 3.1. On the other hand,
+if B∗ = 0 (which implies X is of bounded variation by Lemma 3.2), we also have vB∗(0+) ≥ 0 because (3.14)
+implies that, for any ε > 0, ∂vB(ε)/∂B ≤ 0 for every B > ε and limB→∞ vB(ε) = 0.
+
+≥ 0 and hence vB∗(0+) = W (r)(0)
+
+Φ(r) − G(r)(B∗)
+W (r)(B∗)
+
+(cid:17) ≥
+
+We focus on the case it is discontinuous at 0 (or X is of bounded variation) and then address how the proof
+can be modiﬁed for the other case. We ﬁrst construct a sequence of functions vn(·) such that (1) it is continuous
+everywhere, (2) vn(x) = vB∗(x) on x ∈ (0,∞) and (3) vn(x) ↓ vB∗(x) pointwise for every ﬁxed x ∈ (−∞, 0).
+n(x) on (0,∞), that (L− r)(vn − vB∗)(x) decreases
+This implies, by noting that vB∗(x) = vn(x) and v(cid:48)
+monotonically in n to zero for every ﬁxed x ∈ (0,∞) by the monotone convergence theorem. Notice that vB∗(·)
+is uniformly bounded because h(·) is. Hence, we can choose so that vn is also uniformly bounded for every ﬁxed
+n ≥ 1.
+
+B∗(x) = v(cid:48)
+
+32
+
+T. LEUNG AND K. YAMAZAKI
+
+Suppose K < ∞ is the maximum difference between vB∗ and vn. Using N as the Poisson random measure for
+
+−X, we have by compensation formula (see, e.g., Theorem 4.4 in [30]), for every ν ∈ S,
+
+(A.4) Ex
+
+(cid:20)(cid:90) ν
+(cid:20)(cid:90) ∞
+
+0
+
+= KEx
+
+(cid:90) ∞
+
+e−rs|(L − r)(vn − vB∗)(Xs−)|ds
+
+(cid:21)
+e−rs1{θ≥s, u>Xs−}Π(du)ds
+
+0
+
+0
+
+≤ KEx
+
+e−rsΠ(Xs−,∞)ds
+
+(cid:21)
+
+(cid:20)(cid:90) θ
+(cid:20)(cid:90) ∞
+
+0
+
+0
+
+= KEx
+
+(cid:21)
+= KEx(cid:104)
+
+(cid:21)
+(cid:105)
+e−rs1{θ≥s, u>Xs−}N (du × ds)
+
+e−rθ1{Xθ<0, θ<∞}
+
+< ∞.
+
+(cid:90) ∞
+(cid:111)
+
+0
+
+Fix  > 0. By applying Ito’s formula to
+
+ )vn(Xt∧τ−
+
+
+
+); t ≥ 0
+
+, we see that
+
+(cid:40)
+
+e−r(t∧τ−
+
+ )vn(Xt∧τ−
+
+
+
+) −
+
+e−rs ((L − r)vn(Xs−)) ds;
+
+t ≥ 0
+
+is a local martingale. Suppose {σk; k ≥ 1} is the corresponding localizing sequence, namely, for given k ≥ 1,
+
+e−r(t∧τ−
+
+ ∧σk)vn(Xt∧τ−
+
+ ∧σk
+
+)
+
+= vn(x) + Ex
+
+(cid:34)(cid:90) t∧τ−
+
+ ∧σk
+
+(cid:35)
+
+e−rs ((L − r)vn(Xs−)) ds
+
+(cid:34)(cid:90) t∧τ−
+
+ ∧σk
+
+= vn(x)+Ex
+
+e−rs ((L − r)(vn − vB∗)(Xs−)) ds
+
++Ex
+
+e−rs ((L − r)vB∗(Xs−)) ds
+
+0
+
+0
+
+where the second line makes sense by (A.4). Applying the dominated convergence theorem on the left-hand
+side and the monotone convergence convergence theorem on the right-hand side (here the integrands in the two
+expectations are positive and negative, respectively, by Lemma 3.3), we obtain again by (A.4)
+
+Ex(cid:104)
+
+(cid:105)
+
+e−r(t∧τ−
+
+ )vn(Xt∧τ−
+
+
+
+)
+
+= vn(x) + Ex
+
+e−rs ((L − r)vn(Xs−)) ds
+
+.
+
+(cid:34)(cid:90) t∧τ−
+
+
+
+0
+
+(cid:110)
+
+e−r(t∧τ−
+
+(cid:90) t∧τ−
+
+
+
+0
+
+(cid:34)(cid:90) t∧τ−
+
+ ∧σk
+
+0
+
+(cid:41)
+
+(cid:35)
+
+(cid:35)
+
+(cid:35)
+
+Hence, (A.5) is in fact a martingale.
+
+Now ﬁx ν ∈ S. By the optional sampling theorem, we have, for any M ≥ 0, that
+
+e−r(ν∧τ−
+
+ ∧M )vn(Xν∧τ−
+
+ ∧M )
+
+= vn(x) + Ex
+
+e−rs ((L − r)vn(Xs−)) ds
+
+(cid:34)(cid:90) ν∧τ−
+
+ ∧M
+
+0
+
+≤ vn(x) + Ex
+
+(cid:34)(cid:90) ν∧τ−
+
+ ∧M
+
+0
+
+e−rs ((L − r)(vn − vB∗)(Xs−)) ds
+
+where the last equality holds by Lemma 3.3. Applying dominated convergence via (A.4) and because ν∧τ−
+as  ↓ 0, upon taking limits as M ↑ ∞ and  ↓ 0,
+
+
+
+a.s.−−→ ν
+
+Ex(cid:2)e−rνvn(Xν)1{ν<∞}(cid:3) ≤ vn(x) + Ex
+
+(cid:20)(cid:90) ν
+
+0
+
+(A.6)
+
+e−rs((L − r)(vn − vB∗)(Xs−))ds
+
+.
+
+(cid:21)
+
+(A.5)
+
+Ex(cid:104)
+
+Ex(cid:104)
+
+(cid:105)
+
+(cid:105)
+
+(cid:35)
+
+,
+
+(cid:35)
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+33
+
+Furthermore, the monotone convergence theorem yields the followings:
+
+Ex(cid:2)e−rνvn(Xν)1{ν<∞}(cid:3) = Ex(cid:2)e−rν(cid:0)vB∗(Xν) + vB∗(0+)1{Xν =0,ν<∞}(cid:1)(cid:3) ≥ Ex(cid:2)e−rνvB∗(Xν)1{ν<∞}(cid:3) ,
+(cid:20)(cid:90) ν
+
+lim
+n→∞
+
+(cid:21)
+
+0
+
+Ex
+
+e−rs((L − r)(vn − vB∗)(Xs−))ds
+
+lim
+n→∞
+Therefore, by taking n → ∞ on both sides of (A.6) (note vB∗(x) = vn(x)), we have
+
+vB∗(x) ≥ Ex(cid:2)e−rνvB∗(Xν)1{ν<∞}(cid:3) ≥ Ex(cid:2)e−rνh(Xν)1{ν<∞}(cid:3) ,
+
+= 0.
+
+ν ∈ S,
+
+where the last inequality follows from (3.17). This together with the fact that the stopping time τ +
+B∗ corresponds to
+the value function vB∗ completes the proof for the case vB∗ is discontinuous at 0. For the case vB∗ is continuous
+(unbounded variation case), the proof is simpler; the approximation via vn is no longer needed but the localization
+via τ−
+
+is still needed because the value function fails to be C1 at zero.
+
+
+
+A.6. Proof of Lemma 3.5. Fix A > 0. Using (3.5) and Lemma 3.4, we differentiate to get
+
+∂
+∂A
+∂
+∂A
+
+ζ(x − A) = −rW (r)(x − A) +
+
+W (r)(cid:48)
+
+r
+
+Φ(r)
+
+(x − A),
+
+(x − A) + W (r)(x − A)
+
+W (r)(cid:48)
+
+Γ(x; A) = − ρ(A)
+Φ(r)
+W (r)(x − A) − 1
+Φ(r)
+
+=
+
+(x − A)
+
+ρ(A).
+
+(cid:16)
+
+1 − e−Φ(r)(u−A)(cid:17)
+
+Π(du)
+
+A
+
+(cid:90) ∞
+(cid:19)
+(cid:19)
+
+W (r)(cid:48)
+
+W (r)(cid:48)
+
+(cid:18)
+(cid:18)
+
+Therefore, it follows from (2.27) that
+
+∂
+∂A
+
+∆A(x) =
+
+W (r)(x − A) − 1
+Φ(r)
+eΦ(r)(x−A)
+
+(x − A)
+
+((γr + ˜p) − (˜α − γ)ρ(A))
+
+=
+
+Φ(r)
+
+Φ(r)(x − A) ((˜α − γ)ρ(A) − (γr + ˜p)) ,
+W (cid:48)
+
+∂A ∆A(x) from (3.23).
+
+(A.7)
+where WΦ(r)(x) := e−Φ(r)xW (r)(x). Since WΦ(r)(x) is increasing in x (see p.219 of [30]) and ρ(A) is decreasing,
+we can infer the sign of ∂
+
+ﬁx A∗ > 0. Using (3.21) and recalling that (L − r)Z(r)(y) = (L − r)W (r)(y) = 0 for every y > 0, we have
+
+A.7. Proof of Lemma 3.6. (1) We ﬁrst show (L− r)uA∗(x) = 0 for every x > A∗. Deﬁne a function(cid:101)u by (3.21)
+and (3.22) but extended to the whole real line. This way, for x < 0, uA∗(x) = 0 while(cid:101)u(x) does not vanish. Now
+(cid:20) 1
+(L − r)(cid:101)u(x) = (˜α − γ)
+(cid:19)
+(cid:21)
+(cid:18)
+(cid:90) ∞
+−
+= − ˜α − γ
+
+(A.8)
+Here the generator can go into the integral because, by Lemma 3.1, Z(r)(·) is continuous when σ = 0 and is
+continuously differentiable when σ > 0. On the other hand, if A∗ = 0, then from (3.22) we derive that (L −
+
+(L − r)Z(r)(x − A∗) − (L − r)Z(r)(x − u)
+
+r
+(L − r)Z(r)(x − A∗) +
+
+(L − r)Z(r)(x) − r
+Φ(r)
+
+= (˜α − γ)Π(x,∞).
+
+(L − r)Z(r)(x − u)
+
+(cid:19)(cid:20)
+(cid:105)
+
+(L − r)W (r)(x)
+
+(cid:90) ∞
+
+(cid:105)(cid:21)
+
+(cid:18) ˜p
+
+r
+
+Π(du)
+
+r
+
+x
+
+Π(du)
+
+γ +
+
+˜p
+r
+
+(cid:104)
+
+(cid:104)
+
++ ˜α
+
+A∗
+
+34
+
+r)(cid:101)u(x) = (˜α − γ)Π(x,∞) as above. Furthermore, it is straightforward to show that (L − r)(uA∗(x) −(cid:101)u(x)) =
+
+T. LEUNG AND K. YAMAZAKI
+
+−Π(x,∞)(˜α − γ). Combining this with (A.8), we get (L − r)uA∗(x) = 0.
+
+(2) We now show for the case A∗ > 0 that we have (L − r)uA∗(x) > 0 for every 0 < x < A∗. Notice that
+
+uA∗(x) = g(x) on 0 < x < A∗. By (2.21),
+
+(cid:18)
+
+(cid:19)
+
+(L − r)uA∗(x) = (L − r)L(x) where L(x) := −
+
+γ +
+
+˜p
+r
+
+− (˜α − γ)1{x≤0}.
+
+Therefore, we have
+
+(L − r)uA∗(x) = (L − r)L(x) =
+
+(cid:90) ∞
+
+(L(x − u) − L(x)) Π(du) − rL(x)
+
+0
+
+= − (˜α − γ) Π(x,∞) + (rγ + ˜p) ≤ − (˜α − γ) ρ(A∗) + (rγ + ˜p) = 0.
+
+Here the inequality holds by (3.18) and because x < A∗. The last equality holds by (3.20).
+
+REFERENCES
+
+[1] L. Alili and A. E. Kyprianou. Some remarks on ﬁrst passage of L´evy processes, the American put and pasting principles.
+
+Ann. Appl. Probab., 15(3):2062–2080, 2005.
+
+[2] S. Asmussen, F. Avram, and M. R. Pistorius. Russian and American put options under exponential phase-type L´evy
+
+models. Stochastic Process. Appl., 109(1):79–111, 2004.
+
+[3] S. Asmussen, D. Madan, and M. Pistorius. Pricing equity default swaps under an approximation to the CGMY Levy
+
+model. J. Comput. Finance, 11(2):79–93, 2007.
+
+[4] F. Avram, T. Chan, and M. Usabel. On the valuation of constant barrier options under spectrally one-sided exponential
+
+L´evy models and Carr’s approximation for American puts. Stochastic Process. Appl., 100:75–107, 2002.
+
+[5] F. Avram, A. E. Kyprianou, and M. R. Pistorius. Exit problems for spectrally negative L´evy processes and applications
+
+to (Canadized) Russian options. Ann. Appl. Probab., 14(1):215–238, 2004.
+
+[6] F. Avram, Z. Palmowski, and M. R. Pistorius. On the optimal dividend problem for a spectrally negative L´evy process.
+
+Ann. Appl. Probab., 17(1):156–180, 2007.
+
+[7] O. E. Barndorff-Nielsen. Processes of normal inverse Gaussian type. Finance Stoch., 2(1):41–68, 1998.
+[8] E. Baurdoux and A. E. Kyprianou. The McKean stochastic game driven by a spectrally negative L´evy process. Electron.
+
+J. Probab., 13:no. 8, 173–197, 2008.
+
+[9] E. Baurdoux and A. E. Kyprianou. The Shepp-Shiryaev stochastic game driven by a spectrally negative l´evy process.
+
+Theory Probab. Appl., 53, 2009.
+
+[10] F. Black and J. Cox. Valuing corporate securities: Some effects of bond indenture provisions. J. Finance, 31:351–367,
+
+1976.
+
+[11] S. Boyarchenko. Pricing of perpetual Bermudan options. Quant. Finance, 4:525–547, 2004.
+[12] J. Cariboni and W. Schoutens. Pricing credit default swaps under L´evy models. J. Comput. Finance, 10(4):1–21, 2007.
+[13] R. Carmona and N. Touzi. Optimal multiple stopping and valuation of swing options. Math. Finance, 18(2):239–268,
+
+April 2008.
+
+[14] P. Carr, H. Geman, D. B. Madan, and M. Yor. The ﬁne structure of asset returns: An empirical investigation. J. Bus.,
+
+75(2):305–332, 2002.
+
+[15] T. Chan, A. Kyprianou, and M. Savov. Smoothness of scale functions for spectrally negative L´evy processes. Probab.
+
+Theory Related Fields, 150:691–708, 2011.
+
+[16] S. Dayanik, C. Goulding, and H. V. Poor. Bayesian sequential change diagnosis. Math. Oper. Res., 33(2):475–496, 2008.
+[17] E. Eberlein, W. Kluge, and P. J. Sch¨onbucher. The L´evy Libor model with default risk. J. Credit Risk, 2(2):3–42, 2006.
+
+AMERICAN STEP-UP AND STEP-DOWN DEFAULT SWAPS
+
+35
+
+[18] M. Egami and K. Yamazaki. Phase-type ﬁtting of scale functions for spectrally negative L´evy processes. Working paper.
+
+ArXiv:1005.0064, 2012.
+
+[19] M. Egami and K. Yamazaki. Precautionary measures for credit risk management in jump models. Stochastics, To appear.
+[20] E. Ekstr¨om and G. Peskir. Optimal stopping games for Markov processes. SIAM J. Control Optim., 47(2):684–702,
+
+2008.
+
+[21] A. Feldmann and W. Whitt. Fitting mixtures of exponentials to long-tail distributions to analyze network performance
+
+models. Performance Evaluation, (31):245–279, 1998.
+
+[22] B. Hilberink and C. Rogers. Optimal capital structure and endogenous default. Finance Stoch., 6(2):237–263, 2002.
+[23] B. Hilberink and L. C. G. Rogers. Optimal capital structure and endogenous default. Finance Stoch., 6(2):237–263,
+
+2002.
+
+[24] A. Hirsa and D. Madan. Pricing american options under variance gamma. J. Comput. Finance, 7(2), 2003.
+[25] J. Hull and A. White. The valuation of credit default swap options. J. Derivatives, 10(3):40–50, 2003.
+[26] K. Jackson, S. Jaimungal, and V. Surkov. Fourier space time stepping for option pricing with L´evy models. J. Comput.
+
+Finance, 12(2):1–29, 2008.
+
+[27] H. J¨osson and W. Schoutens. Single name credit default swaptions meet single sided jump models. Rev. Derivatives
+
+Res., 11(1):153–169, 2008.
+
+[28] Y. Kifer. Game options. Finance Stoch., 4:443–463, 2000.
+[29] S. G. Kou and H. Wang. Option pricing under a double exponential jump diffusion model. Manage. Sci., 50(9):1178–
+
+1192, 2004.
+
+[30] A. E. Kyprianou. Introductory lectures on ﬂuctuations of L´evy processes with applications. Universitext. Springer-
+
+Verlag, Berlin, 2006.
+
+[31] A. E. Kyprianou and Z. Palmowski. Distributional study of de Finetti’s dividend problem for a general L´evy insurance
+
+risk process. J. Appl. Probab., 44(2):428–448, 2007.
+
+[32] A. E. Kyprianou and B. A. Surya. Principles of smooth and continuous ﬁt in the determination of endogenous bankruptcy
+
+levels. Finance Stoch., 11(1):131–152, 2007.
+
+[33] T. Leung and R. Sircar. Accounting for risk aversion, vesting, job termination risk and multiple exercises in valuation of
+
+employee stock options. Math. Finance, 19(1):99–128, 2009.
+
+[34] S. Z. Levendorski. Early exercise boundary and option prices in l´evy driven models. Quant. Finance, 4(5):1469–7696,
+
+2004.
+
+[35] R. L. Loeffen. On optimality of the barrier strategy in de Finetti’s dividend problem for spectrally negative L´evy pro-
+
+cesses. Ann. Appl. Probab., 18(5):1669–1680, 2008.
+
+[36] D. Madan, C. P.P., and C. E.C. The variance gamma processes and option pricing. Europ. Finance Rev., 2:79–105, 1998.
+[37] R. Merton. Option pricing when underlying stock returns are discontinuous. J. Financial Econom, 3:125–144, 1976.
+[38] E. Mordecki. Optimal stopping and perpetual options for l´evy processes. Finance Stoch., 4:473–493, 2002.
+[39] G. Peskir. Principles of optimal stopping and free-boundary problems, volume 68 of Lecture Notes Series (Aarhus).
+
+University of Aarhus, Department of Mathematics, Aarhus, 2001. Dissertation, University of Aarhus, Aarhus, 2002.
+
+[40] G. Peskir. Optimal stopping games and Nash equilibrium. Theory Probab. Appl., 53(3):558–571, 2009.
+[41] G. Peskir and A. Shiryaev. Optimal stopping and free-boundary problems. Lectures in Mathematics ETH Z¨urich.
+
+Birkh¨auser Verlag, Basel, 2006.
+
+[42] G. Peskir and A. N. Shiryaev. Sequential testing problems for Poisson processes. Ann. Statist., 28(3):837–859, 2000.
+[43] G. Peskir and A. N. Shiryaev. Solving the Poisson disorder problem. In Advances in ﬁnance and stochastics, pages
+
+295–312. Springer, Berlin, 2002.
+
+[44] C. Zhou. The term structure of credit spreads with jump risk. J. Banking Finance, 25:2015–2040, 2001.
+
+

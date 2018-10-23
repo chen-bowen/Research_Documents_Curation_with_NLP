@@ -1,0 +1,1054 @@
+An Adaptive Markov Chain Monte Carlo
+
+Method for GARCH Model
+
+Tetsuya Takaishi
+
+Hiroshima University of Economics,
+
+731-0192 Hiroshima, Japan
+
+takaishi@hiroshima-u.ac.jp
+
+Abstract. We propose a method to construct a proposal density for the
+Metropolis-Hastings algorithm in Markov Chain Monte Carlo (MCMC)
+simulations of the GARCH model. The proposal density is constructed
+adaptively by using the data sampled by the MCMC method itself. It
+turns out that autocorrelations between the data generated with our
+adaptive proposal density are greatly reduced. Thus it is concluded that
+the adaptive construction method is very eﬃcient and works well for the
+MCMC simulations of the GARCH model.
+
+Key words: Markov Chain Monte Carlo, Bayesian inference, GARCH
+model, Metropolis-Hastings algorithm
+
+1 Introduction
+
+It is well known that ﬁnancial time series of asset returns show various interesting
+properties which can not be explained from the assumption that the time series
+obeys the Brownian motion. Those properties are classiﬁed as stylized facts[1].
+Some examples of the stylized facts are (i) fat-tailed distribution of return (ii)
+volatility clustering (iii) slow decay of the autocorrelation time of the absolute
+returns. The true dynamics behind the stylized facts is not fully understood.
+There are some attempts to make physical models based on spin dynamics[2]-[9]
+and they are able to capture some of the stylized facts.
+
+In ﬁnance volatility is an important quantity to measure risk. To forecast
+volatility, various empirical models to mimic the properties of the volatility
+have been proposed. In 1982 Engle[10] proposed Autoregressive Conditional Het-
+eroskedasticity (ARCH) model where the present volatility is assumed to depend
+on squares of the past observations. Later Bollerslev[11] proposed Generalized
+ARCH (GARCH) model which includes additional past volatility terms to the
+present volatility estimate.
+
+A conventional approach to infer GARCH model parameters is the Maxi-
+mum Likelihood (ML) estimation where the GARCH parameters are obtained
+as the values which maximaize the likelihood function of the GARCH model.
+The maximization of the likelihood function can be done by the maximization
+tool available in computer libraries. A practical diﬃculty of the maximization
+procedure is that the output results are often sensitive to starting values.
+
+9
+0
+0
+2
+
+ 
+
+n
+a
+J
+ 
+
+8
+
+.
+
+ 
+ 
+]
+P
+C
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+2
+9
+9
+0
+
+.
+
+1
+0
+9
+0
+:
+v
+i
+X
+r
+a
+
+2
+
+Tetsuya Takaishi
+
+An alternative approach, which recently becomes popular, is the Bayesian
+inference. Usually the Bayesian inference procedure is performed by MCMC
+methods. There is no unique way to implement MCMC methods. So far a vari-
+ety of methods to MCMC procedure have been developed[14]-[19]. In a recent
+survey[18] it is shown that Acceptance-Rejection/Metropolis-Hastings (AR/MH)
+algorithm works better than other algorithms. In the AR/MH algorithm the
+proposal density is assumed to be a multivariate Student’s t-distribution and its
+parameters are estimated by the ML technique. Here we develop a method to
+determine parameters of a multivariate Student’s t-distribution, which does not
+rely on the ML method. In our method the proposal density is also assumed to be
+a multivariate Student’s t-distribution but the parameters are determined by an
+MCMC simulation. During the MCMC simulation, the parameters are updated
+adaptively using the data generated so far. We test our method using artiﬁcial
+GARCH data and show that the method substantially reduces the correlations
+between the sampled data and works well for GARCH parameter estimations.
+
+2 GARCH Model
+
+The GARCH(p,q) model to the time series data yt is given by
+
+yt = σtǫt,
+
+σ2
+t = ω +
+
+q
+
+Xi=1
+
+αiy2
+
+t−i +
+
+p
+
+Xi=1
+
+βiσ2
+
+t−i,
+
+(1)
+
+(2)
+
+where ω > 0, αi > 0 and βi > 0 to ensure a positive volatility. Furthermore the
+stationary condition given by
+
+q
+
+Xi=1
+
+αi +
+
+p
+
+Xi=1
+
+βi < 1
+
+(3)
+
+is also required. ǫt is an independent normal error ∼ N (0, 1). In many empirical
+studies it is shown that (p = q = 1) GARCH model well captures the properties
+of the ﬁnancial time series volatility. Thus in this study we use GARCH(1,1)
+model for our testbed. The volatility σ2
+t of the GARCH model is now written as
+t−1 + βσ2
+
+t−1,
+where α, β and ω are the parameters to be estimated.
+
+σ2
+t = ω + αy2
+
+(4)
+
+Let θ = (ω, α, β) be a parameter set of the GARCH model. The likelihood
+
+function of the GARCH model is written as
+
+This function plays a central role in ML estimations and also for the Bayesian
+inference.
+
+1
+
+p2πσ2
+
+t
+
+L(y|θ) = Π n
+
+i=1
+
+exp (−
+
+y2
+t
+σ2
+t
+
+).
+
+(5)
+
+An Adaptive Markov Chain Monte Carlo Method for GARCH Model
+
+3
+
+3 Bayesian inference
+
+In this section we brieﬂy describe the Bayesian inference which estimates the
+GARCH parameters numerically by using the MCMC method. From the Bayes’
+theorem the posterior density π(θ|y) with data y = (y1, y2, . . . , yn) is given by
+
+π(θ|y) ∝ L(y|θ)π(θ),
+
+(6)
+
+where L(y|θ) is the likelihood function. π(θ) is the prior density for θ. The
+functional form of π(θ) is not known a priori. Here we assume that the prior
+density π(θ) is constant. π(θ|y) gives a probability distribution of θ when the
+data y are given.
+
+With this π(θ|y) values of the parameters are inferred as the expectation
+
+values of θ given by
+
+where
+
+hθi =
+
+1
+
+Z Z θπ(θ|y)dθ,
+
+Z = Z π(θ|y)dθ.
+
+Z is a normalization constant irrelevant to MCMC estimations.
+
+(7)
+
+(8)
+
+3.1 MCMC
+
+In general the integral of eq.(7) can not be performed analytically. The MCMC
+technique gives a method to estimate eq.(7) numerically. The basic procedure of
+the MCMC method is as follows. First we sample θ drawn from the probability
+distribution π(θ|y). Sampling is done by a technique which produces a Markov
+chain. After sampling some data, we obtain the expectation value as an average
+value over the sampled data θ(i) = (θ(1), . . . , θ(k)),
+
+hθi = lim
+k→∞
+
+1
+k
+
+k
+
+Xi=1
+
+θ(i),
+
+(9)
+
+where k is the number of the sampled data. The statistical error for k indepen-
+dent data is proportional to 1
+. In general, however, the data generated by the
+√k
+MCMC method are correlated. As a result the statistical error will be propor-
+k where τ is the autocorrelation time between the sampled data.
+The autocorrelation time depends on the MCMC method we employ. Thus it is
+desirable to choose an MCMC method generating data with a small τ .
+
+tional to q 2τ
+
+3.2 Metropolis-Hastings algorithm
+
+The most general and simple method to draw values from a given probability
+distribution is the Metropolis method[12] or its generalized version, Metropolis-
+Hastings method[13]. Let P (x) is a probability distribution from which data x
+
+4
+
+Tetsuya Takaishi
+
+shall be sampled. First starting from x, we propose a candidate x′ which is drawn
+from a certain probability distribution g(x′|x) which we call proposal density.
+Then we accept the candidate x′ with a probability PMH (x, x′) as the next value
+of the Markov chain:
+
+PMH (x, x′) = min(cid:20)1,
+
+P (x′)
+P (x)
+
+g(x|x′)
+
+g(x′|x)(cid:21) .
+
+(10)
+
+If x′ is rejected we keep the previous value x.
+
+When g(x|x′) = g(x′|x), eq.(10) reduces to the Metropolis accept probability:
+
+PMetro(x, x′) = min(cid:20)1,
+
+P (x′)
+
+P (x) (cid:21) .
+
+(11)
+
+4 Adaptive construction of proposal density
+
+Disadvantages of the MH method are that the candidate drawn as the next value
+is not always accepted and in general the data sampled by the Markov chain are
+correlated, which results in increasing statistical errors.
+
+If the proposal density is close enough to the posterior density the acceptance
+in the MH method can be high. The posterior density of GARCH parameters
+often resembles to a Gaussian-like shape. Thus one may choose a density similar
+to a Gaussian distribution as the proposal density. Following [17, 18], in order
+to cover the tails of the posterior density we use a (p-dimensional) multivariate
+Student’s t-distribution given by
+
+g(θ) =
+
+Γ ((ν + p)/2)/Γ (ν/2)
+
+det Σ1/2(νπ)p/2
+
+(cid:20)1 +
+
+(θ − M )tΣ−1(θ − M )
+
+ν
+
+(cid:21)−(ν+p)/2
+
+,
+
+(12)
+
+where θ and M are column vectors,
+
+θ =
+
+θ1
+θ2
+...
+θp
+
+
+
+
+
+
+
+, M =
+
+M1
+M2
+...
+Mp
+
+
+
+
+
+
+
+,
+
+and Mi = E(θi). Σ is the covariance matrix deﬁned as
+
+νΣ
+ν − 2
+
+= E[(θ − M )(θ − M )t].
+
+(13)
+
+(14)
+
+ν is a parameter to tune the shape of Student’s t-distribution. When ν → ∞ the
+Student’s t-distribution goes to a Gaussian distribution. At small ν Student’s
+t-distribution has a fat-tail.
+
+For our GARCH model p = 3 and θ = (θ1, θ2, θ3) = (α, β, ω), and thus
+Σ is a 3 × 3 matrix. We determine these unknown parameters M and Σ by
+
+An Adaptive Markov Chain Monte Carlo Method for GARCH Model
+
+5
+
+MCMC simulations. First we make a short run by the Metropolis algorithm and
+accumulate some data. Then we estimate M and Σ from the data. Note that
+there is no need to estimate M and Σ accurately. Second we perform an MH
+simulation with the proposal density of eq.(12) with the estimated M and Σ.
+After accumulating more data, we recalculate M and Σ, and update M and
+Σ of eq.(12). By doing this, we adaptively change the shape of eq.(12) to ﬁt
+the posterior density. We call eq.(12) with the estimated M and Σ ”adaptive
+proposal density”.
+
+5 Numerical simulations
+
+In order to test the adaptive construction method we use artiﬁcial GARCH data
+generated with a known parameter set and try to infer the parameters of the
+GARCH model from the artiﬁcial GARCH data. The GARCH parameters are
+set to α = 0.1, β = 0.8 and ω = 0.1. Then using these parameters we generated
+2000 data. For this artiﬁcial data we perform MCMC simulations by the adaptive
+construction method.
+
+Implementation of the adaptive construction method is as follows. First we
+start a run by the Metropolis algorithm. The ﬁrst 3000 data are discarded as
+burn-in process or in other words thermalization. Then we accumulate 1000 data
+for M and Σ estimations. The estimated M and Σ are substituted to g(θ) of
+eq.(12). We re-start a run by the MH algorithm with the proposal density g(θ).
+Every 1000 update we re-calculate M and Σ and update g(θ). We accumulate
+199000 data for analysis. To check ν parameter dependence on the MCMC esti-
+mations we use ν = (4, 6, 8, 10, 12, 20) and perform the same MCMC simulation
+for each ν. Later we ﬁnd that ν dependence on the MCMC results is weak.
+Therefore the results from ν = 10 simulations will be mainly shown.
+
+Table 1. Results of parameters.
+
+α
+
+β
+
+ω
+
+Adaptive (ν = 10) 0.10374
+
+standard deviation
+statistical error
+
+2τ
+
+Metropolis
+
+0.7789
+0.045
+0.0002
+
+0.019
+0.00006
+2.3 ± 0.2 3.0 ± 0.3
+0.1033
+
+0.7797
+0.045
+0.0017
+
+0.11532
+0.034
+0.00014
+3.4 ± 0.8
+0.1149
+0.034
+0.0012
+
+standard deviation 0.019
+
+statistical error
+
+2τ
+
+0.0005
+440 ± 90 900 ± 190 830 ± 170
+
+For comparison we also make a Metropolis simulation and accumulate 600000
+data for analysis. In this study the Metropolis algorithm is implemented as
+follows. We draw a candidate θ′ by adding a small random value δθ to the
+present value θ:
+
+6
+
+Tetsuya Takaishi
+
+θ′ = θ + δθ,
+
+(15)
+
+where δθ = d(r − 0.5). r is a uniform random number in [0, 1] and d is a constant
+to tune the Metropolis acceptance. We choose d so that the acceptance becomes
+greater than 50%.
+
+0.2
+
+0.15
+
+α
+
+0.1
+
+0.05
+
+10000
+
+Metropolis
+
+Adaptive
+
+0.2
+
+0.15
+
+α
+
+0.1
+
+0.05
+
+12000
+
+MC time
+
+14000
+
+10000
+
+12000
+
+MC time
+
+14000
+
+Fig. 1. Monte Carlo histories of α from the adaptive construction method with ν =
+10(left) and the Metropolis algorithm(right).
+
+Fig. 1 compares the Monte Carlo history of α generated by the adaptive
+construction method with that by the Metropolis algorithm. It is clearly seen
+that the data α generated by the Metropolis algorithm are very correlated. For
+other parameters β and ω we also see similar behavior.
+
+To quantify the correlation we measure the autocorrelation function (ACF).
+
+The ACF of certain successive data x is deﬁned by
+
+ACF (t) =
+
+1
+
+N PN
+
+j=1(x(j)− < x >)(x(j + t)− < x >)
+
+,
+
+(16)
+
+σ2
+x
+
+where < x > and σ2
+
+x are the average value and the variance of x respectively.
+
+Fig. 2 shows the ACF for the adaptive construction method and the Metropo-
+lis algorithm. The ACF of the adaptive construction method decreases quickly
+as Monte Carlo time t increases. On the other hand the ACF of the Metropolis
+algorithm decreases very slowly which indicates that the correlation between the
+data is very large.
+
+Using the ACF, the autocorrelation time τ is calculated as
+
+τ =
+
+1
+2
+
++
+
+∞
+
+Xi=1
+
+ACF (i).
+
+(17)
+
+Results of τ are summarized in Table 1. The values of τ from the Metropolis
+simulations are very large, typically several hundreds. On the other hand we see
+very small correlations, 2τ ∼ 2 − 3 for the adaptive construction method. Thus
+
+An Adaptive Markov Chain Monte Carlo Method for GARCH Model
+
+7
+
+F
+C
+A
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0
+0
+
+α
+β
+ω
+
+5
+
+10
+
+t
+
+15
+
+20
+
+25
+
+F
+C
+A
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0
+0
+
+α
+β
+ω
+
+1000
+
+t
+
+2000
+
+Fig. 2. Autocorrelation functions for the adaptive construction method with ν = 10
+(left) and the Metropolis algorithm (right).
+
+0.00038
+
+0.00036
+
+1
+1
+
+V
+
+0.00034
+
+0.00032
+
+0.0003
+0
+
+-0.0005
+
+-0.001
+
+3
+2
+
+V
+
+-0.0015
+
+ν= 4
+ν= 6
+ν= 8
+ν=10
+ν=12
+ν=20
+
+ν= 4
+ν= 6
+ν= 8
+ν=10
+ν=12
+ν=20
+
+50
+
+k
+
+100
+
+150
+(×1000)
+
+-0.002
+0
+
+50
+
+k
+
+100
+
+150
+(×1000)
+
+Fig. 3. V11 and V23 as a function of the data size.
+
+the adaptive construction method works well for reducing correlations between
+the sampled data.
+
+We examine how the covariance matrix Σ varies during the simulations. Here
+
+let us deﬁne a symmetric matrix V as
+
+V = E[(θ − M )(θ − M )t],
+
+(18)
+
+and θ = (θ1, θ2, θ3) = (α, β, ω). Instead of Σ, we analys this V since V should
+be same for all ν and it is easy to see the convergence property.
+
+In Fig. 3 we show how V11(= Vαα) and V23(= Vβω) change as the simulations
+are proceeded. We see that V11 and V23 converge to some values. We also ﬁnd
+similar behavior for other Vij . The ﬁnal output of the matrix elements of V from
+the simulations is as follows.
+
+V = 
+
+
+3.6 × 10−4 −5.8 × 10−4 2.6 × 10−4
+−5.8 × 10−4 2.1 × 10−3 −1.4 × 10−3
+2.6 × 10−4 −1.4 × 10−3 1.2 × 10−3
+
+
+ .
+
+(19)
+
+8
+
+Tetsuya Takaishi
+
+From this result we ﬁnd that V12(= Vαβ) and V23(= Vβω) are negative, and
+V13(= Vαω) is positive. Fig. 4 also displays these correlation properties.
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0
+0
+
+(α,β)
+
+(α,ω)
+
+(β,ω)
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+Fig. 4. Scatter plot of sampled data for (α, β), (β, ω) and (α, ω).
+
+e
+c
+n
+a
+t
+p
+e
+c
+c
+A
+
+0.8
+
+0.7
+
+0.6
+
+0.5
+
+0.4
+
+ν= 4
+ν= 6
+ν= 8
+ν=10 
+ν=12
+ν=20
+
+0
+
+25
+
+50
+
+k
+
+75
+
+(×1000)
+
+Fig. 5. Acceptance at MH step with the adaptive proposal density.
+
+Fig. 5 shows values of the acceptance at the MH algorithm with the adaptive
+proposal density of eq.(12). Each acceptance is calculated every 1000 updates
+and the calculation of the acceptance is based on the latest 1000 data. At the ﬁrst
+stage of the simulation the acceptance is low because M and Σ are not calculated
+
+An Adaptive Markov Chain Monte Carlo Method for GARCH Model
+
+9
+
+accurately as shown in Fig. 3. However the acceptances increase quickly as the
+simulations are proceeded and reaches plateaus. Typically the acceptances are
+more than 70% except for ν = 4. Probably ν = 4 proposal density is less eﬃcient
+because the tail of the proposal density is too heavy to cover the tail of the
+posterior density.
+
+0.104
+
+α
+
+0.1035
+
+0.103
+
+Adaptive
+Metropolis
+
+Adaptive
+Metropolis
+
+0.782
+
+0.781
+
+0.78
+
+β
+
+0.779
+
+0.778
+
+0
+
+10
+
+20
+
+ν
+
+30
+
+40
+
+50
+
+0
+
+10
+
+20
+
+30
+
+ν
+
+40
+
+50
+
+0.116
+
+ω
+
+0.115
+
+0.114
+
+Adaptive
+Metropolis
+
+0
+
+10
+
+20
+
+ν
+
+30
+
+40
+
+50
+
+Fig. 6. Results of the GARCH parameters estimated by MCMC methods. The results
+at ν = 40 are from the Metropolis simulations. The error bars show statistical errors
+only and they are calculated by the jackknife method.
+
+Fig. 6 shows results of the GARCH parameters estimated by the MCMC
+methods. The values of the GARCH parameters are summarized in Table 1.
+The results from the adaptive construction method have much smaller error
+bars and are consistent each other. On the other hand the Metropolis results
+have larger error bars although the number of the sampled data is larger than
+that of the adaptive construction method. This is because the data sampled
+by the Metropolis algorithm are long-correlated. The all results with standard
+deviations agree with the input GARCH parameters (α = 0.1, β = 0.8 and
+ω = 0.1). This indecates that the MCMC estimations are correctly done.
+
+10
+
+Tetsuya Takaishi
+
+6 Summary
+
+We proposed a method to construct a proposal density used in the MH algo-
+rithm. The construction of the proposal density is performed using the data
+generated by MCMC methods. During the MCMC simulations the proposal
+density is updated adaptively. The numerical results show that the adaptive
+construction method signiﬁcantly reduces the correlations between the sampled
+data. The autocorrelation time of the adaptive construction method is calculated
+to be 2τ ∼ 2 − 3. This autocorrelation time is similar to that of the AR/MH
+method[18] which uses the ML estimation. Thus the eﬃciency of the adaptive
+construction method is comparable to that of the AR/MH method. This is not
+surprising because both methods construct the essentially same proposal den-
+sity in diﬀerent ways. Therefore the adaptive construction method serves as an
+alternative eﬃcient method for GARCH parameter inference without using ML
+estimations.
+
+Acknowledgments
+
+The numerical calculations were carried out on Altix at the Institute of Statistical
+Mathematics and on SX8 at the Yukawa Institute for Theoretical Physics in
+Kyoto University.
+
+References
+
+1. See e.g., Cont, R.: Empirical Properties of Asset Returns: Stylized Facts and Sta-
+
+tistical Issues. Quantitative Finance 1, 223–236 (2001)
+
+2. Iori, G.: Avalanche dynamics and trading friction eﬀects on stock market returns.
+
+Int. J. Mod. Phys. C 10, 1149–1162 (1999)
+
+3. Bornholdt, S.: Expectation bubbles in a spin model of markets. Int. J. Mod. Phys.
+
+C 12, 667–674 (2001)
+
+4. Yamano, T.: Bornholdt’s spin model of a market dynamics in high dimensions. Int.
+
+J. Mod. Phys. C 13, 89–96 (2002)
+
+5. Sznajd-Weron, K., Weron, R.: A simple model of price formation. Int. J. Mod. Phys.
+
+C 13, 115–123 (2002)
+
+6. Sanchez, J.R: A simple model for stocks markets. Int. J. Mod. Phys. C 13, 639–644
+
+(2002)
+
+7. Yamano, T.: A spin model of market dynamics with random nearest neighbor cou-
+
+pling. Int. J. Mod. Phys. C 13, 645–648 (2002)
+
+8. Kaizoji, T., Bornholdt, S., Fujiwara, Y.: Dynamics of price and trading volume in
+a spin model of stock markets with heterogeneous agents. Physica A 316, 441–452
+(2002)
+
+9. Takaishi, T.: Simulations of ﬁnancial markets in a Potts-like model. Int. J. Mod.
+
+Phys. C 16, 1311–1317 (2005)
+
+10. Engle, R.F.: Autoregressive Conditional Heteroskedasticity with Estimates of the
+
+Variance of the United Kingdom inﬂation. Econometrica 50, 987–1007 (1982)
+
+An Adaptive Markov Chain Monte Carlo Method for GARCH Model
+
+11
+
+11. Bollerslev, T.: Generalized Autoregressive Conditional Heteroskedasticity. Journal
+
+of Econometrics 31, 307–327 (1986)
+
+12. Metropolis, N., Rosenbluth, A.W., Rosenbluth, M.N., Teller, A.H., Teller, E.: Equa-
+tions of State Calculations by Fast Computing Machines. J. of Chem. Phys. 21,
+1087–1091 (1953)
+
+13. Hastings, W.K.: Monte Carlo Sampling Methods Using Markov Chains and Their
+
+Applications. Biometrika 57, 97–109 (1970)
+
+14. Bauwens, L., Lubrano, M.: Bayesian inference on GARCH models using the Gibbs
+
+sampler. Econometrics Journal 1, c23-c46 (1998)
+
+15. Kim. S., Shephard, N., Chib, S.: Stochastic volatility: Likelihood inference and
+
+comparison with ARCH models. Review of Economic Studies 65, 361–393 (1998)
+
+16. Nakatsuma, T.: Bayesian analysis of ARMA-GARCH models: Markov chain sam-
+
+pling approach. Journal of Econometrics 95, 57–69 (2000)
+
+17. Mitsui, H., Watanabe, T.: Bayesian analysis of GARCH option pricing models. J.
+
+Japan Statist. Soc. (Japanese Issue) 33, 307–324 (2003)
+
+18. Asai, M.: Comparison of MCMC Methods for Estimating GARCH Models. J.
+
+Japan Statist. Soc. 36, 199–212 (2006)
+
+19. Takaishi, T.: Bayesian Estimation of GARCH model by Hybrid Monte Carlo. Pro-
+
+ceedings of the 9th Joint Conference on Information Sciences 2006, CIEF-214
+doi:10.2991/jcis.2006.159
+
+

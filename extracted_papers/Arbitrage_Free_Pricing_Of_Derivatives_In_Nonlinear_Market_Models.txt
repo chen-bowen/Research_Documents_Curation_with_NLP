@@ -1,0 +1,5329 @@
+8
+1
+0
+2
+
+ 
+r
+p
+A
+0
+1
+
+ 
+
+.
+
+ 
+ 
+]
+F
+M
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+2
+v
+9
+9
+3
+8
+0
+
+.
+
+1
+0
+7
+1
+:
+v
+i
+X
+r
+a
+
+Arbitrage-Free Pricing Of Derivatives In Nonlinear Market Models
+
+Tomasz R. Bielecki a,
+
+Igor Cialenco a,
+
+and Marek Rutkowski b
+
+First Circulated: January 28, 2017 This Version: April 4, 2018
+
+Forthcoming in Probability, Uncertainty and Quantitative Risk
+
+Abstract: The objective of this paper is to provide a comprehensive study no-arbitrage pricing of
+ﬁnancial derivatives in the presence of funding costs, the counterparty credit risk and
+market frictions aﬀecting the trading mechanism, such as collateralization and capital
+requirements. To achieve our goals, we extend in several respects the nonlinear pricing
+approach developed in El Karoui and Quenez [27] and El Karoui et al. [26], which was
+subsequently continued in Bielecki and Rutkowski [8].
+
+Keywords: hedging, fair price, funding cost, margin agreement, market friction, BSDE
+MSC2010: 91G40, 60J28
+
+Contents
+
+1 Introduction
+
+3
+
+2 Nonlinear Market Model
+
+4
+5
+2.1 Contracts with Trading Adjustments . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+2.2 Self-ﬁnancing Trading Strategies
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.3 Funding Adjustment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.4 Financial Interpretation of Trading Adjustments
+9
+. . . . . . . . . . . . . . . . . . . .
+2.5 Wealth Process . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+2.6 Trading in Risky Assets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+2.6.1 Cash Market Trading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+2.6.2
+. . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+2.6.3 Repo Market Trading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+2.7 Collateralization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+2.7.1 Rehypothecated Collateral . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+Segregated Collateral
+2.7.2
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+2.7.3
+Initial and Variation Margins . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+2.8 Counterparty Credit Risk . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+2.8.1 Closeout Payoﬀ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+2.8.2 Counterparty Credit Risk Decomposition . . . . . . . . . . . . . . . . . . . . 16
+. . . . . . . . . . . . . . . . . . . . . . . . . . 18
+
+2.9 Local and Global Valuation Problems
+
+Short Selling of Risky Assets
+
+aDepartment of Applied Mathematics, Illinois Institute of Technology
+10 W 32nd Str, Building E1, Room 208, Chicago, IL 60616, USA
+Emails: tbielecki@iit.edu (T.R. Bielecki) and cialenco@iit.edu (I. Cialenco)
+URLs: http://math.iit.edu/~bielecki and http://math.iit.edu/~igor
+bSchool of Mathematics and Statistics, University of Sydney, Sydney, NSW 2006, Australia
+and Faculty of Mathematics and Information Science, Warsaw University of Technology, 00-661 Warszawa, Poland
+Email: marek.rutkowski@sydney.edu.au, URL: http://sydney.edu.au/science/people/marek.rutkowski.php
+
+1
+
+2
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+3 No-Arbitrage Properties of Nonlinear Markets
+
+19
+3.1 No-arbitrage Pricing Principles . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+3.2 Discounted Wealth and Admissible Strategies . . . . . . . . . . . . . . . . . . . . . . 21
+3.3 No-arbitrage with Respect to the Null Contract . . . . . . . . . . . . . . . . . . . . . 22
+3.4 No-arbitrage for the Trading Desk . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+3.5 Dynamics of the Discounted Wealth Process . . . . . . . . . . . . . . . . . . . . . . . 24
+3.6 Suﬃcient Conditions for the Trading Desk No-Arbitrage . . . . . . . . . . . . . . . . 26
+
+4 Hedger’s Fair Pricing and Market Regularity
+
+4.1 Replication on [0, T ] and the Gained Value
+4.2 Market Regularity on [0, T ]
+
+27
+. . . . . . . . . . . . . . . . . . . . . . . 30
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+4.2.1 Replicable Contracts in Regular Markets . . . . . . . . . . . . . . . . . . . . . 32
+4.2.2 Nonreplicable Contracts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+4.2.3 Nonregular Market Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+. . . . . . . . . . . . . . . . . . . . . . . 35
+
+4.3 Replication and Market Regularity on [t, T ]
+
+5 Pricing by Replication in Regular Markets
+
+36
+5.1 Hedger’s Ex-dividend Price at Time t
+. . . . . . . . . . . . . . . . . . . . . . . . . . 36
+5.2 Exit Price . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+5.3 Oﬀsetting Price . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+
+6 A BSDE Approach to Nonlinear Pricing
+
+38
+6.1 BSDE for the Gained Value . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+6.2 BSDE for the Ex-dividend Price
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+6.3 BSDE for the CCR Price
+
+7 Nonlinear Valuation Versus Market Practice
+
+44
+
+Derivatives Pricing in Nonlinear Models
+
+3
+
+1
+
+Introduction
+
+The paper contributes to the nonlinear arbitrage-free pricing theory, which arises in a natural way
+due to the salient features of real-world trades, such as: trading constraints, diﬀerential funding
+costs, collateralization, counterparty credit risk, and capital requirements. Our aim is to extend in
+several respects the nonlinear hedging and pricing approach developed in El Karoui and Quenez
+[27] and El Karoui et al. [26] who used a BSDE approach, by accounting for the complexity of over-
+the-counter ﬁnancial derivatives and speciﬁc features of the trading environment after the global
+ﬁnancial crisis. This work builds also upon the earlier paper by Bielecki and Rutkowski [8] where,
+however, the important issue of no-arbitrage was not studied in depth. The paper is structured as
+follows:
+
+• In Section 2, we introduce self-ﬁnancing trading strategies in the presence of diﬀerential
+funding rates and adjustment processes. We consider general contracts with cash ﬂow streams,
+rather than simple contingent claims with a single payoﬀ either at the contract’s maturity
+or upon early exercise. We also introduce in Section 2.9 the concepts of local and global
+valuation problems. This distinction is crucial since it demonstrates that results obtained in
+Sections 3 and 4 are capable of covering also ﬁnancial models and valuation problems that
+cannot be addressed through classical BSDEs, which are nowadays commonly used to deal
+with nonlinear ﬁnancial markets.
+
+• Section 3 is devoted to a comprehensive examination of the issue of existence of arbitrage
+opportunities for the hedger and for the trading desk in a nonlinear trading framework and
+with respect to a predetermined class of contracts. We introduce the concept of no-arbitrage
+with respect to the null contract and a stronger notion of no-arbitrage for the trading desk.
+We then proceed to the issue of unilateral fair valuation of a given contract by the hedger who
+is endowed with an initial capital. We examine the link between the concept of no-arbitrage
+for the trading desk and the ﬁnancial viability of prices computed by the hedger.
+
+• In Section 4, we propose and analyze the concept of a regular market model, which can be
+seen as an extension of the notion of a nonlinear pricing system, which was introduced by
+El Karoui and Quenez [27]. The goal is to identify a class of nonlinear markets, which are
+arbitrage-free for the trading desk and, in addition, enjoy the desirable property that if a
+given contract can be replicated, then the cost of replication is also the fair price for the
+hedger.
+
+• Section 5 focuses on replication of a contract in a regular market model. We propose four
+alternative deﬁnitions of no-arbitrage prices, namely, the gained value, the ex-dividend price,
+the exit price, and the oﬀsetting price. Generally speaking, it is not expected that these prices
+will coincide, since they correspond to diﬀerent valuation problems for the hedger. However,
+when the trading arrangements in the underlying model are such that the valuation problem
+is local then, under some suitable technical conditions, we show that the gained value and
+the ex-dividend price coincide.
+
+• In Section 6, we present a BSDEs approach to the valuation and hedging and we give examples
+of BSDEs for the gained value and the ex-dividend price. Finally, we brieﬂy address in
+Section 7 the issue of valuation adjustments in linear and nonlinear markets and we make
+some comments on the prevailing market practice of performing separate computations of the
+so-called ‘clean price’ and the ‘total valuation adjustment’, and subsequently adding them to
+obtain the full price charged to customers.
+
+Although we focus on the issue of fair unilateral valuation from the perspective of the hedger,
+it is clear that identical deﬁnitions and valuation methods are applicable to his counterparty as
+
+4
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+well. Hence, in principle, it is possible to use our results to examine the interval of fair bilateral
+prices in a regular market model. Particular instances of such unilateral and bilateral valuation
+problems were previously studied in Nie and Rutkowski [40, 41, 43] where it was shown that a
+non-empty interval of either fair bilateral prices or bilaterally proﬁtable prices can be obtained in
+some nonlinear markets for contracts with either an exogenous or an endogenous collateralization.
+It should be acknowledged that there exists a vast body of literature devoted to valuation and
+hedging of ﬁnancial derivatives under diﬀerential funding costs, collateralization, the counterparty
+credit risk and other trading adjustments (see, for instance, Bichuch et al. [4], Brigo and Pallavicini
+[11], Brigo et al. [9, 10], Burgard and Kjaer [12, 13], Cr´epey [17, 18], Mercurio [39], Pallavicini et al.
+[45, 44], and Piterbarg [47]). In view of limited space, we cannot present here these works in detail.
+Let us only mention that most of these papers deal with linear markets with credit risk (possibly
+also with diﬀerential funding rates), whereas the general theory developed in this work aims to
+address problems where the emphasis is put on a nonlinear character of valuation in markets with
+imperfections. In contrast, Albanese et al.
+[20]
+propose to address the issue of valuation adjustments through an alternative approach, which is
+based on the global valuation paradigm referencing to the balance sheet of the bank, its internal
+structure, and long-term interests of bank’s shareholders. The issue of nonlinearity of trading does
+not appear in their approach, since the classical hedging arguments are no longer employed to
+determine the value of a new contract, which is added to the existing portfolio of bank’s assets.
+For further comments on some of the above-mentioned papers, we refer to Section 7.
+
+[1], Albanese and Cr´epey [2], and Cr´epey et al.
+
+2 Nonlinear Market Model
+
+We start by re-examining and extending the nonlinear trading setup introduced in Bielecki and
+Rutkowski [8]. Throughout the paper, we ﬁx a ﬁnite trading horizon date T > 0 for our market
+model. Let (Ω, G, G, P) be a ﬁltered probability space satisfying the usual conditions of right-
+continuity and completeness, where the ﬁltration G = (Gt)t∈[0,T ] models the ﬂow of information
+available to the hedger and his counterparty. For convenience, we assume that the initial σ-ﬁeld
+G0 is trivial. All processes introduced in what follows are implicitly assumed to be G-adapted and,
+as usual, any semimartingale is assumed to be a c`adl`ag process. Let us introduce the notation for
+the prices of all traded assets in our model.
+
+Risky assets. We denote by S = (S1, . . . , Sd) the collection of the ex-dividend prices of a family of
+d risky assets with the corresponding cumulative dividend streams D = (D1, . . . , Dd). The process
+Si represents the ex-dividend price of any traded security, such as, stock, sovereign or corporate
+bond, stock option, interest rate swap, currency option or swap, credit default swap, etc.
+
+Funding accounts. We denote by Bi,l (resp. Bi,b) the lending (resp. borrowing) funding account
+associated with the ith risky asset, for i = 1, 2, . . . , d. The ﬁnancial interpretation of these accounts
+varies from case to case. For an overview of trading mechanisms for risky assets, we refer to Section
+2.6. In the special case when Bi,l = Bi,b, we will use the notation Bi and we call it the funding
+account for the ith risky asset.
+
+Cash accounts. The lending cash account B0,l and the borrowing cash account B0,b are used
+for unsecured lending and borrowing of cash, respectively. For brevity, we will sometimes write
+Bl and Bb instead of B0,l and B0,b. Also, when the borrowing and lending cash rates are equal,
+the single cash account is denoted by B0 or, simply, B. Note, however, that since an unlimited
+borrowing/depositing of cash in the bank account is not a realistic feature of a trading model, it is
+not assumed in what follows.
+
+Derivatives Pricing in Nonlinear Models
+
+5
+
+For brevity, we denote by B = (Bi,l, Bi,b, i = 0, 1, . . . , d) the collection of all cash and funding
+
+accounts.
+
+2.1 Contracts with Trading Adjustments
+
+We will consider ﬁnancial contracts between two parties, called the hedger and the counterparty.
+In what follows, all the cash ﬂows will be viewed from the prospective of the hedger, with the
+convention that a positive cash ﬂow means that the hedger receives the corresponding amount, and
+a negative cash ﬂow meaning that the hedger makes a payment. A bilateral ﬁnancial contract (or
+simply a contract) is given as a pair C = (A, X ) where the meaning of each term is explained below.
+A stochastic processes A represents the cumulative cash ﬂows from time 0 till the contracts’s
+maturity date, which is denoted as T . In the ﬁnancial interpretation, the process A is assumed
+to model the cumulative (promised) cash ﬂows of a given contract, which are either paid out from
+the hedger’s wealth or added to his wealth via the value process of his portfolio of traded assets
+(including positive or negative holdings of cash, that is, lent or borrowed money). Note that
+the price of the contract C exchanged at its initiation (that is, at time 0) is not included in A.
+For example, if the contract stipulates that the hedger will ‘receive’ the (possibly random and of
+arbitrary signs) cash ﬂows a1, a2, . . . , am at times t1, t2, . . . , tm ∈ (0, T ], then A is given by
+
+At =
+
+mXl=1
+
+1[tl,∞)(t)al.
+
+Let (At, 0) denote a basic contract originated at time t with X = 0. Then the only cash ﬂow
+exchanged between the counterparties at time t is the price of the contract and thus the remaining
+cumulative cash ﬂows of (At, 0) are given as At
+u := Au − At for u ∈ [t, T ]. In particular, the equality
+At
+t = 0 is valid for any basic contract (A, 0) and any date t ∈ [0, T ). All future cash ﬂows al for l
+such that tl > t are predetermined, in the sense that they are explicitly speciﬁed by the contract
+covenants.
+
+As a simple example of cash ﬂows, consider the situation where the hedger sells at time t the
+European call option on the risky asset Si. Then m = 1, t1 = T , and the terminal payoﬀ from the
+perspective of the hedger equals a1 = −(Si
+T − K)+. More generally, for every t ∈ [0, T ), the process
+At is given by At
+
+T − K)+1[T,∞)(u) for every u ∈ [t, T ].
+
+u = −(Si
+
+To account for additional features of a particular contract at hand, we ﬁnd it convenient to pos-
+tulate that the cash ﬂows A (resp. At) of a basic contract are complemented by trading adjustments,
+which are represented by the process X (resp. X t) given as X = (X 1, . . . , X n; α1, . . . , αn; β1, . . . , βn).
+The role of X is to describe additional clauses of a given contract, such as rehypothecated or seg-
+regated collateral, as well as to account for the impact of atypical trading arrangements on the
+value process of the hedger’s portfolio. For each adjustment process X k, the process αkX k repre-
+sents additional incoming or outgoing cash ﬂows for the hedger, which are either stipulated in the
+clauses of the contract or imposed by a third party (for instance, the regulator). To each process
+X k, k = 1, 2, . . . , n we also specify the remuneration process βk, which is used to determine the
+net interest payments (if any) associated with the process X k. It should be noted that the pro-
+cesses X 1, . . . , X n and the associated remuneration processes β1, . . . , βn do not represent traded
+assets, although they impact the dynamics of the value of a portfolio (see (2.4)). It is rather clear
+that the processes α and β may depend on the respective adjustment process. Therefore, when
+the adjustment process is Y, rather than X , one should write α(Y) and β(Y) in order to avoid
+confusion. However, for brevity, we will keep the shorthand notation α and β when the adjustment
+process is denoted as X . For further comments on trading adjustment, we refer to Section 2.3 and
+
+6
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+2.4. Last, but not least, we will need to deﬁne a suitable modiﬁcation of the promised cash ﬂows
+A resulting from the counterparty credit risk; see Deﬁnition 2.8 where the concept of counterparty
+risky cumulative cash ﬂows is introduced.
+
+In essence, the unilateral valuation of a given contract is the process of ﬁnding at any date t
+the range of its fair prices pt, as seen from the viewpoint of either the hedger or the counterparty.
+Although it will be postulated that the two parties in a contract adopt the same valuation paradigm,
+due to the asymmetry of cash ﬂows, diﬀerential trading costs, and possibly also diﬀerent trading
+opportunities, they will typically obtain diﬀerent ranges for the respective fair unilateral prices
+of a bilateral contract. The disparity in unilateral valuation executed independently by the two
+parties is a consequence of the nonlinearity of the wealth dynamics in trading strategies, so that it
+will typically occur even within the framework of a complete nonlinear market, where the perfect
+replication of a contract can be achieved by the counterparties. An important issue of determination
+of the range of fair bilateral prices in a general nonlinear framework is left for a future work; for
+results on bilateral pricing in speciﬁc nonlinear market models, see Nie and Rutkowski [40, 41, 43].
+
+2.2 Self-ﬁnancing Trading Strategies
+
+The concept of a portfolio refers to the family of primary traded assets, that is, risky assets, cash
+accounts, and funding accounts for risky assets. Formally, by a portfolio on the time interval [t, T ],
+we mean an arbitrary R3d+2-valued, G-adapted process (ϕt
+
+u)u∈[t,T ] denoted as
+
+ϕt =(cid:0)ξ1, . . . , ξd; ψ0,l, ψ0,b, ψ1,l, ψ1,b, . . . , ψd,l, ψd,b(cid:1),
+
+(2.1)
+
+u ≥ 0, ψj,b
+
+u ψj,b
+
+where the components represent the positions in risky assets (Si, Di), i = 1, 2, . . . , d, cash accounts
+B0,l, B0,b, and funding accounts Bi,l, Bi,b, i = 1, 2, . . . , d for risky assets. It is postulated throughout
+that ψj,l
+u = 0 for all j = 0, 1, . . . , d and u ∈ [t, T ]. If the borrowing and
+lending rates are equal, then we write ψj = ψj,l + ψj,b. It is also assumed throughout that the
+processes ξ1, . . . , ξd are G-predictable.
+
+u ≤ 0 and ψj,l
+
+We say that a portfolio ϕ is constrained if at least one of the components of the process ϕ is
+assumed to satisfy some explicitly stated constraints, which directly aﬀect the choice of ϕ. For
+instance, we will need to impose conditions ensuring that the funding of each risky asset is done
+using the corresponding funding account. Another example of an explicit constraint is obtained
+when we set ψ0,b
+u = 0 for all u ∈ [t, T ], meaning that an outright borrowing of cash from the account
+B0,b is prohibited. For examples of markets with various kinds of portfolio constraints, we refer to
+[14], Fahim and Huang [28], Karatzas and Kou [32, 33], and Pulido [48] and the
+Carassus et al.
+references therein. The concept of a constrained portfolio should be contrasted with the notion
+of admissibility of a trading strategy that may involve some additional conditions imposed on the
+wealth process and thus indirectly also on the class of admissible processes ϕ (see Deﬁnition 3.2).
+Note that portfolio constraints are not a matter of choice, since they are due to genuine real-life
+restrictions imposed on traders. This should be contrasted with the idea of admissibility of a trading
+strategy, which is a mathematical artifact needed to preclude unrealistic arbitrage opportunities
+(like doubling strategies), which may be present within a stochastic model when continuous trading
+is allowed. Note in this regard that there is no need to be concerned with the admissibility under
+the realistic assumption that only a ﬁnite number of trading times is available to traders.
+
+We are now in a position to state some standard technical assumptions underpinning our further
+
+developments.
+
+Assumption 2.1. We work throughout under the following standing assumptions:
+
+Derivatives Pricing in Nonlinear Models
+
+7
+
+(i) for every i = 1, 2, . . . , d, the price Si of the ith risky asset is a semimartingale and the
+
+cumulative dividend stream Di is a process of ﬁnite variation with Di
+
+0 = 0;
+
+(ii) the cash and funding accounts Bj,l and Bj,b are strictly positive and continuous processes of
+
+ﬁnite variation with Bj,l
+
+0 = Bj,b
+
+0 = 1 for j = 0, 1, . . . , d;
+
+(iii) the cumulative cash ﬂow process A of any contract is a process of ﬁnite variation;
+(iv) the adjustment processes X k, k = 1, 2, . . . , n and the auxiliary processes αk, k = 1, 2, . . . , n
+
+are semimartingales;
+
+(v) the remuneration processes βk, k = 1, 2, . . . , n are strictly positive and continuous processes
+
+of ﬁnite variation with βk
+
+0 = 1 for every k.
+
+In the next deﬁnition, the Gt-measurable random variable xt represents the endowment of the
+hedger at time t ∈ [0, T ) whereas pt, which at this stage is an arbitrary Gt-measurable random
+variable, stands for the price at time t of Ct = (At, X t), as seen by the hedger. Recall that At
+denotes the cumulative cash ﬂows of the contract A that occur after time t, that is, At
+u := Au − At
+for all u ∈ [t, T ]. Hence At can be seen as a contract with the same remaining cash ﬂows as the
+original contract A, except that At starts and is traded at time t. By the same token, we denote by
+X t the adjustment process related to the contract At. Let C be a predetermined class of contracts.
+As expected, it is assumed throughout that the null contract N = (0, 0) is traded in any market
+model at any time t, that is, N ∈ C t for every t ∈ [0, T ) (see Assumption 3.1).
+
+It should be noted that the prices pt for contracts belonging to the class C are yet unspeciﬁed
+and thus there is a certain degree of freedom in the foregoing deﬁnitions. Note also that we use the
+
+convention that R u
+
+t
+
+:=R(t,u] for any t ≤ u.
+
+Deﬁnition 2.2. A quadruplet (xt, pt, ϕt, Ct) is a self-ﬁnancing trading strategy on [t, T ] associated
+with the contract C = (A, X ) if the portfolio value V p(xt, pt, ϕt, Ct), which is given by
+
+V p
+u (xt, pt, ϕt, Ct) :=
+
+dXi=1
+
+ξi
+uSi
+
+u +
+
+dXj=0(cid:16)ψj,l
+
+u Bj,l
+
+u + ψj,b
+
+u Bj,b
+
+u (cid:17)
+
+satisﬁes for all u ∈ [t, T ]
+
+V p
+u (xt, pt, ϕt, Ct) = xt + pt + Gu(xt, pt, ϕt, Ct),
+
+where the adjusted gains process G(xt, pt, ϕt, Ct) is given by
+
+Gu(xt, pt, ϕt, Ct) :=
+
+ξi
+v (dSi
+
+v + dDi
+
+v) +
+
+v dBj,l
+
+v + ψj,b
+
+v dBj,b
+
+dXj=0
+
+Z u
+t (cid:16)ψj,l
+
+v (cid:17)
+
+t
+
+Z u
+dXi=1
+nXk=1
+
++
+
+uX k
+αk
+
+u −
+
+X k
+
+v (βk
+
+v )−1 dβk
+
+v + At
+u.
+
+Z u
+
+t
+
+nXk=1
+
+(2.2)
+
+(2.3)
+
+(2.4)
+
+For a given pair (xt, pt), we denote by Φt,xt(pt, Ct) the set of all self-ﬁnancing trading strategies on
+[t, T ] associated with the contract C.
+
+When studying the valuation of a contract Ct for a ﬁxed t, we will typically assume that the
+hedger’s endowment xt is given and we will search for the range of hedger’s fair prices pt for Ct.
+Therefore, when dealing with the hedger with a ﬁxed initial endowment xt at time t, we will
+consider the following set of self-ﬁnancing trading strategies Φt,xt(C ) = ∪C∈C ∪pt∈Gt Φt,xt(pt, Ct).
+Note, however, that the deﬁnition of the market model does not assume that the quantity xt is
+predetermined.
+
+8
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+Deﬁnition 2.3. The market model is the quintuplet M = (S, D, B, C , Φ(C )) where Φ(C ) stands
+for the set of all self-ﬁnancing trading strategies associated with the class C of contracts, that is,
+Φ(C ) = ∪t∈[0,T ) ∪xt∈Gt Φt,xt(C ).
+
+In principle, the market model deﬁned above exhibits nonlinear features, in the sense that
+either the portfolio value process V p(xt, pt, ϕt, Ct) is not linear in (xt, pt, ϕt, Ct) or the class of all
+self-ﬁnancing strategies is not a vector space (or, typically, both). Therefore, we refer to this setup
+as to a generic nonlinear market model. In contrast, by a linear market model we will understand
+in this paper the version of the model deﬁned above in which all trading adjustments are null
+(i.e., X k = 0 for all k = 1, 2, . . . , n), there are no diﬀerential funding rates (i.e., Bj,b = Bj,l for
+all j = 0, 1, . . . , d) and no portfolio constraints are imposed. In particular, in the linear market
+model the class of all self-ﬁnancing trading strategies is a vector space and the value process
+V p(xt, pt, ϕt, Ct) is a linear mapping in (xt, pt, ϕt, Ct). Note, however, that the last property is
+usually lost when an admissibility condition is imposed on the class of trading strategies since,
+typically, a trading strategy is deemed to be admissible if it its discounted wealth is bounded from
+below or nonnegative (hence the class of admissible trading strategies is no longer a vector space).
+To alleviate notation, we will frequently write (x, p, ϕ, C) instead of (x0, p0, ϕ0, C0) when working
+on the interval [0, T ]. Note that (2.2)–(2.4) yield the following equalities for any trading strategy
+(x, p, ϕ, C) ∈ Φ0,x(C )
+
+V p
+0 (x, p, ϕ, C) =
+
+dXi=1
+
+ξi
+0Si
+
+0 +
+
+dXj=0(cid:16)ψj,l
+
+0 Bj,l
+
+0 + ψj,b
+
+0 Bj,b
+
+0 (cid:17) = x + p +
+
+nXk=1
+
+0X k
+αk
+0 .
+
+(2.5)
+
+Recall that in the classical case of a frictionless market, it is common to assume that the initial
+endowments of traders are null. Moreover, the price of a derivative has no impact on the dynamics
+of the gains process. In contrast, when portfolio’s value is driven by nonlinear dynamics, the initial
+endowment x at time 0, the initial price p and the adjustment cash ﬂows of a contract may all
+aﬀect the dynamics of the gains process and thus the classical approach is no longer valid.
+
+2.3 Funding Adjustment
+
+The concept of the funding adjustment refers to the spreads of funding rates with regard to some
+benchmark cash rate. In the present setup, it can be deﬁned relative to either Bl or Bb. If the
+lending and borrowing rates are not equal, then (2.3) can be written as follows
+
+V p
+t (x,p, ϕ, C) = x + p +
+
+Z t
+
+0
+
+dXi=1
+
+u (dSi
+ξi
+
+u + dDi
+
+u) +
+
+nXk=1
+
+t X k
+αk
+
+t + At
+
++
+
+−
+
++
+
+−
+
+dXj=0
+nXk=1
+dXi=1
+nXk=1
+
+Z t
+0 (cid:16)ψj,l
+0 (cid:18)(X k
+Z t
+Z t
+0 (cid:16)ψi,l
+Z t
+0 (cid:16)(X k
+
+u (cid:0)(bBi,l
+u )+(bβk,l
+
+u − 1) dB0,l
+
+u + B0,l
+
+u − 1) dB0,b
+
+u + B0,b
+
+u (cid:1)(cid:17)
+u dbBi,b
+
+u dB0,l
+
+u + ψj,b
+
+u dB0,b
+
+u (cid:17)
+
+u )+(B0,l
+
+u )−1 dB0,l
+
+u − (X k
+
+u )−(B0,b
+
+u )−1 dB0,b
+
+u (cid:19)
+u (cid:1) + ψi,b
+u (cid:0)(bBi,b
+u (cid:17)
+u )−1 dbβk,b
+
+u dbBi,l
+u )−(bβk,b
+
+u − (X k
+
+u )−1 dbβk,l
+
+Derivatives Pricing in Nonlinear Models
+
+9
+
+where bBj,l/b := Bj,l/b(B0,l/b)−1 and bβk,l/b := βk(B0,l/b)−1. The quantity
+
+u − 1) dB0,l
+
+u + B0,l
+
+u − 1) dB0,b
+
+u + B0,b
+
+γt :=
+
+−
+
+Z t
+0 (cid:16)ψi,l
+dXi=1
+Z t
+0 (cid:16)(X k
+nXk=1
+
+u (cid:0)(bBi,l
+u )+(bβk,l
+
+u dbBi,l
+u )−(bβk,b
+
+u (cid:1) + ψi,b
+u (cid:0)(bBi,b
+u (cid:17)
+u )−1 dbβk,b
+
+u − (X k
+
+u )−1 dbβk,l
+
+u (cid:1)(cid:17)
+u dbBi,b
+
+is called the funding adjustment. If the borrowing and lending rates are equal, then the expression
+for the funding adjustment simpliﬁes to
+
+γt =
+
+Z t
+
+0
+
+dXi=1
+
+ψi
+
+u(cid:0)(bBi
+
+u − 1) dB0
+
+u + B0
+
+u(cid:1) −
+
+u dbBi
+
+Z t
+
+0
+
+nXk=1
+
+X k
+
+u (bβk
+u)−1dbβk
+
+u.
+
+When the cash account B0 is used for funding and remuneration for adjustment processes, that is,
+when Bi = B0 for i = 1, 2, . . . , d and βk = B0 for k = 1, 2, . . . , n, then the funding adjustment
+vanishes, as was expected.
+
+2.4 Financial Interpretation of Trading Adjustments
+
+In this study, we will devote signiﬁcant attention to terms appearing in the dynamics of V p(x, ϕ, A, X ),
+which correspond to the trading adjustment process X .
+
+Deﬁnition 2.4. The stochastic process ̟ =Pn
+t −Z t
+
+t := αk
+
+t X k
+
+̟k
+
+0
+
+is called the cash adjustment.
+
+k=1 ̟k, where for k = 1, 2, . . . , n,
+
+X k
+
+u (βk
+
+u)−1 dβk
+u
+
+(2.6)
+
+t X k
+
+In general, the ﬁnancial interpretation of the cash adjustment term ̟k is as follows: the term
+αk
+t X k
+t represents the part of the kth adjustment that the hedger can either use for his trading
+purposes when αk
+t > 0 or has to put aside (for instance, pledge to his counterparty as a collateral
+or hold in a separate account as a regulatory capital) when αk
+t < 0. Formally, the quantity
+t )−1 can be seen as the number of “shares” of the remuneration process βk that the hedger
+−X k
+should hold at time t in order to cover interest payments associated with the adjustment process
+u represents the cumulative interest either paid or received
+
+u)−1 dβk
+
+t (βk
+
+t X k
+
+by the hedger due to the presence of the kth trading adjustment.
+
+Let us illustrate a few alternative interpretations of cash adjustments given by (2.6). We
+
+u (βk
+
+0 X k
+
+X k. Hence the integral R t
+hereafter write bX k = (βk)−1X k.
+
+• Let us ﬁrst assume that αk
+
+t = 1, for all t. The term X k
+adjustment ̟k is aﬀected by both the current value X k
+
+u indicates that the cash
+t of the adjustment process and by the
+u. Such a situation occurs,
+for example, when X k represents the capital charge or the rehypotecated collateral. The
+integration by parts formula gives
+
+t −R t
+0 bX k
+cost of funding of this adjustment given by the integral R t
+0 bX k
+0 +Z t
+
+u = X k
+
+t = X k
+
+u dβk
+
+u dβk
+
+u dβk
+
+(2.7)
+
+̟k
+
+βk
+
+u ,
+
+0
+
+where the integral R t
+
+units of the funding account βk
+
+0 βk
+
+u dbX k
+
+u has the following ﬁnancial interpretation: bX k
+
+u that are needed to fund the amount X k
+
+u is the number of
+u of the adjustment
+
+t −Z t
+0 bX k
+
+u dbX k
+
+10
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+u is the cost of this
+change, which has to be absorbed by the change in the value of the trading strategy. Observe
+that the term βk
+u may be negative, meaning that a cash relieve situation is taking place.
+
+u is the inﬁnitesimal change of this number and βk
+
+u dbX k
+
+process. Hence dbX k
+u dbX k
+
+t = 1 and βk
+
+• In the special case when αk
+
+for all t. We
+deal here with the cash adjustment X k on which there is no remuneration since manifestly
+u = 0. This situation may arise, for example, if the bank does not use any external
+funding for ﬁnancing this adjustment, but relies on its own cash reserves, which are assumed
+to be kept idle and neither yield interest nor require interest payouts.
+
+t = 1 for all t, we obtain ̟k
+
+R t
+0 bX k
+
+t = X k
+t
+
+u dβk
+
+• Let us now assume that αk
+
+t = 0 for all t. Then the term ̟k
+
+u indicates
+that the cash value of the adjustment X k does not contribute to the portfolio value. Only
+u dβk
+u,
+contributes to the portfolio’s value. This happens, for example, when the adjustment process
+represents the collateral posted by the counterparty and kept in the segregated account.
+
+the remuneration of the adjustment process X k, which is given by the integral R t
+0 bX k
+
+u dβk
+
+t = −R t
+0 bX k
+
+The above considerations lead to the following lemma, which gives a convenient representation
+for the cash adjustment process when αk is equal to either 1 or 0. In most practical situations,
+a general case can also be dealt with using Lemma 2.5 and a suitable redeﬁnition of adjustment
+processes.
+
+Lemma 2.5. Let the non-negative integers n1, n2, n3 be such that n1 + n2 + n3 = n. If αk = 1 for
+k = 1, 2, . . . , n1 + n2, βk = 1 for k = n1, n1 + 1, . . . , n1 + n2 and αk = 0 for k = n1 + n2, n1 + n2 +
+1, . . . , n1 + n2 + n3, then the cash adjustment process ̟ satisﬁes, for all t ∈ [0, T ],
+
+̟t =
+
+n1Xk=1
+
+X k
+
+0 +
+
+Z t
+
+0
+
+n1Xk=1
+
+2.5 Wealth Process
+
+u +
+
+βk
+
+u dbX k
+
+n1+n2Xk=n1+1
+
+X k
+
+t −
+
+n1+n2+n3Xk=n1+n2+1
+
+Z t
+0 bX k
+
+u dβk
+u.
+
+(2.8)
+
+Let (x, p, ϕ, C) be an arbitrary self-ﬁnancing trading strategy. Then the following natural question
+arises: what is the wealth of a hedger at time t, say Vt(x, p, ϕ, C)? It is clear that if the hedger’s
+initial endowment equals x, then his initial wealth equals x + p when he sells a contract C at the
+price p at time 0. By contrast, the initial value of the hedger’s portfolio, that is, the total amount of
+cash he invests at time 0 in his portfolio of traded assets, is given by (2.5) meaning that the trading
+adjustments at time 0 need to be accounted for in the initial portfolio’s value. However, according
+to the ﬁnancial interpretation of trading adjustments, they have no bearing on the hedger’s initial
+wealth and thus the relationship between the hedger’s initial wealth and the initial portfolio’s value
+reads
+
+V0(x, p, ϕ, C) = V p
+
+0 (x, p, ϕ, C) −
+
+0X k
+αk
+0 .
+
+nXk=1
+
+Analogous arguments can be used at any time t ∈ [0, T ], since the hedger’s wealth at time t should
+represent the value of his portfolio of traded assets net of the value of all trading adjustments
+(see (2.10)). Furthermore, one needs to focus on the actual ownership (as opposed to the legal
+ownership) of each of the adjustment processes X 1, . . . , X n, of course, provided that they do not
+vanish at time t. Although this general rule is cumbersome to formalize, it will not present any
+diﬃculties when applied to a particular contract at hand.
+
+For instance, in the case of the rehypothecated cash collateral (see Section 2.7.1), the hedger’s
+wealth at time t should be computed by subtracting the collateral amount Ct from the portfolio’s
+
+Derivatives Pricing in Nonlinear Models
+
+11
+
+value. This is consistent with the actual ownership of the cash amount delivered by either the
+hedger or the counterparty at time t. For example, if C +
+t > 0 then the legal owner of the amount
+C +
+t at time t could be either the holder or the counterparty (depending on the legal covenants
+of the collateral agreement) but the hedger, as a collateral taker, is allowed to use the collateral
+amount for his trading purposes. If there is no default before T , the collateral taker returns the
+collateral amount to the collateral provider. Hence the amount C +
+t should be accounted for when
+dealing with the hedger’s portfolio, but should be excluded from his wealth. In general, we have
+the following deﬁnition of the wealth process.
+
+Deﬁnition 2.6. The wealth process of a self-ﬁnancing trading strategy (xt, pt, ϕt, Ct) is deﬁned, for
+every u ∈ [t, T ], by
+
+Vu(xt, pt, ϕt, Ct) := V p
+
+u (xt, pt, ϕt, Ct) −
+
+αk
+uX k
+u
+
+nXk=1
+
+(2.9)
+
+(2.10)
+
+or, more explicitly,
+
+Vu(xt, pt, ϕt, Ct) =
+
+dXi=1
+
+ξi
+uSi
+
+u +
+
+dXj=0(cid:16)ψj,l
+
+u Bj,l
+
+u + ψj,b
+
+u Bj,b
+
+u (cid:17) −
+
+nXk=1
+
+uX k
+αk
+u .
+
+Let us observe that there is a lot of ﬂexibility in the choice of the adjustment processes X k and
+corresponding processes αk. However, we will always assume that these processes are speciﬁed such
+that the above arguments of interpreting the actual ownership of the capital and thus also of the
+wealth process V (x, p, ϕ, A, X ) hold true.
+
+As an immediate consequence of Deﬁnitions 2.2 and 2.6, it follows that the wealth process V of
+
+any self-ﬁnancing trading strategy (xt, pt, ϕt, Ct) admits the dynamics, for u ∈ [t, T ],
+
+Vu(xt, pt, ϕt, Ct) = xt + pt +
+
+−
+
+dXi=1
+nXk=1
+
+t
+
+Z u
+Z u
+
+t
+
+ξi
+v d(Si
+
+v + Di
+
+v) +
+
+dXj=0
+
+Z u
+t (cid:16)ψj,l
+
+v dBj,l
+
+v + ψj,b
+
+v dBj,b
+
+v (cid:17)
+
+(2.11)
+
+X k
+
+v (βk
+
+v )−1 dβk
+
+v + At
+u.
+
+One could argue that it would be possible to take equations (2.10) and (2.11) as the deﬁnition of
+a self-ﬁnancing trading strategy and subsequently deduce that equality (2.3) holds for the portfolio’s
+value V p(x, p, ϕ, C), which is then given by (2.9). We contend this alternative approach would not
+be optimal, since conditions in Deﬁnition 2.2 are obtained through a straightforward analysis of
+the trading mechanism and physical cash ﬂows, whereas the ﬁnancial justiﬁcation of equations
+(2.10)–(2.11) is less appealing.
+
+Clearly, the wealth processes of a self-ﬁnancing trading strategy is characterized in terms of
+two equations (2.10) and (2.11). Observe that, using (2.10), it is possible to eliminate one of the
+processes ψj,l or ψj,b from (2.11) and thus to characterize the wealth process in terms of a single
+equation. One obtains in that way a (typically nonlinear) BSDE, which can be used to formulate
+various valuation problems for a given contract.
+
+2.6 Trading in Risky Assets
+
+Note that we do not postulate that the processes Si, i = 1, 2, . . . , d are positive, unless it is explicitly
+stated that the process Si models the price of a stock. Hence by the long cash position (resp. short
+tSi
+cash position), we mean the situation when ξi
+t is the number of
+hedger’s positions in the risky asset Si at time t.
+
+t ≥ 0), where ξi
+
+t ≤ 0 (resp. ξi
+
+tSi
+
+12
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+2.6.1 Cash Market Trading
+
+t > 0 shares of the ith risky asset is funded using cash. Then, we set ψi,b
+
+For simplicity of presentation, we assume that Si
+t ≥ 0 for all t ∈ [0, T ]. Assume ﬁrst that the
+purchase of ξi
+t = 0 for all
+t ∈ [0, T ] and thus the process Bi,b becomes irrelevant. Let us now consider the case when ξi
+t < 0.
+If we assume that the proceeds from short selling of the risky asset Si can be used by the hedger
+(this is typically not true in practice), we also set ψi,l
+t = 0 for all t ∈ [0, T ], and thus the process
+Bi,l becomes irrelevant as well. Hence, under these stylized cash trading conventions, there is no
+need to introduce the funding accounts Bi,l and Bi,b for the ith risky asset. Since dividends Di are
+passed over to the lender of the asset, they do not appear in the term representing the gains/losses
+from the short position in the risky asset. In the simplest case of no market frictions and trading
+adjustments, and with the single risky asset S1, under the present short selling convention, (2.3)
+becomes
+
+t (x, p0, ϕ, C) = x + p +Z t
+
+V p
+
+0
+
+ξ1
+u (dS1
+
+u + dD1
+
+u dB0,l
+
+u + ψ0,b
+
+u dB0,b
+
+u) +Z t
+
+0 (cid:16)ψ0,l
+
+u (cid:17) + At.
+
+More practical short selling conventions for risky assets are discussed in the foregoing subsections.
+
+2.6.2 Short Selling of Risky Assets
+
+Let us now consider the classical way of short selling of a risky asset borrowed from a broker. In
+that case, the hedger does not receive the proceeds from the sale of the borrowed shares of a risky
+asset, which are held instead by the broker as the cash collateral. The hedger may also be requested
+to post additional cash collateral to the broker and, in some cases, he may be paid interest on his
+margin account with the broker.1 To represent these trading arrangements for the ith risky asset,
+we set ψi,l
+
+t = αi+d
+
+t = 0 and
+
+t = 0, αi
+
+X i
+
+t = −(1 + δi
+
+t)(ξi
+
+t)−Si
+
+t, X i+d = δi
+
+t(ξi
+
+t)−Si
+t
+
+t speciﬁes the interest (if any) on the hedger’s margin account with the broker, δi
+
+where βi
+t ≥ 0
+represents an additional cash collateral, and βi+d speciﬁes the interest rate paid by the hedger for
+ﬁnancing the additional collateral. Let us assume, for instance, that there is only one risky asset,
+S1, which is either sold short or purchased using cash as in Section 2.6.1. Then we obtain the
+following expression for the portfolio value
+
+whereas equation (2.3) becomes
+
+V p
+t (x, p, ϕ, C) = (ξ1
+
+t )+S1
+
+t + ψ0,l
+
+t B0,l
+
+t + ψ0,b
+
+t B0,b
+
+t
+
+t (x, p, ϕ, C) = x + p +Z t
+
+V p
+
+0
+
++Z t
+
+0
+
+u) +Z t
+
+0 (cid:16)ψ0,l
+u −Z t
+
+0
+
+ξ1
+u (dS1
+
+u + dD1
+
+u dB0,l
+
+u + ψ0,b
+
+u dB0,b
+
+u (cid:17) + At
+
+(β1
+
+u)−1(1 + δ1
+
+u)(ξ1
+
+u)−S1
+
+u dβ1
+
+(β2
+
+u)−1δ1
+
+u(ξ1
+
+u)−S1
+
+u dβ2
+u.
+
+(2.12)
+
+(2.13)
+
+In particular, if there is no speciﬁc interest rate for remuneration of an additional collateral, then
+we set X 2 = 0 and thus the last term in (2.13) should be omitted. It is worth noting that (2.12)
+can be seen as a special case of the following extended version of (2.2)
+
+V p
+u (xt, pt, ϕt, Ct) :=
+
+dXi=1
+
+hi(ξi
+
+u)Si
+
+u +
+
+dXj=0(cid:16)ψj,l
+
+u Bj,l
+
+u + ψj,b
+
+u Bj,b
+
+u (cid:17)
+
+1The interested reader may consult the web pages http://www.investopedia.com/terms/s/shortsale.asp and
+
+https://www.sec.gov/investor/pubs/regsho.htm for more details on the mechanics of short-sales.
+
+Derivatives Pricing in Nonlinear Models
+
+13
+
+with d = 1 and h1(x) = x+ for x ∈ R.
+
+2.6.3 Repo Market Trading
+
+Let us ﬁrst consider the cash-driven repo transaction, the situation when shares of the ith risky
+asset owned by the hedger are used as collateral to raise cash.2 To represent this transaction, we
+set
+
+ψi,b
+t = −(Bi,b
+
+t )−1(1 − hi,b)(ξi
+
+t)+Si
+t,
+
+(2.14)
+
+where Bi,b speciﬁes the interest paid to the lender by the hedger who borrows cash and pledges the
+risky asset Si as collateral, and the constant hi,b represents the haircut for the ith asset pledged.
+
+A synthetic short-selling of the risky asset Si using the repo market is obtained through the
+security-driven repo transaction, that is, when shares of the risky asset are posted as collateral by
+the borrower of cash and they are immediately sold by the hedger who lends the cash. Formally,
+this situation corresponds to the equality
+
+ψi,l
+t = (Bi,l
+
+t )−1(1 − hi,l)(ξi
+
+t)−Si
+t,
+
+(2.15)
+
+where Bi,l speciﬁes the interest amount paid to the hedger by the borrower of the cash amount
+(1 − hi,l)(ξi
+
+t and hi,l is the corresponding haircut.
+
+t)−Si
+
+If only one risky asset is traded and transactions are exclusively in repo market, then we obtain
+
+V p
+
+t (x, p, ϕ, C) = x + p +Z t
++Z t
+0 (cid:16)(B1,l
+
+u )−1(1 − h1,l)(ξ1
+
+0
+
+ξ1
+u (dS1
+
+u + dD1
+
+u dB0,l
+
+u + ψ0,b
+
+u dB0,b
+
+u) +Z t
+
+0 (cid:16)ψ0,l
+
+u)−S1
+
+u dB1,l
+
+u − (B1,b
+
+u )−1(1 − h1,b)(ξ1
+
+u)+S1
+
+u dB1,b
+
+u (cid:17)
+u (cid:17) + At.
+
+(2.16)
+
+In practice, it is reasonable to assume that the long and short repo rates for a given risky asset
+tSi
+t,
+
+are identical, that is, Bi = Bi,l = Bi,b. In that case, we may and do set ψi
+so that equations (2.14) and (2.15) reduce to just one equation
+
+t = (1 − hi)(Bi
+
+t)−1ξi
+
+(1 − hi)ξi
+
+tSi
+
+t + ψi
+
+tBi
+
+t = 0.
+
+(2.17)
+
+According to this interpretation of Bi, equality (2.17) means that trading in the ith risky asset is
+done using the (symmetric) repo market and ξi
+t shares of a risky asset are pledged as collateral at
+time t, meaning that the collateralization rate equals 1. Under (2.17), equation (2.16) reduces to
+
+t (x, p, ϕ, C) = x + p +Z t
+
+V p
+
+ξ1
+u (dS1
+
+u + dD1
+
+u dB0,l
+
+u + ψ0,b
+
+u dB0,b
+
+u) +Z t
+
+0 (cid:16)ψ0,l
+
+u (cid:17)
+
+(2.18)
+
+0
+
+−Z t
+
+0
+
+(B1
+
+u)−1(1 − h1)ξ1
+
+uS1
+
+u dB1
+
+u + At.
+
+2.7 Collateralization
+
+We consider the situation when the hedger and the counterparty enter a contract and either receive
+or pledge collateral with value denoted by C, which is assumed to be a semimartingale. Generally
+speaking, the process C represents the value of the margin account. We let
+
+2We refer to https://www.newyorkfed.org/medialibrary/media/research/staff_reports/sr529.pdf for a detailed de-
+
+scription of mechanics of repo trading.
+
+Ct = X 1
+
+t + X 2
+t
+
+(2.19)
+
+14
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+:= C +
+
+:= −C −
+
+t = Ct1{Ct≥0}, and X 2
+t
+
+t = Ct1{Ct<0}. By convention, the amount C +
+t
+
+where X 1
+is
+t
+the cash value of collateral received at time t by the hedger from the counterparty, whereas C −
+t
+represents the cash value of the collateral pledged by him and thus transferred to his counterparty.
+For simplicity of presentation and consistently with the prevailing market practice, it is postulated
+throughout that only cash collateral may be delivered or received (for other collateral conventions,
+see, e.g., Bielecki and Rutkowski [8]). According to ISDA Margin Survey 2014, about 75% of non-
+cleared OTC collateral agreements are settled in cash and about 15% in government securities.
+We also make the following natural assumption regarding the value of the margin account at the
+contract’s maturity date.
+
+Assumption 2.7. The G-adapted collateral amount process C satisﬁes CT = 0.
+
+Typically this means that the collateral process C will have a jump at time T from CT − to 0.
+The postulated equality CT = 0 is simply a convenient way of ensuring that any collateral amount
+posted is returned in full to the pledger when the contract matures, provided that default events
+have not occurred prior to or at maturity date T . As soon as the default events are also modeled,
+we will need to specify closeout payoﬀs (see Section 2.8.1).
+
+Let us ﬁrst make some comments from the hedger’s perspective regarding the crucial features of
+the margin account. The ﬁnancial practice may require to hold the collateral amounts in segregated
+margin accounts, so that the hedger, when he is a collateral taker, cannot make use of the collateral
+amount for trading. Another collateral convention mostly encountered in practice is rehypothecation
+(around 90% of cash collateral of OTC contracts are rehypothecated), which refers to the situation
+where the hedger may use the collateral pledged by his counterparties as collateral for his contracts
+with other counterparties. Obviously, if the hedger is a collateral provider, then a particular
+convention regarding segregation or rehypothecation is immaterial for the dynamics of the value
+process of his portfolio. We refer the reader to Bielecki and Rutkowski [8] and Cr´epey et al. [19]
+for a detailed analysis of various conventions on collateral agreements. Here we will examine some
+basic aspects of collateralization (sometimes also called margining) in our context.
+
+In general, the cash adjustments due to collateralization are
+
+̟C
+t
+
+:= α1
+
+t C +
+
+t − α2
+
+t C −
+
+t −Z t
+
+0
+
+(β1
+
+u)−1C +
+
+u dβ1
+
+u +Z t
+
+0
+
+(β2
+
+u)−1C −
+
+u dβ2
+u,
+
+(2.20)
+
+where the remuneration processes β1 and β2 determine the interest rates paid or received by the
+hedger on collateral amounts C + and C −, respectively. The auxiliary processes α1 and α2 intro-
+duced in (2.20) are used to cover alternative conventions regarding rehypothecation and segregation
+of margin accounts. Note that we always set α2
+t = 1 for all t ∈ [0, T ] when considering the portfolio
+of the hedger, since a particular convention regarding rehypothecation or segregation is manifestly
+irrelevant for the pledger of collateral.
+
+2.7.1 Rehypothecated Collateral
+
+As it is customary in the existing literature, we assume that rehypothecation of cash collateral
+means that it can be used by the hedger for his trading purposes without any restrictions. To cover
+this stylized version of a rehypothecated collateral for the hedger, it suﬃces to set α1
+t = 1
+for all t ∈ [0, T ], so that for the hedger we obtain α1
+t = Ct. Consequently, the cash
+adjustment corresponding to the margin account equals
+
+t = α2
+
+t + α2
+
+t X 1
+
+t X 2
+
+̟t = ̟1
+
+t + ̟2
+
+t =
+
+2Xk=1(cid:16)X k
+
+0 +Z t
+
+0
+
+βk
+
+u(cid:17).
+u dbX k
+
+(2.21)
+
+Derivatives Pricing in Nonlinear Models
+
+15
+
+2.7.2 Segregated Collateral
+
+Under segregation, the collateral received by the hedger is kept by the third party, so that it cannot
+be used by the hedger for his trading activities. In that case, we set α1
+t = 1 for all
+t ∈ [0, T ] and thus α1
+t . Hence the corresponding cash adjustment term ̟ equals
+
+t = 0 and α2
+
+t = −C −
+
+t X 1
+
+t + α2
+
+t X 2
+
+̟t = ̟1
+
+t + ̟2
+
+t = X 2
+
+0 −Z t
+0 bX 1
+
+u dβ1
+
+u +Z t
+
+0
+
+β2
+
+u.
+
+u dbX 2
+
+(2.22)
+
+2.7.3
+
+Initial and Variation Margins
+
+In market practice, the total collateral amount is usually represented by two components, which
+are termed the initial margin (also known as the independent amount) and the variation margin. In
+the context of self-ﬁnancing trading strategies, this can be easily dealt with by introducing two (or
+more) collateral processes for a given contract A. It is worth mentioning that each of the collateral
+processes speciﬁed in the clauses of a contract is usually subject to a diﬀerent convention regarding
+segregation and/or remuneration.
+
+2.8 Counterparty Credit Risk
+
+The counterparty credit risk in a ﬁnancial contract arises from the possibility that at least one of
+the parties in the contract may default prior to or at the contract’s maturity, which may result in
+failure of this party to fulﬁl all their contractual obligations leading to ﬁnancial loss suﬀered by
+either one of the two parties in the contract. We will model defaultability of the two parties to the
+contract in terms of their default times. We denote by τ h and τ c the default times of the hedger
+and his counterparty, respectively. We require that τ h and τ c are non-negative random variables
+deﬁned on (Ω, G, G, P).
+then the hedger (resp. the
+counterparty) is considered to be default-free in regard to the contract under study. Hence the
+counterparty risk is a relevant aspect for the contract maturing at T provided that P(τ ≤ T ) > 0
+where τ := τ h ∧ τ c is the moment of the ﬁrst default.
+
+If τ h > T holds a.s. (resp. τ c > T , a.s.)
+
+From now on, we postulate that the process A models all promised (or nominal) cash ﬂows of
+the contract, as seen from the perspective of the trading desk without accounting for the possibility
+of defaults of trading parties. In other words, A represents cash ﬂows that would be realized in
+case none of the two parties has defaulted prior to or at the contract’s maturity. We will sometimes
+refer to A as to the counterparty risk-free cash ﬂows and we will call the contract with cash ﬂows
+A the counterparty risk-free contract. The key concept in the context of counterparty risk is the
+counterparty risky contract, which will be examined in the foregoing subsection.
+
+2.8.1 Closeout Payoﬀ
+
+Recall that τ denotes the moment of the ﬁrst default. On the event {τ < ∞}, we deﬁne the random
+variable Υ as
+
+Υ = Qτ + ∆Aτ − Cτ ,
+
+(2.23)
+
+where Q is the Credit Support Annex (CSA) closeout valuation process of the contract A, ∆Aτ =
+Aτ − Aτ − is the jump of A at τ corresponding to a (possibly null) promised bullet dividend at τ ,
+and Cτ is the value of the collateral process C at time τ . In the ﬁnancial interpretation, Υ+ is
+the amount the counterparty owes to the hedger at time τ , whereas Υ− is the amount the hedger
+owes to the counterparty at time τ . It accounts for the legal value Qτ of the contract, plus the
+
+16
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+bullet dividend ∆Aτ to be received/paid at time τ , less the collateral amount Cτ since it is already
+held by either the hedger (if Cτ > 0) or the counterparty (if Cτ < 0). We refer the reader to
+Section 3.1.3 in Cr´epey et al. [19] for the detailed discussion of the speciﬁcation of Υ.
+
+One of the key ﬁnancial aspects of the counterparty credit risk is the closeout payoﬀ, which
+occurs if at least one of the parties defaults either before or at the maturity of the contract. It
+represents the cash ﬂow exchanged between the two parties at the ﬁrst-party-default time. The
+following deﬁnition of the closeout payoﬀ, as usual given from the perspective of the hedger, is
+[19]. The random variables Rc and Rh taking values in [0, 1] represent
+taken from Cr´epey et al.
+the recovery rates of the counterparty and the hedger, respectively.
+
+Deﬁnition 2.8. The CSA closeout payoﬀ K is deﬁned as
+
+K := Cτ + 1
+
+{τ c<τ h}(RcΥ+ − Υ−) + 1
+
+{τ h<τ c}(Υ+ − RhΥ−) + 1
+
+{τ h=τ c}(RcΥ+ − RhΥ−).
+
+(2.24)
+
+The counterparty risky cumulative cash ﬂows process A♯ is given by
+
+A♯
+
+t = 1{t<τ }At + 1{t≥τ }(Aτ − + K),
+
+t ∈ [0, T ].
+
+(2.25)
+
+Let us make some comments on the form of the closeout payoﬀ K. First, the term Cτ is due to
+the fact that the legal title to the collateral amount comes into force only at the time of the ﬁrst
+default. The three terms appearing after Cτ in (2.24) correspond to the CSA convention that the
+cash ﬂow at the ﬁrst default from the perspective of the hedger should be equal to Qτ + ∆Aτ . Let
+us consider, for instance, the event {τc < τh}. If Υ+ > 0, then we obtain
+
+K = Cτ + Rc(Qτ + ∆Aτ − Cτ ) ≤ Qτ + ∆Aτ ,
+
+where the equality holds whenever Rc = 1. If Υ− > 0, then we get
+
+K = Cτ − (−Qτ − ∆Aτ + Cτ ) = Qτ + ∆Aτ .
+
+Finally, if Υ = 0, then K = Cτ = Qτ + ∆Aτ . Similar analysis can be done on the remaining two
+events in (2.24).
+
+Remark 2.9. Of course, there is no counterparty credit risk present under the assumption that
+P(τ > T ) = 1. Let us consider the case where P(τ > T ) < 1. We denote by P e
+t the counterparty
+risk-free ex-dividend price of the contract at time t. If we set Rc = Rh = 1, then we obtain
+
+A♯
+
+τ = Aτ + Qτ .
+
+Hence the counterparty credit risk is still present, despite the postulate of the full recovery, unless
+the legal value Qτ perfectly matches the counterparty risk-free ex-dividend price P e
+τ . Obviously, the
+counterparty credit risk vanishes when Rc = Rh = 1 and Qτ = P e
+τ , since in that case the so-called
+exposure at default (see Section 3.2.3 in Cr´epey et al. [19]) is null.
+
+2.8.2 Counterparty Credit Risk Decomposition
+
+To eﬀectively deal with the closeout payoﬀ in our general framework, we now deﬁne the counterparty
+credit risk (CCR) cash ﬂows, which are sometimes called CCR exposures. Note that the events
+{τ = τ h} = {τ h ≤ τ c} and {τ = τ c} = {τ c ≤ τ h} may overlap.
+
+Derivatives Pricing in Nonlinear Models
+
+17
+
+Deﬁnition 2.10. By the CCR processes, we mean the processes CL, CG and RP where the credit
+loss CL equals
+
+the credit gain CG equals
+
+CLt = −1{t≥τ }1{τ =τ c}(1 − Rc)Υ+,
+
+CGt = 1{t≥τ }1
+
+{τ =τ h}(1 − Rh)Υ−,
+
+and the replacement process is given by
+
+CRt = 1{t≥τ }(Aτ − At + Qτ ).
+
+The CCR cash ﬂow is given by ACCR = CL + CG + CR.
+
+It is worth noting that the CCR cash ﬂows depend on the processes A, C and Q. The next
+proposition shows that we may interpret the counterparty risky contract as the basic contract A,
+which is complemented by the collateral adjustment process X = (X 1, X 2) = (C +, −C −) and the
+CCR cash ﬂow ACCR. In view of this result, the counterparty risky contract (A♯, X ) admits the
+following formal decompositions (A♯, X ) = (A, X ) + (ACCR, 0) and (A♯, X ) = (A, 0) + (ACCR, X ).
+
+Proposition 2.11. The equality A♯
+
+t = At + ACCR
+
+t
+
+holds for all t ∈ [0, T ].
+
+Proof. We ﬁrst note that
+
+{τ c<τ h}(RcΥ+ − Υ−) + 1
+{τ c≤τ h}(1 − Rc)Υ+ + 1
+
+K = Cτ + 1
+= Cτ − 1
+= Qτ + ∆Aτ − 1
+
+{τ h≤τ c}(1 − Rh)Υ− + Υ
+
+{τ c≤τ h}(1 − Rc)Υ+ + 1
+
+{τ h≤τ c}(1 − Rh)Υ−,
+
+{τ h<τ c}(Υ+ − RhΥ−) + 1
+
+{τ h=τ c}(RcΥ+ − RhΥ−)
+
+where we used (2.23) in the last equality. Therefore, from (2.25) we obtain
+
+A♯
+
+t = 1{t<τ }At + 1{t≥τ }(Aτ − + K) = 1{t<τ }At + 1{t≥τ }(Aτ − ∆Aτ + K)
+= At∧τ + 1{t≥τ }(K − ∆Aτ ) = At + (At∧τ − At) + 1{t≥τ }(K − ∆Aτ )
+
+= At + 1{t≥τ }(cid:0)Aτ − At + Qτ − 1
+
+{τ c≤τ h}(1 − Rc)Υ+ + 1
+
+{τ h≤τ c}(1 − Rh)Υ−(cid:1),
+
+which is the desired equality in view of Deﬁnition 2.10.
+
+Proposition 2.11 shows that cash ﬂows of the counterparty risky contract can be formally
+decomposed into the counterparty risk-free component (A1, X 1) = (A, X ) and the CCR component
+(A2, X 2) = (ACCR, 0). This additive decomposition of the contract’s cash ﬂows may be employed
+in pricing of a counterparty risky contract. For instance, one could attempt to compute the price
+of the contract (A♯, X ) using the following tentative decomposition
+
+price (A♯, X ) = price (A, X ) + price (ACCR, 0) = counterparty risk-free price + CCR price.
+
+It is unlikely that this procedure would result in an overall arbitrage-free valuation of the coun-
+terparty risky contract in a nonlinear framework since, as we argue in Section 6, the additivity of
+ex-dividend prices obtained by solving nonlinear BSDEs fails to hold, in general.
+
+18
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+2.9 Local and Global Valuation Problems
+
+Market adjustments, represented in our framework by the process X , may in fact depend both on
+the cash ﬂow process A and the trading strategy ϕ. By the same token, the trading strategy ϕ will
+typically depend on the trading adjustments. So, a feedback eﬀect between ϕ and X is potentially
+present in our trading universe and, of course, this feature should be properly accounted for in
+valuation and hedging. Furthermore, it is important to distinguish between the case where the
+above-mentioned dependence is only on the current composition of the hedging portfolio and/or
+the current level of the wealth process and the case, where this dependence extends to the history
+of a hedging strategy. If a contract (A, X ), the cash and funding accounts, and the prices of risky
+assets do not depend on the strict history (i.e., the history not including the current values of
+processes of interest) of a hedger’s trading strategy ϕ and the wealth process V (ϕ), then we say
+that a valuation problem is local; otherwise, it is referred to as a global valuation problem. In view
+of (2.11), the distinction between local and global valuation problems can be formalized as follows.
+
+Deﬁnition 2.12. A valuation problem is said to be local if X k
+t =
+wk(t, Vt(ϕ), ϕt) dt for some G-progressively measurable mappings vk, wk : Ω × [0, T ] × R3(d+1) → R
+for every k = 1, 2, . . . , n. A valuation problem is said to be global if X k
+t =
+¯wk(t, V·(ϕ), ϕ·) dt for some G-non-anticipative functionals ¯vk, ¯wk : Ω×[0, T ]×D([0, T ], R3(d+1)) → R
+for every k = 1, 2, . . . , n where D([0, T ], R3(d+1)) is the space of R3(d+1)-valued, G-adapted, c`adl`ag
+processes on [0, T ].
+
+t = vk(t, Vt(ϕ), ϕt) and dβk
+
+t = ¯vk(t, V·(ϕ), ϕ·) and dβk
+
+As one might guess, solutions to the two valuation problems will always coincide at time 0 but,
+in general, they may have very diﬀerent properties at any date t ∈ (0, T ). In particular, they will
+typically correspond to diﬀerent classes of BSDEs: local problems correspond to classical BSDEs,
+whereas global ones can be dealt with through generalized BSDEs, which were introduced in the
+recent work by Cheridito and Nam [16] (see also Zheng and Zong [51]). It is important to stress
+that the distinction between the local and global problems is not related to the concept of path-
+independent contingent claims or the Markov property of the underlying model for primary risky
+assets. It is only due to the above-mentioned (either local or global) feedback eﬀect between the
+hedger’s trading decisions and the market conditions inclusive of particular adjustments for the
+contract at hand.
+
+Example 2.13. As a stylized example of a global valuation problem, let us consider a contract,
+which lasts for two months (for concreteness, assume that it is a simple combination of the put and
+the call on the stock S1 with maturities equal to one month and two months, respectively). The
+borrowing rate for the hedger is set to be 5% per annum, rising to 6% after one month if the hedger
+borrows any cash during the ﬁrst month and it will stay at 5% if he does not. Similarly, the lending
+rate initially equals 3% per annum and drops to 2% if the hedger borrows any cash during the ﬁrst
+month. It is intuitively clear that the valuation problem is here global, since its solution on [t, T ]
+will depend on the strict history of trading. In contrast, if the trading model has possibly diﬀerent,
+but ﬁxed, borrowing and lending rates, then the valuation problem for any contract will be local,
+in the sense introduced above, of course, unless some other trading adjustments will depend on the
+strict history of trading.
+
+For instance, if the only adjustment is the variable margin account determined by the hedger’s
+valuation and with a constant remuneration rate, then the hedger’s valuation problem is local. Note
+that the valuation problem described above can be inherently global even when the stock price is
+governed under the real-world probability measure by Markovian dynamics and the contract under
+study is a standard call or put option (or any other path-independent contingent claim).
+
+Derivatives Pricing in Nonlinear Models
+
+19
+
+More general instances of local and global valuation problems are presented in Section 6 where
+we examine a BSDE approach to the nonlinear markets. Let us mention that most valuation
+problems examined in the existing literature are local and thus they can be solved using existing
+results for classical BSDEs. In contrast, global valuation problems are much harder to analyze,
+since they require to use novel classes of BSDEs (see [16, 51] and the references therein).
+
+3 No-Arbitrage Properties of Nonlinear Markets
+
+The analysis of the self-ﬁnancing property of a trading strategy should be complemented by the
+study of some kind of the no-arbitrage property for the adopted market model. Due to the non-
+linearity of a market model with diﬀerential funding rates, the question how to properly deﬁne
+the no-arbitrage property is already a nontrivial matter, even when no additional portfolio con-
+straints or trading adjustments are taken into account. Nevertheless, we will argue that it can be
+eﬀectively dealt with using some reasonably general deﬁnition of an arbitrage opportunity associ-
+ated with trading. Let us stress that we only examine here a nonlinear extension of the classical
+concept of an arbitrage opportunity and hence the simplest deﬁnition of no-arbitrage, sometimes
+abbreviated as NA (see, for instance, part (iv) in Deﬁnition 2.2 in Fontana [29]), as opposed to
+much more sophisticated concepts, such as: NFLVR (no free lunch with vanishing risk), NUPBR
+(no unbounded proﬁt with bounded risk, which is also known as the no-arbitrage of the ﬁrst kind,
+that is, NA1) or NIP (no increasing proﬁt). The introduction of more sophisticated no-arbitrage
+conditions is motivated by the desire to establish a suitable version of the fundamental theorem
+of asset pricing (FTAP), which shows the equivalence between a particular form of no-arbitrage
+and the existence of some kind of a “martingale measure” for the discounted prices of primary
+assets. Due to the complexity of a general nonlinear market model, it is unlikely that the mar-
+tingale technique underpinning the FTAP in the linear setup will also prove useful when working
+within the general nonlinear framework (see, however, Pulido [48] who established the FTAP for
+a very special, and hence tractable, case of a nonlinear market with short sales prohibitions). In
+this paper, we only propose alternative deﬁnitions of no-arbitrage in a nonlinear framework and we
+give suﬃcient conditions for the no-arbitrage property of a general nonlinear market model.
+
+3.1 No-arbitrage Pricing Principles
+
+Let us ﬁrst describe very succinctly the classical valuation paradigm for ﬁnancial derivatives. In
+essence, a general approach to the arbitrage-free pricing hinges, at least implicitly, on the following
+arguments:
+Step (L.1). One ﬁrst checks whether a market model with predetermined trading rules and
+primary traded assets is arbitrage-free, where the deﬁnition of an arbitrage opportunity is a math-
+ematical formalization of the real-world concept of a risk-free proﬁtable trading opportunity. In
+fact, depending on the framework at hand, several alternative deﬁnitions of “no-arbitrage” were
+studied (for an overview, see Fontana [29]).
+Step (L.2). Given a ﬁnancial derivative for which the price is yet unspeciﬁed, one proposes a
+price (not necessarily unique) and checks whether the extended model (that is, the model where
+the ﬁnancial derivative is postulated to be an additional traded asset) preserves the no-arbitrage
+property in the sense made precise in Step (L.1).
+
+The valuation procedure outlined above can be referred to as the arbitrage-free pricing paradigm.
+In any linear market model (see the comments after Deﬁnition 2.3), one can show that the unique
+price given by replication (or the range of no-arbitrage prices obtained using the concept of super-
+
+20
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+hedging strategies in the case of an incomplete market) is consistent with the arbitrage-free pricing
+paradigm (L.1)–(L.2), although to establish this property in a continuous-time framework, one
+needs also to introduce the concept of admissibility of a trading strategy. In particular, the strict
+comparison property of linear BSDEs can be employed to show that replication (or superhedging)
+will indeed yield prices for derivatives that are consistent with the arbitrage-free pricing paradigm.
+Alternatively, a suitable version of the fundamental theorem of asset pricing can be used to show
+that the discounted prices deﬁned through admissible trading strategies are σ-martingales (hence,
+in fact, supermartingales) under an equivalent local martingale measure. The latter property is
+a well known fundamental feature of stochastic integration, so it covers all linear market models.
+Obviously, our very brief summary of linear arbitrage-free pricing theory is rather superﬁcial and
+we acknowledge that it should be complemented by suitable assumptions on prices of traded assets
+and speciﬁc deﬁnitions of no-arbitrage. For a survey of classical results regarding no-arbitrage
+properties of linear market models, we refer to the monograph by Delbaen and Schachermayer [23]
+(see also papers by Karatzas and Kardaras [31], Kardaras [34], and Takaoka and Schweizer [50] for
+more recent developments).
+
+Let us now comment on the existing approaches to the nonlinear valuation of derivatives, as
+ﬁrst developed by El Karoui and Quenez [27] and El Karoui et al. [26]) and later applied by several
+authors to particular ﬁnancial models or classes on contracts (see, for instance, Bichuch et al. [4],
+Brigo and Pallavicini [11], Cr´epey [17, 18], Dumitrescu et al. [24], Mercurio [39] or Pallavicini et al.
+[44, 45]). The most common approach to the valuation problem in a nonlinear framework seems
+to hinge, at least implicitly, on the following steps in which it is usually assumed that the hedger’s
+initial endowment is immaterial and thus it may be set to zero. In fact, Step (N.1) was explicitly
+addressed only in some of the above-mentioned works, whereas in most papers in the existing
+literature the authors were only concerned with the issue of ﬁnding a replicating or a superhedging
+strategy, as brieﬂy outlined in Step (N.2). Also, to the best of our knowledge, the important issue
+emphasized in Step (N.3) has been completely ignored up to now, since apparently it was implicitly
+taken for granted that the cost of replication, as given by a solution to a suitable BSDE, is a fair
+price of the contract.
+
+Step (N.1). The strict comparison argument for the BSDE associated with the wealth dynamics
+is used to show that one cannot construct an admissible trading strategy with the null initial wealth
+and the terminal wealth, which is non-negative almost surely and strictly positive with a positive
+probability (hence the classical no-arbitrage property holds).
+
+Step (N.2). The price for a European contingent claim is deﬁned using either the cost of replication
+or the minimal cost of superhedging. A suitable version of the strict comparison property for wealth
+processes can be used to show that, for some nonlinear market models, the two pricing approaches
+yield the same value for any replicable European claim.
+
+Step (N.3). It remains to check if the tentative price, as given by the cost of replication or selected
+to be below the upper bound given by the minimal cost of superhedging, complies with some form
+of the no-arbitrage property of the extended market.
+
+We will argue that the question whether the extended nonlinear market model preserves the
+no-arbitrage property (of course, according to each particular deﬁnition of no-arbitrage is much
+harder to resolve than it was the case in the linear framework. Intuitively, this is due to the fact
+that trading in derivatives may essentially change the properties of the original nonlinear market,
+whereas some version of the FTAP can be used to give a positive answer to the same question in
+the linear setup. We propose a partial solution in the nonlinear framework by putting forward in
+Section 4.2 the concept of the regular market model (see Deﬁnitions 4.9 and 4.14) and we establish
+some results on the fair pricing in a regular model (see Propositions 4.11 and 4.15).
+
+Derivatives Pricing in Nonlinear Models
+
+21
+
+3.2 Discounted Wealth and Admissible Strategies
+
+To deal with the issue of no-arbitrage, we need to introduce the discounted wealth process and
+properly deﬁne the concept of admissibility of trading strategies. For any x ∈ R, we denote by
+B(x) the strictly positive process given by, for all t ∈ [0, T ],
+
+Bt(x) := 1{x≥0}B0,l
+
+t + 1{x<0}B0,b
+
+t
+
+.
+
+(3.1)
+
+Note that if B0,l = B0,b, then B(x) = B0 = B. Furthermore, if x = 0, then xB0,b
+t = 0
+for all t ∈ [0, T ] and thus the choice of either B0,l or B0,b in the right-hand side of (3.1) will be
+in fact immaterial. It is natural to postulate that the initial endowment x ≥ 0 (resp. x < 0) has
+the future value xB0,l
+t ) at time t ∈ [0, T ] when invested in the cash account B0,l (resp.
+t
+B0,b). We henceforth work under the following assumption.
+
+t = xB0,l
+
+(resp. xB0,b
+
+Assumption 3.1. We postulate that:
+
+(i) for any initial endowment x ∈ R of the hedger, the null contract N = (0, 0) belongs to C ,
+
+(ii) for any x ∈ R, the trading strategy (x, 0,bϕ, N ), where all components of bϕ vanish except for
+t (x, 0,bϕ, N ) = Vt(x, 0, bϕ, N ) =
+
+either ψ0,l, if x ≥ 0, or ψ0,b, if x < 0, belongs to Φ0,x(C ) and V p
+xBt(x) for all t ∈ [0, T ].
+
+At the ﬁrst glance, Assumption 3.1 may look trivial or even redundant but it should be made
+and it will be useful in the derivation of fundamental properties of fair prices. Condition (i) is
+indeed a rather obvious formal requirement. Note, however, that condition (ii) cannot be deduced
+directly from the self-ﬁnancing condition, since it hinges on the additional postulate that there are
+no trading adjustments (such as: taxes, transactions costs, margin account, etc.) when the initial
+endowment is invested in the cash account. It is needed to show that the null contract has fair price
+zero at any date t ∈ [0, T ]. Also, the trading strategy introduced in condition (ii) will serve as a
+natural benchmark for assessment of proﬁts or losses incurred by the hedger. A natural extension of
+Assumption 3.1 to the case where we study trading strategies on [t, T ] is also implicitly postulated
+without stating it explicitly.
+
+In the next necessary step, we follow the standard approach of introducing the concept of
+admissibility for the discounted wealth. Towards this end, for any ﬁxed t ∈ [0, T ), we consider a
+hedger who starts trading at time t with the initial endowment xt and uses a self-ﬁnancing trading
+strategy (xt, pt, ϕt, Ct), where the price pt ∈ Gt at which the contract Ct is traded at time t is
+arbitrary. We also consider the strictly positive discounting process Bt(xt), which is deﬁned for all
+u ∈ [t, T ] by
+
+u(xt) := 1{xt≥0}B0,l
+Bt
+so that, in particular, Bt
+t(xt) = 1. Then the wealth process discounted back to time t satisﬁes, for
+all u ∈ [t, T ],
+
+t )−1 + 1{xt<0}B0,b
+
+t )−1,
+
+(3.2)
+
+u (B0,b
+
+u (B0,l
+
+eVu(xt, pt, ϕt, Ct) := (Bt
+
+u(xt))−1Vu(xt, pt, ϕt, Ct)
+
+(3.3)
+
+and we have the following natural concept of admissibility of a trading strategy on [t, T ].
+Deﬁnition 3.2. For any ﬁxed t ∈ [0, T ), we say that a trading strategy (xt, pt, ϕt, Ct) ∈ Φt,xt(C )
+
+is admissible if the discounted wealth eVu(xt, pt, ϕt, Ct) is bounded from below by a constant. We
+
+denote by Ψt,xt(pt, Ct) the class of admissible strategies corresponding to (xt, pt, ϕt, Ct) and we
+denote by
+
+Ψt,xt(C ) := ∪C∈C ∪pt∈Gt Ψt,xt(pt, Ct)
+
+the class of all admissible trading strategies on [t, T ] relative to the class C of contracts for the
+hedger with the initial endowment xt at time t. In particular, Ψ0,x(C ) is the class of all trading
+strategies that are admissible for the hedger with the initial endowment x at time t = 0.
+
+22
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+3.3 No-arbitrage with Respect to the Null Contract
+
+A minimal no-arbitrage requirement for an underlying market model is that it should be arbitrage-
+free with respect to the null contract. Note that, consistently with Assumption 3.1 and the concept
+of replication (for the general formulation of replication of a non-null contract, see Deﬁnition 4.8),
+it is implicitly assumed in Deﬁnition 3.4 that the price at which the null contract is traded at time
+zero equals zero. Needless to say, this is a rather indisputable feature of any trading model.
+
+Deﬁnition 3.3. Consider an underlying market model M = (S, D, B, C , Ψ0,x(C )). An arbitrage
+opportunity with respect to the null contract (or a primary arbitrage opportunity) for the hedger
+with an initial endowment x is a strategy (x, 0, ϕ, N ) ∈ Ψ0,x(0, N ) such that
+
+P(eVT (x, 0, ϕ, N ) ≥ x) = 1, P(eVT (x, 0, ϕ, N ) > x) > 0.
+
+(3.4)
+
+Deﬁnition 3.4. If no primary arbitrage opportunity exists in the market model M, then we say
+that M has the no-arbitrage property with respect to the null contract for the hedger with an initial
+endowment x.
+
+For an arbitrary linear market model, Deﬁnition 3.4 reduces to the classical deﬁnition of an
+arbitrage opportunity. It is well known that the no-arbitrage property introduced in this deﬁnition
+is a suﬃciently strong tool for the development of arbitrage-free pricing for ﬁnancial derivatives in
+the linear framework. This does not mean, however, that Deﬁnition 3.4 is suﬃciently strong to
+allow us to develop nonlinear arbitrage-free pricing theory, which would enjoy the properties, which
+are desirable from either mathematical or ﬁnancial perspective.
+
+On the one hand, a natural deﬁnition of a hedger’s fair value (see Deﬁnition 4.1) is consistent
+with the concept of no-arbitrage with respect to the null contract and thus Deﬁnition 3.4 seems to
+be theoretically sound. On the other hand, however, Deﬁnition 3.4 is inadequate for an eﬃcient
+valuation and hedging approach in a general nonlinear market for the following reasons. First, it
+may occur that the replication cost of a contract does not satisfy the deﬁnition of a fair price, since
+the possibility of selling of a contract at the hedger’s replication cost may generate an arbitrage
+opportunity for him. An explicit example of a market model, which is arbitrage-free in the sense of
+Deﬁnition 3.4, but suﬀers from this deﬁciency, is given in Section 4.2.3. Second, and perhaps even
+more importantly, no well established method for ﬁnding a fair price in a general nonlinear market
+satisfying Deﬁnition 3.4 is available.
+
+We contend that the drawback of the deﬁnition of an arbitrage-free model with respect to the
+null contract is that it does not make an explicit reference to a class C of contracts under study.
+Indeed, it relies on the speciﬁcation of the class Ψ0,x(0, N ) of trading strategies, but it makes no
+reference to the larger class Ψ0,x(C ). To amend that drawback of Deﬁnition 3.4, Bielecki and
+Rutkowski [8] proposed to consider the concept of the no-arbitrage property for the trading desk
+with respect to a predetermined family C of contracts.
+
+3.4 No-arbitrage for the Trading Desk
+
+Following Bielecki and Rutkowski [8], we will now examine a stronger no-arbitrage property of a
+market model, which is intimately related to a predetermined family C of ﬁnancial contracts. Our
+goal is here to propose a more stringent no-arbitrage condition, which not only accounts for the
+nonlinearity of the market, but also explicitly refers to a family of contracts under consideration.
+Unfortunately, the class of models that are arbitrage-free in the sense of Deﬁnition 3.10 seems to
+be too encompassing and thus it is still unclear whether valuation irregularities commented upon
+in the preceding section will be completely eliminated (for an example, see Section 4.2.3).
+
+Derivatives Pricing in Nonlinear Models
+
+23
+
+For simplicity of notation, we consider here the case of t = 0, but all deﬁnitions can easily be ex-
+tended to the case of any date t. The symbols X = X (A) and Y = Y(−A) are used to emphasize that
+there is no reason to expect that the trading adjustments will satisfy the equality X (−A) = −X (A),
+in general. Therefore, we denote by Y = (Y 1, . . . , Y n; α1(Y), . . . , αn(Y); β1(Y), . . . , βn(Y)) the trad-
+ing adjustments associated with the cumulative cash ﬂows process −A. In order to avoid confusion,
+we will use the full notation for the wealth process, for instance, V (x, p, ϕ, C) = V (x, p, ϕ, A, X ),
+etc.
+Remark 3.5. As already mentioned above, it is not necessarily true that the equality Y k = −X k,
+holds for all k = 1, 2, . . . , n. For instance, this equality is satisﬁed by the variation margin, but it
+is not met by the initial margin and the regulatory capital, which are always non-negative.
+
+Deﬁnition 3.6. For a contract C = (A, X ) and an initial endowment x, the combined wealth is
+deﬁned as
+
+V com(x1, x2, ϕ, ¯ϕ, A, X , Y) := V (x1, 0, ϕ, A, X ) + V (x2, 0, ¯ϕ, −A, Y),
+
+(3.5)
+
+where x1, x2 are arbitrary real numbers such that x = x1 + x2, ϕ ∈ Ψ0,x1(0, A, X ), and ¯ϕ ∈
+Ψ0,x2(0, −A, Y). In particular, V com
+
+(x1, x2, ϕ, ¯ϕ, A, X , Y) = x1 + x2 = x.
+
+0
+
+The motivation for the name combined wealth is fairly transparent, since it comes directly from
+the ﬁnancial interpretation of the process given by the right-hand side in (3.5). We argue below
+that it can be seen as the aggregated wealth of the two traders, who are members of the same
+trading desk, and who are supposed to proceed as follows:
+
+• The ﬁrst trader takes the long position in a contract (A, X ), whereas the second one takes the
+short position in the same contract, so that his position is formally represented by (−A, Y).
+Since we assume that the long and short positions have exactly opposite prices, the corre-
+sponding cash ﬂows p and −p coming to the trading desk (and not to individual traders)
+oﬀset each other and thus the initial endowment x of the trading desk remains unchanged.
+
+• In addition, it is assumed that after the cash ﬂows p and −p have already been netted, so
+they are no longer relevant, the initial endowment x is split into arbitrary amounts x1 and x2
+meaning that x = x1 + x2. Then each trader is allocated the respective amount x1 or x2 as
+his initial endowment and each of them undertakes active hedging of his respective position.
+It is now clear that the level of the initial price p at which the contract is traded at time
+zero is immaterial for both hedging strategies and the total (i.e., combined) wealth of the two
+traders is given by the right-hand side in (3.5).
+
+Alternatively, the combined wealth may be used to describe the situation where a single trader
+takes long and short positions with two external counterparties and hedges them independently
+using his initial endowment x split into x1 and x2. Of course, in that case it is even more clear
+that the initial price p does not aﬀect his trading strategies since the amount of cash received at
+time 0 from one of the counterparties is immediately transferred to the second one.
+
+Remark 3.7. One can also observe that the following equality holds for any real number p
+
+V (x1, 0, ϕ, A, X ) + V (x2, 0, ¯ϕ, −A, Y) = V (ex1, p, ϕ, A, X ) + V (ex2, −p, ¯ϕ, −A, Y),
+
+where ex1 = x1 − p and ex2 = x2 + p is another decomposition of x such that x = ex1 +ex2. However,
+
+equation (3.5) better reﬂects the actual trading arrangements and it has a clear advantage that a
+number p, which is not known a priori, does not appear in the expression for the combined wealth.
+Hence (3.5) emphasizes the crucial feature that the combined wealth is independent of p. In fact,
+one can remark that the fact whether the trading desk is aware about the actual level of the price
+
+24
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+p is immaterial for the question whether an arbitrage opportunity for the trading desk exists in a
+particular market model.
+
+Deﬁnition 3.8. A pair (x1, ϕ; x2, ¯ϕ) of trading strategies introduced in Deﬁnition 3.6 is admissible
+for the trading desk if the discounted combined wealth process
+
+eV com(x1, x2, ϕ, ¯ϕ, A, X , Y) := (B(x))−1V com(x1, x2, ϕ, ¯ϕ, A, X , Y)
+
+(3.6)
+
+is bounded from below by a constant. The class of strategies admissible for the trading desk is
+denoted by Ψ0,x1,x2(A, X , Y).
+
+We are in a position to formalize the concept of an arbitrage-free model for the trading desk
+
+with respect to a particular family of contracts.
+
+Deﬁnition 3.9. A pair (x1, ϕ; x2, ¯ϕ) ∈ Ψ0,x1,x2(A, X , Y) is an arbitrage opportunity for the trading
+desk with respect to a contract (A, X ) if the following conditions are satisﬁed
+
+T
+
+P(eV com
+
+(x1, x2, ϕ, ¯ϕ, A, X , Y) ≥ x) = 1, P(eV com
+
+T
+
+(x1, x2, ϕ, ¯ϕ, A, X , Y) > x) > 0.
+
+Deﬁnition 3.10. We say that the market model M = (S, D, B, C , Ψ0,x(C )) has the no-arbitrage
+property for the trading desk if there are no arbitrage opportunities for the trading desk with respect
+to any contract C from C .
+
+Our main purpose in Sections 3.3 and 3.4 was to provide some simple and ﬁnancially meaningful
+criteria that would allow us to detect and eliminate market models in which some particular form
+of arbitrage appears. Deﬁnition 3.4 and Deﬁnition 3.10 provide such criteria for accepting or
+rejecting any tentative nonlinear market model. It is easy to see that a model which is rejected
+according to Deﬁnition 3.10 will also be rejected if Deﬁnition 3.4 is applied. We do not claim,
+however, that these tentative tests are suﬃcient for an eﬀective discrimination between acceptable
+and non-acceptable nonlinear models for valuation of derivatives. Therefore, in Deﬁnition 4.9, we
+will formulate additional conditions that should be satisﬁed by an acceptable model, which is then
+called a regular model.
+
+3.5 Dynamics of the Discounted Wealth Process
+
+It is natural to ask whether the no-arbitrage for the trading desk can be checked for a given market
+model. Before we illustrate a simple veriﬁcation method for this property, we need to introduce
+additional notation. Let us write
+
+eBi,l(x) := (B(x))−1Bi,l,
+eβk(x, X ) := (B(x))−1βk(X ),
+bX k := (βk(X ))−1X k,
+
+B0,b,l := (B0,l)−1B0,b,
+
+eBi,b(x) := (B(x))−1Bi,b,
+eβk(x, Y) := (B(x))−1βk(Y),
+bY k := (βk(Y))−1Y k,
+
+B0,l,b := (B0,b)−1B0,l.
+
+Derivatives Pricing in Nonlinear Models
+
+Lemma 3.11. The discounted combined wealth satisﬁes
+
+25
+
+(3.7)
+
+(3.8)
+
+(x1, x2, ϕ, ¯ϕ, A, X , Y) =
+
+dXi=1
+
+(ξi
+
+t + ¯ξi
+
+t
+
+t) deSi,cld
+
+(x) +
+
+(ψi,l
+
+t + ¯ψi,l
+
+dXi=1
+
+t (x)
+
+t ) deBi,l
+
+t + ¯ψi,b
+
+t (x) + 1{x≥0}(ψ0,b
+
+t + ¯ψ0,b
+
+t ) dB0,b,l
+
+t + 1{x<0}(ψ0,l
+
+t + ¯ψ0,l
+
+t ) dB0,l,b
+
+t
+
+t
+
++
+
+(ψi,b
+
+deV com
+dXi=1
+nXk=1 bX k
+t deβk
+nXk=1(cid:0)(1 − αk
+
+−
+
++
+
+where we set
+
+t ) deBi,b
+
+t (x, X ) −
+
+t (x, Y)
+
+nXk=1bY k
+t deβk
+
+t (X ))X k
+
+t + (1 − αk
+
+t (Y))Y k
+
+t (cid:1) d(Bt(x))−1,
+t +Z t
+
+0
+
+(x) := (Bt(x))−1Si
+
+(Bu(x))−1 dDi
+u.
+
+t
+
+eSi,cld
+
+Proof. For an arbitrary decomposition x = x1 + x2, we write (note that the notation introduced in
+equation (3.3) is extended here, since x 6= xi, in general)
+
+eV (x1, p, ϕ, A, X ) := (B(x))−1eV (x1, p, ϕ, A, X ),
+eV (x2, p, ¯ϕ, −A, Y) := (B(x))−1eV (x2, p, ¯ϕ, −A, Y).
+
+From (2.10) and (2.11), using the Itˆo integration by parts formula, we obtain
+
+deVt(x1, p, ϕ, A, X ) =
+
+dXi=1
+
+ξi
+
+t
+
+t deSi,cld
+
+(x) +
+
+dXi=1(cid:16)ψi,l
+
+t deBi,l
+
+t (x) + ψi,b
+
++ 1{x≥0}ψ0,b
+
+t dB0,b,l
+
+t + 1{x<0}ψ0,l
+
+t dB0,l,b
+
+t + (Bt(x))−1 dAt −
+
+t (x, X )
+
+(3.9)
+
+t (x)(cid:17)
+t deBi,b
+nXk=1 bX k
+t deβk
+
++
+
+nXk=1
+
+(1 − αk
+
+t (X ))X k
+
+t d(Bt(x))−1,
+
+and an analogous equality holds for eV (x2, p, ¯ϕ, −A, Y). Hence (3.7) follows from (3.5) and (3.6).
+
+We deduce from (3.9) that condition (ii) in Assumption 3.1 is satisﬁed, provided that no ad-
+ditional portfolio constraints are imposed (recall that condition (i) in Assumption 3.1 is always
+postulated to hold).
+
+Assume now, in addition, that Bi,l = Bi,b = Bi for i = 1, 2, . . . , d. We deﬁne the processes Si,cld
+
+and bSi,cld
+
+Si,cld
+t
+
+:= Si
+
+t + Bi
+
+tZ t
+
+0
+
+(Bi
+
+u)−1 dDi
+u,
+
+:= (Bi
+
+t)−1Si,cld
+
+t
+
+t
+
+bSi,cld
+
+t +Z t
+
+0
+
+= bSi
+
+where in turn bSi := (Bi)−1Si. It is easy to check that
+t(x) dbSi,cld
+where eBi(x) := (B(x))−1Bi.
+
+(x) = eBi
+
+deSi,cld
+
+t
+
+t + bSi
+
+t deBi
+
+t(x),
+
+(Bi
+
+u)−1 dDi
+u,
+
+(3.10)
+
+26
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+Corollary 3.12. Assume that Bi,l = Bi,b = Bi for i = 1, 2, . . . , d. Then the discounted combined
+wealth satisﬁes
+
+(x1, x2, ϕ, ¯ϕ, A, X , Y) =
+
+t
+
+deV com
+
+dXi=1
+
+(ξi
+
+t + ¯ξi
+
+t(x) dbSi,cld
+t)eBi
+
+t +
+
+dXi=1(cid:0)(ξi
+
+t + ¯ψi
+
+t)(cid:1) deBi
+
+t(x)
+
++ 1{x≥0}(ψ0,b
+
+t + ¯ψ0,b
+
+t ) dB0,b,l
+
+t + 1{x<0}(ψ0,l
+
+t + ¯ψ0,l
+
+t ) dB0,l,b
+
+t −
+
+t (x, X )
+
+(3.11)
+
+−
+
+nXk=1bY k
+t deβk
+
+nXk=1(cid:0)(1 − αk
+
+t (x, Y) +
+
+t (X ))X k
+
+t + (1 − αk
+
+t (Y))Y k
+
+Proof. It suﬃces to combine (3.7) with (3.10).
+
+t + ¯ξi
+
+t + (ψi
+
+t)bSi
+nXk=1 bX k
+t deβk
+t (cid:1) d(Bt(x))−1.
+
+3.6 Suﬃcient Conditions for the Trading Desk No-Arbitrage
+
+The following result gives a suﬃcient condition for a market model to be arbitrage-free for the
+trading desk. The proof of Proposition 3.13 is pretty straightforward and thus it is omitted.
+
+Proposition 3.13. Assume that there exists a probability measure Q, equivalent to P on (Ω, GT ),
+and such that for any decomposition x = x1+x2 and any admissible combination of trading strategies
+(x1, ϕ, A, X ) and (x2, ¯ϕ, −A, Y) for any contract (A, X ) belonging to C the discounted combined
+
+wealth eV com(x1, x2, ϕ, ¯ϕ, A, X , Y) is a supermartingale under Q. Then the market model M =
+
+(S, D, B, C , Ψ0,x(C )) is arbitrage-free for the trading desk.
+
+Although Proposition 3.13 is fairly abstract, the suﬃcient condition formulated there can readily
+be veriﬁed, as soon as a speciﬁc market model is adopted (see, for instance, Bielecki and Rutkowski
+[8] and Nie and Rutkowski [40, 41, 43]). To support this claim, we will examine an example of a
+market model with idiosyncratic funding for risky assets and rehypothecated cash collateral.
+
+Example 3.14. We consider the special case where B0,l = B0,b = B = B(x) and Bi,l = Bi,b = Bi
+for all i = 1, 2, . . . , d. If we temporarily assume that there are no additional portfolio constraints,
+then from (3.11) we obtain (for a special case of this formula, see Corollary 2.1 in Bielecki and
+Rutkowski [8])
+
+(x1, x2, ϕ, ¯ϕ, A, X , Y) =
+
+t + ¯ξi
+
+t +
+
+(ξi
+
+tSi
+
+t + ψi
+
+tBi
+
+t)(Bi
+
+t + ¯ψi
+
+tBi
+
+t)(Bi
+
+t(x) −
+
+t (x, X ) −
+
+t (x, Y)
+
+t
+
+deV com
+
++
+
++
+
+(¯ξi
+
+tSi
+
+dXi=1
+nXk=1(cid:0)(1 − αk
+
+(ξi
+
+dXi=1
+t)−1 deBi
+
+dXi=1
+
+t(x) dbSi,cld
+t)eBi
+nXk=1 bX k
+t deβk
+t (cid:1) dB−1
+
+t
+
+.
+
+t (X ))X k
+
+t + (1 − αk
+
+t (Y))Y k
+
+t(x)
+
+t)−1 deBi
+
+nXk=1bY k
+t deβk
+
+t = α1
+
+t (Y) = α2
+
+We postulate that the cash collateral is rehypothecated, so that n1 = n = 2 in Lemma 2.5. Then
+t = α2
+α1
+t = 0 for all t ∈ [0, T ]. Let us assume,
+in addition, that ξi
+t = 0 for all i and t ∈ [0, T ], which means that the ith
+risky asset is fully funded using the repo account Bi (see Section 2.6.3). More generally, it suﬃces
+to assume that the following equalities are satisﬁed for all t ∈ [0, T ]
+
+t (Y) = 1 and X 1
+t + ¯ψi
+
+t + Y 1
+tBi
+
+t = X 2
+
+t + Y 2
+
+t = ¯ξi
+
+t + ψi
+
+tBi
+
+tSi
+
+tSi
+
+Z t
+
+0
+
+dXi=1
+
+(ξi
+
+uSi
+
+u + ψi
+
+uBi
+
+u)(Bi
+
+u(x) =
+
+u)−1 deBi
+
+Z t
+
+0
+
+dXi=1
+
+(¯ξi
+
+uSi
+
+u + ¯ψi
+
+uBi
+
+u)(Bi
+
+u(x) = 0.
+
+(3.12)
+
+u)−1 deBi
+
+Derivatives Pricing in Nonlinear Models
+
+27
+
+Finally, let the remuneration processes satisfy βk(X ) = βk(Y) (the symmetry of collateral rates).
+Then the formula for the dynamics of the discounted combined wealth for the trading desk reduces
+to
+
+(x1, x2, ϕ, ¯ϕ, A, X , Y) =
+
+t
+
+deV com
+
+dXi=1
+
+(ξi
+
+t + ¯ξi
+
+t(x) dbSi,cld
+t)eBi
+
+t
+
+and thus the model is arbitrage-free for the trading desk provided that there exists a probability
+
+measure Q, which is equivalent to P on (Ω, GT ), and such that the processes bSi,cld, i = 1, 2, . . . , d are
+
+Q-local martingales. This property is still a suﬃcient condition for the trading desk no-arbitrage
+when the cash account B0,l and B0,b diﬀer, but the borrowing rate dominates the lending rate.
+
+4 Hedger’s Fair Pricing and Market Regularity
+
+We now address the issue of a fair pricing in the nonlinear framework under the assumption that the
+hedger has the initial endowment xt at time t. We assume that the model enjoys the no-arbitrage
+property either with respect to the null contract or for the trading desk and we consider the hedger
+who contemplates entering into the contract Ct at time t. The ﬁrst goal is to describe the range
+of the hedger’s fair prices for the contract Ct. Let pt ∈ Gt denote a generic price of a contract at
+time t, as seen from the perspective of the hedger. Hence if pt is positive, then the hedger receives
+at time t the cash amount pt from the counterparty, whereas a negative value of pt means that
+he agrees to pay the cash amount −pt to the counterparty at time t. In the next deﬁnition, we
+ﬁx a date t ∈ [0, T ) and we assume that the contract Ct is traded at the price pt at time t. It is
+natural to ask whether in this situation the hedger can make a risk-free proﬁt by entering into the
+contract and hedging it with an admissible trading strategy over [t, T ]. We propose to call it a
+hedger’s pricing arbitrage opportunity. Recall that the arbitrage opportunities deﬁned in Section 3
+are related to the properties of a trading model, but they do not depend on the level of a price pt
+for Ct.
+
+Deﬁnition 4.1. A trading strategy (xt, pt, ϕt, Ct) ∈ Ψt,xt(C ) is a hedger’s pricing arbitrage oppor-
+tunity on [t, T ] associated with a contract Ct traded at pt at time t (or, brieﬂy, a secondary arbitrage
+opportunity) if
+
+It is clear that (xt, pt, ϕt, Ct) ∈ Ψt,xt(C ) is not a hedger’s pricing arbitrage opportunity on [t, T ]
+
+(4.1)
+
+(4.2)
+
+(4.3)
+
+(4.4)
+
+and
+
+if either
+
+or
+
+P(cid:0)eVT (xt, pt, ϕt, Ct) ≥ xt(cid:1) = 1
+P(cid:0)eVT (xt, pt, ϕt, Ct) > xt(cid:1) > 0.
+P(cid:0)eVT (xt, pt, ϕt, Ct) = xt(cid:1) = 1
+P(cid:0)eVT (xt, pt, ϕt, Ct) < xt(cid:1) > 0.
+
+We will refer to condition (4.4) as the hedger’s loss condition.
+
+Deﬁnition 4.2. We say that pf
+no hedger’s secondary arbitrage opportunity (xt, pf
+such that the loss condition holds for every trading strategy (xt, pf
+loss-generating cost.
+
+t (xt, Ct) is a fair hedger’s price at time t for Ct if there is
+t , ϕt, Ct) ∈ Ψt,xt(C ). A fair hedger’s price pf
+t
+t , ϕt, Ct) ∈ Ψt,xt(C ) is called a
+
+t = pf
+
+28
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+It is clear from Deﬁnitions 4.1 and 4.2 that if pf
+t
+
+is a fair price, then any trading strategy
+(xt, pt, ϕt, Ct) ∈ Ψt,xt(C ) necessarily satisﬁes either condition (4.3) or condition (4.4). Obviously,
+a fair hedger’s price depends both on the given endowment xt and the contract Ct and thus the
+notation pf
+t when no danger of
+confusion may arise.
+
+t (xt, Ct) is appropriate, but it will be frequently simpliﬁed to pf
+
+A fair price prevents the hedger from making a sure proﬁt with a positive probability and with
+no risk of suﬀering a loss. In contrast, it does not prevent the hedger from losing money, in general.
+It is thus natural to search for the highest level of a fair price. This idea motivates the following
+deﬁnition of the upper bound for the hedger’s fair prices pf
+
+t (xt, Ct) = ess sup Hf
+
+t (xt, Ct), where
+
+Hf
+
+t (xt, Ct) :=(cid:8)pf
+
+t ∈ Gt | pf
+
+t is a fair hedger’s price for Ct(cid:9).
+
+(4.5)
+
+(4.6)
+
+(4.7)
+
+(4.8)
+
+We ﬁnd it useful to study also the upper bound for the loss-generating costs, which is given by
+t(xt, Ct) = ess sup Hl
+pl
+
+t(xt, Ct) where
+
+Hl
+
+t(xt, Ct) :=(cid:8)pl
+
+t ∈ Gt | pl
+
+t is a loss-generating cost for Ct(cid:9).
+
+Deﬁnition 4.3. A trading strategy (xt, ps
+t , ϕt, Ct) ∈ Ψt,xt(C ) is said to be the superhedging strat-
+egy for the contract Ct if (4.1) holds, whereas the strict superhedging means that (4.1) and (4.2)
+are satisﬁed. If ps
+t (xt, Ct) is such that there exists a superhedging strategy (resp. a strict
+t , ϕt, Ct) ∈ Ψt,xt(C ), then it is called a superhedging cost (resp. strict
+superhedging strategy) (xt, ps
+superhedging cost) at time t for Ct.
+
+t = ps
+
+The lower bound for superhedging costs is given by ps
+t
+
+(xt, Ct) = ess inf Hs
+
+t (xt, Ct) where
+
+and the lower bound for strict superhedging costs equals pa
+t
+
+t (xt, Ct) where
+
+Hs
+
+t (xt, Ct) :=(cid:8)ps
+t (xt, Ct) :=(cid:8)pa
+
+Ha
+
+t ∈ Gt | ps
+
+t is a superhedging cost for Ct(cid:9)
+t is a strict superhedging cost for Ct(cid:9).
+
+(xt, Ct) = ess inf Ha
+
+t ∈ Gt | pa
+
+From Deﬁnitions 4.2 and 4.3, it is obvious that Hl
+t (xt, Ct). Moreover, the set Hf
+
+t (xt, Ct) is the complement of Ha
+t (xt, Ct) so that, obviously, we have that Hf
+
+t (xt, Ct) and Ha
+
+t (xt, Ct) and the set Hl
+t (xt, Ct) ∩ Ha
+
+t (xt, Ct) ⊆
+t(xt, Ct)
+t (xt, Ct) = ∅ and
+
+t(xt, Ct) ⊆ Hf
+
+Hs
+is the complement of Hs
+Hl
+
+t(xt, Ct) ∩ Hs
+
+t (xt, Ct) = ∅. Consequently, it is easy to see that
+
+0(x, C) ≤ pf
+pl
+
+0 (x, C),
+
+ps
+0
+
+(x, C) ≤ pa
+0
+
+(x, C),
+
+(4.9)
+
+where, in principle, it may happen that ps
+0
+
+(x, C) = −∞ or pf
+
+0 (x, C) = ∞.
+
+The next assumption looks fairly natural, but it is not necessarily satisﬁed by every nonlinear
+
+market model, so it should be checked on a case-by-case basis.
+
+Assumption 4.4. For every C ∈ C and t ∈ [0, T ), all xt, pt, qt ∈ Gt, and every trading strategy
+(xt, pt, ϕt, Ct) ∈ Ψt,xt(C ), if qt ≥ pt on some event D ∈ Gt such that P(D) > 0, then there
+exists a trading strategy (xt, qt, ψt, Ct) ∈ Ψt,xt(C ) such that the inequality VT (xt, qt, ψt, Ct) ≥
+VT (xt, pt, ϕt, Ct) holds on D.
+
+One may try to argue that if the hedger can enter into a contract at a higher price, then
+he can invest the cash diﬀerence qt − pt in the bank account till the contract’s maturity and
+trade according to the trading strategy ϕ corresponding to pt, and thus yielding a higher terminal
+wealth. However, this is not necessarily possible, since it may happen that ϕ requires borrowing
+
+Derivatives Pricing in Nonlinear Models
+
+29
+
+from the bank account at some future times, while we postulated that simultaneous borrowing
+and lending of cash is prohibited in our model. More generally, selling at a higher price means
+essentially that the hedger starts with a diﬀerent initial capital, which may change the trading
+strategy signiﬁcantly. Formally, a simple combination of two self-ﬁnancing strategies is no longer
+a self-ﬁnancing strategy, in general. Furthermore, if we take into account the limited supply of
+investment grade assets (perhaps also inclusive of the bank account), then any strategy needs to
+satisfy suitable portfolio constraints, which could imply that the additional cash amount received by
+the hedger will necessarily be used to purchase assets with a much higher exposure to substantial
+losses. To sum up, due to the presence of portfolio constraints and trading adjustments, the
+monotonicity of the terminal wealth with respect to the price pt is by no means guaranteed, in
+general.
+
+Assumption 4.4 is not explicitly stated in most existing papers devoted to the nonlinear valuation
+of derivatives. Note, however, that if the wealth process happens to be governed by some simple
+dynamics with no portfolio constraints or trading adjustments, then there is no need to postulate
+that this property holds, since it can be deduced from a suitable comparison theorem for ordinary
+diﬀerential equations. For a particular example of a model where Assumption 4.4 is satisﬁed, see
+Lemma 6.2 in the paper by Dumitrescu et al. [24] who postulate that the wealth process satisﬁes
+
+dVt = −g(t, Vt, Zt) dt + Z 1
+
+t dWt + Z 2
+
+t dMt,
+
+where W is the Wiener process and M is the compensated martingale of the default indicator
+process. Let us stress that if the validity of Assumption 4.4 is not ensured, then one may only
+claim that the inequalities given in (4.9) are satisﬁed. In contrast, if Assumption 4.4 is met, then
+one obtains more informative conditions (4.10).
+
+Under Assumption 4.4, it is easy to see that if pf
+
+t is a fair hedger’s price (resp. a loss-generating
+cost) at time t for Ct, then any pt ∈ Gt such that pt ≤ pf
+is also a fair hedger’s price (resp. a
+t
+loss-generating cost) at time t for that contract. Similarly, if a superhedging (resp. strict super-
+hedging) strategy exists when Ct is entered into at the price ps
+t , then a superhedging (resp. strict
+superhedging) strategy exists as well for any pt satisfying pt ≥ ps
+t . Therefore, if we postulate that
+Assumption 4.4 is met, then we have the following result in which we focus on the case where t = 0,
+but it is easy to check that analogous properties are valid for any t ∈ (0, T ) as well.
+
+Lemma 4.5. Let Assumption 4.4 be satisﬁed. Then for every contract C ∈ C such that pa
+0
+−∞ and pf
+
+0 (x, C) < ∞, we obtain the following intervals:
+
+(x, C) >
+
+(i) the interval I l
+
+(ii) the interval I r
+
+0(x, C) := (−∞, pl
+0 (x, C) := (pl
+
+0(x, C), pa
+0
+
+(x, C)) = (ps
+0
+
+(x, C), pf
+
+0 (x, C)) where for every p ∈ I r
+
+0 (x, C)
+
+there exists a trading strategy (x, p, ϕ, C) ∈ Ψt,x(C ) such that P(eVT (x, p, ϕ, C) = x) = 1,
+
+(x, C), +∞) of strict superhedging costs (arbitrage range),
+
+(iii) the interval I a
+
+0 (x, C) := (pa
+0
+
+0(x, C)) of loss generating costs,
+
+where, in particular, the interval I r
+
+0 (x, C) may be empty. Consequently,
+
+pl
+0(x, C) = ps
+0
+
+(x, C) ≤ pf
+
+0 (x, C) = pa
+0
+
+(x, C).
+
+(4.10)
+
+Proof. Under Assumption 4.4, if p ∈ Hl
+(resp. q ∈ Hf
+q ∈ Ha
+
+0 (x, C)). Also, if p ∈ Hs
+
+0(x, C) (resp. p ∈ Hf
+
+0 (x, C)) and q < p, then q ∈ Hl
+
+0(x, C) (resp. p ∈ Hs
+
+0(x, C)) and q > p, then q ∈ Hs
+
+0(x, C)
+0(x, C) (resp.
+
+0(x, C)). Using, in particular, it is now easy to see that the asserted properties are valid.
+
+30
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+Observe that nothing speciﬁc can be said about the end points of the three intervals introduced
+in Lemma 4.5, in general. Obviously, we have that either (a) I r
+0 (x, C) = ∅ and the equalities
+0(x, C) = pf
+pl
+0 (x, C). One
+may also consider the following stronger version of Assumption 4.4 under which case (b) cannot
+occur, by virtue of the postulated strict monotonicity of the terminal wealth with respect to the
+price pt.
+
+0 (x, C) 6= ∅ and thus ps
+0
+
+(x, C) hold or (b) I r
+
+0 (x, C) = ps
+0
+
+(x, C) = pa
+0
+
+(x, C) < pf
+
+Assumption 4.6. For every C ∈ C and t ∈ [0, T ), all xt, pt, qt ∈ Gt, and every trading strategy
+(xt, pt, ϕt, Ct) ∈ Ψt,xt(C ), if qt > pt on some event D ∈ Gt such that P(D) > 0, then there
+exists a trading strategy (xt, qt, ψt, Ct) ∈ Ψt,xt(C ) such that the inequalities VT (xt, qt, ψt, Ct) ≥
+VT (xt, pt, ϕt, Ct) and VT (xt, qt, ψt, Ct) 6= VT (xt, pt, ϕt, Ct) are valid on D.
+
+It is clear that, under Assumption 4.6, the equality ps
+0
+
+(x, C) = pa
+0
+
+(x, C) holds and thus the
+
+following corollary to Lemma 4.5 is valid where, by convention, inf ∅ = ∞ and sup ∅ = −∞.
+
+Lemma 4.7. If Assumption 4.6 is satisﬁed, then for any contract C ∈ C we have that
+
+0(x, C) = pf
+pl
+
+0 (x, C) = ps
+0
+
+(x, C) = pa
+0
+
+(x, C).
+
+(4.11)
+
+4.1 Replication on [0, T ] and the Gained Value
+
+Admittedly, the most commonly used technique for valuation of derivatives hinges on the concept
+of replication. In the present framework, it is given by the following deﬁnition, in which we consider
+the hedger with the initial endowment x at time 0 and where pr
+0 stands for an arbitrary real number.
+
+Deﬁnition 4.8. A trading strategy (x, pr
+[0, T ] whenever VT (x, pr
+0 = pr
+pr
+by
+
+0, ϕ, C) ∈ Ψ0,x(C ) is said to replicate the contract C on
+0, ϕ, C) = x. Then a real number
+0(x, C) is said to be a hedger’s replication cost for C at time 0 and the process pg(x, C) given
+
+0, ϕ, C) = xBT (x) or, equivalently, eVT (x, pr
+
+is called the hedger’s gained value associated with the replicating strategy (x, pr
+
+0, ϕ, C).
+
+pg
+t (x, C) := Vt(x, pr
+
+0(x, C), ϕ, C) − xBt(x)
+
+(4.12)
+
+0(x, C) = pr
+
+Note that the equality pg
+
+0(x, C) is always satisﬁed since V0(x, pr
+
+0(x, C), ϕ, C) = x +
+pr
+0(x, C). The ﬁnancial interpretation of a hedger’s replication cost pr
+0(x, C) for a given contract
+C ∈ C is fairly straightforward. It represents either an increase or a reduction of the hedger’s initial
+endowment x, which is required to implement a trading strategy ensuring that the hedger’s wealth
+at time T , after the terminal payoﬀ of the contract has been settled, perfectly matches the value
+at time T of the original initial endowment x invested in the cash account.
+
+As expected, for the null contract N = (0, 0), the self-ﬁnancing strategy (x, 0, ϕ, N ), where
+the portfolio ϕ hinges on keeping all money in the bank account B(x), is a replicating strategy for
+N such that the gained value satisﬁes pg
+t (x, N ) = 0 for all t ∈ [0, T ]. The fact that the trading
+strategy (x, 0, ϕ, N ) is self-ﬁnancing was postulated in Section 3.2 but, obviously, this assumption
+needs to be veriﬁed for each particular market model under study. Note also that the uniqueness of
+a replication cost pr
+0(x, C) is not ensured and, in fact, there is no reason to expect that it will always
+hold in every market model satisfying either Deﬁnition 3.4 or Deﬁnition 3.10 (for a counterexample,
+see Proposition 4.12).
+
+Let us make some comments on replication costs. Suppose ﬁrst that Assumption 4.4 is met. Let
+0 (x, C) introduced in part (ii) in Lemma 4.5 is nonempty. We already
+0(x, C), pa
+(x, C)) is necessarily a replication cost and a fair price for
+0
+
+us assume that the interval I r
+know that any number p ∈ (pl
+
+Derivatives Pricing in Nonlinear Models
+
+31
+
+0(x, C) = pa
+0
+
+0(x, C).
+
+(x, C) < pr
+
+C but it is unclear whether the minimal replication cost is well deﬁned. In principle, it may also
+happen that there exists a replication cost either equal to, or strictly greater than, pa
+0
+
+(x, C).
+
+Let us now examine the case where the interval I r
+
+If the contract C can
+be replicated, then it may then happen that pl
+It is not obvious,
+however, whether pr
+0(x, C) would be in that case a hedger’s fair price, since it may occur that a
+strict superhedging strategy with the same initial cost exists. Furthermore, it is also possible that
+pa
+0(x, C) meaning that a strict superhedging may be in fact less expensive than replica-
+0
+tion. If the contract C cannot be replicated, then it is not clear whether pf
+0 (x, C) is a fair price,
+although it coincides with the upper bound for loss-generating costs and with the lower bound for
+strict superhedging costs.
+
+0 (x, C) is empty.
+(x, C) = pr
+
+If Assumption 4.6 is met, then one can be a bit more speciﬁc. If the set of replication costs is
+nonempty, then only the lowest cost of replication can be a fair price (indeed, if p1 and p2 are two
+replication costs such that p1 < p2, then p2 is also a strict superhedging cost and thus it is not a
+fair price). Consequently, if the set of all possible replication costs for a given contract is bounded
+from below then either (a) the lower bound for replication costs is not a replication cost and none
+of replication costs is a fair price or (b) the lower bound is a replication cost and it is a candidate
+for a maximal fair price for the contract.
+
+To conclude, in a nonlinear market model, which is assumed to have the no-arbitrage prop-
+erty with respect to the null contract (or even the no-arbitrage property for the trading desk),
+a replication cost may fail to be a fair hedger’s price. To amend this shortcoming of a general
+nonlinear setup, we introduce in the next section a particular class of models in which replication
+yields a unique fair price for any contract C belonging to a predetermined family C and such that
+a replicating strategy for C exists.
+
+4.2 Market Regularity on [0, T ]
+
+Once again, we consider the hedger with the initial endowment x at time 0. Intuitively, the concept
+of regularity with respect to a given family C of contracts is motivated by our desire to ensure that,
+for any contract from C , the cost of replication is never higher than the minimal cost of superhedging
+and, in addition, the cost of replication is a fair hedger’s price, in the sense of Deﬁnition 4.1.
+
+Deﬁnition 4.9. We say that the market model M = (S, D, B, C , Ψ0,x(C )) is regular on [0, T ] with
+respect to C if Assumption 4.4 is met and for every replicable contract C ∈ C and for any replicating
+strategy (x, pr
+
+0(x), ϕ, X ) the following properties hold:
+
+(i) if p is such that there exists (x, p, ϕ, C) ∈ Ψ0,x(p, C) satisfying
+
+then p ≥ pr
+
+0(x);
+
+P(cid:0)eVT (x, p, ϕ, C) ≥ x(cid:1) = 1,
+
+(ii) if p is such that there exists (x, p, ϕ, C) ∈ Ψ0,x(p, C) such that
+
+and
+
+then p > pr
+
+0(x).
+
+P(cid:0)eVT (x, p, ϕ, C) ≥ x(cid:1) = 1
+P(cid:0)eVT (x, p, ϕ, C) > x(cid:1) > 0,
+
+(4.13)
+
+(4.14)
+
+(4.15)
+
+32
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+By applying Deﬁnition 4.9 to the null contract N = (0, 0), we deduce that any regular market
+model is arbitrage-free for the hedger with respect to the null contract. It is not clear, however,
+whether an arbitrage opportunity for the trading desk may arise in a regular model.
+
+Condition (i) in Deﬁnition 4.9 means that superhedging cannot be less expensive than replica-
+tion, whereas condition (ii) postulates that any strict superhedging has a strictly higher cost than
+0(x)
+replication.
+for C is unique. Moreover, if condition (i) holds, then condition (ii) is equivalent to the following
+condition
+
+It is important to observe that condition (i) implies that the replication cost pr
+
+(iii) if p is such that there exists (x, p, ϕ, C) ∈ Ψ0,x(p, C) satisfying
+
+then the following implication is valid: if p = pr
+
+P(cid:0)eVT (x, p, ϕ, C) ≥ x(cid:1) = 1,
+P(cid:0)eVT (x, p, ϕ, C) = x(cid:1) = 1.
+
+0(x), then
+
+(4.16)
+
+(4.17)
+
+Remark 4.10. In the special case of European claims with maturity T and no trading adjustments,
+conditions (i) and (ii) correspond to the comparison and strict comparison properties for solutions
+to BSDEs satisﬁed by the wealth process with diﬀerent terminal conditions. In fact, the same idea
+underpins Deﬁnition 2.7 of the nonlinear pricing system introduced by El Karoui and Quenez [27].
+Using similar arguments as El Karoui and Quenez [27], we will show that the regularity of a market
+model can be established for a large variety of ﬁnancial models using a BSDE approach.
+
+4.2.1 Replicable Contracts in Regular Markets
+
+In this section, we focus on contracts that can be replicated. Proposition 4.11 shows that, in a
+regular market model, the cost of replication is the unique fair price of a contract C ∈ C that can
+be replicated and the equalities pr
+0(x, C) hold for such a contract. This means
+that the replication of a contract is indeed an eﬀective method of valuation within the framework
+of a regular model, although this statement is not necessarily true when dealing with an arbitrary
+nonlinear market model.
+
+0(x, C) = pa
+0
+
+(x, C) = pl
+
+Proposition 4.11. Let a market model M = (S, D, B, C , Ψ0,x(C )) be regular on [0, T ] with respect
+to C . Then for every contract C ∈ C that can be replicated on [0, T ] we have:
+
+0(x, C) is unique,
+
+(i) the replication cost pr
+(ii) pr
+0(x, C) is the maximal fair price and the upper bound for loss-generating costs, that is,
+0(x, C) = pf
+pr
+(iii) pr
+0(x, C) is the lower bound for superhedging costs and strict superhedging costs, that is,
+0(x, C) = ps
+pr
+0
+
+(x, C) = pa
+0
+
+0 (x, C) = pl
+
+0(x, C),
+
+(x, C).
+
+Proof. As was mentioned, the uniqueness of the replication cost pr
+0(x, C) is an immediate conse-
+quence of condition (i) in Deﬁnition 4.9. Hence the interval I r
+0 (x, C) deﬁned in part (ii) in Lemma
+4.5 is empty and thus, in particular, pr
+0 (x, C). Condition (ii) in Deﬁnition 4.9 implies that
+there is no trading strategy (x, pr
+0(x, C), ϕ, C) ∈ Ψ0,x(C ) such that conditions (4.14) and (4.15) are
+satisﬁed. This means that no hedger’s arbitrage opportunity arises (that is, no strict superhedging
+strategy for C exists) if C is traded at time 0 at its replication cost pr
+0(x, C) and thus we conclude
+that pr
+0 (x, C). The remaining equalities
+are immediate consequences of Lemma 4.5.
+
+0(x, C) is the maximal fair price meaning that pr
+
+0(x, C) = pf
+
+0(x, C) ≥ pf
+
+Derivatives Pricing in Nonlinear Models
+
+33
+
+4.2.2 Nonreplicable Contracts
+
+0(x, C) = pf
+
+(x, C) = pa
+0
+
+0 (x, C) = ps
+0
+
+Let us make some comments on the properties of a contract C for which replication in M =
+(S, D, B, C , Ψ0,x(C )) is not feasible. If Assumption 4.4 is satisﬁed, then from Lemma 4.5 we obtain
+the following equalities pl
+(x, C). Obviously, it would be interesting
+to know whether the common value is a fair price. Unfortunately, the deﬁnitive answer is not
+available, in general, since it may happen that it is indeed the maximal fair price, but it may also
+occur that it represents the cost of a strict superhedging strategy. Furthermore, it is not clear at
+all how to proceed to compute the value of pf
+0 (x, C) (it would be perhaps enough to know this value
+since any strictly lower value is a loss-generating cost). Under either Assumption 4.6 or when we
+postulate that the market model M is regular, we obtain the same conclusions as under Assumption
+4.4 and thus they are not helpful when analyzing the valuation of nonreplicable contracts.
+
+4.2.3 Nonregular Market Model
+
+Our next goal is to illustrate the issue of regularity of a model by providing a simple, albeit
+admittedly artiﬁcial, example of a model, which is not regular. We now assume that the hedger’s
+endowment at time 0 is null and we start by placing ourselves within the framework of Bergman’s [3]
+model with diﬀerential borrowing and lending interest rates (see also Korn [38], Nie and Rutkowski
+[40] and Mercurio [39]). In particular, the stock price S1 is driven by the Black-Scholes dynamics
+and constant interest rates satisfy rb > rl. It is straightforward to verify that Bergman’s model
+MB = (S1, Bl, Bb, C , Ψ0,0(C )) satisﬁes Deﬁnition 3.4 if, for instance, we take as C the class of
+long and short positions in all European put options written on the stock S1 and maturing at T .
+Moreover, the hedger is able to replicate, without borrowing any cash, the short position in the
+European put option on S1 with maturity T and any strike K > 0. The hedger’s price of the
+European put in Bergman’s model is thus given by the classical Black-Scholes formula with the
+interest rate equal to rl and we henceforth denoted it as Pt(K) for every t ∈ [0, T ].
+
+In the next step, we ﬁx strike K > 0 and the date U ∈ (0, T ). For concreteness, we assume
+that T − U = 1 and rl = 0. In particular, the class C comprise only short and long positions in
+the put option with strike K. We complement the model MB by introducing an additional risky
+asset with the following price process with nondecreasing sample paths
+
+S2
+t = 1[0,T ](t) + (K(t − U ))(PU (K))−11{2PU (K)>K}1[U,T ](t).
+
+Since rl = 0, we have that P(2PU (K) > K) > 0, due to the fact that 2PU (K) > K for SU
+suﬃciently close to zero. It is obvious that S2
+T = 1 on the event {2PU (K) ≤ K}. On the other
+hand, on the event {2PU (K) > K}, we have
+
+1 < S2
+
+T = 1 + K(PU (K))−1 < 3 = eln 3.
+
+We henceforth assume that rb > ln 3 in order to ensure that the interest rate rb dominates the
+rate of return on the asset S2. Obviously, the put option with strike K can be replicated in
+M = (Bl, Bb, S1, S2, C , Ψ0,0(C )) (through the same strategy as in MB, that is, using only Bl and
+S1 for trading) and thus its replication cost in M is given by the Black-Scholes price P (K). We
+are ready to prove the following proposition describing the properties of M. It is easy to check
+that Assumption 4.4 (as well as Assumption 4.6) is satisﬁed by the model M.
+
+Proposition 4.12. The market model M = (Bl, Bb, S1, S2, C , Ψ0,0(C )) has the following proper-
+ties:
+
+(i) M has the no-arbitrage property with respect to the null contract,
+
+34
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+(ii) M has the no-arbitrage property for the trading desk,
+
+(iii) M is nonregular and the extended model fM = (Bl, Bb, S1, S2, S3, C , Ψ0,0(C )) where S3 =
+
+P (K) does not have the no-arbitrage property with respect to the null contract.
+
+(iv) replication cost for the put option is not unique and the minimal cost of replication is given
+
+by the solution Y to the BSDE
+
+dYt =
+
+2Xi=1
+
+t dSi
+ξi
+t,
+
+YT = (K − S1
+
+T )+.
+
+(4.18)
+
+Intuitively, the increasing process S2 can be seen as an
+Proof. Assertion (i) is easy to check.
+alternative (artiﬁcial) lending account to the constant lending account Bl = 1 and thus, if the
+hedger has a surplus of cash, then he will invest it in the asset S2, rather than in the lending account
+Bl. It is thus enough to note that the model (S1, ¯Bl = S2, Bb, C , Ψ0,0(C )) satisﬁes Deﬁnition 3.4,
+as it can be seen as another instance of Bergman’s setup with a random lending rate.
+
+For part (ii), we focus on the model (S1, ¯Bl = S2, Bb, C , Ψ0,0(C )) and we observe that equation
+
+(3.7) reduces to
+
+t
+
+deV com
+
+(x1, −x1, ϕ, ¯ϕ, A, 0, 0) = (ξ1
+
+t + ¯ξ1
+
+t + (ψ0,b
+
+t + ¯ψ0,b
+
+t ) dB0,b,l
+
+t
+
+,
+
+t ) deS1
+
+where A represents the put option, eS1 = S1( ¯Bl)−1 and B0,b,l = Bb( ¯Bl)−1. Since the process eS1
+
+admits a martingale measure, the process B0,b,l is non-increasing and, by assumption, the processes
+ψ0,b and ¯ψ0,b are nonnegative, it is clear that no arbitrage opportunity for the trading desk may
+arise in the considered model, and thus also in M.
+
+To prove (iii), we will show that the hedger who sells the put option at time 0 at its Black-Scholes
+price P0(K) can construct an arbitrage opportunity. To see this, assume that the hedger uses the
+replicating strategy for the put on the interval [0, U ]. If the event {2PU (K) ≤ K} occurs, then he
+continues to replicate the put until its maturity date T . In contrast, if the event {2PU (K) > K}
+U = PU (K) of shares of the asset S2 and holds them till T . Then
+occurs, then he buys PU (K)/S2
+the hedger’s wealth at T , after delivery of the cash amount (K − S1
+T )+ to the buyer of the option,
+satisﬁes
+
+VT (0, P0(K), ϕ, −P (K)) =(cid:18) PU (K)
+
+S2
+U
+
+S2
+T − (K − S1
+
+T )+(cid:19) 1{2PU (K)>K} + 0 · 1{2PU (K)≤K}
+T )+(cid:1) 1{2PU (K)>K}
+T )+(cid:1) 1{2PU (K)>K} > 0.5K 1{2PU (K)>K}.
+
+=(cid:0)PU (K)(1 + K(PU (K))−1) − (K − S1
+>(cid:0)1.5K − (K − S1
+
+Since P(2PU (K) > K) > 0 and it is clear that the wealth is always non-negative (so that the
+strategy is admissible), the strategy described above is an arbitrage opportunity for the hedger.
+Also, a strict superhedging strategy for the claim PT (K) can be obtained using the initial wealth
+equal to the replication cost. Indeed, using the premium P0(K), the hedger may either replicate
+ζ1 := PT (K) or strictly superhedge PT (K) by producing the terminal payoﬀ
+
+ζ2 = PT (K)1{2PU (K)≤K} + PU (K)(1 + K(PU (K))−1)1{2PU (K)>K}.
+
+It is easy to check that ζ2 ≥ ζ1 and P(ζ2 > ζ1) > 0. We thus conclude that the model M is
+
+nonregular and the extended model fM does not satisfy Deﬁnition 3.4.
+
+For the last assertion, we note that the put option can be replicated in the model (S1, ¯Bl =
+S2, C , Ψ0,0(C )), which is an extension of the Black-Scholes model in which the interest rate is
+
+Derivatives Pricing in Nonlinear Models
+
+35
+
+random. This claim follows from the existence and uniqueness of a solution (Y, ϕ1, ϕ2) to BSDE
+(4.18) with Lipschitz continuous coeﬃcients and the bounded terminal condition. Furthermore, the
+component ϕ2 of the replicating strategy is nonnegative and thus the same strategy replicates the
+option in M and it is the least expensive replicating strategy in M.
+
+4.3 Replication and Market Regularity on [t, T ]
+The notion of the hedger’s gained value pg
+t (x, C), t ∈ [0, T ) reduces to the classical no-arbitrage
+price obtained through replication in the linear setup provided that the only cash ﬂow of A after
+time 0 is the terminal payoﬀ, which equals AT − AT −. Unfortunately, in a general nonlinear setup
+considered in this work, the ﬁnancial interpretation of the hedger’s gained value at time t > 0
+is less transparent, since it depends on the hedger’s initial endowment, the past cash ﬂows of a
+contract and the strategy implemented by the hedger on [0, t]. The following deﬁnition mimics
+Deﬁnition 4.8, but focuses on the restriction of a contract C to the interval [t, T ]. Note that here
+the discounted wealth process is given by equation (3.3). It is assumed in this section that Ct can
+be replicated on [t, T ) at some initial cost pr
+
+t at time t, in the sense of the following deﬁnition.
+t be a Gt-measurable random variable. If there exists
+
+Deﬁnition 4.13. For a ﬁxed t ∈ [0, T ], let pr
+a trading strategy (xt, pr
+
+t , ϕt, Ct) ∈ Ψt,xt(C ) such that
+
+t , ϕt, Ct) = xt,
+
+eVT (xt, pr
+
+t = pr
+
+then pr
+endowment xt at time t.
+
+t (xt, Ct) is called a replication cost at time t for the contract Ct relative to the hedger’s
+
+As expected, Deﬁnition 4.9, and thus also Proposition 4.11, can be extended to any date t ∈
+
+[0, T ).
+
+Deﬁnition 4.14. We say that a market model M = (S, D, B, C , Ψt,xt(C )) is regular on [t, T ] with
+respect to C if Assumption 4.4 is met and the following properties hold for every contract C ∈ C
+that can be replicated:
+
+(i) if pt ∈ Gt and there exists (xt, pt, ϕt, Ct) ∈ Ψt,xt(C ) satisfying
+
+(4.19)
+
+(4.20)
+
+(4.21)
+
+(4.22)
+
+then pt ≥ pr
+
+t (xt, Ct);
+
+(ii) if pt ∈ Gt and there exists (xt, pt, ϕt, Ct) ∈ Ψt,xt(C ) such that for some D ∈ Gt
+
+P(cid:0)eVT (xt, pt, ϕt, Ct) ≥ xt(cid:1) = 1,
+P(cid:0)1DeVT (xt, pt, ϕt, Ct) ≥ 1Dxt(cid:1) = 1
+P(cid:0)1DeVT (xt, pt, ϕt, Ct) > 1Dxt(cid:1) > 0,
+
+and
+
+then P(1D pt > 1Dpr
+
+t (xt, Ct)) > 0.
+
+Similarly as for t = 0, if condition (i) holds, then condition (ii) is equivalent to the following
+
+condition:
+
+(iii) if pt ∈ Gt and there exists (xt, pt, ϕt, Ct) ∈ Ψt,xt(C ) such that for some event D ∈ Gt
+
+then the following implication holds: if 1Dpt = 1Dpr
+
+P(cid:0)1DeVT (xt, pt, ϕt, Ct) ≥ 1Dxt(cid:1) = 1,
+P(cid:0)1DeVT (xt, pt, ϕt, Ct) = 1Dxt(cid:1) = 1.
+
+t (xt, Ct), then
+
+(4.23)
+
+(4.24)
+
+36
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+In the following extension of Proposition 4.11, we assume that the hedger’s endowment xt at
+time t is given and the contract C has all cash ﬂows on (t, T ] so that Ct = C. We now search for
+the hedger’s fair price for C at time t assuming that a replication strategy exists. A closely related,
+but not identical, valuation problem is studied in Section 5.1 where we study the valuation at time
+t of a contract originated at time 0.
+
+Proposition 4.15. Let a market model M = (S, D, B, C , Ψt,xt(C )) be regular on [t, T ] with respect
+to the class C . Then for every contract C ∈ C such that C = Ct and which can be replicated on
+[t, T ], we have:
+
+t (xt, C) is unique,
+
+(i) the replication cost pr
+(ii) pr
+t (xt, C) is the maximal fair price and the upper bound for loss-generating costs, that is,
+t (xt, C) = pf
+pr
+(iii) pr
+t (xt, C) is the lower bound for superhedging costs and strict superhedging costs, that is,
+t (xt, C) = ps
+pr
+t
+
+(xt, C) = pa
+t
+
+t (xt, C) = pl
+
+t(xt, C),
+
+(xt, C).
+
+The proof of Proposition 4.15 is very similar to the proof of Proposition 4.11 and thus it is
+omitted. According to Proposition 4.15, in any market model regular on [t, T ], a replication cost is
+unique and it is the maximal fair price at time t for the hedger with the endowment xt at time t.
+
+5 Pricing by Replication in Regular Markets
+
+In this section, it is assumed that a market model M is regular. Our goal is to examine the
+properties of various kinds of prices for a contract C under the assumption that it can be replicated
+on [t, T ] for every t ∈ [0, T ). Recall that for any ﬁxed t ∈ [0, T ) we denote by (xt, pt, ϕt, Ct) a
+hedger’s trading strategy starting at time t with a Gt-measurable endowment xt when a contract
+Ct is traded at a Gt-measurable price pt. For simplicity, we focus on contracts C = (A, X ) with a
+constant maturity date T , which correspond to non-defaultable contracts of European style. To deal
+with the counterparty credit risk, it suﬃces to replace A with the process A♯ introduced in Section
+2.8.1 and a ﬁxed maturity T with the eﬀective maturity of a contract at hand (for instance, by T ∧τ
+where τ is the random time of the ﬁrst default or, more generally, by the eﬀective settlement date
+of a contract in the presence of the gap risk). Furthermore, in the case of contracts of an American
+style or game options, the eﬀective settlement date is also aﬀected by respective decisions of both
+parties to prematurely terminate the contract.
+
+5.1 Hedger’s Ex-dividend Price at Time t
+
+Since it was postulated that the initial endowment of the hedger at time 0 equals x, it is clear
+that any application of Deﬁnition 4.13 should be complemented by a ﬁnancial interpretation of the
+hedger’s endowment xt at time t and a relationship between the quantity xt and the hedger’s initial
+endowment x should be clariﬁed. One may consider several alternative speciﬁcations for xt, which
+correspond to diﬀerent ﬁnancial interpretations of valuation problems under study:
+
+1. A ﬁrst natural choice is to set xt = xt(x) := xBt(x) meaning that the hedger has not been
+dynamically hedging the contract between time 0 and time t (this particular convention was
+adopted in Bielecki and Rutkowski [8] and Nie and Rutkowski [40, 41]). Then the quantity
+t (xt, Ct) is the future fair price at time t of the contract Ct, as seen at time 0 by the
+pr
+hedger with the endowment x at time 0, who decided to postpone trading in C to time t.
+This speciﬁcation of xt could be convenient if one wishes to study, for instance, the issue of
+valuation at time 0 of the option with the expiration date t written on the contract Ct.
+
+Derivatives Pricing in Nonlinear Models
+
+37
+
+2. Alternatively, one may postulate that the contract was entered into by the hedger at time 0
+at his replication cost pr
+0(x, C) and he decided to keep his position unhedged. In that case, the
+initial price, the cash ﬂows, and the adjustments should be appropriately accounted for when
+computing the actual hedger’s endowment xt at time t using a particular market model.
+
+3. Next, one may assume that the contract was entered into by the hedger at time 0 at the
+0(x, C) and was hedged by him on [0, t] through a replicating strategy ϕ, as given by
+0(x, C), ϕ, C)
+
+price pr
+Deﬁnition 4.8. Then the hedger’s endowment at time t > 0 equals xt = Vt(x, pr
+and it is natural to expect that the equality pr
+
+t (xt, Ct) = 0 will hold for all t ∈ (0, T ].
+
+4. Finally, one can simply postulate that the hedger’s endowment xt at time t is exogenously
+speciﬁed. Then Deﬁnition 4.13 reduces in fact to Deﬁnition 4.8 with essentially identical
+ﬁnancial interpretation: we deﬁne the hedger’s initial price at time t for the contract Ct given
+his initial endowment xt at time t. Of course, under this convention no relationship between
+the quantities x and xt exists.
+
+In the next deﬁnition, we apply Deﬁnition 4.13 to the ﬁrst of the above-mentioned speciﬁcations
+of xt, that is, we set xt = xt(x) := xBt(x). As in Deﬁnition 4.13, the discounted wealth is given by
+(3.3).
+
+Deﬁnition 5.1. For a ﬁxed t ∈ [0, T ], assume that pe
+exists a trading strategy (xt(x), pe
+
+t , ϕt, Ct) ∈ Ψt,xt(x)(C ) such that
+
+t is a Gt-measurable random variable. If there
+
+then pe
+
+t = pe
+
+t (x, Ct) is called the hedger’s ex-dividend price at time t for the contract Ct.
+
+t , ϕt, Ct) = xt(x),
+
+eVT (xt(x), pe
+
+(5.1)
+
+0(x, C) = pg
+
+Note that pr
+
+0(x, C) = pe
+
+T (x, CT ) = 0. The price given in
+Deﬁnition 5.1 is suitable when dealing with derivatives written on the contract Ct as an underlying
+asset or, simply, when the hedger would like to compute the future fair price for Ct without actually
+entering into the contract at time 0. Furthermore, it can also be used to deﬁne a proxy for the exit
+price of the contract Ct.
+
+T (x, C) = pe
+
+0(x, C) and pg
+
+t (x, C) = pe
+
+t (x, C) and pe
+
+It is natural to ask whether the processes pg
+
+t (x, Ct) coincide for all t ∈ [0, T ]. We
+will argue that the equality pg
+t (x, Ct) is valid for every t when the valuation problem is
+local, but it is not necessarily true for a global valuation problem (see Proposition 6.5). The reason
+is that in the former case the two processes satisfy identical BSDE, whereas in the latter case one
+obtains a generalized BSDE for the former process and a classical BSDE for the latter. It is also
+intuitively clear that in the case of the global valuation problem the two processes will typically
+t (x, Ct) is clearly independent of the hedger’s trading strategy on [0, t], as
+diﬀer, since the value of pe
+opposed to pg
+t (x, C), which may depend on the whole history of his trading. Since most valuation
+problems encountered in the existing literature have a local nature, to the best of our knowledge,
+this particular issue was not yet examined by other authors.
+
+5.2 Exit Price
+
+The issue of valuation at time t is also important when we ask the following question: at which exit
+price a contract entered into by the hedger at time 0 can be unwound by him at time t. In theory,
+the easiest way to unwind at time t a contract originated at time 0 at the price pr
+0(x, C)
+would be to transfer all obligations associated with the remaining part of the contract on [t, T ]
+to another trader. Accordingly, the gained value pg
+t (x, C) for 0 < t < T would be the amount of
+cash, which the hedger would be willing to pay to another trader who would then take the hedger’s
+
+0(x, C) = pg
+
+38
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+position from time t onwards. This argument leads to the following deﬁnition of the hedger’s exit
+price.
+
+Deﬁnition 5.2. The exit price for the contract C entered into at time 0 by the hedger with the
+initial endowment x is given by the equality pm
+
+t (x, C) for every t ∈ [0, T ].
+
+t (x, C) := −pg
+
+t (x, C) + pm
+
+Deﬁnition 5.2 reﬂects the market practice where the exit price is related to the concept of
+unwinding the existing contract at time t at its current market value. Note, in particular, that
+the equality pg
+t (x, C) = 0 holds for every t ∈ [0, T ], meaning that the net value of the
+fully hedged position is null at any moment when the contract is marked to market. Unfortunately,
+a practical implementation of Deﬁnition 5.2 could prove diﬃcult, especially when dealing with a
+global valuation problem, since it would require to keep track of past cash ﬂows from the contract
+and gains from the hedging strategy (of course, provided the hedging strategy was implemented
+by the hedger). We thus contend that the proxy for the exit value pm
+t (x, C) could
+be more suitable for most practical purposes when facing a global valuation problem. Since the
+equality pg
+t (x, C) holds when the valuation problem is local, the issue of the choice of a
+marking to market convention is clearly immaterial in that case.
+
+t (x, C) := −pe
+
+t (x, C) = pe
+
+5.3 Oﬀsetting Price
+
+Assume that the hedger is unable to transfer to another trader his existing position in the contract
+C entered into at time 0. Then he may attempt to oﬀset his future obligations associated with C
+by taking the opposite position in an “equivalent” contract. In the next deﬁnition, we postulate
+that the hedger attempts to unwind his long position in C = (A, X ) at time t by entering into an
+oﬀsetting contract (−At, Y t). It is also assumed here that he liquidates at time t the replicating
+
+(5.2)
+
+replicating strategy for C on [0, T ].
+
+Deﬁnition 5.3. For a ﬁxed t ∈ [0, T ], let po
+
+portfolio for C so that his endowment at time t equals bVt(x, C) := Vt(x, pr
+an admissible trading strategy (bVt(x, C), po
+eVT (bVt(x, C), po
+
+t , ϕt, 0, X t + Y t) = x,
+
+t , ϕt, 0, X t + Y t) on [t, T ] such that
+
+0(x, C), bϕ, C), where bϕ is a
+
+t be a Gt-measurable random variable. If there exists
+
+then po
+
+t = po
+
+t (x, Ct) is called the oﬀsetting price of Ct = (At, X t) through (−At, Y t) at time t.
+
+Deﬁnition 5.3 takes into account the fact that the cash ﬂows of At and −At (and perhaps also
+some cash ﬂows associated with the corresponding adjustments X t and Y t) oﬀset one another and
+thus only the residual cash ﬂows need to be accounted for when computing the price at which the
+contract C can be unwound by the hedger at time t.
+
+In the special case where the equality X t + Y t = 0 holds for all t ∈ [0, T ] (that is, the oﬀsetting
+t (x, C) since then, in view of (4.12), we have that
+
+is perfect) we obtain the equality po
+
+t (x, Ct) = −pg
+
+t (x, Ct) = pg
+
+t (x, C) + xBt(x) + po
+
+t (x, Ct) = xBt(x),
+
+bVt(x, C) + po
+
+where xBt(x) is the cash amount that is required to replicate the null contract (0, 0) on [t, T ].
+
+6 A BSDE Approach to Nonlinear Pricing
+
+For each deﬁnition of the price, one may attempt to derive the corresponding backward stochastic
+diﬀerential equation (BSDE) by combining their deﬁnitions with dynamics (2.11) of the hedger’s
+wealth or, even more conveniently, with dynamics (3.9) of his discounted wealth. Subsequently,
+
+Derivatives Pricing in Nonlinear Models
+
+39
+
+each particular valuation problem can be addressed by solving a suitable BSDE. In addition, one
+may use a BSDE approach to establish the regularity property of a market model at hand. To this
+end, one may either use the existing (strict) comparison theorems for solutions to BSDEs or, if
+needed, to establish original results. In this work, we are not analyzing these issues in detail since
+our goal is merely to derive BSDEs for the gained value and the ex-dividend price in a particular
+setup with trading adjustments and to emphasize the diﬀerence between local and global pricing
+problems. We conclude the paper by outlining important issues related to a BSDE approach to the
+counterparty credit risk.
+
+6.1 BSDE for the Gained Value
+
+We will ﬁrst derive a generic BSDE associated with the hedger’s gained value pg(x, C) introduced
+in Deﬁnition 4.8. For concreteness, we focus on the case of x ≥ 0 so that the equality B(x) = Bl is
+valid. To simplify the presentation, we also postulate that Bi,l = Bi,b = Bi for i = 1, 2, . . . , d and
+t = 0 for all i = 1, 2, . . . , d
+and every t ∈ [0, T ]. Of course, the case where x < 0 can be dealt with in an analogous manner.
+Recall that (see (3.8))
+
+we consider trading strategies satisfying the funding constraint bξi
+
+t +bψi
+
+tBi
+
+tSi
+
+(x) := (Bt(x))−1Si
+
+(Bu(x))−1 dDi
+u.
+
+t +Z t
+
+0
+
+t
+
+eSi,cld
+
+It is worth recalling that pr
+
+0(x, C) = pg
+
+0(x, C) (see Deﬁnition 4.8).
+
+Lemma 6.1. Assume that a trading strategy (x, pr
+
+the processes bY := eV l(x, pr
+0,bϕ, C) := (B0,l)−1V (x, pr
+t )−1(cid:18)bYtB0,l
+dXi=1 bZ i
+t dbSi,cld
+dbYt =
+nXk=1 bX k
+t deβk,l
+
+t − (B0,b
+
+t )−1 dAt −
+
++ (B0,l
+
+t +
+
+nXk=1
+nXk=1
+
+0,bϕ, C) ∈ Ψ0,x(C ) replicates a contract C. Then
+0,bϕ, C) and bZ i := eBi,lbξi satisfy the BSDE
+
+t +
+
+αk
+t X k
+
+dB0,b,l
+
+t
+
+t(cid:19)−
+
+(1 − αk
+
+t )X k
+
+t d(B0,l
+
+t )−1
+
+Proof. Under the present assumptions, (3.9) and (3.10) imply
+
+with the terminal condition bYT = x.
+dXi=1 bξi
+teBi,l
+t dbSi,cld
+nXk=1
+
+0,bϕ, C) =
+
+deV l
+
+t (x, pr
+
+(1 − αk
+
++
+
+t dB0,b,l
+
+t + (B0,l
+
+t )−1 dAt −
+
+t + bψ0,b
+
+t )X k
+
+t d(B0,l
+
+t )−1,
+
+nXk=1 bX k
+
+t
+
+t deβk,l
+
+(6.1)
+
+(6.2)
+
+(6.3)
+
+(6.4)
+
+where eBi,l := (B0,l)−1Bi, B0,b,l := (B0,l)−1B0,b, eβk,l := (B0,l)−1βk. Equation (2.10) and conditions
+bψ0,l ≥ 0, bψ0,b ≤ 0 and bψ0,lbψ0,b = 0 yield
+
+and
+
+t = (B0,l
+
+t )−1(cid:18)Vt(x, pr
+
+t = −(B0,b
+
+t )−1(cid:18)Vt(x, pr
+
+bψ0,l
+
+bψ0,b
+
+t(cid:19)+
+
+t X k
+αk
+
+nXk=1
+
+t(cid:19)−
+
+αk
+t X k
+
+.
+
+nXk=1
+
+0,bϕ, C) +
+
+0,bϕ, C) +
+
+40
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+t − (B0,b
+
+dbYt =
+
+dXi=1 bξi
+teBi,l
+t dbSi,cld
+
+0,bϕ, C), then (6.2) can be represented as the BSDE
+
+Note that the process bψ0,l does not appear in (6.2) and the process bψ0,b can also be eliminated from
+(6.2) by using (6.4). If we set bY := eV l(x, pr
+t )−1(cid:18)bYtB0,l
+nXk=1
+nXk=1 bX k
+t deβk,l
+with the terminal condition bYT = eV l
+0,bϕ, C) = x. In view of equality (3.10), BSDE (6.5) further
+
+dXi=1 bψi
+
+dXi=1 bξi
+
+simpliﬁes to (6.1).
+
+t )X k
+
+t d(B0,l
+
+t )−1
+
++ (B0,l
+
+t )−1 dAt −
+
+t(cid:19)−
+
+nXk=1
+
+T (x, pr
+
+tBi
+
+t +
+
+αk
+t X k
+
+dB0,b,l
+
+t
+
+t +
+
+(1 − αk
+
+t −
+
+tSi
+
+t −
+
+(6.5)
+
+In the next result, we focus on a market model satisfying regularity conditions introduced in
+Deﬁnition 4.14. From the regularity of a model, it follows that the hedger’s gained value pg
+t (x, C)
+is unique for each ﬁxed t ∈ [0, T ]. However, this does not suﬃce to deﬁne the process pg(x, C) and
+thus in the next result we will make assumptions regarding BSDE (6.1). First, we postulate that
+
+for a given x ≥ 0 and any contract C ∈ C there exists a unique solution (bY , bZ) to (6.1) in a suitable
+
+space of stochastic processes. Second, we assume that BSDE (6.1) enjoys the following variant of
+the strict comparison property.
+
+Deﬁnition 6.2. The strict comparison property holds for the BSDE (6.1) if for any contract C ∈ C
+T , respectively,
+T = 1Dξ2
+T .
+
+if (bY 1, bZ 1) and (bY 2, bZ 2) are solutions with GT -measurable terminal conditions ξ1
+
+for some t ∈ [0, T ) and some D ∈ Gt implies that 1Dξ1
+
+then the equality 1DY 1
+
+t = 1DY 2
+t
+
+T ≥ ξ2
+
+It is also important to note that one needs to examine the manner in which the inputs in BSDE
+(6.1) (that is, the stochastic processes introduced in Assumption 2.1) may possibly depend on the
+
+local valuation problem if we postulate that X k and βk satisfy X k
+
+According to Deﬁnition 2.12, the problem examined in this section will be an example of a
+t =
+
+unknown processes bY and bZ.
+t = vk(t,bYt, bZt) and dβk
+wk(t,bYt, bZt) dt for some G-progressively measurable mappings vk, wk : Ω × [0, T ] × Rd+1 → R for
+t = ¯vk(t,bY·, bZ·) and
+t = ¯wk(t,bY·, bZ·) dt for some G-non-anticipative functionals ¯vk, ¯wk : Ω × [0, T ] × D([0, T ], Rd+1) →
+
+every k = 1, 2, . . . , n. The same valuation problem becomes a global one if X k
+dβk
+R for every k = 1, 2, . . . , n, where D([0, T ], Rd+1) is the space of Rd+1-valued, G-adapted, c`adl`ag
+processes on [0, T ].
+
+From Lemma 6.1, we deduce that a local valuation problem can be formulated it terms of
+a classical BSDE. In contrast, the situation where the inputs depend on the past history of the
+processes is harder to address, since a global valuation problem requires to study a generalized
+BSDE with non-anticipative functionals. Since both situations are covered by Proposition 6.3,
+we refer the reader to Cheridito and Nam [16] and Zheng and Zong [51] for the existence and
+uniqueness results for generalized BSDEs. It is worth noting that, to the best of our knowledge, so
+far no results on the strict comparison property for generalized BSDE are available. This should
+be contrasted with the theory of classical BSDEs where the strict comparison theorem plays an
+important role. In the next result, we suppose that the dynamics of the wealth process given by
+(6.2) and (6.4) are such that Assumption 4.4 is satisﬁed.
+
+Proposition 6.3. Assume that the BSDE (6.1) has a unique solution (bY , bZ) for any contract C ∈ C
+
+and the strict comparison property for solutions to (6.1) holds. Then the following assertions are
+valid:
+
+(i) the market model is regular on [t, T ] for every t ∈ [0, T ];
+
+Derivatives Pricing in Nonlinear Models
+
+41
+
+(ii) the hedger’s gained value satisﬁes pg(x, C) = B0,l(bY − x) where (bY , bZ) is a solution to BSDE
+(iii) the unique replicating strategy bϕ for C satisﬁes bξi = (eBi,l)−1bZ i and the cash components bψ0,l
+
+(6.1) with the terminal condition bYT = x;
+
+and ψ0,b are given by (6.3) and (6.4), respectively, with V (x, pr
+
+Proof. In view of Deﬁnition 4.14, it is clear that the existence, uniqueness and the strict comparison
+property for the BSDE (6.1) imply that the market model is regular on [t, T ] for every t ∈ [0, T ].
+To establish (ii), we recall that the regularity of a model implies that the hedger’s gained value
+pg
+t (x, C) is unique. Moreover, we also know that pg(x, C) satisﬁes for every t ∈ [0, T ] (see (4.12))
+
+0,bϕ, C) replaced by B0,lbY .
+
+pg
+t (x, C) = Vt(x, pg
+
+0(x, C),bϕ, C) − xBt(x) = B0,l
+
+t bYt − xBt(x) = B0,l
+
+t (bYt − x),
+
+which establishes the asserted equality pg(x, C) = B0,l(bY −x). In particular, the hedger’s replication
+0(x) = bY0 − x for any ﬁxed initial endowment x ≥ 0. Finally, part (iii) is an
+
+cost pr
+immediate consequence of Lemma 6.1.
+
+0(x) satisﬁes pr
+
+Of course, one needs to check for which models the assumptions of Proposition 6.3 are satisﬁed.
+For general results regarding BSDEs driven by one- or multi-dimensional continuous martingales,
+the reader is referred to Carbone et al. [15], El Karoui and Huang [25] and Nie and Rutkowski [42]
+and the references therein. Typically, a suitable variant of the Lipschitz continuity of a generator
+to a BSDE is suﬃcient to guarantee the desired properties of its solutions. Several instances of
+nonlinear market models with BSDEs satisfying the comparison property were studied by Nie and
+Rutkowski [40, 41, 43], although the concept of a regular model was not formally stated therein.
+In particular, they analyzed contracts with an endogenous collateral, meaning that an adjustment
+
+the hedger and the counterparty).
+
+process X k explicitly depends on a solution bY (or even on solutions to the valuation problems for
+
+Let us ﬁnally mention that since the model examined in this section is a special case of the
+model studied in Sections 3.5 and 3.6, it follows from Proposition 3.13 that to ensure that the
+model is arbitrage-free for the trading desk, it suﬃces to assume that there exists a probability
+
+measure Q, which is equivalent to P on (Ω, GT ) and such that the processes bSi,cld, i = 1, 2, . . . , d
+
+given by (4.23) are Q-local martingales. This assumption is also convenient if one wishes to prove
+the existence and uniqueness result for BSDE (6.1).
+
+6.2 BSDE for the Ex-dividend Price
+
+ex-dividend price is implicitly given by the equality eV l
+
+Our next goal is to derive the BSDE for the ex-dividend price pe(x, C) introduced in Deﬁnition 5.1.
+As in Section 6.1, we work under the assumption that x ≥ 0. Recall that, for a ﬁxed t, the hedger’s
+t , ϕt, Ct) = xt(x) where xt(x) = xBl
+t
+and the discounting is done using the process Bt
+· (xt(x)) given by (3.2). We henceforth assume
+that the valuation problem is local. This assumption is essential for validity of Lemma 6.4 and
+Proposition 6.5, so it cannot be relaxed.
+Lemma 6.4. Assume that a trading strategy (xt(x), pe
+
+T (xt(x), pe
+
+t , ϕt, Ct) ∈ Ψt,xt(x)(C ) replicates a contract Ct
+u)i, u ∈ [t, T ], satisfy
+
+t , ϕt, At, X t) and ¯Z i
+
+u (ξt
+
+on [t, T ]. Then the processes ¯Yu := eVu(xt(x), pe
+
+the following BSDE, for all u ∈ [t, T ]
+
+u := eBi,l
+u(cid:19)−
+
+u +
+
+αk
+uX k
+
+dB0,b,l
+
+u
+
+d ¯Yu =
+
+dXi=1
+
+u − (B0,b
+
+¯Z i
+
+u dbSi,cld
+
+u )−1(cid:18) ¯YuB0,l
+nXk=1 bX k
+u deβk,l
+
+u +
+
+nXk=1
+nXk=1
+
++ (B0,l
+
+u )−1 dAu −
+
+(1 − αk
+
+u)X k
+
+u d(B0,l
+
+u )−1
+
+(6.6)
+
+42
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+with the terminal condition ¯YT = x.
+
+Proof. Arguing as in the proof of Lemma 6.1, we conclude that the dynamics of the discounted
+
+wealth eVu(xt(x), pe
+bZ with the terminal condition eYT = x.
+
+t , ϕt, At, X t) for u ∈ [t, T ] are given by (6.2) and thus (6.6) is satisﬁed by bY and
+
+Although BSDEs (6.1) and (6.6) have the same shape, the features of their solutions heavily
+depend on a speciﬁcation of the processes X k and βk,l. The next result shows that the gained value
+and the ex-dividend price coincide when the valuation problem is local, so that the corresponding
+BSDEs are classical. In contrast, this property will typically fail to hold when a valuation problem
+is global, so that (6.1) becomes a generalized BSDE. In that case, equation (6.6) needs to be
+complemented by additional conditions regarding the processes X k and βk,l.
+
+Proposition 6.5. Under the assumptions of Proposition 6.3, if a valuation problem is local, then
+for any contract C ∈ C the hedger’s gained value and the hedger’s ex-dividend price satisfy pe
+t (x, C) =
+pg
+t (x, Ct) for all t ∈ [0, T ].
+
+Proof. On the one hand, under the postulate of uniqueness of solutions to BSDE (6.1) (and thus
+
+also to BSDE (6.6)), the equality bYt = ¯Yt is manifestly satisﬁed for all t ∈ [0, T ]. On the other
+t(bYt − x) and
+
+hand, from Deﬁnition 5.1, we obtain the equality xt(x) + pe
+pe
+t (x, Ct) = Bl
+the ex-dividend price pe
+
+t( ¯Yt − x). Since bYt = eYt, we conclude that the gained value pg
+
+¯Yt, which in turn yields
+t (x, Ct) = Bl
+t
+t (x, C) = Bl
+
+t (x, Ct) coincide for all t ∈ [0, T ].
+
+The property of a local valuation problem established in Proposition 6.5 is fairly general:
+
+its
+validity hinges on the existence and uniqueness of a solution to a common BSDE for the gained
+value and the ex-dividend price. This should be contrasted with the case of the global valuation
+problem where the equality pg
+t (x, Ct) is always satisﬁed for t = 0, but it is not likely to
+hold for any t > 0.
+
+t (x, C) = pe
+
+6.3 BSDE for the CCR Price
+
+We now address the question raised in Section 2.8.2: can we disentangle the counterparty risk-
+free valuation of a credit risky contract from the CRR valuation? Although this is true in the
+linear setup where the price additivity is known to hold, the answer to this question is unlikely to
+be positive within a nonlinear framework. On the one hand, according to Proposition 2.11, the
+counterparty risky contract (A♯, X ) admits the following decomposition
+
+(A♯, X ) = (A, X ) + (ACCR, 0),
+
+(6.7)
+
+where the ﬁrst component is not subject to the counterparty credit risk (although it may include
+the margin account) and thus it is referred to as the counterparty risk-free contract, whereas the
+second component is concerned exclusively with the CCR (see Deﬁnition 2.10 for the speciﬁcation
+of the CCR cash ﬂow ACCR). On the other hand, however, in a nonlinear framework, the price of
+the full contract (A♯, X ) is unlikely to be equal to the sum of prices of its components appearing
+in the additive decomposition of the full contract.
+
+To examine this problem more closely, let us assume that the underlying market model is
+suﬃciently rich to allow for replication of the full contract (A♯, X ), as well as for replication of its
+two components (A, X ) and (ACCR, 0). Of course, one can alternatively focus on the decomposition
+(A♯, X ) = (A, 0) + (ACCR, X ) in which the trading adjustments (in particular, the margin account)
+are assumed to aﬀect the CCR part, rather than the counterparty risk-free contract (A, 0). The
+
+Derivatives Pricing in Nonlinear Models
+
+43
+
+choice of a decomposition should be motivated by practical considerations; one may argue that
+collateralization is nowadays a standard covenant in most contracts, not necessarily directly related
+to the actual level of exposure to the counterparty credit risk in a given contract.
+
+If we denote by τ h and τ c the default times of the hedger and the counterparty, respectively,
+then τ = τ h ∧ τ c is the moment of the ﬁrst default and thus the eﬀective maturity of (A♯, X )
+
+and (ACCR, 0) is the random time bτ = τ ∧ T . For the counterparty risk-free contract (A, X ), it
+
+is convenient to formally assume that its maturity date equals T , since this component of the full
+contract is not exposed to the default risk.
+
+By a minor extension of Lemma 6.1, we obtain the following BSDE for the full contract (A♯, X )
+
+dbYt =
+
+dXi=1 bZ i
+
+t dbSi,cld
+
+t − (B0,b
+
++ (B0,l
+
+t )−1 dA♯
+
+t −
+
+t +
+
+t )−1(cid:18)bYtB0,l
+nXk=1 bX k
+t deβk,l
+
+t +
+
+nXk=1
+nXk=1
+
+t(cid:19)−
+
+αk
+t X k
+
+dB0,b,l
+
+t
+
+(6.8)
+
+(1 − αk
+
+t )X k
+
+t d(B0,l
+
+t )−1
+
+with the terminal condition bYbτ = x. Let x = x1+x2 be an arbitrary split of the hedger’s endowment.
+
+Then we obtain the following BSDE corresponding to the counterparty risk-free contract (A, X )
+
+t =
+
+dbY 1
+
+dXi=1 bZ 1,i
+
+t dbSi,cld
+
++ (B0,l
+
+t )−1 dAt −
+
+t − (B0,b
+
+t B0,l
+
+t +
+
+t )−1(cid:18)bY 1
+nXk=1 bX k
+t deβk,l
+
+t +
+
+t(cid:19)−
+
+αk
+t X k
+
+nXk=1
+
+dB0,b,l
+
+t
+
+nXk=1
+
+(1 − αk
+
+t )X k
+
+t d(B0,l
+
+t )−1
+
+with bY 1
+
+T = x1. The BSDE associated with the CRR component (ACCR, 0) reads
+
+t =
+
+dbY 2
+
+dXi=1 bZ 2,i
+
+t dbSi,cld
+
+t − (B0,b
+
+t )−1(cid:0)bY 2
+
+t B0,l
+
+t (cid:1)−dB0,b,l
+
+t + (B0,l
+
+t )−1 dACRR
+
+t
+
+(6.9)
+
+(6.10)
+
+bτ = x2. If the initial endowment x = 0, then we may take x1 and x2 to be null as well.
+
+The question formulated at the beginning of this section can be restated as follows: under which
+0 holds for solutions to BSDEs (6.8), (6.9) and (6.10), so that
+
+with bY 2
+conditions the equality bY0 = bY 1
+
+0 + bY 2
+
+the three replication costs satisfy the following equality
+
+pr
+0(x, A♯, X ) = pr
+
+0(x1, A, X ) + pr
+
+0(x2, ACCR, 0),
+
+which formally corresponds to decomposition (6.7) of the full contract and the split x = x1 + x2 of
+the hedger’s initial endowment? Since this equality is unlikely to be satisﬁed (even when x = x1 =
+x2 = 0, as it was implicitly assumed in most existing papers on the nonlinear approach to credit
+0 are close to
+each other, so that some approximate equality is satisﬁed by the replication costs. Of course, an
+analogous question can also be formulated for the corresponding replicating strategies.
+
+risk modeling), one could ask, more generally, whether the quantities bY0 and bY 1
+
+0 + bY 2
+
+One needs ﬁrst to address the issues of regularity and completeness of market models with
+default times. To this end, one may employ the existence and uniqueness results, as well as
+the strict comparison theorems, obtained for BSDEs with jumps generated by the occurrence of
+random times. BSDEs of this form are relatively uncommon in the existing literature on the theory
+of BSDEs, but they were studied in papers by Peng and Xu [46] and Quenez and Sulem [49]. Of
+
+44
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+course, to be in a position to use results established in those papers, one would need to explicitly
+specify the price dynamics for non-defaultable risky assets S1, . . . , Sd−2 (usually, they are supposed
+to be driven by a multidimensional Brownian motion), as well as the manner in which default times
+(thus also the prices of defaultable assets Sd−1 and Sd) are deﬁned. The latter issue is addressed in
+Peng and Xu [46] or Quenez and Sulem [49] through the so-called intensity-based approach, which
+was previously extensively studied in the credit risk literature. Furthermore, it would be convenient
+to assume that the cash and funding accounts, as well as remuneration processes, have absolutely
+continuous sample paths, so that BSDEs could be represented in the following generic form
+
+dYt = −g(t, Zt, Yt) dt +
+
+d−2Xi=1
+
+Z i
+t dW i
+
+t +
+
+dXi=d−1
+
+Z i
+t dM i
+
+t + d ¯At,
+
+where M 1 and M 2 are purely discontinuous G-martingales associated with the price processes Sd−1
+and Sd, respectively, and ¯A is a ﬁxed process. Note that the generator g can be obtained from
+(6.8), (6.9) and (6.10) by straightforward computations.
+
+From the ﬁnancial perspective, to ensure the completeness of the market model at hand, one
+would need to postulate that some defaultable securities (typically, defaultable bonds issued by the
+two parties or credit default swaps) are among primary traded assets. Finally, it is also necessary
+to explicitly specify the closeout valuation process Q (see Remark 2.9) and the collateral process
+C. When dealing with a local valuation problem, the most natural theoretical choice (albeit not
+necessarily easy to implement in practice) would be to set (see Proposition 6.5)
+
+Qt := pe
+
+t (x1, C) = pg
+
+t (x1, Ct), Ct := pe
+
+t (x, A♯, X ) = pg
+
+t (x, (A♯)t, X t)
+
+although the latter convention of the endogenous collateral is slightly cumbersome to handle,
+even when dealing with BSDEs driven by a multidimensional continuous martingale (see Nie and
+Rutkowski [42]). Note also that it would require to replace Cτ by Cτ − when specifying the closeout
+payoﬀ K (hence also the process A♯) in Section 2.8.1. For technical problems for BSDEs with jumps
+arising in this context and related to the classical immersion hypothesis and the way in which they
+can be resolved, the interested reader is referred to recent papers by Cr´epey and Song [21, 22].
+
+Within the framework of a linear model of credit risk, the issue of market completeness and
+various methods for replication were studied in several works (see, in particular, Bielecki et al.
+[5, 6, 7]). In contrast, only a few papers devoted to nonlinear models of credit risk are available.
+More recently, Cr´epey [17, 18], Dumitrescu et al. [24] and Bichuch et al. [4] used BSDEs with jumps
+to solve the valuation and hedging problems for derivative contracts exposed to the counterparty
+credit risk. In Bichuch et al. [4] and Dumitrescu et al. [24], the authors focus on valuation of the
+full contract, whereas Cr´epey [17, 18] examines the problem of the approximate additivity for the
+credit valuation adjustments.
+
+7 Nonlinear Valuation Versus Market Practice
+
+Although the goal of this paper is to formulate questions and give preliminary answers regarding the
+most fundamental issues pertinent to the theory of nonlinear arbitrage-free pricing, a few remarks
+concerning the current market practice and its relationship to theoretical results on nonlinear pricing
+could be appreciated by the reader. We also brieﬂy describe some related recent papers where the
+issue of the so-called valuation adjustments was examined in both linear and nonlinear setups.
+
+According to the prevailing practice, the full price for a counterparty risky contract is obtained
+by combining, at least implicitly, the so-called clean price of the basic contract (A, 0) with various
+
+Derivatives Pricing in Nonlinear Models
+
+45
+
+valuation adjustments. The clean price and the corresponding hedge are computed by the trading
+desk using the classical linear approach under a manifestly unrealistic, but obviously very conve-
+nient, assumption that a proxy for the unique risk-free rate is available for funding of all trading
+activities and the counterparty credit risk is ignored. It is thus clear that, from the theoretical
+point of view, the clean price can be computed as a solution to a linear BSDE, as in the classical
+arbitrage-free pricing theory.
+In contrast, various valuation adjustments are determined by the
+dedicated CVA desk in such a way that they account for all other features of a contract and trading
+conditions, such as: diﬀerential funding costs, the presence of the margin account, the counterparty
+credit risk, regulatory requirements, etc.. This means that, according to practical approach adopted
+by most banks, the full price of a new deal is implicitly represented as follows
+
+full price (A♯, X ) := linear price (A, 0) + possibly nonlinear price (ACCR, X )
+
+= clean price + total valuation adjustment (XVA),
+
+(7.1)
+
+where the clean price is given by a solution to a linear BSDE and the total valuation adjustment
+(denoted as XVA) is determined by solving either a linear or a nonlinear BSDE. Of course, if all
+three terms appearing in (7.1) (that is: the full price, the clean price, and the total valuation
+adjustment) are given by solutions to particular linear BSDEs, then it is possible to argue that
+decomposition (7.1) can be formally justiﬁed. However, if the valuation adjustment (and thus also
+the full price) is given by a solution to a nonlinear BSDE, which is the case of our primary interest,
+then the two terms appearing in the right-hand side in (7.1) cannot be computed separately and
+subsequently aggregated to obtain the full price. This observation is valid, in general, despite the
+fact that the clean price is always computed through a solution to linear BSDE or, equivalently, a
+suitable version of the risk-neutral valuation formula, so that it enjoys the additivity property across
+several (uncollateralized and non-defaultable) deals. Therefore, in our opinion, the introduction
+of the concept of the clean price, although convenient in practice since it refers to the pre-crisis
+experience and facilitates calibration of commonly used models for the underlying securities, may
+further complicate the theoretical problem of searching for the full price of a contract and the
+corresponding hedging strategy when working in a nonlinear setup.
+
+Let us illustrate the issue of non-additivity by focusing on a speciﬁc nonlinear setup. We stress
+that by the non-additivity of pricing we mean here the property that the clean price and the total
+valuation adjustment cannot be computed separately by splitting the cash ﬂows of a contract and
+perhaps even using a diﬀerent model to deal with each of the two (or more) components. Brigo
+[9] have recently shown that the risk-neutral valuation approach with adjusted cash ﬂows
+et al.
+based on a proxy for the risk-free interest rate, which was introduced and studied by Pallavicini
+et al.
+[44, 45], can be formally supported using the replication-based approach in which a proxy
+for the risk-free interest rate can be chosen in a completely arbitrary way. Indeed, it is possible to
+use any G-adapted and suitably integrable process α to play the role of a proxy for the risk-free
+interest rate, since the ﬁnancial interpretation (if any) of this process is irrelevant for the derivation
+of decomposition (7.2). It was proven in Proposition 3.2 in [9], under the assumption of null initial
+endowment (so that x = xt(x) = 0 for all t ∈ [0, T ]), that the ex-dividend hedger’s price of an
+
+46
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+attainable collateralized contract C = (A♯, C) equals, on the event {t < τ } for every t ∈ [0, T ],
+
+t (0, Ct) = pe,α
+pe
+
+t
+
+(A) + Bα
+
+{τ c<τ h}(1 − Rc)Υ+ − 1
+
+t EQα(cid:16)1{τ ≤T }(cid:0)1
+
+(αu − ¯fu)Fu(Bα
+
+(αu − ¯hi
+
+u)F i
+
+u(Bα
+
+{τ h<τ c}(1 − Rh)Υ−(cid:1)(cid:12)(cid:12)(cid:12) Gt(cid:17)
+
+u )−1 du(cid:12)(cid:12)(cid:12) Gt(cid:19)
+
+(7.2)
+
++ Bα
+
++ Bα
+
+t EQα(cid:18)Z τ ∧T
+t EQα(cid:18)Z τ ∧T
+
+t
+
+t
+
+(¯cu − αu)Cu(Bα
+
+Z τ ∧T
+
+t
+
+u )−1 du +
+
+dXi=1
+u )−1 du(cid:12)(cid:12)(cid:12) Gt(cid:19),
+
+, F i
+
+t = ξi
+
+tSi
+
+where we denote Ft = ψ0,l
+
+t B0,l
+
+t + ψ0,b
+
+t B0,b
+
+t
+
+t, and
+
+¯ft := f l
+t
+
+1{Ft≥0} + f b
+t
+
+1{Ft<0}, ¯hi
+
+t := hi,l
+
+t
+
+1
+
+t ≥0} + hi,b
+
+t
+
+{F i
+
+1
+
+t <0}, ¯ct := cl
+
+t
+
+{F i
+
+1{Ct<0} + cb
+t
+
+1{Ct≥0},
+
+t
+
+where cl (resp. cb) is the remuneration rate for the cash collateral pledged (resp. received) by
+the hedger. Furthermore, pe,α
+(A) is the ex-dividend clean price and the probability measure Qα
+is such that the processes Si(Bα)−1, i = 1, 2, . . . , d, are Qα-martingales. For more information on
+the concept of a “martingale measure” in a nonlinear model, see Section 3.2.1 in [9]. Equality (7.2)
+leads to the following formal additive decomposition of the ex-dividend price for (A♯, X ) into its
+clean price and several complementary valuation adjustments (for their interpretation, see Section
+3.2.2 in [9]), which can be aggregated into a single total valuation adjustment, denoted as XVAt,
+so that we have
+
+t (0, Ct) = πe,α
+pe
+
+t
+
+(A) + CVAt − DVAt + FVA
+
+¯f
+t +
+
+dXi=1
+
+FVA
+
+¯hi
+t + LVAt
+
+(7.3)
+
+= πe,α
+
+t
+
+(A) + XVAt.
+
+We stress that (7.3) is true for any choice as a proxy α for the risk-free interest rate, which further
+supports the view that the clean price is an abstract concept dissociated from the actual trading
+and the total valuation adjustment is a necessary mechanism needed to bring it back to reality.
+More importantly, terms appearing in the right-hand side in (7.3) are intertwined so that various
+valuation adjustments cannot be computed without the prior knowledge of the hedging strategy
+for the full contract. We thus conclude that the additivity and separation of adjustments, which
+is visibly suggested by the shape of equality (7.3), is in fact illusory, unless the underlying trading
+model has fully linear features so that it is possible to use the theory of linear BSDEs in order to
+justify separation. Obviously, this does not mean that separation cannot hold in some models with
+certain nonlinear features but this should be an exceptional situation, rather than the rule.
+
+As a concrete example of an explicit application of nonlinear pricing theory, we may quote
+[4] who provide a thorough examination of valuation of path-
+the recent paper by Bichuch et al.
+independent European claims in an extension of the classical Black-Scholes model to diﬀerential
+funding rates and counterparty credit risk (for another example of pricing under asymmetric borrow-
+ing and lending rates, see Brigo and Pallavicini [11]). In [4], the authors ﬁrst verify the no-arbitrage
+property of their trading model with respect to the null contract in the case of a nonnegative initial
+endowment x. Subsequently, they apply the BSDE approach to unilateral valuation of a collat-
+eralized European claim with bilateral default risk. The closeout payoﬀ is speciﬁed in reference
+to the third party valuation, which is based on a single risk-free rate (not available to the two
+parties) and thus it is given by the standard Black-Scholes model. It is important to stress that
+the total valuation adjustment for the hedger (or the counterparty) is not computed in [11] as a
+separate quantity, but it is instead deﬁned as the diﬀerence between the full unilateral price and
+
+Derivatives Pricing in Nonlinear Models
+
+47
+
+t
+
+t (x, Ct) − πe,α
+
+the Black-Scholes price (see Deﬁnition 4.8 in [4]), which is hence supposed to play the role of the
+clean price. Using our notation, the deﬁnition of the total valuation adjustment adopted in [4] reads
+XVAt := pe
+(A). It is thus clear that Bichuch et al. [4] do not advocate the practical
+approach, where the clean price and valuations adjustment are supposed to be ﬁrst independently
+computed by trading and CVA desks and subsequently aggregated into the full price. It is also
+observed in [4] that the total valuation adjustments are equal, and thus unilateral prices collapse
+to a single full price, when the pricing BSDE is linear; otherwise, unilateral full prices computed
+by the two counterparties, who are supposed to use identical trading model, are likely to diﬀer.
+Obviously, it is not our intention to suggest that the practice where separate desks are indepen-
+dently dealing with components of a contract and then using the aggregate number as a plausible
+candidate for the “full price” is wrong and thus should be discontinued. We have only argued
+that this pragmatic approach, which can be justiﬁed within the framework of a linear market (see,
+for instance, Burgard and Kjaer [12, 13], Fujii and Takahashi [30] or Kenyon and Green [37, 36])
+is unlikely to result in a mathematically sound arbitrage-free pricing of derivatives in a nonlinear
+setup, where the introduction of the concept of the clean price is no longer advantageous.
+
+Let us ﬁnally mention the important issue of netting of outstanding deals between counterpar-
+ties, which means that, in principle, every new deal should be valued not in isolation, but rather as
+a new component added to the portfolio of existing contracts. Needless to say, this issue is highly
+challenging, both in theory and practice, and thus it is left for future work. Last but not least,
+it should be acknowledged that the valuation of derivatives based on arbitrage-free replication (or
+superhedging) should not be seen as the most realistic pricing approach, but rather a mathemat-
+ical idealization of a much more complex situation, and thus other pricing paradigms should also
+be examined. The interested reader is referred to Kenyon and Green [35] for a discussion of a
+regulatory-compliant derivatives pricing and to Albanese and Cr´epey [2] for a novel balance-sheet
+approach to XVA with the special emphasis on KVA (capital value adjustment) computations.
+
+48
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+Acknowledgments
+
+The research of I. Cialenco and M. Rutkowski was supported by the DVC Research Bridging
+Support Grant BSDEs Approach to Models with Funding Costs. Part of the research was completed
+while I. Cialenco and M. Rutkowski were visiting the Institute for Pure and Applied Mathematics
+(IPAM) at UCLA, which is funded by the National Science Foundation. We would also like to
+thank the anonymous referees and St´ephane Cr´epey for their insightful and helpful comments and
+suggestions, which helped us greatly to improve the ﬁnal manuscript.
+
+References
+
+[1] C. Albanese, S. Caenazzo, and S. Cr´epey. Credit, funding, margin, and capital valuation
+adjustments for bilateral portfolios. Probability, Uncertainty and Quantitative Risk, 2(7):1–26,
+2017.
+
+[2] C. Albanese and S. Cr´epey. XVA analysis from the balance sheet. Working paper, 2017.
+
+[3] Y. Z. Bergman. Option pricing with diﬀerential interest rates. Review of Financial Studies,
+
+8:475–500, 1995.
+
+[4] M. Bichuch, A. Capponi, and S. Sturm. Arbitrage-free XVA. Mathematical Finance, 28:582–
+
+620, 2018.
+
+[5] T. R. Bielecki, M. Jeanblanc, and M. Rutkowski. Hedging of defaultable claims. In Paris-
+Princeton Lectures on Mathematical Finance 2003, Lecture Notes in Mathematics, Vol. 1847,
+pages 1–132. R. Carmona et al. (Eds.), Springer, Berlin Heidelberg New York, 2004.
+
+[6] T. R. Bielecki, M. Jeanblanc, and M. Rutkowski. Replication of contingent claims in a reduced-
+
+form credit risk model with discontinuous asset prices. Stochastic Models, 22:661–687, 2006.
+
+[7] T. R. Bielecki, M. Jeanblanc, and M. Rutkowski. Credit Risk Modeling. Osaka University
+
+CSFI Lecture Notes Series. Osaka University Press, Osaka, 2008.
+
+[8] T. R. Bielecki and M. Rutkowski. Valuation and hedging of contracts with funding costs and
+
+collateralization. SIAM Journal of Financial Mathematics, 6:594–655, 2015.
+
+[9] D. Brigo, C. Buescu, M. Francischello, A. Pallavicini, and M. Rutkowski. Risk-neutral
+valuation under diﬀerential funding costs, defaults and collateralization. Working paper
+(arXiv:1802.10228v1), 2018.
+
+[10] D. Brigo, C. Buescu, and M. Rutkowski. Funding, repo and credit inclusive valuation as
+
+modiﬁed option pricing. Operations Research Letters, 45:665–670, 2017.
+
+[11] D. Brigo and A. Pallavicini. Non-linear consistent valuation of CCP cleared or CSA bilateral
+trades with initial margins under credit, funding and wrong-way risks. Journal of Financial
+Engineering, 1:1–60, 2014.
+
+[12] C. Burgard and M. Kjaer. Partial diﬀerential equations representations of derivatives with
+
+counterparty risk and funding costs. Journal of Credit Risk, 7:75–93, 2011.
+
+[13] C. Burgard and M. Kjaer. Funding costs, funding strategies. Risk, 12(26):82–87, 2013.
+
+Derivatives Pricing in Nonlinear Models
+
+49
+
+[14] L. Carassus, H. Pham, and N. Touzi. No arbitrage in discrete time under portfolio constraints.
+
+Mathematical Finance, 11:315–329, 2001.
+
+[15] R. Carbone, B. Ferrario, and M. Santacroce. Backward stochastic diﬀerential equations driven
+
+by c`adl`ag martingales. Theory of Probability and its Applications, 52:304–314, 2008.
+
+[16] P. Cheridito and K. Nam. BSEs, BSDEs and ﬁxed point problems. The Annals of Probability,
+
+45(6A):3795–3828, 2017.
+
+[17] S. Cr´epey. Bilateral counterparty risk under funding constraints - Part I: Pricing. Mathematical
+
+Finance, 25:1–22, 2015.
+
+[18] S. Cr´epey. Bilateral counterparty risk under funding constraints - Part II: CVA. Mathematical
+
+Finance, 25:23–50, 2015.
+
+[19] S. Cr´epey, T. R. Bielecki, and D. Brigo. Counterparty Risk and Funding: A Tale of Two
+Puzzles. Chapman & Hall/CRC Financial Mathematics Series. CRC Press, Boca Raton, FL,
+2014.
+
+[20] S. Cr´epey, R. Elie, and W. Sabbagh. When capital is the funding source: The XVA anticipated
+
+BSDEs. Working paper, 2017.
+
+[21] S. Cr´epey and S. Song. Counterparty risk and funding: immersion and beyond. Finance and
+
+Stochastics, 20:901–930, 2016.
+
+[22] S. Cr´epey and S. Song. Invariance times. The Annals of Probability, 45(6B):4632–4674, 2017.
+
+[23] F. Delbaen and W. Schachermayer. The Mathematics of Arbitrage. Springer, Berlin Heidelberg
+
+New York, 2006.
+
+[24] R. Dumitrescu, M. C. Quenez, and A. Sulem. Game options in an imperfect market with
+
+default. SIAM Journal on Financial Mathematics, 8:532–559, 2017.
+
+[25] N. El Karoui and S. J. Huang. A general result of existence and uniqueness of backward
+stochastic diﬀerential equations. In Backward Stochastic Diﬀerential Equations. Pitman Re-
+search Notes in Mathematics Series, Vol. 364, pages 27–36. H. Brezis et al. (Eds.), Addison
+Wesley Longman, Harlow, Essex, 1997.
+
+[26] N. El Karoui, S. Peng, and M. C. Quenez. Backward stochastic diﬀerential equation in ﬁnance.
+
+Mathematical Finance, 7:1–71, 1997.
+
+[27] N. El Karoui and M. C. Quenez. Non-linear pricing theory and backward stochastic diﬀerential
+equations. In Financial Mathematics, Lecture Notes in Mathematics, Vol. 1656, pages 191–
+246. B. Biais et al. (Eds.), Springer, Berlin Heidelberg New York, 1997.
+
+[28] A. Fahim and Y. Huang. Model-independent superhedging under portfolio constraints. Finance
+
+and Stochastics, 20:51–81, 2016.
+
+[29] C. Fontana. Weak and strong no-arbitrage conditions for continuous ﬁnancial markets. Inter-
+
+national Journal of Theoretical and Applied Finance, 18:1550005, 2015.
+
+[30] M. Fujii and A. Takahashi. Derivative pricing under asymmetric and imperfect collateralization
+
+and CVA. Quantitative Finance, 13(5):749–768, 2013.
+
+50
+
+T.R. Bielecki, I. Cialenco and M. Rutkowski
+
+[31] I. Karatzas and K. Kardaras. The numeraire portfolio in semimartingale ﬁnancial models.
+
+Finance and Stochastics, 11:447–493, 2007.
+
+[32] I. Karatzas and S. Kou. On the pricing of contingent claims under constraints. The Annals of
+
+Applied Probability, 6:321–369, 1996.
+
+[33] I. Karatzas and S. Kou. Hedging American contingent claims with constrained portfolios.
+
+Finance and Stochastics, 2:215–258, 1998.
+
+[34] K. Kardaras. Market viability via absence of arbitrage of the ﬁrst kind. Finance and Stochas-
+
+tics, 16:651–667, 2012.
+
+[35] C. Kenyon and A. Green. Regulatory-compliant derivatives pricing is not risk-neutral. Working
+
+paper, 2013.
+
+[36] C. Kenyon and A. Green. MVA: Initial margin valuation adjustment by replication and re-
+
+gression. Working paper, 2014.
+
+[37] C. Kenyon and A. Green. Warehousing credit (CVA) risk, capital (KVA) and tax (TVA)
+
+consequences. Working paper, 2014.
+
+[38] R. Korn. Contingent claim valuation in a market with diﬀerent interest rates. Mathematical
+
+Methods of Operations Research, 42(3):255–274, 1995.
+
+[39] F. Mercurio. Bergman, Piterbarg and beyond: Pricing derivatives under collateralization and
+diﬀerential rates.
+In Actuarial Sciences and Quantitative Finance, Springer Proceedings in
+Mathematics and Statistics, Vol. 135, pages 65–95. J. A. Londono et al. (Eds.), Springer,
+Berlin Heidelberg New York, 2013.
+
+[40] T. Nie and M. Rutkowski. Fair bilateral prices in Bergman’s model with exogenous collater-
+
+alization. International Journal of Theoretical and Applied Finance, 18:1550048, 2015.
+
+[41] T. Nie and M. Rutkowski. A BSDE approach to fair bilateral pricing under endogenous
+
+collateralization. Finance and Stochastics, 20:855–900, 2016.
+
+[42] T. Nie and M. Rutkowski. BSDEs driven by a multi-dimensional martingale and their ap-
+plications to market models with funding costs. Theory of Probability and its Applications,
+60:686–719, 2016.
+
+[43] T. Nie and M. Rutkowski. Fair bilateral pricing under funding costs and exogenous collater-
+
+alization. Mathematical Finance, 28:621–655, 2018.
+
+[44] A. Pallavicini, D. Perini, and D. Brigo. Funding, collateral and hedging: uncovering the
+
+mechanism and the subtleties of funding valuation adjustments. Working paper, 2012.
+
+[45] A. Pallavicini, D. Perini, and D. Brigo. Funding valuation adjustment: a consistent framework
+
+including CVA, DVA, collateral, netting rules and re-hypothecation. Working paper, 2012.
+
+[46] S. Peng and X. Xu. BSDEs with random default time and their applications to default risk.
+
+Working paper, 2009.
+
+[47] V. Piterbarg. Funding beyond discounting: collateral agreements and derivatives pricing. Risk,
+
+23(2):97–102, 2010.
+
+Derivatives Pricing in Nonlinear Models
+
+51
+
+[48] S. Pulido. The fundamental theorem of asset pricing, the hedging problem and maximal claims
+in ﬁnancial markets with short sales prohibitions. The Annals of Applied Probability, 24:54–75,
+2014.
+
+[49] M. C. Quenez and A. Sulem. BSDEs with jumps, optimization and applications to dynamic
+
+risk measures. Stochastic Processes and their Applications, 123:3328–3357, 2013.
+
+[50] K. Takaoka and M. Schweizer. A note on the condition of no unbounded proﬁt with bounded
+
+risk. Finance and Stochastics, 18:393–405, 2014.
+
+[51] S. Zheng and G. Zong. A note on BSDEs and SDEs with time advanced and delayed coeﬃcients.
+
+Working paper, 2017.
+
+

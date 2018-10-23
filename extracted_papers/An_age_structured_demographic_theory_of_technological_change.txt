@@ -1,0 +1,2549 @@
+4
+1
+0
+2
+
+ 
+
+v
+o
+N
+6
+2
+
+ 
+
+ 
+ 
+]
+h
+p
+-
+c
+o
+s
+.
+s
+c
+i
+s
+y
+h
+p
+[
+ 
+ 
+
+4
+v
+2
+0
+6
+3
+
+.
+
+4
+0
+3
+1
+:
+v
+i
+X
+r
+a
+
+An age structured demographic theory of technological change
+
+Cambridge Centre for Climate Change Mitigation Research (4CMR), Department of Land Economy, University of Cambridge, 19 Silver Street,
+
+Cambridge, CB3 1EP, United Kingdom
+
+Jean-Franc¸ois Mercure
+
+Abstract
+
+At the heart of technology transitions lie complex processes of social and industrial dynamics. The quantitative
+study of sustainability transitions requires modelling work, which necessitates a theory of technology substitution.
+Many, if not most, contemporary modelling approaches for future technology pathways overlook most aspects of
+transitions theory, for instance dimensions of heterogenous investor choices, dynamic rates of diﬀusion and the pro-
+ﬁle of transitions. A signiﬁcant body of literature however exists that demonstrates how transitions follow S-shaped
+diﬀusion curves or Lotka-Volterra systems of equations. This framework is used ex-post since timescales can only be
+reliably obtained in cases where the transitions have already occurred, precluding its use for studying cases of interest
+where nascent innovations in protective niches await favourable conditions for their diﬀusion. In principle, scaling
+parameters of transitions can, however, be derived from knowledge of industrial dynamics, technology turnover rates
+and technology characteristics. In this context, this paper presents a theory framework for evaluating the parameteri-
+sation of S-shaped diﬀusion curves for use in simulation models of technology transitions without the involvement of
+historical data ﬁtting, making use of standard demography theory applied to technology at the unit level. The classic
+Lotka-Volterra competition system emerges from ﬁrst principles from demography theory, its timescales explained in
+terms of technology lifetimes and industrial dynamics. The theory is placed in the context of the multi-level perspec-
+tive on technology transitions, where innovation and the diﬀusion of new socio-technical regimes take a prominent
+place, as well as discrete choice theory, the primary theoretical framework for introducing agent diversity.
+
+Keywords: Technology transitions, Lotka-Volterra, Replicator dynamics, Evolutionary economics, Discrete choice
+theory
+
+1. Introduction
+
+Socio-technical regime transitions are notoriously complex to model and understand quantitatively, but such an
+understanding may be crucial for anticipating and informing the planning of sustainability transitions. Socio-technical
+systems play important societal functions (Geels, 2002, 2005), and these services and their demand are in a continuous
+evolution. Meanwhile, the evolution of technology generates unforeseen opportunities to society that enable the
+creation of activities that did not exist previously, producing a complex interaction between technology, society and the
+economy, generating economic development through Schumpeter’s widely discussed but not well understood process
+of ‘Creative Destruction’ (Schumpeter 1934, 1939, 1942; see also Nelson and Winter 1982). Technological change
+occurs through a gradual process of technology substitutions which stems from a continuous stream of decision-
+making performed by a myriad of actors involved in the operation of technology or the consumption of the services
+it generates (Gr¨ubler, 1998, Gr¨ubler et al., 1999). This spans from the power sector, transport, communications and
+information technologies, to heating, cooling and lighting equipment and so on. In other words, technological change
+occurs in sectors performing societal functions where generation technologies or socio-technical regimes are not
+unique and competition occurs. Change in such sectors occurs through the choices of consumers or investors facing
+various alternatives and incomplete information, and these decisions are based, in a context of bounded rationality,
+on diverse sets of considerations and constraints (Nelson and Winter, 1982).
+
+Email address: jm801@cam.ac.uk (Jean-Franc¸ois Mercure )
+
+Preprint submitted to the Journal of Evolutionary Economics
+
+November 27, 2014
+
+The process of technological change is not currently well described by any generally accepted theory.1 However,
+a signiﬁcant and well known body of empirical literature exists that consistently describes the process of technology
+substitutions through gradual S -shaped curves (e.g. Fisher and Pry 1971, Mansﬁeld 1961, Wilson 2009; see reviews
+by Gr¨ubler 1998, Gr¨ubler et al. 1999). As opposed to neoclassical technology vintage theory where capital vintages
+have optimal lifetimes and are treated with a reversible equilibrium theory (i.e. not path-dependent, Boucekkine et al.
+(2004), Johansen (1959), Solow et al. (1966), for a review see Boucekkine et al. (2011)), S -shaped curves suggest to
+adopt an approach where time and complex dynamics take a prominent role (e.g. the contagion model of Mansﬁeld
+(1961)). As we show here, attractive parallels with mathematical theories of population dynamics in biology, grounded
+in the understanding of the processes of birth and death of biological individuals (humans, animals, cells, etc), are
+more than simple analogies (e.g. Metcalfe, 2004, Silverberg, 1988).
+
+The best known such parallel is to use the Lotka-Volterra system of population growth equations of competing
+species in ecosystems for the competition of technologies in markets (for an explanation and history see Andersen,
+1994), or equivalently, the replicator dynamics equation of evolutionary game theory (Hofbauer and Sigmund, 1998)
+applied to social sciences. While this idea has strong support in the ﬁeld of evolutionary economics (Safarzynska and van den Bergh,
+2010, Saviotti and Mani, 1995), it also makes intuitive sense to perceive competing technologies (or even socio-
+technical systems) in the marketplace similarly to competing species in ecosystems (or even competing sub-ecosystems
+and food chains). The parallel has been brought further with the development of evolutionary game theory (for a re-
+view, see Hodgson and Huang 2012), the pioneers of which were acutely aware of the strong analogy that could be
+drawn between the mathematics of the evolution of genotype frequencies and their selection in a population in biol-
+ogy, and the process of innovation and technology diﬀusion in economics. In addition to providing a deﬁnition to
+the concept of bounded rationality, this strand of literature demonstrates that the parallel, although described with yet
+insuﬃcient precision, is more than just intuitive (Metcalfe, 2008, 2004). As we show here, the missing link lies in the
+realm of technology selection and demography.
+
+The description of technological change or technology evolution following parallels with biology currently re-
+mains in the conceptual and theoretical domain (for a review, see Safarzynska and van den Bergh, 2010) or in stylised
+form (e.g. ‘history-friendly models’ of Malerba et al. 1999; recombinant models of Safarzynska and van den Bergh
+2012; or the replicator dynamics of Saviotti and Mani (1995)). They are not quite adapted to actual quantitative appli-
+cations such as modelling the supply of particular goods or services, technology mixes or the economic and environ-
+mental impacts that these may have. Meanwhile, Geels (2002), using the multi-level perspective, describes the diﬀu-
+sion of socio-technical systems as much more complex than simple substitution events represented by a set of coupled
+diﬀerential equations, involving niches, early uncoordinated innovations and transformations in the social context,
+seemingly precluding any modelling attempts at all. Despite this, it is remarkable that diﬀusion processes have been
+observed in a myriad of contexts to follow a very simple ordering principle,2 logistic curves or the more general Lotka-
+Volterra system of equations (Farrell, 1993, Fisher and Pry, 1971, Lakka et al., 2013, Marchetti and Nakicenovic,
+1978, Nakicenovic, 1986, Sharif and Kabir, 1976, Wilson, 2009, 2012, and many more), and that such simple pat-
+terns emerge from the underlying complexity.
+
+In order to maintain a quantitative perspective in a computational model, the analysis can be restricted to the
+selection and diﬀusion component. As opposed to a fully evolutionary theory, this excludes the early erratic innovation
+process, assuming that new but established technologies permeate the landscape in dormant niches that could wake up,
+diﬀuse and potentially dominate given the right selection environment, for instance with targeted policy. From then
+onwards, the diﬀusion process, gaining momentum, becomes ﬁrmer and simpler to project quantitatively. Although
+the quantitative prediction of technology diﬀusion is inherently highly uncertain, in parts due to the actual evolutionary
+nature of technological change, it is nevertheless a highly worthwhile venture to undertake, particularly for instance in
+the climate change mitigation context, in which the description of technological change is crucial in order to project
+energy consumption, greenhouse gas emissions and their related environmental impacts (e.g. in power generation,
+transport, industry). As we show elsewhere (Mercure et al., 2014), this approach oﬀers a signiﬁcant improvement
+
+1Observing for instance the stark contrast between approaches by Nordhaus (2010) (exogenous technology trends), Messner and Strubegger
+(1995) (cost-optimisation), de Vries et al. (2001) (elasticities of substitution), Boucekkine et al. (2011), Johansen (1959) (neoclassical vintage cap-
+ital theory), Gr¨ubler (1998) (empirical technology dynamics), Safarzynska and van den Bergh (2012) (evolutionary dynamics), Silverberg (1988)
+(self-organised systems), Malerba et al. (1999) (innovation dynamics within ﬁrms), Geels (2002) (socio-technical regimes).
+
+2In the sense of complxity science, e.g. Anderson (1972), Arrow et al. (1995).
+
+2
+
+over current optimisation approaches where technological change has no clear theoretical underpinning.
+
+While concepts of technology diﬀusion provide insights on the key dynamics involved in transitions, they have
+not been used signiﬁcantly in the modelling literature beyond the ex-post empirical description of past data, using
+the observed pattern, the logistic curve (Fisher and Pry, 1971, Marchetti and Nakicenovic, 1978, Nakicenovic, 1986,
+Sharif and Kabir, 1976, Wilson, 2009, 2012, and many more). Despite the fact that innovation may be the primary
+driver of economic growth (Nelson and Winter, 1982, Schumpeter, 1934, 1939), the process of technology diﬀu-
+sion has yet to be even considered in large scale mainstream models such as those for energy systems modelling
+and related energy policy analysis. These predominantly use representative agent cost-optimisation algorithms (e.g.
+TIMES/MARKAL, IEA/ETSAP, 2012) as a descriptive mechanism, which has no theoretical or empirical ground-
+ing.3 Indeed, this current lack of a representation of empirical dynamics is partly due to the fact that, while empirical
+diﬀusion measurements suggest a system for forecasting technology or market evolution, such projections would rely
+on measured time scaling parameters, which can be reliably measured only precisely in cases of older technologies
+where transitions have already occurred. Eﬀectively, by the non-linear nature of the problem itself, obtaining such
+time scaling parameters for new technologies for which forecasting would be critically important cannot be reliably
+done based on the small amounts of available data.4
+
+I thus ask the question, is it possible to use empirically known technology dynamics to forecast technology? If so,
+how can it be parameterised? As argued above, important scientiﬁc gains could be generated if new insight could be
+found on how to obtain these parameters through other means than the empirical ﬁtting of diﬀusion data, requiring
+to establish a quantitative theory to understand their nature. These parameters are timescales, and this suggests
+that their meaning is associated to the use, the building and the scrapping of technology in time at the unit level,
+hinting to the use of demography theory applied to technology. Previous work has shown that the use of the Lotka-
+Volterra equation system can be made convenient, even mainstreamed, with the creation of the ‘Future Technology
+Transformations’ family of computational models (Mercure, 2012), which enables to explore the impact and dynamics
+of policy instruments on choices of diverse agents, with real-world data. This model is based on the theory presented
+here. It was recently used to evaluate climate change impacts of combinations of policy instruments in 21 countries
+covering the World by integrating it to macroeconometric and climate modelling frameworks (Mercure et al., 2014),
+and currenlty runs under a resolution of 54 countries and 24 technologies (Cambridge Econometrics, 2014).
+
+The goal of this paper is thus to derive a parameterisation method from a detailed theory. I ﬁrst frame the problem
+by using an example of empirical data, and place it in context within its appropriate theoretical framework, transitions
+theory (section 2). Second, I derive from ﬁrst principles components of a quantitative theory of technological change,
+based on survival (or demographic) analysis explaining the origin of the timescales of change (section 3). Third, by
+invoking theoretical concepts of technology choice mostly based on discrete choice theory, I combine the components
+to demonstrate how a Lotka-Volterra system (or replicator dynamics) can be derived from demography theory from
+ﬁrst principles (section 4). Finally, I interpret this theory by demonstrating the origin of the the scaling parameters
+of the Lotka-Volterra system, and point to how these can be used in real models of technology that could potentially
+replace with reasonable ease incumbent cost-optimisation models (section 5).
+
+2. Framing the problem and putting it into theoretical context
+
+2.1. The Lotka-Volterra equation for empirical technology transitions
+
+The parallel between technology and biology/ecology can be summarised as follows. Figure 1 presents the iconic
+data from Nakicenovic (1986) for the transition between horse-drawn carriages and petrol cars that occurred in the
+1920s. In this data, a transition is observed superimposed onto an exponential growth in the number of vehicles.
+Through closer inspection, one observes that by dividing the numbers of horses and cars by the total number of
+transport units, functions reminiscent of logistic curves are observed that cross each other in around 1915 (using S
+
+3No evidence points to cost-optimisation behaviour by agents, i.e. ﬁrms (Nelson and Winter, 1982) or consumers (Douglas and Isherwood,
+1979), including at an aggregate level (Keen, 2011), and no theory satisfactorily proves that an ‘average’ representative agent can correctly repro-
+duce the aggregate behaviour of an underlying diverse set of agents, including neoclassical theory (Keen, 2011).
+
+4E.g. ﬁtting logistic curves requires data that spans at least beyond the inﬂexion point.
+
+3
+
+Figure 1: Transition from horse-drawn carriages to petrol cars in the 1920s (data originally from Nakicenovic 1986, graph taken from Gr¨ubler et al.
+1999, reproduced with permission). (Left) Raw data on a semi-log axis. (Top Right) The data, when expressed as fractions of the total F, follows
+very closely logistic curves. (Bottom Right) This demonstrated by a transformation of the data of the form F/(1 − F) on a semi-log axis, which
+produces nearly linear trends.
+
+1
+
+1 + exp(cid:0)α12(t − t0)(cid:1)
+
+1
+
+1 + exp(cid:0)α21(t − t0)(cid:1)
+
+,
+
+S 2(t) = 1 − S 1(t) =
+
+.
+
+(1)
+
+here for market Shares):
+
+S 1(t) =
+
+This is shown to be an accurate assessment by displaying the fractional data as S /(1 − S ) on semilog axes, generating
+linear trends, of which the time scaling parameters α are obtained from the slope:
+
+log  S 1
+
+1 − S 1! = α12(t − t0),
+
+log  S 2
+
+1 − S 2! = α21(t − t0), α12 = −α21,
+
+(2)
+
+Taking a time derivative of these expressions, one obtains a pair of diﬀerential equations fully describing the system:
+
+dS 1
+dt
+
+= α12S 1(cid:0)1 − S 1(cid:1) = α12S 1S 2,
+
+dS 2
+dt
+
+= α21S 2S 1.
+
+(3)
+
+This example depicts the interaction occurring within a pair of technologies. Geels (2005) criticises the analysis
+of Nakicenovic (1986) by invoking the presence of two other important transport technologies that have interacted
+with and inﬂuenced the development of petrol vehicles but have not pervaded the market, namely electric trams and
+bicycles. Eﬀectively, in most cases of technology competition, it is nearly impossible to exclude the existence of a
+third interacting component, and a fourth and so on,5
+
+˙S 1 = α12S 1S 2 + α13S 1S 3 + α14S 1S 4 + ...
+˙S 2 = α21S 2S 1 + α23S 2S 3 + α24S 2S 4 + ...
+
+˙S n = αn1S nS 1 + αn2S nS 2 + αn3S nS 3 + ...
+
+...
+
+
+
+⇒
+
+dS i
+dt
+
+=
+
+n
+
+Xj=1
+
+αi jS iS j,
+
+(4)
+
+5The perverse eﬀect of using quantities relative to the total is that this method can easily lead to overlooking other competing technologies that
+
+only hold small market shares.
+
+4
+
+generalising the theory to an arbitrary number n of technologies interacting in the marketplace, with interaction
+time constants held in the antisymmetric matrix αi j.
+It corresponds to the so-called replicator dynamics used in
+evolutionary game theory (imitation dynamics, Hofbauer and Sigmund, 1998, p86) and evolutionary economics
+(Safarzynska and van den Bergh, 2010), in binary interaction form. A more common version however is one of com-
+parison of the ﬁtness of a candidate to the average ﬁtness of the population,
+
+dS i
+dt
+
+= S iXj (cid:16)Fi(S j) − F (S j)(cid:17) ,
+
+(5)
+
+The replicator equation is mathematically equivalent to the Lotka-Volterra system of diﬀerential equations for the
+numbers of individuals in a set of competing species in an ecosystem when expressed in absolute numbers,
+
+dNi
+dt
+
+= ri
+
+Ni −Xj
+
+αi jNiN j
+
+Ntot
+
+
+
+.
+
+(6)
+
+Here, the ﬁrst term riNi is the birth of individuals with birth rates ri, generating an exponential growth component,
+and the second term, negative, expresses both the interference of a specie with itself, when resources become scarce
+and individuals begin to compete, or the interference across species6 competing for the same resources. The new
+parameter Ntot is the carrying capacity of the ecosystem, the number of individuals that the system can accommodate.
+In the technology context, the carrying capacity corresponds to the total number of units of technology supplying the
+demand for a service, or societal function, following a demand led economic assumption. In this analysis, however,
+the parameters ri and αi j contain lots of information and thus need unpacking, which we proceed to do below.
+
+2.2. Combining technology demography and choice modelling
+
+This paper presents a model of technological change that explains the pattern given above, deriving from ﬁrst
+principles a replicator dynamics equation for technologies at the unit level from demography theory,7 and provides
+meaning to its parameters (αi j) in terms of information that relates to technology and industry characteristics (e.g.
+life expectancy, rates of capital investments, etc). Several independent strands of demography exist, using either a
+continuous or a discrete form, (all equivalent, Keyﬁtz, 1977), of which I shall choose the continuous form. Human
+demography in the continuous version corresponds to an age structured form of single specie population dynamics.
+It provides an in-depth view of the process of population evolution through age speciﬁc stochastic birth and death
+events, using probabilities of giving birth and of dying for age tranches covering a whole lifetime. This provides
+demographers with a ﬁner accuracy for population projections than crude average birth and death rates. This is also
+partly equivalent to survival analysis as used in engineering to determine the statistics of failure of devices. A system
+of competing species can also be described with an age structure. I create here such a construction for technology
+dynamics, which, as I will show, explains the form of the technological change process due to its key property of
+self-correlation in time.
+
+In contrast to demography, however, the birth of technology obviously does not occur through pregnancy, although
+it is possible to deﬁne an equivalent birth function (or maternity function, see Kot, 2001). Technology birth takes
+place in an industrial structure through the investment of ﬁnanciers in production capital and labour, using for this
+the proﬁts on sale of these same technologies. Sales are the process by which population expansions can take place:
+if sales increase, the production capital and labour can be expanded, but if sales decrease, the production capital and
+labour must eventually depreciate due to lack of investment. In order to explore this I thus proceed in section 3 with
+describing mathematically the birth, death and the nature of competition in a market.
+
+The choice of technology however is a human process, and the human population is naturally diverse. To model
+choice by diverse agents, a standard theory exists which is commonly applied, discrete choice theory (e.g. voter
+models, transport mode choice, see Ben-Akiva and Lerman, 1985, McFadden, 1973). This is also known as logit
+models, in which the choice probability commonly takes the form
+eUi
+
+eUi
+
+, (Binary form)
+
+fi =
+
+, (Multinomial form),
+
+(7)
+
+fi =
+
+eUi + eU j
+
+6The relative signs of the elements in αi j when permuting i and j determine the nature of the interaction, i.e. competition or predator-prey.
+7E.g. how long does a car survive for on roads? How many cars of a particular type can be produced in a year?
+
+Pk eUk
+
+5
+
+where Ui is the so-called random (i.e. stochastic) utility associated to each choice. These models however, if applied as
+they are to technological change, fundamentally assume perfect information and technology access by diverse agents,
+and, without further dynamics, instantaneous diﬀusion. It however appears appropriate to connect discrete choice
+theory with the replicator equation of evolutionary game theory. As we show below, a duality exists between the
+binary interaction form of the Lotka-Volterra (eq. 6) and the multi-technology form of the common replicator equation
+of evolutionary theory (eq. 5), and furthermore, the multinomial logit approximately emerges when transforming the
+Lotka-Volterra system in to this form of the replicator equation (section 4.4).
+
+2.3. The multi-level perspective in transitions theory
+
+This work can be brought into the perspective of transitions theory, the main qualitative theoretical framework
+to describe transitions of socio-technical regimes. This paper however treats the problem from a multi-technology
+competition perspective, which can thus be brought into the transitions theory context.
+
+Starting from the picture of Geels (2002), the process of technology transitions from a multi-technology com-
+petition perspective can be thought of as going through two diﬀerent phases. This is depicted in ﬁgure 2. New
+technologies originate from small, erratic, cumulative incremental innovations that gradually gain coordination as in-
+ventors and ﬁrms get to grips with understanding their own market and ﬁguring out what is possible technically. This
+is shown with small randomly oriented arrows, with three colours indicating three innovations generating roughly the
+same service, or societal function. Many trials and errors generate experience and learning that gradually determine
+the successful direction to take. Once this happens, better deﬁned technologies in a particular socio-technical context
+begin to gain momentum of diﬀusion, and enter what I will call the demographic phase. At this point, the growth rate
+is determined both by: (1) agent choices (in terms of the respective advantages and ﬂaws of competing technologies
+including the incumbent) within the socio-technical context and its evolution, (2) the timescales of birth and death, or
+technology turnover. In a situation of very clear and favourable consumer preferences and socio-technical evolution,
+the diﬀusion becomes limited by the birth rate of the new technology, and by the death rate of the old technology
+being replaced: the timescales of technological change which are the subject of this paper.
+
+The innovation phase is diﬃcult to model in a forecasting context, as this would require knowing the unknown,
+innovations that have not yet been developed, inventions that have not yet been invented. Therefore, it is diﬃcult to
+describe the emergence of new technologies beyond the qualitative picture by Geels (2002). However, the impacts
+of innovation on prices is simple to include using learning curves, if they are known. When technologies enter the
+demographic phase, they are well deﬁned with a dominant design, and modelling their diﬀusion becomes straightfor-
+ward, given a model of technology choices and knowledge of their survival properties, the birth and survival functions
+deﬁned below, or equivalently the life expectancy and the rate of reinvestment into production capital and labour of
+all competing technologies. This diﬀusion is thus made uncertain in such a model in parts by the lack of possibility
+of emergence of disruptive alternatives.
+
+3. Model components: birth, death and choice of technology
+
+3.1. The death process
+
+The death of technology at the unit level can occur in diﬀerent ways with diﬀerent probabilities. For example, in
+the transport sector, vehicles can be retired due to fatal accidents, failures, or by economic decisions of owners due
+to increasing costs of maintenance with age.8 These processes have diﬀerent probabilities of occurring as functions
+of vehicle age. For a technology of brand-model i, taking the probability of destruction at age a as pi(a)∆a, and the
+number ni(a, t′)∆t′ of technology units produced between year t′ and t′ + ∆t′ (or age interval ∆a),9 the change in this
+age distribution of technology units ∆n(a, t) at time t during an ageing interval ∆a due to destructions is
+
+∆ni(a, t′)∆t′ = −pi(a)ni(a, t′)∆t′∆a.
+
+(8)
+
+8The existence of sunk costs, investments in exchange for which technology is expected to operate for a certain amount of time, imply the
+existence of a non-zero life expectancy. This is particularly true if money is borrowed for the purchase of a unit and repaid during its operating
+lifetime.
+
+9E.g. the number of 2003 Citroen C3 currently 11 years old.
+
+6
+
+Figure 2: Illustration of the demographic phase of technology transitions, adapted from Geels (2002). Small arrows represent small incremental
+erratic innovations, during the innovation phase, which gradually gain coordination and momentum before diﬀusion takes place, entering the
+demographic phase. One technology is in decline (gray), disappearing at a maximum rate related to its survival function ℓ(a). One technology
+initially gains market shares at the expense of the one declining (blue), but is in time beaten in the race by another (black), which in turn is overtaken
+by yet another technology (red). The maximum growth rate is related to the birth function m(b). The socio-technical context, consumer preferences
+and the environment generate selection mechanisms driving market share exchanges between technologies.
+
+In the continuous limit (∆a → 0), solving this for a yields
+
+ni(a, t′)∆t′ = ni(0, t′)ℓi(a)∆t′,
+
+ℓi(a) = exp −Z a
+
+0
+
+pi(a′)da′! .
+
+(9)
+
+ℓi(a) is the common demographic survival function, while pi(a) is the instantaneous force of death (see for instance
+Keyﬁtz, 1977). This is depicted in ﬁg. 3 (left panel). When used in relation to people, survival functions are derived
+from life tables where individuals are traced during their lifetime from birth until death, which, when applied to
+technology, is called survival analysis in engineering. The various processes of technology death can be associated to
+components in ℓi(a). Accidents normally have a constant force of death, and therefore give ℓi(a) a simple exponential
+form. Meanwhile, scrapping due to failures tend to occur later during technology life, with increasing values of p(a).
+Thus ℓ(a) can be written as
+
+p(a) =
+
+1
+τ1
+
++
+
+a
+τ2
+2
+
++
+
+a2
+τ3
+3
+
++ ...,
+
+ℓ(a) = exp
+
+,
+
+(10)
+
+−
+
+a
+τ1
+
+−
+
+a2
+2τ2
+2
+
+−
+
+a3
+3τ3
+3
+
+− ...
+
+each term corresponding to diﬀerent destruction processes with diﬀerent timescales τn. If accidents dominate the
+destruction process, then ℓi(a) should take predominantly an exponential form, while if the probability of failures
+dominates and increases approximately linearly with age, ℓi(a) takes the form of a gaussian, and so on. The survival
+of transport vehicles in the USA was shown to follow approximately a mixture of τ1 and τ2 processes (ORNL, 2012,
+and references therein). While ℓi(a) expresses the probability of a technology unit to remain in use until age a, the
+negative of its derivative expresses the probability of destruction at age a. The life expectancy τi is deﬁned as
+
+τi = −Z ∞
+
+0
+
+a
+
+dℓi(a)
+
+da
+
+da = Z ∞
+
+0
+
+ℓi(a)da,
+
+7
+
+(11)
+
+Death of technology
+
+Birth of technology
+
+)
+a
+(
+p
+
+ 
+,
+)
+a
+(
+l
+
+Area = µ
+
+pi(a)
+
+ℓi(a)
+
+a
+
+P K
+
+i (b)
+
+ℓK
+i (b)
+
+mK
+
+i (b)
+
+b0
+
+τ K
+
+i
+
+P K
+
+i
+
+Area = Φ
+
+b
+
+)
+b
+(
+m
+
+ 
+,
+)
+b
+(
+P
+
+ 
+,
+)
+b
+(
+l
+
+0
+
+Figure 3: Schema of the typical technology survival function ℓi(a) (left) and birth function m(b) (right), which respectively stem from the in-
+stantaneous force of death p(a) and a product of the production capital survival function ℓK
+i (b). The area under ℓi(a)
+corresponds to the life expectancy τi, while the area under mi(b) is the total expected production from one unit of capital during its lifetime, Φi.
+
+i (b) and the productivity PK
+
+where the last expression above is obtained from the previous by integration by parts. In the simple case of death
+dominated by accidents, τi = τ1 and units of a particular age tranche decrease in numbers exponentially at a rate equal
+to the life expectancy.
+
+Every year t = t′ + a, a certain number of deaths di(t) occur, technology units that are scrapped in some way or
+
+another, while a number ξi(t) of new units are sold, both changing the total number of units in use,
+
+∆Ni
+∆t
+
+= ξi(t) − di(t).
+
+(12)
+
+While deaths decrease the number of units of all ages, sales generate units of age zero. The gradual decease in numbers
+with ageing is
+
+dni(a, t′)
+
+dt
+
+dℓi(a)
+
+da
+
+∆t′ = ni(0, t′)
+
+∆t′,
+
+ni(0, t′) = ξi(t′),
+
+(13)
+
+where for each age tranche between a and ∆a (or production year between t′ and t′ + ∆t′), the number of deaths
+depend on the probability of destruction times the number of units of that age remaining, which decreases every year.
+The number of units in each age tranche originates from sales that happened a years ago (in year t′). Thus, in the
+continuous limit ∆t′ → 0, while the total number of units at time t depends on the number of units sold in the past that
+still remain at time t,
+
+Ni(t) = Z t
+
+−∞
+
+ξi(t′)ℓi(a)dt′ = Z ∞
+
+0
+
+ξi(t − a)ℓi(a)da,
+
+(14)
+
+the reduction in the number of units at year t due to deaths is the sum of the number of units that remain in each age
+tranche and their probability of being destroyed precisely in year t,
+
+di(t) = −Z ∞
+
+0
+
+ξi(t − a)
+
+dℓi(a)
+
+da
+
+da.
+
+(15)
+
+These expressions are the ﬁrst and second convolutions encountered in this theory, of past sales with the survival
+function and the probability of death. If sales ξi(t) are related in any way to the existing number of units, this produces
+a self-correlation of the number of units with itself in past years. I will show later that this is eﬀectively the case,
+which restricts how fast the total number of units can change in the system.10
+
+10Note that in contrast to the birth function that I shall deﬁne further, ℓi(a) must be a strictly decreasing function of age otherwise dead units
+
+would come back to life.
+
+8
+
+3.2. The birth process
+
+The number of units of technology that can be built in a time span depends on the production capital and labour
+available at that time. However, production capital also wears out as it ages (when it is not repaired) and has a ﬁnite
+lifetime, and therefore its own survival function, which we denote ℓK
+i (b), with age variable b. The production capital
+K(b, t′), installed at time t′ of age b, will begin production after a certain delay of installation b0, and therefore its
+age dependent productivity function, PK
+i (b), is zero at b = 0 (see ﬁg. 3). The production decreases statistically with
+i (b → ∞) = 0.11 The number of
+age however, since production capital gradually break down with ageing following ℓK
+units of technology produced per year by these production units of age b at time t during an interval of capital ageing
+is therefore K(b, t)ℓK
+
+i (b)PK
+
+i (b)∆b.
+
+Investment in new units of production capital is carried out using part of the income from the sale of produced
+technology units (we assume, of technology of the exact same type, we do not mix funds across diﬀerent industries).
+Taking Ri as the fraction of re-investment of proﬁts into production capital,12 the amount of capital of age b at time
+u scales with sales that occurred b years earlier, i.e. K(b, t′) = Ri ξi(t′) = Ri ξi(t − b). The total production capacity
+δNi(t) of all vintages can be calculated from the amount of capital that was built with funds from sales in all previous
+years. Deﬁning the technology birth function mi(b) = PK
+
+i (b)ℓK
+
+i (b), this is
+
+δNi(t) = RiZ ∞
+
+0
+
+ξi(t − b)mi(b)db,
+
+(16)
+
+where the diﬀerence between the production capacity and actual sales depends on the presence of competitors and
+consumer choices.13 This is the third convolution of this theory, which generates, if the number of production units is
+related to sales, another autocorrelation in the number of units.
+
+As opposed to ℓi(a), mi(b) it is not a strictly decreasing function, but it increases initially, as production begins
+some time after construction, before decreasing in later years when old production lines get decommissioned. It must
+0 mi(b)db converges. As we show in section 4.3, in order to
+
+be an integrable function, the area under which Φi = R ∞
+
+have an increasing production capacity, we must have RΦi > 1.
+
+The fastest possible rate of growth of sales can be calculated by hypothesising a ﬁctitious situation without com-
+petition where households are able to consume any level of production, therefore with indeﬁnite growth (a ﬁctitious
+purely supply-led market14). The production capital is under full employment and the total amount of production of
+technology units is
+
+ξi(t) = RiZ ∞
+
+0
+
+ξi(t − b)ℓK
+
+i (b)PK
+
+i (b)db.
+
+(17)
+
+Thus, in this monopolistic case sales that occur in the present are completely determined by sales in the past, where
+the income on past sales were used to expand the production capacity, which enables more production and more
+sales, and thus more expansion and so on. This is identical to renewal equations in demography where birth rates in
+the present depend on what birth rates have been in the past (Keyﬁtz, 1977, Kot, 2001), also called Lotka’s integral
+equation (Lotka, 1911). This leads to exponential solutions with possible oscillatory components (Keyﬁtz, 1967) for
+both ξi(t) and K(t), therefore indeﬁnitely increasing sales and capital. Obviously, such a monopoly could never be
+maintained indeﬁnitely and sales must presumably fall short of production at some point in time where a competitor
+interferes with the market with a more successful product. However, in a situation where an innovation were to take
+such a path free of competitors, it would follow the fastest possible rate t−1
+of growth determined in Appendix A,
+equal to either:
+
+i
+
+1. RiPi, the rate of investment in the case where the production capital lifetime is long-lived and only a short or no
+
+delay takes place in its construction,
+
+2. b0, the time delay, in case a long delay takes place in the construction of the production capital.
+
+11We consider here repairs as investments in new production capital, in order to correctly keep track of the amount of depreciation.
+12Ri is in units of production capital purchased per unit of technology sold.
+13Whether the capital is fully used or whether there is spare capacity.
+14It almost never happens that a rate of production growth determined solely by the supply side persists for a long time. For example in the
+transport sector, if sales in developed nations were to increase faster than the population, this would mean that households eventually own 3-4-5 cars
+and so on, rather unlikely. In this case, the rate of growth of sales is limited by the rate of growth of the demand, not the rate at which production
+could hypothetically be scaled up given its proﬁtability. Supply-led growth however could arise in special circumstances such as in wartime policies
+of rapid up-scaling.
+
+9
+
+Consumer choices
+
+x j
+
+x i
+
+f j (x)
+
+f i (x)
+
+σ i
+
+σ j
+
+Generalised cost x
+
+agents adopting i
+
+Fij (Δx)
+
+= 1- Fji (Δx)
+
+σ i j =
+
+σ 2
+i
+
++ σ 2
+j
+
+agents adopting j
+
+Generalised cost difference Δx
+
+y
+c
+n
+e
+u
+q
+e
+r
+F
+
+ 
+
+y
+c
+n
+e
+u
+q
+e
+r
+F
+e
+v
+i
+t
+a
+u
+m
+u
+C
+
+l
+
+Figure 4: Illustration of the process of decision-making under diversity of agents between two technologies. The blue curve represents the
+distribution of perceived generalised costs for one technology, and the red curve that of the other. In the left panel, if diversity is very low, choices
+can ﬂip very abruptly as average costs cross. This corresponds to the representative agent case. In the right panel, introducing signiﬁcant diversity
+makes choices distributed and choices change very gradually as costs cross.
+
+3.3. The choice process
+
+As we know from diﬀusion theory (Rogers, 2010), the diversity of agents is linked to diﬀusion rates.
+
+I thus
+create a model of decision-making in the context of diverse agents. For a model of technology diﬀusion, we require
+an aggregate representation of decision-making when agents are diverse, and costs have variations. Diversity stems
+from diﬀerent perceptions from agents when they take a decision, which may originate from a large set of particular
+preferences and constraints that is impossible to enumerate in a model. We require this diversity to be summarised by
+distributions. For this, I assume that choice is made on the basis of a single quantity, a generalised cost x (ﬁgure 4
+top), evaluated by agents for each option they see as available to them, and this value must feature a quantiﬁcation of
+all possible aspects that weigh in the decision-making balance.
+
+To clarify, I postulate here that distributions of perceived costs correspond to distributions of observed costs. I
+justify it as follows: agents, I assume, when considering investing in a unit of technology (e.g. a car), most likely
+choose something they have seen chosen before, perhaps by someone they know, such that they were able to gather
+information.15 This may be due to their belonging to a particular social group and social class, and they are most
+likely to choose amongst what their peers have previously chosen, which itself is a subset of what the whole market
+has to oﬀer (e.g. poor rural households perhaps purchase diﬀerent types of vehicles to rich suburban families, which
+itself is diﬀerent than single middle-class persons, i.e.
+their peers are a subset of the population and their obser-
+vations are a subset of all observations). This is a key part of what is known as the anthropology of consumption
+(Douglas and Isherwood, 1979). Thus I assume restricted technology/information access, in other words, agents do
+not choose what they do not know, and they do not know, or care for, all options technically available. Choices of par-
+ticular social groups endure through peer observation and visual inﬂuence, which has been demonstrated empirically
+for for example with vehicle purchases in the USA (McShane et al., 2012).
+
+15i.e. they most likely do not choose something they know nothing of, and they gather reliable information predominantly through observations
+
+of their peers
+
+10
+
+The frequency of events of observations of a particular technology model (by consumers shopping), sample of
+an ensemble of such events, corresponds to the frequency of recent sales of that model (purchases by their peers). It
+follows that the probability of choosing a particular model is most likely proportional to this frequency of observation,
+and thus these preference distributions, associated to circumstances, constraints and social group origin of consumers,
+diﬃcult to enumerate and unknown to the modeller, are relatively stable. These combined frequencies form a gener-
+alised cost distributions of sales. Therefore in this perspective, the generalised cost distribution of recent sales is a
+representation of the diversity of choices. I shall go further and claim that we can use the measured diversity of sales
+and interpret it in terms of the diversity of agents. In such a perspective, technology sales by type and model reinforce
+technology sales of those types and models, consistent with the work of McShane et al. (2012). This is a situation of
+increasing returns to adoption, discussed by Arthur (1989), which, combined with diversity, he demonstrates leads to
+path dependence and several equilibrium points.
+
+This approach to modelling choice is not new, termed discrete choice theory (Ben-Akiva and Lerman, 1985,
+McFadden, 1973), where the generalised cost being minimised (ﬁgure 4) is equivalent to the random utility being
+maximised in the more classical version of the theory. In binary logit form, the description of decision-making is
+represented here using pairwise comparisons of cost distributions (ﬁgure 4, top). When faced with equivalent technol-
+ogy choices, the fraction of investors or consumers choosing technology i over j can be approximated by counting the
+number of instances out of the total where the generalised cost of technology i falls below every possible other value of
+the generalised cost of technology j, and vice-versa. Following standard discrete choice theory if the distributions are
+of the Gumbel type (extreme value distributions), with standard deviations (diversity) σi and σ j, then the frequency
+where technology i is less costly than technology j follows a logistic distribution (the binary logit in eq. 7), of width
+j. The pairwise comparison generates a choice likelihood of adopting i over j that I denote
+Fi j, and a likelihood of adopting j over i F ji = 1 − Fi j. This is derived exactly and explained further in Appendix B.
+Finally, one comment may be added concerning innovation. Technologies are not static but change as production
+methods improve, and these improvements occur through re-investment and production. Innovation in the ﬁrm leads to
+learning-by-doing cost reductions, which inﬂuences the choices of agents (e.g. McDonald and Schrattenholzer, 2001,
+Weiss et al., 2012). In particular, the costs of new technologies typically change faster than those of the incumbent.
+
+parameter σi j = qσ2
+
+i + σ2
+
+Learning curves, of the usual form Ci(t) ∝ (R ξi(t)dt)−b (cumulated sales) can easily be included in the decision-
+
+making process described here.
+
+4. An age structured model of technology competition
+
+4.1. Deaths replaced by births
+
+I now build a model of technology competition and substitution. Choices of consumers or investors are taken to
+mean what choices would be made if all options were not equally available or known to all agents. This is deﬁned in
+terms of preferences in the comparison of each possible pairs of technologies Fi j. Given that despite the ﬁrst choice
+of consumers or investors, those may not necessarily be available in every individual situations due to the amount of
+existing industrial capacity to produce them, consumers or investors may have to content themselves with their second
+or third choice. This is important here since we are dealing with technology diﬀusion, and that the diﬀusion process
+involves a gradually changing availability of new technologies.
+
+Considering that units of any age are replaced by new ones when they come to the end of their life and are
+scrapped,16 following this approach, I evaluate the number of units removed from one arbitrary technology category
+j and added into another category i. For this, I start with the total number of deaths to be replaced in all vehicle
+categories and ages, and ﬁnd how many of those belong to category j. Out of those destructions in j, I evaluate those
+that were chosen by consumers to be replaced by technology i, according to Fi j.
+
+Of these, only a fraction can be produced. The production capacity of a particular technology may not necessarily
+be able to supply the demand in every one of these situations, were the consumers to all simultaneously choose this
+technology. Therefore, in a certain number of these situations, the option will simply not be available, and consumers
+
+16i.e. accidents, breakdowns or economic scrapping decisions, following the survival function. The nature of ownership of these technology
+
+units, and whether they change ownership, is not relevant, which enables to make abstraction of second-hand markets.
+
+11
+
+will have to choose between the remaining options despite their best preference. The fraction of instances where
+this choice will be available with respect to the total number of choices being made corresponds to the fraction of
+production capacity of this technology with respect to the total production capacity.
+
+This can be understood through an analogy involving an ensemble of shops with a number of competing products
+on their shelves, and agent only go to their local shop, and thus each see a diﬀerent set of options. Given the production
+capacity of each product’s respective industry, most shops will not be able to stock units of all competing products.
+The relative frequency of shops stocking particular technology models corresponds to the relative production capacity
+for those models. When customers have equal preferences for all products, the relative probability of the average
+customer choosing particular products corresponds to the average composition of the product choice in the ensemble
+of shops, which itself corresponds to relative production capacity of each product with respect to the total. Thus the
+fraction of units of technology j, chosen to be replaced by technology i, that can actually be replaced by units of i
+corresponds to the fraction of the total production capacity that produces technology i.
+
+I deﬁne a ﬂow of units from categories j to i as follows:
+
+∆N j→i = 
+
+i
+
+Fraction of
+prod. capital
+belonging to i
+
+" Consumer
+preferences #i j
+
+Fraction of
+deaths
+belonging to j
+
+" Number of
+
+deaths
+
+#tot
+
+(18)
+
+
+
+ j
+
+The net ﬂow from both directions between i and j (some agents make opposite choices), ∆Ni j, and the sum of all
+
+changes for any technology i, are:
+
+∆Ni j = ∆N j→i − ∆Ni→ j, ∆Ni = Xj
+
+∆Ni j.
+
+4.2. The age structured model
+
+Eq. 18 can be written in terms of the production capacity δNi(t) and deaths d j(t), as deﬁned above:
+
+(19)
+
+(20)
+
+(21)
+
+The production capacities and death numbers at time t can be replaced by convolutions of past sales (eqns 15 and 16):
+
+∆t.
+
+dk(t)
+
+∆N j→i =   δNi(t)
+
+0 ξi(t − b)mi(b)db
+
+Pk δNk(t)! Fi j  d j(t)
+Pk dk(t)!
+Xk
+0 ξ j(t − a) dℓ j(a)
+R ∞
+RiR ∞
+Fi j
+0 ξk(t − b)mk(b)db
+da da
+Pk RkR ∞
+PkR ∞
+0 ξk(t − a) dℓk(a)
+
+da
+Xk Z ∞
+
+∆t.
+
+ξk(t − a)
+
+dℓk(a)
+
+da
+
+0
+
+da da
+
+∆N j→i = 
+
+Note the symmetry between the production side and the destruction side of this equation. There is, eﬀectively, a
+high similarity between both processes. The diﬀerence however is fundamental: while ℓ(a) is a strictly decreasing
+normalised function of age and smaller than 1, generating destruction only, Rim(b) increases, and its integral is greater
+than 1, generating production. However, in order not to have an indeﬁnitely increasing production capacity, m(b)
+also decreases again at high values of b, maintaining the function integrable17, generating decreases in the production
+capacity when sales decrease, reﬂecting the gradual depreciation and wearing out of the production capital if no funds
+are available to replace them.
+
+Eq. 19 with eq. 21 provide an expression for exchanges of units between categories (the exchange term). However,
+the total number, the carrying capacity, could also be changing, requiring either units that are brought in that do not
+replace deaths, or deaths that are not replaced. In the more common case of a total population Ntot increasing, this is
+met by technology production following the relative production capacity:
+
+∆N↑
+
+i = 
+
+0 ξi(t − b)mi(b)db
+
+RiR ∞
+0 ξk(t − b)mk(b)db
+Pk RkR ∞
+
+  ∆Ntot
+∆t ! ∆t,
+
+(22)
+
+17The production capital produces a ﬁnite amount of goods in its lifetime.
+
+12
+
+where choices need not be involved.18 Meanwhile in the second less common case, the decrease in Ntot is met by the
+relative rate of deaths,
+
+Assembling these expressions together, one obtains an expression too large to write here, summarised by
+
+∆N↓
+
+i = 
+∆Ni = Xj
+
+R ∞
+0 ξi(t − a) dℓi(a)
+da da
+PkR ∞
+0 ξk(t − a) dℓk(a)
+
+da da
+or ∆Ni = Xj
+
+∆Ni j + ∆N↑
+i
+
+  ∆Ntot
+∆t ! ∆t.
+
+∆Ni j + ∆N↓
+i .
+
+(23)
+
+(24)
+
+(25)
+
+When terms are replaced in eq 24, the resulting large expression corresponds to the demographic model of tech-
+nology expressed in terms of the full sales history. This is the most general model of technology competition that can
+be derived from deterministic demography theory.19
+
+This model can also be expressed uniquely in terms of sales, where ξi(t) = P j ∆N j→i + ∆N↑
+i :
+da!
+
+0 ξi(t − b)mi(b)db
+
+ξ j(t − a)
+
+dℓ j(a)
+
+da
+
+ξi(t) = Xj
+
+
+
+RiR ∞
+0 ξk(t − b)mk(b)db
+Fi j Z ∞
+Pk RkR ∞
+RiR ∞
++
+0 ξk(t − b)mk(b)db
+Pk RkR ∞
+
+0 ξi(t − b)mi(b)db
+
+0
+
+  ∆Ntot
+∆t !
+
+This fully recurrent population growth equation expresses how sales in the present are constrained by sales in the past
+within and between categories, through convolutions, generating self and cross-correlations of the sales. Since sales
+are autocorrelated in time, and that the addition of units corresponds to sales and removals to deaths, it implies that
+the absolute numbers of units are self and cross-correlated in time as well. Therefore, changes in the numbers of units
+cannot happen faster than is allowed by these correlations, which as we demonstrate next, are given by the length in
+time of the functions ℓi(a) and mi(b).
+
+Going any further requires evaluating all the convolutions, which would involve full knowledge of sales ξi(t) in
+addition to survival functions ℓi(a) and birth functions mi(b). This equation can however be simpliﬁed enormously
+with the two following approximations.
+
+4.3. Simpliﬁcation of the model with key approximations
+
+Eq. 24 in its full form, or alternatively eq. 25, appear rather complicated, unconstrained and un-instructive. How-
+ever, since they are recurrent, these equations are more constrained in terms of their possible solutions than they
+seem. Eq. 24 expresses technological change between technology categories in terms of respective sales of those
+technologies. These sales are convolved with the functions m(b) and dℓ(a)/da. It is well known in signal processing
+theory that convolutions of time series with functions of bounded kernels (ﬁg. 5) yield slightly modiﬁed time series
+that are smoothed with respect to the original, where high frequency changes have been damped.20 The ‘cutoﬀ’ value
+at which frequencies are suppressed, the sharpness limit, corresponds to the width in time of the kernel.21 This is also
+the correlation length of the smoothed function. For symmetrical normalised kernels of similar widths but diﬀerent
+shapes, the convolution of a function leads to very similar results since a similar frequency cutoﬀ occurs, and the same
+amount of damping occurs. If a kernel is not normalised, it either ampliﬁes the time series (its integral is greater than
+one) or damps it (its integral less than one). If both kernels are not normalised but of similar widths, the convolutions
+will yield results which are close to multiples of each other, with proportionality factor the relative area under the ker-
+nels.22 Finally, if the kernels are not symmetrical functions, as is the case here, a time oﬀset may appear between the
+
+18Adding here a factor Fi j can be done but is secondary: even if new units are not chosen exchanges can occur through the exchange term.
+19Thus improvements could be made using stochastic population growth theory, where for instance the probability of extinction at low population
+
+numbers would be better represented.
+
+20i.e. a ‘low-pass’ ﬁlter.
+21In this case both m(b) and dℓ(a)/da; the wider the kernel, the lower the frequency cutoﬀ and the more smoothing occurs.
+22This results from the convolution theorem.
+
+13
+
+ 
+
+δ N(t) / RΦ
+N(t) / τ
+Sales
+
+l
+
+n
+o
+i
+t
+a
+u
+p
+o
+P
+
+ 
+/
+ 
+
+s
+e
+
+l
+
+a
+S
+
+Birth function
+
+ 
+
+Survival function
+Time
+
+Figure 5: Computational experiment illustrating the convolution sales with the birth and death functions, justifying both approximations of this
+section.
+
+two convolved outputs. This is demonstrated with a computational example shown in ﬁgure 5, where a hypothetical
+noisy time series (sales) was convolved with hypothetical birth and death functions. The result is almost independent
+of the shape of these functions, except for a proportionality factor, the relative area under the two kernel functions (the
+time oﬀset results from the asymmetry in time of the kernels). In our case here with the birth and survival functions
+as kernels, this relative factor is RiΦi/τi.
+
+Approximation 1: the shape of the death function
+
+The ﬁrst kernel, dℓi(a)/da, is normalised by deﬁnition (expressing an eventual but certain death), while the life
+
+expectancy is deﬁned by eq. 11:
+
+Z ∞
+
+0
+
+−
+
+dℓ j(a)
+
+da
+
+da = 1, Z ∞
+
+0
+
+ℓ j(a)da = τi.
+
+(26)
+
+Since the shape of the kernel does not matter much for the convolutions as long as its width in time is maintained, for
+our purpose we can approximate that,
+
+−
+
+dℓ j(a)
+
+da
+
+≃
+
+ℓi(a)
+τi
+
+.
+
+(27)
+
+This means that from eq. 14, which relates numbers to sales through the survival function, the convolution for deaths
+in eq. 15 becomes
+
+Z ∞
+
+0
+
+ξ j(t − a)
+
+dℓ j(a)
+
+da
+
+da ≃
+
+1
+
+τi Z ∞
+
+0
+
+ξ j(t − a)ℓ j(a)da =
+
+,
+
+(28)
+
+N j(t)
+
+τi
+
+Approximation 2: similarity between the birth and death functions
+
+The second kernel, the birth function m j(b), has the following property,
+
+RiZ ∞
+
+0
+
+mi(b)db = RiΦi > 1,
+
+(29)
+
+which reﬂects the growth of the production capacity through reinvestment.23 In a case where the width of the second
+kernel, the birth function mi(b), is similar to the width of the survival function ℓi(a) (or alternatively the death function
+
+23The production of goods using existing capital generates more wealth than just what is required to maintain itself.
+
+14
+
+da ), the convolution of sales by dℓi(a)
+
+− dℓi(a)
+da or mi(b) will not be very diﬀerent, but rather approximately proportional.
+Conversely, if the widths are very diﬀerent, they cannot in any way be proportional or even similar. The width of the
+birth function is related to the survival function of the capital and labour used for production, the production lines,
+i ), and since − dℓi(a)
+which may have, in some situations, a similar time scale. Assuming that this is so (i.e. τi ≃ τK
+is normalised, then the convolutions with mi(b) and − dℓi(a)
+are approximately proportional, and the proportionality
+da
+factor is RiΦi:
+
+da
+
+RiZ ∞
+
+0
+
+ξi(t − b)mi(b)db ≃ −RiΦiZ ∞
+
+0
+
+ξi(t − a)
+
+da =
+
+ℓi(a)
+τi
+
+where ti =
+
+τi
+RiΦi
+
+≃
+
+1
+RiPi
+
+,
+
+Ni(t)
+
+ti
+
+(30)
+
+ti is the newly deﬁned fastest possible timescale of growth of the production capacity before considering investor
+choices, consistent with the result of Appendix A (section 5.1).
+
+Thus with these approximations, I can replace the convolutions in eqns. 21 and 24 by N j/t j and Ni/τi, which
+
+considerably simpliﬁes the system of coupled equations.
+
+4.4. Derivation of the replicator and Lotka-Volterra equations
+
+Substituting in eqns. 21 each convolution by its associated approximation, I obtain
+
+∆N j→i = 
+
+Pk
+
+Ni(t)
+
+ti
+Nk(t)
+
+tk
+
+N j(t)
+τ j
+Nl(t)
+τl
+
+
+
+Fi j
+
+Pl
+
+
+
+∆t,
+
+
+Xm
+
+Nm(t)
+
+τm 
+
+Deﬁning the population weighted average frequencies t−1 and τ−1,
+
+1
+t
+
+=
+
+1
+
+Ntot Xk
+
+Nk(t)
+
+tk
+
+and
+
+1
+τ
+
+=
+
+1
+
+Ntot Xl
+
+Nl(t)
+τl
+
+,
+
+the ﬂow becomes
+
+∆N j→i =   t
+
+ti
+
+Ni(t)
+
+Ntot ! Fi j  τ
+
+τ j
+
+N j(t)
+
+Ntot !(cid:18) Ntot
+
+τ (cid:19) ∆t,
+
+while the term concerning increases in carrying capacity Ntot becomes
+
+∆N↑
+
+i =   t
+
+t j
+
+Ni(t)
+
+Ntot !  ∆Ntot
+
+∆t ! ∆t
+
+Using a new matrix Ai j = tτ/tiτ j for compact notation,
+
+∆Ni
+∆t
+
+=
+
+t
+ti
+
+Ni(t)
+
+Ntot   ∆Ntot
+
+∆t ! +Xj
+
+NiN j
+
+Ntot (cid:16)Ai jFi j − A jiF ji(cid:17)
+
+1
+τ
+
+.
+
+(31)
+
+(32)
+
+(33)
+
+(34)
+
+(35)
+
+This is the Lotka-Volterra equation 6 again. The replicator dynamics equation 4 can be obtained using the chain
+derivative:
+
+dNi
+dt
+
+= Ntot
+
++ S i
+
+dS i
+dt
+
+dNtot
+dt
+
+,
+
+which, if the ti do not diﬀer signiﬁcantly from the t, reduces to
+
+∆S i = Xj
+
+1
+τ
+
+S iS j(cid:16)Ai jFi j − A jiF ji(cid:17) ∆t, Ai j =
+
+tτ
+tiτ j
+
+.
+
+(36)
+
+(37)
+
+This replicator dynamics equation, in the binary form (imitation dynamics), has an antisymmetric exchange matrix
+αi j = Ai jF ji − A jiF ji.
+
+15
+
+I have thus described the rate of uptake, αi j = Ai jF ji − A jiF ji, completely in terms of technology, market properties
+and choice of agents. These values can thus be compared to real diﬀusion timescales or used to parameterise diﬀusion
+dynamics in technology models in cases where such data is not available. Note that diﬀusion timescales are not
+related to the properties of individual technologies but, rather, to the properties of pairs of technologies plus investor
+choices. This shows that diﬀusion timescales measured from historical time series are, in actuality, abstractions of
+many underlying processes that include decision-making, and should be understood to refer only to the decision
+context where they apply; they cannot be expected to represent other contexts where other choices might have been
+made.24
+
+As a ﬁnal note, I ask, can this theory be put into a form that uses a multinomial logit instead, leading perhaps to
+a diﬀerent form of the replicator equation? Appendix C presents in a demonstration that this is indeed approximately
+the case, where by grouping the binary logit terms, the classical multinomial logit is obtained. This naturally leads to
+a replicator equation of the classical form used in evolutionary theory,
+
+∆S i = S i(cid:16)Fi(~S ) − F (~S )(cid:17) ∆t,
+
+(38)
+
+which is expressed in terms of the diﬀerence between the ﬁtness Fi, in the evolutionary theory sense, of technology i,
+to the average ﬁtness F . This, however, is an approximation of the more accurate and practically usable binary system.
+The binary system is, eﬀectively, probably the only way to correctly incorporate restricted access to technology and
+information, which introduces a diﬀerentiation between options as seen by the agent, as opposed to a comparison with
+the ‘average’ alternative.
+
+5. How to use this theory: Interpretation of the Lotka-Volterra scaling parameters
+
+5.1. Constraints and applicability of the Lotka-Volterra model
+
+The Lotka-Volterra model is a special case of the general model derived here from demography theory. This
+
+section summarises the constraints under which this applies:
+
+1. The birth and death functions have similar approximate widths in time,
+2. The area under the birth function for technology i, Φi, times the reinvestment fraction Ri, must be greater than
+
+one for a technology to be able to replicate itself.
+
+One then ﬁnds that, according to eq. 30, RiΦi determines the growth time constant in terms of the lifetime: ti = τi/RiΦi,
+where
+
+1
+ti
+
+=
+
+Ri
+
+τi Z ∞
+
+0
+
+mi(b)db,
+
+(39)
+
+the integral determining the total expected production by one unit of capital over its lifetime. Furthermore, since the
+productivity constant, after a possible delay of installation, is independent of age, then it can be further approximated
+to 1/ti = RiPiτK
+i /τi ≃ RiPi. Thus we unsurprisingly ﬁnd again that the rate of reinvestment RiPi determines the
+magnitude of the fastest possible rate of growth of the production capacity t−1
+(see section 3.2 and Appendix A).
+Thus in order for the industry to grow, such that ti < τi, one must have that RiΦi > 1, Φi representing the expected
+cumulative production of one installed unit of production capital during its lifetime.
+
+i
+
+From this, strict constraints can be determined that provide insight over which systems can be modelled using the
+Lotka-Volterra set of equations (LVEs) at the technology unit level:25 Furthermore, this model is also a deterministic
+one that does not include the process of generation of new technologies directly. The following are the factors that
+limit its predictive power:
+
+1. If the lifetime of the production capital and that of the technology units it produces is very diﬀerent, the LVEs
+
+are not appropriate when used at the unit level.26
+
+24Given, say, a diﬀerent set of possibilities available to investors.
+25LVE systems can be applied at other levels, e.g. ﬁrms. This may provide ways to deal with cases excluded here, requiring further research.
+26E.g. the mobile phone industry, in which phones have very short lifetimes, or infrastructure industries where the capital, e.g. houses, roads and
+
+bridges, have much longer lifetimes than the ﬁrms building them, potentially maintained forever.
+
+16
+
+2. The producing ﬁrms must have an intended propensity towards expansion, and must reinvest enough proﬁts
+to expand their production capacity, which will only decline if sales decline due to a lack of interest by in-
+vestors/consumers (i.e. Ri roughly constant). In a case where a ﬁrm has made a decision not to maintain a
+technology under production despite that it is proﬁtable, the Lotka-Volterra model breaks down.
+
+3. In evaluating the evolution of the market shares of ﬁrms for a particular market, the technology unit used in the
+Lotka-Volterra equation is crucial. This must be service producing technologies at the unit level (e.g. ovens,
+power plants, vehicles of diﬀerent engine types, lighting devices, etc), not the service itself (e.g. a piece of
+bread, a kWh, a transport service, light) or long-lived infrastructure (e.g. houses or buildings, roads, airports,
+sets of transmission lines, bridges) likely to be maintained for lengths of time beyond foreseeable future.27
+
+4. Innovation is not included directly in the demography/diﬀusion model, which does not predict the generation
+of new technologies, which could disrupt the diﬀusion of the other existing ones (e.g. the diﬀusion of fusion
+power). However, some aspects of innovation can, and should be, included through learning-by-doing cost
+reductions, which can easily be included in the decision model as described above (although the rates are
+uncertain). This approach narrows down possibilities for existing technologies for the near future (e.g. during
+several life expectancies), which is itself quite robust, since it is well established that the formation of dominant
+designs is itself a lengthy process (e.g.
+the diﬀusion of fusion power). This limitation aﬀects the realistic
+modelling time horizon.
+
+5. Finally, this theory requires to be fully validated with historical data beyond existing empirical work, outside
+
+the scope of the present paper.
+
+5.2. How to use this theory in real models
+
+Summarising this theory, for real models, both the industrial dynamics Ai j and the decision-making Fi j processes
+
+must be parameterised and used in the replicator equation for market shares S i,
+
+∆S i = Xj
+
+S iS j(cid:16)Ai jFi j − A jiF ji(cid:17) ∆t
+
+τ
+
+,
+
+(40)
+
+requiring of course starting share values obtained from real-world data, and an absolute time scaling constant τ, the
+average life expectancy (see below).
+
+Industrial dynamics Ai j
+
+Using the theory given above to parameterise a computational model of technology diﬀusion boils down to deter-
+
+mining two parameters per technology: ti and τi,
+
+τi = Z ∞
+
+0
+
+ℓi(a)da,
+
+ti =
+
+τi
+RiΦi
+
+≃
+
+1
+RiPi
+
+, Ai j =
+
+τt
+τit j
+
+,
+
+(41)
+
+with τi the life expectancy from the survival function, and ti the fastest possible growth rate in terms of the re-
+investment rate Ri (in units re-invested per unit sold) and the productivity Pi (in units produced per year), and τ−1, t−1
+are share weighted averages of the inverse of the time constants,
+
+1
+t
+
+= Xi
+
+S i(t)
+
+ti
+
+and
+
+1
+τ
+
+= Xi
+
+S i(t)
+τi
+
+.
+
+(42)
+
+Then this is put into the changeover timescale matrix for every possible pair of technologies Ai j.
+
+Further simpliﬁcations are possible however. Since these timescales ti and τi only ever appear as ratios with their
+averages t and τ, the common scaling factors cancel out.28 Therefore, for instance, it is not the absolute value of ti
+
+27This model does not apply at the ﬁrm level, as was done in Atkeson and Kehoe (2007).
+28Note however that knowledge of the absolute value of τ, the absolute time scaling factor, appears on its own in the equation and is thus
+
+necessary.
+
+17
+
+that determines the rate of technology uptake, but its ratio with the average, in other words, how much faster is a
+technology able to ﬁll gaps in the market in comparison to other technologies.
+
+Furthermore, for technologies with long times of construction, for similar fractions of proﬁt re-invested into pro-
+duction between technologies Ri, the productivity Pi scales with the inverse of the time of construction, the time a ﬁrm
+has to wait before allocating its production capacity to new projects, and thus t/ti = Pi/P (e.g. power sector), equal
+to the ratio of the time of construction with the average, other parameters cancelling out. If times of construction are
+the same, however, but Ri vary, then the Pi cancel out and the ratio Ri/R must be used. Or it can also be that ti simply
+cancels out with t altogether and the τi broadly determine timescales of changeover (e.g. the car industry).
+
+Technology choice Fi j
+
+Fi j must be evaluated using a binary logit. This can be parameterised using measured cost distributions of sales,
+in which the diversity of past choices is represented. In the common case where small amounts of information on
+agents is available beyond cost distributions, the simplest approach is to parameterise the Gumbel or other type of
+distributions on the cost data, obtaining in this way a mean cost Ci and a standard deviation σi for every technology.
+Note that the shape of the distribution does not matter signiﬁcantly in practice. The simple form of the binary logit
+can then be used for each technology category:
+
+Fi j =
+
+1
+
+1 + e∆Ci j/σi j
+
+, ∆Ci j = Ci − C j, σi j = qσ2
+
+i + σ2
+j.
+
+(43)
+
+6. Conclusion
+
+This work demonstrates that the origin of the empirical observation of the applicability of the Lotka-Volterra or
+replicator dynamics models of competition dynamics to technology diﬀusion can be derived from demographic princi-
+ples applied to technology. I have created an age structured model of technology demography, using life expectancies
+and birth rates which, given the right conditions, using an approximation, falls back onto the form of the well known
+empirical Lotka-Volterra and replicator dynamics models of competition. This procedure explains on the way the
+nature of the scaling parameters of the Lotka-Volterra equation, the timescales of technology diﬀusion, in terms of
+survival properties of technology and industrial dynamics stemming from investment.
+
+The calculation presented however generates more insight than the simple correspondence of the Lotka-Volterra
+system to demography. While every previous quantitative use of the Lotka-Volterra system for modelling technology
+diﬀusion has remained empirical and without clear explanation of its parameterisation, the calculation presented here
+explains why the Lotka-Volterra actually describes well systems of competing technologies at all. It moreover clariﬁes
+under which conditions it applies. Meanwhile, this paper gives meaning of the timescales of technology population
+dynamics measured empirically.
+
+By clarifying the meaning of the scaling constants of the Lotka-Volterra model, this theory enables its use with
+a method for its parameterisation without prior empirical measurement, the latter diﬃcult to achieve in cases where
+only small amounts of data are available. This tends to occur precisely in the cases of interest, namely when exploring
+the diﬀusion potential of new technologies under diﬀerent assumptions over the market and policy environment. This
+theory thus enables to build models of technology forecasting based on S -shaped diﬀusion curves and to parameterise
+them using known properties of the technologies and those of their respective production industries. This method,
+as used for instance in earlier work (Mercure, 2012, Mercure et al., 2014), can in principle replace the optimisation
+algorithms in mainstream models which have little theoretical foundation. This opens many possibilities for modelling
+future technology pathways, for instance for analysing the impacts of policy supporting the diﬀusion of low carbon
+technology.
+
+Acknowledgements
+
+I would like to acknowledge the students who have been attending the Energy Systems Modelling seminars held
+at 4CMR in 2013, in particular A. Lam, P. Salas and E. Oughton, with whom the discussions on technology and evo-
+lutionary economics led to the development and enhancement of this theory. I would furthermore like to thank partic-
+ipants to the International Conference on Sustainability Transition 2013 for providing valuable feedback, in particular
+
+18
+
+K. Safarzynska for critical comments, as well as two anonymous referees for their recommendations. This research
+was funded by the UK Engineering and Physical Sciences Research Council, fellowship number EP/K007254/1.
+
+Appendix A. : Growth under full employment
+
+In a situation where an innovation was to follow a path free of competitors and grow as fast as its industry can
+
+produce it, it would follow the fastest possible rate t−1
+
+i of exponential growth determined by:
+
+1 = Z ∞
+
+0
+
+Rie−b/tiℓK
+
+i (b)PK
+
+i (b)db.
+
+(44)
+
+This is a transcendental equation that can only be solved numerically. As demonstrated by Lotka (1911) (see Kot,
+2001, for a clearer derivation), it has only one real solution, all others being complex of the form u ± iv which give
+rise to oscillatory behaviour in the real part. The non-oscillatory real solution, an exponential, can be approximated if
+simple forms are taken for ℓ(b) and P(b) (see ﬁg. 3, right):
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+λb0
+
+RiPib0
+
+C
+
+a
+
+s
+
+e
+
+ 
+
+1
+
+C
+
+a
+
+s
+
+e
+ 
+2
+
+e−λb0
+
+0
+0
+
+1
+
+2
+λb0
+
+i (b) ≃ e−b/τK
+ℓK
+
+i , P(b) = ( 0,
+= e−λb0 with λ =
+
+Pi,
+
+b < b0
+b ≥ b0
+
+1
+ti
+
++
+
+1
+τK
+i
+
+,
+
+λb0
+
+(RiPib0)
+
+Case 3
+
+3
+
+4
+
+⇒
+
+where b0 is the time between investment and construction, Pi is a production rate and therefore (RiPi)−1 is the rate of
+expansion of production capacity (in inverse years), and τK
+is the timescale of capital depreciation, its life expectancy
+i
+(and therefore we always have τK
+i >> b0). To ﬁrst order, one can ﬁnd which is the dominant of these timescales in
+particular situations, using limits for the dimensionless parameter RiPib0 (which determines the slope of the linear left
+hand side of the equation, see graph).
+
+Case 1: (RiPib0) is small ⇒ λb0 is small
+
+We perform a Taylor expansion around λb0 = 0,
+
+1 − b0λ −
+
+λ = RiPi
+
+0λ2
+b2
+2
+
++ ...
+
+⇒ ti ≃ "
+
+1
+
+(RiPi)−1 + b0
+
+−
+
+1
+τK
+
+i #−1
+
+(45)
+
+Since RiPi cannot be a very small quantity, it is most likely that b0 << (RiPi)−1, for instance with small technologies
+i , then ti ≃ (RiPi)−1. In
+that are ready to use as they come out of the factory (e.g. vehicles). And since RiPi >> 1/τK
+this case the rate of production is constrained by the rate of re-investment into production capacity, which depends
+on the rate of production of technology units but not on the time of construction of production capacity. For large
+systems (e.g. power plants, wind turbines, infrastructure), the time of construction may be long (i.e. several years),
+constraining money ﬂows used for ﬁrm expansions. For small modular technologies (e.g. electronics), the time of
+production is short and other timescales dominate the time ‘bottleneck’.
+
+Case 2: (RiPib0) is of order 1 ⇒ λb0 ≃ 1
+
+We perform a Taylor expansion around λb0 = 1,
+
+λ = RiPie−1 (1 − (b0λ − 1) − ...) ⇒ ti ≃ "
+
+1
+
+(eRiPi)−1 + b0
+
+−
+
+1
+τK
+
+i #−1
+
+(46)
+
+i P−1
+i
+
+then t = eRiPi and the limiting timescale is again the re-investment rate. However, if b0 >> R−1
+
+If b0 << R−1
+i P−1
+i
+then t = b0 and the rate of growth is limited by the rate of completion of capital installation. For example, for
+technologies with complex production capital structures with a long time of for installation with no income constrains
+
+19
+
+the rate of return, the dominant bottleneck timescale is b0, a situation where a ﬁrm must wait for expansion projects
+to come to completion and income to be brought in before launching itself into further expansions.
+
+Case 3: (RiPib0) is large ⇒ λb0 is large
+
+No Taylor expansion is possible. However if RiPie−λb0 → 1/τK
+
+i , then
+
+1
+ti
+
+= RiPie−λb0 −
+
+1
+τK
+i
+
+≃→ 0
+
+(47)
+
+and the timescale of expansion diverges. This corresponds to a case where a ﬁrm struggles with its cash ﬂows to
+maintain its production capacity. Beyond this the timescale can also become negative, where a ﬁrm scales down its
+activities.
+
+Thus in many cases one of the three timescales dominates, the bottleneck timescale.
+
+In other cases, if two
+
+timescales are similar, ti must be calculated numerically using eq. 44.
+
+These three cases however only occur if consumers are ready to buy all that this particular industry is able to
+produce, and consequently its growth is limited by its ability to expand. If, however, the demand grows more slowly
+than these maximal rates, then the demand constrains the rate of growth, a demand-led case. Furthermore, if con-
+sumers have a choice of products and competition occurs, then the rate of growth is further constrained and a model
+of competition must be derived, as done in section 4.
+
+Appendix B. : A binary logit choice model
+
+A model of choice is constructed here using a pairwise comparison, which will be performed for all possible
+pairs in order to rank exhaustively consumer preferences, the latter being distributed.
+I use for this generalised
+cost distribution of sales obtained from recent sales data. This calculation is the basis of discrete choice theory
+adapted to the purposes of this work, and more information can be obtained in Ben-Akiva and Lerman (1985) and
+Domencich and McFadden (1975).
+
+I assume two distributions for the relative numbers of situations where agents, stating their individual preference
+between technologies i and j, face diﬀerent situations and state diﬀerent choices. By counting how many agents
+prefer which technology in each pair, one can determine what the probabilities of preferences between these two
+technologies are for future situations where choices are to be made (e.g. 70% of agents choose i and 30% j). It does
+not mean however that when the time comes to invest or purchase, these are the choices that would be made, since
+depending on the state of diﬀusion of these technologies, they might not necessarily be available to every agent. By
+going through an exhaustive list of pairwise preferences, ﬁnal choices can be determined.
+
+I denote these (normalised) distributions f (C, Ci, σi)dC = fi(C −Ci)dC and f (C, C j, σ j)dC = f j(C −C j)dC, where
+Ci, C j are the means and σi, σ j are the standard deviations for technologies i and j. These distributions can be of any
+kind, but they require to have a single well deﬁned maximum and variance (e.g. they cannot have two maxima29). I
+can then evaluate the probability of choosing i over j using the following. First, I calculate the probability of choosing
+i in all cases where j has an arbitrary cost C. The central assumption here is that the fraction of agents for whom the
+generalised cost of j is C and for whom the cost for i is lower than C will choose technology i over j if given a choice,
+and this fraction is equal to the cumulative probability distribution Fi(C − Ci). But this situation occurs a fraction
+f j(C − C j) of the time, giving a total probability
+
+while the converse is
+
+P(Ci < C|C j = C) = Fi(C − Ci) f j(C − C j)dC,
+
+P(C j < C|Ci = C) = F j(C − C j) fi(C − Ci)dC.
+
+(48)
+
+(49)
+
+In order to evaluate how often the cost of technology i is lower than that of technology j, and the converse, a sum over
+all possible values of C must be taken. For simplicity, I use as variables C′ = C − C j and C′′ = C − Ci, with the mean
+
+29In which case we would need to subdivide such a technology category into two.
+
+20
+
+cost diﬀerence ∆C = Ci − C j:
+
+Fi j(∆C) = P(Ci < C j) = Z +∞
+
+−∞
+
+Fi(C′ − ∆C) f j(C′)dC′,
+
+F ji(∆C) = 1 − Fi j = P(C j < Ci) = Z +∞
+
+−∞
+
+F j(C′′ + ∆C) fi(C′′)dC′′.
+
+(50)
+
+This appears diﬃcult without further knowledge of the distribution type, however it is possible to take a derivative
+with respect to ∆C, which makes the integral a convolution of the two distributions
+
+dFi j
+d∆C
+
+= −Z +∞
+
+−∞
+
+fi(C′ − ∆C) f j(C′)dC′ = − fi j(∆C)
+
+= Z −∞
+
+∞
+
+fi(C′′) f j(C′′ + ∆C)dC′′ = − f ji(−∆C) =
+
+dF ji
+d∆C
+
+.
+
+(51)
+
+(52)
+
+This convolution yields a new distribution fi j(∆C)d∆C of which the standard deviation is σi j = qσ2
+
+j. This
+is the probability distribution of technology switching in terms of ∆C. The convolution having been computed, this
+distribution can be integrated again as a function of ∆C to yield a cumulative probability distribution that the cost of
+technology i is less than that of j (and conversely):
+
+i + σ2
+
+Fi j(∆C) = Z +∞
+
+−∞
+
+fi j(∆C)d∆C = 1 −Z +∞
+
+−∞
+
+f ji(∆C)d∆C = 1 − F ji(∆C).
+
+(53)
+
+Thus given a choice between technologies i and j, the fraction Fi j of agents tends to choose technology i and the
+fraction F ji chooses j, these fractions being functions of the generalised cost diﬀerence, and this cumulative choice
+j. Note that this calculation is independent
+of probability distribution type; however Fi j(∆C) should have roughly the shape of a ‘smooth’ step function, its
+‘smoothness’ determined roughly by the widths of both cost distributions.
+
+function has a width that follows the sum of the squares σi j = qσ2
+
+In discrete choice theory, the Gumbel distribution is often used, fi = e−e−(C−Ci )/σi , and the result of the convolution of
+two Gumbel distributions is a logistic distribution of the average cost diﬀerence ∆Ci j relative to the root mean square
+width σi j:
+
+i + σ2
+
+fi = e−e−(C−Ci )/σi , Fi j = Z ∞
+
+−∞(cid:16) fi ∗ f j(cid:17) d∆C =
+
+1
+
+1 + e∆Ci j/σi j
+
+.
+
+(54)
+
+Appendix C. : From the binary to the multinomial logit in the replicator equation
+
+The derivation of the binary logit in Appendix B gives a relationship between the cost probability distributions
+and the cumulative distribution of choice between two options fi and f j (with parameters Ci, σi and C j, σ j), as a
+convolution, consistent with Domencich and McFadden (1975). The probability of cost of option i being less than the
+cost of option j is
+
+P(Ci < C j) =
+
+dFi j
+d∆Ci j
+
+= −Z +∞
+
+−∞
+
+fi(C′ − ∆Ci j) f j(C′)dC′ = fi ∗ f j,
+
+(55)
+
+the star denoting a convolution. The binary form of the replicator dynamics equation requires summing the result of
+binary choices, however distributions can be ﬁrst grouped and afterwards convolved:
+
+d∆Ci j.
+
+(56)
+
+In this picture, each cost distribution of possible alternatives f j is weighted by the factor Ai jS j which involves shares
+and changeover timescales. This weighted sum of distributions results in a composite distribution with new mean
+
+Ai jFi jS j = Z ∞
+
+−∞
+
+Xj
+
+fi ∗Xj
+
+Ai jS j f j
+
+
+
+21
+
+and standard deviation parameters C and σ.30, which cannot be expressed analytically in any simpler form. The
+convolution corresponds roughly to the probability that the cost of option i is less than the cost of the ‘average’
+alternative (with average cost C) weighted by the frequency of occurrence of these choices, P(C < C|Ci = C).
+
+As an approximation, I replace this ‘average’ probability distribution with that of an arbitrary cost value C being
+lower than the minimum of all available alternatives simultaneously. This corresponds to the product of the individual
+distributions,
+
+P (C < min[C1, C2, C3...Cn]) = P(C < C1)P(C < C2)...P(C < Cn).
+
+When the weighting of these choices is equal, if each of these probability functions are Gumbel, then the result of this
+
+is also a Gumbel distribution, of cost parameter proportional to lnP j e−C j/σ j, a classic result of discrete choice theory
+
+when deriving the multinomial logit (Ben-Akiva and Lerman, 1985, p. 105). Equal weighting in the multinomial logit
+corresponds to perfect access to information and technology options by all agents. In the theory presented here, each
+agent has access to a diﬀerent set of choices, which, when correctly weighted, is
+
+P(C < C1)Ai1S 1 P(C < C2)Ai2S 2 ...P(C < Cn)AinS n ,
+
+P (C < min[C1, C2, C3...Cn]|Ci = C) = Fi(Ci − C)Yj
+
+P(C < C j)Ai jS j .
+
+The weighted (representative alternative) cost parameter is instead
+
+ˆC = ˆσ lnXj
+
+Ai jS je
+
+−C j
+σ j .
+
+(57)
+
+(58)
+
+This unequal weighting of alternatives is generally overlooked in discrete choice theory, but crucial when exploring
+the diﬀusion of technology since part of the dynamics stem from restricted access to options in early states of diﬀusion.
+Following Appendix B, the convolution becomes
+
+Z ∞
+−∞(cid:16) fi ∗ ˆf(cid:17) d∆Ci =
+
+1
+
+1 + eAii
+
+Ci
+σi
+
+−ln(cid:16)P j Ai jS je−C j /σ j(cid:17)
+
+=
+
+Aiie−Ci/σi
+
+P j Ai jS je−C j/σ j
+
+.
+
+(59)
+
+This is the multinomial logit weighted by Ai jS j, i.e. adjusted for restricted access to alternatives. I now deﬁne the
+ﬁtness in the evolutionary theory sense,
+
+e−Ci/σi
+
+S je−C j/σ j
+
+t
+ti
+t
+t j
+
+−
+
+e−Ci/σi
+S je−C j/σ j
+
+τ
+τi
+τ
+τ j
+
+(60)
+
+Fi =
+
+P j
+
+P j
+
+This is the ﬁtness of a technology to capture the market, a growth minus a survival term.31 The average ﬁtness is then
+
+Thus the replicator dynamics equation (eq. 37) can in fact be written as
+
+F = Xj
+
+S jF j = 1 − 1 = 0.
+
+∆S i = S i(cid:16)Fi − F(cid:17) ∆t.
+
+(61)
+
+(62)
+
+This is the classical replicator dynamics equation in general evolutionary theory (e.g. Hofbauer and Sigmund, 1998),
+where the ability of a proponent option or biological specie to capture market or space is proportional to the diﬀerence
+of its ﬁtness to the average ﬁtness.
+
+30C is the weighted average, while σ2 is the weighted sum of the square of the standard deviations.
+31Producing faster (smaller ti) increases competitiveness and therefore the ﬁtness, while surviving for longer (larger τi) decreases vulnerability
+
+to changes and thus also improves the ﬁtness.
+
+22
+
+This transformation however has required an approximation which is a simpliﬁcation of the distribution of alter-
+natives. This is a useful simpliﬁcation for the sake of exposition, but leads to a less accurate form of the replicator
+equation and associated market response. This is due to leaving out, at eq. 57, some of the details of the restricted
+access to technology and information, as well as the complexity emerging from interactions.32 The binary form es-
+sentially maintains the information as to which options are seen by which agent in aggregate. It is however heavier
+computationally since it involves pairwise comparisons, which scales as n2/2 − n for the binary form, compared to n
+for the multinomial form (n the number of options).
+
+References
+
+References
+
+Andersen, E. S., 1994. Evolutionary Economics, Post-Schumpeterian Contributions. Pinter Publishers.
+Anderson, P. W., 1972. More is diﬀerent. Science 177 (4047), 393–396.
+Arrow, K., Bolin, B., Costanza, R., Dasgupta, P., Folke, C., Holling, C., Jansson, B., Levin, S., Maler, K., Perrings, C., Pimentel, D., 1995.
+
+Economic-growth, carrying-capacity, and the environment. Science 268 (5210), 520–521.
+
+Arthur, W. B., 1989. Competing technologies, increasing returns, and lock-in by historical events. The economic journal 99 (394), 116–131.
+Atkeson, A., Kehoe, P. J., 2007. Modeling the transition to a new economy: Lessons from two technological revolutions. American Economic
+
+Review 97 (1), 64–88.
+
+Ben-Akiva, M. E., Lerman, S. R., 1985. Discrete choice analysis: theory and application to travel demand. MIT press.
+Boucekkine, R., Croix, D. D. L., Licandro, O., 2004. Modelling vintage structures with DDEs: principles and applications. Mathematical Population
+
+Studies 11 (3-4), 151–179.
+
+Boucekkine, R., de la Croix, D., Licandro, O., Jun. 2011. Vintage capital growth theory: Three breakthroughs. UFAE and IAE Working Papers
+
+875.11, Unitat de Fonaments de l’Anlisi Econmica (UAB) and Institut d’Anlisi Econmica (CSIC).
+
+Cambridge Econometrics, 2014. E3ME Manual.
+
+URL http://www.e3me.com
+
+de Vries, B. J., van Vuuren, D. P., den Elzen, M. G., Janssen, M. A., 2001. The Targets IMage Energy Regional (TIMER) Model. Tech. rep.,
+
+National Institute of Public Health and the Environment (RIVM).
+
+Domencich, T. A., McFadden, D., 1975. Urban travel demand - A behavioural analysis. North-Holland Publishing.
+Douglas, M., Isherwood, B., 1979. The world of goods: Towards an anthropology of consumption. Routledge.
+Farrell, C. J., 1993. A theory of technological progress. Technological Forecasting and Social Change 44 (2), 161 – 178.
+Fisher, J. C., Pry, R. H., 1971. A simple substitution model of technological change. Technological Forecasting and Social Change 3 (1), 75–88.
+Geels, F. W., 2002. Technological transitions as evolutionary reconﬁguration processes: a multi-level perspective and a case-study. Research Policy
+
+31 (8-9), 1257 – 1274.
+
+Geels, F. W., 2005. The dynamics of transitions in socio-technical systems: A multi-level analysis of the transition pathway from horse-drawn
+
+carriages to automobiles (1860 - 1930). Technology Analysis & Strategic Management 17 (4), 445–476.
+
+Gr¨ubler, A., 1998. Technology and Global Change. Cambridge University Press, Cambridge, UK.
+Gr¨ubler, A., Nakicenovic, N., Victor, D., 1999. Dynamics of energy technologies and global change. Energy Policy 27 (5), 247–280.
+Hodgson, G., Huang, K., 2012. Evolutionary game theory and evolutionary economics: Are they diﬀerent species? Journal of Evolutionary
+
+Economics 22 (2), 345–366.
+
+Hofbauer, J., Sigmund, K., 1998. Evolutionary Games and Population Dynamics. Cambridge University Press, Cambridge, UK.
+IEA/ETSAP, 2012. Energy technology systems analysis program.
+
+URL http://www.iea-etsap.org/
+
+Johansen, L., 1959. Substitution versus ﬁxed production coeﬃcients in the theory of economic growth: A synthesis. Econometrica 27 (2), pp.
+
+157–176.
+
+Keen, S., 2011. Debunking Economics - Revised and expanded edition. Zed Books.
+Keyﬁtz, N., 1967. The integral equation of population analysis. Revue de l’Institut International de Statistique / Review of the International
+
+Statistical Institute 35 (3), pp. 213–246.
+
+Keyﬁtz, N., 1977. Introduction to the Mathematics of Population. Addison-Wesley.
+Kot, M., 2001. Elements of Mathematical Ecology. Cambridge University Press.
+Lakka, S., Michalakelis, C., Varoutas, D., Martakos, D., 2013. Competitive dynamics in the operating systems market: Modeling and policy
+
+implications. Technological Forecasting and Social Change 80 (1), 88–105.
+
+Lotka, A. J., 1911. A problem in age-distribution. Philosophical Magazine 21, 435–438.
+Malerba, F., Nelson, R., Orsenigo, L., Winter, S., 1999. ‘history-friendly’ models of industry evolution: The computer industry. Industrial and
+
+Corporate Change 8 (1), 3–40.
+
+Mansﬁeld, E., 1961. Technical change and the rate of imitation. Econometrica 29 (4), pp. 741–766.
+Marchetti, C., Nakicenovic, N., 1978. The dynamics of energy systems and the logistic substitution model. Tech. rep., IIASA.
+
+URL http://www.iiasa.ac.at/Research/TNT/WEB/PUB/RR/rr-79-13.pdf
+
+McDonald, A., Schrattenholzer, L., MAR 2001. Learning rates for energy technologies. Energy Policy 29 (4), 255–261.
+
+32Replacing all alternatives by a single ‘representative’ alternative.
+
+23
+
+McFadden, D., 1973. Conditional logit analysis of qualitative choice behavior. Frontiers in Econometrics.
+McShane, B. B., Bradlow, E. T., Berger, J., 2012. Visual inﬂuence and social groups. Journal of Marketing Research 49 (6), 854–871.
+Mercure, J.-F., 2012. Ftt:power : A global model of the power sector with induced technological change and natural resource depletion. Energy
+
+Policy 48 (0), 799 – 811.
+URL http://dx.doi.org/10.1016/j.enpol.2012.06.025
+
+Mercure, J.-F., Pollitt, H., Chewpreecha, U., Salas, P., Foley, A., Holden, P., Edwards, N., 2014. The dynamics of technology diﬀusion and the
+
+impacts of climate policy instruments in the decarbonisation of the global electricity sector. Energy Policy 73 (0), 686 – 700.
+
+Messner, S., Strubegger, M., 1995. User’s guide for MESSAGE III. Tech. rep., IIASA.
+
+URL http://www.iiasa.ac.at/Admin/PUB/Documents/WP-95-069.pdf
+
+Metcalfe, J., 2008. Accounting for economic evolution: Fitness and the population method. Journal of Bioeconomics 10 (1), 23–49.
+Metcalfe, J. S., 2004. Ed mansﬁeld and the diﬀusion of innovation: An evolutionary connection. The Journal of Technology Transfer 30, 171–181.
+Nakicenovic, N., 1986. The automobile road to technological-change - Diﬀusion of the automobile as a process of technological substitution.
+
+Technological Forecasting and Social Change 29 (4), 309–340.
+
+Nelson, R. R., Winter, S. G., 1982. An Evolutionary Theory of Economic Change. Harvard University Press, Cambridge, USA.
+Nordhaus, W. D., 2010. Economic aspects of global warming in a post-Copenhagen environment. Proceedings of the National Academy of Sciences.
+ORNL, 2012. Transportation energy data book: edition 31. Tech. rep., Oak Ridge National Laboratory.
+Rogers, E. M., 2010. Diﬀusion of innovations. Simon and Schuster.
+Safarzynska, K., van den Bergh, J. C. J. M., 2010. Evolutionary models in economics: a survey of methods and building blocks. Journal of
+
+Evolutionary Economics 20 (3), 329–373.
+
+Safarzynska, K., van den Bergh, J. C. J. M., 2012. An evolutionary model of energy transitions with interactive innovation-selection dynamics.
+
+Journal of Evolutionary Economics, 1–23.
+
+Saviotti, P., Mani, G., 1995. Competition, variety and technological evolution: A replicator dynamics model. Journal of Evolutionary Economics
+
+5 (4), 369–392.
+
+Schumpeter, J. A., 1934. The Theory of Economic Development - An inquiry into Proﬁts, Capital, Credit, Interest and the Business Cycle. Harvard
+
+University Press, Cambridge, USA.
+
+Schumpeter, J. A., 1939. Business Cycles. McGraw-Hill.
+Schumpeter, J. A., 1942. Capitalism, Socialism and Democracy. Martino Publishing, Eastford, USA.
+Sharif, M. N., Kabir, C., 1976. Generalized model for forecasting technological substitution. Technological Forecasting and Social Change 8 (4),
+
+353–364.
+
+Silverberg, G., 1988. Modelling economic dynamics and technical change: mathematical approaches to self-organisation and evolution. In: Dosi,
+
+G., Freeman, C., Nelson, R., Silverberg, G., Soete, L. (Eds.), Technical change and economic theory. Pinter Publishers, pp. 560–607.
+
+Solow, R. M., Tobin, J., von WeizsŁcker, C. C., Yaari, M., 1966. Neoclassical growth with ﬁxed factor proportions. The Review of Economic
+
+Studies 33 (2), pp. 79–115.
+
+Weiss, M., Patel, M. K., Junginger, M., Perujo, A., Bonnel, P., van Grootveld, G., 2012. On the electriﬁcation of road transport - learning rates and
+
+price forecasts for hybrid-electric and battery-electric vehicles. Energy Policy 48 (0), 374 – 393.
+
+Wilson, C., 2009. Meta-analysis of unit and industry level scaling dynamics in energy technologies and climate change mitigation scenarios. Tech.
+
+Rep. IR-09-029, IIASA.
+URL http://webarchive.iiasa.ac.at/Admin/PUB/Documents/IR-09-029.pdf
+
+Wilson, C., 2012. Up-scaling, formative phases, and learning in the historical diﬀusion of energy technologies. Energy Policy 50, 81–94.
+
+24
+
+

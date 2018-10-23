@@ -1,0 +1,1862 @@
+Anti-Robust and Tonsured Statistics
+
+Anti-Robust and Tonsured Statistics
+
+by
+
+Martin Goldberg
+
+Abstract: This describes a statistical technique called “tonsuring” for exploratory data
+analysis in finance. Instead of rejecting “outlier” data that conflicts with the model, this strips
+out “inlier” data to get a clearer picture of how the market changes for larger moves.
+I.
+
+Introduction
+There are no inviolable laws of finance. Any apparent statistical regularities are just
+
+empirical tendencies, and exceptions are expected to occur. The markets are composed of many
+heterogeneous agents, who may sometimes choose not to act in accord with any particular
+model. This paper describes a data-driven statistical technique for characterizing unusual market
+events, that may be useful for risk management, stress test design, and portfolio optimization.
+
+Anti-robust statistics, in the sense used in this paper, are sensitive to the tails of a
+
+distribution, but relatively unaffected by the bulk of the observations (“inliers”). This is an
+exploratory data analysis technique, intended to highlight infrequent features of the observed
+data, and does not posit any mechanism for explaining such features.
+
+A statistical modeling procedure is considered [4] to be robust if the output is relatively
+insensitive to small changes in the underlying assumptions, small changes in much of the input,
+or large changes in some of the input (“outliers” or “anomalies”). Some robust techniques work
+even when almost half the data are outliers. [3,4,5] In the physical sciences these anomalies are
+often plausibly attributed to measurement errors; in finance there are usually separate data
+scrubbing procedures applied before the data enters the model. Referring to actual observed
+data as outliers reflects a belief that the model is correct and the data that do not fit are drawn
+from a separate, irrelevant, or uninteresting model, and should be ignored, or represent
+phenomena that the modeler does not intend to capture. Proponents of these robust models claim
+that the models fit the relevant data even if almost half the data do not fit. A graphical indicator
+that an extreme data point may not be an “outlier” (neither a mismeasurement nor a draw from a
+different distribution) is if the point does not sit alone, but instead is consistent with extrapolation
+from the bulk of the data[12].
+
+This paper describes a set of techniques for testing how well a model fits data, or in other
+
+words, highlighting the ways in which data do not conform to the selected model[1]. This is a
+way of examining the question in Wigner’s famous paper[2]
+
+“How do we know that, if we made a theory which focuses its attention on phenomena
+we disregard and disregards some of the phenomena now commanding our attention, that
+we could not build another theory which has little in common with the present one but
+which, nevertheless, explains just as many phenomena as the present theory?”
+
+The paper uses correlation as the statistical measurement to illustrate these techniques. The
+
+main technique discussed is called "tonsuring." The robustification technique of trimming
+assigns zero weight to outliers; Winsorization downweights data according to how anomalous
+they are. Tonsuring is the opposite of trimming and assigns zero weight to “inliers.”
+
+page 1 of 18
+
+Anti-Robust and Tonsured Statistics
+
+An example of trimmed correlation in finance is the CDO “base correlation” curve in the
+
+Gaussian Copula model, where the attachment point is 0%, and the detachment point is the
+trimming point, varying from 0% to 100%. A tonsured CDO correlation curve would keep the
+detachment point at 100% and tonsure below the attachment point, varying from 0% (all the
+data) to 100%. This tonsured correlation is the correlation calculated conditional on using only
+relatively large changes for the input data, as defined by some distance metric.
+
+II. Caveats about Defining Correlation
+
+The usual Pearson correlation
+
+
+
+
+
+n
+
+
+
+i
+
+1
+
+
+
+x
+
+i
+
+
+yx
+
+i
+
+
+
+
+
+y
+
+
+
+
+
+
+P
+,
+YX
+
+
+
+2
+
+n
+
+
+
+
+
+
+x
+
+
+
+
+
+
+where x and y are the means,
+
+
+
+
+
+x
+
+1
+
+
+j
+
+j
+
+
+
+
+
+n
+
+
+
+j
+
+1
+
+
+
+
+y
+
+j
+
+
+
+y
+
+2
+
+
+ 
+
+
+(1)
+
+can be calculated for any finite data set, but it can be misleading if the bivariate distribution is
+not elliptical, as it then depends on the size of the odd moments such as skewness. The
+Spearman (rank) correlation
+
+
+
+
+
+
+
+
+S
+
+YX
+,
+
+
+
+
+
+
+
+
+n
+
+
+
+j
+
+1
+
+
+n
+
+
+
+i
+
+1
+
+
+rank
+
+(
+
+x
+i
+
+)
+
+
+
+
+
+
+
+n
+2
+
+
+
+
+
+
+
+
+rank
+
+(
+
+y
+
+)
+
+
+
+i
+
+n
+2
+
+
+
+
+
+
+
+
+
+rank
+
+(
+
+x
+i
+
+)
+
+
+
+2
+
+n
+2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+n
+
+
+
+j
+
+1
+
+
+rank
+
+(
+
+y
+
+)
+
+
+
+i
+
+
+
+
+
+2
+
+n
+2
+
+
+
+
+
+
+
+
+
+
+(2)
+
+where n/2 is the median rank,
+is not sensitive to the univariate distributions, and may be more useful for highly skewed data.
+As an illustration, two series of Gaussian random numbers were generated with 61% Pearson
+correlation, and these were used to drive two Tukey g-and-h [6] processes with mean zero and
+unit variance. The observed Pearson correlation was calculated as a function of the two
+skewnesses γ1 and γ2, while keeping each mean at zero and each standard deviation at one. For
+zero skews, the driving Gaussians are recovered. Figure 1 displays the observed Pearson
+correlations. Note that the "true" answer is by construction 0.61. The observed rank correlation
+is unchanged for any skewness.
+
+page 2 of 18
+
+Anti-Robust and Tonsured Statistics
+
+Figure 1. Measured correlation of skewed data.
+
+III. Definition of Tonsured Correlation
+
+Consider a series of N sets of observations of two variables X and Y. Although this is
+
+intended for a financial time series, for this paper it is assumed that
+
+ These are independent draws from a time-invariant (stationary) distribution.
+These discrete observations come from a continuous bivariate distribution.
+
+ All data have been scrubbed and were actually observed.
+ The dataset is complete and has no issues with “missing” observations.
+ Each (x,y) pair is observed contemporaneously at constant intervals – no timing issues.
+
+To quantify which data are of more interest, some distance metric is chosen - below both the
+
+usual least-squares metric L2 and the non-parametric absolute-value-of-rank R1 are used. The
+distance ri of the i’th observation zi ≡{xi,yi} from the centroid μ of the distribution (mean under 
+L2 and median under R1) is defined as
+
+page 3 of 18
+
+Anti-Robust and Tonsured Statistics
+
+ri ≡ ||zi-μ|| 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+(3) 
+
+One could use a robustified distance measure as in [3] but here only the usual L2 and R1 metrics
+are used.
+
+We construct a distance δj to use as a data index and we number the data points so j=1 is closest
+to μ (smallest δ) and j=n is the farthest from the centroid,  
+
+
+
+
+(
+
+j
+in L2 or
+
+x
+
+j
+
+
+
+2
+
+x
+
+/)
+2
+
+x
+
+
+
+(
+
+y
+
+j
+
+
+
+2
+
+y
+
+/)
+2
+
+y
+
+
+
+j
+
+rank
+
+(
+
+x
+
+)
+
+
+
+j
+
+n
+2
+
+
+
+rank
+
+(
+
+y
+
+)
+
+
+
+j
+
+n
+2
+
+in R1.
+
+(4)
+
+(5)
+
+Points closer to the center than some cutoff T, measured by δj ≤ δT, are labeled “inliers” and
+excluded. This is called “tonsuring” after the medieval monk’s practice of shaving the middle
+of their heads to simulate male pattern balding. The center “bald spot” is typically roughly
+elliptical with L2 tonsuring of the data density, and typically star-shaped with R1 tonsuring. The
+bald spot in the rank density (copula density) is typically diamond-shaped with R1 tonsuring.
+
+The ratio
+
+[100% - (100%*(n-T)/n)]
+
+is the percentage tonsuring.
+
+(6)
+
+Tonsuring is not the same as center censoring, where the middle observations are all set equal to
+some average, but is a type of center truncation, where the middle values are discarded. Unlike
+[8], this technique requires no regressions and does not postulate any mechanisms – it is purely a
+characterization of data.
+
+page 4 of 18
+
+Anti-Robust and Tonsured Statistics
+
+Some tonsured plots of changes in 1 year US Treasury rates versus changes in 10-year US
+Treasury rates are shown here. Both the probability density and copula density are separately
+tonsured using R1 and L2 tonsuring, at 50% and at 75%.
+
+Top 2 plots are probability density, and bottom 2 plots are copula (rank) density.
+
+Figure 2. 50% Tonsuring
+
+page 5 of 18
+
+Anti-Robust and Tonsured Statistics
+
+Top 2 plots are probability density, and bottom 2 plots are copula (rank) density.
+
+Figure 3. 75% tonsuring
+
+page 6 of 18
+
+Anti-Robust and Tonsured Statistics
+
+This paper uses three measures of association (concordance), Pearson correlation, Spearman
+rank correlation, and Somers dBA.
+
+The tonsured Pearson correlation is
+
+
+
+
+
+n
+
+
+
+Ti
+
+
+
+x
+i
+
+
+
+y
+
+i
+
+
+
+x
+T
+
+
+
+y
+T
+
+
+
+
+
+
+
+T
+
+
+
+j
+
+2
+
+n
+
+n
+
+Tj
+
+
+
+
+
+
+x
+T
+
+
+
+
+
+
+x
+
+
+
+
+
+
+
+
+
+
+Ty are the means of the data remaining
+Where the cutoff T is measured by δi > δT, and
+after discarding inliers.
+Analogously, the tonsured Spearman rank correlation is calculated using the same formula (7)
+but substituting rank(xi) for xi and rank(yi) for yi, and using (n-T)/2 for
+
+
+
+Tj
+
+Tx and
+
+
+ 
+
+
+y
+T
+
+
+
+y
+
+2
+
+j
+
+Tx and
+
+Ty .
+
+(7)
+
+In R1 an additional analogous tonsured measure of association is a tonsured Somers's dBA,
+defined by
+n
+
+
+sign
+C
+1
+
+sign
+
+
+
+(1
+
+
+x
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+y
+
+y
+
+x
+
+)
+
+i
+
+j
+
+n
+
+j
+
+i
+
+j
+
+i
+
+ 
+x
+1
+
+i
+
+y
+
+j
+
+
+
+x
+
+j
+
+
+(1
+
+j
+
+
+
+i
+
+)
+
+(8)
+
+
+
+D
+
+
+
+
+sign
+1
+
+
+x
+
+i
+
+
+
+x
+
+j
+
+
+
+
+
+sign
+
+
+
+y
+
+i
+
+
+
+y
+
+j
+
+
+
+(1
+
+j
+
+
+
+i
+
+)
+
+
+x
+1
+
+i
+
+
+
+x
+
+j
+
+ 
+1
+
+y
+
+i
+
+
+
+y
+
+j
+
+
+(1
+
+j
+
+
+
+i
+
+)
+
+Ti
+
+n
+
+Tj
+
+n
+
+
+
+Ti
+
+n
+
+Tj
+
+n
+
+
+
+Ti
+
+n
+
+Tj
+
+n
+
+i
+
+y
+
+Ti
+
+
+
+
+
+
+
+1
+Tj
+
+DC
+TDC
+
+
+DC
+TDC
+
+
+Y
+
+S
+5.
+
+
+
+
+BA
+
+X
+
+X
+
+T
+
+X
+
+
+
+T
+Y
+
+
+
+S
+
+X
+
+
+
+S
+
+Y
+
+
+
+S
+
+
+
+d
+
+
+
+S
+
+Y
+
+where in the set (8) of formulas, the sums are over all zi and zj remaining after tonsuring(δj > δT
+and δi > δT), and the indicator functions 1(…) are of ranks recomputed after tonsuring, and not
+comparisons of values. Note C means concordant, D means discordant, T means tied, and S is
+Somers's dBA measure. Somers S is not expected to be numerically close to the Pearson and rank
+correlations - two Gaussian random variables with a Pearson correlation of ½ will have a rank
+correlation of about ½ but a Somers dBA of about ⅓.
+
+page 7 of 18
+
+Anti-Robust and Tonsured Statistics
+
+IV. Examples of tonsuring
+
+Graphs of the Pearson, Spearman, and Somers correlations, as a function of tonsuring
+percentage, between annual S&P 500 returns and arithmetic changes in 1-year Treasury rates
+since 1871 (data taken from Shiller’s website) are displayed as Figure 4, separately for L2 and
+R1 tonsuring. To verify that there is some noteworthy effect, results must be compared to the
+null hypothesis of multivariate normality – tonsured correlation between variables distributed
+multivariate Gaussian increases slightly as an artifact of the tonsuring process [7]. All 6 graphs
+on real data lie below the equivalent Gaussian random numbers lines.
+
+page 8 of 18
+
+Anti-Robust and Tonsured Statistics
+
+L2 tonsuring on S&P 500-vs-1-year-Treasury
+
+compared with random Gaussians
+
+n
+o
+i
+t
+a
+l
+e
+r
+r
+o
+C
+
+40%
+30%
+20%
+10%
+0%
+-10%
+-20%
+
+0
+
+%
+
+1
+
+0
+
+%
+
+2
+
+0
+
+%
+
+3
+
+0
+
+%
+
+4
+
+0
+
+%
+
+5
+
+0
+
+%
+
+6
+
+0
+
+%
+
+7
+
+0
+
+%
+
+8
+
+0
+
+%
+
+9
+
+0
+
+%
+
+Tonsuring percentage
+
+L2 Pearson on data
+L2 Pearson on randoms
+
+L2 Spearman on data
+L2 Spearman on randoms
+
+L2 Somers on data
+L2 Somers on randoms
+
+R1 tonsuring on S&P 500-vs-1-year-Treasury
+
+compared with random Gaussians
+
+n
+o
+i
+t
+a
+l
+e
+r
+r
+o
+C
+
+40%
+30%
+20%
+10%
+0%
+-10%
+-20%
+
+0
+
+%
+
+1
+
+0
+
+%
+
+2
+
+0
+
+%
+
+3
+
+0
+
+%
+
+4
+
+0
+
+%
+
+5
+
+0
+
+%
+
+6
+
+0
+
+%
+
+7
+
+0
+
+%
+
+8
+
+0
+
+%
+
+9
+
+0
+
+%
+
+Tonsuring percentage
+
+R1 Pearson on data
+R1 Pearson on randoms
+
+R1 Spearman on data
+R1 Spearman on randoms
+
+R1 Somers on data
+R1 Somers on randoms
+
+Figure 4 – Tonsured correlation between annual changes in the U.S. stock and bond markets
+from 1871 to 2004. The random Gaussians were generated to have the same 14.6% Pearson
+correlation for the full dataset as the historical data.
+
+page 9 of 18
+
+Anti-Robust and Tonsured Statistics
+
+If there were some parametric form for the tonsured correlation, one could look for a limit as the
+tonsuring percentage went to 100%. This is the procedure for tail dependence, as discussed
+below. However, a central point of this paper is that there is in general no such parametric form
+for tonsured correlation that mathematically must be obeyed by the data and is suitable for
+extrapolation; no tonsuring equivalent to the generalized Pareto distribution of Extreme Value
+Theory. This is purely an explanatory data analysis, and no functional form is forced onto the
+data. The tonsured correlation becomes statistically meaningless after a certain level, typically
+when there are fewer than one or two dozen data left.  This can usually be seen in a graph of  ρ 
+vs tonsuring percentage as a loss of monotonicity.
+
+To see if observed effects are more than an artifact of the tonsuring procedure, this paper will
+compare each pair of financial timeseries with a pair of Gaussian random numbers generated
+with the same full-sample Pearson correlation. It is commonly thought that, in times of stock
+market stress, inter-stock correlations go to either one or zero. Figure 5 examines this using L2
+tonsuring of the Pearson correlation between weekly returns on BAC and on GE common stock
+using data from Yahoo Finance from 1986 to mid-2010. These two stocks were chosen at
+random purely for illustrative purposes. The correlation for the real data increases with
+tonsuring faster than the slight increase observed with random Gaussians generated with the
+same 45% full-sample Pearson correlation.
+
+R2 Tonsured Pearson Correlation Between Weekly
+
+returns on BAC and GE prices 1986-2010
+
+n
+o
+i
+t
+a
+l
+e
+r
+r
+o
+C
+
+70%
+65%
+60%
+55%
+50%
+45%
+40%
+
+0
+
+%
+
+1
+
+0
+
+%
+
+2
+
+0
+
+%
+
+3
+
+0
+
+%
+
+4
+
+0
+
+%
+
+5
+
+0
+
+%
+
+6
+
+0
+
+%
+
+7
+
+0
+
+%
+
+8
+
+0
+
+%
+
+9
+
+0
+
+%
+
+Tonsuring percentage
+
+R2 Pearson on data
+
+R2 Pearson on randoms
+
+Figure 5 – R2 tonsured Pearson correlation for two stock returns
+
+page 10 of 18
+
+Anti-Robust and Tonsured Statistics
+
+V. Tonsuring compared to Quantile Regression and Tail Dependence
+Quantile regression [8] assumes one variable is dependent on one or more explanatory
+
+variables, with the measure of dependency calibrated to optimize the parametric fit at one or
+more specific quantiles. The tonsuring methodology in this paper treats both variables
+symmetrically, and has no fitting parameters, but is purely an empirical measure.
+
+Tail dependence is another non-parametric technique, which is complementary to
+
+tonsuring.  In two dimensions, upper right tail dependence λur(u), as u goes to zero, is defined for
+any bivariate copula density c(x,y) as
+
+
+
+
+Pr(
+
+u
+
+1
+
+1
+
+x
+
+)
+
+(9)
+
+
+
+ur
+
+u
+)(
+
+
+
+lim
+u
+0
+
+
+
+
+lim
+u
+0
+
+
+
+
+
+yu
+,
+u
+
+
+
+
+where changing u to 1-u and > to < in the obvious way gets the formulae for upper left (ul),
+bottom right (br), and bottom left (bl) tail dependencies. In words, this is a measure of whether
+copula density for a small square of size u2 at the corner ( angle z/||z|| ) at 45˚, 135˚, 225˚, or 315˚ 
+stays finite, or goes to zero, as the square gets smaller. The tail size u serves a similar function to
+the tonsuring percentage. Note that equation (9) is expressed in terms of the copula density, and
+not in tems of the (cumulative) copula
+
+yxC
+,(
+
+yxc
+,(
+
+dxdy
+
+
+
+)
+
+)
+
+.
+
+x
+
+y
+
+ 
+
+0
+
+0
+
+For continuous variables, λ is bounded between zero and one, since at least zero copula 
+
+ 
+density is inside the small square, and if y=x, then since Pr(x>1-u)=u by construction for any
+copula with no mass points, the upper limit is u/u=1. For real financial data, only certain discrete
+values occur due to discrete tick sizes, and there are many mass points. If some of the data
+points inside the u2 square are observed more than once (tied ranks), λ can go above 1.  There are 
+ways to address this but they are outside the scope of this paper.
+
+Gaussian copulas have zero tail dependence in the limit u 0 for all 4 of these tails – the most
+extreme values of one marginal never accompanies the most extreme values of the other for
+Gaussian copulas.[10] Tail dependence is one way of defining contagion – the tendency for
+local correlations in the most extreme situations to go to 1 or -1, such as is often claimed for
+financial crises. This tail dependence measure may not detect changes in concordance which
+either are more subtle than being very close to 1 or 0, or if the tails are too thin.
+
+Since there is no universal parametric formula for real data, λi(u) is plotted vs u until u is small
+enough that the square contains too few data.
+An analogous measure, “tail insulation,” or “crisis hedging,” measures the tendency for one
+variable to go to zero when the other gets extreme. There are four of these, 0t, r0, 0b, and l0,
+(top, right, bottom, and left) – angles of 0º, 90º, 180º, or 270º - and the right-side one λr0 is
+
+Pr(
+
+x
+
+
+
+1
+
+u
+
+5,.
+
+
+
+ur
+)(0
+
+
+
+
+u
+2/
+u
+
+
+
+y
+
+u
+
+)5.2/
+
+
+
+(10)
+
+page 11 of 18
+
+Anti-Robust and Tonsured Statistics
+
+As an example of tonsuring and tail dependence, consider daily arithmetic changes in Treasury
+10-year yields from England and Japan. For ease of display, only R1 tonsuring is shown. As seen
+in Figure 7 below, the tonsured correlation for all 3 measures is lower for the real data (heavy
+lines) than for the simulated bivariate normal distribution with the same untonsured Pearson
+correlation (dotted lines). As a consequence, in this example, if a practitioner were calculating a
+99% Value-at-Risk on a portfolio sensitive to only these 2 yields, but using an approximation of
+a static correlation, the input correlation to get appropriate results at the 99th percentile – a 99%
+R1 tonsured Pearson correlation of 31% - would be an input of 9%, which in this case is slightly
+lower than the untonsured actual measurement of 10.3%. Similarly, the asset correlations used
+in multivariate Merton models of default likelihood might need adjustment.
+
+Tonsured Correlation of changes in 10-year GBP
+
+and JPY Treasury Yields
+
+n
+o
+i
+t
+a
+l
+e
+r
+r
+o
+C
+
+50%
+
+40%
+
+30%
+
+20%
+
+10%
+
+0%
+0.0%
+
+50.0%
+
+75.0%
+
+80.0%
+
+90.0%
+
+94.0%
+
+96.0%
+
+97.0%
+95.0%
+Percent Tonsuring
+
+98.0%
+
+99.0%
+
+99.1%
+
+99.2%
+
+99.3%
+
+Treas R1 Pearson
+Random R1 Pearson
+
+Treas R1 Spearman
+Random R1 Spearman
+
+Treas R1 Somers
+Random R1 Somers
+
+Figure 6 – R1-Tonsured correlation for daily changes in GBP and JPY 10-year Treasury yields
+
+Figure 7 compares tail dependence of the same 10-year yield changes as Figure 6. The real data
+show somewhat slower decay in tail dependence than random, but go to zero or nearly zero.
+Only one tail, bottom right, stays above zero – a possibly insignificant tendency for large
+decreases in JPY rates to accompany large increases in GBP rates.
+
+page 12 of 18
+
+Anti-Robust and Tonsured Statistics
+
+Tail dependence for daily changes in GBP and
+
+JPY 10-year yields
+
+e
+c
+n
+e
+d
+n
+e
+p
+e
+d
+
+l
+i
+a
+T
+
+20.000%
+
+15.000%
+
+10.000%
+
+5.000%
+
+0.000%
+0.0%
+
+50.0%
+
+75.0%
+
+80.0%
+
+90.0%
+
+94.0%
+
+96.0%
+
+95.0%
+97.0%
+98.0%
+Percent tonsuring
+
+99.0%
+
+99.1%
+
+99.2%
+
+99.3%
+
+Treas ur
+Random ur
+
+Treas br
+Random br
+
+Treas bl
+Random bl
+
+Treas ul
+Random ul
+
+Figure 7– Tail dependence for daily changes in 10-year Treasury yields for England and Japan
+
+Figure 8 shows tail dependence for the same weekly returns on BAC and GE stock as Figure 5.
+There is no meaningful difference in this case between any of the four tail-dependence graphs of
+the data and of random numbers, even though the tonsuring graph shows a significant increase in
+dependence between BAC and GE compared to Gaussian random numbers.
+
+page 13 of 18
+
+Anti-Robust and Tonsured Statistics
+
+Tail dependence of weekly returns on BAC and
+
+GE
+
+y
+c
+n
+e
+d
+n
+e
+p
+e
+D
+
+100%
+80%
+60%
+40%
+20%
+0%
+0%
+
+10%
+
+20%
+
+30%
+
+50%
+
+60%
+40%
+Percent eliminated
+
+70%
+
+80%
+
+90%
+
+ur on data
+ul on data
+bl on randoms
+
+br on data
+ur on randoms
+ul on randoms
+
+bl on data
+br on randoms
+
+Tail dependence for weekly stock returns compared to correlated Gaussian
+
+Figure 8.
+random numbers.
+VI. Future Work
+
+As noted above, this paper attempts to analyze pairs of timeseries using correlation as a weighted
+average over directions (angles), as a function of some distance metric, and as an average over
+time. There are techniques to extract more information about the angular distribution and time
+distribution.
+
+A technique, described in [9] can be combined with tonsuring to get a more detailed view of the
+angular distribution. Describing Luo and Shevchenko’s technique using copula densities, they
+divide the bivariate copula density into 8 regions, by dividing along the 4 lines x=.5, y=.5, x=y,
+and x=-y. Starting at 9:00 (x axis, x<0) and going clockwise, they number the regions 1 through
+8. For an elliptical copula density, there are two sets of four equally populated octants:
+
+page 14 of 18
+
+Anti-Robust and Tonsured Statistics
+
+N1=N2=N5=N6 and N3=N4=N7=N8. 1 An alternative measure of concordance is defined by
+comparing the populations of different octants.
+
+Combining this with tonsuring k percent using the R1 measure, and defining the population in
+each octant i after tonsuring as Nki, and computing the averages
+
+N
+
+k
+
+1
+
+
+
+N
+
+k
+
+2
+
+N
+
+k
+
+3
+
+
+
+N
+
+k
+
+4
+
+N
+
+ka
+
+
+
+N
+
+kb
+
+
+
+
+4
+
+4
+
+N
+
+k
+
+5
+
+
+
+N
+
+k
+
+6
+
+N
+
+k
+
+7
+
+
+
+N
+
+k
+
+8
+
+(11)
+
+Then Nka/Nkb is a non-parametric tonsured measure of association, and the various ratios
+Nki/Nk(a or b) measure asymmetry. Note that this is not equivalent to the tail dependence measures
+in equations (7) or (8).
+
+A technique described in [11] for non-parametrically segmenting the series into different epochs
+with adjustable tolerance could be combined with tonsuring to get a more detailed description of
+time series effects in the data.
+
+Extending tonsuring to more than 2 variables, the Principal Component Analysis of tonsured
+correlation matrices could be compared to the Marcenko-Pastur distribution of eigenvalues of
+Gaussian noise from Random Matrix Theory[13].
+
+This Luo-Shevchenko procedure is much more complicated and less useful using
+
+1
+probability densities – the four lines go through the mean of each variable, the major axis, and
+the minor axis, which axes may not be well-defined if the probability density is too far from
+elliptical. The resulting probability density octants have four symmetry-related pairs rather than
+two sets of four.
+
+page 15 of 18
+
+Anti-Robust and Tonsured Statistics
+
+Other Uses of Tonsuring
+Although this paper uses correlation to illustrate the concept of tonsuring, it could apply to any
+statistical summary measure or distribution moment where the modeler can impose some
+definition of metric and centroid, and attach to each data point a quantitative distance from the
+un-tonsured centroid. For example, one could define a tonsured CAPM beta of a stock as a
+function of the minimum daily percentage change in the overall market retained in the
+calculation. For many stocks, the tonsured beta is about the same as the untonsured beta.
+However, for some, as shown for BAC below, there is a noticeable effect.
+
+TonsuredBetaof BACtoSPXindex
+
+a
+a
+t
+e
+B
+
+1.55
+1.5
+1.45
+1.4
+1.35
+1.3
+
+0% 10% 20% 30% 40% 50% 60% 70% 80% 90%
+
+Percent tonsuringof SPXIndex
+
+Figure 9. Tonsured CAPM beta of Bank of America stock to SPX index using daily data from
+
+Yahoo
+
+page 16 of 18
+
+Anti-Robust and Tonsured Statistics
+
+VII. Conclusions
+
+By concentrating on the more extreme observations rather than dismissing them as
+
+irrelevant outliers, the tonsuring technique allows a model-free view of the more extreme data
+separate from the “inliers.” Monte Carlo sampling from some hypothesized parametric form can
+be compared to the actual data in question to check for significant changes in behavior as a
+function of tonsuring percentage. In the examples above, the parametric form of a multivariate
+normal was shown to have qualitatively incorrect tonsuring behavior for the correlation between
+large moves for the S&P 500 vs 1-year US Treasuries, and for the correlation between two
+equities. A more subtle overestimate of the tonsured correlation between 10-year Treasury yield
+changes in England and Japan was also illustrated. In general, a significant overestimate or
+underestimate of tonsuring effects would suggest that a proposed parametric model would need
+to be modified to correctly capture tail behavior. This is a direct test of how well the model fits
+the data, for a model calibrated to the observed full-sample correlation.
+
+Tonsuring can be a useful exploratory data analysis technique to highlight changes in
+association between pairs of financial variables as a function of size of market move, which
+changes may be too subtle, or the individual variables too thin-tailed, to cause asymptotic tail
+dependence in the sense of Equation (7). Unlike tail dependence, the tonsured correlation does
+not go to zero for thin-tailed data, but extrapolation to unobserved or very rarely observed
+extreme moves is not purely mechanical.
+
+Tonsured correlation complements, and gives different information from, tail
+
+dependence measures. Correlations are a radial average, while tail dependences focus on one
+angle. The tonsuring technique can be used with several distance metrics and many definitions
+of correlation / dependence. For datasets with significant skewness in the univariate distribution,
+R1 distance measures are unaffected, but L2 measures should be used with caution.
+
+Because any observed dataset is finite, there are limitations on how much data can be
+tonsured away while retaining statistical significance. This limitation is also present with tail
+dependence measures.
+
+Tonsuring can be a useful technique to raise additional questions about the more extreme
+
+observations in a dataset, by ignoring the inliers, where not as much happens.
+
+page 17 of 18
+
+Anti-Robust and Tonsured Statistics
+
+VIII. References
+
+[1] C. Schinkus, Physica A 388 (2009) 4415-4423, “Economic uncertainty and econophysics”
+
+[2] Eugene Wigner, Communications in Pure and Applied Mathematics, Vol. 13, No. I (February
+1960), “The Unreasonable Effectiveness Of Mathematics In The Natural Sciences”
+
+[3] Mia Hubert et al, “High-Breakdown Robust Multivariate Methods” in Statistical Science
+2008, Vol. 23, No. 1, 92–119
+
+[4] Jurečková and Sen, Robust Statistical Procedures, Wiley 1996 
+
+[5] Hettmansperger and McKean, Robust Nonparametric Statistical Methods, Arnold 1998
+
+[6] S. G. Badrinath and S. Chatterjee, J. Business Vol 61, no. 4 (1988), “On Measuring skewness
+and Elongation in Common Stock Return Distributions”
+
+[7] PITFALLS IN TESTS FOR CHANGES IN CORRELATIONS Brian H. Boyer, Michael S.
+Gibson and Mico Loretan at http://www.federalreserve.gov/pubs/ifdp/1997/597/ifdp597.pdf
+
+[8] ECB Working Paper Series NO. 501 (http://ssrn.com/abstract_id=742507 )
+“Measuring Comovements By Regression Quantiles”
+by Lorenzo Cappiello, Bruno Gérard, and Simone Manganelli
+
+[9] Xiaolin Luo and Pavel V. Shevchenko, Quantitative Finance vol 10 (forthcoming),“The t
+copula with multiple parameters of degrees of freedom: bivariate characteristics and application
+to risk management”
+
+[10] H. Joe, “Multivariate Models and Dependence Concepts,” Chapman and Hall 1997, page
+54, exercise 2.9
+
+[11] Danilo Mercurio and Vladimir Spokoiny, “Statistical Inference For Time-Inhomogeneous
+Volatility Models,” The Annals of Statistics 2004, Vol. 32, No. 2, 577–602
+
+[12] for example, Austin Gerig, “Universal Laws and Economic Phenomena,”
+http://arxiv.org/abs/1002.0377
+
+[13] for example, Giulio Biroli, Jean-Philippe Bouchaud, Marc Potters, “The Student ensemble
+of correlation matrices,” http://arxiv.org/abs/0710.0802
+
+page 18 of 18
+
+

@@ -1,0 +1,534 @@
+5
+0
+0
+2
+
+ 
+
+p
+e
+S
+6
+1
+
+ 
+
+ 
+ 
+]
+n
+a
+-
+a
+t
+a
+d
+
+.
+s
+c
+i
+s
+y
+h
+p
+[
+ 
+ 
+
+1
+v
+2
+4
+1
+9
+0
+5
+0
+/
+s
+c
+i
+s
+y
+h
+p
+:
+v
+i
+X
+r
+a
+
+A characteristic time scale of tick quotes on
+
+foreign currency markets
+
+Aki-Hiro Sato
+
+Department of Applied Mathematics and Physics,
+
+Graduate School of Informatics,
+
+Kyoto University, Kyoto 606-8501, Japan
+
+January 14, 2018
+
+Abstract
+
+This study investigates that a characteristic time scale on an ex-
+change rate market (USD/JPY) is examined for the period of 1998
+to 2000. Calculating power spectrum densities for the number of tick
+quotes per minute and averaging them over the year yield that the
+mean power spectrum density has a peak at high frequencies. Conse-
+quently it means that there exist the characteristic scales which dealers
+act in the market. A simple agent model to explain this phenomenon
+is proposed. This phenomena may be a result of stochastic resonance
+with exogenous periodic information and physiological ﬂuctuations of
+the agents. This may be attributed to the traders’ behavior on the
+market. The potential application is both quantitative characteriza-
+tion and classiﬁcation of foreign currency markets.
+
+Key words. power spectrum density, agent-based model,
+stochastic resonance
+
+1
+
+Introduction
+
+Empirical analysis of high-frequency ﬁnancial data have been attracting sig-
+niﬁcant interest among physicists as well as economists during a decade
+
+1
+
+(Mantegna and Stanley 2000, and Dacorogna 2001). Many features of ﬁ-
+nancial markets have been clariﬁed by many successive studies.
+
+Actually it is well-known that the markets have a characteristic time
+scale in long period (daily, weekly, and monthly). However recent studies
+(Takayasu 2003, Ohnishi 2004 and Mizuno 2004) on time-series analyses in
+ﬁnancial markets show that the market has a characteristic time scale in short
+period and propose the reason why traders are mainly using strategies with
+weighted feedbacks of past prices. Furthermore using the self-modulation
+process Takayasu et al. have found that the characteristic time scale is about
+2 minutes in the JPY/USD market (Takayasu 2003) (abbreviated as MT).
+
+On the other hand Baninec and Krawiech and Ho lst proposed a possibility
+that stochastic resonance occurs in markets (Babinec 2002 and Krawiech
+2003) through an Ising-like agent model. They suggest that a periodicity
+in the market results from exogenous periodical information (abbreviated as
+BKH).
+
+In order to clarify the mechanism of this characteristic time I think that
+we should examine it on a diﬀerent standpoint from MT and BKH. Both stud-
+ies focus on prices or price returns. However, in this article, we focus on the
+number of tick quotes in foreign currency rates (USD/JPY) and investigate
+the statistical properties of them by utilizing the power spectrum technique.
+As the results of examining the number of tick quotes in USD/JPY market
+it is found that the power spectrum density (PSD) has some peaks at about
+2 minutes (the peak frequency depends on the currency markets).
+
+In order to explain this phenomena a simple agent model based on double-
+threshold noisy device (Sato 2004) is proposed. From a result of numerical
+simulations of the model it is found that the high periodicity of the num-
+ber of tick quotes may happen. This result leads to a hypothesis that this
+periodicity is caused by common exogenous periodical information.
+
+The purposes of this study are as follows: (1) to examine the number
+of high-frequency quotes lead us to deeply understand microscopic market
+activities.
+(2) this may provide useful information for market players to
+consider their trading strategy.
+
+2 Data Analysis
+
+The number of ask quotes per minute in USD/JPY is counted for a period of
+1998 to 2000. Utilizing the data we calculated three PSDs for 2,048 points in
+
+2
+
+weekday and average them over the year. The averaged power spectrums on
+the semi-log scale are shown in Fig. 1. They all have a peak at 0.4 (1/min),
+namely 2.5 minutes. We consider that these peaks exhibit characteristic time
+scales of dealers’ activities, i.e., the dealers act having the periodicity of 2.5
+minutes.
+
+3 Dealer model
+
+We introduce a simple agent model based on double-threshold noisy devices
+in order to understand the characteristic time scales found in the averaged
+power spectrum density. This model contains N dealers and the ith dealer
+has double-threshold (θ(1)
+i ) to decide buy(1), sell(-1) and wait(0), and
+noise source ξi(t) to model an uncertainty in their mind. We assume that
+the ith dealer must choose a decision (output) into the three ones yi(t) =
+{1, 0,−1} based on information (input) xi(t) with an uncertainty ξ(t) in
+his/her mind:
+
+i > θ(2)
+
+yi(t) =
+
+
+
+
+(xi(t) + ξi(t) > θ(1)
+i )
+(θ(2)
+i ≤ xi(t) + ξi(t) ≤ θ(1)
+i )
+
+1
+0
+−1 (xi(t) + ξi(t) < θ(2)
+i )
+
+.
+
+(1)
+
+Here we assume that ξi(t) is identically independent Gaussian distribution,
+
+ξ2
+2σ2
+where σi are standard deviations of the ith dealer.
+
+exp(cid:16) −
+
+√2πσi
+
+G(ξ) =
+
+1
+
+(cid:17),
+
+i
+
+(2)
+
+It is assumed that the input of each dealer is exogenous periodic informa-
+tion s(t) = A sin(2πf t), where A represents an amplitude, and f a frequency.
+For s(t) > 0 the dealers feel it good news and tend to decide a buy, while for
+s(t) < 0 they do it bad news and to decide a sell.
+
+Furthermore the number of tick quotes per unit time X(t) is deﬁned as
+
+X(t) =
+
+1
+N
+
+N
+
+X
+i=1 |yi(t)|.
+
+(3)
+
+For simplicity assume θ(1)
+
+i = −θ. Obviously the activity
+X(t) is always zero if σ = 0 and A < θ, so that, there is no uncertainty
+of the dealers in their mind and the exogenous information is weaker than
+
+i = θ and θ(2)
+
+3
+
+the threshold for the dealers to decide their action. However if there is
+uncertainty σ > 0 then the activity X(t) can exhibit periodicity despite
+of A < θ due to stochastic resonance (see Gammaitoni H¨anggi Jung and
+Marchesoni (1998)).
+
+As shown in Fig. 2 it is found that the PSD has some peaks from nu-
+merical simulations of the dealer model for σ > 0 and A < θ. This peak is
+caused by stochastic resonance.
+
+4 Discussion and Conclusion
+
+We empirically investigate the number of the tick quotes per unit time in
+foreign currency market (USD/JPY). It is found that the power spectrum
+densities of them for a period 1998 to 2000 all have a peak at 0.4 [1/min].
+From the results it is conclude that a periodical action of dealers exists.
+
+In order to explain this phenomena a simple dealer model based on the
+double-threshold noisy devices is proposed. Under a hypothesis that the
+mechanism of this periodicity is stochastic resonance the market activity
+in the model shows periodicity due to uncertainty of dealers’ decision even
+though the exogenous periodical information is weaker than the threshold for
+dealers to decide their action. In fact this model is a feedforward one, how-
+ever, real markets contains complicated (positive and negative) feedbacks.
+The future work is to consider the feedbacks to improve the dealer model.
+
+Moreover the source of this periodicity is open problem. One possibility
+is an endogenous feedback mechanism of dealers as shown in MT. The other
+is an exogenous periodical information as shown in this paper. More detailed
+data analyses let us clarify the mechanism of this phenomena. To consider
+this problem is expected to contribute to a deep understanding of ﬂuctuations
+and structure in the market.
+
+References
+
+[1] Mantegna R.N. and Stanley H.E. (2000) Introduction to econophysics,
+
+Cambridge University Press.
+
+[2] Dacorogna M.M., Gen´cay R, M¨uller U., Olsen R.B. and Pictet O.V.
+(2000) An Introduction to High-Frequency Finance, Academic Press
+(San Diego).
+
+4
+
+[3] Mizuno T., Kurihara S., Takayasu M. and Takayasu H. (2003) Analy-
+sis of high-resolution foreign exchange data of USD-JPY for 13 years.
+Physica A 324:296–302.
+
+[4] Takayasu M. (2003) in ; The Application of Econophyisc–Proceedings
+of the Second Nikkei Econophysics Symposium, H. Takayasu (Ed.),
+Springer(Tokyo): 155-160; Takayaus M. and Takayasu H. (2003) Self-
+modulation processes and resulting generic 1/f ﬂuctuations. Physica A
+324: 101–107.
+
+[5] Ohnishi T., Mizuno T., Aihara K., Takayasu M. and Takayasu H. (2004)
+Statistical properties of the moving average price in dollar-yen exchange
+rates, Physica A 344:207–210.
+
+[6] Mizuno T., Nakano T., Takayasu M. and Takayasu H. (2004) Traders’
+strategy with price feedbacks in ﬁnancial market. Physica A 344:330–
+334.
+
+[7] Babinec, P (2002) Stochastic resonance in an interacting-agent model
+
+of stock market. Chaos, Solutions and Fractals 13: 1767–1770.
+
+[8] Krawiecki A. and Ho lyst J.A. (2003) Stochastic resonance as a model
+
+for ﬁnancial market crashes and bubbles. Physica A 317: 597–608.
+
+[9] Sato A.-H., Ueda M. and Munakata T., Signal estimation and threshold
+optimization using an array of bithreshold elements. (2004) Physical
+Review E, 70:021106.
+
+[10] Gammaitoni L., H¨anggi P., Jung P., and Marchesoni F. (1998) Stochas-
+
+tic resonance. Rev. Mod. Phys. 70:223–287.
+
+5
+
+m
+u
+r
+t
+c
+e
+p
+s
+ 
+r
+e
+w
+o
+p
+
+m
+u
+r
+t
+c
+e
+p
+s
+ 
+r
+e
+w
+o
+p
+
+m
+u
+r
+t
+c
+e
+p
+s
+ 
+r
+e
+w
+o
+p
+
+ 100
+
+ 10
+
+ 1
+
+ 0.1
+
+ 0.01
+
+ 0.001
+
+ 100
+
+ 10
+
+ 1
+
+ 0.1
+
+ 0.01
+
+ 0.001
+
+ 100
+
+ 10
+
+ 1
+
+ 0.1
+
+ 0.01
+
+ 0.001
+
+USD/JPY(1998)
+
+ 0
+
+ 0.05
+
+ 0.1
+
+ 0.15
+
+ 0.2
+
+ 0.25
+
+ 0.3
+
+ 0.35
+
+ 0.4
+
+ 0.45
+
+ 0.5
+
+frequency [1/min]
+
+USD/JPY(1999)
+
+ 0
+
+ 0.05
+
+ 0.1
+
+ 0.15
+
+ 0.2
+
+ 0.25
+
+ 0.3
+
+ 0.35
+
+ 0.4
+
+ 0.45
+
+ 0.5
+
+frequency [1/min]
+
+USD/JPY(2000)
+
+ 0
+
+ 0.05
+
+ 0.1
+
+ 0.15
+
+ 0.2
+
+ 0.25
+
+ 0.3
+
+ 0.35
+
+ 0.4
+
+ 0.45
+
+ 0.5
+
+frequency [1/min]
+
+Figure 1: Semi-log plots of the averaged power spectrum density of the num-
+ber of tick quotes (USD/JPY) over the year for a period of 1998 (top), 1999
+(middle), and 2000 (bottom). They all have a peak at 0.4 (1/min), i.e., 2.5
+minutes.
+
+6
+
+ 
+
+y
+t
+i
+s
+n
+e
+d
+m
+u
+r
+t
+c
+e
+p
+s
+ 
+r
+e
+w
+o
+p
+
+10-2
+
+10-3
+
+10-4
+
+10-5
+
+10-6
+
+10-7
+
+numerical simulation
+
+ 0
+
+ 0.05  0.1  0.15  0.2  0.25  0.3  0.35  0.4  0.45  0.5
+
+f [1/min]
+
+Figure 2: Semi-log plots of the averaged power spectrum of X(t) at σ = 0.3,
+θ = 1.0, A = 0.4, and f = 0.2. It has a peak at 0.4.
+
+7
+
+

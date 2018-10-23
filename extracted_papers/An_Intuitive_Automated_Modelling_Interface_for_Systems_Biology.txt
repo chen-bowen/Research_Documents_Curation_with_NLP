@@ -1,0 +1,1008 @@
+An Intuitive Automated Modelling Interface
+
+for Systems Biology
+
+Ozan Kahramano˘gulları
+
+Luca Cardelli
+
+The Microsoft Research – University of Trento
+Centre for Computational and Systems Biology ∗
+
+Microsoft Research Cambridge
+
+Centre for Integrative Systems Biology at Imperial College
+
+Emmanuelle Caron
+
+Centre for Integrative Systems Biology at Imperial College
+
+Centre for Molecular Microbiology and Infection, Imperial College
+
+We introduce a natural language interface for building stochastic π calculus models of biological
+systems. In this language, complex constructs describing biochemical events are built from basic
+primitives of association, dissociation and transformation. This language thus allows us to model
+biochemical systems modularly by describing their dynamics in a narrative-style language, while
+making amendments, reﬁnements and extensions on the models easy. We demonstrate the language
+on a model of Fcγ receptor phosphorylation during phagocytosis. We provide a tool implementation
+of the translation into a stochastic π calculus language, Microsoft Research’s SPiM. 1 2
+
+1 Introduction
+
+Modelling of biological systems by mathematical and computational techniques is becoming increas-
+ingly widespread in research on biological systems. In recent years, pioneered by Regev and Shapiro’s
+seminal work [16, 17], there has been a considerable amount of research on applying computer science
+technologies to modelling biological systems. Along these lines, various languages with stochastic sim-
+ulation capabilities based on, for example, process algebra, term rewriting (see, e.g, [5, 7]) and Petri
+nets (see, e.g., [19, 9]) have been proposed. However, expressing biological knowledge in specialised
+modelling languages often requires a simultaneous understanding of the biological system and expert
+knowledge of the modelling language. Isolating and communicating the biological knowledge to build
+models for simulation and analysis is a challenging task both for wet-lab biologists and modellers.
+
+Writing programs in simulation languages requires specialised training, and it is difﬁcult even for the
+experts when complex interactions between biochemical species in biological systems are considered:
+the representation of different states of a biochemical species with respect to all its interaction capabilities
+results in an exponential blow up in the number of states. For example, when a protein with n different
+interaction sites is being modelled, this results in 2n states, which needs to be represented in the model.
+Enumerating all these states by hand, also without inserting typos is a difﬁcult task.
+
+∗This work has been done during Kahramano˘gulları’s appointment at the Department of Computing, Imperial College and
+Centre for Integrative Systems Biology at Imperial College. Kahramano˘gulları acknowledges support of the UK Biotechnol-
+ogy and Biological Sciences Research Council through the Centre for Integrative Systems Biology at Imperial College (grant
+BB/C519670/1).
+
+1We dedicate this paper to the memory of Dr. Emmanuelle Caron, who unexpectedly passed away in July 2009. It has been
+
+an honour to have worked with Emmanuelle, a biologist of the highest calibre.
+
+2This work has been presented as oral presentation at the BioSysBio’09 Conference and Noise in Life’09 Meeting, both
+
+held in Cambridge in March 2009.
+
+S. Barry Cooper & Vincent Danos (eds.): Fifth Workshop on
+Developments in Computational Models—Computational Models From Nature
+EPTCS 9, 2009, pp. 73–86, doi:10.4204/EPTCS.9.9
+
+c(cid:13) Kahramano˘gulları, Cardelli & Caron
+This work is licensed under the
+Creative Commons Attribution License.
+
+74
+
+An Intuitive Automated Modelling Interface for Systems Biology
+
+To this end, we introduce an intuitive front-end interface language for building process algebra mod-
+els of biological systems: process algebras are languages that have originally been designed to formally
+describe complex reactive computer systems. Due to the resemblance between these computer systems
+and biological systems, process algebra have been recently used to model biological systems. An impor-
+tant feature of the process algebra languages is the possibility to describe the components of a system
+separately and observe the emergent behaviour from the interactions of the components (see, e.g., [1, 2]).
+Our focus here is on π calculus [12], which is a broadly studied process algebra, also because of
+its compactness, generality, and ﬂexibility. Because biological systems are typically highly complex
+and massively parallel, the π calculus is well suited to describe their dynamics. In particular, it allows
+the components of a biological system to be modelled independently, rather than modelling individual
+reactions. This allows large models to be constructed by composition of simple components. π calculus
+also enjoys an expressive power in the setting of biological models that exceeds, e.g., Petri nets [3].
+
+In the following, we present a language that consists of basic primitives of association, dissociation
+and transformation. We impose certain consistency constraints on these primitive expressions, which
+are required for the models that describe the dynamics of biochemical processes. We give a translation
+algorithm into stochastic π calculus. Based on this, we present the implementation of a tool for automated
+translation of models into Microsoft Research’s stochastic simulation language SPiM [14, 13], which can
+be used to run stochastic simulations on π calculus models. We demonstrate the language on a model of
+Fcγ receptor phosphorylation during phagocytosis. The implementation of the translation tool as well as
+further information is available for download at our website 3.
+
+2 Species, Sites, Sentences and Models
+
+We follow the abstraction of biochemical species as stateful entities with connectivity interfaces to other
+species: a species can have a number of sites through which it interacts with other species, and changes
+its state as a result of the interactions [6, 11]. In Section 4, we use this idea to design a natural language-
+like syntax for building models. The models written in this language are then automatically translated
+into a SPiM program by a translation algorithm. This is done by mapping the sentences of the lan-
+guage into events constructed from the basic primitives, which are then compiled into executable process
+expressions in the SPiM language.
+
+There is a countable set of species A,B,C, . . .. Each species has a number of sites a,b,c, . . . with
+which it can bind to other species or unbind from other species when they are already bound. We write
+sentences that describe the ‘behaviour’ of each species with respect to their sites. There are three kinds
+of sentences, i.e., associations, dissociations, and transformations. We deﬁne the sentences as
+
+(cid:104) type,(A,a), (B,b), Pos, Neg, r(cid:105)
+
+where type ∈ {association, dissociation, transformation} is the type of the sentence. The pairs (A,a)
+and (B,b) are called the body of the sentence. The sets Pos and Neg are called the conditions of the
+sentences. (A,a) and (B,b) are pairs of species and sites, and Pos and Neg are sets of such pairs of
+species and sites. If the sentence is an association, it describes the event where the site a on species A
+associates to the site b on species B if the sites on species in Pos are already bound and those in Neg are
+already unbound. If it is a dissociation sentence, it describes the dissociation of the site a on species A
+from the site b on species B. A transformation sentence describes the event of species A transforming into
+
+3http://www.doc.ic.ac.uk/∼ozank/pim.html
+
+Kahramano˘gulları, Cardelli & Caron
+
+75
+
+species B, where B can be empty. In this case, this describes the decay of species A. In transformation
+sentences, sites a and b must be empty, since transformations are site independent. r ∈ R+ denotes the
+rate of the event that the sentence describes. Then a model M is a set of such sentences. In Section
+4, we give a representation of these sentences in natural-language. For example, a sentence of the form
+(cid:104)association,(A,a), (B,b), {(A,c)}, {}, 1.0(cid:105) is given with the following English sentence.
+
+site a on A associates site b on B with rate 1.0 if site c on A is bound
+
+We denote with species(M ) all the species occurring in the body of the sentences of M . The func-
+tion sites(M ,A) denotes the sites of the species A that occur in the body of all the sentences of M .
+sites(Pos,A) denotes the sites of the species A in Pos (similarly for Neg). For any set A , ℘(A ) denotes
+the powerset of A .
+
+2.1 Conditions on Sentences
+
+Given a model M , we impose several conditions on its sentences.
+
+1. Sentences contain relevant species. The species in the condition of each sentence must be a
+
+subset of those in the body of the sentence.
+
+2. Conditions of the sentences are consistent. For every sentence of the form
+
+(cid:104) type,(A,a), (B,b), Pos, Neg, r(cid:105), we have that Pos∩ Neg = /0.
+
+3. All the sites in the conditions are declared in the model. For every sentence of the form
+
+(cid:104) type,(A,a), (B,b), Pos, Neg, r(cid:105), we have that sites(Pos,A) ⊆ sites(M ,A),
+sites(Neg,A) ⊆ sites(M ,A), sites(Pos,B) ⊆ sites(M ,B) and sites(Neg,B) ⊆ sites(M ,B).
+
+4. Association sentences associate unbound species. For every association sentence
+
+(cid:104)association,(A,a), (B,b), Pos, Neg, r(cid:105), we have that (A,a), (B,b) ∈ Neg.
+
+5. Dissociation sentences dissociate bound species. For every dissociation sentence
+
+(cid:104)dissociation,(A,a), (B,b), Pos, Neg, r(cid:105), we have that (A,a), (B,b) ∈ Pos.
+
+6. Transformation sentences are unbound at all sites. For every transformation sentence
+
+(cid:104)transformation,A, B, Pos, Neg, r(cid:105), we have that Pos = /0 and Neg = {(A,x)|x ∈ sites(M ,A)}.
+
+When these conditions hold, we can map the sentences of a model to another representation where the
+role of the conditions become more explicit. In the following, for a model M , we describe the states of its
+species as subsets of its sites, where bound sites are included in the set describing the state. For example,
+for a species A with binding sites sites(M ,A) = {a,b}, the set ℘(sites(M ,A)) = {{},{a},{b},{a,b}}
+is the set of all its states. Then {a} is the state where site a on A is bound and site b on A is unbound. We
+map each sentence (cid:104) type,(A,a), (B,b), Pos, Neg, r(cid:105) to a sentence of the form
+
+(cid:104) type,(A,a), (B,b), states(A), states(B), r(cid:105)
+
+where states(A) and states(B) are obtained as follows.
+
+states(A) = { S ∈℘(sites(M ,A)) | ((A,x) ∈ Pos ⇒ x ∈ S )∧ (x ∈ S ⇒ (A,x) /∈ Neg)}
+
+This representation allows us to impose another condition on the sentences:
+
+76
+
+An Intuitive Automated Modelling Interface for Systems Biology
+
+7. There are no overlapping conditions in the sentences. For any two sentences of a model M
+of the form (cid:104) type1,(A,a), (B,b), Pos1, Neg1, r(cid:105) and (cid:104) type2,(A,a), (B,b), Pos2, Neg2, r(cid:105) where
+type1 = type2, we obtain states(A)1 and states(B)1, for the ﬁrst and states(A)2 and states(B)2,
+for the second sentence. Then we have that
+– if states(A)1 = states(A)2 then it must be that states(B)1 ∩ states(B)2 = /0;
+– if states(B)1 = states(B)2 then it must be that states(A)1 ∩ states(A)2 = /0;
+– if states(A)1 (cid:54)= states(A)2 and states(B)1 (cid:54)= states(B)2 then it must be that
+states(A)1 ∩ states(A)2 = /0 and states(B)1 ∩ states(B)2 = /0.
+
+Example 1 Consider the models M1.
+
+M1 = {(cid:104)association,(A,a), (B,b), {(B, f )}, {(C,c), (A,a),(B, f )}, 1.0(cid:105),
+
+(cid:104)dissociation,(A,a), (B,b), {(B,b)}, {}, 1.0(cid:105),
+(cid:104)transformation,A, B, {}, {}, 1.0(cid:105),
+(cid:104)association,(D,d), (E,e), {}, {(D,d), (E,e)}, 2.0(cid:105),
+(cid:104)association,(D,d), (E,e), {}, {(D,d), (E,e)}, 4.0(cid:105)}
+
+This model does not fulﬁll any of the conditions above: in the ﬁrst sentence, (1.) C /∈ {A,B}; (2.)
+(B, f ) ∈ Pos and (B, f ) ∈ Neg; (3.) f /∈ {b}; (4.) (B,b) /∈ {(C,c), (A,a),(B, f )}. In the second sentence,
+(5.) (A,a) /∈ {(B,b)}. In the third sentence, (6.) {} (cid:54)= {(A,a)}. (7.) In the fourth and ﬁfth sentences,
+states(D)1 = {{}} = states(D)2 and states(E)1 = {{}} = states(E)2.
+Example 2 The model M2 fulﬁlls all the conditions above.
+
+M2 = {(cid:104)association,(A,a1), (B,b), {}, {(A,a1),(B,b)}, 1.0(cid:105),
+(cid:104)association,(A,a2), (C,c), {}, {(A,a2),(C,c)}, 1.0(cid:105),
+(cid:104)dissociation,(A,a1), (B,b), {(A,a1), (A,a2), (B,b)}, {}}, 2.0(cid:105),
+(cid:104)dissociation,(A,a1), (B,b), {(A,a1), (B,b)}, {(A,a2)}}, 4.0(cid:105)}
+
+3 Translation into Stochastic π calculus
+
+We use the representation of the states of species as sets of their sites to map models to stochastic π
+calculus speciﬁcations. For this purpose, we ﬁrst map each model to a compile map. Let us ﬁrst recall
+some of the deﬁnitions of stochastic π calculus, implemented in SPiM, as they can be found in [13].
+
+3.1 Stochastic π calculus
+Deﬁnition 3 Syntax of stochastic π calculus. Below fn(P) denotes the set of names that are free in P.
+
+E ::=
+|
+|
+
+/0
+E,X( ˜m) = P
+
+Empty
+Deﬁnition
+fn(P) ⊆ ˜m
+
+Σ ::=
+|
+
+0
+π;P + Σ
+
+Null
+Action
+
+P,Q ::=
+|
+|
+|
+
+π ::=
+|
+|
+
+Σ
+X( ˜n)
+P|Q
+newx P
+
+Summation
+Instance
+Parallel
+Restriction
+
+?x( ˜m)
+!x( ˜n)
+τr
+
+Input
+Output
+Delay
+
+Kahramano˘gulları, Cardelli & Caron
+
+77
+
+Expressions above are considered equivalent up to the least congruence relation given by the equivalence
+relation ≡ deﬁned as follows.
+
+P | 0 ≡ P
+P | Q ≡ Q | P
+
+P | (Q | R) ≡ (P | Q) | R
+
+X( ˜n) ≡ P{ ˜n/ ˜m} if X( ˜m) = P
+
+newx 0 ≡ 0
+
+newx newy P ≡ newy newx P
+newx (P | Q) ≡ P | newx Q if x /∈ fn(P)
+
+3.2 Compile Maps
+We map models into compile maps, denoted with C . A compile map is a set of expressions that we
+call process descriptions for each species A ∈ species(M ). For a model M , the process description
+of species A ∈ species(M ), denoted with P(A), is the pair (cid:104)A, actions(A)(cid:105). Here, actions(A) is the set
+collecting actions(A, S ) for every S ∈℘(sites(M ,A)).
+
+actions(A, S ) = (cid:104)S , assoc(A, S ), dissoc(A, S ), transform(A, S )(cid:105)
+
+We deﬁne assoc(A, S ) as the set of assoc(A, S ,a) for every a ∈ sites(M ,A).
+
+assoc(A, S ,a) = (cid:104)a, assocPartners(A, S ,a)(cid:105)
+
+where assocPartners(A, S ,a) is the set
+
+{(cid:104)B,b, states(B),r(cid:105) |
+
+((cid:104)association, (A,a), (B,b), Pos, Neg, r(cid:105) ∈ M ∧ S ∈ states(A))
+
+∨ ((cid:104)association, (B,b), (A,a), Pos, Neg, r(cid:105) ∈ M ∧ S ∈ states(A))} .
+
+We deﬁne dissoc(A, S ), similarly, as the set of dissoc(A, S ,a) for every a ∈ sites(M ,A).
+
+dissoc(A, S ,a) = (cid:104)a, dissocPartners(A, S ,a)(cid:105)
+
+where dissocPartners(A, S ,a) is the set
+
+{(cid:104)B,b, states(B),r(cid:105) |
+
+((cid:104)dissociation, (A,a), (B,b), Pos, Neg, r(cid:105) ∈ M ∧ S ∈ states(A))
+
+∨ ((cid:104)dissociation, (B,b), (A,a), Pos, Neg, r(cid:105) ∈ M ∧ S ∈ states(A))} .
+
+If S = /0, the set transform(A, S ) is deﬁned as
+
+{(cid:104)B,r(cid:105) | ((cid:104)transformation, A, B, Pos, Neg, r(cid:105) ∈ M } .
+
+Otherwise, it is /0.
+Example 4 Consider the model M2 in Example 2. We have that the compile map C2 for this model is as
+follows.
+
+{ (cid:104)A, { (cid:104){}, {(a1,{(B,b,{{}},1.0)}), (a2,{(C,c,{{}},1.0)}, {}, {}(cid:105) ,
+
+(cid:104){a1}, {(a2,{(C,c,{{}},1.0)}, {(B,b,{{b}},4.0)}, {}(cid:105) ,
+(cid:104){a2}, {(a1,{(B,b,{{}},1.0)}, {}, {}(cid:105) ,
+(cid:104){a1, a2}, {}, {(B,b,{{b}},2.0)}, {}(cid:105) }(cid:105) ,
+(cid:104)B, { (cid:104){}, {(b,{(A,a1,{{}, {a2}},1.0)}, {}, {}(cid:105) ,
+
+(cid:104){b}, {}, {(b,{(A,a1,{{a1}},4.0), (A,a1,{{a1, a2}},2.0)}, {}(cid:105) }(cid:105) ,
+
+(cid:104)C, { (cid:104){}, {(a1,{(A,a2,{{}, {a1}},1.0) }, {}, {}(cid:105) ,
+
+(cid:104){c}, {}, {}, {}(cid:105) }(cid:105)}
+
+78
+
+An Intuitive Automated Modelling Interface for Systems Biology
+
+3.3 From Compile Maps to Stochastic π calculus
+We construct a π calculus speciﬁcation from the compile map C of a model M . For each species
+A ∈ species(M ), we map the process description P(A) to a process speciﬁcation in stochastic π calculus.
+Let
+
+P(A) = (cid:104)A,{ actions(A, S1), . . . , actions(A, Sn)}(cid:105)
+
+where℘(sites(M ,A)) = {S1, . . . , Sn}, that is, the powerset of set of sites of A. Thus, there are n process
+speciﬁcations for the species A, some of which may be empty. Each process speciﬁcation for each state
+S of A is of the following syntactic form.
+
+process declaration
+
+“= (”
+
+“+”
+“+”
+
+local channel declarations
+association speciﬁcations
+dissociation speciﬁcations
+transformation speciﬁcations “)”
+
+The idea here is that each set of sites of a species A denotes the state where the sites in the set are
+bound. Thus the powerset of the set of sites of a species denotes the set of all its states. Now, let us obtain
+the process expression for each state Si with respect to actions(A, Si) where 1 ≤ i ≤ n. Let us consider
+Si = {a1, . . . ,ak} of A with
+
+actions(A, Si) = (cid:104)Si , assoc(A, Si), dissoc(A, Si), transform(A, Si)(cid:105) .
+
+Process declaration
+
+The expression for process declaration is a process name with its list of parameters. It is delivered by
+the dissociation sentences in M and Si = {a1, . . . ,ak}. For every a j ∈ Si, consider the set
+
+R(A,a j) =
+{(a j, (r/2)) |(cid:104)dissociation,(A,a j),(B,b), Pos, Neg, r(cid:105) ∈ M } ∪
+
+{(a j, (r/2)) |(cid:104)dissociation,(B,b),(A,a j), Pos, Neg, r(cid:105) ∈ M } ∪
+{(a j, 1.0) |(cid:104)dissociation,(B,b),(A,a j), Pos, Neg, r(cid:105) /∈ M ∧
+
+(cid:104)dissociation,(A,a j),(B,b), Pos, Neg, r(cid:105) /∈ M} .
+
+We associate each element of the set R(A,a j) a unique label s ∈ N+ and obtain R(cid:48)(A,a j). Then if
+R(cid:48)(A,a j) = {(a j, r1, 1), . . . ,(a j, r(cid:96), (cid:96))} we write the process declaration for A at state Si = {a1, . . . ,ak}
+as follows.
+
+Ai(a11, . . . ,a1(cid:96)1, . . . . . . ,ak1, . . . ,ak(cid:96)k)
+
+Example 5 For the state S2 = {a1} of species A of Example 2, we have the process declaration below,
+since we have that R(cid:48)(A,a1) = {(a1,2.0,1),(a1,1.0,2)}.
+A2(a11,a12)
+
+Local channel declarations
+
+These expressions are delivered by the dissociation sentences in M and the assoc(A, Si). That is, for
+every
+
+assoc(A, Si,a j) = (cid:104)a j, assocPartners(A, Si,a j)(cid:105) ∈ assoc(A, Si) ,
+
+Kahramano˘gulları, Cardelli & Caron
+
+79
+
+and for every (cid:104)B,b, states(B), r(cid:105) ∈ assocPartners(A, Si,a j) consider the set
+
+U (A,a j,B,b) =
+{(a j, (r/2)) |(cid:104)dissociation,(A,a j),(B,b), Pos, Neg, r(cid:105) ∈ M ∧ a j ≺ b} ∪
+
+{(a j, (r/2)) |(cid:104)dissociation,(B,b),(A,a j), Pos, Neg, r(cid:105) ∈ M ∧ a j ≺ b} ∪
+
+{(a j, 1.0) |(cid:104)dissociation,(B,b),(A,a j), Pos, Neg, r(cid:105) /∈ M ∧
+
+(cid:104)dissociation,(A,a j),(B,b), Pos, Neg, r(cid:105) /∈ M ∧ a j ≺ b}
+
+where ≺ denotes a lexicographic order on sites. We associate each element of the set U (A,a j,B,b) a
+unique label s ∈ N+ to obtain U (cid:48)(A,a j,B,b). Then if
+
+U (cid:48)(A,a j,B,b) = {(a j, r1, 1), . . . ,(a j, r(cid:96), (cid:96))}
+
+then we write the channel declarations for assoc(A, Si,a j) as follows.
+
+new a j1@r1
+
+. . .
+
+new a j(cid:96)@r(cid:96)
+
+Example 6 For the state S2 = {a1} of species A of Example 2, we have the channel declarations below,
+since we have that U (cid:48)(A,a2,B,b) = {(a2,1.0,1)}.
+
+Association speciﬁcations
+
+new a21@1.0
+
+The expression for association speciﬁcations for species A at state assoc(A, Si) is delivered by assoc(A, Si).
+For every
+
+(cid:104)a j, assocPartners(A, Si,a j)(cid:105) ∈ assoc(A, Si),
+and for every (cid:104)B,b, states(B), r(cid:105) ∈ assocPartners(A, Si,a j) consider the set
+
+B(A,a j,B,b) =
+
+{(!a jb, r) |(cid:104)(B,b), states(B), r(cid:105) ∈ assocPartners(A, Si,a j) ∧ a j ≺ b} ∪
+{(?ba j, r) |(cid:104)(B,b), states(B), r(cid:105) ∈ assocPartners(A, Si,a j) ∧ b ≺ a j } .
+
+We associate each element of the set B(A,a j,B,b) a unique label s ∈ N+ and obtain B(cid:48)(A,a j,B,b).
+Association of site a j on A results in the state Si(cid:48) = Si ∪ {a j}. For each element of (!a jb,rs,s) ∈
+B(cid:48)(A,a j,B,b) we write the following, composed by +.
+
+!a jbs(a j1, . . . ,a j(cid:96));continuation
+
+The association channel names, such as a jbs here, are also declared as global channel declarations,
+preceding all the process declarations. The continuation is written for A in Si(cid:48) as for process declarations
+above, however we write nil for the channel names for those associations of site a j on A with some
+site b(cid:48) (cid:54)= b. Here, nil is the nil-dissociation channel with rate 0. We obtain a j1, . . . ,a j(cid:96) from the set
+U (A,a j,B,b) as in channel declarations.
+Example 7 For the state S2 = {a1} of species A of Example 2, we have the following association
+speciﬁcations.
+
+!a2c1(a2);A3(a11,a12,a2)
+
+80
+
+An Intuitive Automated Modelling Interface for Systems Biology
+
+Dissociation speciﬁcations
+
+The expression for dissociation speciﬁcations for species A at state assoc(A, Si) is delivered by dissoc(A, Si).
+For every
+
+(cid:104)a j, dissocPartners(A, Si,a j)(cid:105) ∈ dissoc(A, Si),
+
+and for every (cid:104)B,b, states(B), r(cid:105) ∈ dissocPartners(A, Si,a j) consider the set
+
+G (A,a j,B,b) =
+
+{(!a j, r) |(cid:104)(B,b), states(B), r(cid:105) ∈ dissocPartners(A, Si,a j) ∧ a j ≺ b} ∪
+{(?b, r) |(cid:104)(B,b), states(B), r(cid:105) ∈ dissocPartners(A, Si,a j) ∧ b ≺ a j } .
+
+We associate each element of the set G (A,a j,B,b) a unique label s ∈ N+ and obtain G (cid:48)(A,a j,B,b).
+Dissociation of a j on A results in the state Si(cid:48) = Si\{a j}. For each (!a j,rs,s) ∈ G (cid:48)(A,a j,B,b) we write
+the following, composed by “+”.
+
+!a js;continuation + ?a js;continuation
+
+The continuation is written for A in Si(cid:48) as for process declarations above.
+
+Example 8 For the state S2 = {a1} of species A of Example 2, we have the following dissociation
+speciﬁcations.
+
+!a11;A1() + ?a11;A1()
+
+Transformation speciﬁcations
+The expression for transformation speciﬁcations for species A is given only if the state S = {}. In that
+case, for transfrom(A,{}) = {(B1,r1), . . . ,(Bk,rk)} we write
+
+delay@r1;B1() + . . . + delay@rk;Bk()
+
+4 Syntax of the Language
+
+The syntax of the language is deﬁned in BNF notation, where optional elements are enclosed in braces
+as {Optional}. A model (description) consists of sentences of the following form.
+
+Kahramano˘gulları, Cardelli & Caron
+
+81
+
+Model
+Sentence
+
+Association
+
+Dissociation
+
+Phosphorylation
+
+Dephosphorylation
+
+m ≥ 1
+
+::= Sentence1 . . . Sentencem
+::= Association
+| Dissociation
+| Transformation
+| Decay
+| Phosphorylation
+| Dephosphorylation
+
+::= Site on Species associates Site on Species
+
+{with rate Float} {if Conditions}
+
+::= Site on Species dissociates Site on Species
+
+{with rate Float} {if Conditions}
+
+::= Site on Species gets phosphorylated
+
+{with rate Float} {if Conditions}
+
+::= Site on Species gets dephosphorylated
+
+{with rate Float} {if Conditions}
+
+::= Species becomes Species {with rate Float}
+::= Species decays {with rate Float}
+::= Condition
+
+| Condition and Conditions
+::= Site on Species is bound
+
+Site on Species is unbound
+
+|
+
+Transformation
+Decay
+Conditions
+
+Condition
+
+Site
+Species
+
+::= String
+::= String
+
+In our implementation of the translation algorithm, each sentence of a model given in this syntax is
+mapped by a lexer and parser to a data structure of the form given in Section 2 in the obvious way. Phos-
+phorylation sentences are treated as association sentences where the second species is by default Phosph
+with the binding site phosph. The dephosphorylation sentences are mapped similarly to dissociation
+sentences. If not given, a default rate (1.0) is assigned to sentences.
+
+4.1 A Model of Fcγ Receptor-mediated Phagocytosis
+
+We demonstrate the use of the language on a model of Fcγ receptor (FcγR) phosphorylation during
+phagocytosis, where the binding of complexed immunoglobulins G (IgG) to FcγR triggers a signalling
+cascade that leads to actin-driven particle engulfment [8, 18, 4]. When a small particle is coated (op-
+sonised) with IgG, the Fc regions of the IgG molecules can bind to FcγRs in the plasma membrane and
+initiate a phagocytic response: a signalling cascade then drives the remodelling of the actin cytoskele-
+ton close to the membrane. This results in cup-shaped folds of plasma membrane that extend outwards
+around the internalised particle and eventually close into a plasma membrane-derived phagosome.
+
+FcγR contains within its cytoplasmic tail an immunoreceptor tyrosine-based activation motif (ITAM).
+The association of FcγR with an IgG induces the phosphorylation of two tyrosine residues within the
+ITAM domain by Src-family kinases. The phosphorylated ITAM domain then recruits Syk kinase, which
+propagates the signal further to downstream effectors (see Figure 1). In our language, we can describe
+
+82
+
+An Intuitive Automated Modelling Interface for Systems Biology
+
+Figure 1: A simple model of the phosphorylation of the ITAM domain on the Fcγ receptor during phago-
+cytosis. Adapted from [8].
+
+the initial phases of this cascade as follows:
+
+site f on FcR associates site i on IgG with rate 2.0
+site y on FcR gets phosphorylated if site f on FcR is bound
+site z on FcR gets phosphorylated if site f on FcR is bound
+
+The ﬁrst sentence above describes the binding of FcγR to IgG. The second and third sentences de-
+scribe the phosphorylation of the two tyrosine residues on ITAM (association of a Phosph0() molecule).
+This is automatically translated by our tool into the SPiM program given in Appendix A. We can then
+run stochastic simulations on the model given by these sentences.
+
+By using this language and our translation tool, we can build models of different size and complexity,
+and modify and extend these models with respect to the knowledge in hand on the different sites and
+interaction capabilities of the FcγR, as well as other biological systems. For example, the model above
+abstracts away from the role played by the Src kinases in the phosphorylation of the FcγR as depicted in
+Figure 1. The sentences above can be easily modiﬁed and extended to capture this aspect in the model
+as follows: here, the shaded part demonstrates the modiﬁcations with respect to the model given above.
+
+site f on FcR associates site i on IgG with rate 2.0
+site y on FcR gets phosphorylated if site s on FcR is bound
+site z on FcR gets phosphorylated if site s on FcR is bound
+site s on FcR associates site sr on Src if site f on FcR is bound
+site s on FcR dissociates site sr on Src
+
+The SPiM program resulting from automated translation of this model is given in Appendix B. It is
+important to note that, because FcR has 4 binding sites in the model above, in the SPiM code resulting
+from the translation, there are 16 species for FcR, denoting its different possible states. However, in the
+code given in Appendix A, there are 8 species for FcR denoting its states that result from its 3 binding
+sites in that model.
+
+5 Discussion
+
+We have introduced a natural language interface for building stochastic π calculus models of biological
+systems. The κ-calculus [5, 6, 7] and the work on Beta-binders in [11] have been source of inspiration
+
+Kahramano˘gulları, Cardelli & Caron
+
+83
+
+for this language.
+
+In [11], Guerriero et al. give a narrative style interface for the process algebra Beta-binders for a
+rich biological language. In our language, we build complex events such as phosphorylation and dephos-
+phorylation of sites as instances of basic primitives of association, dissociation and transformation. We
+give a functional translation algorithm for our translation into stochastic π calculus. The conditions that
+we impose on the models are automatically veriﬁed in the implementation of our tool. These conditions
+should be instrumental for ‘debugging’ purposes while building increasingly large models.
+
+The implicit semantics of our language, which is implemented in the translation algorithm into π
+calculus, can be seen as a translation of a fragment of the κ calculus into π calculus. Another approach
+similar to the one in this paper is the work by Laneve et al. in [15], where the authors give an encoding
+of nano-κ-calculus in SPiM. In comparison with our algorithm, the encoding in [15] covers a larger part
+of nano-κ by using the SPiM language as a programming language for implementing a notion of term
+rewriting, where there is an explicit function for matching. The algorithm gives the different states of a
+species in the SPiM encoding with respect to the parameters of that species as in κ-calculus.
+
+Topics of future work include an exploration of the expressive power of the association, dissociation
+
+and transformation primitives with respect to Kohn diagram representation [10] of biological models.
+
+References
+
+[1] L. Cardelli, E. Caron, P. Gardner, O. Kahramano˘gulları, and A. Phillips. A process model of actin polymeri-
+
+sation. In FBTC’08, volume 229 of ENTCS, pages 127–144. Elsevier, 2008.
+
+[2] L. Cardelli, E. Caron, P. Gardner, O. Kahramano˘gulları, and A. Phillips. A process model of Rho GTP-
+
+binding proteins. Theoretical Computer Science, 410/33-34:3166–3185, 2009.
+
+[3] L. Cardelli and G. Zavattaro. On the computational power of biochemistry. In AB’08, volume 5147 of LNCS,
+
+pages 65–80. Springer, 2008.
+
+[4] C. Cougoule, S. Hoshino, A. Dart, J. Lim, and E. Caron. Dissociation of recruitment and activation of the
+small G-protein Rac during Fc gamma receptor-mediated phagocytosis. J. Bio. Chem., 281:8756–8764, 2006.
+[5] V. Danos, J. Feret, W. Fontana, R. Harmer, and J. Krivine. Rule-based modelling of cellular signalling. In
+
+CONCUR’07, volume 4703 of LNCS, pages 17–41. Springer, 2007.
+
+[6] V. Danos, J. Feret, W. Fontana, R. Harmer, and J. Krivine. Rule-based modelling, symmetries, reﬁnements.
+
+In FMSB’08, volume 5054 of LNCS, pages 103–122. Springer, 2008.
+
+[7] V. Danos, J. Feret, W. Fontana, and J. Krivine. Abstract interpretation of cellular signalling networks. In
+
+VMCAI’08, volume 4905 of LNBI, pages 83–97. Springer, 2008.
+
+[8] E. Garcia-Garcia and C. Rosales. Signal transduction during Fc receptor-mediated phagocytosis. Journal of
+
+Leukocyte Biology, 72:1092–1108, 2002.
+
+[9] M. Heiner, D. Gilbert, and R. Donaldson. Petri nets for systems and synthetic biology. In SFM’08, volume
+
+5016 of LNCS, pages 215–264. Springer, 2008.
+
+[10] K. W. Kohn, M. I. Aladjem, S. Kim, J. N. Weinstein, and Y. Pommier. Depicting combinatorial complexity
+
+with the molecular interaction map notation. Molecular Systems Biology, 2:51, 2006.
+
+[11] C. Priami M. L. Guerriero, J. K. Heath. An automated translation from a narrative language for biological
+
+modelling into process algebra. In CMSB’07, volume 4695 of LNCS, pages 136–151. Springer, 2007.
+[12] R. Milner. Communication and Mobile Systems: the π-calculus. Cambridge University Press, 1999.
+[13] A. Phillips and L. Cardelli. Efﬁcient, correct simulation of biological processes in stochastic Pi-calculus. In
+
+CMSB’07, volume 4695 of LNBI. Springer, 2007.
+
+[14] A. Phillips, L. Cardelli, and G. Castagna. A graphical representation for biological processes in the stochastic
+pi-calculus. In Transactions on Computational Systems Biology VII, volume 4230 of LNCS, pages 123–152.
+Springer, 2006.
+
+84
+
+An Intuitive Automated Modelling Interface for Systems Biology
+
+[15] S. Pradalier, C. Laneve, and G. Zavattaro. From biochemistry to stochastic processes. In QALP’09, ENTCS.
+
+Elsevier, 2009. to appear.
+
+[16] C. Priami, A. Regev, E. Shapiro, and W. Silverman. Application of a stochastic name-passing calculus to
+
+representation and simulation of molecular processes. Information Processing Letters, 80:25–31, 2001.
+
+[17] A. Regev and E. Shapiro. Cellular abstractions: Cells as computation. Nature, 419:343, 2002.
+[18] J. A. Swanson and A. D. Hoppe. The coordination of signaling during Fc receptor-mediated phagocytosis.
+
+Journal of Leukocyte Biology, 76:1093–1103, 2004.
+
+[19] A. Tiwari, C. Talcott, M. Knapp, P. Lincoln, and K. Laderoute. Analyzing pathways using sat-based ap-
+proaches. In Gerhard Goos, Juris Hartmanis, and Jan van Leeuwen, editors, Second International Conference,
+Algebraic Biology 2007, volume 4545 of LNCS, pages 155–169. Springer, 2007.
+
+Kahramano˘gulları, Cardelli & Caron
+
+85
+
+Appendix A
+
+site f on FcR associates site i on IgG with rate 2.0
+site y on FcR gets phosphorylated if site f on FcR is bound
+site z on FcR gets phosphorylated if site f on FcR is bound
+
+The SPiM code resulting from the automated translation of this model.
+
+directive sample 10.0
+directive plot FcR7(); FcR6();
+
+FcR4(); FcR3();
+
+FcR5();
+FcR2(); FcR1();
+FcR0(); IgG1(); IgG0();
+Phosph1(); Phosph0()
+
+new fi1@1.0:chan(chan)
+new phosphy2@1.0:chan(chan)
+new phosphz3@1.0:chan(chan)
+new nil@0.0:chan
+
+let FcR0() =
+
+( new f@1.0:chan
+
+!fi1(f)*2.0; FcR1(f) )
+
+and FcR5(f:chan,z:chan) =
+
+( ?phosphy2(y); FcR7(f,y,z) )
+
+and FcR6(y:chan,z:chan) =
+
+( new f@1.0:chan
+
+!fi1(f)*2.0; FcR7(f,y,z) )
+
+and FcR7(f:chan,y:chan,z:chan) =
+
+()
+
+let IgG0() =
+
+( ?fi1(i); IgG1(i) )
+
+and IgG1(i:chan) =
+
+()
+
+and FcR1(f:chan) =
+
+let Phosph0() =
+
+( do ?phosphy2(y); FcR4(f,y)
+
+or ?phosphz3(z); FcR5(f,z) )
+
+and FcR2(y:chan) =
+
+( new f@1.0:chan
+
+!fi1(f)*2.0; FcR4(f,y) )
+
+and FcR3(z:chan) =
+
+( new f@1.0:chan
+
+!fi1(f)*2.0; FcR5(f,z) )
+
+and FcR4(f:chan,y:chan) =
+
+( ?phosphz3(z); FcR7(f,y,z) )
+
+6 Appendix B
+
+( new phosph@1.0:chan
+
+do !phosphy2(phosph)*1.0;
+
+Phosph1(phosph)
+
+or !phosphz3(phosph)*1.0;
+
+Phosph1(phosph) )
+
+and Phosph1(phosph:chan) =
+
+()
+
+run 1000 of
+run 1000 of
+run 1000 of
+
+FcR0()
+IgG0()
+Phosph0()
+
+site f on FcR associates site i on IgG with rate 2.0
+site y on FcR gets phosphorylated if site s on FcR is bound
+site z on FcR gets phosphorylated if site s on FcR is bound
+site s on FcR associates site sr on Src if site f on FcR is bound
+site s on FcR dissociates site sr on Src
+
+The SPiM code resulting from the automated translation of this model.
+
+directive sample 10.0
+directive plot FcR15();
+
+FcR14(); FcR13(); FcR12();
+FcR11(); FcR10();
+FcR9(); FcR8(); FcR7();
+
+86
+
+An Intuitive Automated Modelling Interface for Systems Biology
+
+FcR6(); FcR5();
+FcR4(); FcR3(); FcR2();
+FcR1(); FcR0();
+IgG1(); IgG0();
+Phosph1(); Phosph0();
+Src1(); Src0()
+
+new fi1@1.0:chan(chan)
+new phosphx2@1.0:chan(chan)
+new phosphy3@1.0:chan(chan)
+new ssr4@1.0:chan(chan)
+new nil@0.0:chan
+
+let FcR0() =
+
+( new f@1.0:chan
+
+!fi1(f)*2.0; FcR1(f) )
+
+and FcR1(f:chan) =
+
+( new s1@0.50:chan
+
+!ssr4(s1)*1.0; FcR5(f,s1) )
+
+and FcR2(s1:chan) =
+
+( new f@1.0:chan
+
+do !fi1(f)*2.0; FcR5(f,s1)
+or ?phosphx2(x); FcR8(s1,x)
+or ?phosphy3(y); FcR9(s1,y)
+or !s1; FcR0() or ?s1; FcR0() )
+
+and FcR3(x:chan) =
+
+( new f@1.0:chan
+
+!fi1(f)*2.0; FcR6(f,x) )
+
+and FcR4(y:chan) =
+
+( new f@1.0:chan
+
+!fi1(f)*2.0; FcR7(f,y) )
+
+and FcR5(f:chan,s1:chan) =
+
+( do ?phosphx2(x); FcR11(f,s1,x)
+or ?phosphy3(y); FcR12(f,s1,y)
+or !s1; FcR1(f) or ?s1; FcR1(f) )
+
+and FcR6(f:chan,x:chan) =
+
+( new s1@0.50:chan
+
+( new f@1.0:chan
+
+do !fi1(f)*2.0; FcR12(f,s1,y)
+or ?phosphx2(x); FcR14(s1,x,y)
+or !s1; FcR4(y) or ?s1; FcR4(y) )
+
+and FcR10(x:chan,y:chan) =
+
+( new f@1.0:chan
+
+!fi1(f)*2.0; FcR13(f,x,y) )
+
+and FcR11(f:chan,s1:chan,x:chan) =
+
+( do ?phosphy3(y); FcR15(f,s1,x,y)
+
+or !s1; FcR6(f,x) or ?s1; FcR6(f,x) )
+
+and FcR12(f:chan,s1:chan,y:chan) =
+
+( do ?phosphx2(x); FcR15(f,s1,x,y)
+
+or !s1; FcR7(f,y) or ?s1; FcR7(f,y) )
+
+and FcR13(f:chan,x:chan,y:chan) =
+
+( new s1@0.50:chan
+
+!ssr4(s1)*1.0; FcR15(f,s1,x,y) )
+
+and FcR14(s1:chan,x:chan,y:chan) =
+
+( new f@1.0:chan
+
+do !fi1(f)*2.0; FcR15(f,s1,x,y)
+or !s1; FcR10(x,y) or ?s1; FcR10(x,y) )
+
+and FcR15(f:chan,s1:chan,x:chan,y:chan) =
+
+( do !s1; FcR13(f,x,y) or ?s1; FcR13(f,x,y) )
+
+let IgG0() =
+
+( ?fi1(i); IgG1(i) )
+
+and IgG1(i:chan) =
+
+()
+
+let Phosph0() =
+
+( new phosph@1.0:chan
+
+do !phosphx2(phosph)*1.0;
+Phosph1(phosph)
+or !phosphy3(phosph)*1.0;
+Phosph1(phosph) )
+
+!ssr4(s1)*1.0; FcR11(f,s1,x) )
+
+and Phosph1(phosph:chan) =
+
+()
+
+and FcR7(f:chan,y:chan) =
+
+( new s1@0.50:chan
+
+!ssr4(s1)*1.0; FcR12(f,s1,y) )
+
+let Src0() =
+
+and FcR8(s1:chan,x:chan) =
+
+( new f@1.0:chan
+
+do !fi1(f)*2.0; FcR11(f,s1,x)
+or ?phosphy3(y); FcR14(s1,x,y)
+or !s1; FcR3(x) or ?s1; FcR3(x) )
+
+and FcR9(s1:chan,y:chan) =
+
+( ?ssr4(sr1); Src1(sr1) )
+
+and Src1(sr1:chan) =
+
+( do !sr1; Src0() or ?sr1; Src0() )
+
+(* run
+
+1000 of ... *)
+
+

@@ -1,0 +1,2775 @@
+5
+1
+0
+2
+
+ 
+
+y
+a
+M
+7
+2
+
+ 
+
+.
+
+ 
+ 
+]
+F
+M
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+4
+v
+1
+3
+4
+2
+0
+
+.
+
+5
+0
+5
+1
+:
+v
+i
+X
+r
+a
+
+An explicit solution for optimal investment in Heston model∗
+
+Elena Boguslavskaya† ‡
+
+Brunel University London, United Kingdom,
+
+Dmitry Muravey§
+
+Internatonal Laboratory of Quantitative Finance,
+
+Higher School of Economics, Moscow, Russia
+
+Abstract
+
+In this paper we consider a variation of the Merton’s problem with added stochastic volatility
+and ﬁnite time horizon. It is known that the corresponding optimal control problem may be
+reduced to a linear parabolic boundary problem under some assumptions on the underlying
+process and the utility function. The resulting parabolic PDE is often quite diﬃcult to solve,
+even when it is linear. The present paper contributes to the pool of explicit solutions for stochastic
+optimal control problems. Our main result is the exact solution for optimal investment in Heston
+model.
+
+1
+
+Introduction
+
+The optimal control theory for stochastic processes plays a prominent role in ﬁnancial mathe-
+matics and allows to formulate and solve problems in optimal investment, optimal trading, and
+other areas related to ﬁnance. The seminal paper by Robert Merton [1] was generalized in several
+directions. The subsequent research has introduced more realistic and complex asset dynamics
+[2], [3], and more realistic market models [4]. Similar mathematical problems arise in algorithmic
+trading [5], and market microstructure studies [6].
+
+In this paper we consider a variation of the Merton’s problem with stochastic volatility and
+ﬁnite time horizon. As shown in [2], the optimal control problem may be reduced to a linear
+parabolic boundary problem under some assumptions on the underlying process and the utility
+function. Generally, due to the lack of solution smoothness for this boundary problem, one needs
+to ﬁnd a viscosity solution to a non-linear equation.
+
+The resulting parabolic PDE is often quite diﬃcult to solve, even when it is linear. In several
+special cases the explicit solutions were obtained, see [7] for the model similar to Heston’s, and
+[8] for Chacko-Viceira model.
+
+The present paper contributes to the pool of explicit solutions for stochastic optimal control
+problems. Our main result is the exact solution to the optimal control problem within the
+framework of the celebrated Heston model [9]. The method of aﬃne representations, as used
+in [7], cannot be applied here. To obtain the desired explicit solution we employ the theory
+of integral representations and special functions. Quasi-analytical solutions were obtained by
+asymptotic and perturbation methods in [3] for optimal control of more general processes.
+
+∗The research on this paper was supported by grant 14.12.31.2007 of the Russian government.
+†elena@boguslavsky.net
+‡The author is supported by Daphne Jackson fellowship funded by ESPRC
+§dmuravey@hse.ru
+
+1
+
+The paper is organized as follows:
+
+in section 2 we formulate the problem; in section 3 we
+discuss the results of [2] on the representation of Bellman function as the solution of the linear
+parabolic equation, and extend their results to the case of exponential utility; in section 4 we
+present the main results of the paper; in section 5 we analyze the obtained explicit solution; in
+Appendix (section 6) we provide some technical asymptotics relations.
+
+2 Formulation of the problem
+
+Let (X, V ) = (Xs, Vs)s≥t be a vector stochastic process, given by the triangular system of
+stochastic diﬀerential equations
+
+dX/X = µ dt + √V dB1,
+
+dV = k(Θ − V )ds + σ√V dB2,
+
+Xt = x
+
+Vt = v.
+
+(2.1)
+
+t )s≥t B2 = (B2
+
+where B1 = (B1
+t )s≥t are correlated Wiener processes with correlation coeﬃcient
+ρ, i.e. hB1, B2it = ρ t, and µ, k, Θ, σ are some constants. The model for the asset price X
+deﬁned by (2.1) is very well known in ﬁnancial mathematics, and is called the Heston model [9].
+In order to solve the system of SDE’s (2.1) one needs to solve the second equation ﬁrst to
+obtain V , and then solve for X. Process V = (Vs)s≥t represents the volatility of asset X. Process
+V is a Feller process, also called a CIR (Cox-Ingersoll-Ross) process in ﬁnancial mathematics [10]
+. We assume that the Feller condition 2kΘ > σ2 is satisﬁed for V . Thus, V is always positive
+given V0 > 0.
+
+Let us consider a controlled process W = (Ws)s≥t given by
+
+dW = αdX,
+
+Wt = w.
+
+(2.2)
+
+where control α = (αs)s≥t is adapted to ﬁltration F≥t = σ{Bs − Bt, s ≥ t} and R T
+
+t α2
+Our aim is to ﬁnd the control on which functional EU (WT ) achieves its maximum
+
+sdt < ∞.
+
+J(w, x, v, t) = sup
+α
+
+EU (WT ).
+
+(2.3)
+
+Function J(w, x, v, t) is the Bellman function, which is a solution to HJB ( Hamilton-Jacobi-
+Bellman) equation. Utility function U (w) can be a power or an exponential utility function. For
+the convenience of notation we will omit the indices.
+
+UP (w) =
+
+wγ
+γ
+
+,
+
+γ < 0,
+
+UE(w) = 1 −
+
+e−cw
+
+c
+
+,
+
+c > 0.
+
+(2.4)
+
+Note, that the logarithmic utility is a special case of the power utility with γ = 0. This well
+known observation can be checked by taking the limit limγ→0(wγ − 1)/γ = log(w) and noting
+that utility functions are deﬁned up to an additive constant.
+The ﬁnancial interpretation of the processes above is the following: process W represents the
+wealth dynamics of the investor, while control α is the evolution of the investor’s position in the
+asset. The utility function U represents the investor’s preferences. Thus, to invest optimally,
+one should ﬁnd the optimal investment rule at each time t such that the expected utility of the
+terminal wealth at time T is maximised (2.3).
+
+Function J(w, x, v, t) is the solution of Hamilton-Jacobi-Bellman (HJB) equaion. The solution
+of HJB equation in the general case is a non-linear PDE. However, this equation may become
+linear under some choice of utility functions. Zariphopoulou [2] has proposed a method based on
+viscosity solution technique. Under this method the equation (2.3) may be reduced to a linear
+parabolic equation. The method may be applied to systems of stochastic diﬀerential equations
+of “triangular type”. Under this restriction the drift and the diﬀusion of the underlying asset X
+may depend on the volatility process V in arbitrary way.
+
+2
+
+It is much easier to perform qualitative and quantitative analysis of the optimal solution
+while provided with the exact formula. Nevertheless, it is not always possible to ﬁnd an explicit
+solution to a linear parabolic PDE. Explicit solutions were obtained in some special cases: see [7]
+for the model similar to Heston’s, and [8] for Chacko-Viceira model. Either of the above results
+are based on aﬃne representations of solutions. This technique is not applicable in the model
+we consider (2.1).
+
+In the present paper we propose a method based on Laplace transform. This technique allows
+
+us to obtain an explicit solution in terms of conﬂuent hypergeometric functions.
+
+3 T. Zariphopoulou’s result and extensions
+
+A quite general model for optimal investment (2.3) with power utility function UP was considered
+in [2]. The asset price dynamics X dependent on random process V was given by the triangular
+system of stochastic diﬀerential equations
+
+dX/X = µ(V, t)dt + σ(V, t)dB1,
+dV = b(V, t)dt + a(V, t)dB2,
+
+(3.1)
+
+where B1 = (B1
+ρ.
+
+t )s≥t B2 = (B2
+
+t )s≥t are correlated Wiener processes with correlation coeﬃcient
+
+We assume the necessary restrictions on the coeﬃcients of system (3.1) being satisﬁed in
+
+order to guarantee the existence of a strong solution (X, V ).
+
+Theorem 3.1 (Zariphopoulou). For process (3.1) and power utility function (2.4) we have the
+following representation of Bellman function (2.3)
+
+where
+
+JP (w, x, v, t) =
+
+wγ
+γ
+
+f 1/δ(v, t),
+
+δ = 1 + ρ2
+
+γ
+
+1 − γ
+
+,
+
+(3.2)
+
+(3.3)
+
+and function f = (v, t) is a solution to the following parabolic boundary value problem
+
+ft +
+
+1
+2
+
+a2(v, t) fvv +(cid:18)b(v, t) + ρ
+
+γ µ(v, t)a(v, t)
+
+(1 − γ)σ(v, t)(cid:19) fv +
+
+γ
+
+1 − γ
+
+δ
+2
+
+µ2(v, t)
+σ2(v, t)
+
+f = 0,
+
+(3.4)
+
+f (v, T ) = 1.
+
+The optimal synthesis is given by
+
+α∗
+
+P (w, x, v, t) =
+
+w
+
+x(1 − γ)(cid:18) µ(v, t)
+
+σ2(v, t)
+
++
+
+ρ
+δ
+
+a(v, t)
+σ(v, t)
+
+fv(v, t)
+
+f (v, t)(cid:19) .
+
+(3.5)
+
+To ﬁnd the optimal control at time t one should substitute the values for processes W and
+(X, V ) into synthesis (3.5). Note, that representation (3.2) can be explained as follows. Firstly,
+one can separate variables in the Bellman function J(w, x, v, t) = u(w)R(x, v, t). This trick
+is well known for the power utility case. Secondly, from the form of the coeﬃcients and the
+boundary condition, one can see that the solution does not depend on variable x. Thirdly, after
+the above manipulations, the remaining non-linear equation can be linearised by substitution
+Rδ(v, t) = f (v, t).
+
+We use similar reasoning as above to extend Zariphopoulou’s formula to the case of exponen-
+
+tial utility. It is our ﬁrst result in this paper.
+
+3
+
+Proposition 3.1. Under exponential utility function UE, the Bellman function (2.3) is repre-
+sented by
+
+(3.6)
+
+(3.7)
+
+(3.8)
+
+(3.9)
+
+where
+
+JE(x, w, v, t) = 1 −
+
+e−cw
+
+c
+
+f 1/δ(v, t),
+
+and function f = f (v, t) is a solution to the following parabolic boundary value problem
+
+δ = 1 − ρ2,
+
+ft +
+
+1
+2
+
+a2(v, t)fvv +(cid:18)b(v, t) − ρ
+
+µ(v, t)a(v, t)
+
+σ(v, t) (cid:19) fv −
+
+δ
+2
+
+µ2(v, t)
+σ2(v, t)
+
+f = 0,
+
+f (v, T ) = 1.
+
+The optimal synthesis is given by
+
+α∗
+
+E(w, x, v, t) =
+
+1
+
+c x(cid:18) µ(v, t)
+
+σ2(v, t)
+
++
+
+ρ
+δ
+
+a(v, t)
+σ(v, t)
+
+fv(v, t)
+
+f (v, t) (cid:19) .
+
+Note, that constant δ given by (3.7) and equation (3.8) for f can be obtained from power
+
+utility formula (3.3) and (3.4) by taking limit γ → −∞.
+
+4 The main result
+
+Let us return to the original problem. Consider the Heston model given by (2.1). Using the results
+from section 3, in particular substitutions (3.2) and (3.6) from Theorem 3.1 and Proposition 3.1
+respectively, we can reduce the original boundary value problem for Bellman function to the
+following boundary value problem for function f = f (v, t)
+
+σ2v
+2
+
+fvv +(cid:18)kΘ −
+
+1 − δ
+ρ
+
+µσ − kv(cid:19) fv −
+
+f + ft = 0.
+
+C
+v
+f (v, T ) = 1,
+
+(4.1)
+
+Equation (4.1) is the same for both cases of power and exponential utility functions, with the
+only diﬀerence in the values of constants δ and C. In the case of power utility function
+
+δ = 1 + ρ2 γ
+
+1 − γ
+
+,
+
+C = −
+
+µ2
+2
+
+δ.
+
+γ
+
+1 − γ
+
+For the exponential utility case
+
+Lemma 4.1. The solution of (4.1) is given by
+
+δ = 1 − ρ2,
+
+C =
+
+µ2
+2
+
+δ.
+
+f (v, t) =
+
+Γ(η − λ + 1/2)
+
+Γ(2η + 1)
+
+e−Ψ(v,t)/2 (Ψ(v, t))λ Mλ,η (Ψ(v, t)) ,
+
+where
+
+Ψ(v, t) =
+
+2kv
+
+σ2(cid:0)ek(T −t) − 1(cid:1)
+
+,
+
+λ = −
+
+kΘ
+σ2 +
+
+(1 − δ)µ
+
+ρσ
+
+,
+
+η =s(cid:18)λ +
+
+1
+
+2(cid:19)2
+
++
+
+2C
+σ2 ,
+
+Mλ,η(z) is a Whittaker’s function, and Γ(z) is a Gamma function.
+Moreover, we have
+
+fv
+f
+
+=
+
+(η + λ + 1/2)
+
+v
+
+M1+λ,η (Ψ(v, t))
+Mλ,η (Ψ(v, t))
+
+.
+
+4
+
+(4.2)
+
+(4.3)
+
+(4.4)
+
+(4.5)
+
+(4.6)
+
+Proof. Making substitutions
+
+˜v =
+
+2kv
+σ2 ,
+
+k(T − t) = ˜τ ,
+
+f (v, t) = e−λ˜τ ˜vλe˜v/2h(˜v, ˜τ )
+
+(4.7)
+
+we get the following boundary value problem for h
+
+h˜v˜v +(cid:18)−
+
+1
+4
+
++
+
+1/4 − η2
+
+˜v2
+
+(cid:19) h =
+
+1
+˜v
+
+h˜τ .
+
+h(˜v, 0) = ˜v−λe−˜v/2.
+
+Let G(˜v; ζ) be the Laplace transform of function h(˜v, ˜τ ) with respect to ˜τ
+
+G(˜v; ζ) =Z ∞
+
+0
+
+eζ ˜τ h(˜v, ˜τ )d˜τ .
+
+By denoting χ(˜v) = ˜v−1−λe−˜v/2, one can see that
+
+G′′ +(cid:18)−
+
+1
+4 −
+
+ζ
+˜v
+
++
+
+1/4 − η2
+
+˜v2
+
+(cid:19) G = −χ(˜v).
+
+(4.8)
+
+If made homogeneous, equation (4.8) is a Whittaker equation. Whittaker functions M−ζ,η(˜v)
+and W−ζ,η(˜v) are two linearly independent solutions of a Whittaker equation. One can check by
+substitution that the formula below is the solution of equation (4.8)
+
+G(˜v; ζ) =
+
+Γ(1/2 + ζ + η)
+
+Γ(1 + 2η)  M−ζ,η(˜v)Z ˜v
+
+0
+
+χ(ϕ)W−ζ,η(ϕ)dϕ + W−ζ,η(˜v)Z ∞
+
+˜v
+
+χ(ϕ)M−ζ,η(ϕ)dϕ! .
+
+(4.9)
+
+To proceed further we use formula 6.669.4 from [12]
+
+Z ∞
+
+0
+
+e− 1
+
+2 (a1+a2)t cosh x coth2ν(cid:18) 1
+
+2
+
+x(cid:19) I2µ (t√a1a2 sinh x) dx =
+Re (cid:18) 1
+
+2
+
+The above formula from [12] allows us to rewrite (4.9) as
+
+Wν,µ(a1t)Mν,µ(a2t),
+
+Γ(cid:0) 1
+2 + µ − ν(cid:1)
+t√a1a2Γ(1 + 2µ)
++ µ − ν(cid:19) > 0, Re µ > 0,
+
+a1 > a2.
+
+G(˜v; ζ) = √˜vZ ∞
+
+0 Z ∞
+
+0
+
+ϕ−1/2−λe− ϕ
+
+2 − ˜v+ϕ
+
+2
+
+Applying 6.643.2 from [12]
+
+cosh ψ tanh2ζ(cid:18) ψ
+
+2(cid:19) I2η(cid:16)p˜vϕ sinh ψ(cid:17) dϕdψ.
+
+(4.10)
+
+Z ∞
+
+0
+
+xµ− 1
+
+2 e−αxI2ν(cid:0)2β√x(cid:1) dx =
+
+Γ(cid:0)µ + ν + 1
+2(cid:1)
+
+Γ(2ν + 1)
+
+β−1e
+
+to the internal integral in (4.10), we obtain
+
+β2
+
+2α α−µM−µ,ν(cid:18) β2
+
+α (cid:19) , Re (cid:18)µ + ν +
+
+1
+
+2(cid:19) > 0
+
+(4.11)
+
+G(˜v; ζ) = e−˜v/2 Γ(η − λ + 1/2)
+
+Γ(1 + 2η)
+
+Z ∞
+
+0
+
+e(1−cosh ψ)˜v/4 tanh2ζ(cid:18) ψ
+
+2(cid:19)(cid:18) cosh ψ + 1
+
+2
+
+(cid:19)λ
+
+Mλ,η(cid:18) cosh ψ − 1
+
+2
+(4.12)
+
+˜v(cid:19) 2dψ
+
+sinh ψ
+
+.
+
+By changing the variable of integration ψ in (4.12) as
+
+2 log(cid:20)tanh(cid:18) ψ
+
+2(cid:19)(cid:21) = ν,
+
+2dψ
+sinh ψ
+
+= dν,
+
+cosh ψ − 1 =
+
+2eν
+
+1 − eν ,
+
+5
+
+we get
+
+G(˜v; ζ) = e−˜v/2 Γ(η − λ + 1/2)
+
+Γ(1 + 2η)
+
+Z 0
+
+−∞
+
+exp(cid:26)−
+
+˜v
+2
+
+eν
+eν − 1
+
++ ζν(cid:27)(cid:18) 1
+
+eν − 1(cid:19)λ
+
+Mλ,η(cid:18)˜v
+
+eν
+
+eν − 1(cid:19) dν.
+
+Inverting the Laplace transform, and using substitutions (4.7), we recover the formula for f (v, t)
+
+f (v, t) =
+
+1
+2πi
+
+Γ(η − λ + 1/2)
+
+Γ(1 + 2η)
+
+Z N +i∞
+N −i∞ Z 0
+
+−∞
+
+exp(cid:26)−
+
+˜v
+2
+
+eν
+
+eν − 1(cid:27) eζ(ν+˜τ )(cid:18)˜v
+
+e−˜τ
+
+eν − 1(cid:19)λ
+
+Mλ,η(cid:18)˜v
+
+where N is a number such that all residues of the integrand are to the right of it.
+
+Using the well-known representation of Dirac function
+
+and changing the order of integration in (4.13), we get
+
+1
+
+2πiZ N +i∞
+
+N −i∞
+
+ezζdζ = δ(z),
+
+eν
+
+eν − 1(cid:19) dζdν,
+
+(4.13)
+
+Z 0
+
+−∞
+
+eν
+
+˜v
+2
+
+e−˜τ
+
+eν − 1(cid:19)λ
+
+f (v, t) =
+
+Γ(1 + 2η)
+
+Γ(η − λ + 1/2)
+
+δ(ν + ˜τ ) exp(cid:26)−
+
+eν − 1(cid:19) dν.
+eν − 1(cid:27)(cid:18)˜v
+(4.14)
+Note, that ˜τ ≥ 0. Thus, we can complement the range of integration in (4.14) to the whole
+line, and, using the deﬁnition of Dirac’s function, namely R ∞
+−∞ δ(ζ − z)g(ζ)dζ = g(z) for any
+continuous g, we get
+e˜τ − 1(cid:19)λ
+
+e˜τ − 1(cid:27)(cid:18)˜v
+
+e˜τ − 1(cid:19) .
+
+Γ(η − λ + 1/2)
+
+Mλ,η(cid:18)˜v
+
+exp(cid:26)−
+
+˜v
+2
+
+Mλ,η(cid:18)˜v
+
+Γ(1 + 2η)
+
+e˜τ
+
+e−˜τ
+
+f (v, t) =
+
+e˜τ
+
+(4.15)
+
+eν
+
+Finally, by reversing the change of variables (4.7), we receive the main formula (4.4). The
+expression (4.6) for fv/f is obtained by using diﬀerential rules for Whittaker functions (see [11]).
+△
+
+The following theorem is the analogue of the results from section 3 but for Heston’s model.
+
+It gives an exact solution for the optimal control and Bellman function.
+
+Theorem 4.1. For power utility (2.4) and process (2.1) the Bellman function (2.3) is given by
+
+JP (w, x, v, t) =
+
+wγ
+γ
+
+f 1/δ(v, t),
+
+and the optimal control is
+
+α∗
+
+P (w, x, v, t) =
+
+where
+
+w
+
+x(1 − γ)(cid:18) µ
+
+v
+
++
+
+ρ σ
+δ
+
+(η + λ + 1/2)
+
+v
+
+M1+λ,η (Ψ(v, t))
+
+Mλ,η (Ψ(v, t)) (cid:19) ,
+
+f (v, t) =
+
+Γ(η − λ + 1/2)
+
+Γ(2η + 1)
+
+e−Ψ(v,t)/2 (Ψ(v, t))λ Mλ,η (Ψ(v, t)) ,
+
+(4.16)
+
+(4.17)
+
+,
+
+λ = −
+
+kΘ
+σ2 +
+
+(1 − δ)µ
+
+ρσ
+
+, C = −
+
+µ2
+2
+
+δ,
+
+γ
+
+1 − γ
+
+η =s(cid:18)λ +
+
+1
+
+2(cid:19)2
+
++
+
+2C
+σ2 ,
+
+δ = 1 + ρ2
+
+γ
+
+1 − γ
+2kv
+
+Ψ(v, t) =
+
+,
+
+σ2(cid:0)ek(T −t) − 1(cid:1)
+
+Mλ,η(z) is a Whittaker’s function, and Γ(z) is a gamma function.
+
+6
+
+Theorem 4.2. For exponential utility (2.4) and process (2.1) The Bellman function is given by
+
+JE(x, w, v, t) = 1 −
+
+e−cw
+
+c
+
+f 1/δ(v, t),
+
+and the optimal control is
+
+α∗
+
+E(w, x, v, t) =
+
+where
+
+1
+
+c x(cid:18) µ
+
+v
+
++
+
+ρ σ
+δ
+
+(η + λ + 1/2)
+
+v
+
+M1+λ,η (Ψ(v, t))
+
+Mλ,η (Ψ(v, t)) (cid:19) ,
+
+f (v, t) =
+
+Γ(η − λ + 1/2)
+
+Γ(2η + 1)
+
+e−Ψ(v,t)/2 (Ψ(v, t))λ Mλ,η (Ψ(v, t)) ,
+
+(4.18)
+
+(4.19)
+
+δ = 1 − ρ2,
+
+λ = −
+
+kΘ
+σ2 +
+
+(1 − δ)µ
+
+ρσ
+
+, C =
+
+µ2
+2
+
+δ,
+
+η =s(cid:18)λ +
+
+1
+
+2(cid:19)2
+
++
+
+2C
+σ2 ,
+
+Ψ(v, t) =
+
+2kv
+
+,
+
+σ2(cid:0)ek(T −t) − 1(cid:1)
+
+Mλ,η(z) is a Whittaker’s function, and Γ(z) is a gamma function.
+
+Comment. The model (3.1) with drift µ(Xt, t) = Vt is studied in [7]. For that particular model
+the coeﬃcient for f in (3.4) is proportional to v. This is the reason why the aﬃne representation
+is possible in that speciﬁc case. Moreover, if the boundary condition is not constant, the aﬃne
+representation is not possible again. Our method, on the contrary, allows us to obtain the
+required solution for any boundary conditions and for both models, either Heston’s or the model
+considered in [7].
+
+5 Analysis
+
+5.1 Analysis of the optimal control
+
+Optimal control in (4.17) and (4.19) is proportional to the sum of two terms: the ﬁrst term µ/v
+corresponds to the static portfolio optimization problem. It it simply the ratio of the instanta-
+neous drift to the instantaneous variance and does not depend on time or on the parameters of
+the volatility process. The second term
+
+ρ σ
+δ
+
+(η + λ + 1/2)
+
+v
+
+M1+λ,η (Ψ(v, t))
+Mλ,η (Ψ(v, t))
+
+(5.1)
+
+represents the hedging of the future opportunity set ( see Merton [14]). This term vanishes in a
+number of important special cases:
+
+ρ = 0: no correlation between the two driving Brownian motions,
+
+γ = 0: when the investor has log-utility.
+
+The case of zero volatility of volatility limit of Heston model (σ=0 in (2.1)) turns the asset
+process into a process similar to a geometric Brownian motion but with a deterministically time
+varying volatility.
+If in addition we set V0 = Θ in (2.1), then we get a geometric Brownian
+motion.
+
+Using the asymptotic results from Appendix 6 in case σ ∼ 0, we get
+
+f (v, t) ∼ 1,
+
+fv(v, t)
+f (v, t)
+
+∼
+
+C
+kv2 ek(T −t).
+
+(5.2)
+
+7
+
+Therefore, for σ ∼ 0 the Bellman function is approximately equal to the utility function, namely
+JP ∼ UP , JE ∼ UE; and the optimal controls are
+
+α∗
+
+P (w, x, v, t) =
+
+α∗
+
+E(w, x, v, t) =
+
+w
+
+x(1 − γ)(cid:18) µ
+c x(cid:18) µ
+
+v
+ρ σ
+δE
+
++
+
+1
+
+v
+
++
+
+ρ σ
+δP
+
+CP
+
+kv2 ek(T −t)(cid:19) ,
+
+CE
+
+kv2 ek(T −t)(cid:19) ,
+
+(5.3)
+
+(5.4)
+
+where constants C[−] and δ[−] depend on the choice of utility.
+
+5.2 Hedging interpretation via a bond
+
+Suppose C is given by (4.2) or (4.3). With substitution C/v = r, f (v, t) = g(r, t) we can rewrite
+(4.1) as
+
+b2r3
+
+2
+
+grr + hr (m − r) gr − rg + gt = 0,
+g(r, T ) = 1,
+
+where
+
+b =
+
+σ
+√C
+
+,
+
+h = −
+
+σ2
+C
+
+(1 + λ),
+
+m = −
+
+kC
+
+σ2(1 + λ)
+
+.
+
+Using the Feynman-Kac formula we get the following expression for g = g(r, t)
+
+g(r, t) = Ee− R T
+
+t rsds,
+
+where process r = (rs)s≥t is a solution to the following stochastic diﬀerential equation
+
+dr = h r(m − r)dt + br3/2dB2,
+
+rt = C/vt.
+
+(5.5)
+
+(5.6)
+
+Equation (5.6) describes the well-known 3/2-model of stochastic interest rates (see [13].) In this
+model, if r is interpreted as the short rate, value of a zero coupon bond is given by (5.6), see
+[15]. Hence, the ratio fv/f can be expressed as
+
+fv(v, t)
+f (v, t)
+
+=
+
+d
+dv
+
+log Ehe− R T
+
+t rsds | rt = C/vi .
+
+(5.7)
+
+Substituting (5.7) into formulae for optimal control (4.17) and (4.19) one can get an interpretation
+of the hedging of the future opportunity set via a bond.
+
+6 Appendix. Technical asymptotics relations
+
+It follows from (4.4), that function f = f (v, t) can be written as a function of only Ψ, namely
+f = f (Ψ), where Ψ = Ψ(v, t) is given by (4.5). This representation allows us to study the
+asymptotics of Bellman function and the optimal control by using the asymptotics of Whittaker
+functions Mλ,µ(z) (see, for example, [11]).
+
+Indeed, by using the well known formulae below
+
+Mλ,η(z) ∼ zη+1/2(1 + O(z)),
+
+z → 0,
+
+Mλ,η(z) ∼
+
+Γ(1 + 2η)
+
+Γ(1/2 − λ + η)
+
+ez/2z−λ,
+
+z → ∞,
+
+we get
+
+f (v, t) ∼
+
+Γ(1/2 − λ + η)
+
+Γ(1 + 2η)
+
+Ψη+1/2(v, t)(cid:2)Ψλ(v, t) + O(Ψ(v, t))(cid:3) , Ψ(v, t) → 0,
+
+(6.1)
+
+8
+
+and
+
+For fv(v, t)/f we have
+
+f (v, t) ∼ 1, Ψ(v, t) → ∞.
+
+and
+
+fv(v, t)
+f (v, t)
+
+∼
+
+2C
+σ2
+
+, Ψ(v, t) → 0,
+
+, Ψ(v, t) → ∞.
+
+fv(v, t)
+f (v, t)
+
+∼
+
+(η + λ + 1/2)
+
+v
+
+1
+
+vΨ(v, t)
+
+(6.2)
+
+(6.3)
+
+(6.4)
+
+Acknowledgements. The authors are grateful to Yury Kabanov for fruitful discussions and
+useful suggestions.
+
+References
+
+[1] R.C. Merton (1971) Optimum consumption and portfolio rules in a continuous-time model.
+
+Journal of Economic theory. 3.4. 373-413.
+
+[2] T. Zariphopoulou (2001) A solution approach to valuation with unhedgeable risks. Finance
+
+Stochast., 5, 61-82.
+
+[3] J. Fouque, R. Sircar and T. Zariphopoulou (2013) Portfolio Optimization and Stochastic
+
+Volatility Asymptotics. Preprint
+
+[4] Yu. Kabanov, M. Safarian (2009) Market with transaction costs. Mathematical theory.
+
+Springer-Verlag.
+
+[5] M. Boguslavsky, E. Boguslavskaya (2003) Arbitrage under power RISK. 06. 49-53.
+
+[6] A. Obizhaeva, J. Wang (2013) Optimal trading strategy and supply/demand dynamics. Journal
+
+of ﬁnancial markets. 16. 1-32.
+
+[7] H. Kraft (2005) Optimal portfolios and Heston’s Stochastic volatility model: an explicit solu-
+
+tion for power utility. Quantitative Finance. 5. 303-313.
+
+[8] G. Chacko and L. Viceira (2005) Dynamic Consumption and portfolio choice with stochastic
+
+volatility in incomplete markets Review of Financial Studies, 18, 1369-1402.
+
+[9] S. Heston (1993) A closed form solution for options with stochastic volatility with applications
+
+to bond and currency options. Review of Financial Studies, 6, 2, 327-343.
+
+[10] J.C. Cox, J.E. Ingersoll, S.A. Ross (1985) A theory of the term structure of interest rates.
+
+Econometrica. 53.2.385-407.
+
+[11] Abramowitz M., Stegun I., Eds. (1972) Handbook of mathematical functions with formulas,
+
+graphs and mathematical tables. Dover, New York.
+
+[12] Gradshteyn I.S., Ryzhik I.M. (1980) Tables of integrals, series and products. Academic Press,
+
+New York.
+
+[13] J. Gatheral, N. Taleb (2006) Volatility surface: a practioner guide. Wiley.
+
+[14] R.C. Merton, Continuous-Time Finance, Blackwell Publishers, (1990).
+
+[15] D. Brigo, F. Mercurio (2006) Interest rate models - theory and practice: with smile, inﬂation
+
+and credit. Springer ﬁnance.
+
+9
+
+5
+1
+0
+2
+
+ 
+
+y
+a
+M
+7
+2
+
+ 
+
+.
+
+ 
+ 
+]
+F
+M
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+4
+v
+1
+3
+4
+2
+0
+
+.
+
+5
+0
+5
+1
+:
+v
+i
+X
+r
+a
+
+An explicit solution for optimal investment in Heston model∗
+
+Elena Boguslavskaya† ‡
+
+Brunel University London, United Kingdom,
+
+Dmitry Muravey§
+
+Internatonal Laboratory of Quantitative Finance,
+
+Higher School of Economics, Moscow, Russia
+
+Abstract
+
+In this paper we consider a variation of the Merton’s problem with added stochastic volatility
+and ﬁnite time horizon. It is known that the corresponding optimal control problem may be
+reduced to a linear parabolic boundary problem under some assumptions on the underlying
+process and the utility function. The resulting parabolic PDE is often quite diﬃcult to solve,
+even when it is linear. The present paper contributes to the pool of explicit solutions for stochastic
+optimal control problems. Our main result is the exact solution for optimal investment in Heston
+model.
+
+1
+
+Introduction
+
+The optimal control theory for stochastic processes plays a prominent role in ﬁnancial mathe-
+matics and allows to formulate and solve problems in optimal investment, optimal trading, and
+other areas related to ﬁnance. The seminal paper by Robert Merton [12] was generalized in
+several directions. The subsequent research has introduced more realistic and complex asset
+dynamics [15], [6], and more realistic market models [10]. Similar mathematical problems arise
+in algorithmic trading [2], and market microstructure studies [14].
+
+In this paper we consider a variation of the Merton’s problem with stochastic volatility and
+ﬁnite time horizon. As shown in [15], the optimal control problem may be reduced to a linear
+parabolic boundary problem under some assumptions on the underlying process and the utility
+function. Generally, due to the lack of solution smoothness for this boundary problem, one needs
+to ﬁnd a viscosity solution to a non-linear equation.
+
+The resulting parabolic PDE is often quite diﬃcult to solve, even when it is linear. In several
+special cases the explicit solutions were obtained, see [11] for the model similar to Heston’s, and
+[4] for Chacko-Viceira model.
+
+The present paper contributes to the pool of explicit solutions for stochastic optimal control
+problems. Our main result is the exact solution to the optimal control problem within the
+framework of the celebrated Heston model [7]. The method of aﬃne representations, as used
+in [11], cannot be applied here. To obtain the desired explicit solution we employ the theory
+of integral representations and special functions. Quasi-analytical solutions were obtained by
+asymptotic and perturbation methods in [6] for optimal control of more general processes.
+
+∗The research on this paper was supported by grant 14.12.31.2007 of the Russian government.
+†elena@boguslavsky.net
+‡The author is supported by Daphne Jackson fellowship funded by ESPRC
+§dmuravey@hse.ru
+
+1
+
+The paper is organized as follows:
+
+in section 2 we formulate the problem; in section 3 we
+discuss the results of [15] on the representation of Bellman function as the solution of the linear
+parabolic equation, and extend their results to the case of exponential utility; in section 4 we
+present the main results of the paper; in section 5 we analyze the obtained explicit solution; in
+Appendix (section 6) we provide some technical asymptotics relations.
+
+2 Formulation of the problem
+
+Let (X, V ) = (Xs, Vs)s≥t be a vector stochastic process, given by the triangular system of
+stochastic diﬀerential equations
+
+dX/X = µ dt + √V dB1,
+
+dV = k(Θ − V )ds + σ√V dB2,
+
+Xt = x
+
+Vt = v.
+
+(2.1)
+
+t )s≥t B2 = (B2
+
+where B1 = (B1
+t )s≥t are correlated Wiener processes with correlation coeﬃcient
+ρ, i.e. hB1, B2it = ρ t, and µ, k, Θ, σ are some constants. The model for the asset price X
+deﬁned by (2.1) is very well known in ﬁnancial mathematics, and is called the Heston model [7].
+In order to solve the system of SDE’s (2.1) one needs to solve the second equation ﬁrst to
+obtain V , and then solve for X. Process V = (Vs)s≥t represents the volatility of asset X. Process
+V is a Feller process, also called a CIR (Cox-Ingersoll-Ross) process in ﬁnancial mathematics [5]
+. We assume that the Feller condition 2kΘ > σ2 is satisﬁed for V . Thus, V is always positive
+given V0 > 0.
+
+Let us consider a controlled process W = (Ws)s≥t given by
+
+dW = αdX,
+
+Wt = w.
+
+(2.2)
+
+where control α = (αs)s≥t is adapted to ﬁltration F≥t = σ{Bs − Bt, s ≥ t} and R T
+
+t α2
+Our aim is to ﬁnd the control on which functional EU (WT ) achieves its maximum
+
+sdt < ∞.
+
+J(w, x, v, t) = sup
+α
+
+EU (WT ).
+
+(2.3)
+
+Function J(w, x, v, t) is the Bellman function, which is a solution to HJB ( Hamilton-Jacobi-
+Bellman) equation. Utility function U (w) can be a power or an exponential utility function. For
+the convenience of notation we will omit the indices.
+
+UP (w) =
+
+wγ
+γ
+
+,
+
+γ < 0,
+
+UE(w) = 1 −
+
+e−cw
+
+c
+
+,
+
+c > 0.
+
+(2.4)
+
+Note, that the logarithmic utility is a special case of the power utility with γ = 0. This well
+known observation can be checked by taking the limit limγ→0(wγ − 1)/γ = log(w) and noting
+that utility functions are deﬁned up to an additive constant.
+The ﬁnancial interpretation of the processes above is the following: process W represents the
+wealth dynamics of the investor, while control α is the evolution of the investor’s position in the
+asset. The utility function U represents the investor’s preferences. Thus, to invest optimally,
+one should ﬁnd the optimal investment rule at each time t such that the expected utility of the
+terminal wealth at time T is maximised (2.3).
+
+Function J(w, x, v, t) is the solution of Hamilton-Jacobi-Bellman (HJB) equaion. The solution
+of HJB equation in the general case is a non-linear PDE. However, this equation may become
+linear under some choice of utility functions. Zariphopoulou [15] has proposed a method based
+on viscosity solution technique. Under this method the equation (2.3) may be reduced to a linear
+parabolic equation. The method may be applied to systems of stochastic diﬀerential equations
+of “triangular type”. Under this restriction the drift and the diﬀusion of the underlying asset X
+may depend on the volatility process V in arbitrary way.
+
+2
+
+It is much easier to perform qualitative and quantitative analysis of the optimal solution
+while provided with the exact formula. Nevertheless, it is not always possible to ﬁnd an explicit
+solution to a linear parabolic PDE. Explicit solutions were obtained in some special cases: see [7]
+for the model similar to Heston’s, and [8] for Chacko-Viceira model. Either of the above results
+are based on aﬃne representations of solutions. This technique is not applicable in the model
+we consider (2.1).
+
+In the present paper we propose a method based on Laplace transform. This technique allows
+
+us to obtain an explicit solution in terms of conﬂuent hypergeometric functions.
+
+3 T. Zariphopoulou’s result and extensions
+
+A quite general model for optimal investment (2.3) with power utility function UP was considered
+in [15]. The asset price dynamics X dependent on random process V was given by the triangular
+system of stochastic diﬀerential equations
+
+dX/X = µ(V, t)dt + σ(V, t)dB1,
+dV = b(V, t)dt + a(V, t)dB2,
+
+(3.1)
+
+where B1 = (B1
+ρ.
+
+t )s≥t B2 = (B2
+
+t )s≥t are correlated Wiener processes with correlation coeﬃcient
+
+We assume the necessary restrictions on the coeﬃcients of system (3.1) being satisﬁed in
+
+order to guarantee the existence of a strong solution (X, V ).
+
+Theorem 3.1 (Zariphopoulou). For process (3.1) and power utility function (2.4) we have the
+following representation of Bellman function (2.3)
+
+where
+
+JP (w, x, v, t) =
+
+wγ
+γ
+
+f 1/δ(v, t),
+
+δ = 1 + ρ2
+
+γ
+
+1 − γ
+
+,
+
+(3.2)
+
+(3.3)
+
+and function f = (v, t) is a solution to the following parabolic boundary value problem
+
+ft +
+
+1
+2
+
+a2(v, t) fvv +(cid:18)b(v, t) + ρ
+
+γ µ(v, t)a(v, t)
+
+(1 − γ)σ(v, t)(cid:19) fv +
+
+γ
+
+1 − γ
+
+δ
+2
+
+µ2(v, t)
+σ2(v, t)
+
+f = 0,
+
+(3.4)
+
+f (v, T ) = 1.
+
+The optimal synthesis is given by
+
+α∗
+
+P (w, x, v, t) =
+
+w
+
+x(1 − γ)(cid:18) µ(v, t)
+
+σ2(v, t)
+
++
+
+ρ
+δ
+
+a(v, t)
+σ(v, t)
+
+fv(v, t)
+
+f (v, t)(cid:19) .
+
+(3.5)
+
+To ﬁnd the optimal control at time t one should substitute the values for processes W and
+(X, V ) into synthesis (3.5). Note, that representation (3.2) can be explained as follows. Firstly,
+one can separate variables in the Bellman function J(w, x, v, t) = u(w)R(x, v, t). This trick
+is well known for the power utility case. Secondly, from the form of the coeﬃcients and the
+boundary condition, one can see that the solution does not depend on variable x. Thirdly, after
+the above manipulations, the remaining non-linear equation can be linearised by substitution
+Rδ(v, t) = f (v, t).
+
+We use similar reasoning as above to extend Zariphopoulou’s formula to the case of exponen-
+
+tial utility. It is our ﬁrst result in this paper.
+
+3
+
+Proposition 3.1. Under exponential utility function UE, the Bellman function (2.3) is repre-
+sented by
+
+(3.6)
+
+(3.7)
+
+(3.8)
+
+(3.9)
+
+where
+
+JE(x, w, v, t) = 1 −
+
+e−cw
+
+c
+
+f 1/δ(v, t),
+
+and function f = f (v, t) is a solution to the following parabolic boundary value problem
+
+δ = 1 − ρ2,
+
+ft +
+
+1
+2
+
+a2(v, t)fvv +(cid:18)b(v, t) − ρ
+
+µ(v, t)a(v, t)
+
+σ(v, t) (cid:19) fv −
+
+δ
+2
+
+µ2(v, t)
+σ2(v, t)
+
+f = 0,
+
+f (v, T ) = 1.
+
+The optimal synthesis is given by
+
+α∗
+
+E(w, x, v, t) =
+
+1
+
+c x(cid:18) µ(v, t)
+
+σ2(v, t)
+
++
+
+ρ
+δ
+
+a(v, t)
+σ(v, t)
+
+fv(v, t)
+
+f (v, t) (cid:19) .
+
+Note, that constant δ given by (3.7) and equation (3.8) for f can be obtained from power
+
+utility formula (3.3) and (3.4) by taking limit γ → −∞.
+
+4 The main result
+
+Let us return to the original problem. Consider the Heston model given by (2.1). Using the results
+from section 3, in particular substitutions (3.2) and (3.6) from Theorem 3.1 and Proposition 3.1
+respectively, we can reduce the original boundary value problem for Bellman function to the
+following boundary value problem for function f = f (v, t)
+
+σ2v
+2
+
+fvv +(cid:18)kΘ −
+
+1 − δ
+ρ
+
+µσ − kv(cid:19) fv −
+
+f + ft = 0.
+
+C
+v
+f (v, T ) = 1,
+
+(4.1)
+
+Equation (4.1) is the same for both cases of power and exponential utility functions, with the
+only diﬀerence in the values of constants δ and C. In the case of power utility function
+
+δ = 1 + ρ2 γ
+
+1 − γ
+
+,
+
+C = −
+
+µ2
+2
+
+δ.
+
+γ
+
+1 − γ
+
+For the exponential utility case
+
+Lemma 4.1. The solution of (4.1) is given by
+
+δ = 1 − ρ2,
+
+C =
+
+µ2
+2
+
+δ.
+
+f (v, t) =
+
+Γ(η − λ + 1/2)
+
+Γ(2η + 1)
+
+e−Ψ(v,t)/2 (Ψ(v, t))λ Mλ,η (Ψ(v, t)) ,
+
+where
+
+Ψ(v, t) =
+
+2kv
+
+σ2(cid:0)ek(T −t) − 1(cid:1)
+
+,
+
+λ = −
+
+kΘ
+σ2 +
+
+(1 − δ)µ
+
+ρσ
+
+,
+
+η =s(cid:18)λ +
+
+1
+
+2(cid:19)2
+
++
+
+2C
+σ2 ,
+
+Mλ,η(z) is a Whittaker’s function, and Γ(z) is a Gamma function.
+Moreover, we have
+
+fv
+f
+
+=
+
+(η + λ + 1/2)
+
+v
+
+M1+λ,η (Ψ(v, t))
+Mλ,η (Ψ(v, t))
+
+.
+
+4
+
+(4.2)
+
+(4.3)
+
+(4.4)
+
+(4.5)
+
+(4.6)
+
+Proof. Making substitutions
+
+˜v =
+
+2kv
+σ2 ,
+
+k(T − t) = ˜τ ,
+
+f (v, t) = e−λ˜τ ˜vλe˜v/2h(˜v, ˜τ )
+
+(4.7)
+
+we get the following boundary value problem for h
+
+h˜v˜v +(cid:18)−
+
+1
+4
+
++
+
+1/4 − η2
+
+˜v2
+
+(cid:19) h =
+
+1
+˜v
+
+h˜τ .
+
+h(˜v, 0) = ˜v−λe−˜v/2.
+
+Let G(˜v; ζ) be the Laplace transform of function h(˜v, ˜τ ) with respect to ˜τ
+
+G(˜v; ζ) =Z ∞
+
+0
+
+eζ ˜τ h(˜v, ˜τ )d˜τ .
+
+By denoting χ(˜v) = ˜v−1−λe−˜v/2, one can see that
+
+G′′ +(cid:18)−
+
+1
+4 −
+
+ζ
+˜v
+
++
+
+1/4 − η2
+
+˜v2
+
+(cid:19) G = −χ(˜v).
+
+(4.8)
+
+If made homogeneous, equation (4.8) is a Whittaker equation. Whittaker functions M−ζ,η(˜v)
+and W−ζ,η(˜v) are two linearly independent solutions of a Whittaker equation. One can check by
+substitution that the formula below is the solution of equation (4.8)
+
+G(˜v; ζ) =
+
+Γ(1/2 + ζ + η)
+
+Γ(1 + 2η)  M−ζ,η(˜v)Z ˜v
+
+0
+
+χ(ϕ)W−ζ,η(ϕ)dϕ + W−ζ,η(˜v)Z ∞
+
+˜v
+
+χ(ϕ)M−ζ,η(ϕ)dϕ! .
+
+(4.9)
+
+To proceed further we use formula 6.669.4 from [9]
+
+Z ∞
+
+0
+
+e− 1
+
+2 (a1+a2)t cosh x coth2ν(cid:18) 1
+
+2
+
+x(cid:19) I2µ (t√a1a2 sinh x) dx =
+Re (cid:18) 1
+
+2
+
+The above formula from [9] allows us to rewrite (4.9) as
+
+Wν,µ(a1t)Mν,µ(a2t),
+
+Γ(cid:0) 1
+2 + µ − ν(cid:1)
+t√a1a2Γ(1 + 2µ)
++ µ − ν(cid:19) > 0, Re µ > 0,
+
+a1 > a2.
+
+G(˜v; ζ) = √˜vZ ∞
+
+0 Z ∞
+
+0
+
+Applying 6.643.2 from [9]
+
+ϕ−1/2−λe− ϕ
+
+2 − ˜v+ϕ
+
+2
+
+cosh ψ tanh2ζ(cid:18) ψ
+
+2(cid:19) I2η(cid:16)p˜vϕ sinh ψ(cid:17) dϕdψ.
+
+(4.10)
+
+Z ∞
+
+0
+
+xµ− 1
+
+2 e−αxI2ν(cid:0)2β√x(cid:1) dx =
+
+Γ(cid:0)µ + ν + 1
+2(cid:1)
+
+Γ(2ν + 1)
+
+β−1e
+
+to the internal integral in (4.10), we obtain
+
+β2
+
+2α α−µM−µ,ν(cid:18) β2
+
+α (cid:19) , Re (cid:18)µ + ν +
+
+1
+
+2(cid:19) > 0
+
+(4.11)
+
+G(˜v; ζ) = e−˜v/2 Γ(η − λ + 1/2)
+
+Γ(1 + 2η)
+
+Z ∞
+
+0
+
+e(1−cosh ψ)˜v/4 tanh2ζ(cid:18) ψ
+
+2(cid:19)(cid:18) cosh ψ + 1
+
+2
+
+(cid:19)λ
+
+Mλ,η(cid:18) cosh ψ − 1
+
+2
+(4.12)
+
+˜v(cid:19) 2dψ
+
+sinh ψ
+
+.
+
+By changing the variable of integration ψ in (4.12) as
+
+2 log(cid:20)tanh(cid:18) ψ
+
+2(cid:19)(cid:21) = ν,
+
+2dψ
+sinh ψ
+
+= dν,
+
+cosh ψ − 1 =
+
+2eν
+
+1 − eν ,
+
+5
+
+we get
+
+G(˜v; ζ) = e−˜v/2 Γ(η − λ + 1/2)
+
+Γ(1 + 2η)
+
+Z 0
+
+−∞
+
+exp(cid:26)−
+
+˜v
+2
+
+eν
+eν − 1
+
++ ζν(cid:27)(cid:18) 1
+
+eν − 1(cid:19)λ
+
+Mλ,η(cid:18)˜v
+
+eν
+
+eν − 1(cid:19) dν.
+
+Inverting the Laplace transform, and using substitutions (4.7), we recover the formula for f (v, t)
+
+f (v, t) =
+
+1
+2πi
+
+Γ(η − λ + 1/2)
+
+Γ(1 + 2η)
+
+Z N +i∞
+N −i∞ Z 0
+
+−∞
+
+exp(cid:26)−
+
+˜v
+2
+
+eν
+
+eν − 1(cid:27) eζ(ν+˜τ )(cid:18)˜v
+
+e−˜τ
+
+eν − 1(cid:19)λ
+
+Mλ,η(cid:18)˜v
+
+where N is a number such that all residues of the integrand are to the right of it.
+
+Using the well-known representation of Dirac function
+
+and changing the order of integration in (4.13), we get
+
+1
+
+2πiZ N +i∞
+
+N −i∞
+
+ezζdζ = δ(z),
+
+eν
+
+eν − 1(cid:19) dζdν,
+
+(4.13)
+
+Z 0
+
+−∞
+
+eν
+
+˜v
+2
+
+e−˜τ
+
+eν − 1(cid:19)λ
+
+f (v, t) =
+
+Γ(1 + 2η)
+
+Γ(η − λ + 1/2)
+
+δ(ν + ˜τ ) exp(cid:26)−
+
+eν − 1(cid:19) dν.
+eν − 1(cid:27)(cid:18)˜v
+(4.14)
+Note, that ˜τ ≥ 0. Thus, we can complement the range of integration in (4.14) to the whole
+line, and, using the deﬁnition of Dirac’s function, namely R ∞
+−∞ δ(ζ − z)g(ζ)dζ = g(z) for any
+continuous g, we get
+e˜τ − 1(cid:19)λ
+
+e˜τ − 1(cid:27)(cid:18)˜v
+
+e˜τ − 1(cid:19) .
+
+Γ(η − λ + 1/2)
+
+Mλ,η(cid:18)˜v
+
+exp(cid:26)−
+
+˜v
+2
+
+Mλ,η(cid:18)˜v
+
+Γ(1 + 2η)
+
+e˜τ
+
+e−˜τ
+
+f (v, t) =
+
+e˜τ
+
+(4.15)
+
+eν
+
+Finally, by reversing the change of variables (4.7), we receive the main formula (4.4). The
+expression (4.6) for fv/f is obtained by using diﬀerential rules for Whittaker functions (see [1]).
+△
+
+The following theorem is the analogue of the results from section 3 but for Heston’s model.
+
+It gives an exact solution for the optimal control and Bellman function.
+
+Theorem 4.1. For power utility (2.4) and process (2.1) the Bellman function (2.3) is given by
+
+JP (w, x, v, t) =
+
+wγ
+γ
+
+f 1/δ(v, t),
+
+and the optimal control is
+
+α∗
+
+P (w, x, v, t) =
+
+where
+
+w
+
+x(1 − γ)(cid:18) µ
+
+v
+
++
+
+ρ σ
+δ
+
+(η + λ + 1/2)
+
+v
+
+M1+λ,η (Ψ(v, t))
+
+Mλ,η (Ψ(v, t)) (cid:19) ,
+
+f (v, t) =
+
+Γ(η − λ + 1/2)
+
+Γ(2η + 1)
+
+e−Ψ(v,t)/2 (Ψ(v, t))λ Mλ,η (Ψ(v, t)) ,
+
+(4.16)
+
+(4.17)
+
+,
+
+λ = −
+
+kΘ
+σ2 +
+
+(1 − δ)µ
+
+ρσ
+
+, C = −
+
+µ2
+2
+
+δ,
+
+γ
+
+1 − γ
+
+η =s(cid:18)λ +
+
+1
+
+2(cid:19)2
+
++
+
+2C
+σ2 ,
+
+δ = 1 + ρ2
+
+γ
+
+1 − γ
+2kv
+
+Ψ(v, t) =
+
+,
+
+σ2(cid:0)ek(T −t) − 1(cid:1)
+
+Mλ,η(z) is a Whittaker’s function, and Γ(z) is a gamma function.
+
+6
+
+Theorem 4.2. For exponential utility (2.4) and process (2.1) The Bellman function is given by
+
+JE(x, w, v, t) = 1 −
+
+e−cw
+
+c
+
+f 1/δ(v, t),
+
+and the optimal control is
+
+α∗
+
+E(w, x, v, t) =
+
+where
+
+1
+
+c x(cid:18) µ
+
+v
+
++
+
+ρ σ
+δ
+
+(η + λ + 1/2)
+
+v
+
+M1+λ,η (Ψ(v, t))
+
+Mλ,η (Ψ(v, t)) (cid:19) ,
+
+f (v, t) =
+
+Γ(η − λ + 1/2)
+
+Γ(2η + 1)
+
+e−Ψ(v,t)/2 (Ψ(v, t))λ Mλ,η (Ψ(v, t)) ,
+
+(4.18)
+
+(4.19)
+
+δ = 1 − ρ2,
+
+λ = −
+
+kΘ
+σ2 +
+
+(1 − δ)µ
+
+ρσ
+
+, C =
+
+µ2
+2
+
+δ,
+
+η =s(cid:18)λ +
+
+1
+
+2(cid:19)2
+
++
+
+2C
+σ2 ,
+
+Ψ(v, t) =
+
+2kv
+
+,
+
+σ2(cid:0)ek(T −t) − 1(cid:1)
+
+Mλ,η(z) is a Whittaker’s function, and Γ(z) is a gamma function.
+
+Comment. The model (3.1) with drift µ(Xt, t) = Vt is studied in [11]. For that particular
+model the coeﬃcient for f in (3.4) is proportional to v. This is the reason why the aﬃne repre-
+sentation is possible in that speciﬁc case. Moreover, if the boundary condition is not constant,
+the aﬃne representation is not possible again. Our method, on the contrary, allows us to obtain
+the required solution for any boundary conditions and for both models, either Heston’s or the
+model considered in [11].
+
+5 Analysis
+
+5.1 Analysis of the optimal control
+
+Optimal control in (4.17) and (4.19) is proportional to the sum of two terms: the ﬁrst term µ/v
+corresponds to the static portfolio optimization problem. It it simply the ratio of the instanta-
+neous drift to the instantaneous variance and does not depend on time or on the parameters of
+the volatility process. The second term
+
+ρ σ
+δ
+
+(η + λ + 1/2)
+
+v
+
+M1+λ,η (Ψ(v, t))
+Mλ,η (Ψ(v, t))
+
+(5.1)
+
+represents the hedging of the future opportunity set ( see Merton [13]). This term vanishes in a
+number of important special cases:
+
+ρ = 0: no correlation between the two driving Brownian motions,
+
+γ = 0: when the investor has log-utility.
+
+The case of zero volatility of volatility limit of Heston model (σ=0 in (2.1)) turns the asset
+process into a process similar to a geometric Brownian motion but with a deterministically time
+varying volatility.
+If in addition we set V0 = Θ in (2.1), then we get a geometric Brownian
+motion.
+
+Using the asymptotic results from Appendix 6 in case σ ∼ 0, we get
+
+f (v, t) ∼ 1,
+
+fv(v, t)
+f (v, t)
+
+∼
+
+C
+kv2 ek(T −t).
+
+(5.2)
+
+7
+
+Therefore, for σ ∼ 0 the Bellman function is approximately equal to the utility function, namely
+JP ∼ UP , JE ∼ UE; and the optimal controls are
+
+α∗
+
+P (w, x, v, t) =
+
+α∗
+
+E(w, x, v, t) =
+
+w
+
+x(1 − γ)(cid:18) µ
+c x(cid:18) µ
+
+v
+ρ σ
+δE
+
++
+
+1
+
+v
+
++
+
+ρ σ
+δP
+
+CP
+
+kv2 ek(T −t)(cid:19) ,
+
+CE
+
+kv2 ek(T −t)(cid:19) ,
+
+(5.3)
+
+(5.4)
+
+where constants C[−] and δ[−] depend on the choice of utility.
+
+5.2 Hedging interpretation via a bond
+
+Suppose C is given by (4.2) or (4.3). With substitution C/v = r, f (v, t) = g(r, t) we can rewrite
+(4.1) as
+
+b2r3
+
+2
+
+grr + hr (m − r) gr − rg + gt = 0,
+g(r, T ) = 1,
+
+where
+
+b =
+
+σ
+√C
+
+,
+
+h = −
+
+σ2
+C
+
+(1 + λ),
+
+m = −
+
+kC
+
+σ2(1 + λ)
+
+.
+
+Using the Feynman-Kac formula we get the following expression for g = g(r, t)
+
+g(r, t) = Ee− R T
+
+t rsds,
+
+where process r = (rs)s≥t is a solution to the following stochastic diﬀerential equation
+
+dr = h r(m − r)dt + br3/2dB2,
+
+rt = C/vt.
+
+(5.5)
+
+(5.6)
+
+Equation (5.6) describes the well-known 3/2-model of stochastic interest rates (see [8].) In this
+model, if r is interpreted as the short rate, value of a zero coupon bond is given by (5.6), see [3].
+Hence, the ratio fv/f can be expressed as
+
+fv(v, t)
+f (v, t)
+
+=
+
+d
+dv
+
+log Ehe− R T
+
+t rsds | rt = C/vi .
+
+(5.7)
+
+Substituting (5.7) into formulae for optimal control (4.17) and (4.19) one can get an interpretation
+of the hedging of the future opportunity set via a bond.
+
+6 Appendix. Technical asymptotics relations
+
+It follows from (4.4), that function f = f (v, t) can be written as a function of only Ψ, namely
+f = f (Ψ), where Ψ = Ψ(v, t) is given by (4.5). This representation allows us to study the
+asymptotics of Bellman function and the optimal control by using the asymptotics of Whittaker
+functions Mλ,µ(z) (see, for example, [1]).
+
+Indeed, by using the well known formulae below
+
+Mλ,η(z) ∼ zη+1/2(1 + O(z)),
+
+z → 0,
+
+Mλ,η(z) ∼
+
+Γ(1 + 2η)
+
+Γ(1/2 − λ + η)
+
+ez/2z−λ,
+
+z → ∞,
+
+we get
+
+f (v, t) ∼
+
+Γ(1/2 − λ + η)
+
+Γ(1 + 2η)
+
+Ψη+1/2(v, t)(cid:2)Ψλ(v, t) + O(Ψ(v, t))(cid:3) , Ψ(v, t) → 0,
+
+(6.1)
+
+8
+
+and
+
+For fv(v, t)/f we have
+
+f (v, t) ∼ 1, Ψ(v, t) → ∞.
+
+and
+
+fv(v, t)
+f (v, t)
+
+∼
+
+2C
+σ2
+
+, Ψ(v, t) → 0,
+
+, Ψ(v, t) → ∞.
+
+fv(v, t)
+f (v, t)
+
+∼
+
+(η + λ + 1/2)
+
+v
+
+1
+
+vΨ(v, t)
+
+(6.2)
+
+(6.3)
+
+(6.4)
+
+Acknowledgements. The authors are grateful to Yury Kabanov for fruitful discussions and
+useful suggestions.
+
+References
+
+[1] M. Abramowitz, I. Stegun (1972) Handbook of Mathematical Functions with Formulas, Graphs
+
+and Mathematical Tables, Dover, New York.
+
+[2] M. Boguslavsky, E. Boguslavskaya (2003) Arbitrage under power, RISK, 06, 49-53.
+
+[3] D. Brigo, F. Mercurio (2006) Interest Rate Models - Theory and Practice: with Smile, Inﬂa-
+
+tion and Credit, Springer Finance.
+
+[4] G. Chacko and L. Viceira (2005) Dynamic consumption and portfolio choice with stochastic
+
+volatility in incomplete markets, Review of Financial Studies, 18, 1369-1402.
+
+[5] J.C. Cox, J.E. Ingersoll, S.A. Ross (1985) A theory of the term structure of interest rates,
+
+Econometrica, 53, 2, 385-407.
+
+[6] J. Fouque, R. Sircar and T. Zariphopoulou (2013) Portfolio optimization and stochastic
+
+volatility asymptotics, Preprint
+
+[7] S. Heston (1993) A closed form solution for options with stochastic volatility with applications
+
+to bond and currency options. Review of Financial Studies, 6, 2, 327-343.
+
+[8] J. Gatheral, N. Taleb (2006) Volatility Surface: a Practioner Guide, Wiley Finance.
+
+[9] Gradshteyn I.S., Ryzhik I.M. (1980) Tables of Integrals, Series and Products, Academic Press,
+
+New York.
+
+[10] Yu. Kabanov, M. Safarian (2009) Market with Transaction Costs. Mathematical Theory,
+
+Springer-Verlag.
+
+[11] H. Kraft (2005) Optimal portfolios and Heston’s stochastic volatility model: an explicit so-
+
+lution for power utility, Quantitative Finance, 5, 303-313.
+
+[12] R.C. Merton (1971) Optimum consumption and portfolio rules in a continuous-time model,
+
+Journal of Economic theory, 3, 4, 373-413.
+
+[13] R.C. Merton (1990) Continuous-Time Finance, Blackwell Publishers.
+
+[14] A. Obizhaeva, J. Wang (2013) Optimal trading strategy and supply/demand dynamics, Jour-
+
+nal of ﬁnancial markets, 16, 1-32.
+
+[15] T. Zariphopoulou (2001) A solution approach to valuation with unhedgeable risks, Finance
+
+and Stochastics, 5, 61-82.
+
+9
+
+

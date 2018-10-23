@@ -1,0 +1,835 @@
+6
+0
+0
+2
+
+ 
+t
+c
+O
+6
+1
+
+ 
+
+ 
+ 
+]
+h
+p
+-
+c
+o
+s
+.
+s
+c
+i
+s
+y
+h
+p
+[
+ 
+ 
+
+1
+v
+8
+0
+1
+0
+1
+6
+0
+/
+s
+c
+i
+s
+y
+h
+p
+:
+v
+i
+X
+r
+a
+
+A ﬁtness model for the Italian Interbank Money Market
+
+G. De Masi,1 G. Iori,2 and G. Caldarelli3
+
+1Dipartimento di Fisica, Universit`a di L’Aquila, Via Vetoio,
+
+67010 Coppito (AQ), ITALY and Dipartimento di Fisica,
+
+Universit`a di Roma ”La Sapienza”, P.le A. Moro 5, 00185 Roma, ITALY
+
+2Department of Economics, City University, Northampton Square, EC1V 0HB London, UK
+
+3INFM-CNR Centro SMC and Dipartimento di Fisica Universit´a di Roma ”La Sapienza” Piazzale Moro 5,
+
+00185 Roma, Italy, and Centro Studi e Museo della Fisica Enrico Fermi, Compendio Viminale, 00185 Roma, Italy
+
+We use the theory of complex networks in order to quantitatively characterize the formation of
+communities in a particular ﬁnancial market. The system is composed by diﬀerent banks exchanging
+on a daily basis loans and debts of liquidity. Through topological analysis and by means of a model
+of network growth we can determine the formation of diﬀerent group of banks characterized by
+diﬀerent business strategy. The model based on Pareto’s Law makes no use of growth or preferential
+attachment and it reproduces correctly all the various statistical properties of the system. We believe
+that this network modeling of the market could be an eﬃcient way to evaluate the impact of diﬀerent
+policies in the market of liquidity.
+
+Co-evolution and interaction between diﬀerent agents
+is known to be one of the ingredients of the so-called
+complex systems. Several examples can be found in
+social[1, 2], biological[3, 4, 5, 6], economical[7] and tech-
+nological systems[8]. Any of these systems is composed
+by a set of agents competing and sometimes receiving re-
+ciprocal advantage interacting each other. In the above
+situation both coalition and competition are at the basis
+of the process of co-evolution and self-organization of the
+system. While this class of problems has been tradition-
+ally studied in game theory, more recently it has been
+introduced an approach based on graph theory[9, 10] By
+using networks[11, 12], we can characterize quantitatively
+the interaction between agents by means of a series of
+topological quantities. The case of study presented here
+is composed by banks operating in the Italian market[13].
+Banks try to maximize their returns given some con-
+straints from the European Central Bank. This complex
+interaction results in a diﬀerentiation of the strategies
+that is well described by means of graph cliques. More
+speciﬁcally banks of the same size tend to form a cluster
+and to adopt a similar business strategy.
+
+A network is a mathematical object composed by ver-
+tices and edges joining them. Diﬀerent measures can be
+made, from the degree distribution (the degree is the
+number of edges per vertex) to the diameter (i.e. the max-
+imum of the distances between every couple of vertices).
+It is interesting to note that diﬀerent real world networks
+(ranging from social to biological ones), display a a scale-
+free distribution of degrees and a “small-world” charac-
+ter, that is to say the diameter is usually very small[14].
+More complicated measures determine also the presence
+of communities in a network. In this case, some methods
+have been proposed[15, 16, 17] but no general approach is
+available. The set of banks with their internal loans and
+debts has a structure than can be naturally described by
+means of a network. In this case the vertices are the dif-
+ferent banks. For every pair of banks i and j we draw
+an oriented edge from i to j, if bank j borrows liquid-
+ity from bank i. The number of in-coming and out-going
+
+FIG. 1: (Color on line) A plot of the inter bank network. The
+color codes for the various groups are the following: 1=yellow,
+2=red, 3=blue, 4=black. Note that the dark vertices (bank of
+group 4) form the core of the system.
+
+edges of a vertex is called respectively the in-degree kin
+and the out-degree kout of the vertex (their sum gives
+the total degree k). The loans are originated by the fact
+that every bank needs liquidity in order to satisfy de-
+mands of customers. To buﬀer liquidity shocks the Eu-
+ropean Central Bank requires that on average 2% of all
+deposits and debts owned by banks are stored in national
+central banks. Given this constraint, banks can exchange
+excess reserves on the interbank market with the objec-
+tive to satisfy the reserve requirement and in order to
+minimize the reserve implicit costs[18, 19, 20]. The data
+set analyzed is the e-MID(ref dataset)[21]. This data set
+is composed by 586, 007 overnight transactions (i.e. pay-
+ments of loans must be done in 24 hours) concluded from
+January 1st1999 to December 31st2002 . The network is
+composed by a set of N banks (the average number of
+hN i banks daily active is 140) connected by an average
+
+out
+
+in and F (kout) ∝ k−2.15
+
+number of links hLi = 200 (in case of multiple trans-
+actions among banks i and j, we count just one link).
+As in many other complex networks we ﬁnd here a fat
+tail distribution. By ﬁtting these data with a power law
+we obtain for the total degree a frequency distribution
+F (k) ∝ k−2.3 and a similar behavior for the in/out-degree
+with exponents F (kin) ∝ k−2.7
+. Re-
+gardless the precise form of the ﬁt, the fat-tail indicates
+that banks have an highly heterogeneous behavior, since
+the number of their partners varies very widely. We also
+measure the assortativity and the clustering coeﬃcient
+of the network. The ﬁrst one is deﬁned as the average
+value knn(k) of the neighbors of a vertex whose degree
+is k. We ﬁnd knn(k) ∝ k−0.5. This means that banks
+with few partners interact with banks with many part-
+ners. Conversely (on average) banks with many partners
+interact with banks with few or one. The clustering co-
+eﬃcient instead accounts for the number of triangles a
+vertex of degree k belongs to. Also this quantity has a
+power law behavior of the kind c(k) ∝ k−0.8. All these
+measurements refer to daily networks resulting from com-
+posing all transactions of every day. In fact, the system
+is characterized by a typical time scale of the system, the
+month. This time-scale arises from the above mentioned
+requirement from European Central Bank. The 2% to be
+deposited in national central banks are computed every
+month (the 23rd). The day in which this happens (also
+indicated as End of Month or EOM) witness a frantic ac-
+tivity of the banks. Interestingly, regardless the change in
+volumes all the above topological measurements remain
+similar when computed in diﬀerent days of month.
+
+We try to understand if there are some banks with
+similar behavior and if they have some properties in com-
+mon. We have been able to identify speciﬁc features for
+banks of diﬀerent capital size. In fact for each bank we
+know only its category (small, medium, large, very large)
+based on the capital of the banks (as recorded by Bank
+of Italy). Nevertheless we observe that this classiﬁcation
+is strongly correlated with the total amount of daily vol-
+ume of transactions: we use this latter quantity as it is
+strictly related to capital size. Using this quantity we can
+divide banks in four groups (same number of classes of
+the Bank of Italy classiﬁcation). Group 1 with volume in
+the range 0 − 23 million Euro per day, Group 2 in the
+range 23 − 70 million Euro per day, Group 3 in the range
+70 − 165 million Euro per day, Group 4 over 165 million
+Euro per day. In this way we ﬁnd an overlap of more than
+90% between the two classiﬁcations.
+
+Using this information we realized a picture of the sys-
+tem as an oriented network whose size and color of the
+vertices represent the diﬀerent groups that play the role
+of communities when described by means of a network.
+As evident from Figure 1 we ﬁnd that the core of the
+structure is composed by banks of the last groups (very
+large). The edges in Figure 1 represent the net amount
+of money exchanged in a whole day. As mentioned above
+the measurements in diﬀerent days give similar results.
+A more quantitative measure of the diﬀerent behavior of
+
+Group
+
+1
+
+1.5
+
+2
+
+2.5
+
+3
+
+3.5
+
+4
+
+2
+
+s
+o
+r
+u
+E
+M
+
+400
+
+350
+
+300
+
+250
+
+200
+
+150
+
+100
+
+60
+
+50
+
+40
+
+30
+
+20
+
+10
+
+)
+k
+(
+
+t
+u
+o
+
+F
+
+60
+
+50
+
+40
+
+)
+k
+(
+
+n
+i
+
+F
+
+30
+
+20
+
+10
+
+0
+
+0
+
+0
+
+5
+
+10
+
+15
+days
+
+20
+
+25
+
+30
+
+10
+
+kin
+
+20
+
+30
+
+0
+
+0
+
+10
+
+20
+
+kout
+
+30
+
+40
+
+FIG. 2: (A plot of the out-degree and in-degree (in the ﬁrst
+inset) distributions respectively. As already noticed, the con-
+tribution to the tail of frequency distribution emerges from
+the banks of group 4. Using the division in 4 groups, i.e. in 4
+colors, mentioned in the text, we also colored each bin of F (k)
+with the average color of vertices which are in that bin. For
+example the average color of banks with degree 10 is blue. For
+non integer value of this average we introduced intermediate
+colors. In the smaller inset the daily volume of transactions
+during one month period.
+
+banks from diﬀerent groups is given in the Table I, where
+for every pair of groups we reported the mean percent-
+age of the total number of transactions between banks
+of those groups. This result is conﬁrmed by the ﬁrst
+two plots of Figure 2, where we represented in-degree
+frequency distribution (number of borrowing edges) and
+the out-degree frequency distribution (number of lend-
+ing edges) in the network (experimental distributions are
+obtained on an ensemble of daily networks). It is possi-
+ble to compute the group of the banks whose degree is
+k. We represented this information by coloring accord-
+ingly the plot. We have separately informations about
+degree and volumes of diﬀerent banks. Interestingly we
+note that the degree and the volume are correlated[22],
+since v(k) ∼ k1.1.
+
+With respect to the scale of colors in Figure 1, we also
+added some intermediate colors to account for the values
+between one group and another. The tail of the two dis-
+tributions is black, i.e. it is mainly composed by banks
+of group 4. We again ﬁnd that banks of groups 1 and 2
+are the leaves of the network, staying at periphery of the
+structure and not interacting each other. This particu-
+larity together with the experimental evidence that they
+are more lenders on average means that banks of these
+groups are the lenders for the whole system.
+
+The role of the diﬀerent groups is shown in the Figure
+4. Another measure of the clustering of banks in diﬀerent
+groups is given by the volume-volume correlation vnn(v),
+that is the average value vnn of the neighbors of a ver-
+tex whose volume is v, In fact we ﬁnd that vnn(v) is
+
+Group
+
+1
+
+1.5
+
+2
+
+2.5
+
+3
+
+3.5
+
+4
+
+60
+
+50
+
+40
+
+30
+
+20
+
+10
+
+)
+k
+(
+
+t
+u
+o
+
+F
+
+60
+
+50
+
+40
+
+)
+k
+(
+
+n
+i
+
+F
+
+30
+
+20
+
+10
+
+0
+
+0
+
+10
+
+kin
+
+20
+
+30
+
+0
+
+0
+
+10
+
+20
+
+kout
+
+30
+
+40
+
+FIG. 3: Left: frequency distribution F (k) for a certain de-
+gree k. Comparison between experiment (red dots) and results
+obtained with simulation of our model (black dots). Right:
+Above comparison between experiment (red dots) and results
+obtained with simulation of our model (black dots) for the
+assortativity < knn(k) > and below for the clustering coeﬃ-
+cient c(k).
+
+3
+
+Following the Pareto’s law (conﬁrmed in this data anal-
+ysis) we assume that the distribution of sizes v in the
+model is a power-law P (v) ∝ v−2, where the value of the
+exponent correspond to that of the data (see Fig.5).
+
+102
+
+101
+
+)
+v
+(
+P
+
+100
+
+102
+
+103
+v
+
+104
+
+1
+
+FIG. 5: Distribution of the total daily volume of transaction
+per bank. This quantity is used as ﬁtness in our model
+
+4
+
+3
+
+2
+
+FIG. 4: The division on classes of vertices permits to repre-
+sent in a very easy way the organizational principles of the
+network. Following results of Table 1 we draw a link among
+two groups when the number of links between banks belonging
+to them is bigger then the average value (10). Using the net
+volumes as weight of links, we can represent the directed in-
+teractions among classes of nodes: class 4 appear to be clearly
+a borrower and class 1 lender.
+
+the superposition of a power-law function vnn(v) ∼ v−0.3
+with a function peaked around volume values of banks of
+group 1.
+
+In order to reproduce the topological properties we de-
+ﬁne a model whose only assumption is that a vertex is
+solely determined by its size (as measured by its capital
+or equivalently by its group). Therefore, the idea is that
+the vertices representing the banks are deﬁned by means
+of an intrinsic character corresponding to the size of the
+bank[23, 24]. Since this information is not available we
+use the total daily volume of transactions as a good mea-
+sure of the size of banks (we stated above that this is
+a good approximation). We call this quantity ﬁtness of
+the bank; this is the main quantity driving the network
+formation in the our model.
+
+We assign to the N nodes (N is the size of the system)
+a value drawn from the previous distribution. Vertices
+origin and destination for one edge are chosen with a
+probability pij proportional to the sum 5B of respective
+sizes vi and vj. In formulas
+
+(vi + vj )
+
+1
+
+Pi,j>i(vi + vj)
+2 Xi,j6=i
+
+(vi + vj) = (N − 1)Vtot
+
+pij =
+
+.
+
+(vi + vj ) =
+
+Xi,j>i
+where Vtot = Xj
+
+vj
+
+(1)
+
+(2)
+
+(3)
+
+(N −1)Vtot
+
+We obtain in this way pij = vi+vj
+This choice of
+probability reproduces the fact that big banks are priv-
+ileged in transactions among themselves while two little
+banks are very unlikely to interact. We produce an en-
+semble of 100 statistical realizations of the model and
+then we calculate average statistical distributions. In Fig.
+2 we compare experimental and simulated P (k), c(k) and
+knn(k): here the distributions are also averaged on all
+EOM days of 2002. The simulation of the model repro-
+duces remarkably well the considered topological prop-
+erties of the inter-bank market P (k), c(k) and knn(k).
+The real and simulated networks disclose disassortative
+behavior: this phenomenon has already been observed
+in other systems and it has been called rich club phe-
+nomenon, referring to the fact that in many real networks
+hubs are often connected each other[2]. Fitness models on
+the other hand are known to produce disassortative net-
+works, even if with diﬀerent ﬁtness distributions[24].
+
+It is interesting to note that this model does not con-
+sider preferential attachment rules. With the term “pref-
+erential attachment” it is indicated a speciﬁc procedure
+in which a vertex receives more edges according to the
+value of its degree. Note that this procedure must be
+very precise because if the probability of growth is pro-
+portional to the degree raised to a power diﬀerent from 1,
+the scale invariance is destroyed. Therefore, preferential
+attachment has a precise deﬁnition diﬀerent from “rough
+proportionality”. When considering instead a ﬁtness al-
+gorithm, it is true that the largest the ﬁtness the largest
+the degree, but the microscopic procedure is diﬀerent. A
+large degree is a consequence of an intrinsic quality, not
+the cause of the improvement of site connectivity. This
+is an important point since in this way the search for the
+origin of scale-invariance in networks can be explained
+by means of the ubiquitous presence of Pareto’s law in
+Economics and Finance.
+
+To quantify the agreement between experimental and
+simulated networks we also deﬁne an overlap parameter
+m specifying how good is the behavior of the model in
+reproducing the observed clustering.
+
+To quantify the agreement between experimental and
+simulated networks, we proceed in the following way. We
+deﬁne a matrix E, that is a weighted matrix 4 × 4, where
+the weights represent the number of connections between
+groups. In order to measure the overlap between the ma-
+trices obtained by data and by computer model, we deﬁne
+a distance based on the diﬀerences between the elements
+of the matrices.
+
+d = Xg,k≥g
+
+|Eexp
+
+g,k − Enum
+g,k |
+
+(4)
+
+The sum of all elements, Pg,k≥g Eexp
+
+g,k and Pg,k≥g Enum
+g,k ,
+is equal to Etot in both cases. Therefore the maximum
+possible diﬀerence is 2Etot. This happens when all the
+links are between two groups in one case and in other
+two groups in the other. We use this maximum value to
+normalize the above expression and we than deﬁne the
+overlap parameter m: m = 1 − d/2Etot
+
+A natural way to deﬁne groups in the model is to ob-
+tain a similar number c of banks for each class i.e. c =
+Nbanks/Nclasses. It is useful nevertheless to pass to con-
+tinuous form. Using the previously introduced P (v) giv-
+ing the probability distribution of the size v of one bank.
+Banks of the same group g are in the range [vg, vg +△vg].
+
+Z vg+△vg
+
+vg
+
+P (v′)dv′ = c
+
+(5)
+
+In our case, since the average number of banks is 140,
+we obtain c ≃ 35. Then △v = cv2/(N − cv). We now
+compute the number Eg,k of links going from one group
+of banks gg to another one gk, for every possible pair of
+banks.
+
+4
+
+where g(i) represent the group of bank i and ai,j is the
+element of the adjacency matrix. In the continuous ap-
+proximation, deﬁning Ev′v′′ the number of edges from
+vertices of ﬁtness v′ to vertices of ﬁtness v′′, Eg,k is given
+by
+
+Eg,k = Z vg +△vg
+
+vg
+
+Z vk+△vk
+
+vk
+
+Ev′v′′ dv′dv′′ =
+
+= (N/2)Z Z P (v′)P (v′′)p(v′, v′′)dv′dv′′
+
+(7)
+
+where N is the number of vertices, p(v′, v′′) is the link-
+ing probability, P (v) is the ﬁtness distribution and the
+formula is obtained integrating the expression for the av-
+erage degree[24] (the integration domains are the ranges
+of volumes of groups g and k respectively). To evaluate
+the relevance of division in classes, we have to compare
+the value of Eg,k with the corresponding quantity Enull
+g,k
+for a network where there is not a division in classes (null
+hypothesis). The analytical expression for the null case is
+Enull
+g,k = Etot/10 where 10 is the number of possible cou-
+plings between the 4 groups. The comparison between the
+two networks evidences that in the real case emerges the
+division in groups: in Tab. 1 for each possible combina-
+tion of groups is reported the value Eg,k/Etot. In the null
+case, each element of the same matrix should be equal to
+10. In our case the overlap m is very good (98%).
+
+Group 1 2 3 4
+0 6 4 8
+6 3 8 17
+4 8 5 27
+8 17 27 22
+
+1
+2
+3
+4
+
+TABLE I: (Color on line)The number of daily interactions be-
+tween the banks of diﬀerent groups. Data have been averaged
+during one month.
+
+In conclusion we present here a network representa-
+tion of a ﬁnancial market that in a natural way allows
+to measure the presence of clustering. By means of a
+suitable chosen model of network formation we can also
+understand the mechanism driving the formation of such
+clusters. The agreement between the model and exper-
+imental results is remarkably good; this seems to sug-
+gest that the network formation is not due to the growth
+mechanism of preferential attachment. Since the eﬀects
+of European Central Bank policies are under debate[19],
+graph theory can help in understand the system behavior
+under change of external conditions.
+
+GC acknowledges support from European Project
+
+Eg,k = Xi,j
+
+ai,jδ(gg − g(i))δ(gk − g(j))
+
+(6)
+
+DELIS
+
+5
+
+[1] A. Capocci, V. D. P. Servedio, F. Colaiori, L. S. Buriol,
+D. Donato, S. Leonardi, and G. Caldarelli, Phys. Rev. E
+74, 036116 (2006).
+
+[16] A. Capocci, V.D.P. Servedio, G. Caldarelli, F. Colaiori,
+
+Physica A 352 669 (2005).
+
+[17] J. Reichardt and S. Bornholdt, Physical Review Letters
+
+[2] V. Colizza, A. Flammini, M. A. Serrano and A. Vespig-
+
+93, 218701 (2004).
+
+nani, Nature Physics 2, 110 (2006).
+
+[18] P. Hartmann, M. Manna, A. Manzanares, Journal of In-
+
+[3] D. Garlaschelli, G. Caldarelli and L. Pietronero, Nature
+
+ternational Money and Finance 20 895-948 (2001).
+
+423 165-168 (2003).
+
+[19] E. Barucci, C. Impenna, R. Reno, Research in Banking
+
+[4] J. Memmott, N. D. Martinez and J.E. Cohen, Journal of
+
+and Finance 4 321-362 (2004).
+
+Animal Ecology 69 1-15 (2000).
+
+[20] M. Boss, H. Elsinger, M. Summer et al., Quantitative
+
+[5] M. Vendruscolo and C.M. Dobson, PNAS 102, 5641
+
+Finance 4, 677-684 (2004)
+
+(2005).
+
+[6] J Hou et al., PNAS 102, 3651 (2005).
+[7] G. Caldarelli, M. Marsili and Y.-C. Zhang, Europhysics
+
+Letters 40, 479 (1997).
+
+[8] J. Kleinberg, ACM Computing Surveys 46, 604 (1999).
+[9] G. Bonanno, G. Caldarelli, F. Lillo, R. N. Mantegna,
+
+Physical Review E, 68, 046130 (2003).
+
+[10] J.-P Onnela, A. Chakraborti, K. Kaski, J. Kert´esz, A.
+
+Kanto Physical Review E, 68, 056110 (2003).
+
+[21] Data are taken from the Italian electronic broker market
+MID (Market for Interbank Deposits) is run by e-MID
+S.p.A. Societ`a Interbancaria per l’Automazione (SIA),
+Milan. The Italian electronic broker Market for Interbank
+Deposit (e-MID) covers the entire overnight deposit mar-
+ket in Italy. The information about the parties involved
+in a transaction allows us to perform an accurate daily
+analysis of the connectivity among banks and its change
+over time.
+
+[11] R. Albert and A.-L. Barab´asi, Review of Modern Physics
+
+[22] A. Barrat, M. Barthelemy, R. Pastor-Satorras, A. Vespig-
+
+74, 47 (2002).
+
+[12] M.E.J. Newman SIAM Review 45, 167 (2003).
+[13] G. Iori, G. De Masi, O. Precup, G. Gabbi, G. Cal-
+darelli Journal of Economic Dynamic and Control, in
+press (2006).
+
+[14] S. H. Strogatz, Nature 410, 268 (2001).
+[15] M. Girvan, M.E.J. Newman PNAS 99, 7821 (2002).
+
+nani, PNAS 101, 3747 (2004).
+
+[23] G. Caldarelli, A. Capocci, P. De Los Rios, M. A. Mu˜noz
+
+Physical Review Letters 89, 258702 (2002).
+
+[24] V. D. P. Servedio, P. Butt`a, G. Caldarelli Physical Re-
+
+view E 70, 056126 (2004).
+
+

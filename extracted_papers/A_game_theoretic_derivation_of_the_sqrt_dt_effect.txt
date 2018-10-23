@@ -1,0 +1,1801 @@
+8
+1
+0
+2
+
+ 
+
+b
+e
+F
+4
+
+ 
+
+.
+
+ 
+ 
+]
+F
+M
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+9
+1
+2
+1
+0
+
+.
+
+2
+0
+8
+1
+:
+v
+i
+X
+r
+a
+
+A game-theoretic derivation of the
+
+eﬀect
+
+√
+
+dt
+
+Vladimir Vovk and Glenn Shafer
+
+The Game-Theoretic Probability and Finance Project
+
+Working Paper #5
+
+First posted January 27, 2003. Last revised July 10, 2018.
+
+Project web site:
+
+http://www.probabilityandﬁnance.com
+
+Abstract
+
+√
+
+dt eﬀect in ﬁnance and SDE. In particular, we show,
+We study the origins of the
+in the game-theoretic framework, that market volatility is a consequence of the
+absence of riskless opportunities for making money and that too high volatility is
+also incompatible with such opportunities. More precisely, riskless opportunities
+for making money arise whenever a traded security has fractal dimension below
+or above that of the Brownian motion and its price is not almost constant
+and does not become extremely large. This is a simple observation known in
+the measure-theoretic mathematical ﬁnance. At the end of the article we also
+consider the case of non-zero interest rate.
+
+This version of the article was essentially written in March 2005 but remains
+
+a working paper.
+
+Contents
+
+1 Introduction
+
+2 Continuous-time result in the ﬁnancial protocol
+
+3 Absolute ﬁnitary results
+
+4 Relative ﬁnitary result
+
+5 Empirical studies
+
+6 Non-zero interest rate
+
+7 Continuous-time result in the drift-SDE protocol
+
+8 A modiﬁed Market Protocol
+
+References
+
+A Continuous games
+
+1
+
+1
+
+3
+
+4
+
+6
+
+8
+
+10
+
+12
+
+13
+
+14
+
+1
+
+Introduction
+
+The main result of this article is that high market volatility is a consequence of
+the absence of riskless opportunities for making money. Versions of this propo-
+sition were proven within the standard continuous-time framework by Rogers
+(1997) (see also the references therein), Delbaen and Schachermayer (1994), etc.
+In §2 we prove a simple result using nonstandard analysis saying that if a
+traded security is not suﬃciently volatile and not too close to being a constant,
+this can be used for making money without risk; in the appendix to this article
+we explain how the informal language of §2 can be replaced by a formal argument
+using the ultraproduct construction described in Shafer and Vovk (2001). In
+the following §3 and §4 we give messier ﬁnitary forms of this result in a realistic,
+discrete-time setting. Results of our preliminary empirical studies are reported
+in §5.
+In §6, we remove the assumption of zero interest rate. Our proof techniques
+are elementary and well-known; see, e.g., Cheridito (2001, 2002). (Although the
+techniques are general, the results are typically stated for very narrow classes
+of processes: fractional Brownian motion with drift and exponential fractional
+Brownian motion with drift in Cheridito 2001, 2002.)
+In §8 we brieﬂy discuss a modiﬁcation of the Market Protocol of §2 that
+allows more natural statements of the results of §2.
+
+2 Continuous-time result in the ﬁnancial proto-
+
+col
+
+We use the notation of Shafer and Vovk (2001). In particular, ∆fn := fn−fn−1,
+while dfn := fn+1 − fn. The basic framework is that of Chapter 11: the interval
+T is split into an inﬁnitely large number N of subintervals etc.
+
+The Market Protocol
+Players: Investor, Market
+Protocol:
+I0 := 1.
+Market announces S0 ∈ R.
+FOR n = 1, 2, . . . , N :
+
+Investor announces Mn ∈ R.
+Market announces Sn ∈ R.
+In := In−1 + Mn∆Sn.
+
+Additional Constraint on Market: Market must ensure that S is continu-
+ous.
+
+The deﬁnition of zero game-theoretic probability is given on pp. 340–341
+of Shafer and Vovk (2001): an event E has zero game-theoretic probability
+if for any K there exists a strategy that, when started with 1, does not risk
+bankruptcy and ﬁnishes with capital at least K when E happens.
+
+1
+
+We start with a result showing that too low volatility gives opportunities for
+
+making money.
+
+Theorem 1 For any δ > 0, the event
+
+vex S < 2 & sup
+
+t
+
+|S(t) − S(0)| > δ
+
+has game-theoretic probability zero.
+
+The condition vex S < 2 means that S is less volatile than the Brownian motion
+and supt |S(t) − S(0)| > δ means that S should not be almost constant.
+Proof This proof is a simple modiﬁcation of Example 3 in Shiryaev (1999),
+p. 658, and a proof in Cheridito (2001, 2002).
+It is given in the usual style
+of Shafer and Vovk (2001); in the appendix we will provide additional details.
+Assume, without loss of generality, that S(0) = 0 (if this is not true, replace
+S(t) by S(t) − S(0)). Consider the strategy Mn := 2CSn, where C is a large
+positive constant. With our usual notation dfn := fn+1 − fn, we have
+
+n) − (dSn)2(cid:1)
+
+dIn = 2CSndSn = C(cid:0)d(S2
+n−1(cid:88)
+
+In − I0 = CS2
+
+n − C
+
+(dSi)2 ≈ CS2
+n.
+
+(1)
+
+and, therefore,
+
+i=0
+
+If this strategy starts with 1, the capital at each step n will be nonnegative.
+Stopping playing at the ﬁrst step when |Sn| > δ, we make sure that IN ≥ Cδ2,
+which can be made arbitrarily large by taking a large C.
+
+As the proof shows, the condition vex S < 2 of the theorem can be replaced
+
+by the weaker varS(2) = 0.
+
+Now we complement Theorem 1 with a result dealing with too high volatility.
+
+Theorem 2 For any D > 0, the event
+
+vex S > 2 & sup
+
+t
+
+|S(t) − S(0)| < D
+
+(2)
+
+has game-theoretic probability zero.
+
+Proof This proof is a simple modiﬁcation of a proof in Cheridito (2001, 2002).
+We again assume S(0) = 0.
+
+Consider the strategy Mn := −2D−2Sn. Now we have
+
+dIn = −2D−2SndSn = D−2(cid:0)(dSn)2 − d(S2
+n)(cid:1)
+n−1(cid:88)
+
+n−1(cid:88)
+
+(dSi)2 − D−2S2
+
+n ≥ D−2
+
+In − I0 = D−2
+
+(dSi)2 − 1
+
+(3)
+
+and, therefore,
+
+i=0
+
+i=0
+
+before |Sn| reaches D. If this strategy starts with 1 and stops playing as soon
+as Sn reaches D, the capital at each step n will be nonnegative and, if event (2)
+occurs, IN ≥ D−2 varS(2) will be inﬁnitely large.
+
+2
+
+As before, the condition vex S > 2 can be replaced by varS(2) = ∞.
+If S is a stock price, it cannot become negative, which allows us to strengthen
+
+the conclusion of Theorem 2.
+
+Corollary 1 The event vex S > 2 has game-theoretic probability zero (provided
+S ≥ 0).
+Proof Let K be the constant from the deﬁnition of zero game-theoretic prob-
+ability (p. 1). The required strategy is the 50/50 mixture of the following
+2 strategies: the strategy of Theorem 2 corresponding to D := 2K and the
+buy-and-hold strategy that recommends buying 1 share of S at the outset. If
+supt |S(t) − S(0)| < 2K, the ﬁrst strategy will make Investor rich; otherwise,
+the second will.
+
+3 Absolute ﬁnitary results
+
+The protocol for this section is:
+
+The Absolute Market Protocol
+Players: Investor, Market
+Protocol:
+I0 := 1.
+Market announces S0 ∈ R.
+FOR n = 1, 2, . . . , N :
+
+Investor announces Mn ∈ R.
+Market announces Sn ∈ R.
+In := In−1 + Mn∆Sn.
+
+Now N is a usual positive integer number and there are no a priori con-
+straints on Market. The following two results are the “absolute” ﬁnitary versions
+of Theorems 1 and 2, respectively.
+
+Theorem 3 Let  and δ be two positive numbers. If Market is required to satisfy
+
+N(cid:88)
+
+(∆Si)2 ≤ ,
+
+the game-theoretic probability of the event
+
+i=1
+
+|Sn − S0| ≥ δ
+
+max
+
+n=1,...,N
+
+(4)
+
+is at most /δ2.
+Proof Assume, without loss of generality, that S0 = 0 (replace Sn by Sn− S0 if
+not). Take the same strategy Mn := 2CSn as in Theorem 1, but now C = 1/.
+From (1) we obtain
+
+In − I0 =
+
+1
+
+
+n − 1
+S2
+
+
+(dSi)2 ≥ 1
+
+
+n − 1,
+S2
+
+n−1(cid:88)
+
+i=0
+
+3
+
+i.e., if the strategy starts with 1,
+
+In ≥ 1
+
+
+S2
+n.
+
+This shows that In is never negative; stopping at the step n where |Sn| ≥ δ, we
+make sure that IN ≥ δ2/ when (4) happens.
+
+Theorem 4 Let  and D be two positive numbers.
+satisfy
+|Sn − S0| ≤ D,
+
+max
+
+n=1,...,N
+
+If Market is required to
+
+the upper game-theoretic probability of the event
+
+N(cid:88)
+
+i=1
+
+(∆Si)2 ≥ D2
+
+
+(5)
+
+is at most .
+Proof Assume, without loss of generality, that S0 = 0 (replace Sn by Sn − S0
+if not). Take the same strategy Mn := −2D−2Sn as in Theorem 2. From (3)
+we can see that In is never negative and that
+
+N(cid:88)
+
+IN = D−2
+
+(∆Si)2 ≥ 1
+
+
+when the event (5) happens.
+
+i=1
+
+4 Relative ﬁnitary result
+
+Now we change our protocol to:
+
+The Relative Market Protocol
+Players: Investor, Market
+Protocol:
+I0 := 1.
+Market announces S0 > 0.
+FOR n = 1, 2, . . . , N :
+
+Investor announces Mn ∈ R.
+Market announces Sn > 0.
+In := In−1 + Mn∆Sn.
+
+As in the previous section, N is a standard positive integer number. Deﬁne
+
+a nonnegative function β by
+
+β(x) = x − ln(1 + x);
+
+1
+2
+
+4
+
+so for small |x|, β(x) behaves as x2. The following result is the “relative” ﬁnitary
+version of Theorem 1; it uses the versions
+
+i=0
+
+N−1(cid:88)
+N−1(cid:88)
+N−1(cid:88)
+
+i=0
+
+(d ln Si)2
+
+β
+
+(cid:19)
+(cid:18) dSi
+(cid:19)2
+(cid:18) dSi
+
+Si
+
+and
+
+of the 2-variation
+
+Si
+
+i=0
+
+of S. (We refrain from giving a similar version of Theorem 2: such a version
+would be less interesting from the empirical point of view, because, as explained
+in the following section, the usual expectation is that H > 1/2.)
+
+Theorem 5 Let , δ and γ be three positive numbers. If Market is required to
+satisfy
+
+N−1(cid:88)
+
+(d ln Si)2 ≤ ,
+
+N−1(cid:88)
+
+β
+
+(cid:18) dSi
+
+(cid:19)
+
+Si
+
+≤ 
+
+and
+
+i=0
+
+i=0
+
+ln Sn ≥ −γ,
+
+min
+
+n
+
+the game-theoretic probability of the event
+
+| ln(Sn/S0)| ≥ δ
+
+max
+
+n=1,...,N
+
+(6)
+
+is at most (1 + γ)/δ2.
+
+Proof Assume, without loss of generality, that S0 = 1 (replace Sn by Sn/S0 if
+not). Since the proof is now slightly more complicated than that in the previous
+section, we ﬁrst outline its idea. Roughly speaking, our goal will be to maintain
+In close to (ln Sn)2 (in the previous sections it was to maintain In close to
+(Sn)2). To ﬁnd a strategy that will achieve this, we notice that
+
+d(cid:0)ln2 Sn
+
+(cid:1) = (2 ln Sn)(d ln Sn) + (d ln Sn)2
+(cid:18) dSn
+
+= (2 ln Sn) ln
+
+dSn
+Sn
+
+(cid:18)
+
+(cid:19)
+
+1 +
+
+− (ln Sn)β
+
+= (2 ln Sn)
+
+(cid:19)
+
++ (d ln Sn)2
+
+dSn
+Sn
+
++ (d ln Sn)2.
+
+Sn
+
+(7)
+
+(8)
+
+(9)
+
+We can see that a suitable strategy is
+
+Mn := 2C
+
+ln Sn
+Sn
+
+5
+
+for some C (chosen so that to make sure that the capital process is nonnegative;
+eventually we will take C = 1/((1 + γ))). Expressing 2(ln Sn)(dSn)/Sn from
+the equality between the extreme terms of the chain (7)–(9), we obtain for the
+strategy Mn:
+
+dSn = Cd ln2 Sn + C ln Snβ
+
+− C(d ln Sn)2;
+
+dIn = 2C
+
+ln Sn
+Sn
+
+therefore,
+
+(cid:19)
+
+(cid:18) dSn
+(cid:19)
+(cid:18) dSi
+
+Sn
+
+Si
+
+In − I0 = C ln2 Sn + C
+
+n−1(cid:88)
+
+(ln Si)β
+
+n−1(cid:88)
+
+i=0
+
+(d ln Si)2
+
+(10)
+
+− C
+
+≥ C ln2 Sn − Cγ − C.
+
+i=0
+
+(11)
+Starting from I0 = 1, it is safe to take C := 1/((1+γ)) (this removes possibility
+of bankruptcy), in which case (10)–(11) becomes
+
+In ≥
+
+1
+
+(1 + γ)
+
+ln2 Sn.
+
+Stopping at the step n with | ln Sn| ≥ δ ensures IN ≥ δ2/((1 + γ)) when (6)
+happens.
+
+5 Empirical studies
+
+The empirical studies reported in this section are closely connected to the so
+called R/S-analysis (see Shiryaev 1999, §4a). The results we report here assume
+zero interest rate, and so are of limited interest; further empirical studies are
+needed.
+
+First we consider the absolute setting, although the usual deﬁnitions as given
+
+in Shiryaev (1999) are “relative”. Denote
+
+Rabs
+N := max
+i=1,...,N
+
+|Sn − S0|,
+
+(cid:0)S abs
+
+N
+
+(cid:1)2
+
+:=
+
+1
+N
+
+N(cid:88)
+
+(∆Si)2.
+
+i=1
+
+role of(cid:112)/N . So from Theorem 3 we obtain that we will be able to multiply
+
+N ≤ σ
+Suppose that we believe, for some reason, that we are going to have S abs
+N ≥ δ; therefore, δ plays the same role as in Theorem 3 and σ plays the
+and Rabs
+our capital δ2/ = (δ/σ)2/N -fold. For another variant of the deﬁnitions of RN
+and SN (as given in Shiryaev 1999, (14) on p. 371; see below) one usually has
+
+RNSN
+
+∼ cN
+
+H
+
+with H considerably larger than 1/2. If our guesses δ and σ are not too far oﬀ,
+we can hope to increase our initial capital by a factor of order N 2H−1.
+
+6
+
+In the “relative” setup, deﬁne
+
+(cid:12)(cid:12)(cid:12)(cid:12)ln
+
+(cid:12)(cid:12)(cid:12)(cid:12) ,
+
+Sn
+S0
+
+(cid:0)S abs
+
+N
+
+(cid:1)2
+
+:=
+
+1
+N
+
+(cid:32)N−1(cid:88)
+
+i=0
+
+(cid:18) dSi
+
+Si
+
+β
+
+(cid:19) (cid:95) N−1(cid:88)
+
+(d ln Si)2
+
+(cid:33)
+
+.
+
+i=0
+
+Rrel
+N := max
+
+n=1,...,N
+
+If we believe that we are going to have S rel
+Theorem 5 that we will be able to multiply our capital by a factor of
+
+N ≤ σ and Rrel
+
+N ≥ δ, we obtain from
+
+δ2
+
+(1 + γ)
+
+=
+
+δ2
+
+(1 + γ)σ2N
+
+(where  := σ2N ); if one has
+
+RNSN
+
+∼ cN
+
+H
+
+and our guesses δ and σ are not too far oﬀ, we can again hope to increase our
+initial capital by a factor of order
+
+N 2H−1.
+
+(12)
+Some experimental results are given in Shiryaev (1999, §4.4), but we cannot
+use them directly, since the standard deﬁnitions of R/S analysis are diﬀerent
+from ours (the main diﬀerence being that the standard deﬁnitions are centered).
+Those results, however, suggest that typically H > 0.5, which was why we
+concentrate on this case in our discrete-time analysis and empirical studies.
+N , |SN − S0| and
+| ln(SN /S0)|, respectively, the rationale being that security prices typically in-
+crease. This frees us from the need to guess the value of δ in advance. Our
+results are summarized in Tables 1 and 2.
+
+In our experiments we consider, instead of Rabs
+
+N and Rrel
+
+In Table 1 we list the 19 securities for which we conducted experiments. The
+
+number N is the number of trading periods (days, month, or years).
+
+The numbers given in Table 2 are deﬁned as follows:
+
+abs factor :=
+
+(SN − S0)2
+i=0 (dSi)2
+
+(cid:80)N−1
+(cid:16)
+(cid:16)(cid:80)N−1
+i=0 (d ln Si)2 (cid:87) (cid:80)N−1
+
+(cid:17)2
+
+ln SN
+S0
+
+i=0 β
+
+(cid:17)(cid:17) ,
+
+(cid:16) dSi
+
+Si
+
+rel factor :=
+
+(1 − min)
+
+and
+
+where
+
+min := min
+
+n
+
+ln
+
+Sn
+S0
+
+.
+
+To judge the magnitude of abs factor and rel factor we also give the factor by
+which the value of the security increases (the column “security”) and the factor
+by which the value of an index (S&P500) increases (the column “index”) over
+the same time period.
+
+7
+
+Security and frequency
+
+Microsoft stock daily
+IBM stock daily
+S&P500 daily
+Microsoft stock monthly
+IBM stock monthly
+
+Code
+
+Time Period
+
+13/03/1986–21/09/2001
+02/01/1962–21/09/2000
+04/01/1960–21/09/2000
+
+msft d
+ibm d
+spc d
+msft m March 1986–June 2001
+ibm m
+
+January 1962–June 2001
+
+General Electric stock monthly
+Boeing stock monthly
+Du Pont (E.I.) de Nemours stock monthly
+Consolidated Edison stock monthly
+Eastman Kodak stock monthly
+General Motors stock monthly
+
+Procter and Gamble stock monthly
+Sears/Roebuck stock monthly
+AT&T stock monthly
+Texaco stock monthly
+US T-bill monthly
+
+S&P500 Total Returns monthly
+US T-bill yearly
+S&P500 Total Returns yearly
+
+ge m
+ba m
+dd m
+ed m
+ek m
+gm m
+
+pg m
+s m
+t m
+tx m
+us m
+
+sp m
+us a
+sp a
+
+January 1962–June 2001
+January 1970–June 2001
+January 1970–June 2001
+January 1970–June 2001
+January 1970–June 2001
+January 1970–June 2001
+
+January 1970–June 2001
+January 1970–June 2001
+January 1970–June 2001
+January 1970–June 2001
+January 1871–June 2001
+
+January 1871–June 2001
+1871–2000
+1871–2001
+
+N
+
+3672
+9749
+10, 254
+184
+474
+
+474
+378
+378
+378
+378
+378
+
+378
+378
+378
+378
+1566
+
+1566
+130
+130
+
+Table 1: The 19 securities used in our experiments. Dates are given in the
+format dd/mm/yyyy.
+
+As we already mentioned, our experiments implicitly assume zero interest
+rate, but the results they give are roughly of the same order of magnitude as
+those implied by the table on p. 376 of Shiryaev (1999). Line 1 of that table
+can be interpreted (ignoring the facts that centering is not the same thing as
+discounting and that DJIA cannot be reproduced by a trading strategy) as
+saying that our initial capital can be increased by a factor of roughly
+
+12, 5002×0.59−1 ≈ 5.46
+
+in 12,500 days since 1888.
+
+6 Non-zero interest rate
+
+Our protocols implicitly assume that the interest rate is zero. In this section we
+remove this restriction. Our protocol now involves not only security S but also
+another security B (e.g., a bank account). Their prices are assumed positive.
+
+The Market Protocol
+Players: Investor, Market
+Protocol:
+I0 := 1.
+Market announces S0 > 0 and B0 > 0.
+
+8
+
+code
+
+abs factor
+
+rel factor
+
+index
+
+security min
+
+1.32
+2.62
+8.25
+
+msft d
+ibm d
+spc d
+msft m 0.930
+ibm m
+
+2.08
+
+ge m
+ba m
+dd m
+ed m
+ek m
+gm m
+
+pg m
+s m
+t m
+tx m
+us m
+
+sp m
+us a
+sp a
+
+4.57
+2.35
+1.66
+4.21
+0.638
+1.41
+
+1.20
+0.0331
+0.0293
+4.66
+3.87
+
+6.99
+32.2
+6.57
+
+13.8
+1.94
+10.7
+12.6
+2.22
+
+6.99
+3.25
+6.72
+3.76
+0.994
+2.24
+
+4.88
+0.0223
+0.0159
+7.97
+1081
+
+32.9
+93
+23.9
+
+6.13
+20.8
+24.2
+7.59
+69.4
+
+69.4
+43.5
+43.5
+43.5
+43.5
+43.5
+
+330
+16.0
+24.2
+382
+15.8
+
+63.4
+75.5
+33.0
+58.0
+5.06
+13.8
+
+43.5
+43.5
+43.5
+43.5
+91600
+
+91, 600
+87600
+87, 600
+
+18.6
+1.37
+0.702
+36.7
+282
+
+91, 600
+261
+87, 600
+
+−0.0736
+−0.626
+−0.138
+0
+−0.469
+−0.232
+−0.620
+0
+−1.19
+−0.441
+−0.462
+−0.166
+−0.723
+−1.13
+0
+0
+−0.0877
+0
+−0.00663
+
+Table 2: Empirical results related to Theorems 3 and 5.
+
+FOR n = 1, 2, . . . , N :
+
+Investor announces Mn ∈ R.
+Market announces Sn > 0 and Bn > 0.
+In := (In−1 − MnSn−1) Bn
++ MnSn.
+
+Bn−1
+
+Additional Constraint on Market: Market must ensure that S and B are
+continuous.
+
+(Cf. the protocol and its analysis on p. 296 of Shafer and Vovk 2001.) Intuitively,
+at step n Investor buys Mn units of S and invests the remaining money in B,
+which can be a money market account, a bond, or any other security with
+nonnegative prices. The protocol of §2 corresponds to a constant Bn.
+
+Re-expressing Investor’s capital and the price of S in the num´eraire Bn, we
+
+obtain
+
+It is easy to see that
+
+I†
+n := In/Bn, S†
+
+n := Sn/Bn.
+
+n := I†
+I†
+
+n−1 − MnS
+
+†
+n−1 + MnS†
+n,
+
+which is exactly the expression that we had in §2, only with the daggers added.
+Therefore, we can restate all results of §2 for the current protocol. For example,
+Theorem 8 implies:
+
+9
+
+Theorem 6 The event
+
+is full.
+
+vex(S/B) = 2 or S/B ≈ const
+
+We have an interesting all-or-nothing phenomenon: either two securities are
+proportional or their ratio behaves stochastically.
+
+7 Continuous-time result in the drift-SDE pro-
+
+tocol
+
+In this section we consider a slightly more general protocol (see Chapter 14 of
+Shafer and Vovk 2001):
+
+The Drift-SDE Protocol
+Players: Forecaster, Skeptic, Reality
+Protocol:
+I0 := 1.
+Reality announces S0 ∈ R; T0 := S0.
+FOR n = 1, 2, . . . , N :
+
+Forecaster announces mn ∈ R; Tn := Tn−1 + mn.
+Skeptic announces Mn ∈ R.
+Reality announces Sn ∈ R; xn := ∆Sn.
+In := In−1 + Mn(xn − mn).
+
+Additional Constraint on Market: Market must ensure that S and T are
+continuous.
+
+The main diﬀerences from the Market Protocol are that: Market becomes
+Reality; Investor becomes Skeptic; a new player, Forecaster, is introduced, who
+announces at each trial his expectation of the increment xn to be chosen by
+Reality (the Market Protocol corresponds to the case where mn is always 0).
+The deﬁnition of game-theoretic upper probability is unchanged.
+
+In Chapter 14 of Shafer and Vovk (2001) we describe Diﬀusion Protocol 1,
+
+a game-theoretic counterpart of the standard measure-theoretic SDE
+
+dS(t) = µ(S(t), t)dt + σ(S(t), t)dW (t);
+
+this equation is modeled by Forecaster choosing the moves
+
+mn := µ(Sn−1, ndt)dt
+
+(13)
+
+(the drift move) and
+
+vn := σ2(Sn−1, ndt)dt
+
+(the volatility move). Already Diﬀusion Protocol 1 provides a ﬂexible alterna-
+tive to the usual measure-theoretic approach to SDE; we believe that it would
+
+10
+
+be very beneﬁcial to translate the standard theory of SDE to the game-theoretic
+framework liberating measure-theoretic results of unnecessary assumptions. But
+we can also do more radical things considering much weaker protocols than
+Diﬀusion Protocol 1. Diﬀusion Protocol 2 in Shafer and Vovk (2001) drops
+Forecaster’s drift move altogether; it turns out (Shafer and Vovk 2001, Theo-
+rem 14.1) that the Black-Scholes formula can be proven in Diﬀusion Protocol 2.
+(It is well known that in the measure-theoretic framework the Black-Scholes for-
+mula does not depend on drift, but still there is no way to drop the assumption
+of existence of drift.) In this section we relax Diﬀusion Protocol 1 in a diﬀerent
+way: now we drop Forecaster’s volatility move. We will see that this will not
+prevent us from proving the
+
+dt eﬀect.
+
+√
+
+First we motivate the conditions of our theorem. According to (13), mn
+has the order of magnitude dt; in the game-theoretic framework we also expect
+that the drift process T (t) will be much more stable than the process S(t) itself.
+
+n m2
+
+n is inﬁnitely small.
+
+Therefore, one of our conditions will be that(cid:80)
+=⇒ N(cid:88)
+
+Theorem 7 For any δ > 0 and D > 0, the event
+
+n ≈ 0
+δ < supt |S(t) − T (t)| < D
+has lower game-theoretic probability one.
+Proof Set x(cid:48)
+event
+
+(cid:80)N
+
+n=1 m2
+
+(cid:27)
+
+n=1
+
+(cid:80)N
+
+n := xn − mn. It is easy to see from the arguments of §2 that the
+
+n=1 m2
+
+n ≈ 0
+δ < supt |S(t) − T (t)| < D
+
+has lower game-theoretic probability one (even if the condition(cid:80)N
+dropped). The fact that (cid:80)N
+
+n)2 is appreciable
+
+(x(cid:48)
+
+n ≈ 0
+δ < supt |S(t) − T (t)| < D
+
+n=1 m2
+
+x2
+n is limited
+
+(cid:27)
+
+=⇒ N(cid:88)
+(cid:27)
+
+n=1
+
+=⇒ N(cid:88)
+
+n=1
+
+n=1 m2
+
+n ≈ 0 is
+
+has lower game-theoretic probability one now follows from the closeness of L2
+under addition; more speciﬁcally, from
+
+x2
+n is appreciable
+
+n = (mn + x(cid:48)
+x2
+(cid:80)N
+Therefore, we only need to prove that
+n ≈ 0
+δ < supt |S(t) − T (t)| < D
+N(cid:88)
+
+n ≈ 0 & δ < sup
+m2
+
+n=1 m2
+
+t
+
+n=1
+
+n)2(cid:1) .
+
+n + (x(cid:48)
+
+n)2 ≤ 2(cid:0)m2
+(cid:27)
+=⇒ N(cid:88)
+
+n=1
+
+x2
+n is not inﬁnitesimal
+
+N(cid:88)
+
+|S(t) − T (t)| < D &
+
+n ≈ 0
+x2
+
+(14)
+
+n=1
+
+11
+
+has lower game-theoretic probability one. In other words, our goal is to prove
+that the event
+
+has zero upper game-theoretic probability.
+
+According to (1), we have, for some strategy S1 for Skeptic,
+
+I S1
+N − I S1
+
+0 = C(SN − TN )2 − C
+
+(x(cid:48)
+
+i)2.
+
+N(cid:88)
+
+i=1
+
+Since
+
+i = (x(cid:48)
+x2
+
+we can rewrite this equality as
+
+i + mi)2 = (x(cid:48)
+i)2 + 2x(cid:48)
+N(cid:88)
+
+x2
+i + C
+
+i=1
+
+imi + m2
+i ,
+
+N(cid:88)
+
+i=1
+
+i + I S2
+m2
+
+N − I S2
+0 ,
+
+I S1
+N − I S1
+
+0 = C(SN − TN )2 − C
+
+where S2 is Skeptic’s strategy that recommends move 2Cmi at trial i. Therefore,
+there is Skeptic’s strategy that ensures
+
+IN − I0 = C(SN − TN )2 − C
+
+x2
+i + C
+
+m2
+i ,
+
+N(cid:88)
+
+N(cid:88)
+
+and we can take I0 to be 1. On the event (14) this strategy (if stopped at the
+ﬁrst moment that |S(t) − T (t)| > δ) will attain at least a capital of Cδ2, which
+can be made as large as we wish by choosing a large C.
+
+i=1
+
+i=1
+
+8 A modiﬁed Market Protocol
+
+To state Theorems 1 and 2 in a nicer way (avoiding the  and D), we change
+the Market Protocol in the following way. The two parameters of the Market
+Protocol were T , the time horizon, and N , the inﬁnite number of subintervals
+into which the interval [0, T ] was split. Now we allow T to be an inﬁnitely large
+positive number (still requiring dt := T /N to be inﬁnitesimal) and add another
+parameter, an inﬁnitely small positive number . (Of course, T can stay limited
+if we wish.) The Additional Constraint on Market is now changed to “Market
+must ensure that sup|∆S| ≤ ”. The upper probability P in this protocol is
+deﬁned by the formula
+
+P (E) := inf
+
+I S(2)|
+
+inf
+
+0≤t≤T
+
+I S(t) ≥ 0 everywhere, I S(T ) ≥ 1 inside E
+
+(cid:27)
+
+,
+
+(cid:26)
+
+where S ranges over (internal) strategies; the expressions such as “almost cer-
+tain” refer to this upper (and the corresponding lower) probability. Remember
+that a hyperreal number t is appreciable if a < |t| < b for some positive real a
+and b (i.e., if it is neither unlimited nor inﬁnitesimal).
+
+Theorem 8 It is almost certain that
+
+|S(t) − S(0)| is appreciable =⇒ vex S = 2.
+
+sup
+
+t
+
+12
+
+More precisely,
+
+and
+
+vex S < 2 =⇒ sup
+
+|S(t) − S(0)| is inﬁnitesimal
+
+t
+
+vex S > 2 =⇒ sup
+
+|S(t) − S(0)| is unlimited.
+
+t
+
+(15)
+
+(16)
+
+Proof Of course, the proof is a modiﬁcation of the proofs of Theorems 1 (for
+(15)) and 2 (for (16)); we again assume S(0) = 0.
+
+First we prove (15). As before, we consider the strategies M (C)
+
+stops playing (i.e., starts choosing the move 0) as soon as C(cid:80)n−1
+
+:= 2CSn
+starting from the initial capital 1, with the only diﬀerence that the strategy
+i=0 (dSi)2 reaches
+the value 1 − C2 (in particular, the strategy never plays if C2 ≥ 1; this
+stopping rule ensures that the strategy never goes bankrupt) or |Sn| > C−1/2
+(this condition replaces |Sn| > δ), whichever happens earlier. Now we can
+combine these strategies into
+
+n
+
+∞(cid:88)
+
+m=1
+
+Mn :=
+
+2−mM (2m)
+
+n
+
+n
+
+It remains to prove (16). Consider the strategies M (D)
+
+(we do not have any problems of convergence since for each standard  > 0 only
+ﬁnitely many strategies M (2m)
+will ever play). It is clear that this strategy will
+ensure an unlimited ﬁnal capital IN .
+:= −2D−1/2Sn
+starting from the initial capital 1, with the only diﬀerence that the strategy
+n reaches the value 1− D−2(2Sn + 2). This way
+stops playing as soon as D−2S2
+we make sure that the strategy never goes bankrupt. Combining, as before, the
+strategies M (D)
+
+into
+
+n
+
+n
+
+∞(cid:88)
+m=1 2−3m < ∞), we can see that the combined
+
+2−mM (2m)
+
+m=1
+
+n
+
+(the convergence follows from(cid:80)∞
+
+Mn :=
+
+strategy will ensure an unlimited ﬁnal capital IN .
+
+Acknowledgements
+The theorems in § 2 were inspired by questions raised by Freddy Delbaen in his
+review of our book in the Journal of the American Statistical Association. Our
+reply to his review is available at www.probabilityandfinance.com.
+
+References
+
+Cheridito, P. (2001). Regularizing fractional Brownian motion with a view to-
+wards stock price modelling. Ph. D. thesis, Swiss Federal Institute of Tech-
+nology, Z¨urich, Switzerland.
+
+13
+
+Cheridito, P. (2002). Arbitrage in fractional Brownian motion models. Finance
+
+and Stochastics 7, 533–553.
+
+Delbaen, F. and W. Schachermayer (1994). A general version of the fundamental
+
+theorem of asset pricing. Mathematische Annalen 300, 463–520.
+
+Eklof, P. (1977). Ultraproducts for algebraists. In J. Barwise (Ed.), Handbook
+
+of Mathematical Logic, pp. 105–137. Amsterdam: North Holland.
+
+Goldblatt, R. (1998). Lectures on the Hyperreals: An Introduction to Nonstan-
+
+dard Analysis. New York: Springer.
+
+(cid:32)Lo´s, J. (1955). Quelques remarques, th´eoremes et probl`emes sur les classes
+d´eﬁnissables d’alg`ebres. In Mathematical Interpretation of Formal Systems,
+pp. 98–113. Amsterdam: North Holland.
+
+Rogers, L. C. G. (1997). Arbitrage with fractional Brownian motion. Mathe-
+
+matical Finance 7, 95–105.
+
+Shafer, G. and V. Vovk (2001). Probability and Finance: It’s Only a Game.
+
+New York: Wiley.
+
+Shiryaev, A. N. (1999). Essentials of Stochastic Finance: Facts, Models, Theory.
+
+New York: World Scientiﬁc.
+
+A Continuous games
+
+This appendix contains a partial account of the concepts from nonstandard anal-
+ysis used in this article. (It was intended as an improvement over Appendix 11.5
+of Shafer and Vovk (2001).)
+
+The continuous games that we consider in the main part of the article are
+ultraproducts of discrete games. We will ﬁrst explain informally how such ultra-
+products are formed. For a formal exposition of the concept of an ultraproduct,
+the reader may consult Eklof (1977) or the classical article by Jerzy (cid:32)Lo´s (1955).
+In general, an ultraproduct is formed from a sequence O1,O2, . . . of similar
+mathematical structures, perhaps identical or perhaps increasing in size. We
+remain informal by not saying what we mean by “similar”, but the idea is that
+certain statements have a meaning in each of the On. A statement that two
+objects are related in a certain way, for example, might be interpreted in On as
+Rn(xn, yn), where xn and yn are objects in On and Rn is a binary relation in
+On. Such a statement should also have a reference R(x, y) in the ultraproduct.
+Intuitively,
+
+• R is the sequence R1, R2, . . . ,
+• x is the sequence x1, x2, . . . ,
+• y is the sequence y1, y2, . . . , and
+
+14
+
+• R(x, y) holds if Rn(xn, yn) holds for most n.
+
+To make “most” precise, we choose a nontrivial ultraﬁlter in N, the set of natural
+numbers (positive integers). A nontrivial ultraﬁlter U in N is a set of subsets of
+N that has, inter alia, the property that whenever we partition N into two sets,
+exactly one of the two sets is in U. We say a relation holds for most n if the set
+of n for which it holds is in U.
+
+To strengthen this explanation, we now review the concept of an ultraﬁlter
+and provide two examples of an ultraproduct: (i) the hyperreals, and (ii) a
+simple continuous game.
+
+A.1 Ultraﬁlters
+An ultraﬁlter in N is a family U of subsets of N such that
+
+1. N ∈ U and ∅ /∈ U,
+2. if A ∈ U and A ⊆ B ⊆ N, then B ∈ U,
+3. if A ∈ U and B ∈ U, then A ∩ B ∈ U, and
+4. if A ⊆ N, then either A ∈ U or N \ A ∈ U.
+
+(The ﬁrst three properties deﬁne a ﬁlter.) An ultraﬁlter U is nontrivial if it does
+not contain a set consisting of a single integer; this implies that all the sets in
+U are inﬁnite. It follows from the axiom of choice that a nontrivial ultraﬁlter
+exists. We ﬁx a nontrivial ultraﬁlter U.
+
+We say that a property of natural numbers holds for most natural numbers
+(or for most k, as we will say for brevity) if the set of natural numbers for which
+it holds is in U; Condition 2 of the deﬁnition justiﬁes this usage.
+It follows
+from Condition 4 that for any property A, either A holds for most k or else the
+negation of A holds for most k. It follows from Conditions 1 and 3 that A and
+its negation cannot both hold for most k.
+
+A.2 The hyperreals
+
+As a ﬁrst example of an ultraproduct, we construct the hyperreals, as they are
+usually constructed in nonstandard analysis Goldblatt (1998). In this case, the
+objects On are all identical—each is a copy of the real numbers, together with
+the usual operations and relations associated with them.
+
+As a ﬁrst approximation, a hyperreal number a is a sequence (cid:2)a(1)a(2) . . .(cid:3)
+of real numbers. Sometimes we abbreviate(cid:2)a(1)a(2) . . .(cid:3) to(cid:2)a(k)(cid:3). Operations
+example,(cid:104)
+
+(addition, multiplication, etc.) over hyperreals are deﬁned term by term. For
+
+(cid:104)(cid:16)
+a(1) + b(1)(cid:17)(cid:16)
+
+a(2) + b(2)(cid:17)
+
+a(1)a(2) . . .
+
+. . .
+
+.
+
++
+
+b(1)b(2) . . .
+
+:=
+
+(cid:105)
+
+(cid:105)
+
+(cid:104)
+
+(cid:105)
+
+Relations (equals, greater than, etc.) are extended to the hyperreals by voting.
+For example, [a(1)a(2) . . . ] ≤ [b(1)b(2) . . . ] if a(k) ≤ b(k) for most k. For all
+
+15
+
+a, b ∈ ∗R one and only one of the following three possibilities holds: a < b,
+a = b, or a > b.
+
+a =(cid:2)a(1)a(2) . . .(cid:3) is always below, equal to, or above another hyperreal number
+b = (cid:2)b(1)b(2) . . .(cid:3): a < b, a = b, or a > b. Obviously some of the a(k) can be
+
+Perhaps we should dwell for a moment on the fact that a hyperreal number
+
+above b(k), some equal to b(k), and some below b(k). But the set of k satisfying
+one these three conditions is in U and outvotes the other two.
+
+We do not distinguish hyperreals a and b such that a = b. Technically,
+this means that a hyperreal is an equivalence class of sequences rather than an
+individual sequence: [a(1)a(2) . . . ] is the equivalence class containing a(1)a(2) . . . .
+We embed the real numbers in the hyperreals by identifying each real number
+a with [a, a, . . . ]. For each A ⊆ R we denote by ∗A the set of all hyperreals [a(k)]
+with a(k) ∈ A for all k. We call ∗N the hypernaturals.
+We say that a ∈ ∗R is inﬁnitesimal if |a| <  for each real  > 0. The only
+real number that qualiﬁes as an inﬁnitesimal by this deﬁnition is 0. We say that
+a ∈ ∗R is inﬁnitely large if a > C for each positive integer C, and we say that
+a ∈ ∗R is ﬁnite if a < C for some positive integer C.
+We write a ≈ b when a − b is inﬁnitesimal. For every hyperreal number
+a ∈ ∗R there exists a unique standard number st(a) (its standard part) such
+that a ≈ b.
+
+The representation of the hyperreals as equivalence classes of sequences with
+respect to a nontrivial ultraﬁlter is constructive only in a relative sense, because
+the proof that a nontrivial ultraﬁlter exists is nonconstructive; no one knows
+how to exhibit one. However, the representation provides an intuition that
+helps us think about hyperreals. For example, an inﬁnite positive integer is
+represented by a sequence of positive integers that increases without bound,
+such as [1, 2, 4, . . . ], and the faster it grows the larger it is.
+
+A.3 An ultraproduct of games
+
+Now we construct a continuous game, of the type used in this article.
+
+In this construction, the following protocol, where n is a natural number:
+
+Protocol:
+I0 := 1.
+Market announces S0 ∈ R.
+FOR n = 1, 2, . . . , N :
+
+Investor announces Mn ∈ R.
+Market announces Sn ∈ R.
+In := In−1 + Mn∆Sn.
+
+Fix a positive real number T and an inﬁnitely large positive integer N ; let
+
+N = [N (k)] = [N (1), N (2), . . . ].
+
+For each natural number k, set
+
+T(k) := {nT /N (k) | n = 0, 1, . . . , N (k)}.
+
+16
+
+To each k corresponds a “ﬁnitary framework” (which we will call the k-ﬁnitary
+framework), where the time interval is the ﬁnite set T(k) rather than the inﬁnite
+set T. The “limit” (formally, ultraproduct) of these ﬁnitary frameworks will be
+the inﬁnitary framework based on T; as in the previous subsection, this “limit”
+is deﬁned as follows:
+
+• An object in the inﬁnitary framework, such as strategy, should be deﬁned
+as a family of ﬁnitary objects:
+for every k, an object in the k-ﬁnitary
+framework should be deﬁned (cf. the deﬁnition of hyperreals in the previ-
+ous subsection).
+
+• Functionals deﬁned on ﬁnitary objects are extended to inﬁnitary objects
+term-wise, analogously to the previous subsection. (By “functionals” we
+mean functions of objects of complex nature, such as paths or strategies.)
+• Relations (in particular, properties) are deﬁned by voting (again as in the
+
+previous subsection).
+
+(In nonstandard analysis such limiting inﬁnitary structures are called hyperﬁ-
+nite.)
+
+A.4 Details of the proof of Theorem 1
+Let us show more formally why In is nonnegative and why IN ≥ Cδ2.
+
+According to the ﬁrst equality in (1), in every ﬁnitary framework we have
+
+N−1(cid:88)
+
+In − 1 ≥ −C
+
+(dSi)2;
+
+i=0
+
+since the value on the right-hand side is inﬁnitesimal (and, therefore, smaller
+than 1 in absolute value), minn In is positive.
+To see that IN ≥ Cδ2, deﬁne in each ﬁnitary framework the stopping time
+
+n := min{i||Si| > δ} .
+
+Again using the ﬁrst equality in (1) we obtain that in each ﬁnitary framework
+
+n−1(cid:88)
+
+N−1(cid:88)
+
+IN − 1 = In − 1 = CS2
+
+n − C
+
+(dSi)2 > Cδ2 − C
+
+(dSi)2;
+
+it remains to remember that the last subtrahend is inﬁnitely small and, there-
+fore, smaller than 1.
+
+i=0
+
+i=0
+
+17
+
+

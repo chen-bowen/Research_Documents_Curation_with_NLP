@@ -1,0 +1,2159 @@
+Abstract Interpretation for Probabilistic Termination of
+
+Biological Systems
+
+Roberta Gori
+
+Francesca Levi
+
+Dipartimento di Informatica
+
+Dipartimento di Informatica
+
+Universita’ di Pisa
+Largo Pontecorvo 2
+
+Pisa, Italy
+
+Universita’ di Pisa
+Largo Pontecorvo 2
+
+Pisa, Italy
+
+gori@di.unipi.it
+
+levifran@di.unipi.it
+
+In [5] the authors applied the Abstract Interpretation approach for approximating the probabilistic
+semantics of biological systems, modeled speciﬁcally using the Chemical Ground Form calculus [3].
+The methodology is based on the idea of representing a set of experiments, which differ only for the
+initial concentrations, by abstracting the multiplicity of reagents present in a solution, using intervals.
+In this paper, we reﬁne the approach in order to address probabilistic termination properties. More
+in details, we introduce a reﬁnement of the abstract LTS semantics and we abstract the probabilistic
+semantics using a variant of Interval Markov Chains [34, 13, 19]. The abstract probabilistic model
+safely approximates a set of concrete experiments and reports conservative lower and upper bounds
+for probabilistic termination.
+
+1
+
+Introduction
+
+Process calculi, originally designed for modeling distributed and mobile systems, are nowadays one
+of the most popular formalisms for the speciﬁcation of biological systems.
+In this new application
+domain, a great effort has been devoted for adapting traditional models to characterize the molecular
+and biochemical aspects of biological systems. Among them [32, 30, 2], stochastic calculi, based on
+p -calculus [29, 31], capture the fundamental quantitative aspect (both time and probability) of real life
+applications. The use of a process calculus as a speciﬁcation language offers a range of well established
+methods for analysis and veriﬁcation that could now be applied to biological system models. These
+techniques can be applied to complex biological systems in order to test hypotheses and to guide future
+[33, 27, 28] for p -calculus, are able to realize
+in vivo experimentations. Stochastic simulators, e.g.
+virtual experiments on biological system models, while model checking techniques, recently extended
+also to probabilistic and stochastic models [18, 21], support the validation of temporal properties.
+
+However, the practical application of automatic tools to biological systems revealed serious limi-
+tations. One speciﬁc feature of biological processes is that they are composed by a huge number of
+processes with identical behavior, such as thousands of molecules of the same type. Moreover, typically
+the exact concentrations of molecules are not known, meaning that the hypotheses have to be tested with
+respect to different scenarios. Thus, different experiments have to be realized and the state space of the
+models to be analyzed is often very large (even inﬁnite).
+
+Static analysis techniques provide automatic and decidable methods for establishing properties of
+programs, by computing safe approximations of the (run-time) behavior. This approach has been suc-
+cessfully applied to purely qualitative process calculi for distributed and mobile systems, and recently
+also to biologically inspired process calculi, in order to validate safety as well as more complex temporal
+properties [1, 14, 23, 25, 15, 16, 26].
+
+Gabriel Ciobanu (Ed.): Membrane Computing
+and Biologically Inspired Process Calculi 2009
+EPTCS 11, 2009, pp. 137–153, doi:10.4204/EPTCS.11.9
+
+c(cid:13) Roberta Gori & Francesca Levi
+This work is licensed under the
+Creative Commons Attribution License.
+
+138
+
+AbstractInterpretation forProbabilisticTerminationofBiologicalSystems
+
+LT S
+
+a lts
+
+LT S◦
+
+H
+
+H◦
+
+DT MC
+a mc
+
+/ IMC◦
+
+Figure 1: The complete picture
+
+!a
+
+?>=<
+89:;X
+
+?b
+
+?a
+
+?>=<
+89:;Y
+
+!b
+
+Figure 2: Groupie automata
+
+In [5] we have proposed an approximation technique, based on Abstract Interpretation [7, 8], able to
+address probabilistic temporal properties for a simple calculus, the Chemical Ground Form (CGF)[3].
+CGF is a fragment of stochastic p -calculus which is rich enough for modeling the dynamics of bio-
+chemical reactions. The abstraction is based on the idea of approximating the information about the
+multiplicities of reagents, present in a solution, by means of intervals of integers [6]. The approach com-
+putes an abstract probabilistic semantics for an abstract system, which approximates the probabilistic
+semantics, namely the Discrete-Time Markov Chain (DTMC), for any corresponding concrete system.
+In particular, the validation of an abstract system gives both lower and upper bounds on the probability of
+temporal properties [17], for a set of concrete systems (experiments) differing only for the concentrations
+of reagents.
+
+The methodology is illustrated in Fig. 1. As usual, the DTMC of a concrete system is derived from
+the LTS semantics, by calculating the probability of each move. The technique of abstraction is based
+on the deﬁnition of a suitable abstract LTS semantics for abstract systems, which support the derivation
+of an abstract probabilistic model, represented by an Interval Markov Chains [34, 13, 19]. In Interval
+Markov Chains transitions are labeled with intervals of probabilities, representing the uncertainty about
+the concrete probabilities; consequently, the validation of temporal properties reports lower and upper
+bounds, rather than exact values, which are obtained by considering the worst-case and best-case
+scenario w.r.t. all non-deterministic choices. Obviously, the key step of the translation from abstract
+LTS into the Interval Markov Chain consists in the computation of intervals of probabilities from the
+information reported by abstract transition labels. A quite precise approximation is achieved because
+the information reported by transition labels is proﬁtably exploited in order to capture also relational
+information.
+
+Unfortunately, if one is interested in proving more complex properties of biological systems, such
+as probabilistic termination [35], the previously proposed abstraction is not sufﬁciently powerful. For
+probabilistic termination we have to calculate the probability to reach a terminated state, e.g. a state
+where the probability to move in any other state is zero.
+
+To illustrate probabilistic termination, we consider the ”groupies” example proposed by Cardelli in
+several tutorials on biochemistry and also reported in [4]. The idea is to study how a set of entities
+collectives behave. The behavior of a single entity is represented by the automaton in Fig. 2; it has
+
+/
+/
+
+
+
+
+/
+4
+4
+
+
+u
+u
+U
+U
+RobertaGori&FrancescaLevi
+
+139
+
+two possible states, X and Y . A single automaton performs no interaction, while it may interact with
+other automata. Two automata in state X are stable since they both offer !a and ?b and no interaction are
+possible. Analogously for two automata in state Y . If one automata is in state X and another is in state
+Y then either they can interact on channel a and both move to state X or they can interact on channel b
+and both move to state Y . No matter how many automata are in state X or in state Y initially, eventually
+the groupies form a single homogeneous population of all X or of all Y . Thus, these systems always
+terminate, namely they universally terminate.
+
+The limitation of the abstract LTS semantics, deﬁned in [5], is represented by hybrid states, namely
+abstract states representing concrete terminated as well as non terminated states.
+It should be clear
+that, given an abstract state, the most precise and correct intervals of probabilities, could be derived by
+considering the minimum and maximum exact probabilities, for each concrete move, respectively. Thus,
+for an hybrid state we would obtain very approximated intervals of probabilities, such as [0,1], both for
+the self-loop and for any other move. This information says that some concrete states may loop forever,
+while others may move somewhere else. As a consequence, the lower and upper bound probabilities to
+reach a terminated state, from an hybrid state, are typically zero and one, respectively. This is the case
+of example for the CGF speciﬁcation of groupies example, previously commented.
+
+In order to better capture probabilistic termination, we propose in this paper a reﬁnement of our ap-
+proach, based on a modiﬁcation of the abstract LTS semantics. More in details, the abstract transition
+relation is reﬁned so that terminated and non-terminated states are properly separated, and consequently
+hybrid states are never generated. To this aim, it may be necessary to replace a single abstract tran-
+sition, corresponding to a given reaction, by a set of abstract transitions, leading to different abstract
+target states. Such distinct abstract transitions model the same reaction but with different concentrations
+of reactants. This situation induces a notion of conﬂict between abstract transitions; indeed, the corre-
+sponding reaction, for each concrete state, is approximated by exactly one of those abstract transitions.
+In this context, the labels of transitions precisely identify the interaction and can naturally be exploited
+to capture conﬂicts between abstract transitions.
+
+Once the abstract LTS semantics has been reﬁned, the remaining problem is to generalize the trans-
+lation from the abstract LTS to the abstract probabilistic model. In order to maintain the information
+about conﬂict, recorded by abstract transition labels, we adopt a generalization of the original model,
+called Labeled Interval Markov Chains (IMC). In IMC the labels permit to more accurately represent
+the set of distributions represented by the interval of probabilities. We show that the technique of [5]
+for computing intervals of probabilities from abstract transition labels can be successfully generalized,
+by ﬁnding out a good trade-off between precision and complexity. Finally, the soundness of the pro-
+posed technique is formalized following the approach of [5] (see also [10, 11, 12, 34, 19]) which exploits
+suitable approximation orders, both on abstract LTS and on IMC.
+
+The paper is organized as follows. Section 2 introduces the CGF calculus and the LTS semantics,
+while Section 3 shows the probabilistic semantics in terms of a DTMC. Section 4 presents the reﬁned
+abstract LTS semantics. Section 5 introduces the IMC model and ﬁnally, Section 6 presents the effective
+method to derive the abstract probabilistic semantics.
+
+2 Chemical Ground Form
+
+The CGF calculus [3] is a fragment of stochastic p -calculus [29, 27] without communication. Basic
+actions are related to rates, which are the parameters of the exponential distribution. We present the
+labeled transition system (LTS) semantics of CGF, proposed in [5], which supports more precise abstrac-
+
+140
+
+AbstractInterpretation forProbabilisticTerminationofBiologicalSystems
+
+::= 0 | p l
+
+E ::= 0 | X = S,E
+.P + S
+S
+P ::= 0 | X |P
+p
+
+::= ar | ¯ar | t r
+
+r ∈ R+
+
+Environment
+Molecules
+Solutions
+Basic Actions
+
+Table 1: Syntax of CGF
+
+tions with respect to the original proposal of [3]. In this approach, processes are labeled, and transitions
+record information about the labels of the actions which participate to the move, about their rates, and
+about their number of occurrences (in place of the rate of the move as in [3]).
+
+The syntax of (labeled) CGF is deﬁned in Table 1. We consider a set N (ranged over by a,b,c, . . .)
+of names, a set L (ranged over by l ,m . . .) of labels, and a set X (ranged over by X,Y ,....) of variables
+(representing reagents).
+
+A CGF is deﬁned as a pair (E,P) where E is a species environment and P is a solution . The
+environment E is a (ﬁnite) list of reagent deﬁnitions Xi = Si for distinct variables Xi and molecules Si.
+We assume that the environment E deﬁnes all the reagents of solution E. A molecule S may do nothing,
+or may change after a delay or may interact with other reagents. A standard notation is adopted: t r
+represents a delay at rate r; ar and ¯ar model, respectively, the input and output on channel a at rate r. A
+solution P is a parallel composition of variables, that is a ﬁnite list of reagents.
+
+Labels are exploited in order to distinguish the actions which participate to a move. To this aim, we
+consider CGF (E,P), where E is well-labeled, meaning that the labels of basic actions are all distinct.
+Moreover, given a label l ∈ L , we use the notation E.X .l
+.P provided that
+X = . . . + p l
+.P + . . . is the deﬁnition of X occurring in E. We may also use L (E.X ) for the set of labels
+appearing in the deﬁnition of X in E.
+
+to indicate the process p l
+
+The semantics is based on the natural representation of solutions as multisets of reagents. A multiset
+is a function M : X → N. In the following, we use M for the set of multisets and we use [[P]] for
+the multiset of reagents corresponding to a solution P. Moreover, we call M(X ) the multiplicity of
+reagent X in the multiset M. We may also represent multisets as sets of pair (m,X ), where m is the
+multiplicity of reagent X, using a standard notation, where the pairs with multiplicity 0 are omitted.
+Over multisets we use the standard operations of sum and difference ⊕ and ⊖, such that ∀X ∈ X :
+
+of the form
+
+The evolution of a solution (w.r.t. a given environment E) is described by a labeled transition relation
+
+M ⊕N(X ) = M(X )+N(X ) and M ⊖N(X ) = M(X )b−N(X ) where nb−m = n−m if n−m ≥ 0, 0 otherwise.
+where r ∈ R+ is a rate, Q ∈ cL = L ∪ (L × L ), D ∈ bQ = N ∪ (N × N) such that arity(Q ) = arity(D ).
+
+reports the label (the labels) of the basic action (the basic actions), which participate to the move,
+
+reports consistent information about the multiplicity, and r is the related rate.
+
+−−−→ M′
+
+Here, Q
+
+M
+
+,D
+
+,r
+
+The transition relation for multisets is deﬁned by the rules Table 2 (we are tacitly assuming to reason
+w.r.t. a given environment E). Rule (Delay) models the move of a process t r
+.Q appearing in the
+deﬁnition of a reagent X. The transition records the label l
+together with the multiplicity of X (e.g
+M(X )) as well as the rate r. Rule (Sync) models the synchronization between two complementary
+.Q2 appearing in the deﬁnition reagents X and Y (that may even coincide).
+processes ar
+The transition records the labels l and m
+together with the multiplicities of X and Y (e.g M(X ) and
+M(Y )) as well as the rate r.
+
+.Q1 and ¯ar
+
+l
+
+l
+
+m
+
+We denote with LTS((E,M0)) = (S, →,M0,E) the LTS, obtained as usual by transitive closure, start-
+
+Q
+D
+RobertaGori&FrancescaLevi
+
+141
+
+(Delay)
+
+(Sync)
+
+E.X .l = t r
+
+l
+
+.Q
+
+l ,M(X),r
+−−−−−→ (M ⊖ (1,X )) ⊕ [[Q]]
+
+M
+
+E.X .l = ar
+
+l
+
+.Q1
+
+E.Y.m = ¯ar
+
+m
+
+.Q2
+
+M (l ,m ),(M(X),M(Y )),r
+
+−−−−−−−−−−−−→ ((M ⊖ (1,X )) ⊖ (1,Y )) ⊕ [[Q1]] ⊕ [[Q2]]
+
+Table 2: Transition relation
+
+ing from the initial state M0 ∈ S, w.r.t. to environment E. Note that, since environments are well-labeled,
+e.g. basic actions have distinct labels, the transitions from a state of the LTS are decorated by distinct
+labels too. Moreover, we use L T S to denote the set of LTS.
+
+In the following, given a transition t = M
+
+, and
+source(t), target(t) to denote its source state M and target M′, respectively. Similarly, for a set of transi-
+
+tions T S, we use label(T S) =St∈T S label(t). We also use Ts(M,M′) = {t | source(t) = M and target(t) =
+
+M′} and Ts(M) = {t | source(t) = M} for describing the transitions from a multiset M to a multiset M′,
+and all transitions leaving from multiset M, respectively.
+
+,D
+−−−→ M′ we use label(t) to denote its label Q
+
+,r
+
+3 Probabilistic Semantics
+
+We introduce the probabilistic model of DTMC and we brieﬂy discuss the notion of probabilistic termi-
+nation [35]. We also introduce the probabilistic semantics of CGF proposed in [5].
+
+Dicrete-Time Markov Chains.
+
+Given a ﬁnite or countable set of states S ⊆ M we denote with
+
+SDistr(S) = {r
+
+| r ∈ SDistr(S) and (cid:229) M∈S r (M) = 1}
+the set of (discrete) probability pseudo-distributions and of distributions on S, respectively.
+
+| r : S → [0,1]}, Distr(S) = {r
+
+Deﬁnition 3.1 (DTMC) A DTMC is a tuple (S,P,L,M0) where: (i) S ⊆ M is a ﬁnite or countable
+set of states, M0 ∈ S is the initial state; (ii) P : S → Distr(S) is the probability transition function; (iii)
+
+L : S → (S →ˆ ( cL )) is a labeling function.
+
+In DTMC state transitions are equipped with probabilities, e.g. P(M)(M′) reports the probability of
+moving from state M to state M′. In addition, L(M)(M′) reports the set of labels corresponding to the
+moves from state M to state M′. Notice that we adopt a labeled version of the model in order to simplify
+the correspondence with the abstract models; the labels do not modify the probability distributions in the
+concrete model. We use M C for the set of DTMC.
+
+We are interested in probabilistic termination, e.g. on the probability to reach a state, which is
+terminated. Given a DTMC (S,P,L,M0), we say that a state M ∈ S is terminated iff P(M)(M′) = 0, for
+each M′ ∈ S with M′ 6= M.
+
+The probability to reach a terminated state can be formalized by associating a probability measure to
+paths of a DTMC. Let (S,P,L,M0) be a DTMC. A path p
+is a non-empty sequence of states of S. We
+denote the i-th state in a path p by p [i], and the length of p by |p |. The set of (resp. ﬁnite) paths over
+S is denoted by (resp. FPaths(S)) Paths(S), while C(M) denotes the set of paths starting from the state
+
+Q
+142
+
+AbstractInterpretation forProbabilisticTerminationofBiologicalSystems
+
+M ∈ S. In the following, for M ∈ S and P ∈ C(M), PM(P ) stands for the probability of the sets of paths
+
+(see [20] for the standard deﬁnition).
+
+Deﬁnition 3.2 (Probabilistic Termination) Let mc = (S,P,L,M0) be a DTMC. The probability of reach-
+ing a terminated state, from M ∈ S, is Reachmc(M) = PM({p ∈ C(M) | p [ |p | ] is terminated, and ∀ j,0 ≤
+j ≤ |p |,p [ j] is non-terminated}).
+
+Derivation of the DTMC.
+
+The derivation of a DTMC from the LTS is based on the computation of the probability of moving from
+M to M′, for any M and M′. To this aim, we extract the rate corresponding to the move from M to M′ by
+exploiting the information reported by transition labels.
+
+Formally, for a transition t = M
+
+−−−→ M′ we deﬁne the corresponding rate as follows,
+
+,D
+
+,r
+
+rate(t) =
+
+
+n · r
+
+n · (mb−1) · r
+
+n · m · r
+
+Q = l ,D = n,
+Q = (l ,m ),D = (n,m),l ,m ∈ L (E.X ),
+Q = (l ,m ),D = (n,m),l ∈ L (E.X ),m ∈ L (E.Y ),X 6= Y.
+
+As usual, for computing rate(t) it is necessary to take into account the number of distinct transitions
+t that may occur in the multiset M. Thus, the rate r of the basic action (actions) related to Q
+is multiplied
+by the number of distinct combinations appearing in M (by exploiting the information recorded by D ).
+
+Then, we introduce functions R : S × S → R>=0 and E : S → R>=0, such that
+t∈Ts(M,M′) rate(t) E(M) = (cid:229) M′∈S R(M,M′).
+
+R(M,M′) = (cid:229)
+
+Intuitively, R(M,M′) reports the rate corresponding to the move from M to M′, while E(M) is the
+exit rate. Finally, the probability of moving from M to M′ is computed from R(M,M′) and from the exit
+rate E(M), in a standard way.
+
+Deﬁnition 3.3 We deﬁne a probabilistic translation function H : L T S → M C such that H((S, →
+,M0,E)) = (S,P,L,M0), where
+
+1. P : S → Distr(S) is the probability transition function, such that for each M,M′ ∈ S:
+
+a) if E(M) > 0, then P(M)(M′) = R(M,M′)/E(M);
+b) if E(M) = 0, then P(M)(M) = 1, and P(M)(M′) = 0 for M′ 6= M.
+
+2. L : S → (S →ˆ ( cL )) is a labeling function, such that, for each M,M′ ∈ S, L(M,M′) = label({t ∈
+
+Ts(M,M′) | rate(t) > 0}).
+
+Due to the particular labeling of the LTS semantics, also the DTMC, modeling the probabilistic
+semantics of a CGF process, satisﬁes the properties that all transitions leaving from a state, are decorated
+by distinct labels.
+
+Example 3.4 The example of groupies, commented in the Introduction, can be formalized by the follow-
+ing environment, E ::= X = al
+
+m
+h
+r .X + b
+r .Y .
+
+r .X + ¯bd
+
+r .Y,Y = ¯a
+
+Reagents X and Y may interact together in two possible ways; either along channel a or along
+channel b; both reactions have the same rate r. The former case models a duplication of X, while the
+latter case models a duplication of Y .
+
+P
+Q
+RobertaGori&FrancescaLevi
+
+143
+
+{(l ,m )},(1,3),r
+
+M1
+
+{(l ,m )},(2,1),r
+
+M2
+
+{(l ,m )},1/2
+
+M1
+
+{(l ,m )},1/2
+
+M2
+
+/0,1
+
+{(d ,h )},(2,1),r
+
+M0
+
+{(d ,h )},(1,3),r
+
+/ M3
+
+M0
+
+{(d ,h )},1/2
+
+{(d ,h )},1/2
+
+/ M3
+
+/0,1
+
+Figure 3: The LTS and the corresponding DTMC
+
+Fig. 3 illustrates the LTS and the corresponding DTMC, for the CGF (E,M0), where
+
+M0 = {(1,X ), (2,Y )} M1 = {(2,X ), (1,Y )} M2 = {(3,X )} M3 = {(3,Y )}
+
+The LTS reports for each state, except for states M2 and M3, two transitions: label (l ,m ) models
+the duplication of X, while label (d ,h ) models the duplication of Y . The transitions record also the
+multiplicities of reagents X and Y and the corresponding rate. As a consequence, in the DTMC, states
+M2 and M3 are terminated. By contrast, the states M0 and M1 have two different moves with the same
+probability. By calculating the probability to reach a terminated state from M0 we obtain exactly 1.
+Indeed, the probability to be stuck in the loop M0-M1 is zero.
+✷
+
+4 Abstract LTS
+
+The abstract LTS semantics uses the same abstraction of multisets of [5], based on the approximation of
+the multiplicity of reagents by means of intervals of integers [6]. Instead, the abstract transition relation
+is reﬁned, and the related notions, needed for expressing soundness, are adapted accordingly.
+
+Abstraction of states.
+We adopt intervals of integers, I = {[m,n] | m ∈ N,n ∈ N ∪ {¥ } ∧ m ≤ n}. Over intervals we consider
+the standard order ⊑I, such that I ⊑I J iff min(I), max(I) ∈ J. Moreover, we use ⊔I for the corresponding
+l.u.b..
+
+The abstract states are deﬁned by replacing multiplicities with intervals of multiplicities. Therefore,
+
+an abstract state is a function M◦ : X → I . We also use M ◦ for the set of abstract states.
+
+Obviously, given a multiset M, there exists an abstract multiset M◦, which is its most precise approx-
+imation. Indeed, each multiplicity, such as n, can be replaced with the exact interval [n,n]; for simplicity,
+we may even use n as a shorthand of [n,n]. In the following, a (M) stands for the best abstraction of a
+multiset M. Moreover, we use M◦[I/X ] for denoting the abstract state where the abstract multiplicity of
+reagent X is replaced by the interval I ∈ I . We adopt abstract operations of sum and difference, such
+that ∀X ∈ X ,
+
+M◦⊕◦N◦(X ) = M◦(X ) + N◦(X ),
+M◦⊖◦N◦(X ) = M◦(X ) − N◦(X ),
+
+I + J = [min(I) + min(J),max(I) + max(J)]
+
+I − J = [min(I)b−max(J),max(I)b−min(J)]
+
+It is immediate to deﬁne the following approximation order over abstract states.
+
+Deﬁnition 4.1 (Order on States) Let M◦
+M◦
+
+1 (X ) ⊑I M◦
+
+2 (X ).
+
+1 ,M◦
+
+2 ∈ M ◦, we say that M◦
+
+1 ⊑◦M◦
+
+2 iff, for each reagent X ∈ X ,
+
+/
+/
+o
+o
+&
+&
+/
+/
+/
+o
+o
+w
+w
+%
+%
+/
+w
+w
+144
+
+AbstractInterpretation forProbabilisticTerminationofBiologicalSystems
+
+The relation between multisets and abstract states is formalized as a Galois connection [8]. The
+abstraction function a
+: P(M ) → M ◦ reports the best approximation for each set of multisets S; the
+l.u.b. (denoted by ⊔◦) of the best abstraction of each M ∈ S. Its counterpart is the concretization function
+g : M ◦ → P(M ) which reports the set of multisets represented by an abstract state. We refer the reader
+to [5] for the properties of functions (a ,g ).
+Deﬁnition 4.2 We deﬁne a
+M◦ ∈ M ◦: (i) a (S) =F◦
+
+: P(M ) → M ◦ and g : M ◦ → P(M ) such that, for each S ∈ P(M ) and
+a (M); (ii) g (M◦) = {M′ | a (M′)⊑◦M◦}.
+
+M∈S
+
+Abstract transitions.
+
+The semantics of [5] uses abstract transitions of the form M◦
+1
+I ∪ (I × I ), with arity(Q ) = arity(D ◦). Similarly as in the concrete case, Q
+reports the label (the
+labels) of the basic action (actions), D ◦ reports consistent information about the possible multiplicities,
+while r is the rate.
+
+2 where Q ∈ cL , D ◦ ∈ bQ◦ =
+
+M◦
+
+,D ◦,r
+−−−→
+◦
+
+,r
+
+In the proposed approach, such a transition is intended to approximate all the concrete moves, cor-
+1. This means that
+is included in the
+
+, for each multiset M1 approximated by the abstract state M◦
+,D
+−−−→ M2, where the multiplicity (multiplicities) D
+
+responding to label Q
+there exists a concrete transition M1
+interval (intervals) D ◦, and M2 is approximated by the abstract state M◦
+2.
+
+0 = {([1,2],X ), ([1,2],Y )}. The abstract state M◦
+
+Let us consider the environment E commented in Example 3.4 and a very simple abstract state
+such as M◦
+0 describes a set of experiments; thus, the
+abstract semantics has to model the system described by E, w.r.t. different initial concentrations. For
+approximating the duplication of X, i.e. the synchronization between X and Y along channel a, we would
+obtain
+
+(l ,m ),([1,2],[1,2]),r
+−−−−−−−−−−→
+◦
+In this way, however, a hybrid state M◦
+0
+
+M◦
+0
+
+M◦
+0
+
+′ with M◦
+0
+
+′ = {([2,3],X ), ([0,1],Y )}.
+
+′ represents terminated multisets,
+where the concentration of reagent Y is zero, as well as non terminated multisets, where reagent Y is still
+available.
+
+′ is introduced. Actually, M◦
+0
+
+It should be clear that the moves corresponding to (l ,m ) could be better approximated by adopting
+
+two different abstract transitions,
+
+M◦
+0
+
+(l ,m ),([1,2],[2,2]),r
+−−−−−−−−−−→
+◦
+
+1 (a)
+1 = {([2,3],X ), ([1,1],Y )} and M◦
+
+M◦
+
+M◦
+0
+
+(l ,m ),([1,2],[1,1]),r
+−−−−−−−−−−→
+◦
+
+M◦
+
+3 (b)
+
+where M◦
+
+3 = {([2,3],X ), ([0,0],Y )}. In this representation the labels
+capture a relevant information because they express a conﬂict. Actually, each multiset represented by M◦
+0,
+realizes a move corresponding to (l ,m ) which is abstracted either by transition (a) or by transition (b).
+Table 3 presents the reﬁned abstract transition rules (as usual, w.r.t. a given environment E). The
+rules are derived from the concrete ones, by replacing multiplicities with intervals of multiplicities. The
+following operators are applied both to the target state and to the intervals, appearing in the transition
+labels, in order to properly split the intervals, such as [0,n].
+
+(X ) = {(X = 0), (X > 0)}. Then, given an abstract state M◦ ∈ M and
+
+For X ∈ X , we deﬁne (cid:192)
+(X ) we deﬁne
+
+♯ ∈ (cid:192)
+
+▽♯(M◦) =
+
+
+M◦[[0,0]/X ]
+M◦[[1,n]/X ]
+M◦
+
+if ♯ = (X = 0),M◦(X ) = [0,n],n > 0
+if ♯ = (X > 0),M◦(X ) = [0,n],n > 0
+otherwise
+
+Q
+Q
+RobertaGori&FrancescaLevi
+
+145
+
+(Delay-a)
+
+(Sync-a)
+
+E.X .l = t r
+
+l
+
+.Q ♯ ∈ (cid:192)
+
+(X )
+
+M◦
+
+l ,(M◦(X))♯,r
+−−−−−−−→
+◦
+
+▽♯((M◦⊖◦{(1,X )})⊕◦a ([[Q]]))
+
+E.X .l = ar
+
+.Q1
+M◦ (l ,m ),((M◦(X))♯1 ,(M◦(Y ))♯2 ),r
+−−−−−−−−−−−−−−−−−→
+◦
+
+l
+
+E.Y.m = ¯ar
+
+m
+
+.Q2
+
+♯1 ∈ (cid:192)
+
+(X )
+
+♯2 ∈ (cid:192)
+
+(Y )
+
+▽♯1,♯2 (((M◦⊖◦{(1,X )})⊖◦{(1,Y )})⊕◦a ([[Q1]])⊕◦a ([[Q2]]))
+
+Table 3: Abstract transition relation
+
+With an abuse of notation, we may write ▽♯1,♯2(M◦) in place of ▽♯1(▽♯2(M◦)). Similarly, for an
+
+interval I = [n,m] ∈ I and ♯ ∈ (cid:192)
+
+(X ),
+
+I♯ =
+
+
+[n,1]
+[2,m]
+I
+
+if ♯ = (X = 0),n ≤ 1,
+if ♯ = (X > 0),n ≤ 1,m ≥ 2,
+otherwise.
+
+In the following we use L T S ◦ to denote the set of abstract LTS. We also assume that all notations
+0 ,E) for
+
+deﬁned for LTS are adapted in the obvious way. Hence, we write LTS◦((E,M◦
+the abstract LTS, obtained for the initial abstract state M◦
+0 by transitive closure.
+
+0 )) = (S◦, →◦, M◦
+
+For the sake of simplicity we have presented an approximation where the number of states may be
+
+inﬁnite. Further approximations can be easily derived by means of widening operators (see [5]).
+
+Soundness.
+
+In the style of [5], we introduce an approximation order ⊑◦
+that an abstract LTS lts◦ is a sound approximation of a LTS lts provided that a lts(lts)⊑◦
+a lts(lts) is the best approximation of lts.
+Deﬁnition 4.3 (Best Abstraction of LTS) We deﬁne a lts : L T S → L T S ◦, such that a lts((S, →,M0,E))
+= ({a (M)}M∈S,a (→),a (M0),E) where a (→) = {a (M)
+best abstraction of D
+
+lts over abstract LTS. In this way, we can say
+ltslts◦; as usual,
+
+,D
+−−−→ M1 ∈→} and D ◦ is the
+
+, derived component-wise.
+
+a (M1) | M
+
+,D ◦,r
+−−−→
+◦
+
+,r
+
+In the following, we assume to extend the order ⊑I over intervals to pairs of intervals; D 1
+
+◦ ⊑I D 2
+
+◦ is
+
+deﬁned component-wise.
+
+2, we say that M◦
+
+Deﬁnition 4.4 (Order on abstract LTS) Let lts◦
+For M◦
+1 ∈ S◦
+1 4lts M◦
+then: (i) M◦
+t◦
+1 ∈ Ts(M1
+that lts◦
+1 ⊑◦
+
+1 × S◦
+2 ∈ S◦
+◦) → Ts(M2
+2; and (ii) there exists a surjective function Ht : Ts(M1
+2 , D ◦
+1 ⊑I D ◦
+N◦
+1 = M◦
+1 , Ht(t◦
+N◦
+1
+2 iff M◦
+0,1 4lts M◦
+0,2.
+
+i = (S◦
+2 iff exists a relation R ⊆ S◦
+
+0,i,E) with i ∈ {1,2} be abstract LTS.
+1RM◦
+2 such that if M◦
+2
+◦) such that, for each
+2 and N◦
+2 . We say
+
+1,M◦
+1 ⊑◦M◦
+◦), t◦
+lts lts◦
+
+,D ◦
+1,r
+−−−→
+◦
+
+,D ◦
+2,r
+−−−→
+◦
+
+2 where t◦
+
+2 = M◦
+2
+
+1 ) = t◦
+
+i , →i
+
+◦,M◦
+
+1 RN◦
+
+The approximation order for abstract LTS is based on a simulation between abstract states. More in
+1, and there exists a
+2. In particular, each
+, and such
+
+1 4lts M◦
+◦) between the transitions of M◦
+
+2 approximates M◦
+1 and M◦
+
+1 (M◦
+◦) → Ts(M2
+
+2 , related to the same label Q
+N◦
+
+N◦
+1 has to be matched by a move M◦
+2
+
+2) whenever M◦
+
+2 simulates M◦
+
+details, we say that M◦
+surjective function Ht : Ts(M1
+move M◦
+1
+that D ◦
+
+,D ◦
+1,r
+−−−→
+◦
+1 ⊑I D ◦
+
+2, showing that the multiplicities are properly approximated.
+
+,D ◦
+2,r
+−−−→
+◦
+
+Q
+Q
+Q
+Q
+Q
+Q
+146
+
+AbstractInterpretation forProbabilisticTerminationofBiologicalSystems
+
+{(l ,m )},([1,2][2,2]),r
+
+{(d ,h )},([2,3][1,1]),r
+
+M◦
+0
+
+{(l ,m )},([1,2][1,1]),r
+{(d ,h )},([1,1][1,2]),r
+
+{(l ,m )},([1,1][2,3]),r
+
+{(d ,h )},([2,2][1,2]),r
+
+M◦
+1
+
+M◦
+3
+
+M◦
+4
+
+M◦
+5
+
+{(l ,m )},([2,3][1,1]),r
+
+M◦
+2
+
+{(d ,h )},([1,1][2,3]),r
+
+M◦
+6
+
+Figure 4: The abstract LTS
+
+The following theorem shows that the abstract LTS computed for an abstract state M◦ is a sound
+
+approximation of the LTS, for any M represented by M◦.
+Theorem 4.5 (Soundness) Let E be an environment and M◦ ∈ M ◦. For each M′ ∈ g (M◦), we have
+a lts(LTS((E,M′))) ⊑lts
+
+◦ LTS◦((E,M◦)).
+
+Splitting hybrid states by means of the ▽♯ operator, in order to distinguish terminated and non-
+terminated states may, in general, increase drastically the number of abstract states. For example the
+abstract LTS, starting from the state M◦
+0 = {([1,2],X ),([1,2],Y )} w.r.t. to the environment E of Example
+3.4, would have 14 abstract states.
+
+It is worth noting, however, that for modeling probabilistic termination we don’t need to be too ﬁne
+in distinguishing different non-terminated states. For this reason we can apply the following widening
+operator to each abstract transition step: we approximate the new abstract state M◦, result of the appli-
+cation of the transition relation of Table 3, with an abstract state M◦
+1 was already
+generated in a previous derivation step. This will reduce the number of new generated abstract states as
+it is shown in the next example.
+
+1, if M ⊑I
+
+1 and M◦
+
+◦M◦
+
+For these reasons in the following we always assume the application of the previous widening oper-
+
+ator.
+
+Example 4.6 Fig. 4 shows the complete abstract LTS for the abstract state M◦
+w.r.t. to the environment E of Example 3.4, where
+
+0 = {([1,2],X ),([1,2],Y )}
+
+M1
+M4
+
+◦ = {([2,3],X ), ([1,1],Y ) M2
+◦ = {([0,0],X ), ([2,3],Y ) M5
+
+◦ = {([3,4],X ), ([0,0],Y ) M3
+◦ = {([1,1],X ), ([2,3],Y ) M6
+
+◦ = {([2,3],X ), ([0,0],Y )
+◦ = {([0,0],X ), ([3,4],Y )
+
+5 Abstract Probabilistic Semantics
+
+In standard Interval Markov Chains [34, 13] transitions report intervals of probabilities, representing a
+lower and upper bound on the concrete probabilities, e.g. a set of possible distributions. Unfortunately,
+this information is not adequate for our abstraction. Let us consider again the system, commented in
+Examples 3.4 and 4.6. As it is illustrated in the LTS of Fig. 4, the reachable states from M◦
+1, M◦
+3,
+M◦
+
+0 are M◦
+
+5 (see also Fig. 5 (c)).
+
+4 and M◦
+
+/
+/
+y
+y
+1
+1
+D
+D
+
+
+-
+-
+/
+/
+f
+f
+RobertaGori&FrancescaLevi
+
+147
+
+M◦
+0
+
+[0,1/2]
+
+7ppppppppp [0,1/2]
+'NNNNNNNNN
+
+>
+[0,1/2]
+>
+>
+>
+
+>
+>
+
+>
+
+>
+
+[0,1/2]
+
+>
+
+>
+
+>
+>
+
+(a)
+
+M◦
+3
+
+M◦
+1
+
+M◦
+4
+
+M◦
+5
+
+M◦
+0
+
+{(l ,m )},[1/2,1/2]
+
+6mmmmmmmmmmm{(l ,m )},[1/2,1/2]
+(QQQQQQQQQQQ
+
+C
+
+C
+
+C
+
+C
+
+{(d ,h )},[1/2,1/2]
+C
+
+C
+C
+C
+{(d ,h )},[1/2,1/2]
+
+C
+
+M◦
+3
+
+M◦
+1
+
+M◦
+4
+
+C
+
+C
+
+C
+!C
+
+M◦
+0
+
+{(l ,m )},([1,2],[1,1]),r1
+
+{(l ,m )},([1,2],[2,2]),r1
+
+4hhhhhhhhhhhhhhhhhh
++VVVVVVVVVVVVVVVVVV
+&MMMMMMMMMMMMMMMMMMMM
+
+{(d ,h )},([1,1],[1,2]),r2
+
+{(d ,h )},([2,2],[1,2]),r2
+
+M◦
+
+3 (1)
+
+M◦
+
+1 (2)
+
+M◦
+
+4 (3)
+
+M◦
+
+5 (4)
+
+(b)
+
+M◦
+5
+
+(c)
+
+Figure 5: The interval of probabilities and of multiplicities for M◦
+
+0’s transitions.
+
+In order to reason on the interval of probabilities we could safely assign to each transition leaving
+from M◦
+0, it is useful to examine the set of concrete probability distributions, for each multiset M0,
+represented by M◦
+0 is described
+in Fig. 3; the other cases show analogous behaviors. Actually, for each M0, there are two possible
+synchronizations between reagents X and Y : one corresponding to the duplication of X and the other one
+corresponding to the duplication of Y . These two alternative moves always have the same probability.
+
+0. The DTMC corresponding to one of experiments represented by M◦
+
+Moreover, each solution M0, when there is a duplication of X, evolves into a solution, which is
+3 (where the concentration of Y
+5. Thus, the abstract
+
+represented either by M◦
+is 0). Analogously, for the duplication of Y and the abstract states M◦
+distributions representing the concrete distributions are:
+
+1 (where reagent Y is still available) or by M◦
+
+4 and M◦
+
+r 1(M3) = 1/2,r 1(M1) = 0,r 1(M5) = 1/2,r 1(M4) = 0,
+r 2(M3) = 1/2,r 2(M1) = 0,r 2(M5) = 0,r 2(M4) = 1/2,
+r 3(M3) = 0,r 3(M1) = 1/2,r 3(M5) = 1/2,r 3(M4) = 0,
+r 4(M3) = 0,r 4(M1) = 1/2,r 4(M5) = 0,r 4(M4) = 1/2.
+
+It should be clear that the most precise intervals of probabilities representing the previous distribu-
+tions, could be obtained by considering the minimum and maximum probability, for each move. The
+intervals we would obtain in this way, are illustrated in Fig 5 (a). This representation introduces a clear
+loss of information. For instance, the intervals include a distribution such as r (M1) = 1/2,r (M3) =
+1/2,r (M4) = 0,r 4(M5) = 0, which does not correspond to any concrete behavior. Actually, states M◦
+1
+and M◦
+
+3 are in conﬂict.
+
+Since labels are suitably exploited in the abstract LTS in order to represent conﬂict, we introduce a
+generalization of the original model, called Labeled Interval Markov Chains (IMC). The model permits
+to more accurately represent the set of distributions represented by intervals of probability by means of
+labels.
+
+Labeled Interval Markov Chains.
+Deﬁnition 5.1 (IMC) A IMC is a tuple (S◦,P−,P+,L,M◦
+1. S◦ ⊆ M ◦ is a countable set of abstract states and M0
+2. P−,P+ : S◦ → SDistr(S◦) are the lower and upper bounds on probabilities, such that for each
+
+◦ ∈ S◦ is the initial state;
+
+0 ) where
+
+M1
+
+◦,M2
+
+◦ ∈ S◦, P−(M1
+
+◦)(M2
+
+◦) ≤ P+(M1
+
+◦)(M2
+
+◦);
+
+3. L : S◦ → (S◦ →ˆ ( cL )) is a labeling function.
+
+7
+/
+/
+'
+
+6
+/
+/
+(
+!
+4
+/
+/
++
+&
+148
+
+AbstractInterpretation forProbabilisticTerminationofBiologicalSystems
+
+In the following we use I M C ◦ to denote the set of IMC. As in the standard model, P−(M1
+
+◦)
+and P+(M1
+◦, respectively.
+◦)(M2
+In addition, L(M1
+◦) reports the set of labels corresponding to the move. Intervals represent set
+of admissible distributions; the notion of admissible distribution has to be slightly adapted in order to
+handle the conﬂict between (sets of) labels.
+
+◦) deﬁne the lower and upper bound, for the move from M1
+◦)(M2
+
+◦ to M2
+
+◦)(M2
+
+b
+
+Deﬁnition 5.2 (Conﬂict of Labels) Let a ,b ∈ˆ ( cL ) be sets of labels. We say that a
+iff there exists J ∈ cL such that a = {J } = b .
+
+The notion of conﬂict between labels obviously induces a corresponding notion of conﬂict between
+states. Let (S◦,P−,P+,L,M◦
+0 ) be an IMC and M◦ ∈ S◦. We say that NS◦ ⊆ S◦ is a set of no-conﬂict
+2 ∈ NS◦, there is no conﬂict between L(M◦)(M◦
+states w.r.t. M◦ iff it is maximal and, for each M◦
+1 )
+and L(M◦)conceptM◦
+
+is in conﬂict with
+
+1 ,M◦
+
+2 ).
+
+Deﬁnition 5.3 (Admissible Distribution) Let mc◦ = (S◦,P−,P+,L,M◦
+0 ) be an IMC and let M◦ ∈ S◦.
+We say that a distribution r ∈ Distr(S◦) is admissible for M◦ iff there exists a set of no-conﬂict states
+NS◦ such that, for each M◦
+1) = 0,
+otherwise. We use ADistrmc◦(M◦) for the set of admissible distributions for M◦.
+
+1 ∈ NS◦, then P−(M◦)(M◦
+
+1 ) ≤ P+(M◦)(M◦
+
+1 ) ≤ r (M◦
+
+1 ∈ S◦: if M◦
+
+1 ); r (M◦
+
+Intuitively, an admissible distribution r corresponds to a set of no-conﬂict states NS◦, and reports
+a value included in the interval, for each state of NS◦, and zero otherwise. As an example, the IMC
+illustrated in Fig 5 (b) reports four non-conﬂict set of states w.r.t. M◦
+5 }; (3)
+{M◦
+5 }. As a consequence, the admissible distributions, corresponding to (1)-(4)
+are exactly the distributions r 1 − r 4, discussed at the beginning of the Section. This shows that the IMC
+of Fig. 5 (b) is a sound (and very precise) approximation of the probabilistic semantics, for each multiset
+represented by M◦
+0.
+
+4 } and (4) {M◦
+
+4 }, (2) {M◦
+
+0: (1) {M◦
+
+3 ,M◦
+
+3 ,M◦
+
+1 ,M◦
+
+1 ,M◦
+
+Once deﬁned admissible distributions the concept of scheduler follows the same guidelines of [5].
+
+The notion of path and cylinder for IMC are analogous to that presented for DTMC.
+
+Deﬁnition 5.4 (Scheduler) Let mc◦ = (S◦,P−,P+,L,M◦
+0 ) be an IMC, a scheduler is a function A :
+FPaths(S◦) → Distr(S◦) such that A(p ◦) ∈ ADistrmc◦(p ◦[|p ◦|]) for any abstract path p ◦ ∈ FPaths(S◦).
+We use Adv(mc◦) to denote the set of schedulers.
+
+lowing, PP
+
+Given a scheduler a probability space over paths can be deﬁned analogously as for DTMC. In the fol-
+M◦ ∈ Adv(mc◦) stands for the probability starting from M◦ w.r.t. the scheduler P ∈ Adv(mc◦).
+An IMC gives both under and over approximations of the probability of reachability properties,
+that can be computed by considering the worst and best probabilities w.r.t. all the schedulers. For
+approximating probabilistic termination, we have to deﬁne terminated abstract states. A state M◦ ∈
+S◦ of a IMC mc◦ = (S◦,P−,P+,L, ,M◦
+0 ) is ∃-terminated iff P+(M◦)(M◦) = 1, and is ∀-terminated iff
+P−(M◦)(M◦) = 1.
+
+Deﬁnition 5.5 (Probabilistic Termination) Let mc◦ = (S◦,P−,P+,L, ,M◦
+upper bound of probabilistic termination, starting from M◦ ∈ S◦, are
+
+0 ) be an IMC. The lower and
+
+Reach−
+Reach+
+
+mc◦(M◦) = infP ∈Adv(mc◦) PP
+mc◦(M◦) = supP ∈Adv(mc◦) PP
+
+M◦ ({p ◦ ∈ C(M◦) | p ◦[i] is ∀-terminated for some i ≥ 0})
+M◦ ({p ◦ ∈ C(M◦) | p ◦[i] is ∃-terminated for some i ≥ 0})
+
+Finally, we observe that the problem of model checking the IMC can be reduced, as in the case of
+Markov Interval Chains, to the veriﬁcation of a Markov Decision Process (MDP), by considering the so
+
+RobertaGori&FrancescaLevi
+
+149
+
+called feasible solutions. The complexity of this reduction is comparable to the one for a standard Markov
+Interval Chains with the same number of states. Analogously, more efﬁcient iterative algorithms which
+construct a basic feasible solution on-the-ﬂy can also be used to model check our IMC (see [34, 13]).
+
+Soundness and precision of approximations.
+
+We introduce a notion of best abstraction of a DTMC based on an approximation order on IMC. Here,
+for a lack of space, we give just an intuitive deﬁnition of such an order. The reader can refer to [5] for
+the formal deﬁnition.
+Deﬁnition 5.6 (Best Abstraction) We deﬁne a MC : M C → I M C ◦ such that a MC((S,P,L,M0)) =
+({a (M)}M∈S,Pa −,Pa +,L,a (M0)), where Pa −(a (M1),a (M2)) = Pa +(a (M1),a (M2)) = P(M1)(M2).
+◦ simulates M1
+◦
+◦ is matched by a
+◦, where the probabilities of the target states are eventually summed up.
+This simulation provides sufﬁcient conditions for the preservation of extremum probabilities, as
+
+The order on IMC is based on a sort of probabilistic simulation.
+◦ 4mc M2
+
+(M1
+corresponding distribution of M2
+
+◦: (ii) each distribution of M1
+
+◦) whenever: (i) M2
+
+◦ approximates M1
+
+Intuitively, M2
+
+stated by the following theorem.
+Theorem 5.7 (Soundness of the order) Let mc◦
+for i ∈ {1,2}. If M1
+(M2
+
+◦ 4mc M2
+
+◦, then Reach−
+mc◦
+2
+
+◦,P−
+i ,P+
+i = (Si
+◦) ≤ Reach−
+mc◦
+1
+
+i ,Li,M◦
+(M1
+
+0,i) be two IMC and let Mi
+◦) ≤ Reach+
+mc◦
+2
+
+◦) ≤ Reach+
+mc◦
+1
+
+(M1
+
+◦,
+◦ ∈ Si
+◦).
+(M2
+
+6 Derivation of IMC
+
+We deﬁne a systematic method for deriving an IMC from an abstract LTS. Obviously, the crucial part
+of the translation consists of the calculation of intervals of probabilities from the information reported
+on abstract transitions labels. The approach, proposed in [5], suggests a methodology similar to the one
+applied in the concrete case, based on the calculation of abstract rates, e.g. intervals of rates.
+
+1 ,M◦
+
+1 ,M◦
+
+The idea is to derive from abstract transition labels the interval of rates rate◦(t◦) corresponding
+to any abstract transition t◦. Then, by ”summing up” the abstract rates rate◦(t◦) of all transitions
+t◦ ∈ Ts(M◦
+1 ,M◦
+2 ) for the complete move from M◦
+1 to M◦
+2.
+Analogously, we can also obtain the abstract exit rate E◦(M◦
+1 ) corresponding to all the moves from M◦
+1.
+Finally, both lower and upper bounds of the probability of moving from M◦
+2 can easily be computed
+by minimizing and maximizing the solution of R◦(M◦
+1 ), resp..
+
+2 ), we can obtain the abstract rate R◦(M◦
+
+2 )/◦E◦(M◦
+
+1 to M◦
+
+However, the reﬁned abstract LTS semantics presents a relevant difference: the labels represent a
+notion of conﬂict between abstract transitions. As an example, Fig. 5 (c) reports the abstract transitions
+(see also Example 4.6 and Fig. 4) for the abstract state M◦
+0. Notice that just four combinations of
+transitions are possible: (a) (1) and (3); (b) (1) and (4); (c) (2) and (3); (d) (2) and (4). It should be
+clear that each combination i ∈ {(a) − (d)} leads to a different abstract exit rate for M◦
+1 ). As a
+consequence, in order to generalize the approach of [5], we could minimize and maximize the solution of
+R◦
+
+1 ), for each combination i ∈ {(a) − (d)}, resp..
+
+It should be clear that this naive generalization of the approach would be very computationally ex-
+pensive. Therefore, we propose a more efﬁcient approximated calculation. The idea is to compute a
+different exit rate E◦
+2, reporting the abstract rate of all transitions which
+M◦
+2
+may appear in parallel with a transition of Ts(M◦
+2 ). This represents obviously an approximation of
+the exit rates that we would obtain by considering all combinations involving a transition of Ts(M◦
+1 ,M◦
+2 ).
+In the style of [5], the abstract rates (intervals of rates) are represented by symbolic expressions on
+reagent variables, such as (e,c), where: (i) e ∈ Z is an expression over variables X ; (ii) c ∈ C is a set of
+
+1, w.r.t. each M◦
+
+1 ) for M◦
+
+2 )/◦E◦
+
+1 ,M◦
+
+0, E◦
+
+i (M◦
+
+i (M◦
+
+1 ,M◦
+
+i (M◦
+
+(M◦
+
+150
+
+AbstractInterpretation forProbabilisticTerminationofBiologicalSystems
+
+membership constraints of the form X ∈ I 1. This approach permits to more accurately exploit the infor-
+mation recorded by abstract transition labels. Moreover, for op ∈ {+, /} we use: (a) (e1,c1)op◦(e2,c2) =
+
+The abstract rate of a transition t◦ = M◦
+1
+
+(e1 op e2,c1 ∪ c2); (b) (e,c1)∪◦(e,c2) = (e,c1 ∪ c2), where c1 ∪ c2 =SX∈X (X ∈FI (X∈I)∈ci,i∈{1,2}I)).
+rate◦(t◦) =
+
+
+Q = l ,l ∈ L (E.X ),D ◦ = I,
+Q = (l ,m ),D ◦ = (I,I),l ,m ∈ L (E.X ),
+Q = (l ,m ),D ◦ = (I1,I2),l ∈ L (E.X ),m ∈ L (E.Y ),X 6= Y.
+
+(X · (Xb−1) · r, {X ∈ I})
+
+2 can be deﬁned as follows
+
+(X ·Y · r, {X ∈ I1,Y ∈ I2})
+
+(X · r, {X ∈ I})
+
+,D ◦,r
+−−−→
+◦
+
+M◦
+
+Then, we deﬁne E◦
+M◦
+2
+
+(M◦
+
+1 ) and R◦(M◦
+
+1 ,M2
+
+◦), where T s◦ ⊆ Ts(M◦
+
+1 ),
+
+E◦
+M◦
+2
+
+(M◦
+
+1 ) = (cid:229) ◦
+
+(e,c)∈rate(Ts
+
+\M◦
+2
+
+(M◦
+
+1 )∪Ts(M◦
+
+1 ,M◦
+
+2 ))(e,c) R◦(M◦
+
+1 ,M2
+
+◦) = (cid:229) ◦
+
+t◦∈Ts(M◦
+
+1 ,M◦
+2 )
+
+[rate◦(t◦)
+
+[rate◦(t◦) =(cid:26) (e,c ∪ { X ∈ [0,0] | X ∈ Vars(e)})
+
+rate◦(t◦)
+
+if rate◦(t◦) = (e,c) and label(t◦) ∈ label(Ts\M◦
+otherwise.
+
+2 (M◦
+
+1 )),
+
+rate(T s◦) = {rQ
+
+{t◦∈T s◦,label(t◦)=Q }rate(t◦)}
+
+| Q ∈ cL ,rQ =S◦
+
+Ts\M◦
+
+2 (M◦
+
+1 ) = {t◦ ∈ Ts(M◦
+
+1 )|target(t◦) 6= M◦
+
+2 , label(t◦) not in conﬂict with label(Ts(M◦
+
+1 ,M◦
+
+2 ))}
+
+Here, Ts\M◦
+
+2 (M◦
+
+1 ) ⊆ Ts(M◦
+
+1 ,M◦
+
+2 ). In the calculation of E◦
+M◦
+1
+
+of Ts(M◦
+merged (namely approximated) by taking the union of the membership constraints.
+Finally, both lower and upper bounds of the probability of moving from M◦
+
+1 ) reports the transitions which may appear in parallel with a transition
+2 ) the abstract rates of transitions with the same label are
+
+(M◦
+
+by minimizing and maximizing the solution of R◦(M◦
+1 ,M◦
+properly combined with two special cases when max(E◦
+M◦
+2
+
+2 )/◦E◦
+M◦
+2
+(M◦
+
+1 )) = 0 or min(E◦
+M◦
+2
+
+(M◦
+
+1 )) = 0.
+
+2 can be derived
+1 ), resp.. This reasoning has to be
+
+1 to M◦
+
+(M◦
+
+Deﬁnition 6.1 The abstract probabilistic translation function H◦ : L T S ◦ → I M C ◦ such that
+H◦((S◦, →◦,M0
+ability functions, such that for each M◦
+a) for each M◦
+2 ∈ S◦, such that max(E◦
+M◦
+2
+
+0 ), and P−, P+ : S◦ → SDistr(S◦) are the lower and upper prob-
+
+2 )) = 0, then also P−(M◦
+
+◦,E)) = (S◦,P−,P+,L,M◦
+
+1 )) > 0, if min(R◦(M◦
+
+1 ∈ S◦:
+(M◦
+
+1 )(M◦
+
+1 ,M◦
+
+2 ) = 0,
+1 )). Analogously, the P+ function is ob-
+
+1 )(M◦
+
+otherwise, P−(M◦
+tained by substituting in the previous deﬁnition, the min function with the max function;
+2 6= M◦
+1,
+
+1 )) = 0, then P+ = P−, P+(M◦
+
+2 ) = min(R◦(M◦
+
+1 ) = 1, and ∀M◦
+
+2 )/◦E◦
+M◦
+2
+
+1 )(M◦
+
+1 ,M◦
+
+(M◦
+
+(M◦
+
+b) if, for each M◦
+1 ), (M◦
+
+P+(M◦
+
+2 ∈ S◦, max(E◦
+M◦
+2
+2 ) = 0;
+
+c) if, ∃M◦
+
+2 ∈ S◦, such that max(E◦
+M◦
+2
+
+(M◦
+
+1 )) > 0 and min(E◦
+M◦
+2
+
+(M◦
+
+1 )) = 0 then P+(M◦
+
+1 )(M◦
+
+1 ) = 1, and
+
+P−(M◦
+
+1 ), (M◦
+
+1 ) = 0.
+
+L : S◦ → (S◦ → ˆ ( cL )) is a labeling function deﬁned as ∀M◦
+
+2 ) | max(rate◦(t◦)) > 0}).
+
+Ts(M◦
+
+1 ,M◦
+
+1,M◦
+
+2 ∈ S◦, L(M◦
+
+1 ,M◦
+
+2 ) = label({t◦ ∈
+
+The following theorems state the soundness of our approach.
+
+Theorem 6.2 Let lts◦
+
+i = (Si
+
+◦, →i
+
+◦,M0,i
+
+◦,E) be two abstract LTS. If lts◦
+
+1 ⊑◦
+
+lts lts◦
+
+2, then H◦(lts◦
+
+1) ⊑◦
+
+mc H◦(lts◦
+2).
+
+1We require that, ∀X ∈ Vars(e), there exists exactly one constraint X ∈ I in c.
+
+Q
+RobertaGori&FrancescaLevi
+
+151
+
+{(l ,m )},[1/2,1/2]
+
+M◦
+1
+
+M◦
+2
+
+/0,[1,1]
+
+{(l ,m )},[1/2,1/2]
+
+{(d ,h )},[1/2,1/2]
+
+M◦
+3
+
+/0,[1,1]
+
+M◦
+0
+
+{(l ,m )},[1/2,1/2]
+{(d ,h )},[1/2,1/2]
+
+{(l ,m )},[1/2,1/2]
+M◦
+4
+
+{(d ,h )},[1/2,1/2]
+
+/0,[1,1]
+
+M◦
+5
+
+{(d ,h )},[1/2,1/2]
+
+M◦
+6
+
+/0,[1,1]
+
+Figure 6: The IMC
+
+Theorem 6.3 Let E be an environment and M0 ∈ M be a multiset.
+mc H◦(a lts(LTS((E,M0)))).
+
+We have a MC(H(LTS((E,M0)))) ⊑◦
+
+Example 6.4 Fig. 6 describes the IMC, obtained from the abstract LTS of Fig. 4, for the abstract state
+M◦
+
+0 = {([1,2],X ),([1,2],Y )} (see also Examples 3.4 and 4.6).
+
+This proves that each experiment, represented by M◦
+
+0, leads to a terminated state with probability one,
+e.g. universally terminates. Note that here we have examined a very small example for sake of simplicity;
+however, it should be clear that the result could be generalized to any concentration of reagents X and
+Y .
+✷
+
+7 Conclusions
+
+The methodology proposed in this paper is substantially different from most of the approaches, proposed
+in literature [11, 13, 19, 24, 22, 13], in order to abstract probabilistic models, based on abstract interpre-
+tation or partitioning of the concrete state space. Actually, our goal is to represent by means of the IMC
+of an abstract system a set of concrete systems, each corresponding to a different DTMC. In this setting
+it is therefore essential to develop an effective method (even for inﬁnite state systems) for computing
+the abstract probabilistic model, directly from the abstract LTS. The main contribution of the approach
+consists in the calculation of the intervals of probabilities from the information reported on abstract tran-
+sition labels, without building all the concrete distributions. We have also shown that the technique of
+
+Note that the result is very precise. For M◦
+
+0 we derive precisely the approximation, discussed in Fig.
+5 (b); namely, four admissible distributions corresponding to the combinations of labels not in conﬂict.
+For the other states there is exactly one admissible distribution. In particular, M◦
+3, M◦
+4 and M◦
+6 are
+∀-terminated. By computing lower and upper bounds for probabilistic termination, from M◦
+0, we obtain
+exactly one in both cases. For the maximum, it is enough to choose the admissible distributions which
+reach terminated states as soon as possible. This is obviously represented by the distribution for M◦
+0,
+reporting probability 1/2 to move in M◦
+4. By contrast, for the minimum, it is enough to choose
+the admissible distributions which do not reach terminated states, every time this is possible. This is
+obviously represented by the choice of the distribution for M◦
+0, reporting probability 1/2 to move in M◦
+1
+and M◦
+
+5. Thus, we obtain a DTMC, and the reasoning is similar to that discussed in Example 3.4.
+
+3 and M◦
+
+2, M◦
+
+/
+/
+|
+|
+v
+v
+v
+v
+1
+1
+J
+J
+
+
+-
+-
+v
+v
+/
+/
+e
+e
+v
+v
+152
+
+AbstractInterpretation forProbabilisticTerminationofBiologicalSystems
+
+[5] can be successfully generalized to the reﬁned abstract LTS, by ﬁnding out a good trade-off between
+precision and complexity. For this reason, a probabilistic model such as a Markov Decision Process is
+not adequate.
+
+An advantage of our framework is that other kinds of uncertainties of biological systems could be
+handled in a similar way. For example, the approach could be easily adapted in order to model (even
+inﬁnite) sets of concrete systems with different values for the rates. Another advantage of our framework,
+based on abstract interpretation, is that new analyses could be easily designed by introducing new abstract
+LTS semantics. For example, we would like to investigate the application of more precise numerical
+domains able to model also relational information, such as the domain of convex polyhedra. We leave to
+the future work the extension of the framework to the full calculus with communication [28] as well as
+the extension to Continuous-Time Markov Chains.
+
+References
+
+[1] C. Bodei, P.Degano, F.Nielson and H.Riis Nielson. Static Analysis for the Pi-Calculus with Applications to
+
+Security. Information and Computation, 168: 68-92, 2001.
+
+[2] L. Cardelli. Brane Calculi. Proc. of CMSB ’04, LNCS 3082, 257–278, 2004.
+[3] L. Cardelli. On Process Rate Semantics. Theoretical Computer Science, 391 190–215, 2008.
+[4] L. Cardelli. Algorithmic Bioprocesses. In A.Condon, D.Harel, J.N.Kok, A.Salomaa, E.Winfree (Eds.),
+
+Springer, 2009
+
+[5] A. Coletta and R.Gori and F. Levi. Approximating probabilistic behaviours of biological systems using abstract
+
+interpretation. Proc. of FBTC ’08, ENTCS 229 (1), 165–182, 2009.
+
+[6] P. Cousot and R. Cousot. Static Determination of Dynamic Properties of Programs. Proc. of POPL’76 ,
+
+106–130, 1976.
+
+[7] P. Cousot and R. Cousot. Abstract Interpretation: A Uniﬁed Lattice Model for Static Analysis of Programs by
+
+Construction or Approximation of Fixpoints. Proc. of POPL’77, 238–252, 1977.
+
+[8] P. Cousot and R. Cousot. Systematic Design of Program Analysis Frameworks. Proc. of POPL’79 , 269–282,
+
+1979.
+
+[9] P. Cousot and R. Cousot. Comparing the Galois Connection and Widening/Narrowing Approaches to Abstract
+
+Interpretation. Proc. of PLILP’92, LNCS 631, 269–295, 1992.
+
+[10] D. Dams, R. Gerth and O. Grumberg. Abstract Interpretation of Reactive Systems. TOPLAS, 19(2), 253-291,
+
+1997.
+
+[11] P. D’Argenio, B. Jeannet, H. Jensen and K. Larsen. Reachability Analysis of Probabilistic Systems by Suc-
+
+cessive Reﬁnements. Proc. of PAPM-PROMIV’01, LNCS 2165, 39–56, 2001.
+
+[12] P. D’Argenio, B. Jeannet, H. Jensen and K. Larsen. Reduction and Reﬁnement Strategies for Probabilistic
+
+Analysis. Proc. of PAPM-PROMIV’02, LNCS 2399, 57–76, 2002.
+
+[13] H. Fecher, M. Leucker and V. Wolf. Don’t Know in Probabilistic Systems. Proc. of SPIN’06, LNCS 3925,
+
+71–88, 2006.
+
+[14] J. Feret. Abstract Interpretation-Based Static Analysis of Mobile Ambients. Proc. of SAS’01, LNCS 2126,
+
+412-430, Springer Verlag, 2001.
+
+[15] R.Gori and F. Levi. A new occurrence Counting analysis for BioAmbients. Proc. of APLAS ’05, LNCS 3780,
+
+381–400, 2005.
+
+[16] R.Gori and F. Levi. An Analysis for proving Temporal Properties of Biological Systems. Proc. of APLAS
+
+’06, LNCS 4279, 234–252, 2006.
+
+[17] H.Hansson and B. Jonsson. A Logic for Reasoning about Time and Probability. Formal Aspects of Comput-
+
+ing, 6(5), 512–535, 1994.
+
+RobertaGori&FrancescaLevi
+
+153
+
+[18] A. Hinton, M. Kwiatkowska, G. Norma and D. Parker. PRISM: a tool for automatic veriﬁcation of proba-
+
+bilistic systems. Proc. of TACAS’06, LNCS 3920, 441-444, Springer-Verlag, 2006.
+
+[19] M. Huth. On ﬁnite-state approximants for probabilistic computation tree logic. Theoretical Computer Sci-
+
+ence, 346(1), 113–134, 2005.
+
+[20] J.G. Kemeny, J.L. Snell and A.W. Knapp. Denumerable Markov Chains. Springer, 1976.
+[21] M. Kwiatkowska. Model checking for probability and time: from theory to practice. Proc. of LICS’ 03,
+
+351–360, 2003.
+
+[22] M. Kwiatkowska, G. Norman and D. Parker. Game-based Abstraction for Markov Decision Processes. Proc.
+
+of QEST’06, 157–166, 2006.
+
+[23] F. Levi and S. Maffeis. On Abstract Interpretation of Mobile Ambients. Information and Computation 188,
+
+179–240, 2004.
+
+[24] D. Monniaux. Abstract interpretation of programs as Markov Decision Processes. Science of Computer
+
+Programming, 58(1-2), 179–205, 2005.
+
+[25] F. Nielson, H.R. Nielson, R.R. Hansen. Validating ﬁrewalls using ﬂow logics. Theoretical Computer Science,
+
+283(2), 381-418, 2002.
+
+[26] F. Nielson, H.R. Nielson and H. Pilegaard. Spatial Analysis of BioAmbients. Proc. of SAS’04, LNCS 3148,
+
+pp. 69–83, Springer-Verlag, 2004.
+
+[27] A. Phillips and L. Cardelli. A Correct Abstract Machine for the Stochastic Pi-calculus. Proc. of BioCONCUR
+
+’04, ENTCS, 2004.
+
+[28] A. Phillips and L. Cardelli. Efﬁcient, Correct Simulation of Biological Processes in the Stochastic Pi-calculus.
+
+Proc. of CMSB ’07, LNCS 4695, 184–199, 2007.
+
+[29] C.Priami. Stochastic p -calculus. The Computer Journal, 38, 578–589,1995.
+[30] C.Priami and P. Quaglia. Beta binders for biological interactions. Proc. of CMSB’04, LNCS 3082,20–
+
+33,2005.
+
+[31] C. Priami, A. Regev, W. Silverman and E. Shapiro. Application of a stochastic name-passing calculus to
+
+representation and simulation of molecular processes. Information Processing Letters, 80 (1), 25–31, 2001.
+
+[32] A. Regev, E. M. Panina, W. Silverman, L. Cardelli and E. Shapiro. BioAmbients: an Abstraction for Biolog-
+
+ical Compartments. Theoretical Computer Science, 325, 141–167, 2004.
+
+[33] A. Regev, W. Silverman and E. Shapiro. Representation and Simulation of Biochemical Processes using the
+
+pi-calculus process algebra. Proc. of the Paciﬁc Symposium on Biocomputing 2001, 6, 459–470, 2001.
+
+[34] K. Sen, M. Viswanathan and G. Agha. Model Checking Markov Chains in the Presence of Uncernainties.
+
+Proc. of TACAS’06, LNCS 3920, 394-410, 2006.
+
+[35] G. Zavattaro and L. Cardelli. Termination Problems in Chemical Kinetics. Proc. of CONCUR’08, LNCS
+
+5201, 477-491, 2008.
+
+

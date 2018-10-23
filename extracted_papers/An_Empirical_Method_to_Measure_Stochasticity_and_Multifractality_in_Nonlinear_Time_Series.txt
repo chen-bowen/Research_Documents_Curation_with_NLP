@@ -1,0 +1,2080 @@
+4
+1
+0
+2
+
+ 
+
+n
+a
+J
+ 
+
+7
+
+.
+
+ 
+ 
+]
+T
+S
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+2
+9
+2
+1
+
+.
+
+1
+0
+4
+1
+:
+v
+i
+X
+r
+a
+
+An Empirical Method to Measure Stochasticity and Multifractality in Nonlinear Time
+
+Series
+
+Chih-Hao Lin1,2, Chia-Seng Chang1,2, and Sai-Ping Li2
+
+1Department of Physics, National Taiwan University, Taipei 106, Taiwan and
+
+2Institute of Physics, Academia Sinica, Nankang, Taipei 115, Taiwan
+
+(Dated: September 12, 2018)
+
+An empirical algorithm is used here to study the stochastic and multifractal nature of nonlinear
+time series. A parameter can be deﬁned to quantitatively measure the deviation of the time series
+from a Wiener process so that the stochasticity of diﬀerent time series can be compared. The local
+volatility of the time series under study can be constructed using this algorithm and the multifractal
+structure of the time series can be analyzed by using this local volatility. As an example, we employ
+this method to analyze ﬁnancial time series from diﬀerent stock markets. The result shows that
+while developed markets evolve very much like an Ito process, the emergent markets are far from
+eﬃcient. Diﬀerences about the multifractal structures and leverage eﬀects between developed and
+emergent markets are discussed. The algorithm used here can be applied in a similar fashion to
+study time series of other complex systems.
+PACS numbers: 02.50.Fz, 05.45.Df, 05.45.Tp
+
+I.
+
+INTRODUCTION
+
+Many complex systems in nature have time series
+datasets that exhibit non-stationary and complex behav-
+ior. In many of these time series, their ﬂuctuations show
+a wide range of time scales and/or broad distributions of
+the values. These natural ﬂuctuations are often found to
+follow a scaling relation over several orders of magnitude.
+In general, such scaling laws could allow for a characteri-
+zation of the data and the generating complex system by
+fractal (or multifractal) scaling exponents, which can re-
+ﬂect the characteristics of the systems in comparison with
+other systems and with diﬀerent models. Such fractal (or
+multifractal) scaling behavior has been observed in many
+time series from experimental physics, geophysics, phys-
+iology, etc. Since these time series have many features in
+common, it would lead one to suggest a uniﬁed approach
+to study their behavior. Many diﬀerent methods have
+been developed to analyze these nonlinear time series. In
+many of the studies on time series of these complex sys-
+tems, researchers would assume they obey some stochas-
+tic processes, with stochastic diﬀerential equations of the
+type
+
+dX = a(X, t)dt + b(X, t)dWx,
+
+(1)
+
+where X is the variable that we are interested in, a(X, t)
+and b(X, t) are variables that can depend on X and t,
+the time and Wx is a Wiener process. The time series
+generated is also assumed to have some long-range corre-
+lations. We will take the above equation as our starting
+point. One can indeed ask a straightforward but also fun-
+damental question — how close can the evolution of these
+nonlinear time series be described by stochastic processes
+that follow Eq.(1)? From a practical point of view, one
+would just assume that the empirical time series follows
+exactly a stochastic process governed by Eq.(1). One
+would then decompose the empirical time series dX into
+its components a(X, t), b(X, t) and dWx as suggested by
+
+Eq.(1) by some optimization methods and to quantita-
+tively measure its deviation from a stochastic process.
+One could further investigate the multifractal structures
+embedded in these time series. From the computational
+point of view, this requires one to develop more eﬃcient
+numerical algorithms in order to perform an eﬀective op-
+timization search for the resulting decomposed time se-
+ries. We will demonstrate this with a simple empirical
+algorithm in the present study and show how one can
+use the results obtained from the optimization search to
+investigate the interesting properties embedded in the
+time series.
+
+Among the many nonlinear time series, of particular
+interest and also being intensively studied are ﬁnancial
+time series. Many established facts (or stylized facts
+as commonly called by practitioners in the ﬁeld of eco-
+nomics and ﬁnance) in ﬁnancial time series have already
+been identiﬁed and well documented1. These include e.g.,
+the heavy tail distributions of asset returns and volatility
+clustering. It is found that the heavy tail distributions of
+asset return exhibit power law behavior over several or-
+ders of magnitude. Furthermore, the volatility exhibits
+long range correlations following an approximate power
+law while its ﬂuctuations are randomly distributed and
+follow approximately a lognormal distribution2,3. Such
+scaling behavior suggests that the time series might have
+a multifractal structure, which could reﬂect the charac-
+teristics of the systems in comparison with other systems
+and with various models. These structures will certainly
+help researchers build better models to describe the un-
+derlying dynamics of ﬁnancial markets and complex sys-
+tems in general4–6. We will therefore choose the ﬁnancial
+time series here as an example of our empirical study of
+nonlinear time series. However, the empirical algorithm
+used here can also be applied to time series of other com-
+plex systems.
+Indeed, it is known that time series of
+many complex systems reveal behaviors that are simi-
+lar to the stylized facts observed in ﬁnancial time series.
+
+In ﬁnancial markets, prices of stocks and commodities
+ﬂuctuate over time, which then produce ﬁnancial time
+series. These time series are in fact of great interest both
+to practitioners and theoreticians for making inferences
+and predictions. Historically, it is noted that the well-
+known Eﬃcient Market Hypothesis7,8 has a very close
+link to the stochasticity of the ﬁnancial market. In the
+case of ﬁnancial time series, the stock prices St at time t
+are generally assumed to be an approximate Ito process
+given by the following form,
+
+dSt
+St
+
+= µdt + σdWS ,
+
+(2)
+
+where µ is the instantaneous risk free rate, σ is the local
+volatility, and Ws is a Wiener process, representing the
+inﬂow of randomness into the dynamics. The amplitude
+of this randomness is measured by the local volatility σ
+whose amplitude is usually related to risk in the market.
+It should be noted that µ is a parameter that may depend
+on St, σ and t. When analyzing ﬁnancial time series, re-
+searchers usually assume µ and σ to take some constant
+values. In reality, the amplitude of σ is usually related to
+risk and its value can therefore vary as time evolves. Fig-
+ure 1(a) is a plot of the empirical data of the daily returns
+for the NASDAQ Composite index from February 8, 1971
+through June 13, 2012, while Figure 1(b) is the probabil-
+ity density function of the normalized daily returns for
+the same period. It is easy to see, that the distribution
+in Figure 1(b) has heavy tails on both ends and is far
+from a Gaussian distribution. If the ﬂuctuations of the
+daily returns of the index obeyed the form as suggested
+by Eq.(2), σ could not be a constant over the time pe-
+riod under study and should instead vary as a function
+of time.
+It is noted that many time series of diﬀerent
+complex systems also exhibit behavior similar to that of
+Figure 1(b), e.g., heart rate variability9. Since these non-
+linear time series have similar behavior, one would be
+tempted to develop a general framework that can be ap-
+plied to time series of complex systems in general. Based
+on the assumption that ﬁnancial time series should evolve
+very closely to stochastic processes, researchers also in-
+troduced the concept of stochastic volatility, assuming
+that the change of σ also follows a stochastic process.
+Over the years, many stochastic volatility models10,11
+have been proposed to evaluate derivative securities, such
+as options. For example, Hull and White10,11 proposed
+that the stochastic volatility obeys a stochastic diﬀeren-
+tial equation of the type
+
+= αdt + βdWv
+
+dvt
+vt
+v = σ2,
+
+(3)
+
+where α and β are functions depending on St, σ and t.
+Wv is another Wiener process which can have correlation
+ρ with WS. In general, the actual time evolving process
+that the stochastic variance v follows could be very com-
+plex.
+
+For a time series of Eq.(1) to exhibit fractal behavior,
+the absolute moments of the change of its parameter X
+
+2
+
+s
+n
+r
+u
+t
+e
+r
+ 
+
+ 
+
+y
+l
+i
+a
+d
+Q
+A
+D
+S
+A
+N
+
+n
+o
+i
+t
+c
+n
+u
+f
+ 
+
+y
+t
+i
+s
+n
+e
+d
+
+ 
+
+y
+t
+i
+l
+i
+b
+a
+b
+o
+r
+P
+
+(a)
+
+0.2
+
+0.1
+
+0.0
+
+-0.1
+
+1971/2/8
+
+1979/1/15
+
+1986/12/11
+
+1994/11/8
+
+2002/10/17
+
+2010/9/28
+
+100
+
+10-1
+
+10-2
+
+10-3
+
+10-4
+
+(b)
+
+ 
+
+ NASDAQ returns
+ Gaussian fit
+
+-8
+
+-6
+
+-4
+
+-2
+
+0
+
+2
+
+4
+
+6
+
+8
+
+Normalization daily returns
+
+FIG. 1. (a) a plot of the empirical data of the daily returns for
+the NASDAQ Composite index from 1971/2/8 ∼ 2012/6/13
+(b) the probability density function of the normalized daily
+returns for the same period.
+
+should take the following scaling form12,
+
+M (q, T ) = E(|δT X(t)|q)
+
+= E(|X(t + T ) − X(t)|q)
+∼ KqT f (q),
+
+(4)
+
+where Kq is a prefactor which depends on q and f (q) is a
+function of q. E(...) here stands for the expectation value
+of the subject in the bracket. From the multifractal the-
+ory, there should exist an f (q) for each moment q, such
+that M (q, T ) scales with T , with the prefactor Kq as the
+scale T → 0. When f (q) is linear in q, only a single scal-
+ing exponent H is needed and f (q) = qH. X(t) is said to
+be monofractal. If f (q) is a nonlinear function in q, X(t)
+is then said to be multifractal. Although the underly-
+ing causes of the observed scaling are often not known in
+detail, the fractal or multifractal characterization can be
+useful to model the corresponding time series, and to give
+predictions regarding extreme events or future behavior.
+In recent years, there exist a considerable number
+of papers devoted to the modeling of multifractality in
+nonlinear time series, pioneered by Mandelbrot and his
+collaborators13–15. In their work, they developed a Mul-
+tifractal Model of Asset Returns (MMAR), which is a
+continuous-time process that captures the heavy tails
+and long-memory volatility persistence that are exhib-
+ited by many ﬁnancial time series. It is constructed by
+combining a standard Brownian motion with a random
+time deformation process that is speciﬁed to be multi-
+fractal. Subsequently, other researchers have introduced
+other multifractal models, noticeably Bacry et.al.4,12. In
+order to model asset return ﬂuctuations, these authors
+introduced a multifractal random walk process to de-
+scribe the behavior of ﬁnancial time series which they
+call Multifractal Random Walk model (MRW). It is a
+generalization of the Mandelbrot cascades to stationary,
+causal continuous cascades. This model is able to de-
+scribe many of the stylized facts of ﬁnancial time series
+
+with satisfaction.
+In its original form, MRW can sim-
+ply be considered as a stochastic volatility model where
+the (log-) volatility memory has a peculiar logarithmic
+shape, a feature in agreement with empirical observa-
+tion. This model receives much attention because of its
+simplicity. There also exist analytic solutions for this
+model16 and one could therefore ﬁt the set of parame-
+ters in the model to the empirical data in a more precise
+way. During the past decade, these multifractal models
+have been used to study time series of complex systems
+on various topics9,17,18.
+
+Closely related to the question of stochasticity, one
+could also ask how well a stochastic volatility model, such
+as that of the type of Eq.(3) can model the nonlinear time
+series data under study.
+In this case, one would need
+to decompose the empirical time series into the form as
+suggested by Eq.(2) and (3) and quantitatively measure
+its deviation from a stochastic process. One would then
+be able to investigate the multifractality of the nonlin-
+ear time series as well as to study the detail of the local
+volatility σ itself. We should also mention here that one
+should be aware of the fact that the apparent multifrac-
+tal behavior in ﬁnancial time series could also be a result
+of multiscaling in the time series5,19 and possibly other
+unknown factors.
+
+In the following, we will describe how one can use a
+simple empirical optimization algorithm to quantitatively
+analyze nonlinear time series with the assumption that
+both the stock prices and volatility evolve according to
+some stochastic processes. In this way, one can quanti-
+tatively measure the deviation from stochasticity of the
+system and compare it with other systems of similar na-
+ture. Likewise, one can analyze the multifractal structure
+of the time series and compare with models. One could
+also build models that would describe the behavior of the
+system under study. In Section 2, we will introduce the
+empirical algorithm for the analysis of stochasticity of a
+system under study. In Section 3, we present the result
+by using our method on simulated time series with diﬀer-
+ent distributions of ﬂuctuations. Section 4 contains the
+results obtained from empirical data and Section 5 is the
+conclusion.
+
+II. METHOD
+
+We here assume that both the stock prices and the
+volatility evolve stochastically as the starting point. We
+can also take Eq.(1) for the stock prices alone as the
+starting point if we do not want to put any assumption
+on σ. One can of course use other assumptions that one
+deems to be appropriate as the starting point for the time
+series under study. In the study of ﬁnancial time series,
+there are various deﬁnitions of the volatility used by re-
+searchers. In our case, since we want to use a consistent
+algorithm to evaluate the volatility σ in Eq.(2) without
+assuming any particular form, we will therefore deﬁne it
+to be the local function such that the ﬂuctuations of lnS
+
+3
+
+are a result of the product of this function and a distri-
+bution of ﬂuctuations that should be as close to dWS as
+possible, i.e., a Wiener process in accordance with the
+assumption of Eq.(2). This will be useful as a general
+algorithm if one wants to study time series from diﬀer-
+ent complex systems. To make things simple, we here
+assume that µ is a constant throughout the time series
+under study. We will then average over the whole time
+series and get the mean value of lnS. We then subtract
+this mean value from each lnSi, where i is the i-th data
+point (time step) of the time series, so that the mean,
+and eﬀectively µ of the new time series is equal to zero.
+In the next step, we will look for the local volatility σ at
+each time step of this new time series. We will look for
+the local volatility σ of the time series such that the as-
+set return time series (after subtracting the mean of the
+whole time series) will be a product of this local volatil-
+ity and a process that is as close to a Wiener process
+as possible. Deviation of the reconstructed dWS from a
+Wiener process would be regarded as a measure of the
+deviation of this time series from the stochastic process
+as deﬁned by Eq.(2). To proceed, one can of course per-
+form an optimization search that constrains dWS to be as
+close to a Wiener process as possible and numerically ﬁnd
+the empirical local volatility for the time series. This is
+however very time consuming and ineﬃcient. Therefore
+we will do this in two steps. In the ﬁrst step, we com-
+pute the local volatility σ of the time series by using the
+moving window approach. One then use this function as
+a starting point to perform an optimization search sub-
+ject to the constraints that we mentioned above in order
+to obtain the local volatility function. To carry out this
+procedure, a moving window with size N is ﬁrst chosen.
+We put the window on the ﬁrst event of the asset re-
+turns sequence and calculate the volatility of the ﬁrst N
+events by adding the square of their values and dividing
+the sum by N . We then move the window to the sec-
+ond event and again calculate the volatility of the next
+N events by adding the square of their values and divide
+the sum by N . We repeat the same procedure until we
+ﬁnish scanning through the whole asset return sequence.
+As a matter of fact, one can also choose N to be a vary-
+ing number instead of a constant. We should remark
+here that if one only performs a moving window average
+without further optimizing dWS against a Wiener pro-
+cess, the resulting distribution of the ﬂuctuations of the
+volatility would be signiﬁcantly diﬀerent from a lognor-
+mal distribution.
+
+The next step is to carry out an optimization search to
+get the empirical local volatility function of the ﬁnancial
+time series under study.
+In order to perform an opti-
+mization search, one needs to introduce a cost function.
+In general, if one carried out an optimization search on
+ﬁnancial time series by using Eq.(2) alone, the resulting
+local volatility σ would have a distribution of its ﬂuctua-
+tions close to that of a lognormal distribution, a stylized
+fact that is already known. One can of course perform
+a more speciﬁc analysis, e.g., by optimizing with respect
+
+to a speciﬁc model or a class of models. In this way, one
+could also investigate how well the models would describe
+the time series under study. For our purpose, we will only
+assume in addition that the local volatility of the ﬁnan-
+cial time series has ﬂuctuations that follow a lognormal
+distribution function without further speciﬁcation. This
+is consistent with the stylized fact in ﬁnancial time series
+that the ﬂuctuations of the volatility obey an approx-
+imate lognormal distribution. For time series of other
+complex systems, one may need to introduce other con-
+straints in the cost function. In the optimization search
+here, we will therefore optimize dWS and dln(σ) against
+Wiener processes in order to obtain the local volatility σ.
+The idea, as mentioned above is to minimize the sum of
+the deviation of dln(σ) and dWS from Gaussian distri-
+butions in the cost function. One would then proceed to
+obtain the local volatility σ by using some optimization
+algorithms to optimize this cost function. In this paper,
+we use genetic algorithm (GA)20,21 to do the optimiza-
+tion search. We here adopt the standard procedures of
+genetic algorithm to do the search, i.e., in each genera-
+tion, we carry out the operations of mutation, crossover
+and selection. In our optimization search, we use a pop-
+ulation size of 500 chromosomes, each with the length
+equivalent to the number of data points in the time se-
+ries under study. To begin with, we generate a conﬁgu-
+ration for each chromosome in the population. We then
+carry out the genetic operators: crossover, mutation and
+selection. We now pick a number of pairs (in our study,
+we pick about 20% of the population) of parent chromo-
+somes for the crossover procedure. We randomly pick
+a crossover point in each of the pair of parent chromo-
+somes and make the crossover to produce a pair of baby
+chromosomes. Next, we carry out the mutation operator.
+For the mutation operator, we set a mutation rate (be-
+tween 0 and 10% in our tests) for the whole population
+and randomly choose the sites within the chromosomes
+to mutate. We now have a population of chromosomes
+consisting of the chromosomes from the original popu-
+lation plus the new baby chromosomes from mutation
+and crossover. We then calculate the value of the cost
+function for each of these chromosomes. We next se-
+lect a certain number of chromosomes (500 in this case)
+with better ﬁtness for the next generation. We will again
+carry out the same set of genetic operators (mutation,
+crossover and selection) in the new generation until the
+optimization search stops for some preset criteria. The
+cost function F (or ﬁtness as commonly called in GA)
+used in our search is as follows
+
+F = c × areadif f (dWs, Gaussian)
++areadif f (dln(σ), Gaussian),
+
+(5)
+
+where c is a constant whose value one can choose and
+areadif f (dWs, Gaussian) is the diﬀerence of the area un-
+der the curve of the distribution of dWS and that of the
+Gaussian distribution.
+In our optimization search, we
+choose c to be between 1 and 2 and we have performed
+
+4
+
+the search for 500 generations.
+
+From the optimization search, we now obtain the local
+volatility σ, its ﬂuctuations dln(σ) and the ﬂuctuations
+of the asset return dWS. We can then plot the distri-
+bution of the ﬂuctuations and compare with that of the
+distribution of a Wiener process. To put this on a more
+quantitative basis, one can deﬁne a quantity for each of
+the above distributions as the deviation of the distribu-
+tion under study from a Wiener process. Mathematically,
+a Wiener process has independent increments which will
+give a Gaussian distribution. We therefore deﬁne ∆WS
+as the absolute value of the diﬀerence of the area under
+the curve of the probability density function (pdf) of dWS
+obtained from the optimization search and the curve of
+the pdf of a Wiener process, i.e., the non-overlapping re-
+gion of the two distributions, divided by the sum of the
+area of the two.
+
+∆WS ≡
+
+=
+
+A(|dWS − W iener|)
+A(dWS) + A(W iener)
+A(|dWS − W iener|)
+
+,
+
+2
+
+(6)
+
+where A(...) stands for the area of the subject in the
+bracket. Figure 2 is an illustrative diagram of Eq.(6).
+Curves 1 and 2 are the pdf of dWS and a Wiener process
+respectively. The gray area is the non-overlapping region
+of the pdf of the two distributions corresponding to the
+numerator in Eq.(6). Since both A(WS) and A(W iener)
+are normalized to 1, the denominator is therefore equal to
+2, as is shown in the last equality in the above equation. If
+dWS is exactly equal to a Wiener process, there is perfect
+overlap and the diﬀerence is zero. On the other hand, if
+the pdf of dWS and the Wiener process have no overlap
+at all, the diﬀerence as deﬁned in the numerator of ∆WS
+will be equal to the sum of the two distributions. The
+parameter ∆WS therefore has a value between 0 and 1.
+The larger ∆WS is, the more the time series deviates from
+a Wiener process. In general, one believes that the time
+evolution of an eﬃcient market should follow very closely
+to that of a Wiener process and therefore ∆WS will be
+very small. Large deviation from zero would indicate that
+the market is not totally eﬃcient, or aﬀected by other
+factors such as human psychology. Using this parameter,
+one can compare diﬀerent ﬁnancial time series and also
+understand how eﬃcient a ﬁnancial market is. This will
+then be a simple quantitative way for one to compare the
+eﬃciency of ﬁnancial markets against each other and see
+how much they deviate from a Wiener process.
+
+In a similar fashion, one can deﬁne ∆dln(σ) as absolute
+value of the diﬀerence of the area under the curve of the
+pdf of dln(σ) obtained from the optimization search and
+that of a Wiener process, divided by the sum of the area
+of the two.
+
+∆dln(σ) ≡
+
+=
+
+A(|dln(σ) − W iener|)
+A(dln(σ)) + A(W iener)
+A(|dln(σ) − W iener|)
+
+.
+
+2
+
+(7)
+
+Curve1
+
+Curve2
+
+0.5
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+y
+t
+i
+s
+n
+e
+d
+
+ 
+
+y
+t
+i
+l
+i
+b
+a
+b
+o
+r
+P
+
+0.0
+
+-4
+
+-2
+
+0
+x
+
+2
+
+4
+
+FIG. 2. An illustrative diagram of ∆WS in Eq.(6). The gray
+area is the non-overlapping region corresponding to the nu-
+merator in Eq.(6).
+
+With the reconstructed local volatility σ, its ﬂuctuations
+dln(σ) and the ﬂuctuations of the asset return dWS in
+hand, one can further carry out analysis of other features
+and compare the result with the well-known stylized facts
+in ﬁnancial markets.
+
+III. SIMULATED TIME SERIES TEST
+
+In this section, we will test our method with some sim-
+ulated time series of known distributions. We will here
+use distributions including (i) Gaussian, (ii) rectangular,
+(iii) triangular, (iv) MRW, (v) MRW (with rectangular
+noise distribution), (vi) MRW (with triangular noise dis-
+tribution), and (vii) MRW (with skew triangular noise
+distribution). In the original version of MRW (case (iv)),
+the model consists of a lognormal distributed volatility
+function and a Brownian noise, whose ﬂuctuations follow
+a Gaussian distribution. In our tests, we also generate
+time series with other distributions as listed here. It is
+a common practice to perform a null hypothesis test to
+compare whether two distributions are diﬀerent from one
+another. In order to check how well our algorithm per-
+forms, we here carry out a similar procedure by perform-
+ing a Kolmogorov-Smirnov (KS) null test of the original
+simulated time series and our reconstructed time series
+in each of the cases listed above. The KS test is appli-
+cable to unbinned distributions that are functions of a
+single independent variable and is known to be a use-
+ful approximation for null tests. The result of the KS
+null test is included for comparison in Table I . For the
+numerical test here, we generate 12,000 data points for
+each of the simulated time series, which is equivalent to
+a 40 ∼ 50 year period in ﬁnancial markets. In each of
+the cases (i) - (vii), we generated 100 time series and
+reconstruct the volatility and dWS by using our algo-
+rithm. We then take their average. Table I gives the
+
+5
+
+results of the reconstructed time series of the simulated
+time series of diﬀerent noise distributions by using our
+method. In Table I, column one lists the noise distribu-
+tion of the simulated time series. Column two lists the
+original simulated time series with intrinsic deviation of
+the distribution of dWS from a Gaussian distribution as
+deﬁned by Eq.(6). Column three is the result of the KS
+test on these intrinsic distributions against a Gaussian
+distribution. We set the signiﬁcance level to be 0.01 in
+the test. In the table, T means that one cannot distin-
+guish the two distributions and N means one can. At
+the signiﬁcance level of 0.01, we can see that one can-
+not reject MRW + Gaussian but all the others fail the
+test. The last two columns are the reconstructed dWS
+and the corresponding KS test. One can see that the re-
+constructed time series using our method agree well with
+their corresponding simulated time series against the KS
+test. The numerical test we carry out here thus show
+that our method will allow us to reconstruct a given time
+series to a good degree. In the next section, we will ap-
+ply our method to study the empirical time series from
+ﬁnancial markets.
+
+IV. RESULTS
+
+(DJ,
+
+The algorithm introduced above can now be used
+to analyze diﬀerent ﬁnancial time series.
+In this
+paper, we have studied time series of Dow Jones
+1953/1/22∼2012/6/28),
+Industrial Average
+S&P500(1950/1/3∼2012/6/13), Heng
+Index
+(HSI, 1986/12/31∼2012/6/20), London Stock Ex-
+change (FTSE, 1984/4/2∼2012/6/20), French Stock
+Market Index (CAC, 1990/3/1∼2012/7/3), German
+Stock Index (DAX, 1990/11/26∼2012/7/3), Shanghai
+Composite Index (SSE, 1990/12/19∼2012/6/28), and
+Shenzhen Stock Exchange Composite Index (SZSE,
+1991/4/3∼2012/6/28).
+
+Seng
+
+Let us now take the S&P500 Index time series as an
+example here. We here use the daily opening stock prices
+which means that we will take the time lag to be 1 day.
+Following Eq.(2), we ﬁrst ﬁnd ln( St+1
+) for the whole
+St
+time series of the S&P500 during the period January 3,
+1950∼June 13, 2012. We then calculate the mean µ of
+the series and subtract this mean from the sequence. We
+next calculate the local volatility σ of this new time se-
+quence by using the algorithm introduced in the above.
+In our simulation, we use a window size between 20 and
+30. Our next step is to ﬁnd the local volatility σ, its ﬂuc-
+tuations dln(σ) and the ﬂuctuations of the asset return
+dWS of the S&P500 by using the optimization algorithm
+discussed above.
+
+Figure 3(a) is the local volatility σ obtained by our al-
+gorithm during the period 1990 through 2012. For com-
+parison, we show in Figure 3(b), the VIX of the Chicago
+Board of Exchange (CBOE). One can see that σ thus ob-
+tained from the above optimization algorithm and that of
+the VIX in the Chicago Board of Exchange (CBOE) dur-
+
+TABLE I. Result of the reconstructed dWS of simulated time series with diﬀerent distributions of ﬂuctuations by using our
+algorithm.
+
+6
+
+intrinsic dWS
+
+KS test
+
+reconstructed dWS
+
+KS test
+
+0.0%
+19.8%
+5.1%
+0.0%
+19.8%
+5.1%
+10.7%
+
+T
+N
+N
+T
+N
+N
+N
+
+1.2%
+17.8%
+5.3%
+1.9%
+12.8%
+4.3%
+6.1%
+
+T
+N
+N
+T
+N
+N
+N
+
+case
+
+i
+ii
+iii
+iv
+v
+vi
+vii
+
+y
+t
+i
+l
+i
+t
+a
+l
+o
+v
+
+ 
+l
+a
+c
+o
+l
+ 
+
+0
+0
+5
+P
+&
+S
+
+(a)
+
+0.04
+
+0.02
+
+0.00
+1990/1/15
+
+(b)
+
+80
+70
+60
+50
+40
+30
+20
+10
+0
+
+X
+
+I
+
+V
+
+1990/1/15
+
+1993/12/28
+
+1997/12/10
+
+2001/12/4
+
+2005/11/22
+
+2009/11/12
+
+1993/12/28
+
+1997/12/10
+
+2001/12/4
+
+2005/11/22
+
+2009/11/12
+
+FIG. 3. (a) The local volatility σ obtained by our optimization
+algorithm during the period 1990 through 2012 (b) the VIX
+of the Chicago Board of Exchange (CBOE) during the same
+period.
+
+ing the period of study have features very similar to each
+other. The latter is sometimes also known as the Fear
+Index and is interpreted as the implied volatility of the
+S&P500 Index by market practitioners. In a similar man-
+ner, we can now plot the distribution of the ﬂuctuations
+dln(σ) of the local volatility function and the ﬂuctuations
+of the asset return dWS of the S&P500 obtained from the
+optimization algorithm. The pdf of dWS, dln(σ) as well
+as ln(σ) are shown in Figure 4. The curves in red are
+the pdf of the standard normal distribution for compari-
+son. Note that since we want to compare the result with a
+standard normal distribution, we have normalized dln(σ)
+by an overall factor p< dln(σ)2 >, which is the square
+root of the average of dln(σ)2 of the whole time series. In
+a similar fashion, for the result shown in Figure 4(c), we
+have subtracted the average of ln(σ) and then divided
+by the average of its standard deviation. We see that
+both the pdf of dWS and dln(σ) are very close to that
+of a Gaussian distribution. Its deviation, ∆WS can be
+obtained as deﬁned in Eq.(6). In the case of S&P500 we
+study here, ∆WS and ∆dln(σ) are about 3% and 0.6%
+respectively, which are small deviations from a Gaussian
+distribution. Since the pdf of dWS and dln(σ) are very
+
+close to that of a Wiener process, one can plot their corre-
+sponding linear and nonlinear autocorrelation functions.
+In our study here, the linear autocorrelation of dWS is
+deﬁned as < dWS(t + n)dWS(t) >, where n is the time
+lag in days. The nonlinear autocorrelation of dWS is de-
+ﬁned as the autocorrelations that are diﬀerent from the
+linear autocorrelation as deﬁned above. In this paper, we
+choose to study the autocorrelation of the absolute value
+of dWS. As an illustration, Figure 5 shows the linear and
+nonlinear autocorrelation functions of dWS. Figure 5(a)
+is the linear autocorrelation of dWS while Figure 5(b) is
+the autocorrelation of its absolute value.
+It is easy to
+see that they both resemble the behavior of that of a
+Gaussian noise time series. The behavior of the linear
+and nonlinear autocorrelation functions of dln(σ) is very
+similar that of Figure 5, suggesting that there are no sig-
+niﬁcant long time correlations among the ﬂuctuations in
+the volatility of the time series. Evaluation of the Hurst
+exponent H of dWS indeed gives a value very close to
+1/2, indicating that it follows very closely to that of a
+Wiener process. One can also use Eq.(4) to compute the
+moments of the temporal correlations of dWS. The result
+in Figure 6 indicates that dWS indeed has monofractal
+characteristic. On the other hand, the dependence of the
+temporal correlations of dlnS on q suggests that it has
+multifractal structure. The multifractal behavior could
+well be studied from the local volatility σ itself.
+
+The insigniﬁcance of the correlations among ﬂuctua-
+tions in dWS and dln(σ) can also be studied by other
+methods such as using the clustering index as introduced
+in22,23, which demonstrates that they are indeed very
+close to that of the time series of a Gaussian noise. On the
+other hand, the autocorrelation function of the volatil-
+ity σ shows a slow decay and is shown in Figure 7, in
+agreement with the stylized facts observed in ﬁnancial
+markets.
+
+Since dWS follows very closely a Wiener process, one
+can analyze the multifractal structure of the time series
+by directly studying the local volatility σ. The resulting
+multifractal structure will therefore reﬂect the behavior
+of the long range correlations of the volatility. We here
+use σ to obtain f (q) in Eq.(4). The result is shown in
+Figure 8. Figure 8(a) shows M (q, T ) as a function of T
+for several diﬀerent q and Figure 8(b) is the plot of f (q)
+as a function of q. By disentangling dWS from σ when
+
+(b)
+
+ dln( )
+ Gaussian fit
+
+-3
+
+-2
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+0.55
+
+0.50
+
+0.45
+
+0.40
+
+q
+/
+)
+q
+(
+f
+
+0.35
+
+0.30
+
+0.25
+
+0.0
+
+7
+
+ dlnS
+ dWs
+
+0.5
+
+1.0
+
+1.5
+
+2.0
+
+2.5
+q
+
+3.0
+
+3.5
+
+4.0
+
+4.5
+
+n
+o
+i
+t
+u
+b
+i
+r
+t
+s
+i
+d
+
+ 
+
+y
+t
+i
+s
+n
+e
+d
+
+ 
+
+y
+t
+i
+l
+i
+b
+a
+b
+o
+r
+p
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+0.0
+
+(a)
+
+0.4
+
+ dWs
+ Gaussian fit
+
+n
+o
+i
+t
+u
+b
+i
+r
+t
+s
+i
+d
+
+ 
+
+y
+t
+i
+s
+n
+e
+d
+
+ 
+
+y
+t
+i
+l
+i
+b
+a
+b
+o
+r
+p
+
+0.3
+
+0.2
+
+0.1
+
+0.0
+
+-3
+
+-2
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+0.4 (c)
+
+ ln
+ Gaussian fit
+
+n
+o
+i
+t
+u
+b
+i
+r
+t
+s
+i
+d
+
+ 
+
+y
+t
+i
+s
+n
+e
+d
+
+ 
+
+y
+t
+i
+l
+i
+b
+a
+b
+o
+r
+p
+
+0.3
+
+0.2
+
+0.1
+
+0.0
+
+-3
+
+-2
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+FIG. 4. The probability distribution function(pdf) of (a)dWS
+(b)dln(σ) (c) ln(σ) of S&P500.
+
+(a)
+
+(b)
+
+1.0
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0.0
+
+-0.2
+
+0
+
+1.0
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0.0
+
+-0.2
+
+0
+
+n
+o
+i
+t
+a
+l
+e
+r
+r
+o
+c
+o
+t
+u
+A
+
+n
+o
+i
+t
+a
+l
+e
+r
+r
+o
+c
+o
+t
+u
+a
+ 
+r
+a
+e
+n
+i
+l
+n
+o
+N
+
+20
+
+40
+
+60
+
+80
+
+100
+
+20
+
+60
+40
+Time lag (day)
+
+80
+
+100
+
+FIG. 5. (a) The linear autocorrelation and, (b) the autocor-
+relation of the absolute value of dWS of S&P500.
+
+evaluating M (q, T ) and f (q), one can understand better
+the multifractal behavior of σ and the system itself. One
+may then be able to construct a multifractal model that
+can describe the long range behavior of the system.
+
+The results of other ﬁnancial time series that we have
+studied are summarized in Table II. In Table II, we in-
+clude the ∆WS and ∆dln(σ) of the ﬁnancial time series
+that we study here. For comparison, we also include the
+KS null test at signiﬁcance level 0.01 for both the ∆WS
+and ∆dln(σ) in Table II. We can see that for the de-
+veloped markets (S&P500, DJ, CAC, DAX, FTSE and
+HSI), they all pass the KS test for both the ∆WS and
+∆dln(σ). Their deviations from a Wiener process are in-
+deed relatively small as can be seen from the numerical
+
+FIG. 6. f (q) vs. q for both dWS and dlnS of S&P500.
+
+100
+
+10-1
+
+n
+o
+i
+t
+a
+l
+e
+r
+r
+o
+c
+o
+t
+u
+A
+
+10-2
+
+100
+
+200
+
+300
+
+400
+
+500
+
+600
+
+700
+
+800
+
+Time lag (day)
+
+FIG. 7. The autocorrelation function of the volatility σ of
+S&P500.
+
+ q=-2.5
+ q=-0.5
+ q=2
+
+10
+
+(a)
+
+q
+/
+1
+)
+T
+,
+q
+(
+M
+
+q
+/
+)
+q
+(
+f
+
+1
+
+0.1
+
+0.01
+
+1.06
+
+1.04
+
+1.02
+
+1.00
+
+1
+
+(b)
+
+10
+
+T
+
+100
+
+1000
+
+0.98
+
+-3.0
+
+-2.5
+
+-2.0
+
+-1.5
+
+-1.0
+
+-0.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5
+
+2.0
+
+2.5
+
+q
+
+FIG. 8. (a) shows M (q, T ) as a function of T for diﬀerent q
+of σ for S&P500 and, (b) is its f (q) as a function of q. The
+values fall on an approximate straight line within this range
+of q.
+
+TABLE II. ∆WS and ∆dln(σ) of the ﬁnancial time series
+studied here.
+
+S&P500
+
+DJ
+CAC
+DAX
+FTSE
+HSI
+SSE
+SZSE
+
+∆WS
+2.94%
+2.37%
+2.16%
+3.30%
+1.66%
+2.63%
+6.23%
+5.00%
+
+KS test
+
+∆dln(σ)
+
+KS test
+
+T
+T
+T
+T
+T
+T
+N
+N
+
+0.55%
+0.85%
+0.66%
+0.31%
+0.51%
+1.03%
+1.33%
+1.57%
+
+T
+T
+T
+T
+T
+T
+T
+T
+
+values of their ∆WS and ∆dln(σ) as listed in Table II.
+For the developed markets, their Hurst exponents are all
+close to 1/2. Since the f (q) for both dWS and dlnS of
+these developed markets are quantitatively very similar
+to that of the S&P500 (as shown in Figure 6), therefore
+we will not show here. It is interesting to note that the
+ﬁnancial markets from mainland China show larger de-
+viation from a Wiener process, as can be seen in Table
+II. The KS null test also reveals this fact. The larger de-
+viations might be interpreted as a reﬂection of other fac-
+tors that distinguish a ﬁnancial time series from a strict
+stochastic process.
+If this deviation is taken solely as
+from human factor, ∆WS could then be interpreted as
+a measure of the degree of human eﬀect on the market.
+We should remark here that the ∆dln(σ) for the Shang-
+hai and Shenzhen markets listed in Table II also pass
+the KS null test, suggesting that the ﬂuctuations of their
+volatility can be viewed as following a stochastic process.
+Let us take a closer look at the Chinese stock mar-
+kets. The dWS of the Shanghai Composite Index is about
+6% from Table II. A moment analysis of its dWS using
+Eq.(4) suggests that it has a multifractal behavior. This
+is illustrated in Figure 9. This result indicates that the
+Shanghai stock market cannot be described by a stochas-
+tic process as in Eq.(1). Similarly, the Shenzhen Stock
+Exchange Composite Index also exhibits multifractal be-
+havior for dWS. We therefore include the f (q) of the re-
+constructed dWS of the Shenzhen Stock Exchange Com-
+posite Index in Figure 9(b) for reference.
+
+It is known that negative price returns induce increased
+future volatilities, known as the leverage eﬀect24 . This
+means that the variation of the log-return in the past
+is found to be negatively correlated with the variation
+of the volatility in the future. On the other hand, it
+is also known that the variation of the volatility in the
+past is not correlated with the variation of the log-return
+in the future25,26. Putting this into mathematical lan-
+guage, it implies that there should be a correlation be-
+tween dln(S) and dln(σ), or between dWS and dln(σ).
+More speciﬁcally, there should be a correlation between
+the large negative ﬂuctuations of dln(S) (or dWS) at
+time t, and large positive ﬂuctuations of dln(σ), at time
+t + n, where n is a positive integer, for the time se-
+ries under study. Figure 10(a) shows the correlation of
+< dlnS(t)dln(σ(t + n)) > of the S&P500. One can see
+
+8
+
+100
+
+(a)
+
+ q=1
+ q=1.5
+ q=2
+ q=2.5
+ q=3
+ q=3.5
+
+10
+
+q
+/
+1
+)
+T
+q
+(
+M
+
+,
+
+1
+
+1
+
+0.72
+0.70
+0.68
+0.66
+0.64
+0.62
+0.60
+0.58
+
+q
+/
+)
+q
+(
+f
+
+(b)
+
+ SSE
+ SZSE
+
+0
+
+1
+
+10
+T
+
+2
+
+q
+
+3
+
+4
+
+FIG. 9. (a) shows M (q, T ) as a function of T for diﬀerent q
+of dWS for Shanghai stock market index and, (b) is its f (q)
+as a function of q. Also shown is the f (q) for the Shenzhen
+Stock Exchange Composite Index (red dots) for reference.
+
+0.04
+0.03
+0.02
+0.01
+0.00
+-0.01
+-0.02
+-0.03
+-0.04
+-0.05
+
+0.04
+
+0.02
+
+0.00
+
+-0.02
+
+-0.04
+
+-0.06
+
+(a)
+
+ dlnS(t)dln (t+n)
+
+0
+
+20
+
+40
+
+60
+
+(b)
+
+0
+
+20
+
+40
+
+60
+
+100
+
+80
+Time lag(day)
+
+120
+
+100
+
+80
+Time lag(day)
+
+120
+
+140
+
+160
+
+180
+
+200
+
+ dln (t)dlnS(t+n)
+
+140
+
+160
+
+180
+
+200
+
+FIG. 10. (a) the correlation of < dlnS(t)dln(σ(t + n)) > and,
+(b) the correlation of < dln(σ(t))dlnS(t+n) > of the S&P500.
+
+that there is a correlation between the large negative ﬂuc-
+tuations of dln(S) (or dWS) at time t, and large positive
+ﬂuctuations of dln(σ), at time t + n. No such correlation
+is observed for large positive ﬂuctuations of dln(S) (or
+dWS) at time t, and large positive ﬂuctuations of dln(σ),
+at time t + n. The result shown in Figure 10(a) indi-
+cates that this correlation would last for about 10∼15
+trading days.
+In a similar fashion, one can study the
+correlation of < dln(σ(t))dlnS(t + n) > of the S&P500
+and the result is shown in Figure 10(b). The correlations
+< dWS(t))dln(σ(t+ n))) > and < dln(σ(t))dWS (t+ n) >
+are very similar to that of the correlations in Figure 10(a)
+and 10(b) respectively and will not be shown here.
+
+The results of the correlation of < dln(S(t))dln(σ(t +
+n)) > of other developed markets (DJ, CAC, DAX, FTSE
+and HSI) have behaviors very similar to that of S&P
+500 and therefore we do not show here. For the ﬁnan-
+
+ (a) dlnS(t)dln (t+n)
+
+ positive dlnS
+ negative dlnS
+
+0
+
+10
+
+20
+
+30
+
+40
+
+50
+
+60
+
+70
+
+80
+
+90
+
+100
+
+ (b) dln (t)dlnS(t+n)
+
+ positive dlnS
+ negative dlnS
+
+0.08
+0.06
+0.04
+0.02
+0.00
+-0.02
+-0.04
+-0.06
+-0.08
+
+0.08
+0.06
+0.04
+0.02
+0.00
+-0.02
+-0.04
+-0.06
+-0.08
+
+0
+
+10
+
+20
+
+30
+
+40
+
+50
+
+60
+
+70
+
+80
+
+90
+
+100
+
+FIG. 11.
+(a) the correlation of < dlnS(t)dln(σ(t + n)) >
+and, (b) the correlation of < dln(σ(t))dlnS(t + n) > of the
+Shanghai index.
+
+cial indices in China, both large negative and positive
+ﬂuctuations of dln(S) at time t will induce large posi-
+tive ﬂuctuations of dln(σ) at time t + n and the result
+is shown in Figure 11. The Shenzhen Stock Exchange
+Composite Index exhibits similar behavior for both large
+negative and positive ﬂuctuations of dln(S) to that of
+the Shanghai Composite Index which we do not show
+here. This is another indication that the emergent mar-
+kets evolve very diﬀerently from developed markets. In
+a similar fashion, one can study the high frequency ﬁ-
+nancial time series data using this empirical method. It
+should be noted that a daily detrending is needed in or-
+der to get a consistent result. Analysis of stochasticity
+and multifractality of the high frequency ﬁnancial time
+series would then follow the same procedures which we
+will not do here.
+
+V. CONCLUSION
+
+In this paper, we have employed a simple empirical
+method to study nonlinear time series of complex sys-
+tems. This is based on an optimization search of the lo-
+cal volatility σ with the assumption that the time series
+follows closely an Ito process. We here choose ﬁnancial
+time series to illustrate this method with the assump-
+tion that the ﬂuctuations of the log asset returns and
+the ﬂuctuations of the log volatility follow very closely to
+that of a Wiener process. We propose parameters ∆WS
+and ∆dln(σ) to quantitatively measure the deviation of
+a ﬁnancial time series from a Wiener process.
+If these
+parameters are very close to zero, then the time series
+under study should follow very closely a stochastic pro-
+cess. The deviation could be interpreted as an indication
+of the collective eﬀect of factors such as human psychol-
+ogy that renders the time series to diﬀer from a stochastic
+process. By doing so, one is able to compare diﬀerent ﬁ-
+
+9
+
+nancial markets and study how these factors could aﬀect
+diﬀerent markets in a more quantitative way. We have
+studied several market indices in this paper. Using this
+algorithm, we found that the developed markets (DJ,
+S&P500, CAC, DAX, FTSE and HSI) have relatively
+small ∆WS values while the emergent markets (Shanghai
+Composite (SSE) and Shenzhen Stock Exchange (SZSE)
+Indices) exhibit larger ∆WS values. This reveals the fact
+that the developed markets in the US and Europe are
+closer to an eﬃcient market than the emerging new mar-
+kets such as those in China. For the time series of the
+Chinese stock markets, the values of ∆WS show a larger
+deviation from that of a Wiener process, meaning that
+the time series do not follow a stochastic process. This is
+also supported by the KS null test. This deviation indeed
+induces multifractal structures in dWS. It further gives
+leverage eﬀects that are signiﬁcantly diﬀerent from those
+observed in the developed markets. Whether these are
+the result of the non-stochasticity behavior of the time
+series is unclear and is worth to investigate in the future.
+While the nonlinear autocorrelation functions of the
+asset returns time series of the developed markets dis-
+play power law like decay, the corresponding nonlinear
+autocorrelation functions of the dWS exhibit behaviors
+very similar to Gaussian noise time series, meaning that
+the dWS are indeed very close to a Wiener process. The
+more interesting results are the autocorrelation functions
+of the local volatility σ of the time series and its ﬂuctu-
+ations. The autocorrelation of the local volatility shows
+slow decay behavior, but both the linear and nonlinear
+autocorrelations of its ﬂuctuations dln(σ) show behav-
+ior very similar to a stochastic time series. If dWS for a
+time series is very close to a Wiener process, one could
+investigate the multifractal structure of the time series
+directly from the reconstructed local volatility obtained,
+for example, by the algorithm introduced here. The lo-
+cal volatility σ obtained from the time series under study
+might in fact be interpreted as a response function to the
+external and internal shocks that act on the system with
+its ﬂuctuations follow closely to a lognormal distribution.
+As mentioned above, the method proposed here to ﬁnd
+the local volatility of a time series can be improved by
+developing better optimization algorithms than the one
+being used here. Introducing appropriate constraints re-
+lated to the time series under study into the cost func-
+tion can further improve its performance. The interested
+reader can design his own optimization algorithm to fur-
+ther improve the search performance on the local volatil-
+ity σ that can minimize the cost function under study.
+
+Quantitative methods that are developed to study ﬁ-
+nancial time series can indeed be used to study other
+complex systems27 as well. The algorithm introduced
+here can be applied to analyze time series of other com-
+plex systems and thus to quantitatively measure their
+deviations from a Wiener process. The stochasticity and
+structure of multifractality of these complex systems can
+then be studied in a similar fashion. This empirical al-
+gorithm has recently been applied to the study of heart
+
+rate variability in cardiology and will be reported in a
+
+separate publication28.
+
+10
+
+1 See, e.g., A. Chakraborti, I. Muni Toke, M. Patriarca and
+
+15 Calvet, L. and Fisher, A. 2002 The Review of Economics
+
+F. Abergel 2011 Quantitative Finance 11 991.
+
+and Statistics 84 381.
+
+2 P. Cizeau, Y. Liu, M. Meyer, C.K. Peng and H.E. Stanley
+
+16 D. B. Saakian, A. Martirosyan, Chin-Kun Hu and Z. R.
+
+1997 Physica A 245 441.
+
+Struzik 2011 Europhysics Lett. 95 28007.
+
+3 S. Micchche, G. Bonanno, F. Lillo and R.N. Mantegna 2002
+
+17 Nicolas Mordant, Emmanuel Lvque and Jean-Franois Pin-
+
+Physica A 314 756.
+
+ton 2004 New Journal of Physics 6 116.
+
+4 Bacry, E., Kozhemyak, A. and Muzy, J.F. 2008 Journal of
+
+18 Francccois G. Schmitt and Laurent Seuront 2001 Physica
+
+Economic Dynamics and Control 32 156.
+
+5 Kantelhardt, J. W. 2009 ”Fractal and multifractal time
+series”, R.A. Meyers (Ed.), Encyclopedia of Complexity
+and Systems Science. (Springer).
+
+6 L.E. Calvet and A.J. Fisher 2004 J. Financial Econometrics
+2 49; See also, L.E. Calvet and A. J. Fisher 2008 ”Multi-
+fractal Volatility” (Academic Press) and references therein.
+
+7 E. Fama 1965 Journal of Business 38 34.
+8 P. Samuelson 1965 Industrial Management Review 6 41.
+9 Ken Kiyono, Zbigniew R. Struzik, Naoko Aoyagi, Fumi-
+haru Togo and Yoshiharu Yamamoto 2005 Phys. Rev. Lett.
+95 058101.
+
+10 J. Hull and A. White 1987 The Journal of Finance 42 281.
+11 S. Heston 1993 The Review of Financial Studies 6 327.
+12 Bacry, E., Delour, J. and Muzy, J.F. 2001 Phys. Rev. E 64
+
+A 301 375.
+
+19 J.-P. Bouchaud, M. Potters and M. Meyer 2000 Eur. Phys.
+
+J. 13 595.
+
+20 See e.g., Holland, John 1992 ”Adaptation in Natural and
+
+Artiﬁcial Systems” (Cambridge, MA: MIT Press).
+
+21 Goldberg, David 1989 Genetic Algorithms in Search,
+”Optimization and Machine Learning” (Reading, MA:
+Addison-Wesley Professional) .
+
+22 J.J. Tseng and S.P. Li 2011 Physica A 390 1300.
+23 J.J. Tseng and S.P. Li 2012 International Review of Finan-
+
+cial Analysis 23 11.
+
+24 F. Black. 1976 Proceedings of the 1976 American Statis-
+tical Association, Business and Economical Statistics Sec-
+tion.
+
+25 Reigneron, P. A., Allez, R. & Bouchaud, J. P. 2011 Physica
+
+026103.
+
+A 390 3026 .
+
+13 Mandelbrot, B., Fisher, A., Calvet, L. 1997 Cowles Foun-
+
+26 Tobias Preis, Dror Y. Kenett, H. Eugene Stanley, Dirk
+
+dation Discussion Paper #1164.
+
+Helbing & Eshel Ben-Jacob 2012 Science Reports 00752.
+
+14 Calvet, L. and Fisher, A. 2001 Journal of Econometrics
+
+27 Y.H. Shiau, J.H. Sie, and S.P. Li, 2013 International Jour-
+
+105 27.
+
+nal of Cardiology 168 1638.
+
+28 Chih-Hao Lin and Sai-Ping Li, in preparation .
+
+

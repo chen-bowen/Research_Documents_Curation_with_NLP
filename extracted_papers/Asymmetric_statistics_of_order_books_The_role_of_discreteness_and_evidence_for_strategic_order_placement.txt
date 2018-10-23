@@ -1,0 +1,1634 @@
+0
+1
+0
+2
+
+ 
+
+y
+a
+M
+8
+1
+
+ 
+
+ 
+ 
+]
+
+.
+
+R
+T
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+3
+v
+7
+8
+3
+1
+
+.
+
+6
+0
+9
+0
+:
+v
+i
+X
+r
+a
+
+Asymmetric statistics of order books: The role of
+
+discreteness and evidence for strategic order
+
+placement
+
+A. Zaccaria, M. Cristelli, V. Alﬁ, F. Ciulla, L. Pietronero
+
+September 6, 2018
+
+Abstract
+
+We show that the statistics of spreads in real order books is character-
+ized by an intrinsic asymmetry due to discreteness eﬀects for even or odd
+values of the spread. An analysis of data from the NYSE order book points
+out that traders’ strategies contribute to this asymmetry. We also inves-
+tigate this phenomenon in the framework of a microscopic model and, by
+introducing a non-uniform deposition mechanism for limit orders, we are
+able to quantitatively reproduce the asymmetry found in the experimental
+data. Simulations of our model also show a realistic dynamics with a sort
+of intermittent behavior characterized by long periods in which the order
+book is compact and liquid interrupted by volatile conﬁgurations. The
+order placement strategies produce a non-trivial behavior of the spread
+relaxation dynamics which is similar to the one observed in real markets.
+
+1
+
+Introduction
+
+The order book is the double auction mechanism [1, 2, 3] which permits to
+process and store the orders placed by investors in a modern ﬁnancial market.
+This system is the elementary mechanism of price formation as a consequence
+of the arrival of proposals (orders) of buying or selling. There are two classes
+of orders: market orders and limit orders. The market ones correspond to or-
+ders to buy/sell at the best available price (called best bid/ask), hence they
+are immediately executed. The limit orders instead are orders to buy or sell at
+a given price which can be not necessarily the best one. By consequence limit
+orders may not immediately fulﬁlled and then they are stored in the order book.
+The diﬀerence between the best ask and the best bid is deﬁned as the spread s.
+The order prices are not continuous but discrete and expressed in units of ticks.
+Also the volume of an order is an integer multiple of a certain amount of shares.
+The mid-price between best ask and best bid can be considered a conventional
+deﬁnition of the price of a stock. The majority of the spread variations are due
+to a limit order which falls inside the spread or to a market order which matches
+all the orders placed at the best price.
+In recent years the complex dynamics of the order book has attracted the sci-
+entiﬁc community attention. One of the reasons of this increasing interest is
+the availability of a large amount of experimental data which has permitted an
+
+1
+
+extensive statistical analysis of the order book properties and has revealed a
+number of interesting features and regularities. The main empirical evidences
+of the order book are: the fat-tailed distribution of the price of new limit or-
+ders [4, 5, 6]; the non-trivial power law correlation of the transaction price
+signs [7, 8, 9, 10, 11]; the peculiar shape of the limit order volume distribution
+with fat tails and peaked away from the best quote [4, 5]; the non linear response
+of the order book to order arrivals [12, 13].
+Moreover the microscopic market level of the order book shows the stylized facts
+present in ﬁnancial markets at the aggregate level [3, 14, 15, 16]. To interpret
+these empirical evidences a series of theoretical models has been introduced
+[17, 18, 19, 20, 6, 21]. In particular, the models by Farmer et al.
+[6, 21] show as
+even a “zero intelligence” mechanism can reproduce many of the experimental
+features of real order books.
+In a previous work we have introduced a model [22] where the zero intelligence
+paradigm is adopted and in this paper we are going to interpret some experi-
+mental results in the framework of this model.
+One of the most challenging issue in this ﬁeld is the identiﬁcation of new empir-
+ical features in order to discriminate and validate the various models proposed.
+In this paper we investigate the eﬀects induced by the discrete nature of order
+books. In fact, as we have already noticed, the price of the orders is not a con-
+tinuous variable but it can only be a multiple of a quantity called tick which is a
+fraction of the currency used in the the market considered. A ﬁrst consequence
+of this aspect is the spontaneous emergence of asymmetries in the system. For
+instance, two conﬁgurations of the order book with an even spread or an odd
+one (in units of ticks) are not a priori equivalent for the mechanism of deposi-
+tion of limit orders inside the spread. We investigate the fraction of odd spreads
+for a data set from the NYSE market ﬁnding indeed a strong evidence for this
+asymmetry. However, as we are going to see in detail in the paper, the problem
+is more subtle than expected and also the agent strategies play an important
+role to explain quantitatively this phenomenon. The strategic order placement
+is also the origin of the non-trivial relaxation pattern observed when a spread
+ﬂuctuation takes place.
+The paper is organized in the following way.
+In Sec. 2 we show the experimental evidence of the asymmetry of spreads.
+In Sec. 3 we propose an interpretation of this empirical feature in terms of a
+microscopic model we introduced in [22].
+In Sec. 4 we perform a more detailed data analysis in order to investigate further
+aspect which contributes to the asymmetry.
+In Sec. 5 our model is properly modiﬁed to take into account the new results
+found in the data analysis.
+In Sec. 6 a detailed investigation of the role of the agent strategies for the place-
+ment of order inside the spread is performed in the framework of our model.
+In Sec. 7 we study the eﬀects of strategic order placements on the spread relax-
+ation dynamics with respect to a pure zero-intelligence mechanism.
+Finally conclusions and perspectives are discussed in Sec. 8.
+
+2
+
+2 Empirical evidences
+
+In this section we show the empirical evidences that have led us to investigate
+the asymmetric nature of the order book.
+In our analysis of the order book we have considered a data set which spans
+a period of nearly 80 trading days between October 2004 and February 2005.
+This data set includes a series of high-frequency (tick-by-tick) information for
+20 stocks from the NYSE market. These stocks have been chosen to be het-
+erogeneous in their level of capitalization 1. The information we have for each
+stock is the whole list of transactions and quotes, which are the prices of eﬀec-
+tive deals and of orders respectively. Our data set lacks the information about
+the whole order book apart of the best bid and the best ask. Therefore a new
+quote appears only if the best bid or the best ask have been updated. From
+this data set we have reconstructed the sequence of market and limit orders by
+looking to the spread variations. If the spread has increased with respect to its
+previous value we refer to the event as a market order. On the contrary, the
+event is deﬁned as a limit order if the spread has decreased. We assume that
+the probability that a cancellation of a limit order may change the spread is so
+small to be neglected. We have also expressed all the prices in units of ticks,
+so the spread results to be an integer number. At the end of this reﬁnement,
+our data set is composed only by the series of the events in which the spread
+has changed, each labelled to be a market or a limit order. In this paper we
+restrict our analysis to limit order events. The complete analysis, including also
+market orders, will be matter of future researches. To investigate the intrinsic
+asymmetry that a discrete and ﬁnite spread generates, we have ﬁrstly analyzed
+how the fraction of odd spreads depends on the average value of the spread
+for each stock. In Fig. 1 we have plotted, for each stock, the daily fraction of
+odd-valued spreads as a function of the average value of the spread. There are
+80 diﬀerent points for each stock and also a further average over all the days
+is plotted in the inset. We can observe that for almost all points the fraction
+of odd-valued spreads is larger than 0.5 which would be the expected value if
+the spread was very large (s → ∞). This asymmetry is more marked for stocks
+with a smaller average spread and it goes diminishing while the average spread
+increases. A small average spread usually corresponds to stocks with a large
+capitalization. In the next sections we are going to investigate these results in
+the framework of the model we have introduced in a previous work [22].
+
+3 A model for limit order deposition: uniform
+
+case
+
+In this section we propose a simple explanation of the evidences shown in Sec. 2
+on the basis of the order book model introduced in [22].
+First of all we brieﬂy recall the main properties of the model. At each time
+step an order is placed. This order can be a sell or a buy order with the same
+probability 1/2, and a market or a limit order with probability π = 1/3 and
+1 − π = 2/3 respectively. A limit order is placed with an uniform distribution
+
+1Market capitalization is deﬁned as the number of shares of a company multiplied by their
+
+price. It is the simplest measure of a company’s size.
+
+3
+
+s
+d
+a
+e
+r
+p
+s
+ 
+
+d
+d
+o
+ 
+f
+o
+
+ 
+
+n
+o
+i
+t
+c
+a
+r
+f
+
+1
+
+0.9
+
+0.8
+
+0.7
+
+0.6
+
+0.5
+
+0.4
+
+2
+
+4
+
+6
+
+s
+d
+a
+e
+r
+p
+s
+ 
+d
+d
+o
+ 
+f
+o
+ 
+n
+o
+i
+t
+c
+a
+r
+f
+
+1
+
+0.9
+
+0.8
+
+0.7
+
+0.6
+
+0.5
+
+0.4
+
+2
+
+4
+
+average
+
+6
+
+8
+
+10
+
+12
+
+14
+
+<spread> (ticks)
+
+ah
+avo
+ba
+bro
+cai
+dri
+ge
+glk
+gm
+jwn
+kss
+mcd
+mhs
+mik
+mls
+pg
+txi
+udi
+vno
+wgr
+
+8
+
+<spread> (ticks)
+
+10
+
+12
+
+14
+
+16
+
+Figure 1: (Color online) Fraction of odd-valued spreads (in units of ticks) vs
+daily average spread for diﬀerent stocks. We observe a systematic deviation
+from the symmetric case in which the fraction is 0.5. In the inset we plot a
+further average over a period of 80 days.
+
+in the interval ]b(t), b(t) + ks(t)] if it is a sell order and [a(t) − ks(t), a(t)[ if it is
+a buy order, where b(t) and a(t) are the best bid and the best ask respectively,
+s(t) is the spread and k > 1 is a constant. In ﬁrst approximation k−1 is the
+probability for a limit order to be put inside the spread (therefore causing a
+price change). This dependence on the previous spread value creates a sort
+of autoregressive mechanism for the order deposition. The tick size and the
+volume of the orders are both constant and ﬁxed (∆q = 1 and ω = 1). Finally,
+a cancellation process avoids the divergence of the volume stored in the order
+book.
+In this framework we can evaluate a number of quantities, for example the
+probability that, given a spread s at time t, the new spread s′
+6= s at time
+t + ∆t is even or odd, where ∆t is the time to wait to have a variation of the
+spread. The dependence on the parameter k is removed because we consider
+only the conditioned probability that an event occurs. In this paper we indicate
+with s the value of the spread before an incoming event and with s′ the new value
+of the spread consequent to the variation. Here we restrict our analysis only to
+events due to limit order arrival. The probability to have an odd spread in the
+ﬁnal state turns to be dependent on the parity of the spread s. Straightforward
+calculations give the probabilities
+
+P (e|o, s) = 1
+2
+
+P (o|e, s) = 1
+2
+
+s
+
+s−1
+
+P (o|o, s) = 1
+2
+
+P (e|e, s) = 1
+2
+
+s−2
+(s−1) .
+
+(1)
+
+where o and e denote if the the spread is odd or even respectively. One can
+see that P (o|e) > P (e|e): given an even spread s in the initial state, the next
+spread s′ has a larger probability to be odd rather than even. As expected, both
+P (o|e) and P (e|e) tend to 1/2 for s → ∞. This simple argument gives a ﬁrst
+explanation of the empirical evidence of an excess of odd spreads shown in the
+
+4
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+)
+ 
+
+d
+a
+e
+r
+p
+s
+ 
+|
+ 
+
+d
+d
+o
+
+ 
+(
+ 
+P
+
+0
+0
+
+2
+
+4
+
+6
+
+10
+
+8
+12
+spread (ticks)
+
+14
+
+16
+
+18
+
+20
+
+Figure 2: (Color online) Conditional probability to have an odd-valued spread
+s′ given an initial spread s for real data. The plot shows clearly that with high
+probability an odd spread is followed by an even one (0.8) and vice-versa.
+
+previous section.
+
+4 Data analysis
+
+Now we intend to give an interpretation of Fig. 1 in view of the results obtained
+in the previous section. The dispersion of the points plotted in Fig. 1 can be
+traced back to the spurious eﬀect introduced by the fact that many diﬀerent
+spreads s give their contribution to the ﬁnal average. Therefore the next step
+is to investigate the frequency of odd spreads conditioned to a given s, in order
+to compare Eq. 1 to real data.
+We can identify the variations of the spread caused by limit orders imposing
+the condition s > s′ because only limit orders inside the spread can decrease
+its value (the same argument has been also followed, for example, by [23]). In
+Fig. 2 we show the conditional probability to have an odd spread s′ starting
+from a spread s, as a function of s. The pattern strongly oscillates around the
+value 1/2: an even spread is most likely followed by an odd one as predicted by
+Eq. 1, but surprisingly also the viceversa is true.
+This apparently strange (with respect to the result of Eq. 1) behavior can be
+attributed to a non-uniform depositions of limit orders inside the spread. We
+studied the distribution of the spread variations conditioned to a given value
+of the spread s for real data. We found that a consistent fraction α ∼ 0.7 of
+the limit orders inside the spread is placed at the quote adjacent to the best,
+as we show in Fig. 3. A reasonable way to model this non-uniform distribution
+of the limit orders inside the spread is through a piecewise constant function.
+In this way the probability to put a limit order at the ﬁrst adjacent quote is
+α, and the probability to put the order in one of the other remaining quotes is
+equally distributed. This tendency can be also interpreted in terms of agents’
+strategies. In fact, the placement an order far from the (previous) best bid or
+
+5
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+ 
+)
+ 
+s
+ 
+|
+ 
+s
+∆
+(
+ 
+P
+
+ 
+
+ 
+
+ 
+)
+ 
+s
+ 
+|
+ 
+s
+∆
+(
+ 
+P
+
+ 
+
+ 
+
+1
+
+0.1
+
+0.01
+1
+
+s=4
+s = 4
+s = 6
+s=6
+s = 8
+s=8
+s = 10
+s=10
+s = 12
+s=12
+
+∆ s (ticks)
+
+10
+
+0
+0
+
+1
+
+2
+
+3
+
+4
+
+6
+
+7
+5
+∆ s (ticks)
+
+8
+
+9 10 11 12
+
+Figure 3: (Color online) Probability to have a variation ∆s of the spread given an
+initial s for diﬀerent spread values (empirical data). The most probable variation
+is always ∆s = 1. The probabilities of the other variations (∆s = 2, 3, ...) are
+weakly decreasing functions and, in ﬁrst approximation, can be considered as
+constant. The dashed line is the power law with exponent 1.8 found in [24] for
+London Stock Exhange. In both cases ∆s = 1 is highly preferred.
+
+ask can be seen as a risky operation in which the agent, by disagreeing with
+other agents’ evaluations, tries to trade quickly paying a kind of virtual cost
+equal to the distance between the best and her order quote. In other words, an
+order near the best is the most conservative position able to change the spread.
+The next step is to ﬁnd how much the probability α to place a limit order near
+the corresponding best depends on the spread s and on the stock considered. In
+Fig. 4 we plot α as a function of s for three stocks which cover a wide range of
+capitalization, ﬁnding very diﬀerent behaviors depending on the stocks and on
+the values of the spreads. One possible explaination for this variety of behaviors
+is the lack of statistics:
+in fact, liquid stocks (that is, stocks characterized by
+fast order execution and small transaction impact on the price) usually have
+small spreads, and hence the statistics for large spreads is poor, and viceversa
+for illiquid stocks. We can appropriately weight the contribution of diﬀerent
+stocks by averaging on all the data. The resulting curve is approximately a
+constant as a function of the spread.
+
+5 A model for limit order deposition:
+
+non-uniform case
+
+In the previous section we have observed a systematic deviation of the experi-
+mental probabilities P (o|e, s) and P (e|o, s) from the ones of Eq. 1 derived from
+the hypothesis of uniform order deposition. In this section we are going to show
+that this discrepancy is mainly due to the non-uniform probability of order
+placement inside the spread, and therefore to agents’ strategies.
+In order to include the eﬀect of a non-uniform order deposition, we can gener-
+
+6
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+)
+s
+(
+ 
+
+ 
+
+α
+
+ 
+
+0
+0
+
+2
+
+4
+
+6
+
+8
+
+bro
+ge
+txi
+average
+
+14
+
+16
+
+18
+
+20
+
+10
+
+12
+
+s (ticks)
+
+Figure 4: (Color online) Probability α(s) to place an order at the quote adjacent
+to the best one as a function of the spread. We have plotted this probabilities for
+three representative stocks and also an average over all the 20 stocks. The very
+diﬀerent values observed can be explained by considering the diﬀerent statistics
+of the stocks. To properly address this eﬀect we have performed an average
+over the 20 stocks of our data set. The result is a value of α(s) approximately
+constant.
+
+alize Eq. 1 in the following way
+
+s−1
+
+P (e|o, s) = P
+
+2
+
+j=1 g(2j|s)
+
+P (o|o, s) = P
+
+s−3
+
+2
+
+j=0 g(2j + 1|s)
+
+P (o|e, s) = P
+
+s−2
+
+2
+
+j=0 g(2j + 1|s)
+
+s−2
+
+(2)
+
+P (e|e, s) = P
+
+2
+
+j=1 g(2j|s).
+
+where g(i|s) is the probability mass function of the deposition mechanism for
+limit orders inside the spread and i = 1, . . . , s − 1 is the distance from the best
+quote of the placement price.
+In Fig. 4 we have seen that the probability α that a limit order produces a
+spread variation equal to one is weakly dependent on the value of the spread.
+This suggests a simple approximation for g(i|s) with a piecewise function. Now
+we discuss how to introduce this property in our model.
+If a limit order falls inside the book or at the best quotes the mechanism for
+order deposition is left unchanged.
+Instead, if a limit order is placed inside
+the spread, the probabilities associated to the s − 1 available quotes are no
+more uniform but highly peaked around the quote adjacent to the best. The
+deposition probabilities for a buy or a sell order, for a given s, become
+
+g(i|s) = 
+
+
+g(1|s) = α
+
+g(i|s) = 1−α
+s−2
+
+i = 2, ..., s − 1.
+
+(3)
+
+For buy orders the index i is the distance from the best bid while for sell orders
+the index i is the distance from the best ask. In the previous section we have
+seen that in real markets α can be approximately considered as constant and
+
+7
+
+its value is about 0.7. Clearly Eq. 3 is meaningful only for s ≥ 3 since for s = 1
+limit orders cannot fall inside the spread and for s = 2 a limit order inside the
+spread is always placed at the quote adjacent to the best one.
+It follows directly from Eq. 3 that the transition probabilities now read
+
+P (e|o, s) = α + 1−α
+2
+
+s−3
+s−2
+
+P (o|e, s) = α + 1−α
+2
+
+P (o|o, s) = 1−α
+2
+
+s−1
+s−2
+
+P (e|e, s) = 1−α
+2 .
+
+(4)
+
+In Fig. 5 we plot a comparison between the expression of Eq. 4 and the
+corresponding probabilities evaluated from our data set. The experimental re-
+sults are obtained by averaging over all the 80 trading days and over all the 20
+stocks. The oscillating behavior can be explained by considering that a vari-
+ation of spread of one tick (∆s = 1) is highly preferred with respect to other
+variations. Hence an odd spread goes more likely to an even one and vice-versa.
+We are now able to separate the two eﬀects that contribute to enhance the frac-
+
+)
+ 
+
+d
+a
+e
+r
+p
+s
+ 
+|
+ 
+
+d
+d
+o
+
+ 
+(
+ 
+P
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0
+
+model
+experimental
+
+2
+
+4
+
+6
+
+10
+
+8
+spread (ticks)
+
+12
+
+14
+
+16
+
+18
+
+20
+
+Figure 5: (Color online) Comparison between the experimental data and the
+phenomenological model described in the text. The phenomenological proba-
+bilities of the model (dots) show a small systematic overestimation of the os-
+cillations with respect to the experimental ones (triangles). This eﬀect can be
+easily understood in terms of the approximation considered in Eq. 3.
+
+tion of odd spreads and produce the pattern of Fig. 1 through a simple Monte
+Carlo simulation. These two contributions are the intrinsic asymmetry due to
+discreteness and non-uniformity of order deposition. As initial conditions we
+generate some sequences of spreads with diﬀerent means, in order to represent
+diﬀerent virtual stocks. Starting from each sequence we simulate the transition
+to odd or even spreads s′ according to the probabilities of Eq. 1 and Eq. 4. In
+such a way we can evaluate the average fraction of odd spreads for each virtual
+stock. In Fig. 6 we compare the empirical average asymmetry with the results
+of the Monte Carlo simulations in the two cases just mentioned. The intrinsic
+asymmetry alone is not able to ﬁt properly the experimental data which instead
+
+8
+
+are well reproduced by considering the two combined eﬀects. Nevertheless we
+can observe some deviations for large spreads (> 6). This is due to the fact that
+we have assumed a constant probability to place order at quotes diﬀerent from
+the one adjacent to the best. When the spread grows the error introduced by
+this assumption becomes larger. It is worth noticing that here we are neglecting
+
+1
+
+s
+d
+a
+e
+r
+p
+s
+ 
+
+d
+d
+o
+ 
+f
+o
+
+ 
+
+n
+o
+i
+t
+c
+a
+r
+f
+
+0.9
+
+0.8
+
+0.7
+
+0.6
+
+0.5
+2
+
+average (NYSE data)
+uniform - Eq. (1)
+α=0.7  - Eq. (4)
+
+4
+
+6
+
+<spread>
+
+8
+
+10
+
+Figure 6: (Color online) Fraction of odd-valued spread vs average spread for
+experimental data and for two diﬀerent Monte Carlo simulations. The ﬁrst sim-
+ulation (squares) is performed using the uniform order deposition mechanism.
+The second one (crosses) is instead performed with the non uniform mechanism.
+These two simulations permit to investigate the two contributions to the asym-
+metry between odd and even spreads. As expected we observe that the intrinsic
+asymmetry does not reproduce the experimental pattern (dots) while the two
+combined eﬀects ﬁt the experimental data very well. The small discrepancy
+found for large spreads is originated by the approximation made in Eq. 3.
+
+the correlations between the spread values. Anyway we can recover the experi-
+mental behavior even with this uncorrelated sequence since we are averaging on
+times far longer than the time scales of the spread correlation.
+
+6 The eﬀects of the strategic deposition of or-
+
+ders
+
+An interesting question concerns the role of the parameter α and how the non-
+uniform deposition inside the spread aﬀects the order book statistical properties.
+Our model allows this kind of investigation and permits to study the eﬀect of
+diﬀerent strategies of order placement inside the spread.
+A numerical simulation reveals that if the same set of parameters of Sec. 3 and
+of [22] is used, the spread dynamics diverges for α > 0.85. To explain this eﬀect
+we have to consider the interplay between market and limit orders. Market
+orders tend to move away the two best quotes eroding the book. Instead limit
+orders tend to reduce the spread by coupling the processes followed by best ask
+and best bid. In such a way the process for the spread is somehow stationary.
+
+9
+
+In this framework the deposition rules play an important role in softening or
+strengthening the coupling action of limit orders. In fact the coupling between
+a(t) and b(t) is ruled by two elements. The ﬁrst one is the fraction of orders
+which fall inside the spread. A larger fraction of these orders produces a stronger
+coupling between the best quotes. The second is the mechanism of deposition of
+orders inside the spread, which governs the average spread variation produced
+by a limit order. In order to analyze the eﬀect of the deposition mechanism we
+can reason as it follows. By considering the symmetry of the uniform case, we
+ﬁnd
+
+< ∆s >
+
+s
+
+=
+
+1
+2
+
+while in the non-uniform case, from Eq. 4, we obtain
+
+< ∆s >
+
+s
+
+=
+
+α
+s
+
++
+
+(1 − α)[s(s − 1) − 2]
+
+2s(s − 2)
+
+.
+
+(5)
+
+(6)
+
+We recall that s ≥ 3 since for s = 1 limit orders cannot be placed inside the
+spread and for s = 2 we always have ∆s/s = 1/2. The inequality < ∆s > /s ≥
+1/2 for Eq. 6 is satisﬁed when
+
+2 ≤ s ≤
+
+α + 1
+
+α
+
+(7)
+
+and we observe that (α + 1)/α > 3 only for α < 0.5 (see Fig. 7). Consequently
+the average spread variation and the coupling action of limit orders in the non-
+uniform case are never larger than the one produced by the uniform mechanism
+in the region of parameters investigated (s ≥ 3 and α > 0.5).
+Fixed α ≤ 0.8 we can analyze the properties of our model and we will come back
+on the problem of the stability with respect to α at the end of this section. The
+set of ﬁgures in Fig. 8 clariﬁes the role of a non-uniform deposition inside the
+spread. In Fig. 8a and Fig. 8b we have plotted the probability density functions
+for the price variations (returns) and for the spreads respectively. We observe
+that in the non-uniform case the system produces larger ﬂuctuations and larger
+average spreads, as we expected from the previous discussion. It is interesting
+to notice that when the system tends to a regime in which the order book is
+always compact, i.e. in which most of the quotes inside the book are occupied,
+the statistical properties becomes nearly independent on the deposition details
+(π ≤ 0.25).
+Fig. 8c reveals that the non-uniform deposition also ampliﬁes the ﬂuctuations
+of the granularity g, deﬁned as the linear density of the volume stored in a
+side of the order book [22]. In particular the non-uniform deposition shows a
+non-trivial temporal structure for granularity that resembles an intermittency
+phenomenon. Since most of the arriving limit orders are placed adjacent to
+the best quote the order book stays for long times in a quiet and compact
+state characterized by an average spread whose value is nearly one. This is
+the dominant regime of our simulated order book, but sometimes bursts of
+volatility are observed. In fact, when a large ﬂuctuation of spread occurs, the
+autoregressive property and the non-uniformity of the limit order deposition
+make the relaxation towards the compact state very slow. This intermittency
+is directly related to the volatility correlation that is far longer in the non-
+uniform case than in the uniform one (see Fig. 8d). We want to stress that a
+
+10
+
+d
+a
+e
+r
+p
+s
+
+8
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+0
+
+s=2
+s=(α+1)/α
+
+<∆s>/s < 0.5
+
+<∆
+
+s>/s > 0.5
+
+0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+
+α
+
+1
+
+Figure 7: Phase diagram of the relative average spread variation for the non-
+uniform mechanism. The relative average spread variation < ∆s > /s is 0.5
+for the uniform case. < ∆s > /s is larger than 0.5 only for spreads included
+in the region between s = 2 and s = (α + 1)/α. The highlighted region (s ≥ 3
+and α > 0.5) corresponds to a realistic scenario. We see that in this region
+the relative average variation of the spread produced by a limit order is always
+smaller than 0.5. Therefore the non-uniform deposition reduces the coupling
+action of limit orders with respect to the uniform case.
+
+small volatility clustering is already present in the uniform case. Its origin can
+be traced back to the dependence on the past spread values of the deposition
+mechanism. This simple eﬀect introduces an exponential correlation and so
+ﬁxes a characteristic time-scale. The non-uniform deposition instead ampliﬁes
+this eﬀect because the mechanism sets a further and longer time-scale that
+depends on α (the correlation length increases for increasing values of α). The
+correlation functions in Fig. 8d obey to an exponential decay except for short
+time lags where some spurious eﬀects take place. The bursts of volatility of
+the non-uniform case are even more evident if we represent the complete order
+book. In Fig. 9, that corresponds to the uniform case, the order book is always
+compact. Instead in Fig. 10 we plot the non-uniform case and we ﬁnd that the
+system stays for most of the time in a regime which is very similar to the one
+of Fig. 9 (regions I,III,V) but sometimes regions characterized by large spreads
+and large price movements appear (regions II,IV,VI). It is worth noticing that
+in this model large price ﬂuctuations emerge spontaneously, being triggered by
+a random spread variation (and vice-versa). This mechanism resembles the
+phenomenon of self-organized criticality [25, 26].
+It can be argued that also for larger values of π the uniform case could produce
+this intermittency because this correspond to an increase of the time-scale on
+which the autoregressive mechanism is able to produce local volatility clustering
+as we can observe in Fig. 8d. Nevertheless the correlation is still far shorter
+when π = 0.33 with respect to the one generated by the non-uniform case with
+π = 0.3. Furthermore the magnitude of the correlation is smaller than the one
+of the non-uniform case with lower values of π. Finally a visual inspection of the
+
+11
+
+a)
+
+α=0.7 π=0.33
+α=0.7 π=0.30
+α=0.7 π=0.25
+unif    π=0.33
+unif    π=0.30
+unif    π=0.25
+
+1
+
+10
+
+returns
+
+100
+
+c)
+
+α=0.7 π=0.33
+α=0.7 π=0.30
+α=0.7 π=0.25
+unif    π=0.33
+unif    π=0.30
+unif    π=0.25
+
+100
+
+10-1
+
+)
+s
+n
+r
+u
+t
+e
+r
+(
+f
+d
+p
+
+10-2
+
+10-3
+
+10-4
+
+10-5
+
+0.3
+
+0.2
+
+0.1
+
+)
+g
+(
+f
+d
+p
+
+)
+d
+a
+e
+r
+p
+s
+(
+f
+d
+p
+
+0.5
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+0
+0
+
+0.2
+
+0.15
+
+0.1
+
+0.05
+
+|
+r
+|
+ 
+
+n
+o
+i
+t
+a
+l
+e
+r
+r
+o
+c
+o
+t
+u
+A
+
+b)
+
+<s>=2.77     α=0.7 π=0.33
+<s>=2.17     α=0.7 π=0.30
+<s>=1.71     α=0.7 π=0.25
+<s>=15.8     unif    π=0.33
+<s>=2.07     unif    π=0.30
+<s>=1.80     unif    π=0.25
+
+5
+
+spread
+
+10
+
+15
+
+d)
+
+α=0.7 π=0.33
+α=0.7 π=0.30
+unif    π=0.33
+unif    π=0.30
+
+0
+0
+
+5
+
+10
+
+g
+
+15
+
+20
+
+25
+
+0
+0
+
+200
+
+400
+600
+time (ticks)
+
+800
+
+1000
+
+Figure 8: (Color online) Statistical properties of the simulated order book for
+the uniform and non-uniform case. In panels a) and b) we plot the probability
+density functions for the returns (∆p) and spreads respectively for diﬀerent
+market order rates (π). These plots show that the average ﬂuctuations of spreads
+and returns are larger in the non-uniform case. When the order book turns to
+a compact regime (π ≤ 0.25), the statistical properties of the model become
+nearly independent on the deposition details. Panel c) reveals that the non-
+uniform deposition produces non-trivial ﬂuctuations of liquidity/granularity. In
+panel d) we plot the autocorrelation of the absolute values of returns and we
+observe the presence of persistent volatility. The decay of the autocorrelation
+function of the absolute values of returns is exponential except for short time
+lags where spurious eﬀects take place. This persistent behavior suggests the
+presence of an intermittent dynamics for the order book characterized by bursts
+of volatility.
+
+12
+
+order book reveals that an intermittency of a kind appears but it is very small
+and we never obtain an order book with sudden transitions from a compact
+regime to a volatile regime as it happens in region II of Fig. 10.
+
+Figure 9: (Color online) Snapshot of the simulated order book in the uniform
+case (π = 0.3). The order book is always in a compact regime in which the aver-
+age spread is nearly 1 and a small and local volatility clustering is observed due
+to the autoregressive deposition rules. For higher values of π small deviations
+from the compact regime appear but these phenomena cannot be compared to
+the intermittency produced when the order deposition is non-uniform.
+
+Now we discuss the stability of the model for α ≥ 0.8. We have seen in Figs.
+8 a,b that, in order to make the system stable with respect to α, a possible
+solution is the reduction of the probability of market orders π. In such a way it
+is possible to increase the average length of limit order sequences and then to
+compensate the lower coupling. However increasing values of α (> 0.8) would
+imply a choice for π ≈ 0.25 (or even smaller) and in this region of parameters
+the order book is always compact and all volatility bursts disappear. However
+it is worth noticing that these ranges of parameters are usually not observed in
+empirical data.
+
+7 Spread relaxation: role of the strategic order
+
+placement.
+
+Ponzi et al. in [24] studied the relaxation dynamics after an opening or a closing
+of the spread in LSE 2 order book. They ﬁnd a slow relaxation of the spread
+towards the mean value. This decay is compatible with a power law and the
+authors argue that the absence of a characteristic time scale is due to the pres-
+ence of a strategic placement of the orders.
+
+2London Stock Exchange
+
+13
+
+Figure 10: (Color online) Snapshot of the simulated order book in the non-
+uniform case (π = 0.3 and α = 0.7). These deposition rules produce an order
+book which is typically quiet and compact as in the uniform case (region I, III,
+V) but exhibits bursts of activity due to large ﬂuctuations of the spread (region
+II, IV, VI). The system gives rise to a sort of intermittency since volatility is
+very persistent and clustered.
+
+We want to verify this empirical ﬁndings in the framework of the model intro-
+duced in the previous sections. In this respect we deﬁne, as in [24], the quantity
+
+G(τ |∆) = E[s(t + τ )|s(t) − s(t − 1) = ∆] − E[s(t)]
+
+(8)
+
+where E[·] is the average on the whole time serie, ∆ is the spread variation
+occured at time t (i.e. τ = 0) and τ ≥ 0.
+It is worth noticing that, in our
+model, τ is expressed in time event units diﬀerently from the analysis in [24]
+which is performed in physical time. The mapping between these two time units
+is not necessarily linear and therefore a quantitative agreement should not be
+always expected.
+We perform the spread relaxation analysis in both the uniform case and non-
+uniform case and we report the results in Fig. 11. The non-uniform mechanism
+produces a plateau of a kind and then for τ > 100 a faster decay to normal
+spread values. Instead in the uniform case the spread relaxation is much faster
+than the previous case. Now we analyze in detail the non-uniform case.
+In
+Fig. 12 we report the function G(τ |∆) for positive and negative values of ∆
+(corresponding respectively to openings and closings of the spread at time τ =
+0). As in [24], we observe two slightly diﬀerent patterns for negative and positive
+∆. Instead, we do not observe such a diﬀerence in the uniform case, this means
+the nature of the relaxation dynamics is completely diﬀerent for these two cases.
+We can conclude that, in order to obtain a realistic spread relaxation function,
+a simple change to a pure zero-intelligence model consists in the non-uniform
+mechanism of limit orders deposition inside the spread described in section 5.
+
+14
+
+100
+
+10-1
+
+)
+s
+k
+c
+i
+t
+
+(
+ 
+)
+∆
+τ
+(
+G
+
+|
+
+10-2
+
+100
+
+∆=4   unif
+∆=2   unif
+∆=4   α=0.7
+∆=2   α=0.7
+
+102
+101
+time (event time)
+
+103
+
+Figure 11: (Color online) Spread decay given ∆ in the uniform case (solid lines)
+and in the non-uniform case (dashed lines). We observe a much slower decay in
+the latter case.
+
+8 Conclusions and perspectives
+
+The order book is a system which is intrinsically discrete, for instance the quotes
+of placement of an order must be a multiple of the tick size. We have investi-
+gated which are the eﬀects of this discreteness ﬁnding non-trivial aspects and
+deviations with respect to a continuous regime.
+The starting point of this work has been the observation that odd and even
+spreads are not equivalent for limit order deposition when the available quotes
+inside the spread are discrete. In fact, if a uniform deposition of orders inside
+the spread is assumed, the system spontaneously prefers odd spreads.
+One of results of this paper conﬁrms that this asymmetry is present in real order
+books and that the fraction of odd spreads is signiﬁcantly above 0.5. However
+the asymmetry observed cannot be explained quantitatively only by consider-
+ing the discrete nature of the order book. Indeed we have found that a second
+eﬀect also contributes to modulate the asymmetry, the fact that agents prefer
+the quote adjacent to the best one when they place orders inside the spread.
+Both these contributions have been investigated in the framework of a micro-
+scopic model introduced in a previous work [22]. The model permits to compare
+the eﬀects of uniform and non-uniform deposition mechanisms for limit orders
+inside the spread. We have found that the asymmetry can be quantitatively
+reproduced in the framework of our model by introducing a non-uniform depo-
+sition mechanism.
+Another result is the emergence of a sort of intermittent dynamics in which a
+regime characterized by a compact and liquid order book dominates but bursts
+of volatility also appear. This intermittent behavior is also observed in real
+order books. In this respect, in the framework of our model, we compare the
+uniform and the non-uniform mechanism for order deposition with respect to
+the dynamics of the spread relaxation when a ﬂuctuation occurs. We ﬁnd that
+the introduction of a simple rule of order placement is suﬃcient to reproduce
+
+15
+
+)
+s
+k
+c
+i
+t
+(
+
+|
+
+ 
+)
+∆
+τ
+(
+G
+
+101
+
+100
+
+10-1
+
+∆=10
+∆=9
+∆=8
+∆=7
+∆=6
+∆=5
+∆=4
+∆=3
+∆=2
+
+100
+
+102
+101
+time (event time)
+
+103
+
+101
+
+100
+
+10-1
+
+)
+s
+k
+c
+i
+t
+
+(
+ 
+)
+∆
+τ
+(
+G
+
+|
+
+10-2
+
+100
+
+∆=−10
+∆=−9
+∆=−8
+∆=−7
+∆=−6
+∆=−5
+∆=−4
+∆=−3
+
+102
+101
+time (event time)
+
+103
+
+Figure 12: (Color online) Spread decay in the non-uniform case for positive
+(top panel) and negative (bottom panel) values of ∆. The value of G(τ |∆) is
+higher for higher absolute values of ∆. The patterns found in our model are
+very similar to the empirical results of Ponzi et al. in [24].
+
+16
+
+the peculiar pattern observed in real data (see [24]). The observed relaxation
+cannot be explained by a pure zero-intelligence model (see also [27]).
+An interesting point is how the agents’ strategies take into account the discrete
+properties of the order book. These question will be matter of future works.
+
+References
+
+[1] J. Hasbrouck. Empirical Market Microstructure. Oxford University Press,
+
+2007.
+
+[2] L. Harris. Trading and Exchanges. Oxford University Press, 2003.
+
+[3] J.-P. Bouchaud and M. Potters. Theory of Financial Risk and Derivative
+Pricing: From Statistical Physics to Risk Management. Cambridge Uni-
+versity Press, 2003.
+
+[4] J.-P. Bouchaud, M. M´ezard, and M. Potters. Statistical properties of stock
+order books: empirical results and models. Quantitative Finance, pages
+251–256, 2002.
+
+[5] M. Potters and J.-P. Bouchaud. More statistical properties of order books
+
+and price impact. Physica A, 324:133–140, 2003.
+
+[6] S. Mike and J.D. Farmer. An empirical behavioral model of liquidity and
+volatility. Journal of Economic Dynamics and Control, 32:200–234, 2008.
+
+[7] J.-P. Bouchaud, J. D. Farmer, and F. Lillo. How markets slowly digest
+
+changes in supply and demand, 2008.
+
+[8] J.-P. Bouchaud, Y. Gefen, M. Potters, and M. Wyart. Fluctuations and
+response in ﬁnancial markets: the subtle nature of ‘random’ price changes.
+Quantitative Finance, 4:176–190, 2004.
+
+[9] J.-P. Bouchaud, J. Kockelkoren, and M. Potters. Random walks, liquidity
+molasses and critical response in ﬁnancial markets. Quantitative Finance,
+6:115–123, 2006.
+
+[10] F. Lillo and J.D. Farmer. The long memory of the eﬃcient market. Studies
+
+in Nonlinear Dynamics & Econometrics, 8:1226–1226, 2004.
+
+[11] J.D. Farmer, A. Gerig, F. Lillo, and S. Mike. Market eﬃciency and the long-
+memory of supply and demand: is price impact variable and permanent or
+ﬁxed and temporary? Quantitative Finance, 6:107–112, 2006.
+
+[12] F. Lillo, J.D. Farmer, and R.N. Mantegna. Econophysics: Master curve for
+
+price-impact function. Nature, 421:129–130, 2003.
+
+[13] V. Plerou, P. Gopikrishnan, X. Gabaix, and H.E. Stanley. Quantifying
+stock-price response to demand ﬂuctuations. Phys. Rev. E, 66(2):027104,
+Aug 2002.
+
+[14] R.N. Mantegna and H.E. Stanley. An Introduction to Econophysics: Cor-
+
+relation and Complexity in Finance. Cambridge University Press, 2002.
+
+17
+
+[15] B. Mandelbrot. Forecasts of future prices, unbiased markets and ”martin-
+
+gale” models. Journal of Business, 1966.
+
+[16] R. Cont. Empirical properties of asset returns: stylized facts and statistical
+
+issues. Quantitative Finance, 1:223–236, 2001.
+
+[17] F. Slanina. Critical comparison of several order-book models for stock-
+market ﬂuctuations. The European Physical Journal B, 61:225–240, 2008.
+
+[18] M. Raberto, S. Cincotti, S.M. Focardi, and M. Marchesi. Agent-based
+
+simulation of a ﬁnancial market. Physica A, 299:319–327, 2001.
+
+[19] S. Maslov. Simple model of a limit order-driven market. Physica A,
+
+278:571–578, 2000.
+
+[20] D. Challet and R. Stinchcombe. Non-constant rates and overdiﬀusive prices
+
+in simple models of limit order markets. Quant. Fin., 3:155–162, 2003.
+
+[21] M.G. Daniels, J.D. Farmer, L. Gillemot, G. Iori, and E. Smith. Quanti-
+tative model of price diﬀusion and market friction based on trading as a
+mechanistic random process. Phys. Rev. Lett., 90(10):108102, Mar 2003.
+
+[22] M. Cristelli, V. Alﬁ, L. Pietronero, and A. Zaccaria. Liquidity crisis, gran-
+ularity of the order book and price ﬂuctuations. Eur. Phys. J. B, DOI:
+10.1140/epjb/e2009-00353-6, 2009
+
+[23] Z. Eisler, J. K´ertesz, and F. Lillo. The limit order book on diﬀerent time
+
+scales. PROC.SPIE, 6601:66010G, 2007.
+
+[24] A. Ponzi, F. Lillo, and R.N. Mantegna. Market reaction to a bid-ask spread
+change: A power-law relaxation dynamics. Phys. Rev. E, 80:016112, 2009.
+
+[25] P. Bak. How Nature Works: The Science of Self-Organized Criticality.
+
+Copernicus Press, New York, 1996.
+
+[26] H.J. Jensen. Self-organized criticality. Cambridge University Press, Cam-
+
+bridge, 1998.
+
+[27] B. Toth, J. K´ertesz, and J.D. Farmer. Studies of the limit order book
+
+around large price changes. Eur. Phys. J. B, 71:499-510, 2009.
+
+18
+
+

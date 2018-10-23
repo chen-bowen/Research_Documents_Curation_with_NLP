@@ -1,0 +1,1977 @@
+2
+1
+0
+2
+
+ 
+
+g
+u
+A
+5
+2
+
+ 
+
+ 
+ 
+]
+n
+a
+-
+a
+t
+a
+d
+
+.
+s
+c
+i
+s
+y
+h
+p
+[
+ 
+ 
+
+1
+v
+9
+0
+1
+5
+
+.
+
+8
+0
+2
+1
+:
+v
+i
+X
+r
+a
+
+An intermediate distribution between Gaussian and Cauchy
+
+distributions
+
+Tong Liu1, Ping Zhang2, Wu-Sheng Dai1,3∗and Mi Xie1,3†
+
+1) Department of Physics, Tianjin University, Tianjin 300072, P. R. China
+
+2) Department of Finance, School of Economics, Nankai University, Tianjin 300072, P. R. China
+
+3) LiuHui Center for Applied Mathematics, Nankai University & Tianjin University, Tianjin 300072, P. R. China
+
+Abstract
+
+In this paper, we construct an intermediate distribution linking the Gaussian and the
+
+Cauchy distribution. We provide the probability density function and the corresponding char-
+
+acteristic function of the intermediate distribution. Because many kinds of distributions have
+
+no moment, we introduce weighted moments. Speciﬁcally, we consider weighted moments
+
+under two types of weighted functions: the cut-oﬀ function and the exponential function.
+
+Through these two types of weighted functions, we can obtain weighted moments for almost
+
+all distributions. We consider an application of the probability density function of the inter-
+
+mediate distribution on the spectral line broadening in laser theory. Moreover, we utilize the
+
+intermediate distribution to the problem of the stock market return in quantitative ﬁnance.
+
+Keywords: intermediate distribution; Gaussian distribution; Cauchy distribution; q-Gaussian dis-
+tribution; weighted moment; spectral line broadening; stock market return
+
+1
+
+Introduction
+
+In statistics, the Gaussian distribution is a standard distribution satisfying the central limit the-
+orem; the Cauchy distribution, also called the Lorentzian distribution, however, typically fails to
+be tamed by the central limit theorem [1]. In the meantime, these two kinds of distributions both
+belong to inﬁnitely divisible distributions [2, 3, 4]. They have some similarities, such as unimodal-
+ity, symmetry and the same domain of deﬁnition. Such similar properties are so attractive that
+stimulate one to ﬁnd an intermediate distribution to link up the Gaussian and the Cauchy distri-
+bution. The Student-t distribution [5] is the ﬁrst distribution that realizes the purpose linking the
+two distributions. Neverthelessthe Student-t distribution is not the unique one. In this paper, we
+provide another kind of distribution linking the Gaussian and the Cauchy distribution.
+
+First, we introduce an intermediate distribution which can reduce to the Gaussian and the
+Cauchy distribution at some certain values of a parameter. Second, instead of conventional mo-
+ments, we consider the weighted moment of a distribution. Many distributions have no moments
+
+∗Email: daiwusheng@tju.edu.cn
+†Email: xiemi@tju.edu.cn
+
+1
+
+since the moment of such distributions diverges. To seek moments, a weighted moment is intro-
+duced. By the weighted moment, rather than the conventional moment, one can calculate the
+moment in almost all kinds of distributions, such as Gaussian, Cauchy, and Student-t distribu-
+tions and the distribution provided in the present paper. Third, we give two applications of the
+intermediate distribution: one is in laser theory and the other is in quantitative ﬁnance.
+
+Speciﬁcally, as is well known, each probability density function (PDF) corresponds a character-
+istic function uniquely through a Fourier transformation [6, 7, 8], which enlightens one to construct
+a PDF starting from a characteristic function. From this viewpoint, we provide a distribution that
+bridges the gap between the Gaussian and the Cauchy distribution by analyzing their characteristic
+functions in this paper.
+
+Next, we introduce a weighted moment, because the conventional moment fails to converge
+in many distributions [6], e.g., the Cauchy distribution does not have conventional moments.
+Nevertheless, the moment is one of the most important concepts in statistics. Many properties are
+reﬂected by each order moment, such as deviations and variances. If a distribution does not have
+moments, it makes diﬃculties to discuss the properties described by the moment. Therefore, we
+consider the weighted moment to overcome such a defect. We, speciﬁcally, discuss two types of
+weighted moments in this paper.
+
+When considering complex systems, the concept of generalized distribution is widely discussed.
+An important generalization of the Gaussian distribution is the Tsallis distribution [9, 10, 11]
+(the Student-t distribution mentioned above is a special case of the Tsallis distribution). Recent
+researches show that a dissipative optical lattice system will display the Tsallis distribution [12].
+In quantitative physics, it is shown that one can construct stock price models based on the Tsallis
+distribution [13]. In addition, some other kinds of generalized statistics and the applications are
+also discussed in the literature [14, 15].
+
+Furthermore, we suggest an application of the intermediate distribution on spectral line broad-
+ening in laser theory. The homogeneous broadening due to collisions and spontaneous emissions
+is approximated by the Cauchy distribution, and the inhomogeneous broadening due to Doppler
+eﬀects is approximated by the Gaussian distribution [16]. Since the two kinds of broadenings
+exist simultaneously, we suggest to use the intermediate distribution to describe the spectral line
+broadening. In general, a realistic system always cannot be exactly described by an ideal theoret-
+ical model. Therefore, some intermediate models are suggested to describe complex systems. For
+example, it is found that a magnetic system obeys a kind of intermediate statistics rather than
+Bose-Einstein statistics [17]. Moreover, some composite particles composed of some fermions may
+behave like bosons and obey Bose-Einstein statistics when they are far from each other; when they
+come closer together, however, the fermions in the composite particles can feel each other, and the
+statistics of the composite particles will deviate from exact Bose-Einstein statistics [18]. Such a
+composite-particle system will obey a certain kind of intermediate statistics. For this reason, some
+intermediate theories are considered [19, 20, 21, 22].
+
+At last, we apply the intermediate distribution to describe the stock market return in quantita-
+tive ﬁnance. The stock market return is the return that we obtain from stock market by buying and
+selling stocks or get dividends by the company whose stock you hold. Stock market returns include
+two parts: capital gain and dividend income. In the Black-Scholes stock option pricing model [23]
+and the capital asset pricing model (CAPM) [24, 25, 26], the stock market price is assumed to
+follow lognormal distribution, which means that stock market returns follow the Gaussian distri-
+bution. Nevertheless, in real world, stock market returns disobey the Gaussian distribution. The
+
+2
+
+characteristics of stock market return distribution is sharp peak and fat tails. The intermediate
+distribution can ﬁt the stock market return better than the Gaussian distribution. Moreover, in
+the ﬁtting results, we also compare the intermediate distribution with the q-Gaussian distribution,
+which generalizes the Gaussian distribution in statistics [27]. The distribution of the stock market
+return plays a fundamental role in pricing theory. Based on the intermediate distribution, we can
+price the stock price and the option in line with the realistic.
+
+The structure of this paper is as follows.
+
+In section 2, an intermediate distribution linking
+the Gaussian and the Cauchy distribution is constructed.
+In section 3, the weighted moment
+and some properties of the moment are discussed. In section 4, a function is introduced to link
+the intermediate and the Gaussian distribution smoothly.
+In section 5, an application of the
+intermediate distribution to spectral line broadening in laser theory is discussed. In section 6, the
+intermediate distribution is utilized to ﬁt the probability density function with respect to the stock
+market return. The conclusion and outlook are given in Section 7.
+
+2 The Construction of the intermediate distribution
+
+In this section, we introduce an intermediate distribution. The PDF of the intermediate distribu-
+tion is
+
+p (x, µ, σ, ν) =
+
+cos(cid:18) x − µ
+
+ν
+
+ln t(cid:19) tσ2/ν 2
+
+−1 exp(cid:20)(cid:18)σ2 −
+
+σ2
+
+ν2(cid:19) t(cid:21) dt,
+
+0
+
+1
+
+νπ exp (σ2 − σ2/ν2)Z 1
+
+(ν > 0, σ > 0)
+
+and the corresponding characteristic function is
+
+fν (k) = exp(cid:26)ikµ −
+
+σ2
+
+ν |k| + σ2(cid:18)1 −
+
+1
+
+ν(cid:19) [exp (−ν |k|) − 1](cid:27) .
+
+(1)
+
+(2)
+
+Such a distribution will recover the Gaussian and the Cauchy distribution when ν → 0 and ν → 1,
+respectively.
+
+In the following, we deduce the PDF and the corresponding characteristic function in detail.
+
+2.1 The characteristic function of the intermediate distribution
+
+At the earliest, the unique general formula for any characteristic function of inﬁnitely divisible
+distribution with ﬁnite variance was found by Kolmogorov. Levy and Khintchine generalized
+Kolmogorov’s result and discovered the famous Levy-Khintchine formula [4, 6, 8, 28]. The Levy-
+Khintchine formula is also valid to all inﬁnitely divisible distributions.
+
+According to the Levy-Khintchine formula, all characteristic functions of inﬁnitely divisible
+
+distributions can be represented by [4, 6, 8, 28]
+
+f (k) = exp(cid:20)ikµ +Z +∞
+
+−∞ (cid:18)eiky − 1 −
+
+iky
+
+1 + y2(cid:19) 1 + y2
+
+y2 dG (y)(cid:21) ,
+
+(3)
+
+where µ is a real constant and G (y) is a real, bounded, and nondecreasing function of y. Diﬀerent
+G (y)’s generate diﬀerent distributions.
+
+What we want to do is to introduce a function linking Gaussian and Cauchy distributions. We
+
+construct the function G (y, ν) as
+
+G (y, ν) =
+
+σ2
+π
+
+arctan
+
+y
+ν
+
++
+
+σ2
+2
+
+, (ν > 0, σ > 0).
+
+(4)
+
+3
+
+ObviouslyG (y, ν) is a real, bounded, and nondecreasing function of y from −∞ to +∞. Because
+G (y, ν) satisﬁes the requirements of the Levy-Khintchine formula, it corresponds to a characteristic
+function of a certain distribution. The function G (y, ν) recovers the characteristic functions of
+Gaussian and Cauchy distributions when ν → 0 and ν → 1, respectively:
+
+G (y, 0) = GGauss (y) = σ2Θ (y) ,
+
+G (y, 1) = GCauchy (y) =
+
+σ2
+π
+
+arctan y +
+
+σ2
+2
+
+,
+
+(5)
+
+(6)
+
+where Θ (y) is the step function. In this paper, the intermediate distribution is generated from
+G (y, ν) in Eq. (4).
+
+For simplicityintroduce
+
+H (y) =
+
+∂G
+∂y
+
+=
+
+σ2ν
+
+π (y2 + ν2)
+
+.
+
+Inserting H (y) into the Levy-Khintchine formula (3), we have
+
+(7)
+
+(8)
+
+(9)
+
+dy(cid:21) .
+
+fν (k) = exp(cid:20)ikµ +Z +∞
+
+−∞
+
+eiky 1 + y2
+
+y2 H (y) dy
+H (y)
+
+y
+
+−Z +∞
+
+−∞
+
+1 + y2
+
+y2 H (y) dy − ikZ +∞
+PZ +∞
+
+dy = 0,
+
+H (y)
+
+y
+
+−∞
+
+−∞
+
+Here
+
+where P represents the Cauchy principal value. Performing the Fourier transformation, the result
+of the ﬁrst integral in Eq. (8) becomes
+
+Z +∞
+
+−∞
+
+eiky 1 + y2
+
+y2 H (y) dy = −
+
+σ2
+
+ν |k| + σ2(cid:18)1 −
+
+1
+
+ν2(cid:19) exp (−ν |k|) ,
+
+and the second integral is
+
+Z +∞
+
+−∞
+
+1 + y2
+
+y2 H (y) dy = σ2(cid:18)1 −
+
+1
+
+ν2(cid:19) .
+
+(10)
+
+(11)
+
+Finallythe characteristic function of the intermediate distribution generated by Eq. (4) is shown
+as Eq. (2).
+
+2.2 The PDF of the intermediate distribution
+
+Now, we deduce the PDF of the intermediate distribution corresponding to the characteristic
+function given by Eq. (2).
+
+Facilitating the inverse Fourier transformation, we rewrite fν (k) as
+
+fν (k) = exp(cid:26)ikµ −
+
+σ2
+
+1
+
+1
+
+ν2(cid:19) [exp (−ν |k|) − 1](cid:27)
+
+ν |k| + σ2(cid:18)1 −
+ν2(cid:19)(cid:21)
+ν2(cid:19) exp (νk)(cid:21) Θ (−k)
+ν2(cid:19) exp (−νk)(cid:21) Θ (k)(cid:27) .
+
+= exp(cid:20)ikµ − σ2(cid:18)1 −
+×(cid:26)exp(cid:20) σ2
+k + σ2(cid:18)1 −
++ exp(cid:20)−
+k + σ2(cid:18)1 −
+
+ν
+σ2
+ν
+
+1
+
+1
+
+4
+
+(12)
+
+Then, performing the inverse Fourier transformation to fν (k) gives
+
+p (x, µ, σ, ν) =
+
+1
+√2πF −1 [fν (k) , k, x]
+ν2 − 1(cid:19)(cid:21)−σ2/ν 2
+ν2 − 1(cid:19)(cid:21)(cid:20)σ2(cid:18) 1
+ν2 − 1(cid:19)(cid:21)−i(x−µ)/ν
+Γ(cid:20)i
+x − µ
+Γ(cid:20)−i
+x − µ
+
+ν2 − 1(cid:19)(cid:21)i(x−µ)/ν
+
+σ2
+
+σ2
+
++
+
++
+
+ν
+
+ν
+
+1
+
+=
+
+1
+νπ
+
+exp(cid:20)σ2(cid:18) 1
+2((cid:20)σ2(cid:18) 1
+×
++(cid:20)σ2(cid:18) 1
+where Γ (α, z0, z1) =R z1
+When ν → 0 and ν → 1, the intermediate distribution p (x, µ, σ, ν) given by Eq. (1) reduces to
+
+tα−1e−tdt is the generalized incomplete gamma function. Here p (x, µ, σ, ν)
+is a real function of x, because the two parts in the braces are complex conjugate and can be rewrit-
+ten as a manifest real form as Eq. (1).
+
+ν2 − 1(cid:19)(cid:21)
+ν2 − 1(cid:19)(cid:21)) ,
+
+ν2 , 0, σ2(cid:18) 1
+
+ν2 , 0, σ2(cid:18) 1
+
+(13)
+
+z0
+
+the Gaussian distribution
+
+and the Cauchy distribution
+
+p (x, µ, σ, 0) =
+
+1
+
+√2πσ
+
+exp"−
+
+(x − µ)2
+
+2σ2
+
+#
+
+p (x, µ, σ, 1) =
+
+σ2
+π
+
+1
+
+σ4 + (x − µ)2 ,
+
+respectively.
+
+3 The weighted moment
+
+(14)
+
+(15)
+
+In this section, we introduce weighted moments and discuss their behaviors.
+
+The reason why we consider the weighted moment is that the conventional moment diverges
+in many distributions, such as the Cauchy distribution. To obtain and compare the moment
+between diﬀerent distributions, we introduce the weighted function to seek a convergent moment.
+A parameter is used to adjust the weighted function. When the parameter takes a certain value,
+the weighted function reduces to 1 and coincides with the conventional one. Speciﬁcally, we discuss
+the weighted moment with the cut-oﬀ weighted function and the exponential weighted function.
+
+The moment is one of the essential concepts in statistics. It is because that the even order
+moment, especially the second order moment, reﬂects the deviation of a quantity that is estimated.
+It is inconvenient for us to analyze the deviation of this quantity that a distribution does not have
+the even order moments. Moreover, the mean value of a quantity can be expanded as a series of
+the moments since the quantity can be technically expanded as a power series.
+
+3.1 The moment and the weighted moment
+
+In this section, we introduce the weighted moment.
+
+The central moment in statistics is deﬁned as
+
+hxmi =Z +∞
+
+−∞
+
+(x − µ)m p (x − µ) dx =Z +∞
+
+−∞
+
+xmp (x) dx
+
+(m ≥ 0) .
+
+(16)
+
+5
+
+Note that one also considers another kind of moment, the origin moment hxmiorigin =R +∞
+with m ≥ 0, in statistics. We can easily ﬁnd that the value of the origin moment depends on the
+central site x = µ of the distribution, while the central moment is independent on the site x = µ.
+Thus, the central moment is more natural than the origin moment. We will only discuss the central
+moment in this paper.
+
+−∞ xmp (x − µ) dx
+
+If p (x) is an even function, the Cauchy principal value of the odd order moments vanishes
+
+The even order moment reads
+
+−∞
+
+(cid:10)x2n+1(cid:11) = PZ +∞
+(cid:10)x2n(cid:11) =Z +∞
+
+−∞
+
+x2n+1p (x) dx = 0, (n = 0, 1, 2,··· ) .
+
+x2np (x) dx, (n = 0, 1, 2,··· ) .
+
+The Gaussian distribution has all even order central moments:
+
+(cid:10)x2n(cid:11) =Z +∞
+
+−∞
+
+dx
+
+x2n
+√2πσ
+
+exp(cid:18)−
+
+x2
+
+2σ2(cid:19) =
+
+1
+√π
+
+2nσ2nΓ(cid:18)n +
+
+1
+
+2(cid:19) ,
+
+where Γ (z) is the Euler gamma function. As is well known, the Cauchy distribution, however,
+does not has central moments. The intermediate distribution given by Eq. (1), like the Cauchy
+distribution, has no central moments. The 2n-th moment of Eq. (1)
+
+(17)
+
+(18)
+
+(19)
+
+(20)
+
+0
+
+1
+
+dttσ2/ν 2
+
+(cid:10)x2n(cid:11) =
+
+νπ exp(cid:0)σ2 − σ2
+
+ν 2(cid:1)Z 1
+diverges, because the integral R +∞
+−∞ dxxm cos(cid:0)x ln t
+hxmiw =Z +∞
+
+moments, we deﬁne a weighted moment as
+
+−∞
+
+σ2
+
+−1 exp(cid:20)(cid:18)σ2 −
+
+ν2(cid:19) t(cid:21)Z +∞
+
+dxx2n cos(cid:18)x
+ν (cid:1) does not converge on (−∞, +∞).
+
+−∞
+
+ln t
+
+ν (cid:19)
+
+In order to ﬁnd a quantity to play the role of moments to the distribution which does not have
+
+xmw (x, λ) p (x, 0, σ, ν) dx,
+
+(21)
+
+by introducing a symmetrical weighted function w (x, λ). Since w (x, λ) and p (x, 0, σ, ν) are sym-
+metrical, the Cauchy principal value of the odd order moments vanishes, and, then, only the even
+order moment
+
+(cid:10)x2n(cid:11)w =Z +∞
+
+−∞
+
+needs to be considered.
+
+x2nw (x, λ) p (x, 0, σ, ν) dx,
+
+(n = 0, 1, 2,··· )
+
+(22)
+
+In the following, we consider two weighted functions.
+
+3.2 The weighted moment with the cut-oﬀ weighted function w (x, a) =
+
+Θ (x + a) − Θ (x − a)
+
+In this section, we consider a cut-oﬀ weighted function,
+
+The even order weighted moment with the weighted function (23) is then
+
+w (x, a) = Θ (x + a) − Θ (x − a) .
+
+(cid:10)x2n(cid:11)cut−oﬀ =Z +∞
+=Z +a
+
+−a
+
+−∞
+
+x2n [Θ (x + a) − Θ (x − a)] p (x, 0, σ, x)
+
+x2np (x, 0, σ, ν) dx,
+
+(n = 0, 1, 2,··· ) ,
+
+6
+
+(23)
+
+(24)
+
+The weighted moment of the intermediate distribution:
+
+which reduces to the moment Eq. (16) when a → ∞.
+Finally, we can obtain the cut-oﬀ weighted moments, (cid:10)x2n(cid:11)cut−oﬀ.
+(cid:10)x2n(cid:11)cut−oﬀ =Z +a
+
+x2np (x, 0, σ, ν) dx
+
+−a
+
+=
+
+1
+
+a2n+1
+2n + 1
+
+0
+
+−1 exp(cid:20)(cid:18)σ2 −
+
+dttσ2/ν 2
+
+νπ exp (σ2 − σ2/ν2)
+×Z 1
+πσ2 exp (σ2 − σ2/ν2)
+× 2k+1F2k+1(cid:20)(cid:26) σ2
+ν2 ,··· ,
+
+σ2
+
+=
+
+ν
+
+a2n+1
+
+∞
+
+;
+
+σ2
+
+3
+2
+
+1
+2
+
+1
+2
+
+, n +
+
+ν2(cid:19) t(cid:21) 1F2"n +
+(−1)k
+Xk=0
+ν2(cid:27) ;(cid:26)1 +
+
+;−
+σ2(cid:17)2k
+(2k + 2n + 1) (2k)!(cid:16) ν
+σ2
+ν2(cid:27) ; σ2 −
+ν2 ,··· , 1 +
+
+σ2
+
+1
+
+ν (cid:19)2
+4(cid:18) ln t
+
+σ2
+
+ν2(cid:21) a2k,
+
+a2#
+
+(25)
+
+Here, Γ (α) = Γ (α, 0,∞), Γ (α, z0) = Γ (α, z0,∞), pFq [{a1,··· , ap} ;{b1,··· , bq} ; z] is the gener-
+alized hypergeometric function, and the integral
+
+−1 exp(cid:20)(cid:18)σ2 −
+
+σ2
+
+ν2(cid:19) t(cid:21) (ln t)2k dt
+
+tσ2/ν 2
+
+0
+
+Z 1
+=(cid:18) ν2
+
+σ2(cid:19)2k+1
+
+2k+1F2k+1(cid:20)(cid:26) σ2
+
+ν2 ,··· ,
+
+σ2
+
+ν2(cid:27) ;(cid:26)1 +
+
+σ2
+ν2 ,··· , 1 +
+
+σ2
+
+ν2(cid:27) ; σ2 −
+
+σ2
+
+ν2(cid:21)
+
+(26)
+
+is used.
+
+The weighted moment of the Cauchy distribution:
+
+(cid:10)x2n(cid:11)cut−oﬀ =Z +a
+
+−a
+
+x2np (x, 0, σ, 1) dx
+
+= (−1)n σ4n +
+
+= (−1)n σ4n +
+
+2σ2a2n−1
+
+π (2n − 1) 2F1(cid:20)(cid:26)1,
+(−1)k σ4k
+2k − 2n − 1
+
+2a2n+1
+
+πσ2
+
+Xk=1
+
+∞
+
+a−2k.
+
+1
+
+2 − n(cid:27) ;(cid:26) 3
+
+2 − n(cid:27) ;−
+
+σ4
+
+a2(cid:21)
+
+The weighted moment of the Gaussian distribution:
+
+(27)
+
+(28)
+
+(cid:10)x2n(cid:11)cut−oﬀ =Z +a
+
+−a
+
+x2np (x, 0, σ, 0) dx =
+
+2nσ2n
+
+√π (cid:20)Γ(cid:18)n +
+
+1
+
+2(cid:19) − Γ(cid:18)n +
+
+1
+2
+
+,
+
+a2
+
+2σ2(cid:19)(cid:21) .
+
+When a → ∞, the cut-oﬀ weighted moment of the Gaussian distribution reduces to the moment
+Eq. (19).
+
+3.3 The weighted moment with the exponential weighted function w (x, α) =
+
+− 1
+
+2 α
+
+e
+
+2
+
+2
+
+x
+
+In this section, we consider the exponential weight function deﬁned as
+
+w (x, α) = e−
+
+1
+
+2 α2x2
+
+.
+
+The even order weighted moment with the weighted function (29) is then
+
+(cid:10)x2n(cid:11)exp =Z +∞
+
+−∞
+
+x2ne−
+
+1
+
+2 α2x2
+
+p (x, 0, σ, ν) dx,
+
+(n = 0, 1, 2,··· ) ,
+
+7
+
+(29)
+
+(30)
+
+which reduces to the moment Eq. (16) when α → 0.
+Finally, we obtain the exponential weighted moments, (cid:10)x2n(cid:11)exp.
+
+The weighted moment of the intermediate distribution:
+
+(cid:10)x2n(cid:11)exp =Z +∞
+
+−∞
+
+x2ne−
+
+1
+
+2 α2x2
+
+p (x, 0, σ, ν) dx,
+
+=
+
+2n+ 1
+πσ2eσ2
+
+2 ν
+
+−
+
+α−2n−1
+
+2
+
+2
+
+σ
+
+ν
+
+× 2k+1F2k+1(cid:20)(cid:26) σ2
+
+ν2 ,··· ,
+
+∞
+
+σ4 (cid:19)k
+Xk=0(cid:18)−2ν2
+ν2(cid:27) ;(cid:26)1 +
+
+σ2
+
+1
+
+2(cid:19)
+Γ(cid:18)k + n +
+σ2
+ν2(cid:27) ; σ2 −
+ν2 ,··· , 1 +
+
+σ2
+
+σ2
+
+ν2(cid:21) α−2k.
+
+(31)
+
+The weighted moment of the Cauchy distribution:
+
+(cid:10)x2n(cid:11)exp =Z +∞
+
+−∞
+
+x2ne−
+
+1
+
+2 α2x2
+
+p (x, 0, σ, 1) dx
+
+=
+
+1
+π
+
+σ4nΓ(cid:18)n +
+= (−1)n σ4ne
+
+1
+
+1
+
+2 σ4α2
+
+1
+
+2(cid:19) e
+
+2 σ2α4
+
++
+
+σ2
+2π
+
+1
+2
+
+Γ(cid:18) 1
+2 − n,
+2 Γ(cid:18)n −
+
+2n+ 1
+
+σ2α4(cid:19)
+2(cid:19) α−2n+1
+
+1
+
+∞
+
+Xk=0
+
+The weighted moment of the Gaussian distribution:
+
+(cid:10)x2n(cid:11)exp =Z +∞
+
+−∞
+
+x2ne−
+
+1
+
+2 α2x2
+
+p (x, 0, σ, 0) dx =
+
+1
+√πσ
+
+2nΓ(cid:18)n +
+
+2−kσ4kα2k.
+
+(32)
+
+Γ(cid:0)k − n + 3
+2(cid:1)
+Γ(cid:0)−n + 3
+2(cid:1)
+σ2(cid:19)−n−
+
+2(cid:19)(cid:18)α2 +
+
+1
+
+1
+
+1
+2
+
+.
+
+(33)
+
+When α → 0, the weighted moment of the Gaussian distribution reduces to the moment Eq. (19).
+
+4 An alternative construction of the intermediate distribu-
+
+tion
+
+In this section, we suggest another construction of the PDF of the intermediate distribution, which
+links the intermediate distribution and the Gaussian distribution smoothly.
+
+In the PDF of the intermediate distribution, Eq. (1), the points ν = 0 is a removable singularity.
+According to the analysis in the above section, the behavior of the moment depends on the value
+of the parameter ν. The distribution have no moments unless ν → 0 so that the intermediate
+distribution, Eq. (1), reduces to the Gaussian distribution. What we want to do is to seek a certain
+way that when the parameter ν runs smoothly from a constant ν0 to 0, the distribution travels
+smoothly from the intermediate distribution to the Gaussian distribution. Especially, when ν0 = 1,
+the distribution will travel smoothly from the Cauchy distribution to the Gaussian distribution.
+
+Speciﬁcally, we insert a smooth function h (t, ν0, a, b) into the PDF of the intermediate distri-
+
+bution, Eq. (1), and then have
+
+p (x, µ, σ, ν0, t, a, b)
+1
+
+=
+
+νπ exp [σ2 − σ2/h2 (t, ν0, a, b)]
+×Z 1
+cos(cid:20)
+
+h (t, ν0, a, b)
+
+x − µ
+
+0
+
+ln ξ(cid:21) ξσ2/h2(t,ν0,a,b)−1 exp(cid:20)(cid:18)σ2 −
+
+σ2
+
+h2 (t, ν0, a, b)(cid:19) ξ(cid:21) dξ,
+
+(34)
+
+8
+
+Ν0
+
+ht,Ν0,a,b
+
+st,a,b
+
+a
+
+b
+
+t
+
+a
+
+b
+
+t
+
+Figure 1: The function h (t, ν0, a, b) Eq. (35) and s (t, a, b) Eq. (36)
+
+where the function h (t, ν0, a, b) is [29, 30]
+
+h (t, ν0, a, b) =
+
+
+ν0,
+ν0
+
+t ∈ (−∞, a] ,
+t s (ξ, a, b) dξ,
+t ∈ [b, +∞) ,
+
+λ0 R b
+
+0,
+
+t ∈ (a, b) ,
+
+with λ0 =R b
+
+a s (ξ, a, b) dξ, and
+
+s (t, a, b) =( exp(cid:16) 1
+
+0,
+
+t−b − 1
+t ∈ (−∞, a] ∪ [b, +∞) .
+
+t−a(cid:17) ,
+
+t ∈ (a, b) ,
+
+(35)
+
+(36)
+
+The ﬁgures of h (t, ν0, a, b) and s (t, a, b) are shown in Figure 1.
+
+When t ≥ b, h (t, ν0, a, b) = 0, and the PDF Eq. (34) reduces to the Gaussian PDF. When
+ν0 = 1 and t ≤ a, h (t, 1, a, b) = 1, the PDF Eq. (34) reduces to the Cauchy PDF. When t runs
+from a to b, the distribution travels from the intermediate distribution to the Gaussian distribution
+smoothly. Especially, when ν0 = 1, the distribution travels from the Cauchy distribution to the
+Gaussian distribution.
+
+5 Application to the problem of the spectral line broadening
+
+in laser theory
+
+In this section, we apply the intermediate distribution introduced in the present paper to the
+spectral line broadening in laser theory.
+
+In laser theory, the spectral line broadening is a phenomenon due to photons emitted or ab-
+sorbed in a narrow frequency range. The spectral line broadening of laser can be approximated
+by a distribution. The Cauchy distribution and Gaussian distribution are often used to describe
+the broadening: the Cauchy distribution is used to describe the homogeneous broadening; the
+Gaussian distribution is used to describe the inhomogeneous broadening. Nevertheless, the ho-
+mogeneous and inhomogeneous broadening exist simultaneously. That is to say, in a system, the
+broadening is neither homogeneous nor inhomogeneous, but between homogeneous and inhomoge-
+neous. Therefore, we need a function to describe the mixed broadening. In this paper, we suggest
+that, instead of the Gaussian and the Cauchy distribution, one can use an intermediate distribution
+to describe the spectral line broadening.
+
+In the semiclassical approach of spectral line broadening in laser system, the material and the
+light are described by quantum mechanics and the Maxwell equations, respectively, to calculate
+
+9
+
+gDΩ
+
+Intermediate
+
+Gaussian
+Cauchy
+
+ΩFWHM
+
+DΩ
+
+Figure 2: The Gaussian, the Cauchy, and the intermediate type line shape function g (∆ω) with
+the same full width at half maximum.
+
+the interaction between the medium and the light [31]. Under the electric dipole approximation,
+the rate of absorption and stimulated emission of the medium between two energy levels is [16]
+
+W =
+
+π
+
+3n2ǫ02 |p|2 ρg (ω − ω0) ,
+
+(37)
+
+where n is the refractive index of the material, ǫ0 is the vacuum permittivity, p is the electric dipole
+moment, ρ is the energy density of the light, ω0 is the frequency coinciding with the interval of two
+energy levels deﬁned by ω0 = |E2 − E1| /. The function g (ω − ω0) in Eq. (37) can be expressed
+by a probability density distribution using to describe the broadening near the frequency ω0. It is
+clear that the rate of absorption and stimulated emission is determined by the function g (ω − ω0).
+If the life time of the system at a certain energy level is inﬁnite, g (ω − ω0) reduces to δ (ω − ω0),
+where δ (x) is the Dirac delta function. In a realistic system, the life time of an excited state is
+ﬁnite. There are many kinds of factors eﬀecting on a laser system, such as collisions, spontaneous
+emission, Doppler eﬀect, etc. These factors lead to the broadening, and make g (ω − ω0) deviate
+from δ (ω − ω0). This can be directly measured in experiments [32]. We usually use full width at
+half maximum ωF W HM of g (ω − ω0) to describe the eﬀect of the broadening. The reciprocal of
+full width at half maximum ωF W HM indicates the life time of the level.
+
+There are two kinds of mechanisms in spectral line broadening in a laser system [33]. One is
+homogeneous which arises from collisions and spontaneous emission, and it can be described by the
+Cauchy distribution. The other is inhomogeneous broadening which arises from the Doppler eﬀect
+and the dislocation of the material. The Doppler broadening can be described by the Gaussian
+distribution, but the broadening caused by the dislocation has no proper expression. In general,
+homogeneous and inhomogeneous broadenings appear in a laser system simultaneously. Therefore,
+the function g (ω − ω0) is actually between the Cauchy and Gaussian PDF.
+
+Since the intermediate distribution given by Eq. (1) is between the Gaussian and the Cauchy
+distributions, we suggest that one can use the intermediate PDF, Eq. (1), to describe the function
+g (ω − ω0). Speciﬁcally, take
+
+g (ω − ω0) = p (ω, ω0, σ, ν) ,
+
+(38)
+
+10
+
+400
+
+gDΩ
+
+300
+
+200
+
+100
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æææææææææææææææææææææææææææææææææææææææææææææææææææææææææææææææææ
+0
+-0.010
+
+-0.005
+
+æ
+æ
+
+æ
+æ
+
+0.000
+
+ΝInter=0.00255
+ΣInter=0.00171
+ΣGauss=0.00110
+ΣCauchy=0.02883
+
+æææ
+æ
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+Intermediate
+
+Gaussian
+Cauchy
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+
+æ
+æ
+æ
+
+æ
+æ
+
+æææææææææææææææææææææææææææææææææææææææææææææææææææææææææææææææææ
+0.010
+
+0.005
+
+DΩ
+
+Figure 3: The ﬁtting of the experimental line width data with the intermediate, the Gaussian, and
+the Cauchy distribution. The data are taken from Ref. [34]
+
+where p (x, µ, σ, ν) is deﬁned by the Eq. (1). The parameters σ and ν play the roles of ﬁtting
+constants. The line shape of the broadenings which have the same full width at half maximum
+ωF W HM is shown in Figure 2.
+
+We import a set of data of hydrogen Zeeman-Stark line broadening from Figure 2 (b) in Ref.
+[34] and ﬁt them with the intermediate, Cauchy, and Gaussian distribution, respectively. The
+data and the ﬁtting results are plotted in Figure 3. From the ﬁtting results, the intermediate
+distribution describes the line broadening better than the Gaussian and the Cauchy distribution.
+
+6 Application to stock market returns
+
+Gaussian distributed return is one of the most important assumptions in quantitative ﬁnance
+[24, 25, 26]. The key reason why we make this assumption is that the Gaussian distribution is
+easy to handle and we can get a lot of analytical results. The Gaussian distribution assumption,
+however, has got much criticism for its failure to describe the real world. Stock market returns in
+real world have sharp peak and fat tails distribution, which means that the probability of stock
+market crash is high.
+If we take the Gaussian distribution, the stock market crash is almost
+impossible to happen. Nevertheless, the stock market crash is not far away from us, like the Great
+Depression and the Black Thursday. We know that the Gaussian distribution does not have those
+characteristics. Thus we deem that the Gaussian distribution is a poor model of stock market
+return, and it is inappropriate to use the Gaussian distribution to describe the stock market. In
+this section, the market return is ﬁtted by the intermediate distribution. We use S&P 500 price
+index, Dow Jones index, Nasdaq composite index, and Nikkei 225 index. The daily stock prices
+are obtained from Wind Database – a staple ﬁnancial database. All those indexes are price index,
+and we compute the return from this formula
+
+where rt is the return and pt is the stock price.
+
+rt =
+
+pt − pt−1
+
+pt−1
+
+,
+
+11
+
+ΣInter=0.01269
+ΝInter=0.02064
+Σq=0.00659
+Νq=0.32670
+
+ΣGauss=0.00796
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0
+-0.10
+
+-0.05
+
+0.00
+
+(a)
+
+Intermediate
+q Gaussian
+Gaussian
+
+return
+
+50.0
+
+10.0
+
+5.0
+
+1.0
+
+0.5
+
+ΣInter=0.01269
+ΝInter=0.02064
+Σq=0.00659
+Νq=0.32670
+
+ΣGauss=0.00796
+
+Intermediate
+q Gaussian
+Gaussian
+
+0.05
+
+0.10
+
+0.002
+
+0.005
+
+0.010
+
+0.020
+
+0.050
+
+0.100
+
+(b)
+
+Figure 4: (a) The ﬁtting of the market return of S&P 500 price index with the intermediate, the
+q-Gaussian and the Gaussian distribution. (b) The corresponding log-log plot.
+
+The q-Gaussian distribution is an important distribution, which has wide-ranging applications
+in various research scopes, as well as ﬁnancial physics [35, 36, 37]. The q-Gaussian distribution is
+derived from the minimum Tsallis entropy [38, 39]
+
+1
+
+Sq [p] =
+
+2q (cid:26)1 −Z +∞
+
+[p (x)]2q+1 dx(cid:27) ,
+with the constraints of normalization of probability 1 = R +∞
+q =R +∞
+
+σ2
+
+−∞
+
+p (x, µ, σ, q) =
+
+−∞ x2pq (x) dx. The probability density function of the q-Gaussian distribution is
+
+(0 < q < 1) ,
+
+(39)
+
+−∞ pq (x) dx and a constant variance
+
+1
+
+Aq√πσq
+
+expq"−
+
+(x − µ)2
+
+2σ2
+q
+
+# ,
+
+(40)
+
+where Aq =q 1−q
+2q(cid:17) and the q-exponential function is expq (z) =(cid:16)1 − 2q
+When q → 0, the q-Gaussian distribution returns to the Gaussian distribution, Eq. (14).
+
+2q (cid:17) /Γ(cid:16) 1
+
+q Γ(cid:16) 1−q
+
+Making use of the intermediate, the q-Gaussian and the Gaussian distribution to ﬁt the data, we
+plot the results in Figure 4-7. We can ﬁnd that the intermediate and the q-Gaussian distribution
+are much better than the Gaussian distribution. The real data have sharp peak and fat tails
+and the intermediate and the q-Gaussian distribution both give good ﬁts to this phenomenon.
+From these ﬁgures we can also ﬁnd that the intermediate distribution is somewhat more suitable
+to describe the peak of the data of stock market returns, especially for the Nikkei index, and
+the log-log plots indicate that the q-Gaussian distribution describes the fat tails better than the
+intermediate distribution.
+
+1−q z(cid:17)−1/(2q)
+
+.
+
+7 Conclusions and outlook
+
+In this paper, we construct an intermediate distribution between the Gaussian and the Cauchy
+distribution. We provide the PDF and the corresponding characteristic function of the intermediate
+distribution. The moment, on the one hand, is used to show the mean value and the deviation
+to the mean value; on the other hand, is used as the terms of a series of a quantity. Because
+many kinds of distributions have no moment, we introduce the weighted moment. We calculate
+the weighted moment with the cut-oﬀ and the exponential weighted function, speciﬁcally. With
+the help of a smooth function, we give another expression of the intermediate distribution.
+
+12
+
+ΣInter=0.01264
+ΝInter=0.02063
+Σq=0.00667
+Νq=0.30871
+
+ΣGauss=0.00788
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0
+-0.10
+
+-0.05
+
+0.00
+
+(a)
+
+Intermediate
+q Gaussian
+Gaussian
+
+return
+
+50.0
+
+10.0
+
+5.0
+
+1.0
+
+0.5
+
+ΣInter=0.01264
+ΝInter=0.02063
+Σq=0.00667
+Νq=0.30871
+
+ΣGauss=0.00788
+
+Intermediate
+q Gaussian
+Gaussian
+
+0.05
+
+0.10
+
+0.001
+
+0.002
+
+0.005
+
+0.010
+
+0.020
+
+0.050
+
+0.100
+
+(b)
+
+Figure 5: (a) The ﬁtting of the market return of Dow Jones index with the intermediate, the
+q-Gaussian and the Gaussian distribution. (b) The corresponding log-log plot.
+
+40
+
+30
+
+20
+
+10
+
+0
+-0.10
+
+ΣInter=0.01977
+ΝInter=0.04237
+Σq=0.00877
+Νq=0.30307
+
+ΣGauss=0.01061
+
+Intermediate
+q Gaussian
+Gaussian
+
+return
+
+10.0
+
+5.0
+
+1.0
+
+0.5
+
+ΣInter=0.01977
+ΝInter=0.04237
+Σq=0.00877
+Νq=0.30307
+
+ΣGauss=0.01061
+
+Intermediate
+q Gaussian
+Gaussian
+
+-0.05
+
+0.00
+
+0.05
+
+0.10
+
+0.002
+
+0.005
+
+0.010
+
+0.020
+
+0.050
+
+0.100
+
+(a)
+
+(b)
+
+Figure 6: (a) The ﬁtting of the market return of Nasdaq composite index with the intermediate,
+the q-Gaussian and the Gaussian distribution. (b) The corresponding log-log plot.
+
+35
+
+30
+
+25
+
+20
+
+15
+
+10
+
+5
+
+0
+-0.10
+
+ΣInter=0.01269
+ΝInter=0.02064
+Σq=0.00659
+Νq=0.32670
+
+ΣGauss=0.00796
+
+Intermediate
+q Gaussian
+Gaussian
+
+Intermediate
+q Gaussian
+Gaussian
+
+return
+
+10.0
+
+5.0
+
+1.0
+
+0.5
+
+ΣInter=0.01269
+ΝInter=0.02064
+Σq=0.00659
+Νq=0.32670
+
+ΣGauss=0.00796
+
+-0.05
+
+0.00
+
+0.05
+
+0.10
+
+0.002
+
+0.005
+
+0.010
+
+0.020
+
+0.050
+
+0.100
+
+(a)
+
+(b)
+
+Figure 7: (a) The ﬁtting of the market return of Nikkei 225 index with the intermediate, the
+q-Gaussian and the Gaussian distribution. (b) The corresponding log-log plot.
+
+13
+
+As an application, the spectral line broadening in laser theory can be approximated by a
+PDF. Since the homogeneous and inhomogeneous broadenings exist simultaneously, we suggest to
+describe the line shape function by the intermediate PDF, instead of the Cauchy or the Gaussian
+PDF. The intermediate distribution is not only useful in spectral line broadening of laser but
+maybe more attractive in ﬁnancial physics [40, 41, 42]. A number of theoretical and empirical
+studies indicate that the majority of ﬁnancial data are estimated as sharp peak and fat tails PDFs,
+but the Gaussian distribution is not general enough to account the excess kurtosis [43, 44, 45].
+Our result shows that the intermediate and q-Gaussian distribution, however, comparing with the
+Gaussian distribution, are more suitable for ﬁtting the ﬁnancial data. The ﬁtting results show
+that the intermediate distribution is somewhat more suitable to describe the kurtosis and the q-
+Gaussian distribution is more suitable to describe the tails, respectively. Such results show that
+the intermediate distribution, like the q-Gaussian distribution, can also be utilized in ﬁnancial
+physics. In further study, we can use the intermediate distribution to price the option, and get the
+true value of the option. Option is one kind of derivatives which is the core of pricing theory. We
+also can price other derivatives whose price is based on the stock market return.
+
+Acknowledgements This work is supported in part by NSF of China under Grant No. 11075115.
+
+References
+
+[1] B.V. Gnedenko, A.N. Kolmogorov, 1949 Limit Theorems for Sums of independent Random
+
+Variables, Translated from Russian by Addison-Wesley, 1968.
+
+[2] S.M. Samuels, Positive-Integer-Valued Inﬁnitely Divisible Distribution, Department of Statis-
+
+tics, Division of mathematical Sciences, Purdue University, 1975.
+
+[3] E.A. Novikov, Phys. Rev. E 50 (1994) R3303.
+
+[4] K. Sato, Levy Processes and Inﬁnitely Divisible Distributions, Cambridge University Press,
+
+Cambridge, 1999.
+
+[5] V.C. Preda, Ann. Inst. Statist. Math. 34 (1982) 335.
+
+[6] L.E. Reichl, A Modern Course in Statistical Physics, 2nd edn, Wiley, New York, 1998.
+
+[7] Z.-S. She, E.C. Waymire, Phys. Rev. Lett. 74 (1995) 262.
+
+[8] D.W. Stroock, Probability Theory: An Analytic View, 2nd edn, Cambridge University Press,
+
+Cambridge, 2010.
+
+[9] C. Tsallis, R.S. Mendes, A.R. Plastino, Physica A 261 (1998) 534.
+
+[10] C. Tsallis, A. Rapisarda, A. Pluchino, E.P. Borges, Physica A 381 (2007) 143 .
+
+[11] A. Rodr´ıguez, V. Schw¨ammle, C. Tsallis, J. of Stat. Mech. (2008) P09006.
+
+[12] P. Douglas, S. Bergamini, F. Renzoni. Phys. Rev. Lett. 96 (2006) 110601.
+
+[13] L. Borland, Phys. Rev. Lett. 89 (2002) 098701.
+
+[14] E. Van der Straeten, C. Beck, Phys. Rev. E 78 (2008) 051101.
+
+14
+
+[15] E. Van der Straeten, C. Beck, Physica A, 390 (2011) 951.
+
+[16] O. Svelto, Principles of Lasers, 5th edn, Springer, New York, 2010.
+
+[17] W.-S. Dai, M. Xie, J. Stat. Mech. P04021 (2009).
+
+[18] Y. Shen, W.-S. Dai, M. Xie, Phys. Rev. A 75 (2007) 042111.
+
+[19] W.-S. Dai, M. Xie, Ann. Phys. (NY) 309 (2004) 295.
+
+[20] G. Gentile, Nuovo Cim. 17 (1940) 493.
+
+[21] W.-S. Dai, M. Xie, J. Stat. Mech. P07034 (2009).
+
+[22] W.-S. Dai, M. Xie, Physica A 331 (2004) 497.
+
+[23] F. Black, M. Scholes, Journal of Political economy 81 (1973) 637.
+
+[24] W. Sharpe, Journal of Finance 19 (1964) 425.
+
+[25] J. Lintner, Review of Economics and Statistics 47 (1965) 13.
+
+[26] J. Mossin, Econometrica 34 (1966) 768.
+
+[27] C. Tsallis, J. Stat. Phys. 52 (1988) 479.
+
+[28] D. Applebaum, Levy Processes and Stochastic Calculus, 2nd edn, Cambridge University Press,
+
+Cambridge, 2009.
+
+[29] S.S. Chern, W.H. Chen, K.S. Lam, Lectures on diﬀerential geometry,World Scientiﬁc, Singa-
+
+pore, 1999.
+
+[30] B.A. Dubrovin, A.T. Fomenko and S.P. Novikov, Modern Geometry — Methods and Appli-
+
+cations, Part 2, Springer, Berlin, 1985.
+
+[31] U. Fano, Phys. Rev. 124 (1961) 1866.
+
+[32] M. Hanif, M. Aslam, M. Riaz, S.A. Bhatti, M.A. Baig, J. Phys. B 38 (2005) S65.
+
+[33] C.E. Webb, J.D.C. Jones, Handbook of Laser Technology and Applications, Volume I, IOP
+
+Publishing, London, 2004.
+
+[34] J.Rosato, D. Boland, M.Difallah, Y.Marandet, R. Stamm, International Journal of Spec-
+
+troscopy (2010) Article ID 374372.
+
+[35] A.-H. Sato, J. Phys.: Conf. Ser. 201 (2010) 012008.
+
+[36] A.-H. Sato, Phys. Rev. E 69 (2004) 047101.
+
+[37] V. Gontis, J. Ruseckas, A. Kononoviˇcius, Physica A 389 (2010) 100.
+
+[38] M. Gell-Mann, C. Tsallis, Nonextensive Entropy Interdisciplinary Applications, Oxford Uni-
+
+versity Press, New York, 2004.
+
+[39] H. Suyari, Physica A 368 (2006) 63.
+
+[40] J.B. McDonald, W.K. Newey, Econometrics Theory 4 (1988) 428.
+
+15
+
+[41] R.J. Smith, The Economic Journal 107 (1997) 503.
+
+[42] H.K. Ryu, Journal of Econometrics 56 (1993) 397.
+
+[43] D.X. Li, H.J. Turtle, Journal of Business and Economic Statistics 18 (2000) 174.
+
+[44] R.F. Engle, Econometrica 50 (1982) 987.
+
+[45] S.Y. Park, A.K. Bera, Journal of Econometrics 150 (2009) 219.
+
+16
+
+

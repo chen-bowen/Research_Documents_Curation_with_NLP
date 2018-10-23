@@ -1,0 +1,2474 @@
+S. Khor. Application of Graph Coloring to Biological Networks (Dec 14, 2009) 
+
+Application of Graph Coloring to Biological Networks 
+
+ 
+
+ 
+
+Susan Khor 
+
+ 
+Abstract 
+
+We explore the application of graph coloring to biological networks, specifically protein-protein 
+
+interaction  (PPI)  networks.  First,  we  find  that  given  similar  conditions  (i.e.  number  of  nodes, 
+
+number  of  links,  degree  distribution  and  clustering),  fewer  colors  are  needed  to  color 
+
+disassortative  (high  degree  nodes  tend  to  connect  to  low  degree  nodes  and  vice  versa)  than 
+
+assortative  networks.  Fewer  colors  create  fewer  independent  sets  which  in  turn  imply  higher 
+
+concurrency  potential  for  a  network.  Since  PPI  networks  tend  to  be  disassortative,  we  suggest 
+
+that  in  addition  to  functional  specificity  and  stability  proposed  previously  by  Maslov  and 
+
+Sneppen (Science 296, 2002), the disassortative nature of PPI networks may promote the ability 
+
+of  cells  to  perform  multiple,  crucial  and  functionally  diverse  tasks  concurrently.  Second,  since 
+
+graph coloring is closely related to the presence  of cliques in a  graph, the significance of node 
+
+coloring information to the problem of identifying protein complexes, i.e. dense subgraphs in a 
+
+PPI  network,  is  investigated.  We  find  that  for  PPI  networks  where  1%  to  11%  of  nodes 
+
+participate  in  at  least  one  identified  protein  complex,  such  as  H.  sapien  (DIP20070219, 
+
+DIP20081014 and HPRD070609), DSATUR (a well-known complete graph coloring algorithm) 
+
+node  coloring  information  can  improve  the  quality  (homogeneity  and  separation)  of  initial 
+
+candidate  complexes.  This  finding  may  help  to  improve  existing  protein  complex  detection 
+
+methods, and/or suggest new methods.  
+
+ 
+
+Keywords: graph coloring, biological networks, degree-degree correlation, concurrency, protein 
+
+complexes 
+
+ 
+
+1 
+
+S. Khor. Application of Graph Coloring to Biological Networks (Dec 14, 2009) 
+
+Supplementary Material 
+ 
+
+SM-1 Supplementary Material for Section 2 
+
+Network formation 
+
+ 
+
+Using a different random number seed each time, two networks with power-law distributed 
+
+degree distributions are produced with the preferential attachment algorithm described in [2]. For 
+
+both networks, all nodes belong to the same component, the number of nodes N = 1,000, and the 
+
+number  of  links  M  =  4,960.  Let  these  two  networks  form  a  set  called  D0.  The  relevant 
+
+characteristics of these networks are given in Table SM-1.1 and Fig. SM-1.1.  
+
+ 
+
+ 
+
+ 
+
+ 
+
+Table SM-1.1 Node degree summary statistics for the networks. 
+
+Min  Max  Average  Std. dev.  Mod  Median 
+
+3 
+5 
+
+116 
+102 
+
+9.92 
+9.92 
+
+10.3947 
+9.2080 
+
+5 
+5 
+
+7 
+7 
+
+1
+
+1.000
+
+F
+D
+C
+
+ 
+
+d
+e
+s
+r
+e
+v
+e
+R
+
+0.100
+
+0.010
+
+0.001
+
+Degree
+
+10
+
+100
+
+1000
+
+ 
+
+Fig. SM-1.1 The reversed cumulative degree distributions of the test networks on a log-log scale. 
+
+In the first experiment (E1), assortative and disassortative versions of the networks in D0 are 
+
+formed  by  rewiring  randomly  chosen  pairs  of  links  either  to  increase  or  to  decrease  degree-
+
+degree  correlation  per  [20].  These  networks  have  little  to  no  clustering.  In  E1,  the  networks  in 
+
+D0 form the baseline or null model.  
+
+ 
+
+In the second experiment (E2), the node degree lists (which is a list of node degrees in node 
+
+label order) of the networks in D0 are fed into the algorithm in [9] to produce networks with high 
+
+clustering. Two networks are produced for each node degree list with a different random number 
+
+seed each time. Let these four networks form a set called S0. In E2, the networks in S0 form the 
+
+baseline  or  null  model.  Disassortative  and  assortative  versions  of  the  four  networks  in  S0  are 
+
+ 
+
+2 
+
+S. Khor. Application of Graph Coloring to Biological Networks (Dec 14, 2009) 
+
+produced using the algorithm in Appendix A of [9] which essentially controls the links between 
+
+the top 5% of high degree nodes. For E2, the link probability between the set of top 50 (5% × 
+
+1000)  high  degree  nodes  is  set  at  0.00  to  create  networks  more  disassortative  than  the  null 
+
+networks, and 0.25 and 0.75 to create networks more assortative than the null networks. Fig. SM-
+
+1.2 compares the clustering [19] and assortativity [12] characteristics of the E1 and E2 networks.  
+
+ 
+
+)
+
+A
+
+(
+ 
+y
+t
+i
+v
+i
+t
+a
+t
+r
+o
+s
+s
+A
+
+)
+
+C
+
+(
+ 
+g
+n
+i
+r
+e
+t
+s
+u
+C
+
+l
+
+0.6
+
+0.4
+
+0.2
+
+0.0
+
+-0.2
+
+-0.4
+
+-0.6
+
+0.75
+
+0.25
+
+null
+
+0.00
+
+assort
+
+null
+
+disassort
+
+)
+
+A
+
+(
+ 
+y
+t
+i
+v
+i
+t
+a
+t
+r
+o
+s
+s
+A
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+0
+
+-0.1
+
+-0.2
+
+-0.3
+
+14.5
+
+15.5
+
+16.5
+
+17.5
+
+14
+
+15
+
+16
+
+Network / Test problem
+
+ 
+
+0.8
+
+Network / Test problem
+
+17
+
+ 
+
+assort
+
+null
+disassort
+
+)
+
+C
+
+(
+ 
+g
+n
+i
+r
+e
+t
+s
+u
+C
+
+l
+
+0.75
+
+0.25
+
+null
+
+0.00
+
+0.7
+
+0.6
+
+0.5
+
+0.5
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+0.0
+
+14
+
+15
+
+16
+
+17
+
+14
+
+15
+
+16
+
+17
+
+Network / Test problem
+
+ 
+
+Network / Test problem
+
+ 
+Fig.  SM-1.2 Topological  characteristics  of the two networks  for  E1 (left) and  the  four  networks  for  E2 
+(right). The degree distributions of these networks are given in Fig. SM-1.1. The E2 networks labeled 15 
+and 15.5 (16 and 16.5) have the same degree distribution as the E1 network labeled 15 (16). 
+
+ 
+
+Graph Coloring Algorithms 
+
+ 
+
+The  DSATUR  (degree  saturation)  algorithm  [3]  begins  by  labeling  a  highest  degree  node 
+
+with the lowest numbered color and proceeds to color one node at a time, giving preference to 
+
+nodes of high saturation or of high degree if there is more than one node with the same amount 
+
+of  saturation,  with  the  lowest  numbered  color  without  incurring  a  conflict.  Saturation  refers  to 
+
+the  unique  number  of  colors  neighbouring  an  uncolored  node.  In  our  implementation,  colors 
+
+begin at 0 and increase by 1. We do not fix the number of colors c for a network beforehand, but 
+
+ 
+
+3 
+
+S. Khor. Application of Graph Coloring to Biological Networks (Dec 14, 2009) 
+
+instead use DSATUR to find c. Thus, the c value found may or may not be the chromatic number 
+
+of a network. DSATUR is run once per network. 
+
+ 
+
+The  hill  climbing  (HC)  algorithm  repeatedly  chooses  a  random  number  of  nodes  from  a 
+
+network to mutate, i.e. change to a randomly chosen color within a given palette, until either the 
+
+network  is  properly  colored  or  the  maximum  number  of  tries  (max_evals)  is  reached.  In  the 
+
+experiments, max_evals is set to 2 million. The number of nodes to mutate is controlled by the 
+
+mutation rate (Pm), which in the experiments is set to 0.0625, permitting HC to mutate 1 to 62 
+
+(0.0625 × N) nodes at a time. In HC the current network is reproduced with some slight random 
+
+variation  via  mutation  and  the  better  colored  or  fitter  network  of  the  parent-offspring  pair  is 
+
+selected for reproduction in the next iteration while the less fit network is discarded. HC graph 
+
+coloring is done by first using the number of colors required by DSATUR, and then as necessary, 
+
+incrementing  the  number  of  colors  until  HC  achieves  a  high  (close  to  100%)  success  rate,  i.e. 
+
+finds a proper coloring within max_evals on every run it does.  
+
+ 
+
+Method 
+
+ 
+
+DSATUR  is  run  once  per  network  and  its  results  are  averaged  over  network  type,  i.e. 
+
+disassortative,  null  and  assortative  for  E1,  and  0.00,  null,  0.25  and  0.75  for  E2.  Due  to  HC’s 
+
+stochastic  nature,  10  independent  runs  (with  a  different  random  number  seed  each  time)  are 
+
+made  for  each  network,  and  results  are  averaged  over  all  runs  per  network  type.  Unlike 
+
+DSATUR, there is no inherent order in HC’s color assignments, i.e. the highest degree node need 
+
+not be labeled with color 0, and HC may produce different but proper c-coloring of a network. 
+
+This  difference  between  algorithms  is  considered  when  evaluating  the  results.  Table  SM-1.2 
+
+illustrates the result summarization process for Fig. 1. 
+
+ 
+
+16.0 
+15.0 
+DSATUR Colors 
+6 
+7 
+24 
+
+6 
+7 
+22 
+
+ 
+
+ 
+
+Network 
+E1 
+Disassort 
+Null 
+assort 
+ 
+Colors 
+E1 
+Disassort  20/20 
+Null 
+assort 
+ 
+ 
+
+6 
+
+ 
+ 
+
+14 
+
+12 
+
+8 
+24 
+RMHC Success Rate 
+ 
+ 
+ 
+
+ 
+
+ 
+
+0/20  0/20  16/20  20/20 
+
+ 
+ 
+
+ 
+ 
+
+ 
+ 
+
+E2 
+0.00 
+Null 
+14/20  20/20  0.25 
+0.75 
+
+ 
+ 
+
+ 
+
+ 
+
+ 
+ 
+ 
+
+Table SM-1.2 
+
+ 
+
+Avg. 
+
+6 
+7 
+23 
+
+ 
+
+Network 
+E2 
+0.00 
+Null 
+0.25 
+0.75 
+
+26  Colors 
+
+15.0 
+
+15.5 
+
+16.0 
+
+16.5 
+
+DSATUR Colors 
+
+7 
+9 
+13 
+16 
+8 
+
+8 
+10 
+12 
+16 
+10 
+
+8 
+11 
+13 
+17 
+14 
+
+9 
+11 
+12 
+16 
+16 
+
+ 
+
+Avg. 
+8.00 
+10.25 
+12.50 
+16.25 
+
+18 
+
+20 
+
+17/40  40/40 
+
+RMHC Success Rate 
+ 
+ 
+
+0/40  22/40  37/40 
+
+ 
+
+ 
+
+ 
+ 
+ 
+
+ 
+ 
+
+ 
+ 
+
+32/40  39/40 
+
+ 
+
+36/40  39/40 
+
+ 
+
+4 
+
+S. Khor. Application of Graph Coloring to Biological Networks (Dec 14, 2009) 
+
+Results 
+
+ 
+
+Fig. SM-1.3 examines the coloring of the top 50  high degree nodes. The  DSATUR values 
+
+are the average (avg) and one standard deviation (sd) of color values for the top 50 high degree 
+
+nodes of each network. A low average combined with a small standard deviation indicates little 
+
+variability  in  the  coloring  of  the  top  50  high  degree  nodes.  This  simple  summary  is  not 
+
+applicable  to  HC  because  unlike  DSATUR,  HC  does  not  assign  the  lowest  numbered  color  to 
+
+nodes. Further, permutation of a proper coloring is also a proper coloring. Therefore, for HC, the 
+
+one standard deviation value of color values for the top 50 high degree nodes of the 10 random 
+
+runs is recorded, and the HC plots report the average of these standard deviations to indicate the 
+
+color range of the top 50 high degree nodes. What is important is not the predominant color of 
+
+the  nodes  of  a  network,  but  the  number  of  or  range  of  colors  of  the  nodes,  which  tells  us  the 
+
+number of independent sets and thus the groups of tasks that may execute concurrently.  
+
+r
+o
+
+l
+
+o
+c
+
+ 
+
+R
+U
+T
+A
+S
+D
+
+l
+
+r
+o
+o
+C
+C
+H
+
+ 
+
+18
+
+16
+
+14
+
+12
+
+10
+
+8
+
+6
+
+4
+
+2
+
+0
+
+9
+
+8
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+(E1) 
+
+avg
+
+sd
+
+l
+
+r
+o
+o
+C
+ 
+r
+u
+t
+a
+s
+D
+
+disassort
+
+null
+
+assort
+
+ 
+
+(E1) 
+
+l
+
+ 
+r
+o
+o
+C
+C
+H
+
+ 
+
+(E2) 
+
+avg
+
+sd
+
+dis as sort
+
+null
+
+as sort 0.75
+
+ 
+
+(E2)
+
+12
+
+10
+
+8
+
+6
+
+4
+
+2
+
+0
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+dis as s ort
+
+null
+
+as s ort
+
+ 
+
+disas s ort
+
+null 
+
+ass ort 0.75
+
+ 
+
+Fig. SM-1.3 Color summary for top 50 high degree nodes of E1 (left) and E2 (right) networks. Error bars 
+indicate  99%  confidence  interval.  Color  range  increases  significantly  as  networks  become  less 
+disassortative  (left  to  right)  denoting  that  more  independent  sets  are  created  for  the  same  number  of 
+nodes. 
+
+ 
+
+5 
+
+S. Khor. Application of Graph Coloring to Biological Networks (Dec 14, 2009) 
+
+ 
+
+The plots in Fig. SM-1.3 show that high degree nodes are partitioned into fewer independent 
+
+sets when a network is less assortative. For both DSATUR and HC, the color range of the top 50 
+
+high  degree  nodes  is  significantly  larger  for  assortative  than  disassortative  networks.  Also,  in 
+
+both E1 and E2 networks, DSATUR colors all the top 50 high degree nodes with the same color 
+
+0. This is expected for E2 since link probability is 0.00 between any pair of nodes belonging to 
+
+the top 50 high degree nodes. 
+
+  Why  are  disassortative  networks  more  colorable  with  a  smaller  palette?  Previously,  [17] 
+
+reported  that  increases  in  network  clustering  increases  graph  coloring  difficulty  due  to  shorter 
+
+path lengths and increased network cliquishness. Similarly, we find path length amongst nodes 
+
+of high degree to be a distinguishing factor between disassortative and assortative networks and a 
+
+determining factor in the number of colors required by DSATUR or by HC. Compared with their 
+
+assortative counterparts, disassortative networks have longer median path lengths amongst nodes 
+
+of high degree (q1 MPL) although there is no significant different between median path lengths 
+
+of the networks as a whole (MPL) (Fig. SM-1.4) 
+
+(E1)
+
+disassort
+
+null
+
+assort
+
+10.0
+
+9.0
+
+8.0
+
+7.0
+
+6.0
+
+5.0
+
+4.0
+
+3.0
+
+2.0
+
+1.0
+
+0.0
+
+(E2) 
+
+0.00
+
+null
+
+0.25
+
+0.75
+
+10.0
+
+9.0
+
+8.0
+
+7.0
+
+6.0
+
+5.0
+
+4.0
+
+3.0
+
+2.0
+
+1.0
+
+0.0
+
+q1 MPL
+
+q2 MPL
+
+q3 MPL
+
+MPL
+
+Max PL
+
+ 
+
+q1 MPL
+
+q2 MPL
+
+q3 MPL
+
+MPL
+
+Max PL
+
+ 
+
+Fig. SM-1.4 Median path length (MPL) of nodes by degree quartile and average network diameter (Max 
+PL)  for  E1  networks  (left)  and  for  E2  networks  (right).  Error  bars  indicate  one standard  deviation. The 
+quartiles are formed as follows: (i) unique degree values are sorted in ascending order, and (ii) this sorted 
+list is divided into four (almost) equal parts. Quartile 1 (q1) nodes are those with degree values larger than 
+or  equal  to the  minimum  value in  the  upper  quartile  of  this  sorted  list  (Quartile  1  nodes  are  those  with 
+higher degrees). Quartile 2 nodes are those with degree values larger than or equal to the median of this 
+sorted list. Quartile 3 nodes are those with degree values larger than or equal to the minimum value of the 
+lower quartile of this sorted list. Quartile 4 comprises all nodes in the network. 
+
+ 
+
+ 
+
+The  effect  of  path  length  amongst  nodes  of  high  degree  on  graph  coloring  is  intuited  as 
+
+follows: in general, by nature of having more links, nodes with high degree are more constrained 
+
+in their color choices than nodes with low degree. By preferring to fix the color of high degree 
+
+nodes,  which  DSATUR  does  explicitly  in  its  algorithm  and  HC  does  implicitly  (negative 
+
+ 
+
+6 
+
+S. Khor. Application of Graph Coloring to Biological Networks (Dec 14, 2009) 
+
+correlations are recorded between node degree and time of last successful mutation, and between 
+
+node degree and number of successful mutations), the color palette expands more slowly and less 
+
+unnecessarily.  Nodes  of  low  degree  have  more  color  choices  and  their  exact  color  can  be 
+
+determined  later  within  the  existing  color  range.  As  such,  a  network  would  be  colorable  with 
+
+fewer colors if nodes of  high degree were separated from each other but  still connected to one 
+
+another via nodes of lower degrees which are less constrained in their color choices. Longer path 
+
+lengths amongst nodes of high degree reflect networks with such characteristics, as do negative 
+
+degree-degree  correlation  or  disassortative  node  degree  mixing  pattern.  Differences  in  degree-
+
+degree  correlation  may  also  explain  the  large  performance  variation  associated  with  coloring 
+
+scale-free networks reported in [18]. 
+
+ 
+
+SM-2 Supplementary Material for Section 3 
+
+PPI datafiles 
+
+ 
+
+The PPI networks in this paper are constructed from the data sources listed in Table SM-2.1. 
+
+These data files are freely available on-line for download and the DIP 2008 dataset was the most 
+
+recent  in  the  DIP  at  the  time  of  preparing  this  paper.  Table  SM-2.2  lists  the  organisms  in  this 
+
+study.  Mammalian  does  not  refer  to  a  particular  organism  but  is  included  as  an  additional  test 
+
+network.  
+
+Table SM-2.1 PPI data sources 
+
+Details 
+
+TAP 
+
+ 
+
+Label 
+DIPYYYYMMDDMIF25  Species specific Full DIP (http://dip.doe-mbi.ucla.edu) files dated YYYYMMDD.MIF25. 
+DIP HiTHr 
+HPRD 
+
+High throughput datasets in MIF format from DIP (http://dip.doe-mbi.ucla.edu) 
+The Human Protein Reference Database (http://www.hprd.org) 
+File used: HPRD_SINGLE_PSIMI_070609.xml 
+The Yeast TAP Project (http://tap.med.utoronto.ca) 
+Files used: TAP_core.txt and MCL_clusters.txt 
+Krogan  et  al.  Global  landscape  of  protein  complexes  in  the  yeast  Saccharomyces 
+cerevisiae. Nature 2006; 440:637-643. 
+
+ 
+
+Table SM-2.2 Organisms 
+
+Full name 
+
+Short name 
+Celeg 
+Dmela 
+Ecoli 
+Hpylo 
+Hsapi 
+Scere 
+Mammalian  Mammalian 
+
+Caenorhabditis elegans 
+Drosophila melanogaster 
+Escherichia coli 
+Helicobacter pylori 
+Homo sapiens 
+Saccharomyces cerevisiae  
+
+NCBI TaxId 
+
+ 
+ 
+ 
+ 
+
+9606* 
+
+ 
+
+40674* 
+
+* Used to identify interactors and interactions for different organisms in the HPRD file. 
+
+ 
+
+7 
+
+S. Khor. Application of Graph Coloring to Biological Networks (Dec 14, 2009) 
+
+ 
+
+Table SM-2.3 gives the size of the PPI datafiles in terms of number of listed interactors and 
+
+interactions.  Self  interactions  are  those  with  only  one  distinct  interactor  listed  per  interaction. 
+
+Binary interactions are those with exactly two distinct interactors listed per interaction. Complex 
+
+interactions are those with more than two distinct interactors listed per interaction. 
+
+Table SM-2.3 Characteristics of PPI data files 
+
+ 
+
+Data source 
+
+DIP HiTHr  
+
+Gavin2002a 
+Giot2003a 
+Li2004a 
+
+TAP (2006) 
+DIP20070219MIF25 
+
+DIP20081014MIF25 
+
+HPRD (Release 8, 2009) 
+
+ 
+
+PPI network construction 
+
+Organism  DID 
+
+Interactors 
+
+Scere 
+Dmela 
+Celeg 
+Scere 
+Celeg 
+Dmela 
+Ecoli 
+Hpylo 
+Hsapi 
+Scere 
+Celeg 
+Dmela 
+Ecoli 
+Hpylo 
+Hsapi 
+Scere 
+Hsapi 
+
+Mammalian 
+
+1S 
+1D 
+1C 
+3S 
+4C 
+4D 
+4E 
+4P 
+4H 
+4S 
+5C 
+5D 
+5E 
+5P 
+5H 
+5S 
+7H 
+7X 
+
+1,361 
+7,036 
+2,633 
+2,708 
+2,646 
+7,461 
+1,858 
+710 
+1,186 
+4,968 
+2,651 
+7,505 
+1,879 
+713 
+1,645 
+4,977 
+3,214 
+6,148 
+
+Binary 
+3,221 
+20,732 
+3,966 
+7,123 
+3,976 
+22,641 
+5,928 
+1,358 
+1,427 
+17,240 
+3,979 
+22,677 
+5,937 
+1,360 
+1,806 
+17,226 
+3,555 
+18,523 
+
+Interactions 
+
+Complex 
+
+Self 
+
+0 
+0 
+0 
+
+339 
+
+0 
+1 
+
+445 
+
+0 
+13 
+779 
+
+0 
+9 
+
+445 
+
+0 
+79 
+801 
+
+9 
+
+456 
+
+0 
+
+193 
+60 
+0 
+60 
+185 
+1,041 
+
+61 
+64 
+289 
+61 
+186 
+1,052 
+
+61 
+138 
+294 
+509 
+1,583 
+
+ 
+
+Interactors  and  non-self  interactions  in  a  PPI  datafile  become  respectively  the  nodes  and 
+
+links  of  a  PPI  network.  Except  for  the  TAP  dataset,  the  topology  of  complex  interactions  is 
+
+unspecified in the PPI datafiles. As such, we first use a spanning tree (built by adding one node 
+
+at a time to the existing tree) to link all nodes participating in a complex interaction, and then use 
+
+a  parameter  Pe  which  we  introduce  to  specify  the  probability  of  adding  links  to  the  complex. 
+
+Links built in this manner are hypothetical and may coincide with actual interactions or not. The 
+
+spoke  model  is  another  way  to  handle  the  undetermined  topological  aspect  of  complex 
+
+interactions but this requires knowledge or selection of a central node (the bait) from which links 
+
+are made to all other participants of a complex [1]. The choice of Pe affects the number of links 
+
+in a PPI network with complexes, and may also affect node degree and other network statistics 
+
+such as clustering coefficient, assortativity and path length. As such, three Pe values are used in 
+
+our experiments: 0.00, 0.25 and 0.50. 
+
+ 
+
+8 
+
+S. Khor. Application of Graph Coloring to Biological Networks (Dec 14, 2009) 
+
+ 
+
+Interactions in the TAP datafile (TAP_core.txt) are all binary. The 339 complex interactions 
+
+for TAP are derived from the accompanying MCL_cluster.txt file as follows: for each cluster in 
+
+MCL_cluster.txt (there are 547 clusters, some with only two members or interactors), retain only 
+
+interactors  found  in  TAP_core.txt  and  then  count  as  a  complex,  only  those  clusters  with  more 
+
+than two members.  
+
+ 
+
+Table  SM-2.4  summarizes  the  fixed  (Pe  independent)  characteristics  of  PPI  networks 
+
+generated  from  the  PPI  datafiles  in  Table  SM-2.3.  The  number  of  nodes  in  Table  SM-2.4  may 
+
+differ  from  the  number  of  interactors  in  Table  SM-2.3  because  we  only  include  in  our  PPI 
+
+networks  those  interactors  listed  as  participants  in  an  interaction.  A  complex  node  is  a  node 
+
+participating  in  a  complex  interaction  or  equivalently  belonging  to  a  complex.  Complex  size 
+
+refers  to  the  number  of  nodes  in  a  complex.  Dividing  the  number  of  complex  nodes  by  the 
+
+number of complexes need not yield average complex size because complexes may overlap, i.e. 
+
+a  complex  node  may  belong  to  more  than  one  complex,  and  average  complex  size  counts  a 
+
+shared complex node multiple times.  
+
+ 
+
+Table SM-2.5 gives a sample of values for the variable (Pe dependent) characteristics of PPI 
+
+networks. The values may vary only for PPI networks with unspecified topology for complexes 
+
+(these networks are highlighted in gray).  
+
+ 
+
+Dealing with inaccuracies in PPI data 
+
+ 
+
+To  address  the  possibility  of  incompleteness  and  expected  high  false  positive  rate  in  PPI 
+
+data,  we  first  use  the  variation  over  time  in  the  number  of  nodes,  and  number  and  type  of 
+
+interactions per organism as observed in Tables SM-2.4 and SM-2.5 as a source of noise that is 
+
+more  plausible  than  simply  adding  and  removing  nodes  and  links  at  random  from  a  network. 
+
+Second, links of a network are rewired at  random with various proportions Pr. First 2% of the 
+
+links are rewired, then another 2%, and finally 6% to make a total of 10%. 
+
+ 
+
+9 
+
+S. Khor. Application of Graph Coloring to Biological Networks (Dec 14, 2009) 
+
+DID 
+
+1S 
+1D 
+1C 
+3S 
+4C 
+4D 
+4E 
+4P 
+4H 
+4S 
+5C 
+5D 
+5E 
+5P 
+5H 
+5S 
+7H 
+7X 
+
+Table SM-2.4 Fixed (Pe independent) characteristics of PPI networks 
+No. of  
+Nodes (a) 
+
+No. of  Complex  
+
+Complex nodes  
+
+% (100b/a) 
+
+Nodes (b) 
+
+No. of 
+
+Complex Size 
+
+Complexes  Min  Max  Avg  Stdev 
+
+1,361 
+7,027 
+2,624 
+2,708 
+2,637 
+7,451 
+1,548 
+701 
+1,173 
+4,964 
+2,640 
+7,495 
+1,561 
+704 
+1,595 
+4,971 
+2,231 
+5,716 
+
+0 
+0 
+0 
+
+2,554 
+
+0 
+3 
+
+1,233 
+
+0 
+23 
+
+1,988 
+
+0 
+27 
+
+1,233 
+
+0 
+
+166 
+1,983 
+
+26 
+956 
+
+0 
+0 
+0 
+
+339 
+
+0 
+1 
+
+445 
+
+0 
+13 
+779 
+
+0 
+9 
+
+445 
+
+0 
+79 
+801 
+
+9 
+
+456 
+
+0 
+0 
+0 
+3 
+0 
+3 
+3 
+0 
+3 
+3 
+0 
+3 
+3 
+0 
+3 
+3 
+3 
+3 
+
+0 
+0 
+0 
+49 
+0 
+3 
+89 
+0 
+4 
+55 
+0 
+5 
+89 
+0 
+5 
+55 
+4 
+12 
+
+0.00 
+0.00 
+0.00 
+94.31 
+0.00 
+0.04 
+79.65 
+0.00 
+1.96 
+40.05 
+0.00 
+0.36 
+78.99 
+0.00 
+10.41 
+39.89 
+1.17 
+16.72 
+ 
+ 
+
+0 
+0 
+0 
+6.4 
+0 
+3 
+
+- 
+- 
+- 
+
+5.9 
+
+- 
+- 
+
+13.4  12.9 
+
+- 
+
+0.5 
+8.3 
+
+0 
+3.3 
+9.4 
+0 
+3.6 
+0.7 
+13.4  12.9 
+
+- 
+
+0 
+3.3 
+9.4 
+3.1 
+3.9 
+
+- 
+
+0.6 
+8.2 
+0.3 
+1.5 
+
+Table SM-2.5 Variable (Pe dependent) characteristics of PPI networks 
+
+Pe = 0.00 
+
+Degree 
+
+Min, Max, Avg., Stdev. 
+
+Pe = 0.25 
+
+Degree 
+
+Min, Max, Avg., Stdev. 
+
+Pe = 0.50 
+
+Degree 
+
+Min, Max, Avg., Stdev. 
+
+No. of 
+Links 
+
+No. of 
+Links 
+
+1, 53, 4.7, 5.9 
+1, 178, 5.9, 9.4 
+1, 187, 3.0, 7.2 
+1, 141, 5.3, 7.5 
+1, 187, 3.0, 7.2 
+1, 178, 6.1, 9.8 
+
+1, 248, 11.7, 26.1 
+
+1, 54, 3.9, 5.4 
+1, 37, 2.5, 3.0 
+
+1, 283, 8.9, 13.8 
+1, 187, 3.0, 7.2 
+1, 178, 6.1, 9.8 
+
+1, 252, 11.6, 26.0 
+
+1, 54, 3.9, 5.4 
+1, 37, 2.4, 2.8 
+
+1, 283, 8.9, 13.8 
+
+1, 97, 3.2, 6.2 
+
+1, 191, 6.7, 10.9 
+
+ 
+ 
+ 
+ 
+ 
+
+22,642 
+16,176 
+
+ 
+
+1,443 
+31,862 
+
+ 
+
+22,693 
+16,195 
+
+ 
+
+1,904 
+31,737 
+3,563 
+19,397 
+
+ 
+ 
+ 
+ 
+ 
+
+1, 178, 6.1, 9.8 
+
+1, 412, 20.8, 44.7 
+
+ 
+
+1, 37, 2.5, 3.0 
+
+1, 283, 12.8, 20.4 
+
+ 
+
+1, 178, 6.1, 9.8 
+
+1, 428, 20.7, 44.3 
+
+ 
+
+1, 37, 2.4, 2.8 
+
+1, 283, 12.8, 20.2 
+
+1, 97, 3.2, 6.2 
+
+1, 190, 6.8, 11.0 
+
+ 
+ 
+ 
+ 
+ 
+
+22,643 
+21,964 
+
+ 
+
+1,445 
+40,771 
+
+ 
+
+22,694 
+21,895 
+
+ 
+
+1,920 
+40,719 
+3,564 
+19,614 
+
+ 
+ 
+ 
+ 
+ 
+
+1, 178, 6.1, 9.8 
+
+1, 523, 28.4, 57.8 
+
+ 
+
+1, 37, 2.5, 3.0 
+
+1, 321, 16.4, 27.6 
+
+ 
+
+1, 178,6.1, 9.8 
+
+1, 524, 28.1, 57.4 
+
+ 
+
+1, 37, 2.4, 2.8 
+
+1, 309, 16.4, 27.5 
+
+1, 97, 3.2, 6.2 
+
+1, 188, 6.9, 11.0 
+
+Cells are left blank if there is no change in value. 
+
+ 
+
+10 
+
+DID  No. of 
+Links 
+
+1S 
+3,221 
+1D  20,732 
+1C 
+3,966 
+7,123 
+3S 
+4C 
+3,976 
+4D  22,642 
+4E 
+9,047 
+1,358 
+4P 
+4H 
+1,443 
+4S  22,178 
+5C 
+3,979 
+5D  22,689 
+9,087 
+5E 
+5P 
+1,360 
+5H 
+1,892 
+5S  22,158 
+7H 
+3,561 
+7X  19,181 
+
+ 
+
+ 
+
+ 
+
+ 
+
+S. Khor. Application of Graph Coloring to Biological Networks (Dec 14, 2009) 
+
+PPI network naming convention 
+
+ 
+
+To  ease  the  identification  of  PPI  networks  and  their  variations  in  the  results,  we  assign 
+
+numerical labels (NID) to the PPI networks as follows: NID = ODID + Pe + Pr. For instance, the 
+
+NID of a PPI network for S.  cerevisiae built from dataset  DIP20081014MIF25  with Pe  = 0.25 
+
+and  Pr  =  0.04  is  4.29.  ODID  (Table  SM-2.6)  arranges  the  networks  by  data  file  chronological 
+
+order and by organism. Pe for networks without complex interactions is 0.00.  
+
+ 
+
+ 
+ 
+
+6  7  8  9  10  11  12  13  14  15  16  17  18 
+ODID  1  2  3  4  5 
+DID  1S  3S  4S  5S  1D  4D  5D  1C  4C  5C  4E  5E  4P  5P  4H  5H  7H  7X 
+
+Table SM-2.6 ODID 
+
+SM-3 Supplementary Material for Section 4 
+
+Network clusters and Protein complexes 
+
+ 
+
+Protein complexes often form network clusters, i.e. densely linked subgraphs, and network 
+
+clustering forms the basis of protein complex detection algorithms such as HCS [13], MCODE 
+
+[1] and RNSC [10]. Wherever possible, we use the term ‘complex’ for a biologically meaningful 
+
+cluster of protein nodes which has been tagged as such, and ‘cluster’ for a group of nodes with 
+
+high link density. A cluster need not be a complex. 
+
+ 
+
+Complex  interactions  are  considered  as  protein  complexes.  However,  this  does  not  mean 
+
+that there are no protein complexes in PPI networks with no complex interactions specified. The 
+
+protein complexes in these networks, e.g. 1S and 1D, are just not explicitly identified as such in 
+
+their datafiles, and we exclude them from our work in section 4 of the paper. Information about 
+
+protein complexes for 1S and 1D can be derived from other biological databases e.g. MIPS. But 
+
+we  decided  to  test  more  recent  PPI  networks  and  these  have  complex  interactions  explicitly 
+
+defined  in  their  datafiles.  No  doubt  there  are  other  means  of  creating  PPI  networks  and 
+
+discovering their complexes, e.g. combining different data sources, but these are not dealt with in 
+
+our current work.  
+
+ 
+
+11 
+
+S. Khor. Application of Graph Coloring to Biological Networks (Dec 14, 2009) 
+
+Results 
+
+ 
+
+Fig. SM-3.1 compares pairs of corresponding after the results are summarized by ODID and 
+
+Pe.  
+
+ 
+
+1.2
+
+1.0
+
+0.8
+
+v
+o
+c
+
+0.6
+
+0.4
+
+0.2
+
+0.0
+
+(a) 
+
+(b) 
+
+1.2
+
+1.0
+
+0.8
+
+v
+o
+c
+
+0.6
+
+0.4
+
+0.2
+
+0.0
+
+average C
+
+average D
+
+median C
+
+median D
+
+0.00
+
+5.00
+
+10.00
+
+15.00
+
+20.00
+
+0.00
+
+5.00
+
+10.00
+
+15.00
+
+20.00
+
+NID
+
+C 
+
+D
+
+(c)
+
+1.2
+
+1.0
+
+0.8
+
+c
+c
+a
+
+0.6
+
+0.4
+
+0.2
+
+0.0
+
+ 
+
+0.08
+
+0.06
+
+a
+p
+e
+s
+
+0.04
+
+0.02
+
+0.00
+
+NID
+
+C
+
+D
+
+ 
+
+(d)
+
+0.00
+
+5.00
+
+10.00
+
+15.00
+
+20.00
+
+0.00
+
+5.00
+
+10.00
+
+15.00
+
+20.00
+
+NID
+
+ 
+
+NID
+
+Fig. SM-3.1 Comparison of the ‘after’ clustering quality statistics 
+
+ 
+
+ 
+
+ 
+
+Tables  SM-3.1a  and  SM-3.1b  contain  data  produced  for  5S  (S.  cerevisiae  from 
+
+DIP20081014MIF25) to illustrate the summarization process described in section 4.3. The ODID 
+
+for 5S is 4. Col notes the average values (Avg.) compared in Figs. 9 and SM-3.1. 
+
+ 
+
+12 
+
+S. Khor. Application of Graph Coloring to Biological Networks (Dec 14, 2009) 
+
+Table SM-3.1a Basic algorithm (Avg. Color, ‘C’) results for 5S 
+
+Before 
+
+After 
+
+NID  Avg. 
+cov 
+
+Col 
+
+ 
+
+Median 
+
+cov 
+
+ 
+
+Acc 
+
+Sepa 
+
+Avg. 
+cov 
+
+Median 
+
+cov 
+
+Acc 
+
+Sepa 
+
+Avg. 
+cov 
+
+ 
+
+ 
+
+SM-3.1a  SM-3.1b  SM-3.1c  SM-3.1d 
+
+9b 
+
+After - Before 
+
+Median 
+
+cov 
+
+9c 
+
+Acc 
+
+Sepa 
+
+9d 
+
+9e 
+
+4.00  0.4662  0.4366  0.0026  0.0002  0.4769 
+
+0.4463 
+
+0.0028 
+
+0.0003  0.0107  0.0097  0.0002  0.0001 
+
+4.02  0.4401  0.4150  0.0024  0.0002  0.4532 
+
+0.4281 
+
+0.0029 
+
+0.0003  0.0131  0.0131  0.0005  0.0001 
+
+4.04  0.4182  0.3928  0.0021  0.0002  0.4301 
+
+0.3995 
+
+0.0027 
+
+0.0003  0.0119  0.0067  0.0006  0.0001 
+
+4.10  0.3526  0.3212  0.0015  0.0001  0.3628 
+
+0.3320 
+
+0.0016 
+
+0.0003  0.0102  0.0108  0.0001  0.0002 
+
+ODID 
++ Pe 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Avg.  0.4193  0.3914  0.0022  0.0002  0.4308 
+
+0.4015 
+
+0.0025 
+
+0.0003  0.0115  0.0101  0.0004  0.0001  4.00 
+
+4.25  0.4428  0.4090  0.0022  0.0002  0.4502 
+
+0.4154 
+
+0.0023 
+
+0.0002  0.0074  0.0064  0.0001  0.0000 
+
+4.27  0.4182  0.3796  0.0016  0.0001  0.4279 
+
+0.3890 
+
+0.0018 
+
+0.0002  0.0097  0.0094  0.0002  0.0001 
+
+4.29  0.4000  0.3654  0.0016  0.0001  0.4079 
+
+0.3659 
+
+0.0017 
+
+0.0002  0.0079  0.0005  0.0001  0.0001 
+
+4.35  0.3432  0.3111  0.0011  0.0001  0.3534 
+
+0.3261 
+
+0.0012 
+
+0.0001  0.0102  0.0150  0.0001  0.0000 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Avg.  0.4011  0.3663  0.0016  0.0001  0.4099 
+
+0.3741 
+
+0.0018 
+
+0.0002  0.0088  0.0078  0.0001  0.0001  4.25 
+
+4.50  0.4635  0.4602  0.0023  0.0001  0.4701 
+
+0.4642 
+
+0.0023 
+
+0.0002  0.0066  0.0040  0.0000  0.0001 
+
+4.52  0.4381  0.4296  0.0019  0.0001  0.4448 
+
+0.4341 
+
+0.0020 
+
+0.0002  0.0067  0.0045  0.0001  0.0001 
+
+4.54  0.4223  0.4116  0.0018  0.0001  0.4296 
+
+0.4248 
+
+0.0019 
+
+0.0002  0.0073  0.0132  0.0001  0.0001 
+
+4.60  0.3662  0.3432  0.0011  0.0001  0.3752 
+
+0.3512 
+
+0.0014 
+
+0.0001  0.0090  0.0080  0.0003  0.0000 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Avg.  0.4225  0.4112  0.0018  0.0001  0.4299 
+ 
+ 
+
+0.4186 
+
+0.0019 
+
+0.0002  0.0074  0.0074  0.0001  0.0001  4.50 
+
+Table SM-3.1b Alternative algorithm (Degree, ‘D’) results for 5S 
+
+Before 
+
+After 
+
+NID  Avg. 
+cov 
+
+Col 
+
+ 
+
+Median 
+
+cov 
+
+ 
+
+Acc 
+
+Sepa 
+
+Avg. 
+cov 
+
+Median 
+
+cov 
+
+Acc 
+
+Sepa 
+
+Avg. 
+cov 
+
+ 
+
+ 
+
+SM-3.1a  SM-3.1b  SM-3.1c  SM-3.1d 
+
+9b 
+
+cov 
+
+9c 
+
+9d 
+
+9e 
+
+After - Before 
+Median 
+
+Acc 
+
+ODID 
++ Pe 
+
+Sepa 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+4.00  0.4665  0.4425  0.0025  0.0002  0.4765 
+
+0.4459 
+
+0.0026 
+
+0.0002  0.0100  0.0034  0.0001  0.0000 
+
+4.02  0.4411  0.4099  0.0022  0.0002  0.4527 
+
+0.4175 
+
+0.0023 
+
+0.0002  0.0116  0.0076  0.0001  0.0000 
+
+4.04  0.4162  0.3793  0.0020  0.0002  0.4295 
+
+0.3884 
+
+0.0021 
+
+0.0002  0.0133  0.0091  0.0001  0.0000 
+
+4.10  0.3518  0.3111  0.0014  0.0001  0.3679 
+
+0.3333 
+
+0.0015 
+
+0.0002  0.0161  0.0222  0.0001  0.0001 
+
+Avg.  0.4189  0.3857  0.0020  0.0002  0.4317 
+
+0.3963 
+
+0.0021 
+
+0.0002  0.0128  0.0106  0.0001  0.0000  4.00 
+
+4.25  0.4473  0.4246  0.0022  0.0002  0.4578 
+
+0.4286 
+
+0.0022 
+
+0.0002  0.0105  0.0040  0.0000  0.0000 
+
+4.27  0.4210  0.3788  0.0019  0.0002  0.4324 
+
+0.3920 
+
+0.0020 
+
+0.0002  0.0114  0.0132  0.0001  0.0000 
+
+4.29  0.4003  0.3636  0.0017  0.0001  0.4139 
+
+0.3694 
+
+0.0018 
+
+0.0002  0.0136  0.0058  0.0001  0.0001 
+
+4.35  0.3468  0.3041  0.0012  0.0001  0.3648 
+
+0.3333 
+
+0.0013 
+
+0.0001  0.0180  0.0292  0.0001  0.0000 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Avg.  0.4039  0.3678  0.0018  0.0002  0.4172 
+
+0.3808 
+
+0.0018 
+
+0.0002  0.0134  0.0131  0.0001  0.0000  4.25 
+
+4.50  0.4687  0.4563  0.0020  0.0002  0.4797 
+
+0.4712 
+
+0.0021 
+
+0.0002  0.0110  0.0149  0.0001  0.0000 
+
+4.52  0.4410  0.4333  0.0018  0.0001  0.4542 
+
+0.4443 
+
+0.0018 
+
+0.0002  0.0132  0.0110  0.0000  0.0001 
+
+4.54  0.4227  0.4070  0.0018  0.0001  0.4359 
+
+0.4144 
+
+0.0018 
+
+0.0002  0.0132  0.0074  0.0000  0.0001 
+
+4.60  0.3591  0.3347  0.0012  0.0001  0.3750 
+
+0.3399 
+
+0.0012 
+
+0.0001  0.0159  0.0052  0.0000  0.0000 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Avg.  0.4229  0.4078  0.0017  0.0001  0.4362 
+ 
+
+0.4175 
+
+0.0017 
+
+0.0002  0.0133  0.0096  0.0000  0.0001  4.50 
+
+ 
+
+ 
+
+ 
+
+13 
+
+

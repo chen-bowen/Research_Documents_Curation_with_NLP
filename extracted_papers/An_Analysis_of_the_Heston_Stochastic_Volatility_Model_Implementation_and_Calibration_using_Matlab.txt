@@ -1,0 +1,2530 @@
+ 
+
+An Analysis of the Heston Stochastic Volatility Model: 
+
+Implementation and Calibration using Matlab* 
+
+ 
+
+Ricardo Crisóstomo† 
+
+December 2014 
+
+ 
+
+ 
+
+Abstract 
+
+This  paper  analyses  the  implementation  and  calibration  of  the  Heston  Stochastic  Volatility 
+Model.  We  first  explain  how  characteristic  functions  can  be  used  to  estimate  option  prices. 
+Then  we  consider  the  implementation  of  the  Heston  model,  showing  that  relatively  simple 
+solutions  can  lead  to  fast  and  accurate  vanilla  option  prices.  We  also  perform  several 
+calibration  tests,  using  both 
+local  and  global  optimization.  Our  analyses  show  that 
+straightforward  setups  deliver  good  calibration  results.  All  calculations  are  carried  out  in 
+Matlab  and  numerical  examples  are  included  in  the  paper  to  facilitate  the  understanding  of 
+mathematical concepts. 
+
+Keywords:  Stochastic  volatility,  Heston,  Black-Scholes  biases,  calibration,  characteristic 
+functions. 
+
+JEL Classification: G13, C51, C52, C61, C63. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+                                                           
+* The author acknowledges the comments of seminar participants at the CNMV. A previous version of 
+this work was circulated in partial fulfillment of the requirements of an MSc degree in mathematics at 
+the National Distance Education University (UNED). The opinions in this article are the sole responsibility 
+of the author and they do not necessarily coincide with those of the CNMV. 
+†  Comisión  Nacional  del  Mercado  de  Valores  (CNMV).  c/  Edison  4,  28006  Madrid.  Email: 
+rcayala@cnmv.es. 
+
+List of Contents 
+
+ 
+Introduction                                                                                                                           3  
+
+1 
+
+2  From Characteristic Functions to Option Prices  
+
+ 
+
+ 
+
+ 
+
+              4 
+
+2.1 The General Valuation Framework  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .         4   
+
+2.2 Valuing a European Call Though Characteristic Functions   .  .  .  .  .  .  .  .  .  .  .  .         5 
+
+2.3 An application to the Black and Scholes Model  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .         5 
+
+3  The Heston Model   
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+          8 
+
+3.1 Closed-form Solution of the Heston Model  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .        9   
+
+3.2 Model Implementation     .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .       10 
+
+4  Calibration to Market Prices     
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+        13 
+
+4.1 Calibration Procedure in the Heston Model   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .       13 
+
+4.2 Local Optimization   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .       13 
+
+4.3 Global Optimization    .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .        16 
+
+4.4 More Calibration Exercises   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .             17 
+
+5  Conclusion 
+
+                                                                                                                21 
+
+6  Appendix 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+         22 
+
+A  Derivation of 
+
+and 
+
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .         22 
+
+B  Equivalence of 
+
+to the definition in Gatheral (2006)  .  .  .  .  .  .  .  .  .     25 
+
+C  Risk Neutrality in the Heston Model  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .       27 
+
+D  Datasets used for Calibration  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .       32 
+
+7  References   
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+        34      
+
+12ln()tHestonSw1.  Introduction  
+
+The  Black  and  Scholes  (BSM)  model  provides  a  coherent  framework  for  pricing  European 
+options. However, this method is based on several assumptions that are not representative of 
+the  real  world.  In  particular,  the  BSM  model  assumes  that  volatility  is  deterministic  and 
+remains constant through the option’s life, which clearly contradicts the behavior observed in 
+financial markets. While the  BSM  framework can be adapted  to obtain  reasonable prices for 
+plain  vanilla  options,  the  constant  volatility  assumption  may  lead  to  significant  mispricings 
+when used to evaluate options with non-conventional or exotics features.  
+
+During  the  last  decades  several  alternatives  have  been  proposed  to  improve  volatility 
+modelling in the context of derivatives pricing. One of such approaches is to model volatility as 
+a stochastic quantity. By introducing uncertainty in the behavior of volatility, the evolution of 
+financial assets can be estimated more realistically. In addition, using appropriate parameters, 
+stochastic volatility models can be calibrated to reproduce the market prices of liquid options 
+and other derivatives contracts.  
+
+One of the most widely used stochastic volatility model was proposed by Heston in 1993. The 
+Heston model introduces a dynamic for the underlying asset which can take into account the 
+asymmetry  and  excess  kurtosis  that  are  typically  observed  in  financial  assets  returns.  It  also 
+provides  a  closed-form  valuation  formula  that  can  be  used  to  efficiently  price  plain  vanilla 
+options.  This  will  be  particularly  useful  in  the  calibration  process,  where  many  option 
+repricings are usually required in order to find the optimal parameters that reproduce market 
+prices. 
+
+In this paper we analyze the valuation of financial options using the Heston model. Our aim is 
+to  illustrate  the  use  of  the  model  with  an  emphasis  on  the  implementation  and  calibration. 
+Section 2 presents the valuation framework and explains how characteristic functions can be 
+used  to  estimate  option  prices.  Section  3  introduces  the  Heston  model  and  discusses  the 
+implementation of its closed-form solution. Finally, Section 4 analyzes the calibration problem, 
+considering both local and global optimization methods.  
+
+For  all  relevant  sections,  generic  and  ready-to-use  Matlab  codes  have  been  developed  and 
+numerical examples are provided in order to illustrate the use of the Matlab routines. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+3 
+
+2.  From Characteristic Functions to Option Prices 
+
+A  considerable  amount  of  research  has  been  recently  devoted  to  analyze  the  use  of 
+characteristic  functions  in  option’s  valuation.  The  rationale  is  that  when  you  go  beyond  the 
+classical BSM framework, the underlying stochastic processes that are used to calculate option 
+values  have  characteristic  functions  which  are  simpler  and more  tractable  than  their  density 
+functions.  Therefore,  in  many  sophisticated  models,  it  is  easier  to  work  with  characteristics 
+functions instead of using density functions. 
+
+2.1 The General Valuation Framework 
+
+When markets are complete and arbitrage-free, option values can be calculated as the present 
+value of their expected payoff under the risk-neutral measure 
+
+       (2.1) 
+
+ is the option value at time 
+
+ is the time to maturity 
+ is the option payoff.  In order to use (2.1), we first need to specify the dynamics of 
+. In particular, since we are working with expectations, we should consider 
+  at  (potentially)  different  times,  as  required  by  each  option 
+
+ is the risk free rate, 
+
+ = 0, 
+
+where 
+and 
+the price process 
+the  probability  distribution  of 
+payoff.  
+
+In  the  classical  framework,  the  expectation  above  is  obtained  by  means  of  the  risk-neutral 
+density. For instance, the payoff of a European call with strike
+ is given 
+by 
+
+. Consequently, its value at time 
+
+and expiration date 
+
+ = 0 is 
+
+    (2.2) 
+
+is the risk-neutral density of the underlying asset
+
+where 
+. The 
+problem  with  (2.2)  is  that  there  are  many  price  processes  for  which  the  density  function 
+ is not available in a closed-form or is difficult to obtain. However, if we work with the 
+logarithm  of  the  underlying  asset  price,  there  are  many  of  such  price  processes  with  both 
+simpler and analytically tractable characteristic functions.   
+
+at the terminal date 
+
+Characteristic functions exhibit a one-to-one relationship with density functions. In particular, 
+the  characteristic  function  of  a  given  stochastic  process 
+,  is  the  Fourier  transform  of  its 
+probability density function 
+
+    (2.3) 
+
+Therefore, by applying the Fourier Inversion theorem, we can recover the density function of 
+the process 
+
+ in terms of its characteristic function  
+
+     (2.4) 
+
+ 
+
+4 
+
+0()rTQtVeEHS0VtrT()tHStStSKT()()tTHSSKt00()()rTTTTCeSKqSdS()TqStST()TqSX()[]()iwXiwxwEeefxdxX1()()2iwxfxewdwGiven  this  relationship,  all  the  probability  evaluations  that  are  required  to  calculate  options 
+values can be also computed using characteristic functions.  
+
+2.2 Valuing a European Call through Characteristic Functions 
+
+Following the reasoning in Heston (1993), the value of a European call option can be obtained 
+by using a probabilistic approach 
+
+      (2.5) 
+
+and 
+
+  is  the  risk-neutral  probability  of  exercise 
+
+  are  two  probability-related  quantities.  Specifically, 
+
+where 
+  is  the  option  delta 
+and 
+.  Instead  of  using  density 
+functions, these probabilities can be computed via characteristic functions as follows (proof in 
+Appendix A):  
+
+      (2.6) 
+
+    (2.7) 
+
+Therefore, starting with the characteristic function of the log-price 
+, we can estimate 
+the price of a European call option by first calculating the probabilities (2.6) and (2.7) and then 
+substituting  their values in (2.5). This method presents two main advantages:  
+
+  Generality:  This  approach  can  be  applied  for  any  underlying  price  process 
+
+  whose 
+
+characteristic function is known.  
+  Semi-analytical  solution:  The 
+
+in  (2.6)  and  (2.7)  should  be  evaluated 
+numerically.  However, they are smooth functions that decay rapidly and can be evaluated 
+efficiently using appropriate integration routines1. This lead to numerical implementations 
+that can value plain vanilla options in a fraction of a second2. 
+
+integrands 
+
+2.3 An Application to the Black and Scholes Model  
+
+Before  moving  into  the  Heston  model,  we  will  apply  the  characteristic  function  method  to 
+value  a  call  option  under  the  BSM  framework.  The  risk-neutral  dynamics  of  the  underlying 
+asset in BSM are described by a Geometric Brownian Motion  
+
+      (2.8) 
+
+                                                           
+1  See Kahl and Jäckel (2005) or Schmelzle (2010). 
+2  For  example,  using  the  Matlab’s  implementation  proposed  in  this  paper,  the  computational  times 
+required  for  pricing  a  European  call  option  are  0.003087  seconds  in  the  BSM  model  and  0.004866 
+seconds in the Heston model. 
+
+ 
+
+5 
+
+0012  rTCSeK1212P()TSKln()ln10ln()11Re2()TTiwKSSewidwiwiln()ln20()11Re2TiwKSewdwiwln()TSwtSttttdSrSdtSdWis  the  price  of  the  underlying  asset  at  time 
+
+where 
+volatility  of  the  underlying  returns,  and 
+equation (2.8) can be easily solved to yield    
+
+  is  the 
+is  a  Weiner  process.  Using  stochastic  calculus, 
+
+  is  the  risk  free  rate, 
+
+, 
+
+     (2.9) 
+
+  is  the  standard  normal  distribution.  Therefore,  the  distribution  of 
+
+  is  normally  distributed.  In  particular,  the  risk-neutral  evolution  of 
+
+where 
+while 
+normally distributed with mean 
+practice, it is easier to work with the process
+
+is  lognormal, 
+  is 
+ This means that, in 
+
+ and variance 
+rather than using 
+
+directly. 
+
+Black and Scholes Characteristic Function 
+
+The characteristic function of a normal random variable is given by 
+
+    (2.10) 
+
+Therefore, the characteristic function of 
+
+ can be easily calculated as  
+
+    (2.11) 
+
+Once  we  have  the  characteristic  function,  the  next  step  is  to  estimate 
+probabilities  can  be  computed  by  numerical  integration  or,  alternatively,  Euler’s  formula                  
+(
+more specific expressions for 
+
+) could be applied to further expand (2.6) and (2.7), and in order to obtain 
+
+ under the BSM framework.  
+
+.  These 
+
+  and 
+
+ and 
+
+Since our aim is to gain a better understanding of the general characteristic function approach, 
+we  will  compute 
+  directly  using  (2.6)  and  (2.7).  We  will  repeat  this  procedure  in 
+section 3, where we will use 
+in order to calculate the value of 
+a European call under the Heston model. 
+
+instead of 
+
+  and 
+
+Function  1  below  (chfun_norm.m)  shows  how  to  compute  the  characteristic  function  of  the 
+BSM  model  in  Matlab,  while  function  2  (call_bsm_cf.m)  calculates  the  call  value  based  on 
+equations (2.5) to (2.7). In addition, example 1 illustrates the practical use of these functions 
+by pricing an individual call option. As a reference, within the BSM framework, the estimated 
+= 1 is 
+value of a call option with parameters 
+= 8.9160. As the example shows, using the characteristic function approach, we obtain the 
+
+= 0.15,  = 0.02 and  = 
+
+= 100, 
+
+= 100, 
+
+same call value.  
+
+Matlab Function 1: Characteristic function of the Black-Scholes model (chfun_norm.m) 
+
+function y = chfun_norm(s0, v, r, t, w) 
+ 
+%   Characteristic function of BSM.  
+%   y = chfun_norm(s0, v, r, t, w) 
+ 
+%   Inputs:  
+%   s0: stock price 
+%   v: volatility  
+
+ 
+
+6 
+
+tStrtW212()0rttZtSSeZtSln()tSln()tS20ln()(0.5)Srt2.tln()tStS212(mean)(variance)()iwwweln()tS2220[ln(S)(0.5)]0.5ln()()tiwrtwtBSMSwe12cossinixexix1212ln()()tHestonSwln()()tBSMSw0SKrtT0C%   r: risk-free rate 
+%   t: time to maturity 
+%   w: points at which to evaluate the function 
+ 
+mean =log(s0)+ (r-v^2/2)*t;                     % mean 
+var = v^2*t;                                                 % variance 
+y = exp((i.*w*mean)-(w.*w*var*.5));    % characteristic function of log (St) evaluated at points w 
+end 
+ 
+Matlab Function 2: Call value in the Black-Scholes model (call_bsm_cf.m)  
+
+function y = call_bsm_cf(s0, v, r, t, k) 
+ 
+%  BSM call value calculated using formulas 2.5 to 2.7 
+%   y = call_bsm_cf(s0, k, v, r, t, w ) 
+ 
+%   Inputs:  
+%   s0: stock price 
+%   v: volatility  
+%   r: risk-free rate 
+%   t: time to maturity 
+%   k: option strike 
+%   chfun_norm: Black-Scholes characteristic function 
+ 
+%  1st step: calculate pi1 and pi2  
+   %  Inner integral 1 
+int1 = @(w,s0,v,r,t,k) real(exp(-i.*w*log(k)).*chfun_norm(s0,v,r,t,w-i)./(i*w.*chfun_norm(s0, v, r, t, -i)));  
+int1 = integral(@(w)int1(w,s0,v,r,t,k),0,100); %numerical integration 
+pi1 = int1/pi+0.5; 
+ 
+   %  Inner integral 2 
+int2 = @(w,s0,v,r,t,k) real(exp(-i.*w*log(k)).*chfun_norm(s0, v, r, t, w)./(i*w));  
+int2 = integral(@(w)int2(w,s0, v, r, t, k),0,100); %numerical integration 
+pi2 = int2/pi+0.5; % final pi2 
+ 
+%  2nd step: calculate call value 
+y = s0*pi1-exp(-r*t)*k*pi2; 
+end  
+ 
+Numerical Example 1: Call option valuation using the Black-Scholes model 
+
+%  function y = call_bsm_cf(s0, v, r, t, k) 
+ 
+>> call_bsm_cf(100, 0.20, 0.02, 1, 100) 
+ 
+ans =  8.9160 
+
+ 
+
+7 
+
+3.  The Heston Model 
+
+In  1993,  Heston  proposed  a  stochastic  volatility  model  where  the  underlying  asset  behavior 
+was characterized by the following risk-neutral dynamics   
+
+ 
+
+   (3.1) 
+
+The parameters used in the model are the following:  
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+is the price of the underlying asset at time t 
+ is the risk free rate 
+is the variance at time t 
+is the long-term variance 
+ is the variance mean-reversion speed 
+ is the volatility of the variance process 
+
+ are two  correlated Weiner processes, with correlation coefficient
+
+ 
+
+Therefore, under the Heston model, the underlying asset follows an evolution process which is 
+similar to the BSM model, but it also introduces a stochastic behavior for the volatility process. 
+In  particular,  Heston  makes  the  assumption  that  the  asset  variance 
+  follows  a  mean 
+reverting Cox-Ingersoll-Ross process. 
+
+Stochastic volatility  models  tackle one of the most restrictive  hypotheses of the BSM model; 
+namely,  the  assumption  that  volatility  remains  constant  during  the  option´s  life.  Observing 
+financial  markets  it  can  be  easily  seen  that  volatility  is  not  a  constant  quantity.  This  is  also 
+reflected  in  the  different  implied  volatility  levels  at  which  options  with  different  strikes  and 
+maturities trade in the market, which collectively give rise to the so-called volatility surface.  
+
+Among  volatility  models,  Heston’s  dynamics  exhibit  several  desirable  properties.  First,  it 
+models volatility as a mean-reverting process. This assumption is consistent with the behavior 
+observed  in  financial  markets.  If  volatility  were  not  mean-reverting,  markets  would  be 
+characterized by a considerable amount of assets with volatility exploding or going near zero. 
+In practice, however, these cases are quite rare and generally short-lived.  
+
+Second,  it  also  introduces  correlated  shocks  between  asset  returns  and  volatility.  This 
+assumption allows modelling the statistical dependence between the underlying asset and its 
+volatility, which  is  a  prominent  feature of  financial markets.  For  instance,  in  equity  markets, 
+volatility  tends  to  increase  when  there  are  high  drops  in  equity  prices,  and  this  relationship 
+may have a substantial impact in the price of contingent claims. 
+
+Consequently,  the  Heston  model  provides  a  versatile  modelling  framework  that  can 
+accommodate many of the specific characteristics that are typically observed in the behavior 
+of financial assets. In particular, the parameter 
+ controls the kurtosis of the underlying asset 
+sets its asymmetry.  
+return distribution, while
+
+ 
+
+8 
+
+1212()tttttttttttdSrSdtVSdWdVaVVdtVdWdWdWdttSrtVVa12,ttdWdWtVHowever,  as  expected,  these  benefits  come  at  the  expense  of  higher  complexity.  Compared 
+with BSM, the implementation of the Heston model requires more sophisticated mathematics 
+and it also involves a more challenging process to calibrate the model to fit market prices. 
+
+3.1 Closed-form Solution of the Heston Model 
+
+One of the main advantages of the Heston model is that the price of European options can be 
+estimated using a quasi-closed form valuation formula.  
+
+The  development  of  the  Heston  formula  follows  the  general  approach  that  we  explained  in 
+section  2.  As  we  mentioned,  the  present  value  of  a  European  call  option  can  be  estimated 
+using a probabilistic approach 
+
+     (3.2) 
+
+ and 
+
+ are two probability-related quantities. Therefore, the call value under the 
+where 
+Heston model  can  computed  by  first  obtaining 
+  using  the  dynamics  described  in 
+(3.1) and then substituting their values in equation (3.2). However, the difficulty arises when 
+we  try  to  calculate  these  probabilities  under  the  Heston  dynamics,  since  the  transition 
+densities for this model are not available in a closed-form. Alternatively, as we showed earlier, 
+
+  and 
+
+ and 
+
+ can also be obtained using characteristic functions.  
+
+Heston Characteristic Function  
+
+In this section we  start with  the Heston characteristic function  proposed  by Gatheral (2006), 
+but we also introduce an additional modification. In particular, the characteristic function that 
+we will use through the paper is the following:  
+
+   (3.3) 
+
+Our approach differs from Gatheral (2006) in that we apply the characteristic function method 
+based  on  the  process
+.  Using  this  approach  we  obtain  an 
+expression  for 
+that  can  be  directly  used  within  the  general  pricing  framework 
+presented in section 2. This is in contrast with the formulation used in Heston (1993) and later 
+
+,  instead  of 
+
+ 
+
+9 
+
+0012  rTCSeK12121200[(,)(,)ln()]ln()22222()21(,)11(,)1;4;;222rttCtwVDtwViwSeHestonShththtwegeCtwartlngeDtwrgehrhrgrwiwaiwln()tSln(/)tSKln()()tHestonSwin Gatheral (2006), where two distinct functions are used to calculate 
+shows the equivalence of our approach to the methodology provided by Gatheral (2006)  
+
+ and 
+
+. Appendix B 
+
+It should be noted that the characteristic function presented in (3.3) already incorporates the 
+risk-neutral behavior of  the  process 
+.  A  discussion of  the risk  neutral paradigm in  the 
+Heston model is included in Appendix C. 
+
+3.2 Model Implementation  
+
+Although 
+  may  have  a  complicated  appearance,  its  implementation  is  quite 
+straightforward.  In  particular,  once  we  have  estimated  appropriate  values  for  the  model 
+parameters 
+, the Heston characteristic function can be easily evaluated using 
+numerical  software.  Function  3  (chfun_heston.m)  shows  how  to  compute  the  Heston 
+characteristic function in Matlab.  
+
+, the characteristic function can be substituted in (2.6) and (2.7) to 
+After obtaining  
+calculate 
+. Using these probabilities, equation (3.2) will provide the estimated value 
+of  a  European  call  under  the  Heston  Model.  Function  4  (call_heston_cf.m)  performs  the 
+calculations based on such equations.  
+
+ and 
+
+= 0.16,  = 1,  = 2, 
+
+Example 2 illustrates how to use these functions to value a call option where 
+= 0.16, 
+estimated value for this option under the Heston model is 
+our implementation yields the same call value.  
+
+= 10. Kahl and Jäckel (2005) showed that the 
+= 0.0495. As the example shows, 
+
+= -0.8 and  = 
+
+= 1, 
+
+= 2, 
+
+It is also relevant to note that some authors compute the price of vanilla options in the Heston 
+model using the Fast Fourier Transformation (FFT). This approach has the advantage that it can 
+provide simultaneously the prices of options with different strikes and, therefore, it employs 
+lower  computational  time3.  However,  the  FFT  approach  introduces  an  additional  parameter 
+and its implementation requires modifying the general valuation formulas presented in section 
+2. Consequently, since our aim is to develop practical intuition on the Heston model, we will 
+not employ this approach. 
+
+Matlab Function 3: Characteristic function of the Heston model (chfun_heston.m )  
+
+function y = chfun_heston(s0, v0, vbar, a, vvol, r, rho, t, w); 
+ 
+%   Heston characteristic function.  
+%   Inputs:  
+%   s0: stock price 
+%   v0: initial volatility (v0^2 initial variance) 
+%   vbar: long-term variance mean 
+%   a: variance mean-reversion speed  
+%   vvol: volatility of the variance process 
+%   r : risk-free rate  
+%   rho: correlation between the Weiner processes for the stock price and its variance 
+%   w: points at which to evaluate the function 
+%   Output: 
+                                                           
+3 See Carr and Madam (1998). 
+
+ 
+
+10 
+
+12ln()tSln()()tHestonSw0,,,,VValn()()tHestonSw120SK0VVatT0C%   Characteristic function of log (St) in the Heston model 
+ 
+%  Interim calculations 
+alpha = -w.*w/2 - i*w/2; 
+beta = a - rho*vvol*i*w; 
+gamma = vvol*vvol/2; 
+h = sqrt(beta.*beta - 4*alpha*gamma); 
+rplus = (beta + h)/vvol/vvol; 
+rminus = (beta - h)/vvol/vvol; 
+g=rminus./rplus; 
+ 
+%  Required inputs for the characteristic function  
+C = a * (rminus * t - (2 / vvol^2) .* log((1 - g .* exp(-h*t))./(1-g))); 
+D = rminus .* (1 - exp(-h * t))./(1 - g .* exp(-h*t)); 
+ 
+%  Characteristic function evaluated at points w 
+y = exp(C*vbar + D*v0 + i*w*log(s0*exp(r*t)));   
+ 
+Matlab Function 4: Call price in the Heston model (call_heston_cf.m) 
+
+function y = call_heston_cf(s0, v0, vbar, a, vvol, r, rho, t, k) 
+ 
+%   Heston call value using characteristic functions. 
+%   y = call_heston_cf(s0, v0, vbar, a, vvol, r, rho, t, k) 
+ 
+%   Inputs:  
+%   s0: stock price 
+%   v0: initial volatility (v0^2 initial variance) 
+%   vbar: long-term variance mean 
+%   a: variance mean-reversion speed 
+%   vvol: volatility of the variance process 
+%   r: risk-free rate  
+%   rho: correlation between the Weiner processes of the stock price and its variance 
+%   t: time to maturity 
+%   k: option strike 
+%   chfun_heston: Heston characteristic function 
+ 
+%  1st step: calculate pi1 and pi2  
+   %  Inner integral 1 
+int1 = @(w, s0, v0, vbar, a, vvol, r, rho, t, k) real(exp(-i.*w*log(k)).*chfun_heston(s0, v0, vbar, a, vvol, r, 
+rho, t, w-i)./(i*w.*chfun_heston(s0, v0, vbar, a, vvol, r, rho, t, -i))); % inner integral1 
+int1 = integral(@(w)int1(w,s0, v0, vbar, a, vvol, r, rho, t, k),0,100); % numerical integration 
+pi1 = int1/pi+0.5; % final pi1 
+ 
+   %  Inner integral 2: 
+int2 = @(w, s0, v0, vbar, a, vvol, r, rho, t, k) real(exp(-i.*w*log(k)).*chfun_heston(s0, v0, vbar, a, vvol, r, 
+rho, t, w)./(i*w));  
+int2 = integral(@(w)int2(w,s0, v0, vbar, a, vvol, r, rho, t, k),0,100);int2 = real(int2);  
+pi2 = int2/pi+0.5; % final pi2 
+ 
+
+ 
+
+11 
+
+%  2rd step: calculate call value 
+y = s0*pi1-exp(-r*t)*k*pi2; 
+end 
+ 
+Numerical Example 2: Call valuation in the Heston model. 
+
+% function y = call_heston_cf(s0, v0, vbar, a, vvol, r, rho, t); 
+ 
+>> call_heston_cf(1, 0.16, 0.16, 1, 2, 0, -0.8, 10, 2) 
+ 
+ans =  0.0495 
+
+ 
+
+12 
+
+4.  Calibration to Market Prices 
+
+Before  using  a  pricing  model  we  should  ensure  that  it  can  produce  accurate  results  for  the 
+options  that  are  already  traded  in  the  market.  Availability  of  closed-form  solutions  is 
+particularly  useful  in  the  calibration  process.  Typically,  when  we  seek  to  obtain  the  optimal 
+model parameters that are able to reproduce market prices, we need to perform a substantial 
+number  of  plain  vanilla  options  repricings.  Consequently,  accurate  and  efficient  pricing 
+formulas are required in order to obtain reliable results within a reasonable timeframe. 
+
+4.1 Calibration Procedure in the Heston Model  
+
+The goal of calibration is to find the parameter set that minimizes the distance between model 
+predictions  and  observed  market  prices.  In  particular,  using  the  risk-neutral  measure,  the 
+Heston  model  has  five  unknown  parameters 
+.  Therefore,  by  calibrating 
+these  parameters  values,  we  seek  to  obtain  an  evolution  for  the  underlying  asset  that  is 
+consistent with the current prices of plain vanilla options. 
+
+In  order  to  find  the  optimal  parameter  set  we  need  to  (i)  define  a  measure  to  quantify  the 
+distance between model and market prices; and (ii) run an optimization scheme to determine 
+the parameter values that minimize such distance. A simple and straightforward approach is to 
+minimize the mean sum of squared differences    
+
+    (4.1) 
+
+Where 
+market observed option prices. 
+
+ are the option values using the parameter set 
+
+, and 
+
+are the 
+
+As  shown  in  Bin  (2007),  the  calibration  process  presents  the  problem  that  the  objective 
+function is not necessarily convex and may exhibit several local minima. This complicates the 
+,  since  the  solution  attained  by  local 
+estimation  of  the  optimal  the  parameter  set 
+optimization might be dependent on the initial guess 
+Therefore, a good initial guess might 
+be  critical  and,  even  then,  in  some  cases  the  convergence  to  the  global  optimum  is  not 
+guaranteed.  
+
+The  obvious  solution  is  to  employ  global  optimization.  However,  global  optimizers  generally 
+lack  the  mathematical  tractability  of  local  ones,  and  also  require  substantially  higher 
+computational times. Since both methods have advantages and disadvantages, we will explore 
+both approaches.  
+
+4.2 Local Optimization 
+
+When  a  function  exhibits  several  minima,  local  optimizers  face  the  problem  that  once  a 
+solution  has  been  found,  we  cannot  be  sure  whether  such  solution  is  the  best  available.  In 
+other  words,  we  cannot  distinguish  if  the  solution  is  a  local  minimum  or  a  global  one,  or 
+consequently, if we have reached a local solution, there is no easy way to measure how far we 
+are from the global one.  
+
+ 
+
+13 
+
+0,,,,VVa211()(,)(,)NMktiiiiiiiGCKTCKTN(,)iiiCKT(,)MktiiiCKT0.An  alternative  to  tackle  this  problem  is  to  define  a  criterion  for  acceptable  solutions.  If  we 
+select  a  priori  which  solutions  can  be  deemed  acceptable,  we  can  at  least  ensure  that  any 
+accepted solution will be consistent with our tolerance bounds. Conversely, if we found a non-
+acceptable  solution,  we  can  run  the  algorithm  with  a  different  starting  point  and  keep 
+searching for solutions that comply with our criteria. 
+
+In  our  tests,  we  will  require  that  the  difference  between  model  and  market  prices  falls  on 
+average within the observed bid-ask spreads. Therefore, we will consider the following set of 
+acceptable solutions  
+
+     (4.2)  
+
+where 
+the mid-market option prices,  and 
+
+are the market observed bid and ask prices.  
+
+ are the model prices with the optimal parameter set 
+
+, 
+
+ are 
+
+As a local optimizer we will use the Matlab lsqnonlin function (least-squares non-linear), which 
+implements  a  trust-region reflective minimization  algorithm4.  In addition,  we will also define 
+lower  and  upper  bounds  for  the  optimal  parameters.  These  thresholds  are  included  in  the 
+calibration  in  order  to  avoid  possible  solutions  that,  while  mathematically  feasible,  are  not 
+acceptable in an economic sense.  
+
+In particular, we will use the following bounds: 
+
+ 
+
+Long-term  variance  and  initial  variance:  Acceptable  solutions  for  variance  levels  should 
+take  a  possible  value.  However,  given  its  mean-reversion,  the  volatility  of  most  financial 
+asset rarely reaches levels beyond 100%. Consequently, we will use bounds of 0 and 1 for 
+both for
+
+and 
+
+.  
+
+  Correlation: Statistical correlation takes values from -1 to 1. As previously mentioned, the 
+correlation  between  volatility  and  stock  prices  tends  to  be  negative.  However,  positive 
+correlations  might  also  be  possible  in  particular  cases.  Therefore,  the  full  range  of 
+acceptable solutions will be used in the calibration.  
+
+  Volatility  of  variance:  Being  a  volatility,  this  parameter  should  exhibit  positives  values. 
+However,  the  volatility of financial  assets  may  change  dramatically  in  short  time  periods 
+(i.e. the volatility itself is very volatile). Consequently, high upper bounds are required for 
+this parameter. In order to avoid potential restrictions, a broad set of solutions, from 0 to 
+5, will be used in the calibration. 
+
+  Mean-reversion speed: To ensure mean-reversion the parameter 
+
+ should take positive 
+values  (negative  values  will  cause  mean  aversion).  However,  we  have  not  found  clear 
+evidence  regarding  which  upper  value  could  be  an  appropriate  bound.  Consequently, 
+instead  of  fixing  an  upper  level,  maximum  values  for 
+  will  be  dynamically  set  in  the 
+calibration as a by-product of the non-negativity constraint.  
+
+  Non-negativity  constraint:  In  addition  to  the  parameter  bounds,  another  condition  is 
+required to ensure that the variance process in the Heston model does not reach zero or 
+negative  values.  In  this  regard,  Feller  (1951)  shows  that  a  constraint 
+
+                                                           
+4 See Yuan (1999) for an overview on the use of trust-region algorithms for solving non-linear problems. 
+
+ 
+
+14 
+
+ˆ1111(,)(,)bidask2NNMktiiiiiiiiiiCKTCKTNNˆ(,)iiiCKT(,)MktiiiCKTbid/askiiV0Vaa220aV(generally known as the Feller condition) guarantees that the variance in a CIR process is 
+always strictly positive5.  
+
+The option dataset that we use in the calibration are shown in Appendix D. Using the bounds 
+described  above,  the  implementation  of  the  local  calibration  algorithm  is  shown  in  script  1 
+(Heston_calibration_local.m). In addition, function 5 (costf.m) provides the objective function 
+required for script 1.   
+
+For dataset D1, the results obtained with local optimization are the following: 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+0.0989 
+
+0.3407 
+
+0.7068 
+
+-0.2949 
+
+0.7331 
+
+Using these results, the model predicted values and its comparison with the market prices are 
+shown below: 
+
+Option id.   Mid price 
+
+Model price  Difference(abs)  Within bid-ask? 
+
+1 
+2 
+3 
+4 
+5 
+6 
+7 
+8 
+9 
+10 
+11 
+12 
+13 
+14 
+15 
+
+56.90 
+36.30 
+19.60 
+9.45 
+4.30 
+63.20 
+44.90 
+30.55 
+20.05 
+12.50 
+77.55 
+61.45 
+48.90 
+38.45 
+29.50 
+
+56.01 
+35.57 
+19.62 
+9.26 
+3.84 
+63.26 
+45.52 
+31.07 
+20.21 
+12.69 
+77.16 
+61.87 
+48.85 
+38.10 
+29.47 
+
+0.886 
+0.728 
+0.018 
+0.185 
+0.460 
+0.059 
+0.620 
+0.519 
+0.157 
+0.188 
+0.389 
+0.420 
+0.049 
+0.349 
+0.026 
+
+YES 
+YES 
+YES 
+YES 
+NO 
+YES 
+NO 
+NO 
+YES 
+YES 
+YES 
+YES 
+YES 
+YES 
+YES 
+
+As  the  table  shows,  the  calibrated  Heston  model  provides  a  good  match  for  most  traded 
+options.  12  out  of  15  options  have  a  predicted  value  that  falls  within  the  observed  bid-ask 
+spread. In addition, when evaluated in terms of our acceptance criterion, the model’s average 
+distance from the mid-market price is 0.3369, which is lower than the average deviation in the 
+bid-ask  spreads  (0.6933).  The  computational  time  required  for  the  local  calibration  is  6.5 
+seconds.   
+
+However,  the  table  also  highlights  a  limitation  of  stochastic  volatility  models:  these  models 
+may  have  problems  to  match  the  prices  of  out-of-the-money  (OTM)  options  with  short 
+
+                                                           
+5 This condition is particularly useful in certain Monte Carlo discretization schemes. In the calibration, 
+the non-negativity constraint has been implemented by introducing an upper bound in the acceptable 
+ have their own range of acceptable values, this condition implicitly 
+values of 
+ and 
+restricts the acceptable values of 
+ to those that comply with the non-negativity constraint. 
+
+. Since 
+
+ 
+
+15 
+
+0VVa22aVV2amaturities  (see,  in  particular,  option  n.  56).  More  often  than  not,  diffusion  processes  cannot 
+generate the substantial underlying asset movements that are routinely implied by the prices 
+of  short-dated  OTM options.  Price  jumps  are  generally  perceived  as  one  of  the  main  drivers 
+behind the high quotes for this type of options. Consequently, adding jumps to the underlying 
+price  process  may  be  seen  as  a  possible  way  forward  which  may  improve  the  overall  fit  to 
+market prices. 
+
+4.3 Global Optimization  
+
+The  main  advantage  of  global  optimization  is  that  it  does  not  exhaust  its  search  on  the  first 
+minimum attained. Generally, global optimizers include stochastic movements in their search 
+pattern, which make it possible to overcome local minimums and continue searching even if a 
+potential solution has already been found. 
+
+However,  the  use  of  stochastic  methods  also  entails  certain  drawbacks.  The  mathematical 
+properties  of  these  algorithms  are  less  tractable  than  those  of  local  (deterministic)  ones.  In 
+addition, despite its name, their convergence to the global minimum is not guaranteed. In fact, 
+since the exit sequence is determined stochastically, the algorithm might decide to terminate 
+early  and,  in  some  cases,  the  solution  attained  might  underperform  a  local search.  All  in  all, 
+even  if  global  optimization  is  theoretically  more  powerful,  when  working  with  functions  of 
+unknown  shape,  it  is  not  easy  to  establish  ex  ante  which  calibration  method  will  perform 
+better.   
+
+In  order  to  test  the  results  of  global  optimization  we  employ  the  Simulated  Annealing 
+framework (SA). This algorithm conducts a guided search, where new iterations are generated 
+by taking into account the previous information  but also introducing  randomization.  Initially, 
+the algorithm starts with high tolerance for random shocks, and different regions are surveyed 
+during  the  first  phase.  As  a  consequence,  even  if  a  minimum  is  found,  the  algorithm  keeps 
+searching  for  better  solutions.  As  time  evolves,  the algorithm  decreases  its tolerance  until  it 
+eventually settles in the best optimum attained.  
+
+In particular, we will use the Matlab function asamin, which was developed by Prof. Shinichi 
+Sakata.  This  function  implements  an  Adaptive  Simulated  Annealing  (ASA),    dynamically 
+adjusting the tolerance for random shocks. The ASA framework has been shown by Goel and 
+Stander (2009) to provide good results among a range of different global optimizers.  
+
+For comparability, we will use the same parameter bounds that we defined in section 4.2. The 
+implementation  of  the  asamin  function  is  shown  in  script  2  (Heston_calibration_global.m), 
+while the required cost function is implemented in function 6 (costf_2.m).  
+
+Running script 2, the optimal results obtained for dataset D1 are shown below: 
+
+ 
+
+0.0983 
+
+ 
+
+0.2957 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+0.7544 
+
+-0.2919 
+
+0.9626 
+
+                                                           
+6 Individual contract details are included in Appendix D. 
+
+16 
+
+ 
+
+0VVaOption id. 
+
+Mid price 
+
+Model price  Difference(abs)  Within bid-ask? 
+
+1 
+2 
+3 
+4 
+5 
+6 
+7 
+8 
+9 
+10 
+11 
+12 
+13 
+14 
+15 
+
+56.90 
+36.30 
+19.60 
+9.45 
+4.30 
+63.20 
+44.90 
+30.55 
+20.05 
+12.50 
+77.55 
+61.45 
+48.90 
+38.45 
+29.50 
+
+56.05 
+35.58 
+19.59 
+9.23 
+3.83 
+63.30 
+45.55 
+31.08 
+20.21 
+12.70 
+77.13 
+61.85 
+48.85 
+38.10 
+29.48 
+
+0.853 
+0.716 
+0.008 
+0.220 
+0.470 
+0.103 
+0.647 
+0.531 
+0.165 
+0.203 
+0.416 
+0.403 
+0.055 
+0.346 
+0.017 
+
+YES 
+YES 
+YES 
+YES 
+NO 
+YES 
+NO 
+NO 
+YES 
+YES 
+YES 
+YES 
+YES 
+YES 
+YES 
+
+As can be seen, the optimal parameters values under ASA are slightly different to those of local 
+calibration. However, there are not significant divergences in the overall results. Under global 
+calibration 12 out of 15 model values are within the observed bid-ask spreads, and the average 
+distance  to  the  mid-market  price  is  0.3436.  Therefore,  the  ASA  solution  is  also  acceptable 
+according  to  our  criterion  and  its  quality  is  similar  to  the  results  obtained  through  Matlab’s 
+lsqnonlin.  The  main  drawback  of  ASA  is  its  substantially  higher  computational  time  (245.1 
+seconds in ASA vs 6.5 seconds in Matlab’s lsqnonlin).  
+
+4.4 More Calibration Exercises 
+
+Based  on  dataset  D1  both  ASA  and  Matlab’s  lsqnonlin  yield  similar  solutions.  However,  the 
+complexity of multidimensional non-linear optimization makes it difficult to draw conclusions 
+from a single comparison. 
+
+In order to obtain further evidence, we carried out two additional calibration exercises. First, 
+we applied both methods to an option dataset which, a priori, should be easier to calibrate. In 
+particular, all the options in dataset D2 have relatively broad bid-ask spreads and their implied 
+volatilities  are  also  relatively  stable.  Second,  we  also  tested  a  potentially  more  challenging 
+dataset  (D3).  In  this  case,  the  number  of  options  was  doubled  and  instruments  with  shorter 
+maturities and divergent implied volatilities were included in the calibration.  
+
+The next table summarizes the calibration results for these datasets. 
+
+ 
+
+Dataset 
+
+ 
+
+N. of 
+
+options 
+
+D2 
+D3 
+
+15 
+30 
+
+Matlab’s lsqnonlin 
+
+ASA (asamin) 
+
+Elapsed 
+
+time 
+
+4.1 sec 
+5.2 sec 
+
+Within  
+bid-ask 
+
+15 of 15 
+24 of 30 
+
+Average 
+distance   
+
+Elapsed  
+
+time 
+
+Within 
+bid-ask 
+
+Average 
+distance    
+
+0.3903 
+0.0197 
+
+258.0 sec  15 of 15  0.4235 
+562.4 sec  24 of 30  0.0200 
+
+ 
+
+17 
+
+In dataset D2, both calibration methods produce good results. All the model predicted values 
+are within the observed bid-ask spread. In terms of the distance from the mid-market prices, 
+Matlab’s lsqnonlin performs slightly better, with an average distance of 0.3903, against 0.4235 
+in  ASA.  In  addition,  as  expected,  the  ASA  algorithm  takes  substantially  longer  to  reach  the 
+optimum.  
+
+Calibration  gets  more  difficult  in  dataset  D3.  Although  both  methods  provide  acceptable 
+solutions7,  the  number  of options  within  their  observed  bid-ask  spread  falls to  24 out  of 30. 
+However,  even  in  these  challenging  conditions,  the  comparison  between  both  methods 
+exhibits  a  similar  pattern,  with  Matlab’s  lsqnonlin  reaching  slightly  better  solution  (average 
+distance 0.0197 vs 0.0200) and ASA requiring significantly longer computing times.  
+
+Based on these exercises, we can conclude that Matlab’s lsqnonlin provides better calibration 
+results,  and  it  also  employs  lower  computational  times.  However,  these  results  could  be 
+conditioned  by  an  objective  function  that  may  not  be  complex  enough  to  exploit  the  ASA 
+strengths.  In  particular,  since  typically  we  do  not  know  whether  the  objective  function  may 
+exhibits  several  local  minima,  a  conservative  approach  will  be  to  run  both  calibration 
+approaches. The drawback is, of course, that a global search might not necessarily improve the 
+results  provided  by  a  local  one.  However,  the  advances  in  computing  power  and  numerical 
+methods keep reducing the time required for global calibration. In our exercises, the running 
+time of ASA was lower than 10 minutes, which for many practical applications makes it worth 
+testing for potentially better solutions.  
+
+Script 1: Heston local calibration using Matlab’s lsqnonlin (Heston_calibration_local.m) 
+
+% Heston calibration, local optimization (Matlab's lsqnonlin) 
+ 
+% Input on data.txt 
+% Data = [So, t, k, r, mid price, bid, ask] 
+clear all 
+global data; global cost; global finalcost; 
+load data.txt 
+ 
+% Initial parameters and parameter bounds 
+% Bounds [v0, Vbar,  vvol, rho, 2*a*vbar - vvol^2] 
+% Last bound include non-negativity constraint and bounds for mean-reversion 
+x0 = [.5,.5,1,-0.5,1]; 
+lb = [0, 0, 0, -1, 0]; 
+ub = [1, 1, 5, 1, 20]; 
+ 
+% Optimization: calls function costf.m:  
+tic;  
+x = lsqnonlin(@costf,x0,lb,ub); 
+toc; 
+ 
+ 
+% Solution: 
+
+                                                           
+7 The average observed deviation in the market bid-ask spreads is 0.0559. 
+
+ 
+
+18 
+
+Heston_sol = [x(1), x(2), x(3), x(4), (x(5)+x(3)^2)/(2*x(2))] 
+x 
+min = finalcost 
+ 
+Matlab Function 5: Cost function for local calibration (costf.m) 
+
+function [cost] = costf(x) 
+global data; global finalcost; 
+ 
+% Compute individual differences  
+% Sum of squares performed by Matlab's lsqnonlin 
+for i=1:length(data) 
+cost(i)= data(i,5) - call_heston_cf(data(i,1),x(1), x(2), (x(5)+x(3)^2)/(2*x(2)), x(3), data(i,4), x(4), data(i, 2), 
+data(i,3)); 
+end 
+ 
+% Show final cost  
+finalcost =sum(cost)^2 
+end 
+
+ 
+Script 2: Heston global calibration using ASA (Heston_calibration_global.m) 
+
+% Heston calibration, global optimization (asamin) 
+ 
+% Input on data.txt 
+% Data = [So, t, k, r, mid price, bid, ask] 
+clear all 
+global data; global cost; global finalcost; 
+load data.txt 
+ 
+% Initial parameters and parameter bounds 
+% Bounds [v0, Vbar,  vvol, rho, 2*a*vbar - vvol^2] 
+% Last bound include non-negativity constraint and bounds for mean-reversion 
+x0 = [.5,.5,1,-0.5,5]; 
+lb = [0, 0, 0, -1, 0]; 
+ub = [1, 1, 6, 1, 20]; 
+ 
+% Optimization: calls function costf_2.m:  
+asamin('set', 'test_in_cost_func', 0); 
+xtype = [-1;-1;-1;-1;-1]; 
+tic;  
+[f, x_opt, grad, hessian, state] = asamin ('minimize','costf_2' ,x0',lb',ub', xtype)  
+toc; 
+ 
+% Solution: 
+Heston_sol = [x(1), x(2), x(3), x(4), (x(5)+x(3)^2)/(2*x(2))] 
+x 
+min = finalcost 
+ 
+ 
+
+ 
+
+19 
+
+Matlab Function 6: Cost function for global calibration (costf_2.m) 
+
+function [cost flag] = costf_2(x) 
+global data; global finalcost; global cost; global cost_i; 
+ 
+% Compute individual differences  
+for i=1:length(data) 
+cost_i(i)= data(i,5) - call_heston_cf(data(i,1),x(1), x(2), (x(5)+x(3)^2)/(2*x(2)), x(3), data(i,4), x(4), data(i, 
+2), data(i,3)); 
+end 
+ 
+% Compute sum of squared differences  
+cost = sum(cost_i.^2); 
+ 
+% Show final cost and current solution 
+finalcost =sum(cost) 
+flag = 1; 
+Heston_sol = [x(1), x(2), x(3), x(4), (x(5)+x(3)^2)/(2*x(2))] 
+end 
+
+ 
+
+ 
+
+ 
+
+20 
+
+5.  Conclusion 
+
+Stochastic  volatility  models  tackle  one  of  the  most  restrictive  hypotheses  of  the  BSM 
+framework, which assumes that volatility remains constant during the option´s life. However, 
+by observing financial markets it becomes apparent that volatility may change dramatically in 
+short-time periods and its behavior is clearly not deterministic.   
+
+Among stochastic volatility models, the Heston model presents two main advantages. First, it 
+models an evolution of the underlying asset which can take into account the asymmetry and 
+excess kurtosis that are typically observed (and expected) in financial asset returns. Second, it 
+provides closed-form solutions for the pricing of European options. 
+
+Availability  of  closed-form  valuation  formulas  is  particularly  important  for  the  calibration 
+process. In our tests, although the objective function is not necessarily convex, both local and 
+global  optimization  methods  provide  reasonable  results  within  a  relatively  short  timeframe. 
+However,  in  cases  where  the  objective  function  may  exhibit  several  local  minima,  local 
+optimization  may  underperform  a  global  search.  Once  the  model  parameters  have  been 
+calibrated to fit market prices, the Heston dynamics can be used to price other products that 
+are not actively traded in the market.  
+
+Following these results  there  are  also  two  possible  areas of  further work. First,  before using 
+the calibrated model to price exotic products, a discretization scheme will be typically required 
+in order to obtain more granular information regarding the underlying asset dynamics during 
+the  product´s  life.  This  can  be  achieved,  in  most  practical  cases,  by  implementing  a  Monte 
+Carlo simulation scheme. 
+
+Second, a step further will be to include discontinuous jumps in the underlying asset evolution. 
+Adding jumps to stochastic volatility entails higher complexity, but also provides a potentially 
+more realistic framework. Most jump models follow a characteristic function approach whose 
+implementation  is  similar  to  the  one  described  here.  Therefore,  for  interested  readers,  we 
+hope that the explanations provided in this paper may help them to connect the dots in their 
+next mathematical journey. 
+
+ 
+
+ 
+
+ 
+
+21 
+
+Appendix A:  Derivation of 
+
+ and 
+
+  
+
+The  proof  is  divided  in  two  parts.  In  the  first  one  we  derive 
+relationship  between  the  cumulative  density  function  (CDF)  of  a  random  variable
+characteristic function 
+
+  and 
+
+  based  on  the 
+and  its 
+
+    (A.1) 
+
+The second part is devoted to prove (A.1). 
+
+*** 
+
+For  the  first  part  we  follow  the  reasoning  in  Chourdakis  (2008).  We  start  with  the  value  of 
+European call with maturity date T and strike K. In a risk-neutral context, the call value at t = 0 
+is given by  
+
+        
+
+        (A.2) 
+
+Using x = 
+similar to the definition in terms of 
+
+ and expanding (A.2) we get an expression for the European call value that is 
+
+ and 
+
+ that we used in (2.5) 
+
+     (A.3) 
+
+ should 
+For a given call option, by comparing equations (2.5) and (A.3) it can be seen that 
+be equal to 
+ is simply the 
+probability  of  the  log-stock  price  finishing  above  the  log-strike.  Therefore,  by  applying  the 
+relationship in (A.1), this probability can be obtained in terms of the characteristic function of 
+
+. The second integral 
+
+ should be equal to 
+
+, while 
+
+as follows 
+
+ 
+
+which is the definition of 
+
+that we presented in (2.7). 
+
+To derive 
+
+, we multiply and divide the first integral 
+
+ by the term
+
+, which is 
+
+also equal, in a risk-neutral context, to the capitalized spot price (i.e. 
+
+)  
+
+ 
+
+22 
+
+1212X0()11()Re2iwxXewFxdwiw0max(,0)rTQTCeESKln()TS120logloglog12()()()()rTxKrTxKKrTrTCeeKfxdxeefxdxKfxdxeIeKI22I110/rTIeS2Iln()TS22ln()ln0(lnln)1(lnln)()11Re2TTTiwKSIPSKPSKewdwiw211I()xefxdx0rTeS 
+
+Working  on  the  fraction  above,  we  obtain  an  alternative  integral  expression  for 
+follows 
+
+  as 
+
+Therefore, the first integral 
+
+can be also expressed as  
+
+ 
+
+ 
+
+Since 
+
+ is, by construction, between 0 and 1, its Fourier transforms is given by  
+
+Consequently, using again the relationship in (A.1) 
+
+ 
+
+Finally, since 
+
+, the expression for 
+
+simplifies to:  
+
+  
+
+ 
+
+which is the definition of 
+
+that we used in (2.6). 
+
+*** 
+
+The second part follows the reasoning in Kendall, Stuart and Ord (1994) and Wu (2007). 
+
+First we start with the integral  
+
+ 
+
+Replacing each characteristic function by its integral form, the expression above becomes  
+
+ 
+
+23 
+
+log1log0()()()()()xKxxKxrTefxdxIefxdxefxdxefxdxgxeS()gxlog*loglog()()()()()()xxKKKxxefxdxefxgxdxfxdxefxdxefxdx1I*10log()rTKIeSfxdx*()fx**()()()()iwxwiwefxdxiln()ln100ln()11Re2()TTiwKSrTSewiIeSdwiwi110/rTIeS1ln()ln10ln()11Re2()TTiwKSSewidwiwi10()()iwxiwxXXewewIdwiw 
+
+Next, considering Euler’s equality 
+seen that 
+
+.  
+
+, and using 
+
+,  it can be 
+
+Therefore,  applying  Fubini’s  theorem  and  the  fact  that 
+integral simplifies to  
+
+the 
+
+ 
+
+Consequently, solving for
+
+ and then substituting 
+
+ by its original definition yields  
+
+ 
+
+Finally,  since  the  density  of 
+transforms, 
+
+has  conjugate  symmetry  and 
+
+  is  a  real-valued  function,  using  the  properties  of  Fourier 
+. 
+
+Therefore, the CDF of 
+
+ can also be expressed as 
+
+ 
+
+which is the definition of
+
+that we used in (A.1). 
+
+ 
+
+ 
+
+ 
+
+24 
+
+00()()0()()()()iwxiwziwxiwziwxiwziwxiwziwxziwxzeedFzeedFzIdwiweeeedFzdwiweedFzdwiwsin()()/2iieei()wxz()()2sin()()/iwxziwxzwxzeei0limsin()//2sgn()nnttdt002sin()()2sin()()sgn()()(()0(1())2()1wxzIdFzdwwwxzdwdFzwxzdFzFxFxFx()FxI011()22()()1122iwxiwxXXFxIewewdwiwX()Xw()()/2Re[()]XXXwwwX00()()11()22()11Re2iwxiwxXXiwxXewewFxdwiwewdwiw()FxAppendix B:  Equivalence of our approach to Gatheral (2006)  
+
+The  analysis  of  the  Heston  call  value 
+
+, where 
+
+is  based  on  the  process 
+is the forward price of the underlying asset at the maturity date T.  
+
+in  Gatheral  (2006) 
+
+Consequently, its derivation focus on the future value of the European call at time
+
+  
+
+    (B.1) 
+
+rather than its value today. However, taking into account that the forward price is 
+equation (B.1) becomes    
+
+, 
+
+   
+
+and  calculating  the  present  value  of  the  expression  above  (i.e.  multiplying  by 
+in  a  risk 
+neutral  context)  yields  the  probabilistic  definition  of  the  European  call  value  that  we  used 
+through the paper  
+
+ 
+
+Next,  we  need  to  show  that  the  definitions  that  we  used  for 
+those provided by Gatheral (2006).  Regarding 
+being greater than the log-strike), the result provided in Gatheral’s is given by  
+
+are  equivalents  to 
+(i.e. probability of the final log-stock price 
+
+  and 
+
+where 
+(3.3). Expanding Gatheral’s result we obtain  
+
+, and 
+
+ are defined in the same terms that we used in 
+
+    (B.2) 
+
+     
+
+And recalling that, at time 
+in (3.3) is precisely  
+
+, the characteristic function of the Heston model that we used 
+
+ 
+
+the expression for 
+
+ becomes  
+
+ 
+
+25 
+
+ln(/)TTxFKTFtT12()TxGaTCKe0rTTFSe0ln(/)12012()rTSeKGaTrTCKeSeKrTe0012rTCSeK1220(,)(,)2011Re2CTwvDTwviwxGaedwiwln(/)TxFK(,),(,)CTwDTw000(,)(,)ln(/)20(,)(,)ln()ln()0(,)(,)ln()ln()011Re211Re211Re2TTTCTwvDTwviwFKGaCTwvDTwviwFiwKCTwvDTwviwFiwKeedwiweeedwiweedwiwtT00[(,)(,)ln()]ln()()rTTCTwvDTwviwSeHestonSwe2Ga 
+
+which is the definition of 
+
+ that we have used through the paper. 
+
+A  similar  approach  can  be  used  to  show  the  equivalence  of  (2.6)  to  the  expression  for 
+provided in Gatheral (2006). 
+
+ 
+
+ 
+
+ 
+
+26 
+
+ln()ln20()11Re2TiwKSGaewdwiw21GaAppendix C:  Risk Neutrality in the Heston model 
+
+In  order  to  understand  the  use  of  risk  neutrality  we  first  state  the  main  result  and  then  we 
+prove it. 
+
+Main result 
+
+We start with the Heston dynamics under the physical measure P 
+
+ 
+
+. As we show below, 
+and we seek to obtain a risk-neutral evolution where 
+using  the  multidimensional  Girsanov's  theorem  and  making  appropriate  choices,  the  Heston 
+dynamics under the risk-neutral measure Q can be expressed as  
+
+ 
+
+where 
+
+, 
+
+ and 
+
+ is a parameter linked to the price of volatility risk.  
+
+ instead of 
+
+ and 
+
+ and 
+
+ 
+
+Therefore,  the  Heston  dynamics  under  the  risk-neutral  measure  exhibit  a  similar  pattern  to 
+that of the physical measure, but with a variance process that is defined by the parameters 
+and 
+the  impact  of  the  volatility  risk  premium 
+model  to  market  prices,  we  can  directly  solve  for 
+estimate 
+
+ already incorporate 
+.  Consequently,  when  calibrating  the  risk-neutral 
+,  and  we  will  not  need  to 
+
+. A remarkable feature is that 
+
+ explicitly.  
+
+  and 
+
+ and 
+
+that we used through the paper are the risk-neutral ones (i.e. 
+
+In section 3, for simplicity,  we omitted  the Q superscripts. However,  it should be  noted that 
+the values for 
+ and 
+), and not those under the physical measure. The use of risk-neutral dynamics is justified 
+when all the risks related to holding options can be hedged away. Within the Heston model, 
+there  are  two  sources  of  uncertainty:  the  underlying  asset  movements  and  the  volatility 
+movements. The first risk source can be hedged away implementing a delta-hedging strategy 
+in similar terms to those of the BSM framework.  
+
+However, in order to hedge the volatility risk, a liquid market for volatility related contracts is 
+needed.  Consequently,  the  use  of  risk-neutral  pricing  is  conditioned  by  the  assumption  of 
+perfect hedging. If hedging is not possible, we might need to go back to the dynamics under 
+the physical measure, which requires different models and hypothesis in order to estimate the 
+appropriate risk premiums and the corresponding real-world distribution.  
+
+ 
+
+ 
+
+27 
+
+,1,2,1,2()PtttttPPPttttPPttdSSdtVSdWdVaVVdtVdWdWdWdt(/)QtttEdSSrdt,1,2,1,2()QtttttQQQttttQQttdSrSdtVSdWdVaVVdtVdWdWdWdtQPaaPPQaVaVQaQVPaPVQaQVQaQVaVQaQVProof  
+
+We start again with the Heston dynamics under the physical measure 
+
+    (C.1) 
+
+where the discounted underlying price is a martingale under P. 
+
+To obtain the risk-neutral dynamics we should find an equivalent martingale measure (EMM) 
+where  the  process 
+.  To  achieve  this  we  perform  a  change  of 
+probability  measure  using  Girsanov’s  theorem.  In  particular,  we  define  a  new  EMM  through 
+the Radon-Nikodym derivative:  
+
+  has  a  drift  of 
+
+ 
+
+ 
+
+ 
+
+where
+
+ is an exponential martingale of the form 
+
+and it is the solution of the SDE 
+
+with initial value
+
+.  
+
+Since  we  are  working with  EMMs,  the  expectation of  a  given  stochastic  process  Z  under the 
+new measure Q can be computed as 
+
+Therefore, if we consider the expectation of infinitesimal increments 
+
+ 
+
+Using  the  equation  above,  we  can  compute  the  drift  and  volatility  for  the  process 
+
+ 
+
+under Q  
+
+ 
+
+28 
+
+,1,2,1,2()PtttttPPPttttPPttdSSdtVSdWdVaVVdtVdWdWdWdt/ttdSSrdtttdQMdPtM,12,2211exp22TTTTPPtssssssttttMCdWCdsDdWDds,1,2PPttttdMCdWDdWM01M()()QPtttEZEMZ,1,2()1()QPPPPPPttttttttMdMtdMtEdZEdZEdZEdZECdWDdWdZMtMt/ttdSS 
+
+ 
+
+where  we  expanded  the  initial  expressions  and  we  used  the  fact  that  Weiner  processes  are 
+. We  also  used the  basic 
+distributed as 
+rules of stochastic calculus 
+and 
+
+  and, consequently, 
+
+.   
+
+Similarly, the drift and volatility for 
+
+ can be computed as 
+
+ 
+
+Now, in order select the desired EMM, we impose the restriction  
+
+ 
+
+which gives us the  equation  
+the following relationship, which defines the market price of risk 
+
+.    Rearranging terms we  obtain 
+
+ 
+
+29 
+
+ 
+
+,1,1,2,1,1,2,1,1,12,2()()()()()()()(())()(PQPPPPtttttttttttPPPPPPttttttttPPPPPPttttttttttPPPtttttdSdSdSEEECdWDdWSSSEdtVdWECdWDdWdtVdWEdtEVdWECdWdtECVdWEDdWdtEDVdW,2,1)000()PPtttttttttdWdtCVdtDVdtCVDVdt22,1,2,1,121()QPPPPttttttttPPttttdSEECdWDdWdtVdWSEVdWVdt(0,)Nt,1,2()PPttEdWdWdt2()0;()0;()0ttEdWEdWdtEdt2()tEdWdttdV,1,2,1,2,2,1,2,22()(())()()()()()QPPPPttttttttPPPPPPPPPttttttttPPPPPPPtttttttPPtttttEdVEdVECdWDdWdVEaVVdtECdWDdWaVVdtVdWaVVdtECVdWdWEDVdWaVVCVDVdt22,1,2,22,2221()()QPPPPPPttttttttPPttttEdVECdWDdWaVVdtVdWEVdWVdtQtttdSErdtS()ttttCVDVdtrdttttrCDVAdditionally,  we  need  to  set  the  drift  for  the  volatility  process.  In  this  case,  an  appropriate 
+choice is  
+
+ 
+
+  is  a  parameter  related  to  the  price  of  volatility  risk.  This  constraint  gives  us  the 
+,  which  defines  the 
+
+where 
+equation 
+price of volatility risk 
+
+ 
+
+Considering the properties of EMMs, the multidimensional Girsanov´s theorem tells us that the 
+Weiner processes under the new measure Q are  
+
+ 
+
+ 
+
+Therefore, rearranging terms and substituting on the initial dynamics we get  
+
+ 
+
+ 
+
+and if we introduce the notation 
+
+ and 
+
+,  the process 
+
+ becomes 
+
+ 
+
+ 
+
+30 
+
+()QPPttttEdVaVVVdt[()][()]PPPPtttttttaVVCVDVdtaVVVdttttVCD,1,1QPtttrWWtV,2,2tQPttVWWt,1,1,1,1PtttttQtttttQtttttttQttttdSSdtVSdWrSdtVSdWtVrSdtVSdWVSdtVrSdtVSdW,2,2,2,2()()()PPPtttttPPQttttPPQttttPPPQttttdVaVVdtVdWVaVVdtVdWtVaVVdtVdWVdtaVaVVdtVdWQPaaPPQaVaVtdV,2()QQQttttdVaVVdtVdWFinally, 
+
+the 
+
+correlation 
+
+condition 
+
+require 
+.  And  considering  the  relationship  between  the  Weiner  processes 
+
+is  equivalent 
+
+to 
+
+ 
+
+under the physical and the risk-neutral measure we get 
+
+ 
+
+where  we  have  used  again  the  stochastic  calculus  rules 
+
+and
+
+. 
+
+ 
+
+ 
+
+ 
+
+31 
+
+,1,2PPttdWdWdt,1,2()PPttEdWdWdt,1,2,1,2,1,2()PPtttQQtttQQttdtEdWdWVrEdWtdWtVEdWdW()0;()0ttEdWEdWdt2()0EdtAppendix D:  Datasets used for Calibration 
+
+Dataset D1: 15 options (3 maturities, 5 strikes). 
+
+Spot 
+328.29 
+328.29 
+328.29 
+328.29 
+328.29 
+328.29 
+328.29 
+328.29 
+328.29 
+328.29 
+328.29 
+328.29 
+328.29 
+328.29 
+328.29 
+
+Maturity 
+0.1753424 
+0.1753424 
+0.1753424 
+0.1753424 
+0.1753424 
+0.4246575 
+0.4246575 
+0.4246575 
+0.4246575 
+0.4246575 
+0.9232876 
+0.9232876 
+0.9232876 
+0.9232876 
+0.9232876 
+
+Strike 
+
+275 
+300 
+325 
+350 
+375 
+275 
+300 
+325 
+350 
+375 
+275 
+300 
+325 
+350 
+375 
+
+Interest rate  Mid 
+56.9 
+0.000553778 
+36.3 
+0.000553778 
+0.000553778 
+19.6 
+9.45 
+0.000553778 
+4.3 
+0.000553778 
+0.000659467 
+63.2 
+44.9 
+0.000659467 
+30.55 
+0.000659467 
+20.05 
+0.000659467 
+0.000659467 
+12.5 
+77.55 
+0.000850338 
+61.45 
+0.000850338 
+48.9 
+0.000850338 
+0.000850338 
+38.45 
+29.5 
+0.000850338 
+
+Bid 
+55.5 
+35.0 
+19.3 
+9.2 
+4.1 
+61.7 
+44.4 
+30.2 
+19.7 
+12.2 
+76.1 
+60.8 
+48.1 
+37.9 
+29.0 
+
+Ask 
+58.3 
+37.6 
+19.9 
+9.7 
+4.5 
+64.7 
+45.4 
+30.9 
+20.4 
+12.8 
+79.0 
+62.1 
+49.7 
+39.0 
+30.0 
+
+ 
+Call options written on Biogen Idec (Nasdaq: BIIB). Market data observed on February 14, 2014   
+
+ 
+
+Dataset D2: 15 options (3 maturities, 5 strikes) 
+
+Spot 
+1313.67 
+1313.67 
+1313.67 
+1313.67 
+1313.67 
+1313.67 
+1313.67 
+1313.67 
+1313.67 
+1313.67 
+1313.67 
+1313.67 
+1313.67 
+1313.67 
+1313.67 
+
+Maturity 
+0.3972602 
+0.3972602 
+0.3972602 
+0.3972602 
+0.3972602 
+0.8958904 
+0.8958904 
+0.8958904 
+0.8958904 
+0.8958904 
+1.8904109 
+1.8904109 
+1.8904109 
+1.8904109 
+1.8904109 
+
+Strike 
+1200 
+1250 
+1300 
+1350 
+1400 
+1200 
+1250 
+1300 
+1350 
+1400 
+1200 
+1250 
+1300 
+1350 
+1400 
+
+Interest rate  Mid 
+160.15 
+0.000697973 
+0.000697973 
+127.25 
+99.15 
+0.000697973 
+75.25 
+0.000697973 
+55.6 
+0.000697973 
+0.000853821 
+211.1 
+182.25 
+0.000853821 
+156.35 
+0.000853821 
+0.000853821 
+132.2 
+0.000853821 
+111.55 
+0.002228013 
+0.002228013 
+0.002228013 
+0.002228013 
+0.002228013 
+
+259.75 
+235.3 
+213.05 
+192.2 
+
+286 
+
+Bid 
+158.6 
+125.6 
+98.0 
+73.8 
+54.4 
+209.4 
+180.6 
+155.0 
+130.3 
+110.2 
+284.2 
+257.8 
+233.2 
+211.2 
+190.4 
+
+Ask 
+161.7 
+128.9 
+100.3 
+76.7 
+56.8 
+212.8 
+183.9 
+157.7 
+134.1 
+112.9 
+287.8 
+261.7 
+237.4 
+214.9 
+194.0 
+
+ 
+Call options written on The Priceline Group (Nasdaq: PCLN). Market data observed on February 
+24, 2014   
+
+ 
+
+ 
+
+ 
+
+ 
+
+32 
+
+Dataset D3: 30 options (6 maturities, 5 strikes) 
+
+Spot 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+39.63 
+
+Maturity 
+0.0493150 
+0.0493150 
+0.0493150 
+0.0493150 
+0.0493150 
+0.1260273 
+0.1260273 
+0.1260273 
+0.1260273 
+0.1260273 
+0.3753424 
+0.3753424 
+0.3753424 
+0.3753424 
+0.3753424 
+0.6246575 
+0.6246575 
+0.6246575 
+0.6246575 
+0.6246575 
+0.8739726 
+0.8739726 
+0.8739726 
+0.8739726 
+0.8739726 
+1.8684931 
+1.8684931 
+1.8684931 
+1.8684931 
+1.8684931 
+
+Strike 
+
+36 
+38 
+40 
+42 
+44 
+36 
+38 
+40 
+42 
+44 
+36 
+38 
+40 
+42 
+44 
+36 
+38 
+40 
+42 
+44 
+35 
+37 
+40 
+42 
+45 
+35 
+37 
+40 
+42 
+45 
+
+Interest rate  Mid 
+0.000631752 
+3.75 
+2.145 
+0.000631752 
+1.035 
+0.000631752 
+0.435 
+0.000631752 
+0.000631752 
+0.17 
+4.3 
+0.000707312 
+2.91 
+0.000707312 
+1.85 
+0.000707312 
+0.000707312 
+1.095 
+0.615 
+0.000707312 
+5.55 
+0.000734416 
+4.35 
+0.000734416 
+0.000734416 
+3.35 
+2.55 
+0.000734416 
+1.92 
+0.000734416 
+6.475 
+0.000796417 
+0.000796417 
+5.35 
+4.4 
+0.000796417 
+3.6 
+0.000796417 
+0.000796417 
+2.92 
+7.775 
+0.000882340 
+6.675 
+0.000882340 
+5.25 
+0.000882340 
+0.000882340 
+4.425 
+0.000882340 
+3.425 
+0.002280481 
+10.125 
+0.002280481 
+0.002280481 
+0.002280481 
+0.002280481 
+
+9.2 
+7.85 
+7.1 
+6.1 
+
+Bid 
+3.7 
+2.13 
+1.02 
+0.42 
+0.16 
+4.25 
+2.89 
+1.84 
+1.08 
+0.61 
+5.5 
+4.3 
+3.3 
+2.53 
+1.9 
+6.4 
+5.3 
+4.35 
+3.55 
+2.89 
+7.7 
+6.6 
+5.2 
+4.35 
+3.35 
+9.95 
+9.05 
+7.75 
+7.0 
+5.95 
+
+Ask 
+3.8 
+2.16 
+1.05 
+0.45 
+0.18 
+4.35 
+2.93 
+1.86 
+1.11 
+0.62 
+5.6 
+4.4 
+3.4 
+2.57 
+1.94 
+6.55 
+5.4 
+4.45 
+3.65 
+2.95 
+7.85 
+6.75 
+5.3 
+4.5 
+3.5 
+10.3 
+9.35 
+7.95 
+7.2 
+6.25 
+
+ 
+Call options written on Yahoo (Nasdaq: YHOO). Market data observed on March 4, 2014.   
+
+ 
+
+ 
+
+ 
+
+33 
+
+7.  References  
+
+Albrecher, H., Mayer, P., Schoutens, W. and Tistaert, J. (2007): The little Heston trap. Wilmott 
+Magazine, January 2007, 83-92. 
+
+Bin,  C.  (2007):  Calibration  of  the  Heston  Model  with  Application  in  Derivative  Pricing  and 
+Hedging. Retrieved from: http://ta.twi.tudelft.nl/mf/users/oosterle/oosterlee/chen.pdf 
+
+Black,  F.  and  Scholes,  M.  (1972):  The  Valuation  of  Option  Contracts  and  a  Test  of  Market 
+Efficiency. Journal of Finance 27, 399-417.  
+
+Carr, P. and Madan, D. (1998): Option valuation using the Fast  Fourier Transform.  Journal of 
+Computational Finance 2, 61–73.  
+
+Chourdakis,  K.  (2008):  Financial  engineering:  A  brief  introduction  using  Matlab  system. 
+Retrieved from http://love.theponytail.net/. 
+
+Cox,  J.  C.,  Ingersoll,  J.  E.  and  Ross,  S.  A.  (1985):  A  Theory  of  the  Term  Structure  of  Interest 
+Rates. Econometrica 53, 385-408. 
+
+Feller, W. (1951): Two Singular Diffusion Problems. Annals of Mathematics 54, 173–182. 
+
+Gatheral, J. (2006): The Volatility Surface: A Practioner’s Guide, Wiley Finance, New York. 
+
+Goel, T. and Stander,  N. (2009):  Adaptive  Simulated Annealing for Global Optimization in LS-
+OPT. 7th European LS-DYNA Conference. 
+
+Heston, S. (1993): A closed-form solution for options with stochastic volatility with applications 
+to bond and currency options, Review of Financial Studies 6, 327-343.  
+
+Kahl,  C.  and  Jäckel,  P.  (2005):  Not-so-complex  logarithms  in  the  Heston  model,  Willmott 
+Magazine, September 2005, 94–103. 
+
+Kendall,  M.G.,  Stuart,  A.,  and  Ord,  J.K.  (1994):  Kendall's  advanced  theory  of  statistics: 
+Distribution theory vol. 1, (6th ed.). New York. Wiley. 
+
+Matsuda, K. (2004):  Introduction to Option Pricing with Fourier Transform: Option Pricing with 
+Exponential Lévy Models. White Paper, City University of New York. 
+
+Merton,  R.  (1973):  Theory  of  Rational  Option  Pricing.  Bell  Journal  of  Economics  and 
+Management Science 4, 141-183.  
+
+Schmelzle,  M.  (2010):  Option  Pricing  Formulae  using  Fourier  Transform:  Theory  and 
+Application. Retrieved from http://pfadintegral.com 
+
+Wu, L. (2007): From Characteristic Functions and Fourier Transforms to PDFs/CDFs and Option 
+Prices. Zicklin School of Business, Baruch College. 
+
+Yuan, Y. (1999): A review of trust region algorithms for optimization. ICIAM 99: Proceedings of 
+the Fourth International Congress on Industrial & Applied Mathematics, Edinburgh. 
+
+ 
+
+34 
+
+

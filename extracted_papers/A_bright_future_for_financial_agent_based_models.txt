@@ -1,0 +1,1017 @@
+8
+1
+0
+2
+
+ 
+
+n
+a
+J
+ 
+
+4
+2
+
+.
+
+ 
+ 
+]
+P
+C
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+2
+2
+2
+8
+0
+
+.
+
+1
+0
+8
+1
+:
+v
+i
+X
+r
+a
+
+A bright future for ﬁnancial agent-based models
+
+J. Lussange(1), A. Belianin(2), S. Bourgeois-Gironde(3,4), B. Gutkin(1,5)
+
+,
+
+1. Group for Neural Theory, LNC INSERM U960, Departement des
+
+Etudes Cognitives, Ecole Normale Superieure PSL University, Paris France
+
+2.ICEF, National Research University Higher School of Economics and Primakov
+
+Institute for World Economy and International Relations, Russian Academy of Sciences
+
+3.Institut Jean-Nicod, Ecole Normale Sup´erieure, Paris, FR
+
+4.Institut d’Etude de la Cognition, PSL Research University, 75005, Paris, France
+
+5.Center for Cognition and Decision Making, NRU Higher School of Economics, Moscow Russia
+
+(Dated: January 26, 2018)
+
+The history of research in ﬁnance and economics has been widely impacted by the ﬁeld of Agent-
+based Computational Economics (ACE). While at the same time being popular among natural
+science researchers for its proximity to the successful methods of physics and chemistry for example,
+the ﬁeld of ACE has also received critics by a part of the social science community for its lack of
+empiricism. Yet recent trends have shifted the weights of these general arguments and potentially
+given ACE a whole new range of realism. At the base of these trends are found two present-day
+major scientiﬁc breakthroughs: the steady shift of psychology towards a hard science due to the
+advances of neuropsychology, and the progress of artiﬁcial intelligence and more speciﬁcally machine
+learning due to increasing computational power and big data. These two have also found common
+ﬁelds of study in the form of computational neuroscience, and human-computer interaction, among
+others. We outline here the main lines of a computational research study of collective economic
+behavior via Agent-Based Models (ABM) or Multi-Agent System (MAS), where each agent would
+be endowed with speciﬁc cognitive and behavioral biases known to the ﬁeld of neuroeconomics,
+and at the same time autonomously implement rational quantitative ﬁnancial strategies updated by
+machine learning. We postulate that such ABMs would oﬀer a whole new range of realism.
+
+The ﬁeld of ﬁnance and economics has used various ap-
+proaches to model ﬁnancial markets dynamics. Among
+these we can historically distinguish three important
+classes of models. The ﬁrst and most encountered are
+statistical models which are calibrated to ﬁt times series
+like past prices history. These can bring interesting re-
+sults pertaining to general volatility [1, 2] or log-return
+forecasting [3] as long as the variability of the parameters
+of calibration is not too strong. The second are known as
+Dynamic Stochastic General Equilibrium (DSGE) mod-
+els which provide explicit agent-based microfoundations
+for the sectoral dynamics and aggregate ﬂuctuations [4].
+Modern developments of DSGE models strive to add re-
+alism to the basic model structure, accounting for agent
+heteorgeneity, bounded rationality and imperfect learn-
+ing, and (in the New Keynesian versions) replace the ra-
+tional expectations hypothesis by market rigidities and
+exogenous stochastic shocks to emulate true market en-
+vironment conditions [5–7]. These two classes of models
+have shown a variety of promising results over the years.
+However if we consider a top-down approach to system in-
+ference, we can say that they are based on rough approx-
+imations of reality [8, 9], and will not explain the wealth
+and diversity of price microstructure traditionally seen
+in markets. This leads to a third class of models called
+Agent-Based Models (ABMs) or sometimes Multi-Agent
+Systems (MAS) to probe and emulate markets from a
+pure bottom-up approach [10–12], and considering them
+as the complex systems [13] that they truly are. Among
+ﬁnancial ABM models, we can also include order book
+
+models [14, 15] even though some may see those as a
+midway approach. In a ﬁnancial ABM, market investors
+or traders are modeled as agents trading together via an
+order book (such as a double auction order books [16]).
+This is a discrete-time algorithm taking in the trading
+bids at t and oﬀers of speciﬁc securities from all agents,
+and matching them at transaction prices which then col-
+lectively deﬁne the price of the market for such securities
+at the time step t + 1.
+
+ABM have been used in many scientiﬁc disciplines [17–
+19].
+In economics, these models have emerged by way
+of psychological learning models [20], evolutionary bi-
+ology [21, 22], and especially game theory [23–27].
+In
+recent years, ABM also became popular as a tool to
+study macroeconomics [28–31] — speciﬁcally, the impact
+of trading taxes, market regulatory policies, quantitative
+easing, and the general role of central banks [32]. ABMs
+can also play an important role in analysis of the impact
+of the cross-market structure [33].
+
+From a regulatory point of view, this implies a general
+stronger role for ABM to play [34]. Jean-Claude Trichet
+declared for instance in 2010: ”As a policy-maker during
+the crisis, I found the available models of limited help. In
+fact, I would go further: in the face of the crisis, we felt
+abandoned by conventional tools. [...] Agent-based mod-
+eling dispenses with the optimization assumption and al-
+lows for more complex interactions between agents. Such
+approaches are worthy of our attention.”
+
+Even if ABMs are often designed with many param-
+
+eters and hence subject to the delicate issue of overﬁt-
+ting, one of their biggest advantages is that they require
+fewer assumptions (e.g normal distribution of returns,
+no-arbitrage) than top-down models [35]. Added to this,
+ABM display the famous complexity emergence proper
+to bottom-up approaches [36] and can hence show com-
+pletely new regimes of transitions, akin to phase transi-
+tions in statistical physics [37]. However, being models,
+ABMs are of course imperfect and need a thorough and
+lengthy cross-market validation [38]. Yet at the same
+time, one should keep in mind that such a general and
+cautious validation of ABMs shall be in fact applicable
+and necessary to any other model as well [39].
+
+From now on we consider the application of ABMs
+to ﬁnancial markets. We shall note that among ﬁnan-
+cial ABMs some exclusively pertain to high-frequency
+trading [40, 41], while other take both high- and low-
+frequency into account [42–44]. Another popular topic
+of literature in ﬁnancial ABMs is the emulation of the
+widespread Minority Game [45, 46], which formally is
+not a ﬁnancial market problem, but a general game the-
+ory problem which can be related to the ﬁnancial issues
+of pricing and forecasting.
+
+In order to generate a dynamic trading activity in ﬁ-
+nancial ABMs, a basic economic assumption is that the
+agents disagree on the present security price or trade at
+diﬀerent frequencies (which possibility is sometimes ex-
+plicitly denied in economics literature [47]), and are hence
+willing to long or short a same security at diﬀerent prices.
+In other words, there must be some sort of price disagree-
+ment happening and an original pricing mechanism at
+the discretion of each individual agent. In the literature,
+this mechanism of pricing in ﬁnancial ABMs has in gen-
+eral been designed according to two basic mechanisms
+of trading: in some models at least a part of the agents
+trade in a random way as ‘noise traders’ [40, 41, 48–52],
+and in other models agents use realistic trading strate-
+gies known to real ﬁnancial markets, depending on the
+variability and stochasticity of the market [53–56].
+
+I. ACCURACY
+
+Over the years, economic research (and especially
+econophysics research) has gradually discovered a certain
+number of non-trivial statistical features of or stylized
+facts about ﬁnancial times series. These stylized facts
+are based on variations in prices that have universal sta-
+tistical properties in common from market to market,
+over diﬀerent types of instruments, and time periods.
+Among these, those pertaining to returns distribution
+or volatility clustering for example were gradually dis-
+covered during the nineties: Kim-Markowitz [57], Levy-
+Levy-Solomon [58–64], Cont-Bouchaud [65], Solomon-
+Weisbuch [66], Lux-Marchesi
+[53, 67], Donangelo-
+Sneppen [68–71], Solomon-Levy-Huang [72]. It was also
+not before this time that ABM started to emulate these
+
+stylized facts.
+
+The importance of the universality of stylized facts to
+really gauge ﬁnancial markets comes from the fact that
+the price evolutions of diﬀerent markets may have very
+diﬀerent exogenous or endogenous causes. As a conse-
+quence they highlight general underlying ﬁnancial mech-
+anisms that are market-independent, and which can in
+turn be exploited for ABM architecture design. From
+a scientiﬁc point of view, stylized facts are hence ex-
+tremely interesting and their faithful emulation has been
+an active topic of research in the past ﬁfteen years or
+so [73, 74]. Their deﬁnite characteristics has varied ever
+so slightly over the years and across literature, but the
+most widespread and unanimously accepted stylized facts
+can in fact be grouped in three broad, mutually overlap-
+ping categories:
+
+Non-gaussian returns: the returns distribution is non-
+gaussian and hence asset prices should not be modeled
+as brownian random walks [75, 76], despite what is taught
+in most text books, and applied in sell-side ﬁnance. In
+particular the real distributions of returns are dissim-
+ilar to normal distributions in that they are: (i) hav-
+ing fatter tails and hence more extreme events, with the
+tails of the cumulative distribution being well approx-
+imated [75, 77] by a power law of exponent belonging
+to the interval [2, 4] (albeit this is still the subject of a
+discussion [78, 79] famously started by Mandelbrot [80]
+and his Levy stable model for ﬁnancial returns), (ii) neg-
+atively skewed and asymmetric in many observed mar-
+kets [81] with more large negative returns than large posi-
+tive returns, (iii) platykurtic and as a consequence having
+less mean-centered events [82], (iv) with multifractal k-
+moments so that their exponent is not linear with k, as
+seen in [83–86].
+
+Clustered volatilities: market volatility tends to aggre-
+gate or form clusters [2]. Therefore compared to av-
+erage, the probability to have a large volatility in the
+near-future is greater if it was large also in the near-
+past [73, 87, 88]. Regardless of whether the next return
+is positive or negative, one can thus say that large (resp.
+small) return jumps are likely followed by the same [80],
+and thus display some sort of long memory behavior [89].
+Because volatilities and trading volumes are often corre-
+lated, we also observe a related volume clustering.
+
+Decaying auto-correlations: the auto-correlation function
+of the returns of ﬁnancial time series are basically zero
+for any value of the auto-correlation lag, except for very
+short lags (e.g. half-hour lags for intraday data) because
+of a mean-reverting microstructure mechanism for which
+there is a negative auto-correlation [81, 89]. This is some-
+times feeding the general argument of the well-known Ef-
+ﬁcient Market Hypothesis [90, 91] that markets have no
+memory and hence that one cannot predict future prices
+based on past prices or information [87, 88]. According
+to this view, there is hence no opportunity for arbitrage
+within a ﬁnancial market [77]. It has been observed how-
+ever that certain non-linear functions of returns such as
+
+squared returns or absolute returns display certain steady
+auto-correlations over longer lags [89].
+
+Since then, ABMs of ﬁnancial markets have steadily
+increased in realism and can generate progressively more
+robust scaling experiments. We can speciﬁcally highlight
+the potential of these simulations to forecast real ﬁnancial
+time series via reverse-engineering. A promising recent
+perspective for such use of ABMs has been highlighted in
+the ﬁeld of statistics by [92–94]: the agent-based model
+parameters are constrained to be calibrated and ﬁt real ﬁ-
+nancial time series and then allowed to evolve over a given
+time period as a basic forecast measure on the original
+time series used for calibration. With this, one could thus
+say that ABMs are now reaching Friedman’s [95] method-
+ological requirement that a theory must be ”judged by its
+predictive power for the class of phenomena which it is
+intended to explain.”
+
+II. CALIBRATION
+
+Just as any other model, the parameters of the ABM
+must be calibrated to real ﬁnancial data in order to per-
+form realistic emulation. This part of calibration is to-
+gether with architecture design the most technical and
+crucial aspect of the ABM [96]. Yet at the same time
+in the literature most calibration techniques are done by
+hand, so that the stylized facts are re-enacted in a satis-
+factory way. Therefore so far the ABM calibration step
+is often performed in way that is sub-optimal [48, 97, 98].
+
+On the other hand, an eﬃcient methodology for cal-
+ibration would need two important steps. First a fully
+automated meta-algorithm in charge of the calibration
+should be incorporated, so that massive amount of ﬁ-
+nancial data could be treated and the aforementioned
+scope of validity of ABM studied via cross-market vali-
+dations [48, 99]. This is important as the robustness of
+a calibration always relies on many runs of ABM sim-
+ulations [100]. Second, this calibration meta-algorithm
+should be working through the issues of overﬁtting and
+underﬁtting, which may constitute a severe challenge due
+to the ever-changing stochastic nature of ﬁnancial mar-
+kets.
+
+Part of this calibration problem is to thoroughly and
+cautiously deﬁne the parameter space. This step is par-
+ticularly sensitive, since it can lead to potentially prob-
+lematic simpliﬁcations. For instance, what should be the
+size of the time step of the simulation? ABM with a daily
+time tick will of course produce time series that are much
+coarser than those coming from real ﬁnancial data, which
+include all sorts of intraday events [101–103].
+
+III. TRENDS
+
+As previously said, emergence and recent progress of
+two separate ﬁelds of research will likely have a ma-
+jor upcoming impact on economic and ﬁnancial ABMs.
+The ﬁrst one is the recent developments in cognitive
+neuroscience and neuroeconomics [104–108], which has
+revolutionized behavioral economics with its ever lower
+cost experimental methods of functional magnetic reso-
+nance imaging (fMRI), electro-encephalography (EEG),
+or magneto-encephalography (MEG) applied to deci-
+sion [109, 110] and game theories [111]. The second
+one concerns the recent progress of machine learning
+which has been possible in the last few years by the
+improved computer power, and especially GPU comput-
+ing [112], as well as the availability of big data to train
+supervised algorithms and reach in some tasks superhu-
+man performance [113–116]. Among the multiple ma-
+chine learning approaches and algorithms, we can high-
+light in particular the recent progress of reinforcement
+learning [117–119], artiﬁcial neural networks [120–122],
+Monte Carlo tree search [115], and multi-agent learn-
+ing [114, 123, 124]. Furthermore, these have been com-
+bined to work together in new types of unsupervised al-
+gorithms that have given impressive results [125, 126],
+raising concern about the scale of general societal impact
+of artiﬁcial intelligence [127].
+
+To the ABM ﬁeld, this implies that the realism of
+the economic agents can be greatly increased via these
+two recent technological developments: the agents can
+be endowed with numerous cognitive and behavioral bi-
+ases emulating those of human investors for instance, but
+also their trading strategies can be more faithful to real-
+ity in the sense that they can be dynamic and versatile
+depending on the general stochasticity or variability of
+the market, thanks to the fact that via machine learning
+they will learn to trade and invest. At a time where the
+economy and ﬁnancial markets are progressively more
+and more automated, this impact of machine learning
+on ABM should thus be explored. One should keep in
+mind that the central challenge (and in fact hypothe-
+ses) of ABM are the realism of the agents, but also the
+realism of the economic transactions and interactions be-
+tween the agents.
+
+IV. APPLICATION
+
+Besides studying the agents’ collective trading interac-
+tions with one another, an ABM stock market simula-
+tion could be used to probe the following speciﬁc ﬁelds
+of study:
+Market macrostructure: one could study how human cog-
+nitive and behavioral biases change agents’ behaviour at
+a level of market macrostructure. The two main topics
+of market macrostructure that would be of interest are
+naturally all those pertaining to systemic risk [128, 129]
+
+(bubble and crash formation, problem of illiquidity), and
+also those related to herding-type phenomena [130] (in-
+formation cascades, rational imitation, reﬂexivity). A
+key aspect of this work would be also to carefully cali-
+brate and compare the stylized facts to real ﬁnancial data
+(we need to see standardized eﬀects such as volatility
+clustering, leptokurtic log-returns, fat tails, long mem-
+ory in absolute returns).
+Indeed some of these macro-
+eﬀects have been shown to arise from other agent-based
+market simulators [11, 131], however it is not yet fully un-
+derstood how these are impacted by the agents learning
+process nor their cognitive and behavioral biases such as
+risk aversion, greed, cooperativity, intertemporality, and
+the like.
+Price formation:
+one could study how these biases
+change the arbitrage possibilities in the market via their
+blatant violation of the axioms of the Eﬃcient Market
+Hypothesis [132]. Indeed agent-based market simulators
+so far have often relied on the use of the aforementioned
+’noise traders’ in order to generate the necessary con-
+ditions for basic business activity [12, 33, 133]. The
+novel aspect here would be to go one step further and
+replace this notion of purely random trading by imple-
+menting speciﬁc neuroeconomic biases common to real
+human behaviors. Another problem of past research in
+agent-based stock market simulators is that these have
+often relied on agents getting their information for price
+forecasting from a board of technical indicators common
+to all agents [134]. In contrast, we should develop agent
+models that allow each agent to be autonomous and use
+and ameliorate its own forecasting tools. This is a crucial
+aspect in view of the well-known fact that information is
+at the heart of price formation [135]. We hypothesize
+that such agent learning dynamics is fundamental in ef-
+fects based on market reﬂexivity and impact on price
+formation, and hints to the role played by fundamental
+pricing versus technical pricing of assets. Of major inter-
+est is the issue of global market liquidity provision and
+its relation to the law of supply and demand and bid-ask
+spread formation [136–138].
+
+Credit risk : one could study the eﬀect of market evolu-
+tionary dynamics when the agents are allowed to learn
+and improve their trading strategy and cognitive biases
+via machine learning. In other words, it would be inter-
+esting to see the agents population survival rates [139–
+141] (cf. credit risk), and overall price formation with re-
+spect to the arbitrage-free condition of markets when we
+increase the variability of the intelligence in the trading
+agents [142]. Indeed, recent studies [133, 143, 144] sug-
+gest that arbitrage opportunities in markets arise mainly
+from the collective number of non-optimal trading deci-
+sions that shift the prices of assets from their fundamen-
+tal values via the law of supply and demand. Another
+topic would be to compare such agent survivability with
+Zipf’s law [141].
+
+V. CONCLUSION
+
+We have thus highlighted new possible exciting per-
+spectives for ﬁnancial ABM, where the agents would be
+designed with neuroeconomic biases and having trading
+or investment strategies updated by machine learning.
+One should recall that the main argument against ABM,
+and indeed their main challenge, has always been about
+the realism of the agents, albeit one should also consider
+the realism of the economic transactions. We thus argue
+that these recent trends should set a totally new level of
+realism for ﬁnancial ABM
+
+In particular, whereas early ﬁnancial ABM generations
+increased their realism of emulation of real stock markets
+by re-enacting stylized facts gradually during the late
+nineties, and whereas the issue of calibration is still un-
+dergoing the process of automation so that ABM may be
+validated on large scales of data, we expect these trends
+to bring in several revolutionary breakthroughs, and the
+emergence and recognition of ABM as the relevant tools
+that they are in ﬁnance and economics.
+
+Aknowldgement: This work was supported by the
+RFFI grant nr.16-51-150007 and CNRS PRC nr.151199.
+
+[1] T. Bollerslev, CREATES Research Paper 2008, 49
+
+(2009).
+
+(2008).
+
+[2] R. F. Engle, Econometrica 50(4), 987 (1982).
+[3] C. T. Brownlees, R. F. Engle, and B. T. Kelly, The
+
+Journal of Risk 14(2), 3 (2011).
+
+[9] P. D. Grauwe, Public choice 144(3-4), 413 (2010).
+
+[10] L. Tesfatsion and K. L. Judd, Handbook of computa-
+tional economics: agent-based computational economics
+Vol II (Elsevier, 2006).
+
+[4] A. M. Sbordone, A. Tambalotti, K. Rao, and K. J.
+
+[11] E. Samanidou, E. Zschischang, D. Stauﬀer, and T. Lux,
+
+Walsh, Economic policy review 16(2) (2010).
+
+[5] G. W. Evans and S. Honkapohja, Learning and Expec-
+tations in Macroeconomics (Princeton University Press,
+2001).
+
+[6] S. Eusepi and B. Preston, American Economic Review
+
+Reports on Progress in Physics 70 (3), 409 (2007).
+
+[12] B. LeBaron, Building the Santa Fe Artiﬁcial Stock Mar-
+
+ket (2002).
+
+[13] E. Bonabeau, Harvard Business Review 80(3), 109
+
+(2002).
+
+101, 2844 (2011).
+
+[14] E. Smith, D. J. Farmer, L. Gillemot, and S. Krishna-
+
+[7] D. Massaro, Journal of Economic Dynamics and Control
+
+murthy, Quantitative Finance 3, 481 (2003).
+
+37, 680 (2013).
+
+[8] J. D. Farmer and D. Foley, Nature 460(7256), 685
+
+[15] W. Huang, C.-A. Lehalle, and M. Rosenbaum, Journal
+of the American Statistical Association 110, 509 (2015).
+
+[16] R. M. N and H. Larralde, arXiv:1601.00229 (2016).
+[17] C. M. Macal and M. J. North, Journal of Simulation 4,
+
+151 (2010).
+
+[18] R. M. Axelrod, The complexity of cooperation: Agent-
+based models of competition and collaboration (Prince-
+ton University Press, 1997).
+
+[19] V. Grimm, U. Berger, F. Bastiansen, S. Eliassen,
+V. Ginot, J. Giske, J. Goss-Custard, T. Grand, S. K.
+Heinz, G. Huse, et al., Ecological modelling 198(1),
+115 (2006).
+
+[20] B. R. R. and M. F., Stochastic models for learning (Ox-
+
+ford, England: John Wiley, NY., 1955).
+
+[21] J. Smith and D.Price, Nature 246, 15 (1973).
+[22] P. D.Taylor and L. B.Jonker, Mathematical biosciences
+
+[45] D. Challet, M. Marsili, and Y.-C. Zhang, Minority
+Games: interacting agents in ﬁnancial markets (Oxford
+University Press, 2005).
+
+[46] A. D. Martino and M. Marsili, Journal of Physics A 39,
+
+465 (2006).
+
+[47] A. S. Kyle and O. A, Economertrica forthcoming
+
+(2016).
+
+[48] T. Preis, S. Golke, W. Paul, and J. J. Schneider, Euro-
+
+physics Letters 75(3), 510 (2006).
+
+[49] J. D. Farmer, P. Patelli, and I. I. Zovko, Proceedings of
+the National Academy of Sciences of the United States
+of America 102(6), 2254 (2005).
+
+[50] S. Maslov, Physica A 278(3), 571 (2000).
+[51] D. Challet and R. Stinchcombe, Quantitative ﬁnance
+
+40, 145 (1978).
+
+3(3), 155 (2003).
+
+[23] D. Mookherjee and B. Sopher, Games and Economic
+
+[52] T. A. Schmitt, R. Schfer, M. C. Mnnix, and T. Guhr,
+
+Behavior 7, 62 (1994).
+
+Europhysics Letters 100 (2012).
+
+[24] I. Erev and A. E.Roth, American Economic Review 88,
+
+[53] T. Lux and M. Marchesi, Journal of Theoretical and
+
+848 (1998).
+
+[25] I. Erev and A. E.Roth, PNAS 111, 10818 (2014).
+[26] C. F.Camerer and T. H. Ho, PNAS 67, 827???874
+
+(1999).
+
+Applied Finance 3, 67 (2000).
+
+[54] R. Cont, Volatility clustering in ﬁnancial markets: Em-
+
+pirical facts and agent-based models (Springer, 2007).
+
+[55] M. A. Bertella, F. R. Pires, L. Feng, and H. E. Stanley,
+
+[27] F. D. and L. D., The Theory of Learning in Games
+
+PloS one 9(1), e83488 (2014).
+
+(Cambridge, MIT Press, 1998).
+
+[28] D. Colander, P. Howitt, A. Kirman, A. Leijonhufvud,
+and P. Mehrling, The American Economic Review pp.
+236–240 (2008).
+
+[29] G. Dosi, G. Fagiolo, M. Napoletano, and A. Roventini,
+Journal of Economic Dynamics and Control 37(8), 1598
+(2013).
+
+[30] S. Gualdi, M. Tarzia, F. Zamponi, and J.-P. Bouchaud,
+Journal of Economic Interaction and Coordination pp.
+1–31 (2016).
+
+[31] S. Gualdi, M. Tarzia, F. Zamponi, and J.-P. Bouchaud,
+Journal of Economic Dynamics and Control 50, 29
+(2015).
+
+[32] F. H. Westerhoﬀ, Jahrbucher Fur Nationalokonomie
+
+Und Statistik 228(2), 195 (2008).
+
+[33] H.-C. Xu, W. Zhang, X. Xiong, and W.-X. Zhou, Math-
+ematical Problems in Engineering 2014, 563912 (2014).
+[34] R. Boero, M. Morini, M. Sonnessa, and P. Terna, Agent-
+based models of the economy, from theories to applica-
+tions (Palgrave Macmillan, 2015).
+
+[35] B. LeBaron, Agent-based Computational Finance in The
+Handbook of Computational Economics, Vol. 2 (Ams-
+terdam Elsevier, 2005).
+
+[36] F. Heylighen, Complexity and Self-organization (Boca
+
+Raton CRC Press, 2008).
+
+[56] V. Alﬁ, M. Cristelli, L. Pietronero, and A. Zaccaria, The
+
+European Physical Journal B 67(3), 385 (2009).
+
+[57] G. Kim and H. M. Markowitz, Journal of Portfolio Man-
+
+agement 16, 45 (1989).
+
+[58] M. Levy and S. Solomon, International Journal of Mod-
+
+ern Physics C 7, 595 (1996).
+
+[59] M. Levy, H. Levy, and S. Solomon, Economics Letters
+
+45, 103 (1994).
+
+[60] M. Levy, H. Levy, and S. Solomon, Journal de Physique
+
+I 5, 1087 (1995).
+
+[61] M. Levy and S. Solomon, International Journal of Mod-
+
+ern Physics C 7, 65 (1996).
+
+[62] M. Levy, N. Persky, and S. Solomon, International Jour-
+
+nal of High Speed Computing 8, 93 (1996).
+
+[63] M. Levy, H. Levy, and S. Solomon, Physica A 242, 90
+
+(1997).
+
+[64] M. Levy, H. Levy, and S. Solomon, Microscopic Simula-
+tion of Financial Markets (Academic Press, New York,
+2000).
+
+[65] R. Cont and J. P. Bouchaud, Macroeconomic Dynamics
+
+4, 170 (2000).
+
+[66] S. Solomon, G. Weisbuch, L. de Arcangelis, N. Jan, and
+
+D. Stauﬀer, Physica A 277(1), 239 (2000).
+
+[67] T. Lux and M. Marchesi, Nature 397, 498 (1999).
+[68] R. Donangelo, A. Hansen, K. Sneppen, and S. R. Souza,
+
+[37] V. Plerou, P. Gopikrishnan, and H. E. Stanley, Nature
+
+Physica A 283, 469 (2000).
+
+421, 130 (2003).
+
+[69] R. Donangelo and K. Sneppen, Physica A 276, 572
+
+[38] L. Hamill and N. Gilbert, Agent-Based Modelling in
+
+(2000).
+
+Economics (John Wiley and Sons, 2016).
+
+[70] P. Bak, S. Norrelykke, and M. Shubik, Physical Review
+
+[39] D. Wilcox and T. Gebbie, arXiv:1408.5585 (2014).
+[40] T. A. Hanson, Midwest Finance Association 2012 An-
+
+E 60, 2528 (1999).
+
+[71] P. Bak, S. Norrelykke, and M. Shubik, Quantitative Fi-
+
+nual Meetings Paper (2011).
+
+nance 1, 186 (2001).
+
+[41] M. Bartolozzi, European Physical Journal B 78, 265
+
+[72] Z. F. Huang and S. Solomon, European Physical Journal
+
+(2010).
+
+B 20, 601 (2000).
+
+[42] E. Wah and M. P. Wellman, Proceedings of the four-
+teenth ACM conference on Electronic commerce pp.
+855–872 (2013).
+
+[73] J. Lipski and R. Kutner, arXiv:1310.0762 (2013).
+[74] S. Barde, University of Kent, School of Economics Dis-
+
+cussion Papers 04 (2015).
+
+[43] M. E. Paddrik, R. L. Hayes, A. Todd, S. Y. Yang,
+
+[75] M. Potters and J.-P. Bouchaud, Physica A 299, 60
+
+W. Scherer, and P. Beling, SSRN 1932152 (2011).
+
+(2001).
+
+[44] M. Aloud, E. Tsang, and R. Olsen, Hershey, PA: Busi-
+
+ness Science Reference (2013).
+
+[76] V. Plerou, P. Gopikrishnan, L. A. Amaral, M. Meyer,
+and H. E. Stanley, Physical Review E 60(6), 6519
+
+(1999).
+
+(Academic Press, 2009).
+
+[77] M. Cristelli, Complexity
+
+in Financial Markets
+
+[105] C. Camerer, Journal of Economic Literature 51(4),
+
+(Springer, 2014).
+
+1155 (2013).
+
+[78] R. Weron, International Journal of Modern Physics C
+
+[106] B. D. Martino, J. P. O?Doherty, D. Ray, P. Bossaerts,
+
+12, 209 (2001).
+
+and C. Camerer, Neuron 79(6), 1222 (2013).
+
+[79] Z. Eisler and J. Kertesz, European Physical Journal B
+
+51, 145 (2006).
+
+[80] B. Mandelbrot, The Journal of Business pp. 394–419
+
+(1963).
+
+[81] R. Cont, Quantitative Finance 1, 223 (2001).
+[82] J. Bouchaud, R. Cont, and M. Potters, Scale Invariance
+and Beyond, Proc. CNRS Workshop on Scale Invari-
+ance, Les Houches (Springer, 1997).
+
+[83] Z. Ding, R. Engle, and C. Granger, Journal of Empirical
+
+Finance 1, 83 (1993).
+
+[84] I. N. Lobato and N. E. Savin, Journal of Business and
+
+Economics Statistics 16, 261 (1998).
+
+[107] C. Camerer, Annual Review of Economics 5, 425 (2013).
+[108] C.
+the-
+URL
+
+Neuroscience,
+talk,
+
+Camerer,
+monkeys
+
+game
+2013),
+
+(TEDx
+
+ory,
+http://www.ted.com/talks/colin_camerer_neuroscience_game_theory_monkeys.html.
+
+[109] D. Kahneman and A. Tversky, Econometrica 47(2), 263
+
+(1979).
+
+[110] C. Frydman, N. Barberis, C. Camerer, P. Bossaerts, and
+
+A. Rangel, NBER Working Paper 18562 (2012).
+
+[111] C. F. Camerer, Behavioral Game Theory: Experiments
+on Strategic Interaction (Princeton University Press,
+2003).
+
+[112] A. Coates, B. Huval, T. Wang, D. Wu, A. Ng, and
+
+[85] N. Vandewalle and M. Ausloos, Physica A 246, 454
+
+B. Catanzaro, ICML (2013).
+
+(1997).
+
+[86] B. Mandelbrot, A. Fisher, and L. Calvet, A multifractal
+model of asset returns (Cowles Foundation for Research
+and Economics, 1997).
+
+[87] C. de Vries and K. Leuven, Stylized facts of nominal ex-
+change rate returns (Working Papers from Purdue Uni-
+versity, Krannert School of Management - Center for In-
+ternational Business Education and Research (CIBER),
+1994).
+
+[88] A. Pagan, Journal of Empirical Finance 3, 15 (1996).
+[89] R. Cont, Volatility Clustering in Financial Markets:
+Empirical Facts and Agent-Based Models (A Kirman
+and G Teyssiere: Long memory in economics, Springer,
+2005).
+
+[90] E. Fama, Journal of Finance 25, 383 (1970).
+[91] A. K. Bera, S. Ivliev, and F. Lillo, Financial Economet-
+rics and Empirical Market Microstructure (Springer,
+2015).
+
+[92] J. Wiesinger, D. Sornette, and J. Satinover, Computa-
+
+tional Economics 41 (4), 475 (2012).
+
+[93] J. V. Andersen and D. Sornette, Europhysics Letters
+
+70.5, 697 (2005).
+
+[94] Q. Zhang, Disentangling Financial Markets and Social
+Networks: Models and Empirical Tests (ETH Zurich,
+PhD thesis, 2013).
+
+[95] M. Friedman, Essays in Positive Economics (Chicago
+
+[113] M. Wiering, Journal of Intelligent Learning Systems and
+
+Applications 2, 57 (2010).
+
+[114] J. Heinrich and D. Silver, IJCAI (2015).
+[115] D. Silver, A. Huang, C. J. Maddison, A. Guez, L. Sifre,
+G. van den Driessche, J. Schrittwieser, and et al., Nature
+529, 484 (2016).
+
+[116] V. Mnih, K. Kavukcuoglu, D. Silver, A. A. Rusu, J. Ve-
+ness, M. G. Bellemare, A. Graves, and et al., Nature
+518, 529 (2015).
+
+[117] C. J. C. H. Watkins and P. Dayan, Machine learning
+
+8(3-4), 279 (1992).
+
+[118] R. Sutton and A. Barto, Reinforcement Learning: An
+
+Introduction (MIT Press Cambridge MA, 1998).
+
+[119] B. B. Doll, K. D. Duncan, D. A. Simon, D. S. Shohamy,
+
+and N. D. Daw, Nature Neuroscience 18, 767 (2015).
+
+[120] I. Goodfellow, Y. Bengio,
+
+and A. Courville
+(2016), book in preparation for MIT Press, URL
+http://www.deeplearningbook.org.
+
+[121] J. Schmidhuber, Neural Networks 61, 85 (2015).
+[122] V. Turchenko, P. Beraldi, F. D. Simone,
+
+and
+L. Grandinetti, The 6th IEEE International Conference
+on Intelligent Data Acquisition and Advanced Comput-
+ing Systems: Technology and Applications (2011).
+[123] K. Tuyls and G. Weiss, AI Magazine Fall (2012).
+[124] J. Heinrich and D. Silver, AAAI Workshop (2014).
+[125] S. Reed, Z. Akata, X. Yan, L. Logeswaran, H. Lee, and
+
+University Press, 1953).
+
+B. Schiele, ICML (2016).
+
+[96] F. Canova and L. Sala, Journal of Monetary Economics
+
+56(4), 431 (2009).
+
+[97] C. Chiarella, G. Iori, and J. Perello, Journal of Eco-
+
+nomic Dynamics and Control 33, 525 (2009).
+
+[98] S. J. Leal, M. Napoletano, A. Roventini, and G. Fagiolo,
+
+Journal of Evolutionary Economics 26, 49 (2016).
+
+[99] A. Fabretti, Journal of Economic Interaction and Coor-
+
+dination 8, 277 (2013).
+
+[126] A. Lerer, S. Gross, and R. Fergus, ICML (2016).
+[127] (????), URL http://futureoflife.org/ai-open-letter.
+[128] The
+ﬁcial
+http://fcic-static.law.stanford.edu/cdn_media/fcic-reports/fcic_final_report_full.pdf.
+
+government
+
+(Of-
+URL
+
+ﬁnancial
+
+edition,
+
+2011),
+
+crisis
+
+inquiry
+
+report
+
+[129] E. by Jean-Pierre Fouque and J. A. Langsam, Handbook
+on Systemic Risk (Cambridge University Press, 2013).
+[130] S. Bikhchandani and S. Sharma, International Mone-
+
+[100] R. Axtell, Center on Social and Economic Dynamics
+
+tary Fund 47(3) (2001).
+
+Working Paper 17 (2000).
+
+[131] S. Bikhchandani, D. Hirshleifer, and I. Welch, Journal
+
+[101] M. Gilli and P. Winker, Computational Statistics and
+
+of Political Economy 100 (5), 992 (1992).
+
+Data Analysis 42, 299 (2003).
+
+[102] J. D. Farmer and S. Joshi, Journal of Economic Be-
+
+haviour and Organization 49, 149 (2002).
+
+[103] A. Kirman, Epidemics of opinion and speculative bub-
+bles in ﬁnancial markets, in Money and Financial Mar-
+kets (New York: Macmillan, 1991).
+
+[132] E. Fama, Journal of Business 38, 34 (1965).
+[133] D. Sornette, arXiv:1404.0243v1 (2014).
+[134] C. da Costa Pereira, A. Mauri, and A. G. B. Tettamanzi,
+
+IEEE Computer Society WIC ACM (2009).
+
+[135] S. J. Grossman and J. E. Stiglitz, The American Eco-
+
+nomic Review 70:3, 393 (1980).
+
+[104] P. W. Glimcher, C. F. Camerer, E. Fehr, and R. A. Pol-
+drack, Neuroeconomics: Decision Making and the Brain
+
+[136] A. S. Kyle, Econometrica 53, 1315 (1985).
+[137] G. S. J. M. H. Miller, Journal of Finance 43, 617 (1988).
+
+[138] T. N. Cason and D. Friedman, Experimental Economics
+
+2, 77 (1999).
+
+[139] I. V. Evstigneev, T. Hens, and K. R. Schenk-Hopp, Evo-
+lutionary Finance, Handbook of Financial Markets, Dy-
+namics and Evolution (North-Holland, Elsevier, 2009).
+[140] A. Saichev, Y. Malevergne, and D. Sornette, Theory
+of Zipf ’s Law and Beyond (Springer Lecture Notes in
+Economics and Mathematical Systems Vol. 632, 2010).
+[141] Y. Malevergne, A. Saichev, and D. Sornette, Journal of
+Economic Dynamics and Control 37 (6), 1195 (2013).
+[142] J. Hasanhodzic, A. W. Lo, and E. Viola, Quantitative
+
+Finance 11 (7), 1043 (2011).
+
+[143] B. G. Malkiel, A Random Walk Down Wall Street: The
+Time-Tested Strategy for Successful Investing, 10th re-
+vised edition (W. W. Norton and Company, 2012).
+
+[144] F. Black, Journal of Finance 41 (3), 529 (1985).
+
+

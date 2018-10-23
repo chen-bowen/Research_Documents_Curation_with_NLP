@@ -1,0 +1,1557 @@
+7
+1
+0
+2
+
+ 
+r
+a
+
+ 
+
+M
+2
+2
+
+.
+
+ 
+ 
+]
+P
+C
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+3
+1
+5
+7
+0
+
+.
+
+3
+0
+7
+1
+:
+v
+i
+X
+r
+a
+
+An Agent-based Model of Contagion in
+Financial Networks
+
+LEONARDO DOS SANTOS PINHEIRO
+FL ´AVIO CODEC¸ O COELHO
+Getulio Vargas Foundation
+March 23, 2017
+
+Abstract
+
+This work develops an agent-based model for the study of how the
+leverage through the use of repurchase agreements can function as a
+mechanism for the propagation and ampliﬁcation of ﬁnancial shocks
+in a ﬁnancial system. Based on the analysis of ﬁnancial intermediaries
+in the repo and interbank lending markets during the 2007-08 ﬁnancial
+crisis we develop a model that can be used to simulate the dynamics
+of ﬁnancial contagion.
+
+Keywords: agent-based models, ﬁnancial risk, computational eco-
+
+nomics, ﬁnancial contagion
+
+1
+
+Introduction
+
+In recent years, the use of complex models for the analysis of ﬁnancial
+
+contagion in economic systems has become widely used. The recent 2007-08
+
+1
+
+ﬁnancial crisis, regularly attributed to the complex relationships among
+
+ﬁnancial institutions, has revived the interest in the role of the behavior of
+
+market participants in the creation of the complex interlinkages which serve
+
+as channels for the transmission and ampliﬁcation of economic shocks.
+
+The crisis, which started with a liquidity drain in the US sub-prime
+
+mortgage market, due to the collapse of a bubble in the housing market,
+
+quickly overﬂowed to debt markets and stock markets in a process of ﬁnan-
+
+cial contagion that eventually prompted the downfall of major American
+
+and European banks and triggered a world recession. The means by which
+
+the crisis spread from a speciﬁc bubble to the whole ﬁnancial system is what
+
+we call ﬁnancial contagion and it is a process made possible by the existing
+
+interconnectivity between ﬁnancial institutions.
+
+Financial institutions are interconnected in a variety of ways, both
+
+directly and indirectly. Direct interconnectedness happen mostly through
+
+mutual credit exposures while indirect interconnectedness occurs mainly
+
+through common asset holdings, margin call losses and haircut increases
+
+triggered by ﬁre sales and liquidity drain and information spillover (Liu
+
+et al. (2015)).
+
+Direct interconnectedness occurs because mutual credit exposures
+
+between ﬁnancial institutions can lead to domino effects. With the complex
+
+chains of intermediation which exist in the global ﬁnancial system, the
+
+failure of a highly interconnected institution can cause major disruptions to
+
+the ﬁnancial system as a whole as this institution wouldn’t be able to fulﬁll
+
+it’s obligations and cause mark-to-market losses in the balance sheets of all
+
+other institutions with direct exposure to it, which could cause a number of
+
+other institutions to face distress as well.
+
+Indirect interconnectedness occurs as institutions facing distress can
+
+2
+
+start ﬁre selling it’s assets. Fire sales further stress the market prices of the
+
+assets owned by the company, causing mark-to-market losses in all insti-
+
+tutions with common asset holdings and causing increases in margin calls
+
+and haircuts in repurchase agreements backed by these assets. Information
+
+spillover can also cause other institutions with similar balance sheets to face
+
+higher spreads.
+
+As more institutions suffer losses and become distressed, market con-
+
+ditions may further deteriorate via the aforementioned contagion channels,
+
+leading to a negative feedback loop and, possibly, to a cascade of failures.
+
+While many approches to understand the dynamics of ﬁnancial conta-
+
+gion using equation-based modeling have been developed, mostly through
+
+economic and network models (see Gai and Kapadia (2010), Huang et al.
+
+(2013) and Elliott et al. (2014)), these approaches have the limitation of re-
+
+producing an homogenized and simpliﬁed approximation of the observed
+
+reality, sometimes producing unrealistic models which are not sufﬁciently
+
+justiﬁed (Helbing and Balietti (2010)).
+
+In this work we focus on the prospects of the computer simulation
+
+of economic systems to model the dynamics of ﬁnancial contagion. Agent-
+
+based modeling is a computational technique where the components of a
+
+system are encapsulated as agents, which can represent individuals, groups,
+
+companies and/or countries, while the analysis of the system is carried out
+
+through the interactions of these agents (Helbing (2012)).
+
+By modeling the ﬁnancial system through the use of agents, we are
+
+capable not only of creating simulations that reﬂect the interactions between
+
+different entities more accurately, but also of testing the implications of
+
+different hypothesis. We furthermore emphasize the importance of building
+
+models using a range of empirical observations to design more realistic
+
+3
+
+models which are capable of representing market dynamics observed in
+
+historical episodes and allows us to explore in more detail the dynamics of
+
+ﬁnancial markets.
+
+In this work we focus on modeling one of the most prominent effects
+
+of the 2007-08 ﬁnancial crisis: the liquidity drain observed in the repurchase
+
+agreement (repo) markets. During the crisis both interbank lending and
+
+repurchase agreements shrank dramatically, causing a massive deleverage
+
+in the ﬁnancial system and threatening several banks with insolvency in a
+
+movement that only stopped through a government bailout. To achieve this
+
+objective we focus on the interaction between banks, money market funds
+
+and hedge funds in the repo and interbank markets in order to recreate this
+
+ﬁnancial contagion movement.
+
+The remainder of this paper is structured as follows. In Section 2 we
+
+introduce the problem of ﬁnancial contagion and focus on the repo markets.
+
+Section 3 discusses agent-based models of ﬁnancial markets and how they
+
+can be used to understand market dynamics such as the one we wish to
+
+model. Section 4 presents our agent-based ﬁnancial contagion model. In
+
+Section 5 we perform some numerical simulations and discuss the results.
+
+Finally, in Section 6 we discuss extensions of the proposed method and our
+
+conclusions.
+
+2 Financial Contagion
+
+Strong ﬁnancial contagion has been one of the key features of most recent
+
+ﬁnancial crises, as localized problems in certain segments of the markets
+
+spread to other segments leading to the risk of cascading defaults and
+
+failures which are often avoided through government bailouts of institutions
+
+4
+
+deemed ”too big to fail.”
+
+As described by Gorton and Metrick (2009), the panic of 2007-08
+
+occurred through a run on the repo market. The repo market is very im-
+
+portant market that provides collaterized ﬁnancing for banks.They work
+
+very much like bank deposits, but for ﬁrms operating in the capital markets.
+
+In a repurchase agreement the bank sells a security with the promise of
+
+repurchasing the security at a speciﬁed price in the end of the contract.
+
+The intermediary buying the security from the bank is remunerated by the
+
+spread in operation.
+
+According to Gorton and Metrick (2009), in the last twenty-ﬁve years
+
+a number of ﬁnancial innovations have allowed traditional assets of banks
+
+to be traded in capital markets through securitization and loan sales and
+
+have allowed banks to leverage through these operations.
+
+Since the 2007-08 crisis, the interconnected nature of ﬁnancial mar-
+
+kets has not only been studied as an explanation for the spread of risk and
+
+losses throughout the system, but also motivated much of the policy rec-
+
+ommendations in the aftermath. Yet, a framework to understand how the
+
+dynamics of the network structure of the ﬁnancial market, specially the repo
+
+market, leads to systemic risk remains incomplete.
+
+In a broader sense, there is currently a high level of uncertainty about
+
+which elements in the structure of the ﬁnancial system causes contagion and
+
+how it occurs. Early work, prior to the crisis, focused on general aspects of
+
+interbank lending such as the work of Allen and Gale (2000), which modeled
+
+contagion as an equilibrium phenomenon caused by liquidity preference
+
+shocks through economic regions, and of Rochet and Tirole (1996), which
+
+considers the systemic risk created by interbank lending and investigates
+
+whether decentralized bank interactions can be preserved while maintaining
+
+5
+
+the stability of the system.
+
+More recent work, such as Gai and Kapadia (2010), Acemoglu et al.
+
+(2013) and Elliott et al. (2014) examine how shocks propagate through a
+
+network based on debt holdings or interbank lending and, also, how shocks
+
+propagate as a function of network architecture.
+
+While these works have provided useful insights about ﬁnancial
+
+contagion (although presenting quite different and complementary results),
+
+the use of economic equilibrium and network models have some limitations
+
+in the study of the phenomenon. For instance, ﬁnancial agents usually have
+
+different goals and strategies, thus, behaving very differently. Also, we
+
+must consider that the nature of debt exposures as connectivity measures
+
+can also vary greatly, with mutual lending exposures, cross-holding of
+
+shares, repurchase agreements and common asset holdinds of other sorts
+
+(e.g. stocks) having a different impact on the propagation of shocks.
+
+Accounting for these heterogeneities in network and economic mod-
+
+els can lead to mathematical intractability very fast. A different approach,
+
+which may lead to a more accurate representation of the ﬁnancial system,
+
+despite being unable to render an analytical solution to understand the
+
+problem, is to use agent-based simulation, as we describe bellow.
+
+3 Agent-Based Computational Finance
+
+Much of the work in economics and ﬁnance hopes to simplify human inter-
+
+actions and behaviors in a way that we can analyze these systems through
+
+aggregated macro-features. But complex systems involves complex interac-
+
+tions among many individuals and, in some cases, this complexity makes
+
+the use of analytical models to understand the system unfeasible. For this
+
+6
+
+reason, agent-based models and simulations have become an invaluable tool
+
+for understanding the dynamics of the economic and/or ﬁnancial system as
+
+a whole.
+
+Agent-based models are a class of computational models used to
+
+simulate the actions and interactions of autonomous agents (Gilbert (2008)).
+
+In computational economics, these models have been used to study proper-
+
+ties of markets by building and simulating markets, especially in the ﬁeld
+
+of computational ﬁnance and there are many ways in which agent-based
+models can be used to study ﬁnancial markets 1
+
+The building of artiﬁcial markets is one of the most important con-
+
+tributions of agent-based models to the study of ﬁnancial systems. They
+
+allow us to model economic agents according to a theoretical model and
+
+to observe if our economic assumptions about the agents interactions in a
+
+ﬁnancial setting would generate the expected dynamics.
+
+Since the eighties some models of artiﬁcial markets have been tried,
+
+specially for stock markets. Cohen et al. (1983) tried to look the impact
+
+of random behaving agents on various market structures, while Kim and
+
+Markowitz (1989) used discrete event simulation to model the interactions
+
+of different kinds of trading agents and De Grauwe et al. (1995) focused on
+
+the dynamics of foreign exchange markets.
+
+One of most notable and most sophisticated markets is the Santa Fe
+
+Institute (SFI) market. The SFI market was created with the idea of modeling
+
+a ﬁnancial market with an ecology of trading strategies (LeBaron (2002)). The
+
+SFI Market structure were modeled to consider preferences and risk aversion
+
+1A broad discussion of how market microstructure can be studied by simulations with
+intelligent agents can be found in Chan (2001), while LeBaron (2006) discusses how agent-
+based models can be used to build artiﬁcial markets and Tsang and Martinez-Jaramillo (2004)
+discusses other examples of agent-based models uses in computational ﬁnance
+
+7
+
+in trading and even allowed the emergence of trading patterns over time
+
+through the use of genetic algorithms. Although there have been several
+
+generations of the SFI artiﬁcial market, consisting of modiﬁcations of the
+
+market structure and of different programming platforms, the fundamentals
+of the theoretical model have persisted 2.
+
+Other artiﬁcial stock markets have been designed focusing on fea-
+
+tures not included in the SFI artiﬁcial market model. For instance, LeBaron
+
+(2001b) and LeBaron (2001a) have used a new framework including varying
+
+forecasting horizons and memory lengths, which is crucial in the conver-
+
+gence to a rational expectations equilibrium, while Serguieva and Wu (2007)
+
+have investigated herding behaviors as a possible reason for contagion
+
+among different markets, and Martinez-Jaramillo and Tsang (2009) have
+
+elaborated an artiﬁcial market in which trading behaviors model technical,
+
+fundamental and noise traders, being able to recreate statistical properties
+
+of price series in real ﬁnancial markets.
+
+Outside of stock markets, Arciero et al. (2008) developed a model
+
+of real time gross settlement paying system for predicting the impact of
+
+disruptive events in the ﬂow of interbank payments and Llacay and Peffer
+
+(2010) developed a model to simulate crisis and risk management in ﬁxed-
+
+income markets.
+
+Agent-based models of ﬁnancial markets have allows to simulate and
+
+recreate episodes observed in historical data to assess economic theories. In
+
+this work we focus on building an artiﬁcial repo market and it’s behavior
+
+under a liquidity shock.
+
+2A description of the SFI market model can be found in Arthur et al. (1996) and Palmer
+et al. (1994) while an overview of the SFI market history can be found in LeBaron (2002)) and
+in Johnson (2002)
+
+8
+
+4 The Artiﬁcial Repo Market Model
+
+To simulate the dynamics of ﬁnancial contagion in the repo market we build
+
+an artiﬁcial ﬁnancial market where ﬁnancial agents must manage their risk
+
+and may face defaults and bankruptcy if there are signiﬁcant imbalances
+
+between their balance sheets. The ﬁnancial risk is measured and controlled
+
+trough losses, liquidity and leverage metrics.
+
+Our artiﬁcial market structure is designed to reﬂect ﬁnancial interme-
+
+diaries that may choose to invest in a set of tradeable assets from outside the
+
+ﬁnancial system (representing economic projects) and that can also make
+
+operations among themselves to improve resource allocation.
+
+We design three types of ﬁnancial intermediaries as agents, which
+
+can be banks, money market funds (MMFs) or hedge funds. These interme-
+
+diaries interact with each other trading assets according to their roles, as
+
+described bellow, and with an optimization strategy. Every intermediary
+
+tries to maximize their gains while managing their risk.
+
+4.1 Assets
+
+For the assets that can be traded by the agents, there is a risk free government
+
+bond, a stock, representing a risky liquid asset, and a risky ﬁxed-income
+
+asset (from this point only called risky asset), representing a economic
+
+project ﬁnanced and securitized by banks. The intermediaries can also trade
+
+resources through interbank lending and repurchase agreements. These
+
+serve as instruments for them to improve resource allocation, and manage
+
+risk.
+
+List of Assets:
+
+9
+
+A) Government Bond
+
+In our market there is a government bond, consisting of a risk free
+asset, paying a constant interest rate, r f = 0.10. This asset has complete
+liquidity as there is we assume there are external agents willing to
+
+match the order imbalance (treasury, foreign investors, central banks,
+
+etc.).
+
+B) Stock
+
+There is also a risky stock, similar to the one described in LeBaron
+
+(2002), paying stochastic dividend following the autoregressive pro-
+
+cess:
+
+dt = ¯d + ρ(dt−1 − ¯d) + µt
+
+(1)
+
+with ¯d = 10, ρ = 0.95 and µt ∼ N(0, σ2
+determined endogenously in the market.
+
+µ). The price of the stock is
+
+C) Risky Asset
+
+There is a risky asset paying a constant interest rate rr = 0.11. This
+asset represents an economic project ﬁnanced by banks and securitized
+
+in the capital markets. This asset can lose liquidity fast and may be
+
+a major source of risk. Since we do not implement mark-to-market
+
+calculation of bond prices, mainly because there are no variation in
+
+Government Bond interest rates, the higher interest rate reﬂects exclu-
+
+sively the perceived liquidity risk and the default risk of the asset.
+
+D) Interbank Loan
+
+Interbank lending play a key role in the ﬁnancial system. They are
+
+vital for banks’ liquidity management.The interbank lending market is
+
+constituted by unsecured loans (the interbank loan) and secured loans
+
+(through repurchase agreements and described bellow).
+
+10
+
+The interbank loan is an operation where banks extend loans to one
+
+another for a small term. In our model they are used when banks
+
+don’t have access to secured loans and must meet liquidity or cash
+
+requirements to avoid a default. The interbank loan has an interest
+rater rIL = r f + δi where δi is the risk premium paid by the borrower
+and:
+
+δi =
+
+∑j ILij
+
+∑ Ai × Psell(A)
+
+(2)
+
+where ILij is the value of interbank loan issued from bank j to bank i,
+Ai is the total value of asset A owned by the bank i and Psell(Ai) is the
+probability of selling the asset A at each timestep, which is determined
+
+by the liquidity index of the asset, deﬁned in Subsection 4.3. Interbank
+
+loans are always overnight.
+
+E) Repurchase Agreement
+
+Repos are a key mechanism in our ﬁxed-income market. Repos require
+
+margining practices, where the borrower pays an initial margin, or
+
+‘haircut’, to provide some protection to the lender in case the other
+
+party defaults.
+
+In our market, we implement a simpliﬁed version of repo operations3.
+Repos can be backed up by Government Bonds or by the Risky Asset.
+
+Also, repos, as interbank loans, are always overnight, but can be
+
+renewed at each time step. We also implement margining pratices
+
+with the haircut being calculated as:
+
+Haircut = 1 − Psell
+
+(3)
+
+3See Livingston (1999) for a more complete explanation of repo operations in real markets.
+
+11
+
+This means that assets with full liquidity will not need a haircut, while
+
+totally illiquid assets will require a 100% haircut, meaning the asset is
+
+not acceptable as collateral. The repo is not renewed if the bank can
+
+not meet the margin call. If the repo is not renewed the bank must
+
+repay the repo, selling assets in the process if there is no available cash.
+
+4.2 Financial Agents
+
+Each ﬁnancial agent type has a special role in the model. Banks intact with
+
+the economic system by securitizing credit assets. Hedge funds mainly
+
+operate in the stock market to provide volatility. MMFs interact with banks
+
+in the money markets providing funding.
+
+List of Financial Agents:
+
+A) Banks
+
+Banks are the central agents of our simulation. Banks can acquire the
+
+risky asset at will (it represents the interaction of the bank with the
+
+economic system) and may access the money market (composed by
+
+MMFs) to obtain funding. Banks may also lend directly to other banks,
+
+these operations are done in order to manage short-term liquidity.
+
+B) Money Market Funds (MMF)
+
+MMFs are mutual funds that serve as important intermediaries be-
+
+tween investors who want highly liquid investments and banks that
+
+have short-term liquidity needs (Rosengren and Stone Mountain (2012)).
+
+As described by Rubin et al. (1999), MMFs are usually prevented by
+
+regulation from engaging in leveraging practices and investing in
+
+illiquid assets.
+
+12
+
+In our model, MMFs act buying short-term and liquid debt instru-
+
+ments, such as government securities, and providing liquidity to other
+
+market players through repurchase agreements.
+
+C) Hedge Funds
+
+In our model hedge funds act as minor players. They operate in the
+
+stock market and in the government bond market.
+
+4.2.1 Trading strategies
+
+Stock Trading
+
+The role of the stock market is to provide a major source of volatility
+
+and market risk to ﬁnancial agents. Schwert (2011) have shown that stock
+
+markets present high levels of volatility following periods of market stress.
+
+Moreover, Ben-David et al. (2012) point out to the presence of severe funding
+
+constraints, such as investor withdrawals and lender pressure accounting,
+
+together with ﬂight to quality (selloffs of high-volatility stocks) and static
+
+liquidity management (selloffs of high-liquidity stocks) as major sources of
+
+volatility and market downfall. These mechanisms play an important role
+
+the modeling of the ﬁnancial contagion.
+
+For stock trading, the abstract model we used to simulate a real mar-
+
+ket is similar to the Co-Evolutionary Heterogeneous Artiﬁcial Stock Market
+
+(CHASM) described by Martinez-Jaramillo and Tsang (2009), but with some
+
+key differences in trader behavior, order types and market mechanism.
+
+Stock trading is composed by classes of traders that are used in
+
+the literature and that represent trading behaviors in close resemblance to
+
+empirical observations. They help recreate the statistical properties of a real
+
+market:
+
+13
+
+1. Noise traders: The noise trader represent a stock trader who lacks
+
+access to inside information and make erratic and irrational decisions
+
+(De Long et al. (1990)).
+
+A noise trader does not have any speciﬁc information about the secu-
+
+rity or is not capable of making adequate analysis of the information
+
+available to the market. If the efﬁcient market hypothesis holds, noise
+
+traders add liquidity to a market by increasing the trading volume.
+
+In our artiﬁcial market model, these traders buy, sell, or hold their
+positions with different probabilities pb, ps and ph, respectively. Each
+trader has it’s own probabilities and the probabilities are deﬁned
+
+before the simulations.
+
+2. Fundamental traders: Fundamental traders are stock traders which
+
+adhere to the principle of fundamental trading or value investing.
+
+They compare the true value they assess to the security with the current
+
+market price of the security. They seek to buy securities for which the
+
+market price is lower than the estimated true value (underpriced) and
+
+to sell assets for which the price is bigger than the estimated true value
+
+(overpriced).
+
+The way fundamental traders are modeled is similar to the work of
+
+Tsang and Martinez-Jaramillo (2004), they measure the true value
+
+of the stock by the dividend being paid by the security (See Eq. 1)
+
+and will change their position if the actual price deviates from the
+
+perceived true value by a threshold value of τ. Each agent has a τ
+value drawn from an uniform interval [τmin, τmax]
+
+3. Technical traders: Technical traders use technical and momentum indi-
+
+cators in the form of decision rules to forecast future stock prices. The
+
+list of indicators is taken from Martinez-Jaramillo and Tsang (2009)
+
+and are as follows:
+
+14
+
+Moving Average:
+
+MA(L, t) =
+
+(cid:19)
+
+(cid:18) 1
+i=1 P(t − i)
+∑L
+L
+i=1 P(t − i)
+∑L
+
+P(t) −
+1
+L
+
+Trading Breakout:
+
+TRB(L, t) =
+
+P(t) − max{P(t − 1), ..., P(t − L)}
+
+max{P(t − 1), ..., P(t − L)}
+
+Filter:
+
+Volatility:
+
+Filter(L, t) =
+
+P(t) − min{P(t − 1), ..., P(t − L)}
+
+min{P(t − 1), ..., P(t − L)}
+
+Vol(L, t) =
+
+σ{P(t − 1), ..., P(t − L + 1)}
+
+i=1 P(t − i)
+∑n
+
+1
+L
+
+Momentum:
+
+Mom(L, t) = P(t) − P(t − L)
+
+Moving Average Momentum:
+
+MomMA(L, t) =
+
+Mom(L, t − i)
+
+1
+L
+
+L∑
+
+i=1
+
+(4)
+
+(5)
+
+(6)
+
+(7)
+
+(8)
+
+(9)
+
+The parameter L and and the forecasting rules are learned by Genetic
+
+Programming and the method is described in Martinez-Jaramillo and
+
+Tsang (2009), Tsang et al. (1998) and Li and Tsang (1999).
+
+Fixed-Income trading
+
+For ﬁxed-income assets, while it is possible to use a sophisticated trad-
+
+ing environment emulating bond arbitrage strategies, such as the one used
+
+15
+
+by Llacay and Peffer (2010), we opt for a more simpler and straightforward
+
+model.
+
+All bonds (government bonds, risky asset) are traded in over-the-
+
+counter markets, that is, by trades directly between parties. For simplicity
+
+we assume that Government Bonds have complete liquidity and the order
+
+imbalance will be matched by market players outside the model.
+
+The Risky Asset can be acquired at will by banks, but cannot be sold
+
+easily, they also have long maturity. Whenever a bank wishes to sell its
+
+position in the risky asset, it must ﬁnd another ﬁnancial agent willing to
+
+acquire it.
+
+Interbank lending and Repurchase agreement operations
+
+Secured and unsecured lending operations are carried out in a cen-
+
+tralized manner. Banks use repurchase agreements as a leverage mechanism
+
+to acquire funding in the money market. Interbank loans are carried out
+
+whenever a bank is meeting short term liquidity issues.
+
+4.3 Risk Management
+
+Agents in our model manage their daily market risk, liquidity risk and
+
+leverage to avoid bankruptcy.
+
+Market Risk
+
+Market risk is measured by Value-at-Risk (VaR). The VaR of a portfo-
+
+lio is the potential loss in value of the portfolio over a deﬁned period for a
+
+given conﬁdence interval. In general terms, the maximum loss is calculated
+as a function of the portfolio historical volatility σp (Borodovsky and Lore
+(2000)). In the model all ﬁnancial agents use the VaR Delta-Normal approach
+
+16
+
+described in Linsmeier and Pearson (2000). In this approach, given that a
+ﬁnancial agent will not tolerate a loss that will be equaled or exceeded by x
+
+percent in a given time interval and the VaR is measured as:
+
+VaR = −[µ − xσ]
+
+(10)
+
+where µ is the expected change in portfolio value.
+
+Liquidity Risk
+
+The ﬁnancial concept of liquidity is elusive. Market participants
+
+perceive a ﬁnancial asset as liquid if they can sell a large amount of the asset
+
+without affecting its price, but this concept is hard to quantify and there
+
+is no single theoretically and universally accepted measure for liquidity
+
+(Lybek and Sarr (2002)).
+
+As our liquidity metric we use the order imbalance to measure the
+
+probability of selling a asset at a given time step t as:
+
+Psell(t) = 1 − max{0, (∑n
+
+i=i
+
+n
+OS(t − i)
+
+n
+
+∑n
+
+i=i
+
+OS(t − i) − OB(t − i)
+
+)}
+
+(11)
+
+where OS(t − i) is the volume of buy orders and OB(t − i) is the volume
+of sell orders at time step i and n is the horizon of calculation. This simple
+
+metric measures the probability that a agent wanting to sell an asset will
+
+ﬁnd a buyer for the asset. The horizon for looking past orders must be short
+
+in order to capture the quickness of market liquidity deterioration.
+
+17
+
+4.3.1 Leverage
+
+Leverage is one of the most critical sources of risk in our model. We use a
+
+simple leverage metric of:
+
+Leverage =
+
+TA
+NAV
+
+(12)
+
+where TA stands for total assets and NAV is the net asset value of
+
+the agent.
+
+In our model only banks will leverage and they do so through bank
+
+deposits and repos. Each agent will have a leverage limit which they can
+
+not surpass which is sampled from a Pareto distribution.
+
+4.4 Market Mechanism
+
+The market works with each agent placing orders and managing their
+
+metrics at each time step, during the speciﬁed time of the simulation. Agents
+
+will have strategies and must manage risk.
+
+The focus of our analysis is on the default of banks. If a bank can’t pay
+
+an obligation due to shortage of funds, it becomes defaulted and will enter
+
+ﬁre sales to acquire funding. If they lack assets to pay all their obligations or
+
+if illiquidity prevents them from turning assets into cash they must declare
+
+bankruptcy and are removed from the simulation.
+
+Trading
+
+At each turn t each agent i makes a decision i(t) ∈ {−1, 0, +1}, for
+each asset, where +1 represents the decision to buy, -1 the decision sell and
+
+18
+
+0 the decision to hold an asset. The decision of each agent is determined by
+
+the trader class for stocks, and by it’s liquidity limit, VaR limit and leverage
+
+limit for the stock ﬁxed-income risky asset and lending operation, and is
+unrestricted for risk-free assets. Depending on the value of i(t), the trader
+buys/sells a quantity qi(t) proportional to his current asset belongings and
+free cash.
+
+After the decisions are taken the orders are added to the order book
+
+4. There is a order book for each asset.
+
+The only price directly affected by orders is the stock price. The way
+
+in which order imbalance affects stock prices is similar to the one in Giardina
+
+and Bouchaud (2003), where the normalized total order imbalance is used
+to determine the change of price and is denoted Qj(t):
+
+Qj(t) =
+
+1
+φj
+
+N∑
+
+i=0
+
+qij(t) = Q+(t) − Q−(t)
+
+(13)
+
+where φj is the total number of outstanding shares from the as-
+set(assumed constant in the period of the simulation), Q+ is the volume
+of buy orders and Q− is the volume of sell orders. Trades are cleared and
+settled in a simple ﬁrst in ﬁrst out manner.
+
+Interbank lending
+
+Banks will use repos to leverage and buy the Risky Asset if their risk
+
+limits allow and there is funding available in the money market. Repos are
+
+initialized at the market creation and the operations are renewed as long as
+
+the banks are bellow their limits and have resources available to renew the
+4for simplicity, all orders are placed as market orders. Also, for simplicity, we consider
+
+that all the trading is carried out at a centralized desk.
+
+19
+
+operations. At the end of each turn, the banks that need short term liquidity
+
+to net their positions will resort to the interbank landing market.
+
+This sequence of steps is repeated for the duration of the simulation
+
+and the only changing variable is the trading behavior of agents facing
+
+defaults.
+
+4.5 Failures, Fire sales and Contagion
+
+Financial institutions may fail under a series of conditions. First, if their
+
+assets value fall bellow a threshold they may become insolvent. The same
+
+may happen if the agent is run and they are holding illiquid assets.
+
+Failing institutions will enter ﬁre sales, meaning that they will try to
+
+liquidate their assets to make cash and terminate their obligations until they
+
+become solvent again.
+
+Fire sales won’t affect Government bonds, but will pressure stock
+
+and the risky asset prices. The effect in stock prices is felt directly in the
+
+price adjustment mechanism, and for the risky asset, it will suffer a discount
+d for the volume of agents ﬁre selling it.
+
+Fire sales may also trigger margin calls in repos backed up by the
+
+risky asset and will prompt mark-to-market losses. Mark-to-market losses
+
+will require an immediate margin call to match the value of the debt and,
+
+as a greater number of institutions starts to ﬁre sell the risky asset, it may
+
+become more illiquid, requiring an increase in haircut.
+
+Institutions holding a greater amount of illiquid assets will also face
+
+higher spreads while trying to acquire funding through interbank loans,
+
+expanding their losses. If an agent can’t liquidate it’s positions and can’t
+
+20
+
+obtain funding in the money market it is declared bankrupt and is removed
+
+from the simulation.
+
+4.5.1 Crisis simulation
+
+Here we describe the structure of the simulation. First, we assume there is
+
+a bubble associated with the risky asset which will burst at the beginning
+
+of the simulation. As the price of the risky asset loses signiﬁcant value and
+
+liquidity, repos backed up by this asset will require margin calls and higher
+
+haircut. These new requirements will make some institutions lose value
+
+and deleverage, the institutions unable to meet the new requirements will
+
+become defaulted and enter ﬁre sales, triggering new losses in value and
+
+liquidity. If they become too illiquid or their losses are substantial, they will
+
+not be able to obtain funding in the interbank lending market and must
+
+declare bankruptcy, being removed from the simulation. The contagion
+
+process is characterized by the following algorithm:
+
+1. Initially a bubble collapses, reducing the market value of the risky asset
+to a p fraction of its original value, p ∈ [0, 1] and causing a reduction
+in the probability of selling the asset by a fraction q, q ∈ [0, 1];
+
+2. When the market deteriorates, each bank i owning the a m fraction
+
+of the risky asset must book mark-to-market losses experiencing a
+reduction in value by m ∗ (1 − p) and, for each repo operation j of
+amount n collateralized by the risky asset, there will be a margin call
+of (1 − p) ∗ n and a haircut increase by the fraction q;
+
+3. The loss in value and liquidity will also make a number of agents
+k be above it’s risk limits, triggering a ﬂy to liquidity. These agents
+
+will change their trading behavior to sell risky and illiquid assets to
+
+obtain more liquid ones. These agents will not ﬁre sell, but will fuel
+
+21
+
+the selling side of order book.
+
+4. When a bank can’t meet the new requirements for haircuts they must
+
+deleverage, possibly selling it’s assets in the process.
+
+If the bank
+
+faces high illiquidity, it may not be able to deleverage and becomes
+
+insolvent, entering ﬁre sales to meet it’s obligations.
+
+5. New ﬁre sales will cause new price reductions and lower liquidity,
+
+feeding the negative feedback loop.
+
+Depending on the simulated scenario the contagion may stop brieﬂy,
+
+with no insolvency, or produce a cascade of failures. The model is sensitive
+
+to a high number of parameters, such as the asset composition of of the
+
+agents, risk limits, distribution of trading behaviors and and severity of the
+
+initial crisis. In the next section we perform a simulation to illustrate the
+
+model.
+
+5 Simulation
+
+5.1 Experimental Design
+
+Our market will be composed of 100 banks, 200 hedge funds and 200 money
+
+Initial NAVs are drawn from a Pareto distribution with
+market funds.
+parameters a = 3 and mbanks = 1e8, mmm f = 2e8 5 and mhedge = 1e7. While
+MMFs and Hedge Funds won’t start with an initial leverage, banks start
+with deposits x × NAVbank where x follows a Pareto distribution with
+parameters a = 3 and m = 1.
+
+Each bank is assigned a maximum leverage from an uniform distri-
+
+5Money market funds are created with comparatively high NAVs in order to represent a
+range of institutional investors and ﬁnancial intermediaries operating in the money markets.
+
+22
+
+Figure 1: Liability composition of banks in the simulation. After initial market creation
+liabilities are composed by NAV, bank deposits and repurchase agreements.
+
+bution with parameters a = 3 and b = 7. After this assignment there is a
+
+random assignment of repo operations between banks and money market
+
+funds. Banks use these repo operations to leverage and invest in the Risky
+
+Asset. Figure 1 shows the composition in the liabilities of the banks and
+
+Figure 2 shows their portfolio composition. Other market parameters are
+
+deﬁned in Table 2.
+
+Table 1: Summary of Financial Agents.
+
+Agent
+
+Banks
+
+Hedge Funds
+
+MMFs
+
+Number of Agents Avg. NAV Avg. Leverage
+
+100
+
+200
+
+100
+
+1.66e8
+
+1.71e7
+
+3.11e8
+
+3.781
+
+1.000
+
+1.000
+
+After the market creation we introduce a shock reducing the liquidity
+
+of the Risky Asset by 30% and its price by 20%. The results from this
+
+simulation are presented next.
+
+23
+
+Figure 2: Portfolio composition of banks in the simulation.Banks leverage to invest in the
+risky asset.
+
+Table 2: Parameters of the initial market.
+
+Parameter
+
+Noise traders probabilities
+
+Fundamental traders threshold
+
+Conﬁdence level for market risk
+
+Symbol
+(pb, ps, ph)
+
+τ
+
+σ
+
+Time horizon of selling probability calculation n
+
+Value
+
+(0.4, 0.4, 0.2)
+
+unif(.1, .5)
+
+5%
+
+3
+
+Leverage limit for banks
+
+max leverage unif(4, 7)
+
+5.2 Results
+
+We focus on the analysis of the crisis over the banking system of our model
+
+(i.e. the bank agents). At the beginning of our simulation we have 100 banks,
+
+all solvent. Immediately after the shock seven banks become defaulted
+
+and the situation worsens until reaching a new equilibrium with 43 banks
+
+having gone bankrupt, as is shown in Figure 4.
+
+The system also faces massive deleverage with the average leverage
+
+falling from 3.781 to 2.644 and the required haircut increases up to 100%.
+
+24
+
+Figure 3: Deleverage of the banking system as the the system suffers a run on the repo.
+
+This means essentially that the repo market has frozen. All the remaining
+
+leverage in the results are from bank deposits. In our results, the repo market
+
+has evaporated as the result of our shock.
+
+6 Final Remarks
+
+Financial contagion is a complex phenomenon with devastating conse-
+
+quences over the ﬁnancial system. Here, we have developed a agent-based
+
+model of the ﬁnancial system that recreates some of the observed behav-
+
+iors of ﬁnancial institutions in the repo market in order to simulate a crisis
+
+propagation.
+
+While simple, the approach we have developed can be a valuable
+
+25
+
+Figure 4: Number of solvent, defaulted and bankrupt at each time step in our simulation.
+The system reaches a new equilibrium with close to 42% of the banks having gone bankrupt.
+
+Figure 5: Market required haircut as the ﬁnancial crisis spreads.
+
+26
+
+tool for ﬁnancial supervisors and ﬁnancial intermediaries, as they can help
+
+assess the stability of the banking system and the resilience of individual
+
+participants. For instance, the model can be used with as a stress testing
+
+tool to understand the impact of a possible ﬁnancial crisis over a market
+
+segment to guide supervision and investment decisions.
+
+While the results observed in our simulation are interesting, several
+
+improvements are possible to make the model closer to real markets. To
+
+advance this line of research: (1) The strategies in the ﬁxed-income market
+
+must be modeled to better represent the risk and behavior of participants in
+
+this market(2) The effect of bankruptcy over asset prices, especially ﬁxed-
+
+income assets, needs to be better determined, and (3) More assets need
+
+to be included in the model, to create a better representation of portfolio
+
+allocations.
+
+References
+
+Acemoglu, D., Ozdaglar, A., and Tahbaz-Salehi, A. (2013). Systemic risk
+
+and stability in ﬁnancial networks. Technical report, National Bureau of
+
+Economic Research.
+
+Allen, F. and Gale, D. (2000). Financial contagion. Journal of political economy,
+
+108(1):1–33.
+
+Arciero, L., Biancotti, C., d’Aurizio, L., and Impenna, C. (2008). Exploring
+
+agent-based methods for the analysis of payment systems: A crisis model
+for starlogo tng. Bank of Italy Temi di Discussione (Working Paper) No, 686.
+
+Arthur, W. B., Holland, J. H., LeBaron, B., Palmer, R. G., and Tayler, P. (1996).
+
+Asset pricing under endogenous expectations in an artiﬁcial stock market.
+Available at SSRN 2252.
+
+27
+
+Ben-David, I., Franzoni, F., and Moussawi, R. (2012). Hedge fund stock
+trading in the ﬁnancial crisis of 2007–2009. Review of Financial Studies,
+
+25(1):1–54.
+
+Borodovsky, L. and Lore, M. (2000). Professional’s Handbook of Financial Risk
+
+Management. Butterworth-Heinemann.
+
+Chan, T. (2001). Artiﬁcial markets and intelligent agents. PhD thesis, Citeseer.
+
+Cohen, K. J., Hawawini, G. A., Maier, S. F., Schwartz, R. A., and Whit-
+
+comb, D. K. (1983). Friction in the trading process and the estimation of
+systematic risk. Journal of Financial Economics, 12(2):263–278.
+
+De Grauwe, P., Dewachter, H., and Embrechts, M. (1995). Exchange rate
+
+theory: chaotic models of foreign exchange markets.
+
+De Long, J. B., Shleifer, A., Summers, L. H., and Waldmann, R. J. (1990).
+Noise trader risk in ﬁnancial markets. Journal of political Economy, pages
+
+703–738.
+
+Elliott, M., Golub, B., and Jackson, M. O. (2014). Financial networks and
+
+contagion. Available at SSRN 2175056.
+
+Gai, P. and Kapadia, S. (2010). Contagion in ﬁnancial networks. In Proceed-
+ings of the Royal Society of London A: Mathematical, Physical and Engineering
+Sciences, page rspa20090410. The Royal Society.
+
+Giardina, I. and Bouchaud, J.-P. (2003). Bubbles, crashes and intermittency
+in agent based market models. The European Physical Journal B-Condensed
+Matter and Complex Systems, 31(3):421–437.
+
+Gilbert, G. N. (2008). Agent-based models. Number 153. Sage.
+
+Gorton, G. and Metrick, A. (2009). The run on repo and the panic of 2007-
+
+2008. Unpublished paper, Yale University.
+
+28
+
+Helbing, D. (2012). Social self-organization: Agent-based simulations and
+
+experiments to study emergent social behavior, understanding complex
+
+systems.
+
+Helbing, D. and Balietti, S. (2010). Fundamental and real-world challenges
+
+in economics. Science and culture, 76(9-10).
+
+Huang, X., Vodenska, I., Havlin, S., and Stanley, H. E. (2013). Cascading
+failures in bi-partite graphs: model for systemic risk propagation. Scientiﬁc
+reports, 3.
+
+Johnson, P. E. (2002). Agent-based modeling what i learned from the artiﬁcial
+
+stock market. Social Science Computer Review, 20(2):174–186.
+
+Kim, G.-r. and Markowitz, H. M. (1989). Investment rules, margin, and
+
+market volatility. The Journal of Portfolio Management, 16(1):45–52.
+
+LeBaron, B. (2001a). Empirical regularities from interacting long-and short-
+memory investors in an agent-based stock market. Evolutionary Computa-
+tion, IEEE Transactions on, 5(5):442–455.
+
+LeBaron, B. (2001b). Evolution and time horizons in an agent-based stock
+
+market. Macroeconomic Dynamics, 5(02):225–254.
+
+LeBaron, B. (2002). Building the santa fe artiﬁcial stock market. Physica A.
+
+LeBaron, B. (2006). Agent-based computational ﬁnance. Handbook of compu-
+
+tational economics, 2:1187–1233.
+
+Li, J. and Tsang, E. P. (1999). Investment decision making using fgp: a case
+study. In Evolutionary Computation, 1999. CEC 99. Proceedings of the 1999
+Congress on, volume 2. IEEE.
+
+Linsmeier, T. J. and Pearson, N. D. (2000). Value at risk. Financial Analysts
+
+Journal, 56(2):47–67.
+
+29
+
+Liu, Z., Quiet, S., and Roth, B. (2015). Banking sector interconnectedness:
+what is it, how can we measure it and why does it matter? Bank of England
+Quarterly Bulletin, page Q2.
+
+Livingston, M. (1999). Bonds and bond derivatives. Wiley-Blackwell.
+
+Llacay, B. and Peffer, G. (2010). Realistic agent-based simulation of ﬁnancial
+In Computational Intelligence in Business and
+crises: the 1998 turmoil.
+Economics. Proceeding of the MS’10 Internation Conference, volume 3, page
+
+189.
+
+Lybek, M. T. and Sarr, M. A. (2002). Measuring liquidity in ﬁnancial markets.
+
+Number 2-232. International Monetary Fund.
+
+Martinez-Jaramillo, S. and Tsang, E. P. (2009). An heterogeneous, endoge-
+nous and coevolutionary gp-based ﬁnancial market. Evolutionary Compu-
+tation, IEEE Transactions on, 13(1):33–55.
+
+Palmer, R. G., Arthur, W. B., Holland, J. H., LeBaron, B., and Tayler, P. (1994).
+Artiﬁcial economic life: a simple model of a stockmarket. Physica D:
+Nonlinear Phenomena, 75(1):264–274.
+
+Rochet, J.-C. and Tirole, J. (1996).
+
+Interbank lending and systemic risk.
+
+Journal of Money, credit and Banking, 28(4):733–762.
+
+Rosengren, E. S. and Stone Mountain, G. (2012). Money market mutual
+In Remarks at the Federal Reserve Bank
+funds and ﬁnancial stability.
+of Atlanta’s 2012 Financial Markets Conference (April 11). www. bos. frb.
+org/news/speeches/rosengren/2012/041112/041112. pdf.
+
+Rubin, R. E., Greenspan, A., Levitt, A., and Born, B. (1999). Hedge funds,
+leverage, and the lessons of long-term capital management. Report of The
+President’s Working Group on Financial Markets.
+
+30
+
+Schwert, G. W. (2011). Stock volatility during the recent ﬁnancial crisis.
+
+European Financial Management, 17(5):789–805.
+
+Serguieva, A. and Wu, H. (2007). Computational intelligence in ﬁnancial
+contagion analysis. In Seventh International Conference on Complex Systems,
+Boston, Massachusetts, pages 1–12.
+
+Tsang, E. and Martinez-Jaramillo, S. (2004). Computational ﬁnance. IEEE
+
+computational intelligence society newsletter, 3(8).
+
+Tsang, E. P., Li, J., and Butler, J. M. (1998). Eddie beats the bookies. Softw.,
+
+Pract. Exper., 28(10):1033–1043.
+
+31
+
+

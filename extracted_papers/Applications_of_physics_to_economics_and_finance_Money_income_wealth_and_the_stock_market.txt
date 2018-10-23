@@ -1,0 +1,6867 @@
+3
+0
+0
+2
+
+ 
+l
+u
+J
+ 
+
+6
+1
+
+ 
+ 
+]
+h
+c
+e
+m
+
+-
+t
+a
+t
+s
+.
+t
+a
+m
+-
+d
+n
+o
+c
+[
+ 
+ 
+
+2
+v
+1
+4
+3
+7
+0
+3
+0
+/
+t
+a
+m
+-
+d
+n
+o
+c
+:
+v
+i
+X
+r
+a
+
+APPLICATIONS OF PHYSICS TO ECONOMICS AND FINANCE:
+
+MONEY, INCOME, WEALTH, AND THE STOCK MARKET ∗
+
+Department of Physics, University of Maryland, College Park
+
+Adrian A. Dr˘agulescu†
+
+(Dated: May 15, 2002, cond-mat/0307341)
+
+Abstract: Several problems arising in Economics and Finance are analyzed using concepts and quantitative
+
+methods from Physics. The disertation is organized as follows:
+
+In the ﬁrst chapter, it is argued that in a closed economic system, money is conserved. Thus, by analogy
+with energy, the equilibrium probability distribution of money must follow the exponential Boltzmann-Gibbs
+law characterized by an effective temperature equal to the average amount of money per economic agent. The
+emergence of Boltzmann-Gibbs distribution is demonstrated through computer simulations of economic mod-
+els. A thermal machine which extracts a monetary proﬁt can be constructed between two economic systems
+with different temperatures. The role of debt and models with broken time-reversal symmetry for which the
+Boltzmann-Gibbs law does not hold, are discussed.
+
+In the second chapter, using data from several sources, it is found that the distribution of income is described
+for the great majority of population by an exponential distribution, whereas the high-end tail follows a power
+law. From the individual income distribution, the probability distribution of income for families with two earners
+is derived and it is shown that it also agrees well with the data. Data on wealth is presentend and it is found
+that the distribution of wealth has a structure similar to the distribution of income. The Lorenz curve and Gini
+coefﬁcient were calculated and are shown to be in good agreement with both income and wealth data sets.
+
+In the third chapter, the stock-market ﬂuctuations at different time scales are investigated. A model where
+stock-price dynamics is governed by a geometrical (multiplicative) Brownian motion with stochastic variance
+is proposed. The corresponding Fokker-Planck equation can be solved exactly. Integrating out the variance, an
+analytic formula for the time-dependent probability distribution of stock price changes (returns) is found. The
+formula is in excellent agreement with the Dow-Jones index for the time lags from 1 to 250 trading days. For
+time lags longer than the relaxation time of variance, the probability distribution can be expressed in a scaling
+form using a Bessel function. The Dow-Jones data follow the scaling function for seven orders of magnitude.
+
+G. Distribution of wealth
+H. Other distributions for income and wealth
+I. Conclusions
+
+III. Distribution of stock-price ﬂuctuations
+
+A. Introduction
+B. The model
+C. Solution of the Fokker-Planck equation
+D. Path-Integral Solution
+E. Averaging over variance
+F. Asymptotic behavior for long time t
+G. Asymptotic behavior for large log-return x
+H. Comparison with Dow-Jones time series
+I. Conclusions
+
+15
+16
+17
+
+18
+18
+18
+19
+20
+20
+21
+23
+24
+25
+
+Contents
+
+Acknowledgements
+
+1
+
+I. Statistical mechanics of money
+
+A. Introduction
+B. Boltzmann-Gibbs distribution
+C. Computer simulations
+D. Thermal machine
+E. Models with debt
+F. Boltzmann equation
+G. Non-Boltzmann-Gibbs distributions
+H. Nonlinear Boltzmann equation vs. linear master equation7
+
+2
+2
+2
+3
+4
+4
+5
+6
+
+I. Conclusions
+
+II. Distribution of income and wealth
+
+A. Introduction
+B. Distribution of income for individuals
+C. Exponential distribution of income
+D. Power-law tail and “Bose” condensation
+E. Geographical variations in income distribution
+F. Distribution of income for families
+
+7
+
+8
+8
+8
+8
+10
+11
+13
+
+∗This document is a reformatted version of my PhD thesis. Advisor: Pro-
+fessor Victor M. Yakovenko. Committee: Professor J. Robert Dorfman, Pro-
+fessor Theodore L. Einstein, Professor Bei-Lok Hu, and Professor John D.
+Weeks.
+
+IV. Path-integral solution of the Cox-Ingersoll-Ross/Feller model26
+
+References
+
+29
+
+Acknowledgements
+
+My six year apprenticeship in physics at the University of
+Maryland was a unique and remarkable leg of my life. And to
+a large degree this is due to my advisor, Professor Victor M.
+Yakovenko, who has been at the center of my PhD education.
+I will deeply miss his clear perspective, his sure hand, and the
+incommensurate thrill of doing physics together.
+
+2
+
+I am grateful to Professors J. Robert Dorfman, Theodore
+L. Einstein, Bei-Lok Hu, and John D. Weeks for agreeing to
+serve on my advisory committee.
+
+Thanks are also due to Krishnendu Sengupta, Nicholas
+Dupuis, Hyok-Jon Kwon, Anatoley Zheleznyak, and Hsi-
+Sheng Goan all former students or post-docs of professor Vic-
+tor Yakovenko, for stimulating discussions in condensed mat-
+ter physics. My interests in physics were greatly molded by
+professor Bei-Lok Hu, through his remarkable courses in non-
+equilibrium physics, and also through personal interaction for
+more than three years. I had proﬁted a lot from the association
+with Charis Anastopoulos and Sanjiv Shresta while working
+on quantum optics problems suggested by professor Bei-Lok
+Hu.
+
+It is not without melancholy that I thank my ﬁrst true
+physics teachers:
+Ion Cot˘aescu, Ovidiu Lipan, Dan Luca,
+Adrian Neagu, Mircea Ras¸a, Costel Ras¸inariu, Vlad Socol-
+iuc, and Dumitru Vulcanov. On an even deeper layer, I thank
+my family for all the support they provided me over the years,
+and for allowing me to pursue my interests.
+
+All the people mentioned above have generously shared
+with me some of their time and knowledge. I will do all I
+can to represent them well.
+
+money5 reﬂects their fundamental property that, unlike mate-
+rial wealth, money (more precisely the ﬁat, “paper” money) is
+not allowed to be manufactured by regular economic agents,
+but can only be transferred between agents. Our approach
+here is very similar to that of Ispolatov et al.6. However, they
+considered only models with broken time-reversal symmetry,
+for which the Boltzmann-Gibbs law typically does not hold.
+The role of time-reversal symmetry and deviations from the
+Boltzmann-Gibbs law are discussed in detail in Sec. I G.
+
+It is tempting to identify the money distribution P (m) with
+the distribution of wealth6. However, money is only one part
+of wealth, the other part being material wealth. Material prod-
+ucts have no conservation law because they can be manu-
+factured, destroyed, consumed, etc. Moreover, the monetary
+value of a material product (the price) is not constant. The
+same applies to stocks, which economics textbooks explicitly
+exclude from the deﬁnition of money7. So, we do not ex-
+pect the Boltzmann-Gibbs law for the distribution of wealth.
+Some authors believe that wealth is distributed according to a
+power law (Pareto-Zipf), which originates from a multiplica-
+tive random process8. Such a process may reﬂect, among
+other things, the ﬂuctuations of prices needed to evaluate the
+monetary value of material wealth.
+
+I. STATISTICAL MECHANICS OF MONEY
+
+B. Boltzmann-Gibbs distribution
+
+A.
+
+Introduction
+
+The application of statistical physics methods to economics
+promises fresh insights into problems traditionally not asso-
+ciated with physics (see, for example, the recent review and
+book1). Both statistical mechanics and economics study big
+ensembles: collections of atoms or economic agents, respec-
+tively. The fundamental law of equilibrium statistical mechan-
+ics is the Boltzmann-Gibbs law, which states that the proba-
+bility distribution of energy ε is P (ε) = Ce−ε/T , where T is
+the temperature, and C is a normalizing constant2. The main
+ingredient that is essential for the textbook derivation of the
+Boltzmann-Gibbs law2 is the conservation of energy3. Thus,
+one may generalize that any conserved quantity in a big sta-
+tistical system should have an exponential probability distri-
+bution in equilibrium.
+
+An example of such an unconventional Boltzmann-Gibbs
+law is the probability distribution of forces experienced by
+the beads in a cylinder pressed with an external force4. Be-
+cause the system is at rest, the total force along the cylinder
+axis experienced by each layer of granules is constant and is
+randomly distributed among the individual beads. Thus the
+conditions are satisﬁed for the applicability of the Boltzmann-
+Gibbs law to the force, rather than energy, and it was indeed
+found experimentally4.
+
+We claim that,
+
+in a closed economic system,
+
+the to-
+tal amount of money is conserved. Thus the equilibrium
+probability distribution of money P (m) should follow the
+Boltzmann-Gibbs law P (m) = Ce−m/T . Here m is money,
+and T is an effective temperature equal to the average amount
+of money per economic agent. The conservation law of
+
+Let us consider a system of many economic agents N ≫ 1,
+which may be individuals or corporations. In this thesis, we
+only consider the case where their number is constant. Each
+agent i has some money mi and may exchange it with other
+agents. It is implied that money is used for some economic
+activity, such as buying or selling material products; however,
+we are not interested in that aspect. As in Ref.6, for us the
+only result of interaction between agents i and j is that some
+money ∆m changes hands: [mi, mj] → [m′i, m′j] = [mi −
+∆m, mj + ∆m]. Notice that the total amount of money is
+conserved in each transaction: mi+mj = m′i+m′j. This local
+conservation law of money5 is analogous to the conservation
+of energy in collisions between atoms. We assume that the
+economic system is closed, i. e. there is no external ﬂux of
+money, thus the total amount of money M in the system is
+conserved. Also, in the ﬁrst part of this chapter, we do not
+permit any debt, so each agent’s money must be non-negative:
+mi ≥ 0. A similar condition applies to the kinetic energy of
+atoms: εi ≥ 0.
+Let us introduce the probability distribution function of
+money P (m), which is deﬁned so that the number of agents
+with money between m and m + dm is equal to N P (m) dm.
+We are interested in the stationary distribution P (m) corre-
+sponding to the state of thermodynamic equilibrium. In this
+state, an individual agent’s money mi strongly ﬂuctuates, but
+the overall probability distribution P (m) does not change.
+
+The equilibrium distribution function P (m) can be derived
+in the same manner as the equilibrium distribution function
+of energy P (ε) in physics2. Let us divide the system into
+two subsystems 1 and 2. Taking into account that money
+is conserved and additive: m = m1 + m2, whereas the
+
+)
+
+m
+P
+
+(
+
+ 
+,
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+P
+
+18
+
+16
+
+14
+
+12
+
+10
+
+8
+
+6
+
+4
+
+2
+
+0
+0
+
+N=500, M=5*105, time=4*105.
+
+〈m〉, T
+
+)
+
+(
+
+m
+P
+g
+o
+
+ 
+
+l
+
+3
+
+2
+
+1
+
+0
+0
+
+1000
+
+2000
+
+Money, m
+
+S
+
+ 
+,
+y
+p
+o
+r
+t
+n
+E
+
+4.5
+
+4
+
+3.5
+
+3
+
+2.5
+
+2
+
+1.5
+
+1
+
+0.5
+
+0
+0
+
+3000
+
+1000
+
+2000
+
+3000
+
+Money, m
+
+4000
+
+5000
+
+6000
+
+3
+
+500
+
+1000
+Time, t
+
+1500
+
+2000
+
+FIG. 1: Histogram and points: stationary probability distribution
+of money P (m). Solid curves: ﬁts to the Boltzmann-Gibbs law
+P (m) ∝ exp(−m/T ). Vertical lines:
+the initial distribution of
+money.
+
+FIG. 2: Time evolution of entropy. Top curve: for the exchange of
+a random fraction ν of the average money in the system: ∆m =
+ν M/N. Bottom curve: for the exchange of a small constant amount
+∆m = 1. The time scale for the bottom curve is 500 times greater
+than indicated, so it actually ends at the time 106.
+
+probability is multiplicative: P = P1P2, we conclude that
+P (m1 + m2) = P (m1)P (m2). The solution of this equa-
+tion is P (m) = Ce−m/T ; thus the equilibrium probabil-
+ity distribution of money has the Boltzmann-Gibbs form.
+0 P (m) dm = 1 and
+0 m P (m) dm = M/N , we ﬁnd that C = 1/T and
+T = M/N . Thus, the effective temperature T is the aver-
+age amount of money per agent.
+
+From the normalization conditions R ∞
+R ∞
+
+the
+
+entropy
+
+maximizing
+
+of money
+
+The Boltzmann-Gibbs distribution can be also derived by
+distribution
+S = −R ∞
+0 dm P (m) ln P (m) under the constraint of mon-
+ey conservation2. Following original Boltzmann’s argument,
+let us divide the money axis 0 ≤ m ≤ ∞ into small bins of
+size dm and number the bins consecutively with the index b =
+1, 2, . . . Let us denote the number of agents in a bin b as Nb,
+the total number being N =P∞b=1 Nb. The agents in the bin
+b have money mb, and the total money is M =P∞b=1 mbNb.
+The probability of realization of a certain set of occupation
+numbers{Nb} is proportional to the number of ways N agents
+can be distributed among the bins preserving the set {Nb}.
+This number is N !/N1!N2! . . . The logarithm of probability
+is entropy ln N ! −P∞b=1 ln Nb!. When the numbers Nb are
+big and Stirling’s formula ln N ! ≈ N ln N − N applies, the
+entropy per agent is S = (N ln N −P∞b=1 Nb ln Nb)/N =
+−P∞b=1 Pb ln Pb, where Pb = Nb/N is the probability that an
+agent has money mb. Using the method of Lagrange multipli-
+ers to maximize the entropy S with respect to the occupation
+numbers {Nb} with the constraints on the total money M and
+the total number of agents N generates the Boltzmann-Gibbs
+distribution for P (m)2.
+
+C. Computer simulations
+
+To check that these general arguments indeed work, we per-
+formed several computer simulations. Initially, all agents are
+given the same amount of money: P (m) = δ(m − M/N ),
+which is shown in Fig. 1 as the double vertical line. One pair
+of agents at a time is chosen randomly, then one of the agents
+is randomly picked to be the “winner” (the other agent be-
+comes the “loser”), and the amount ∆m ≥ 0 is transferred
+from the loser to the winner. If the loser does not have enough
+money to pay (mi < ∆m), then the transaction does not take
+place, and we proceed to another pair of agents. Thus, the
+agents are not permitted to have negative money. This bound-
+ary condition is crucial in establishing the stationary distribu-
+tion. As the agents exchange money, the initial delta-function
+distribution ﬁrst spreads symmetrically. Then, the probability
+density starts to pile up at the impenetrable boundary m = 0.
+The distribution becomes asymmetric (skewed) and ultimately
+reaches the stationary exponential shape shown in Fig. 1. We
+used several trading rules in the simulations: the exchange of
+a small constant amount ∆m = 1, the exchange of a ran-
+dom fraction 0 ≤ ν ≤ 1 of the average money of the pair:
+∆m = ν(mi + mj)/2, and the exchange of a random fraction
+ν of the average money in the system: ∆m = ν M/N . Fig-
+ures in this chapter mostly show simulations for the third rule;
+however, the ﬁnal stationary distribution was found to be the
+same for all rules.
+
+In the process of evolution, the entropy S of the system
+increases in time and saturates at the maximal value for the
+BoltzmannGibbs distribution. This is illustrated by the top
+curve in Fig. 2 computed for the third rule of exchange. The
+bottom curve in Fig. 2 shows the time evolution of entropy
+for the ﬁrst rule of exchange. The time scale for this curve is
+500 times greater than for the top curve, so the bottom curve
+
+actually ends at the time 106. The plot shows that, for the ﬁrst
+rule of exchange, mixing is much slower than for the third one.
+Nevertheless, even for the ﬁrst rule, the system also eventually
+reaches the Boltzmann-Gibbs state of maximal entropy, albeit
+over a time much longer than shown in Fig. 2.
+
+One might argue that the pairwise exchange of money may
+correspond to a medieval market, but not to a modern econ-
+omy. In order to make the model somewhat more realistic,
+we introduce ﬁrms. One agent at a time becomes a “ﬁrm”.
+The ﬁrm borrows capital K from another agent and returns it
+with an interest rK, hires L agents and pays them wages W ,
+manufactures Q items of a product and sells it to Q agents
+at a price R. All of these agents are randomly selected. The
+ﬁrm receives the proﬁt F = RQ − LW − rK. The net re-
+sult is a many-body exchange of money that still satisﬁes the
+conservation law.
+
+Parameters of the model are selected following the pro-
+cedure described in economics textbooks7. The aggregate
+demand-supply curve for the product is taken to be R(Q) =
+V /Qη, where Q is the quantity people would buy at a price
+R, and η = 0.5 and V = 100 are constants. The produc-
+tion function of the ﬁrm has the conventional Cobb-Douglas
+form: Q(L, K) = LβK 1−β, where β = 0.8 is a constant. In
+our simulation, we set W = 10. By maximizing ﬁrm’s proﬁt
+F with respect to K and L, we ﬁnd the values of the other
+parameters: L = 20, Q = 10, R = 32, and F = 68.
+
+However, the actual values of the parameters do not matter.
+Our computer simulations show that the stationary probability
+distribution of money in this model always has the universal
+Boltzmann-Gibbs form independent of the model parameters.
+
+D. Thermal machine
+
+As explained in the Introduction, the money distribution
+P (m) should not be confused with the distribution of wealth.
+We believe that P (m) should be interpreted as the instanta-
+neous distribution of purchasing power in the system. Indeed,
+to make a purchase, one needs money. Material wealth nor-
+mally is not used directly for a purchase. It needs to be sold
+ﬁrst to be converted into money.
+
+Let us consider an outside monopolistic vendor selling a
+product (say, cars) to the system of agents at a price p. Sup-
+pose that a certain small fraction f of the agents needs to buy
+the product at a given time, and each agent who has enough
+money to afford the price will buy one item. The fraction f
+is assumed to be sufﬁciently small, so that the purchase does
+not perturb the whole system signiﬁcantly. At the same time,
+the absolute number of agents in this group is assumed to be
+big enough to make the group statistically representative and
+characterized by the Boltzmann-Gibbs distribution of money.
+The agents in this group continue to exchange money with the
+rest of the system, which acts as a thermal bath. The demand
+for the product is constantly renewed, because products pur-
+chased in the past expire after a certain time. In this situation,
+the vendor can sell the product persistently, thus creating a
+small steady leakage of money from the system to the vendor.
+What price p would maximize the vendor’s income?
+
+4
+
+it
+
+is convenient
+
+this question,
+
+To answer
+to introduce
+the cumulative distribution of purchasing power N (m) =
+NR ∞
+m P (m′) dm′ = N e−m/T , which gives the number of
+agents whose money is greater than m. The vendor’s income
+is f pN (p). It is maximal when p = T , i. e. the optimal price
+is equal to the temperature of the system. This conclusion
+also follows from the simple dimensional argument that tem-
+perature is the only money scale in the problem. At the price
+p = T that maximizes the vendor’s income, only the fraction
+N (T )/N = e−1 = 0.37 of the agents can afford to buy the
+product.
+Now let us consider two disconnected economic systems,
+one with the temperature T1 and another with T2: T1 > T2.
+A vendor can buy a product in the latter system at its equi-
+librium price T2 and sell it in the former system at the price
+T1, thus extracting the speculative proﬁt T1 − T2, as in a ther-
+mal machine. This example suggests that speculative proﬁt
+is possible only when the system as a whole is out of equi-
+librium. As money is transferred from the high- to the low-
+temperature system, their temperatures become closer and
+eventually equal. After that, no speculative proﬁt is possi-
+ble, which would correspond to the “thermal death” of the
+economy. This example brings to mind economic relations
+between developed and developing countries, with manufac-
+turing in the poor (low-temperature) countries for export to
+the rich (high-temperature) ones.
+
+We will demonstrate in Ch. II that for the large majority
+of the population the distribution of income is exponential.
+Hence, similar to the distribution of money, the distribution
+of income has a corresponding temperature. If in the previ-
+ous discussion about economic trade, the two countries have a
+different temperature for the distribution of income, the pos-
+sibility of constructing a thermal machine will still hold true.
+This is because purchasing power (total money) per unit time
+has two components: a positive one, income and a negative
+one, spending. Instead of making a one time purchase, the
+buyer will buy one product per unit time, effectively creating
+the thermal engine. We will revisit this idea in Sec. II E when
+we give the values for income temperature between the states
+of the USA and for the United Kingdom.
+
+E. Models with debt
+
+Now let us discuss what happens if the agents are permit-
+ted to go into debt. Debt can be viewed as negative money.
+Now when a loser does not have enough money to pay, he
+can borrow the required amount from a reservoir, and his
+balance becomes negative. The conservation law is not vi-
+olated: The sum of the winner’s positive money and loser’s
+negative money remains constant. When an agent with a
+negative balance receives money as a winner, she uses this
+money to repay the debt until her balance becomes positive.
+We assume for simplicity that the reservoir charges no inter-
+est for the lent money. However, because it is not sensible
+to permit unlimited debt, we put a limit md on the maximal
+debt of an agent: mi > −md. This new boundary condi-
+tion P (m < −md) = 0 replaces the old boundary condition
+
+)
+
+m
+P
+
+(
+
+ 
+,
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+P
+
+18
+
+16
+
+14
+
+12
+
+10
+
+8
+
+6
+
+4
+
+2
+
+0
+
+N=500, M=5*105, time=4*105.
+
+Model with debt, T=1800
+
+Model without debt, T=1000
+
+0
+
+2000
+
+4000
+
+Money, m
+
+6000
+
+8000
+
+FIG. 3: Histograms: stationary distributions of money with and with-
+out debt. Solid curves: ﬁts to the Boltzmann-Gibbs laws with tem-
+peratures T = 1800 and T = 1000.
+
+−md
+
+P (m < 0) = 0. The result of a computer simulation with
+md = 800 is shown in Fig. 3 together with the curve for md =
+0. P (m) is again given by the Boltzmann-Gibbs law, but now
+with the higher temperature T = M/N + md, because the
+normalization conditions need to be maintained including the
+P (m) dm = 1 and
+m P (m) dm = M/N . The higher temperature makes
+−md
+the money distribution broader, which means that debt in-
+creases inequality between agents.
+
+population with negative money: R ∞
+R ∞
+In general, temperature is completely determined by the av-
+erage money per agent, hmi = M/N , and the boundary con-
+ditions. Suppose the agents are required to have no less money
+than m1 and no more than m2: m1 ≤ m ≤ m2. In this case,
+the two normalization conditions: R m2
+P (m) dm = 1 and
+R m2
+m P (m) dm = hmi with P (m) = C e−m/T give the
+
+m1
+following equation for T
+
+m1
+
+5
+
+tributions, the number of events becomes small and statistics
+poor, so the Boltzmann-Gibbs law loses applicability. Thus,
+we expect the Boltzmann-Gibbs law to hold only for the in-
+termediate range of money not too close either to the lower
+boundary or to the very high end. However, this range is the
+most relevant, because it covers the great majority of popula-
+tion.
+
+Lending creates equal amounts of positive (asset) and neg-
+ative (liability) money5,7. When economics textbooks de-
+scribe how “banks create money” or “debt creates money”7,
+they do not count the negative liabilities as money, and thus
+their money is not conserved. In our operational deﬁnition of
+money, we include all ﬁnancial instruments with ﬁxed denom-
+ination, such as currency, IOUs, and bonds, but not material
+wealth or stocks, and we count both assets and liabilities. With
+this deﬁnition, money is conserved, and we expect to see the
+Boltzmann-Gibbs distribution in equilibrium. Unfortunately,
+because this deﬁnition differs from economists’ deﬁnitions of
+money (M1, M2, M3, etc.7), it is not easy to ﬁnd the appro-
+priate statistics. Of course, money can be also emitted by a
+central bank or government. This is analogous to an external
+inﬂux of energy into a physical system. However, if this pro-
+cess is sufﬁciently slow, the economic system may be able to
+maintain quasi-equilibrium, characterized by a slowly chang-
+ing temperature.
+
+We performed a simulation of a model with one bank and
+many agents. The agents keep their money in accounts on
+which the bank pays interest. The agents may borrow money
+from the bank, for which they must pay interest in monthly
+installments. If they cannot make the required payments, they
+may be declared bankrupt, which relieves them from the debt,
+but the liability is transferred to the bank. In this way, the con-
+servation of money is maintained. The model is too elaborate
+to describe it in full detail here. We found that, depending on
+the parameters of the model, either the agents constantly lose
+money to the bank, which steadily reduces the agents’ temper-
+ature, or the bank constantly loses money, which drives down
+its own negative balance and steadily increases the agents’
+temperature.
+
+coth(cid:18) ∆m
+
+T (cid:19) −
+
+T
+∆m
+
+=
+
+m − hmi
+
+∆m
+
+,
+
+(1)
+
+F. Boltzmann equation
+
+where m = (m1+m2)/2 and ∆m = (m2−m1)/2. It follows
+from Eq. (1) that the temperature is positive when m > hmi,
+negative when m < hmi, and inﬁnite (P (m) = const) when
+m = hmi. In particular, if agents’ money are bounded from
+above, but not from below: −∞ ≤ m ≤ m2, the temper-
+ature is negative. That means an inverted Boltzmann-Gibbs
+distribution with more rich agents than poor.
+
+Imposing a sharp cutoff at md may be not quite realistic.
+In practice, the cutoff may be extended over some range de-
+pending on the exact bankruptcy rules. Over this range, the
+Boltzmann-Gibbs distribution would be smeared out. So we
+expect to see the Boltzmann-Gibbs law only sufﬁciently far
+from the cutoff region. Similarly, in experiment4, some devi-
+ations from the exponential law were observed near the lower
+boundary of the distribution. Also, at the high end of the dis-
+
+The Boltzmann-Gibbs distribution can be also derived from
+the Boltzmann equation9, which describes the time evolution
+of the distribution function P (m) due to pairwise interactions:
+
+(2)
+
+dP (m)
+
+=ZZ {−w[m,m′]→[m−∆,m′+∆]P (m)P (m′)
+
+dt
++w[m−∆,m′+∆]→[m,m′]P (m − ∆)P (m′ + ∆)} dm′ d∆.
+Here w[m,m′]→[m−∆,m′+∆] is the rate of transferring money
+∆ from an agent with money m to an agent with money m′.
+If a model has time-reversal symmetry, then the transition rate
+of a direct process is the same as the transition rate of the re-
+versed process, thus the w-factors in the ﬁrst and second lines
+of Eq. (2) are equal. In this case, it can be easily checked that
+the Boltzmann-Gibbs distribution P (m) = C exp(−m/T )
+
+N=500, M=5*105, α=1/3.
+
+N=500, M=5*105, tax=40%.
+
+6
+
+)
+
+m
+P
+
+(
+
+ 
+,
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+P
+
+16
+
+14
+
+12
+
+10
+
+8
+
+6
+
+4
+
+2
+
+0
+0
+
+4000
+
+5000
+
+500
+
+1000
+
+1500
+
+Money, m
+
+2000
+
+2500
+
+3000
+
+2000
+
+3000
+
+Money, m
+
+)
+
+m
+P
+
+(
+
+ 
+,
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+P
+
+16
+
+14
+
+12
+
+10
+
+8
+
+6
+
+4
+
+2
+
+0
+0
+
+1000
+
+FIG. 4: Histogram: stationary probability distribution of money in
+the multiplicative random exchange model studied in Ref.6. Solid
+curve: the Boltzmann-Gibbs law.
+
+FIG. 5: Histogram: stationary probability distribution of money in
+the model with taxes and subsidies. Solid curve:
+the Boltzmann-
+Gibbs law.
+
+nulliﬁes the right-hand side of Eq. (2); thus this distribution
+is stationary: dP (m)/dt = 09.
+
+G. Non-Boltzmann-Gibbs distributions
+
+However, if time-reversal symmetry is broken, the two tran-
+sition rates w in Eq. (2) may be different, and the system may
+have a non-Boltzmann-Gibbs stationary distribution or no sta-
+tionary distribution at all. Examples of this kind were stud-
+ied in Ref.6. One model was called multiplicative random
+exchange. In this model, a randomly selected loser i loses
+a ﬁxed fraction α of his money mi to a randomly selected
+winner j: [mi, mj] → [(1 − α)mi , mj + αmi]. If we try
+to reverse this process and immediately appoint the winner
+j to become a loser, the system does not return to the orig-
+inal conﬁguration [mi, mj]:
+[(1 − α)mi , mj + αmi] →
+[(1 − α)mi + α(mj + αmi) , (1 − α)(mj + αmi)]. Ex-
+cept for α = 1/2, the exponential distribution function is not
+a stationary solution of the Boltzmann equation derived for
+this model in Ref.6. Instead, the stationary distribution has the
+shape shown in Fig. 4 for α = 1/3, which we reproduced in
+our numerical simulations. It still has an exponential tail end
+at the high end, but drops to zero at the low end for α < 1/2.
+Another example of similar kind was studied in Ref.10, which
+appeared after the ﬁrst version of our paper was posted as
+cond-mat/0001432 on January 30, 2000. In that model, the
+agents save a fraction λ of their money and exchange a ran-
+dom fraction ǫ of their total remaining money: [mi, mj] →
+[λmi + ǫ(1− λ)(mi + mj) , λmj + (1− ǫ)(1− λ)(mi + mj)].
+This exchange also does not return to the original conﬁgura-
+tion after being reversed. The stationary probability distribu-
+tion was found in Ref.10 to be nonexponential for λ 6= 0 with
+a shape qualitatively similar to the one shown in Fig. 4.
+Another interesting example which has a non-Boltzmann-
+
+Gibbs distribution occurs in a model with taxes and subsi-
+dies. Suppose a special agent (“government”) collects a frac-
+tion (“tax”) of every transaction in the system. The collected
+money is then equally divided among all agents of the sys-
+tem, so that each agent receives the subsidy δm with the fre-
+quency 1/τs. Assuming that δm is small and approximating
+9, we obtain the
+the collision integral with a relaxation time τr
+following Boltzmann equation
+
+∂P (m)
+
+∂t
+
++
+
+δm
+τs
+
+∂P (m)
+
+∂m
+
+= −
+
+P (m) − ˜P (m)
+
+τr
+
+,
+
+(3)
+
+where ˜P (m) is the equilibrium Boltzmann-Gibbs function.
+The second term in the left-hand side of Eq. (3) is analo-
+gous to the force applied to electrons in a metal by an ex-
+ternal electric ﬁeld9. The approximate stationary solution
+of Eq. (3) is the displaced Boltzmann-Gibbs one: P (m) =
+˜P (m−(τr/τs) δm). The displacement of the equilibrium dis-
+tribution ˜P (m) by (τr/τs) δm would leave an empty gap near
+m = 0. This gap is ﬁlled by interpolating between zero pop-
+ulation at m = 0 and the displaced distribution. The curve
+obtained in a computer simulation of this model (Fig. 5) qual-
+itatively agrees with this expectation. The low-money popula-
+tion is suppressed, because the government, acting as an exter-
+nal force, “pumps out” that population and pushes the system
+out of thermodynamic equilibrium. We found that the entropy
+of the stationary state in the model with taxes and subsidies is
+few a percent lower than without.
+
+These examples show that the Boltzmann-Gibbs distribu-
+tion is not fully universal, meaning that it does not hold for
+just any model of exchange that conserves money. Neverthe-
+less, it is universal in a limited sense: For a broad class of
+models that have time-reversal symmetry, the stationary dis-
+tribution is exponential and does not depend on the details of
+a model. Conversely, when time-reversal symmetry is bro-
+ken, the distribution may depend on model details. The dif-
+
+ference between these two classes of models may be rather
+subtle. For example, let us change the multiplicative random
+exchange from a ﬁxed fraction of loser’s money to a ﬁxed
+fraction of the total money of winner and loser. This mod-
+iﬁcation retains the multiplicative idea that the amount ex-
+changed is proportional to the amount involved, but restores
+time-reversal symmetry and the Boltzmann-Gibbs distribu-
+tion. In the model with ∆m = 1 discussed in the next Section,
+the difference between time-reversible and time-irreversible
+formulations amounts to the difference between impenetra-
+ble and absorbing boundary conditions at m = 0. Unlike in
+physics, in economy there is no fundamental requirement that
+interactions have time-reversal symmetry. However, in the ab-
+sence of detailed knowledge of real microscopic dynamics of
+economic exchange, the semiuniversal Boltzmann-Gibbs dis-
+tribution appears to be a natural starting point.
+
+Moreover, deviations from the Boltzmann-Gibbs law may
+occur only if the transition rates w in Eq. (2) explicitly de-
+pend on the agents’ money m or m′ in an asymmetric man-
+ner. In another simulation, we randomly preselected winners
+and losers for every pair of agents (i, j). In this case, money
+ﬂows along directed links between the agents: i → j → k,
+and time-reversal symmetry is strongly broken. This model
+is closer to the real economy, in which, for example, one
+typically receives money from an employer and pays it to a
+grocer, but rarely the reverse. Nevertheless, we still found
+the Boltzmann-Gibbs distribution of money in this model, be-
+cause the transition rates w do not explicitly depend on m and
+m′.
+
+H. Nonlinear Boltzmann equation vs. linear master equation
+
+For the model where agents randomly exchange the con-
+
+stant amount ∆m = 1, the Boltzmann equation is:
+
+dPm
+dt
+
+= Pm+1
+
+Pn + Pm−1
+
+− Pm
+
+Pn − Pm
+
+∞Xn=0
+∞Xn=0
+
+Pn
+
+∞Xn=1
+
+Pn
+
+∞Xn=1
+
+(4)
+
+(5)
+
+= (Pm+1 + Pm−1 − 2Pm) + P0(Pm − Pm−1),
+
+where Pm ≡ P (m) and we have usedP∞m=0 Pm = 1. The
+ﬁrst, diffusion term in Eq. (5) is responsible for broadening of
+the initial delta-function distribution. The second term, pro-
+portional to P0, is essential for the Boltzmann-Gibbs distri-
+bution Pm = e−m/T (1 − e−1/T ) to be a stationary solution
+In a similar model studied in Ref.6, the second
+of Eq. (5).
+term was omitted on the assumption that agents who lost all
+money are eliminated: P0 = 0. In that case, the total number
+of agents is not conserved, and the system never reaches any
+stationary distribution. Time-reversal symmetry is violated,
+since transitions into the state m = 0 are permitted, but not
+out of this state.
+
+If we treat P0 as a constant, Eq. (5) looks like a linear
+Fokker-Planck equation9 for Pm, with the ﬁrst term describing
+diffusion and the second term an external force proportional
+
+7
+
+to P0. Similar equations were studied in Ref.8. Eq. (5) can be
+also rewritten as
+
+dPm
+dt
+
+= Pm+1 − (2 − P0)Pm + (1 − P0)Pm−1.
+
+(6)
+
+The coefﬁcient (1−P0) in front of Pm−1 represents the rate of
+increasing money by ∆m = 1, and the coefﬁcient 1 in front of
+Pm+1 represents the rate of decreasing money by ∆m = −1.
+Since P0 > 0, the former is smaller than the latter, which
+results in the stationary Boltzmann-Gibbs distributions Pm =
+(1− P0)m. An equation similar to Eq. (6) describes a Markov
+chain studied for strategic market games in Ref.11. Naturally,
+the stationary probability distribution of wealth in that model
+was found to be exponential11.
+
+Even though Eqs. (5) and (6) look like linear equations,
+nevertheless the Boltzmann equation (2) and (4) is a pro-
+foundly nonlinear equation.
+It contains the product of two
+probability distribution functions P in the right-hand side, be-
+cause two agents are involved in money exchange. Most stud-
+ies of wealth distribution8 have the fundamental ﬂaw that they
+use a single-particle approach. They assume that the wealth
+of an agent may change just by itself and write a linear mas-
+ter equation for the probability distribution. Because only
+one particle is considered, this approach cannot adequately
+incorporate conservation of money. In reality, an agent can
+change money only by interacting with another agent, thus the
+problem requires a two-particle probability distribution func-
+tion. Using Boltzmann’s molecular chaos hypothesis, the two-
+particle function is factorized into a product of two single-
+particle distributions functions, which results in the nonlinear
+Boltzmann equation. Conservation of money is adequately in-
+corporated in this two-particle approach, and the universality
+of the exponential Boltzmann-Gibbs distribution is transpar-
+ent.
+
+I. Conclusions
+
+Everywhere in this chapter we assumed some randomness
+in the exchange of money. Our results would apply the best to
+the probability distribution of money in a closed community
+of gamblers. In more traditional economic studies, the agents
+exchange money not randomly, but following deterministic
+strategies, such as maximization of utility functions5,12. The
+concept of equilibrium in these studies is similar to mechan-
+ical equilibrium in physics, which is achieved by minimizing
+energy or maximizing utility. However, for big ensembles,
+statistical equilibrium is a more relevant concept. When many
+heterogeneous agents deterministically interact and spend var-
+ious amounts of money from very little to very big, the money
+exchange is effectively random. In the future, we would like
+to uncover the Boltzmann-Gibbs distribution of money in a
+simulation of a big ensemble of economic agents following re-
+alistic deterministic strategies with money conservation taken
+into account. That would be the economics analog of molecu-
+lar dynamics simulations in physics. While atoms collide fol-
+lowing fully deterministic equations of motion, their energy
+exchange is effectively random due to the complexity of the
+system and results in the Boltzmann-Gibbs law.
+
+We do not claim that the real economy is in equilibrium.
+(Most of the physical world around us is not in true equilib-
+rium either.) Nevertheless, the concept of statistical equilib-
+rium is a very useful reference point for studying nonequilib-
+rium phenomena.
+
+II. DISTRIBUTION OF INCOME AND WEALTH
+
+A.
+
+Introduction
+
+In Ch. I we predicted that the distribution of money should
+follow an exponential Boltzmann-Gibbs law. Unfortunately,
+we were not able to ﬁnd data on the distribution of money. On
+the other hand, we found many sources with data on income
+distribution for the United States (USA) and United Kingdom
+(UK), as well as data on the wealth distribution in the UK,
+which are presented in this chapter. In all of these data, we
+ﬁnd that the great majority of the population is described by
+an exponential distribution, whereas the high-end tail follows
+a power law.
+
+The study of income distribution has a long history.
+Pareto14 proposed in 1897 that income distribution obeys a
+universal power law valid for all times and countries. Sub-
+sequent studies have often disputed this conjecture. In 1935,
+Shirras15 concluded: “There is indeed no Pareto Law. It is
+time it should be entirely discarded in studies on distribu-
+tion”. Mandelbrot16 proposed a “weak Pareto law” applica-
+ble only asymptotically to the high incomes. In such a form,
+Pareto’s proposal is useless for describing the great majority
+of the population.
+
+Many other distributions of income were proposed: Levy,
+log-normal, Champernowne, Gamma, and two other forms by
+Pareto himself (see a systematic survey in the World Bank re-
+search publication17). Theoretical justiﬁcations for these pro-
+posals form two schools: socio-economic and statistical. The
+former appeals to economic, political, and demographic fac-
+tors to explain the distribution of income (e. g.18), whereas the
+latter invokes stochastic processes. Gibrat19 proposed in 1931
+that income is governed by a multiplicative random process,
+which results in a log-normal distribution (see also20). How-
+ever, Kalecki21 pointed out that the width of this distribution
+is not stationary, but increases in time. Levy and Solomon22
+proposed a cut-off at lower incomes, which stabilizes the dis-
+tribution to a power law.
+
+Many researchers tried to deduce the Pareto law from a the-
+ory of stochastic processes. Gibrat19 proposed in 1931 that
+income and wealth are governed by multiplicative random
+processes, which result in a log-normal distribution. These
+ideas were later followed, among many others, by Montroll
+and Shlesinger20. However, already in 1945 Kalecki21 pointed
+out that the log-normal distribution is not stationary, because
+its width increases in time. Modern econophysicists22,33,34
+also use various versions of multiplicative random processes
+in theoretical modeling of wealth and income distributions.
+
+Unfortunately, numerous recent papers on this subject do
+very little or no comparison at all with real statistical data,
+much of which is widely available these days on the Inter-
+
+8
+
+net.
+In order to ﬁll this gap, we analyzed the data on in-
+come distribution in the United States (US) from the Bureau
+of Census and the Internal Revenue Service (IRS) in Ref.35.
+We found that the individual income of about 95% of popu-
+lation is described by the exponential law. The exponential
+law, also known in physics as the Boltzmann-Gibbs distribu-
+tion, is characteristic for a conserved variable, such as energy.
+In Ref.36, we argued that, because money (cash) is conserved,
+the probability distribution of money should be exponential.
+Wealth can increase or decrease by itself, but money can only
+be transferred from one agent to another. So, wealth is not
+conserved, whereas money is. The difference is the same as
+the difference between unrealized and realized capital gains in
+stock market.
+
+In Sec. II B, we propose that the distribution of individual
+income is given by an exponential function. This conjecture
+is inspired by the results of Ch. I,35, where we argued that the
+probability distribution of money in a closed system of agents
+is given by the exponential Boltzmann-Gibbs function. We
+compare our proposal with the census and tax data for individ-
+ual income in USA. In Sec. II D we show that the exponential
+distribution has to be amended for the top 5% of incomes by
+a power-law function. In Sec. II F, we derive the distribution
+function of income for families with two earners and compare
+it with census data. In Sec. II G, we discuss the distribution of
+wealth. In Sec. II H we critically examine several other alter-
+natives proposed in the literature for the distribution of income
+and wealth. Speculations on the possible origins of the expo-
+nential and power-law distribution of income and conclusions
+for this chapter are given in Sec. II I.
+
+B. Distribution of income for individuals
+
+C. Exponential distribution of income
+
+We denote income by the letter r (for “revenue”). The prob-
+ability distribution function of income, P (r), (called the prob-
+ability density in book17) is deﬁned so that the fraction of in-
+dividuals with income between r and r + dr is P (r) dr. This
+0 P (r) dr = 1. We
+propose that the probability distribution of individual income
+is exponential:
+
+function is normalized to unity (100%):R ∞
+
+P1(r) = exp(−r/R)/R,
+
+(7)
+
+R ∞
+
+where the subscript 1 indicates individuals. Function (7)
+contains one parameter R, equal to the average income:
+0 r P1(r) dr = R, and analogous to temperature in the
+Boltzmann-Gibbs distribution35.
+
+From the Survey of Income and Program Participation
+(SIPP)23, we downloaded the variable TPTOINC (total in-
+come of a person for a month) for the ﬁrst “wave” (a four-
+month period) in 1996. Then we eliminated the entries with
+zero income, grouped the remaining entries into bins of the
+size 10/3 k$, counted the numbers of entries inside each bin,
+and normalized to the total number of entries. The results are
+shown as the histogram in Fig. 6, where the horizontal scale
+
+100% 
+
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+P
+
+ 10%
+
+1%
+
+0.1%
+
+ 0.01%
+0
+
+B
+
+A
+
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+p
+ 
+e
+v
+i
+t
+a
+u
+m
+u
+C
+100 120
+
+l
+
+40
+
+20
+Individual annual income, k$
+
+60
+
+80
+
+9
+
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+p
+
+ 
+
+e
+v
+i
+t
+
+l
+
+a
+u
+m
+u
+C
+
+100
+
+A
+
+B
+
+20
+
+40
+
+60
+
+80
+
+Adjusted gross income, k$
+
+100%
+
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+P
+
+10%
+
+1%
+
+0.1%
+0
+
+100%
+
+90
+
+80
+
+70
+
+60
+
+50
+
+40
+
+30
+
+20
+
+10
+
+s
+n
+r
+u
+
+t
+
+e
+r
+ 
+x
+a
+
+t
+ 
+f
+
+o
+
+ 
+t
+
+n
+e
+c
+r
+e
+p
+
+ 
+
+e
+v
+i
+t
+
+l
+
+a
+u
+m
+u
+C
+
+10
+
+20
+
+30
+
+40
+
+50
+
+60
+
+70
+
+80
+
+Individual annual income, k$
+
+90 100 110 120
+
+0
+0
+
+10
+
+20
+
+40
+
+30
+70
+Adjusted gross income, k$
+
+50
+
+60
+
+80
+
+90
+
+100
+
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+P
+
+18%
+
+16%
+
+14%
+
+12%
+
+10%
+
+8%
+
+6%
+
+4%
+
+2%
+
+0%
+0
+
+FIG. 6: Histogram: Probability distribution of individual income
+from the U.S. Census data for 199623. Solid line: Fit to the expo-
+nential law.
+Inset plot A: The same with the logarithmic vertical
+scale. Inset plot B: Cumulative probability distribution of individual
+income from PSID for 199224.
+
+FIG. 7: Points: Cumulative fraction of tax returns vs income from
+the IRS data for 199725. Solid line: Fit to the exponential law. Inset
+plot A: The same with the logarithmic vertical scale. Inset plot B:
+Probability distribution of individual income from the IRS data for
+199326.
+
+has been multiplied by 12 to convert monthly income to an
+annual ﬁgure. The solid line represents a ﬁt to the exponential
+function (7). In the inset, plot A shows the same data with
+the logarithmic vertical scale. The data fall onto a straight
+line, whose slope gives the parameter R in Eq. (7). The ex-
+ponential law is also often written with the bases 2 and 10:
+P1(r) ∝ 2−r/R2 ∝ 10−r/R10. The parameters R, R2 and
+R10 are given in line (c) of Table I.
+
+Source
+a PSID24
+b IRS26
+c SIPPp
+23
+d SIPPf
+IRS25
+e
+
+23
+
+Year R ($) R2 ($) R10 ($)
+43,390
+1992 18,844
+45,329
+1993 19,686
+46,710
+1996 20,286
+1996 23,242
+53,517
+81,051
+1997 35,200
+
+13,062
+13,645
+14,061
+16,110
+24,399
+
+Set size
+1.39×103
+1.15×108
+2.57×105
+1.64×105
+1.22×108
+
+TABLE I: Parameters R, R2, and R10 obtained by ﬁtting data from
+different sources to the exponential law (7) with the bases e, 2, and
+10, and the sizes of the statistical data sets.
+
+Plot B in the inset of Fig. 6 shows the data from the Panel
+Study of Income Dynamics (PSID) conducted by the Insti-
+tute for Social Research of the University of Michigan24. We
+downloaded the variable V30821 “Total 1992 labor income”
+for individuals from the Final Release 1993 and processed the
+data in a similar manner. Shown is the cumulative probabil-
+ity distribution of income N (r) (called the probability dis-
+tribution in book17). It is deﬁned as N (r) = R ∞
+r P (r′) dr′
+and gives the fraction of individuals with income greater than
+r. For the exponential distribution (7), the cumulative dis-
+tribution is also exponential: N1(r) = R ∞
+r P1(r′) dr′ =
+exp(−r/R). Thus, R2 is the median income; 10% of popula-
+tion have income greater than R10 and only 1% greater than
+2R10. The points in the inset fall onto a straight line in the
+
+logarithmic scale. The slope is given in line (a) of Table I.
+
+The points in Fig. 7 show the cumulative distribution of
+tax returns vs income in 1997 from column 1 of Table 1.1
+of Ref.25. (We merged 1 k$ bins into 5 k$ bins in the interval
+1–20 k$.) The solid line is a ﬁt to the exponential law. Plot A
+in the inset of Fig. 7 shows the same data with the logarithmic
+vertical scale. The slope is given in line (e) of Table I. Plot
+B in the inset of Fig. 7 shows the distribution of individual
+income from tax returns in 199326. The logarithmic slope is
+given in line (b) of Table I.
+
+While Figs. 6 and 7 clearly demostrate the ﬁt of income
+distribution to the exponential form, they have the following
+drawback. Their horizontal axes extend to +∞, so the high-
+income data are left outside of the plots. The standard way to
+represent the full range of data is the so-called Lorenz curve
+(for an introduction to the Lorenz curve and Gini coefﬁcient,
+see book17). The horizontal axis of the Lorenz curve, x(r),
+represents the cumulative fraction of population with income
+below r, and the vertical axis y(r) represents the fraction of
+income this population accounts for:
+
+x(r) =Z r
+
+0
+
+P (r′) dr′,
+
+y(r) = R r
+R ∞
+
+0 r′P (r′) dr′
+0 r′P (r′) dr′
+
+.
+
+(8)
+
+As r changes from 0 to ∞, x and y change from 0 to 1, and
+Eq. (8) parametrically deﬁnes a curve in the (x, y)-space.
+
+Substituting Eq. (7) into Eq. (8), we ﬁnd
+
+x(˜r) = 1 − exp(−˜r),
+
+y(˜r) = x(˜r) − ˜r exp(−˜r),
+
+(9)
+
+where ˜r = r/R. Excluding ˜r, we ﬁnd the explicit form of the
+Lorenz curve for the exponential distribution:
+
+y = x + (1 − x) ln(1 − x).
+
+(10)
+
+R drops out, so Eq. (10) has no ﬁtting parameters.
+
+100%
+
+e
+m
+o
+c
+n
+
+i
+ 
+f
+
+o
+
+ 
+t
+
+n
+e
+c
+r
+e
+p
+
+ 
+
+e
+v
+i
+t
+
+l
+
+a
+u
+m
+u
+C
+
+90
+
+80
+
+70
+
+60
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0
+0
+
+1
+
+0.75
+
+0.5
+
+0.25
+
+0
+
+Gini coefficient  ≈  1
+2
+
+1980 1985 1990 1995
+
+Year
+
+10 20 30 40 50 60 70 80 90 100%
+
+Cumulative percent of tax returns
+
+FIG. 8: Solid curve: Lorenz plot for the exponential distribution.
+Points: IRS data for 1979–199727. Inset points: Gini coefﬁcient data
+from IRS27. Inset line: The calculated value 1/2 of the Gini coefﬁ-
+cient for the exponential distribution.
+
+The function (10) is shown as the solid curve in Fig. 8. The
+straight diagonal line represents the Lorenz curve in the case
+where all population has equal income. Inequality of income
+distribution is measured by the Gini coefﬁcient G, the ratio of
+the area between the diagonal and the Lorenz curve to the area
+of the triangle beneath the diagonal
+
+G = 2Z 1
+
+0
+
+(x − y) dx
+
+(11)
+
+The Gini coefﬁcient is conﬁned between 0 (no inequality) and
+1 (extreme inequality). By substituting Eq. (10) into the inte-
+gral, we ﬁnd the Gini coefﬁcient for the exponential distribu-
+tion: G1 = 1/2.
+
+The points in Fig. 8 represent the tax data during 1979–
+1997 from Ref.27. With the progress of time, the Lorenz points
+shifted downward and the Gini coefﬁcient increased from 0.47
+to 0.56, which indicates increasing inequality during this pe-
+riod. However, overall the Gini coefﬁcient is close to the value
+0.5 calculated for the exponential distribution, as shown in the
+inset of Fig. 8.
+
+D. Power-law tail and “Bose” condensation
+
+As Fig. 8 shows, the Lorenz curve deviates from the theo-
+retical Lorenz curve implied by the exponential distribution,
+mostly for the top 20% of tax returns. Moreover, as explained
+in the previous section, the Lorenz curve for a pure exponen-
+tial distribution is independent of temperature (the scale of the
+distribution). Therefore the variations in the Lorenz curves
+over the period 1979-1997 suggest that the shape of the distri-
+bution changes.
+
+United States, IRS data for 1997
+
+10
+
+Boltzmann−Gibbs
+
+100% 
+
+s
+n
+r
+u
+t
+e
+r
+ 
+f
+o
+ 
+t
+n
+e
+c
+r
+e
+p
+ 
+e
+v
+i
+t
+a
+u
+m
+u
+C
+
+l
+
+10%
+
+100%
+
+1%
+
+10%
+
+Pareto
+
+0
+
+20
+
+40
+60
+AGI, k$
+
+80
+
+100
+
+0.1%
+1
+
+10
+
+100
+Adjusted Gross Income, k$
+
+1000
+
+FIG. 9: Cumulative probability distribution of US individual income
+for 1997 in log-log scale, with points (raw data) and solid lines (ex-
+ponential and power-law ﬁt). The inset shows the exponential regime
+and the ﬁt with a Boltzmann-Gibbs distribution in the log-linear
+scale.
+
+In Sec. II A we mentioned the early proposal of Pareto, who
+claimed that the income distribution obeys a universal power
+law valid for all times and countries14. The Pareto distribution
+P (r) = A/rα has several undesirable properties. It diverges
+for low incomes, and if α < 2 the distribution has a diverg-
+ing ﬁrst moment. These two properties are never found in real
+data. Moreover, our study has shown that at least for the over-
+whelming majority (95%) of the population the distribution of
+income is exponential.
+
+The data for the remaining top 5% percent of the population
+is hard to get and often it is unreliable. Because the number
+of people with income in the top few percents is small, census
+data is poor. The Internal Revenue Service (IRS) has reliable
+data but it seldom reports it. We managed to ﬁnd a data set
+from IRS which contains high income data25.
+
+Fig. 9 shows United States IRS income data for 199725. The
+data points represent the cumulative probability distribution in
+log-log scale. Although for large income values r > 120k$
+we have only three data points, the points align on a straight
+line in accordance with a Pareto power-law distribution.
+
+From the plot it is evident that there is a discontinuity
+around 120k$ where the exponential and power-law regimes
+intersect. We conclude that it is not possible to describe
+the entire income distribution with one single differentiable
+function. The two regimes of the probability distribution
+are clearly separated and this may be due to different in-
+come dynamics in the two regimes. Among others,
+the
+Adjusted Gross Income contains capital gains that is stock-
+market gains/losses. It is conceivable that for the top 5% of
+the population, capital gains rather than the labor income ac-
+count for the majority share of the total income. The capital
+gains contribution to the Adjusted Growth Income may be re-
+sponsible for the observed power-law in the tail of the income
+distribution.
+
+We plot the Lorenz curve for income in Fig. 10. As in Sec.
+
+100%
+
+e
+m
+o
+c
+n
+
+i
+ 
+f
+
+o
+
+ 
+t
+
+n
+e
+c
+r
+e
+p
+
+ 
+
+e
+v
+i
+t
+
+l
+
+a
+u
+m
+u
+C
+
+90
+
+80
+
+70
+
+60
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0
+0
+
+US, IRS data for 1997
+
+16%
+
+s
+n
+r
+u
+
+t
+
+e
+r
+ 
+x
+a
+
+t
+ 
+f
+
+o
+
+ 
+t
+
+n
+e
+c
+r
+e
+p
+
+ 
+
+e
+v
+i
+t
+
+l
+
+a
+u
+m
+u
+C
+
+10 20 30 40 50 60 70 80 90 100%
+
+Cumulative percent of tax returns
+
+100% 
+
+10%
+
+100% 
+
+1%
+
+0.1%
+
+10%
+
+0
+
+10
+
+All states of the USA, IRS data for 1998
+
+11
+
+100%
+
+10%
+
+1%
+
+0.1%
+
+WV
+
+CT
+
+0 200 500
+
+AGI, k$
+
+1000     
+
+40
+
+Adjusted gross income, k$
+
+80
+
+120
+
+100
+
+Adjusted gross income, k$
+
+1000
+
+FIG. 10: Lorenz plot with points (raw data) and solid line (function
+(12) with fraction b = 16%).
+
+FIG. 11: Cumulative probability distributions of yearly individual
+income for different states of the USA shown as raw data (top inset)
+and scaled data in log-log, log-linear (lower inset).
+
+II B the horizontal and vertical coordinates are the cumula-
+tive population x(r) and the cumulative income y(r) from (8).
+An imaginary line through the data shows an abrupt change
+in derivative for the last 2% of the tax returns. This sudden
+change in derivative around the 98% mark on the horizontal
+axis of Fig. 10 gives an almost inﬁnite slope for the Lorenz
+curve. Physically, an inﬁnite slope in the Lorenz function for
+arguments x just slightly less than one, is equivalent to hav-
+ing a ﬁnite amount of total society’s income in the hand of a
+very few individuals. We have coined for this effect the name
+“Bose condensation of income” because of similarities with
+the celebrated phase-transition from statistical mechanics.
+
+To understand quantitatively the “Bose condensation” of
+income, we calculate f the ratio of the total income of the
+society if all the population is described by the exponential
+law, to the actual total income of the population. For the
+USA tax income data for 1997 shown in Fig. 10 this frac-
+tion was f = 0.84, which means that the “condensate” has
+b = 1 − f = 16% of the total income of the population. The
+analytical formula for the Lorenz curve in this case is
+
+y = (1 − b)[x + (1 − x) ln(1 − x)] + bδ(1 − x),
+
+(12)
+
+term represents the contribution of
+
+where the ﬁrst
+the
+Boltzmann-Gibbs exponential regime and the second term
+represents the contribution of the Pareto power-law tail. It is
+remarkable that as in the case of (10), Eq. 12 does not have any
+ﬁtting parameters. The condensate fraction b is completely de-
+termined by temperature, which in turn is determined from the
+probability distribution.
+
+The function (12) is plotted as a solid line in Fig. 9. One can
+see that the data systematically deviate from the exponential
+law because of the income concentrated in the power-law tail;
+however, the deviation is not very big. The inequality of the
+US income distribution was also increasing during that time
+period35, which implies that the size of the “Bose condensate”
+has increased in time, too.
+
+The Gini coefﬁcient deﬁned in (11) can be calculated for the
+Lorenz curve given by (12). The effect of the power-law tails
+changes the value of the Gini coefﬁcient from G1 = 1/2 in
+the case of a pure exponential distribution to Gb = (1 + b)/2.
+
+E. Geographical variations in income distribution
+
+In the previous sections we found that the distribution of
+income is an exponential for the large majority of the popu-
+lation followed by a power-law tail for the top few percent of
+the population. It would be interesting to establish the univer-
+sality of this shape for various other countries.
+
+We obtained the data on distribution of the yearly individ-
+ual income in 1998 for each of the 50 states and the District
+of Columbia that constitute the USA from the Web site of the
+IRS42. We plot the original raw data for the cumulative distri-
+bution of income in log-linear scale in the upper inset of Fig.
+11. The points spread signiﬁcantly, particularly at higher in-
+comes. For example, the fraction of individuals with income
+greater than 1 M$ varies by an order of magnitude between
+different states. However, after we rescale the data in the man-
+ner described in the preceding section, the points collapse on
+a single curve shown in log-log scale in the main panel and
+log-linear scale in the lower inset. The open circles represent
+the US average, obtained by treating the combined data for
+all states as a single set. We observe that the distribution of
+higher incomes approximately follows a power law with the
+exponent α = 1.7 ± 0.1, where the ±0.1 variation includes
+70% of all states. On the other hand, for about 95% of indi-
+viduals with lower incomes, the distribution follows an expo-
+nential law with the average US temperature RUS = 36.4 k$
+(R(2)
+US = 83.9 k$). The temperatures of
+the individual states differ from RUS by the amounts shown in
+Table II. For example, the temperature of Connecticut (CT) is
+1.25 times higher and the temperature of West Virginia (WV)
+
+US = 25.3 k$ and R(10)
+
+All states of the USA, IRS data for 1998
+
+100%
+
+e
+m
+o
+c
+n
+
+i
+ 
+f
+
+o
+
+ 
+t
+
+n
+e
+c
+r
+e
+p
+
+ 
+
+e
+v
+i
+t
+
+l
+
+a
+u
+m
+u
+C
+
+90
+
+80
+
+70
+
+60
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0
+0
+
+WA
+
+s
+n
+r
+u
+
+t
+
+e
+r
+ 
+x
+a
+
+t
+ 
+f
+
+o
+
+ 
+t
+
+n
+e
+c
+r
+e
+p
+
+ 
+
+e
+v
+i
+t
+
+l
+
+a
+u
+m
+u
+C
+
+WY
+
+10 20 30 40 50 60 70 80 90 100%
+
+Cumulative percent of tax returns
+
+100% 
+
+10%
+
+1%
+
+0.1%
+
+United Kingdom, IR data for 1994−1998
+
+12
+
+100%
+
+10%
+
+1%
+
+0.1%
+0
+
+100% 
+
+10%
+
+50 100
+
+200   
+
+Income, kpounds
+
+0
+
+10
+30
+Income, kpounds
+
+20
+
+40
+
+10
+
+Individual income, kpounds
+
+100
+
+FIG. 12: Lorenz plot with points (raw data) and solid line (function
+(10) calculated for the exponential law).
+
+TABLE II: Deviations of the state temperatures from the average US
+temperature.
+
+FIG. 13: Cumulative probability distributions of yearly individual
+income in the UK shown as raw data (top inset) and scaled data in
+log-log (left panel), log-linear (lower inset), and Lorenz (right panel)
+coordinates. Solid curve: ﬁt to function (10) calculated for the expo-
+nential law.
+
+IL
+
+RI
+
+NJ MA MD VA CA NY
+
+CT
+CO NH AK
+25% 24% 14% 14% 9% 9% 7% 6% 6% 5% 5%
+DC DE MI WA MN GA TX
+FL
+5% 4% 4% 2% 1% 0% -1% -3% -3% -3% -4%
+KS OR
+TN
+-5% -6% -7% -7% -7% -8% -8% -9% -9% -9% -11%
+NE OH LA AL
+OK
+-12% -12% -13% -13% -13% -14% -14% -14% -14% -15% -16%
+ME MT AR
+SD ND MS WV
+-16% -19% -19% -20% -20% -21% -22%
+
+IA WY NM KY
+
+NV NC WI
+
+AZ
+
+PA
+
+IN
+
+UT MO VT
+
+HI
+
+SC
+
+ID
+
+is 0.78 times lower than the average US temperature.
+
+The Lorenz plot for all states is shown in Fig. 12 together
+with the solid curve representing Eq. (10). The majority of
+points are well clustered and are not too far from the solid
+curve. The exceptions are Wyoming (WY) with much higher
+inequality and the Washington state (WA) with noticeably
+lower inequality of income distribution. The average US
+data, shown by open circles, is consistent with our previous
+results35. Unlike in the UK case, we did not make any ad-
+justment in the US case for individuals with income below the
+threshold, which appears to be sufﬁciently low.
+
+We obtained the data on the yearly income distribution in
+the UK for 1997/8 and 1998/9 from the Web site of the IR39.
+The data for 1994/5, 1995/6, and 1996/7 were taken from the
+Annual Abstract of Statistics derived from the IR40. The data
+for these 5 years are presented graphically in Fig. 13. In the
+upper inset, the original raw data for the cumulative distribu-
+tion are plotted in log-linear scale. For not too high incomes,
+the points form straight lines, which implies the exponential
+distribution N (r) ∝ exp(−r/R), where r stands for income
+(revenue), and R is the income “temperature”. However, the
+slopes of these lines are different for different years. The tem-
+peratures for the years 1994/5, 1995/6, 1996/7, and 1997/8
+differ from the temperature for 1998/9, R(98/9)
+UK = 11.7 k£
+
+UK = 8.1 k£ and R(10)
+
+(R(2)
+UK = 26.9 k£), by the factors 0.903,
+0.935, 0.954, and 0.943. To compensate for this effect, we
+rescale the data. We divide the horizontal coordinates (in-
+comes) of the data sets for different years by the quoted above
+factors and plot the results in log-log scale in the main panel
+and log-linear scale in the lower inset. We observe scaling: the
+collapse of points onto a single curve. Thus, the distributions
+Ni(r) for different years i are described by a single function
+f (r/Ri). The main panel shows that this scaling function f
+follows a power law with the exponent α = 2.0-2.3 at high in-
+comes. The lower inset shows that f has an exponential form
+for about 95% of individuals with lower incomes. These re-
+sults qualitatively agree with a similar study by Cranshaw41.
+He proposed that the P (r) data for lower incomes are better
+ﬁtted by the Gamma distribution Γ(r) ∝ rβ exp(−r/R). For
+simplicity, we chose not to introduce the additional ﬁtting pa-
+rameter β.
+
+We must mention that the individuals with income below a
+certain threshold are not required to report to the IR. That is
+why the data in the lower inset do not extend to zero income.
+We extrapolate the straight line to zero income and take the
+intercept with the vertical axis as 100% of individuals. Thus,
+we imply that the IR data does not account for about 25-27%
+of individuals with income below the threshold.
+
+The Lorenz curve for the distribution of the UK income
+is shown in Fig. 14. We treat the number of individuals be-
+low the income threshold and their total income as adjustable
+parameters, which are the horizontal and vertical offsets of
+the coordinates origin relative to the lowest known data point.
+These parameters are chosen to ﬁt the Lorenz curve for the
+exponential law (10) shown as the solid line. The ﬁt is very
+good, and is illustrated in Fig. 13. The horizontal offsets are
+28-34%, which is roughly consistent with the numbers quoted
+for the lower inset of the left panel.
+
+United Kingdom, IR data for 1994−1998
+
+100%
+
+e
+m
+o
+c
+n
+
+i
+ 
+f
+
+o
+
+ 
+t
+
+n
+e
+c
+r
+e
+p
+
+ 
+
+e
+v
+i
+t
+
+l
+
+a
+u
+m
+u
+C
+
+90
+
+80
+
+70
+
+60
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0
+0
+
+13
+
+8%
+
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+P
+
+6%
+
+4%
+
+2%
+
+0%
+0
+
+20 40 60 80 100 120
+
+Family annual income, k$
+
+8%
+
+7%
+
+6%
+
+5%
+
+4%
+
+3%
+
+2%
+
+1%
+
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+P
+
+10 20 30 40 50 60 70 80 90 100%
+
+Cumulative percent of tax returns
+
+0%
+0
+
+10
+
+20
+
+30
+
+50
+
+40
+80
+Family annual income, k$
+
+60
+
+70
+
+90 100 110 120
+
+FIG. 14: Cumulative probability distributions of yearly individual
+income in the UK shown as raw data (top inset) and scaled data in
+log-log (left panel), log-linear (lower inset), and Lorenz (right panel)
+coordinates. Solid curve: ﬁt to function (10) calculated for the expo-
+nential law.
+
+FIG. 15: Histogram: Probability distribution of income for families
+with two adults in 199623. Solid line: Fit to Eq. (13). Inset histogram:
+Probability distribution of income for all families in 199623. Inset
+solid line: 0.45P1(r) + 0.55P2(r).
+
+The income temperature for the UK in 1998/9 was RUK =
+11.7 k£ and for the US in 1998 was RUS = 36.4 k$. Us-
+ing the exchange rate as of December 31, 1998 to convert
+pounds into dollars45, we ﬁnd that the UK temperature was
+RUK = 19.5 k$, which is 1.87 times lower than the US tem-
+perature. The difference in temperatures indicates nonequilib-
+rium, which can be exploited to create a thermal machine36.
+The gain (proﬁt) produced by such a thermal machine is pro-
+portional to the difference in temperatures. In agreement with
+the second law of thermodynamics, money would ﬂow from a
+high-temperature system to a low-temperature one. This may
+explain the huge trade deﬁcit of the USA in global interna-
+tional trade with other, lower-temperature countries. The vari-
+ation of temperatures between different states of the USA is
+shown in Table II.
+
+F. Distribution of income for
+
+families
+
+Now let us discuss the distribution of income for families
+with two earners. The family income r is the sum of two indi-
+vidual incomes: r = r1+r2. Thus, the probability distribution
+of the family income is given by the convolution of the indi-
+vidual probability distributions28. If the latter are given by the
+exponential function (7), the two-earners probability distribu-
+tion function P2(r) is
+
+P2(r) =Z r
+
+0
+
+P1(r′)P1(r − r′) dr′ =
+
+r
+R2 e−r/R.
+
+(13)
+
+The function P2(r) (13) differs from the function P1(r) (7) by
+the prefactor r/R, which reﬂects the phase space available to
+compose a given total income out of two individual ones. It is
+shown as the solid curve in Fig. 15. Unlike P1(r), which has a
+
+maximum at zero income, P2(r) has a maximum at r = R and
+looks qualitatively similar to the family income distribution
+curves in literature18.
+
+From the same 1996 SIPP that we used in Sec. II B23, we
+downloaded the variable TFTOTINC (the total family income
+for a month), which we then multiplied by 12 to get annual
+income. Using the number of family members (the variable
+EFNP) and the number of children under 18 (the variable
+RFNKIDS), we selected the families with two adults. Their
+distribution of family income is shown by the histogram in
+Fig. 15. The ﬁt to the function (13), shown by the solid line,
+gives the parameter R listed in line (d) of Table I. The families
+with two adults and more than two adults constitute 44% and
+11% of all families in the studied set of data. The remaining
+45% are the families with one adult. Assuming that these two
+classes of families have two and one earners, we expect the
+income distribution for all families to be given by the super-
+position of Eqs. (7) and (13): 0.45P1(r) + 0.55P2(r). It is
+shown by the solid line in the inset of Fig. 15 (with R from
+line (d) of Table I) with the all families data histogram.
+
+By substituting Eq. (13) into Eq. (8), we calculate the
+
+Lorenz curve for two-earners families:
+
+x(˜r) = 1 − (1 + ˜r)e−˜r,
+y(˜r) = x(˜r) − ˜r2e−˜r/2.
+
+(14)
+(15)
+
+It is shown by the solid curve in Fig. 17. Given that x −
+y = ˜r2 exp(−˜r)/2 and dx = ˜r exp(−˜r) d˜r, the Gini coef-
+ﬁcient for two-earners families is: G2 = 2R 1
+0 (x − y) dx =
+R ∞
+0 ˜r3 exp(−2˜r) d˜r = 3/8 = 0.375. The points in Fig. 17
+show the Lorenz data and Gini coefﬁcient for family income
+during 1947–1994 from Table 1 of Ref.29. The Gini coefﬁ-
+cient is very close to the calculated value 0.375.
+
+The fundamental assumption which underlies the derivation
+of (13) is the independence of the two incomes r1 and r2 of
+
+100
+
+$
+k
+ 
+,
+r
+e
+n
+r
+a
+e
+ 
+r
+e
+h
+
+t
+
+o
+n
+a
+
+ 
+f
+
+o
+
+ 
+
+e
+m
+o
+c
+n
+
+i
+ 
+r
+o
+b
+a
+L
+
+80
+
+60
+
+40
+
+20
+
+0
+0
+
+PSID data for families, 1999
+
+20
+80
+Labor income of one earner, k$
+
+40
+
+60
+
+14
+
+1
+
+0.8
+
+0.6
+
+0.375
+0.2
+
+0
+
+Gini coefficient  ≈ 3
+8
+
+1950 1960 1970 1980 1990
+
+Year
+
+10 20 30 40 50 60 70 80 90 100%
+
+Cumulative percent of families
+
+100%
+
+e
+m
+o
+c
+n
+
+i
+ 
+y
+
+l
+i
+
+m
+a
+
+f
+ 
+f
+
+o
+
+ 
+t
+
+n
+e
+c
+r
+e
+p
+e
+v
+i
+t
+
+ 
+
+l
+
+a
+u
+m
+u
+C
+
+90
+
+80
+
+70
+
+60
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0
+0
+
+100
+
+FIG. 16: Points: The income for families with two earners in 199924.
+One family is represented by two points (r1, r2) and (r2, r1). The
+existence of correlations between r1 and r2 is equivalent to a cluster-
+ing of points along the diagonal. The data shows little evidence for
+such correlation.
+
+the two-earner family. While the good ﬁt of the function (13)
+is an implicit validation of this assumption, it would be good
+to show that the assumption holds true directly from data. The
+Census database does not provide the individual values of r1
+and r2, but only their sum r = r1 + r2. We found that the
+PSID survey24 does have give for a family with two earners,
+each earners contribution to the total income of the family. We
+downloaded the variable ER16463 (total labor income, head)
+and ER16465 (total labor income, wife). We represent in Fig.
+16 each family by two points (r1, r2) and (r2, r1). The ex-
+istence of correlations between r1 and r2 is equivalent to a
+clustering of points along the diagonal. Or stated otherwise,
+the independence of r1 and r2 should result in a uniform dis-
+tribution of points on inﬁnitesimal strips perpendicular to the
+diagonal. The plotted data shows little, if any evidence for
+such correlation.
+
+The distributions of the individual and family income dif-
+fer qualitatively. The former monotonically increases toward
+the low end and has a maximum at zero income (Fig. 6).
+The latter, typically being a sum of two individual incomes,
+has a maximum at a ﬁnite income and vanishes at zero (Fig.
+15). Thus, the inequality of the family income distribution
+is smaller. The Lorenz data for families follow the different
+Eq. (15), again without ﬁtting parameters, and the Gini coef-
+ﬁcient is close to the smaller calculated value 0.375 (Fig. 17).
+Despite different deﬁnitions of income by different agencies,
+the parameters extracted from the ﬁts (Table I) are consistent,
+except for line (e).
+
+The qualitative difference between the individual and fam-
+ily income distributions was emphasized in Ref.26, which split
+up joint tax returns of families into individual incomes and
+combined separately ﬁled tax returns of married couples into
+family incomes. However, Refs.25 and27 counted only “indi-
+
+FIG. 17: Solid curve: Lorenz plot (15) for distribution (13). Points:
+Census data for families, 1947–199429. Inset points: Gini coefﬁcient
+data for families from Census29. Inset line: The calculated value 3/8
+of the Gini coefﬁcient for distribution (13).
+
+vidual tax returns”, which also include joint tax returns. Since
+only a fraction of families ﬁle jointly, we assume that the latter
+contribution is small enough not to distort the tax returns dis-
+tribution from the individual income distribution signiﬁcantly.
+Similarly, the deﬁnition of a family for the data shown in the
+inset of Fig. 15 includes single adults and one-adult families
+with children, which constitute 35% and 10% of all families.
+The former category is excluded from the deﬁnition of a fam-
+ily for the data29 shown in Fig. 17, but the latter is included.
+Because the latter contribution is relatively small, we expect
+the family data in Fig. 17 to approximately represent the two-
+earners distribution (13). Technically, even for the families
+with two (or more) adults shown in Fig. 15, we do not know
+the exact number of earners.
+
+With all these complications, one should not expect perfect
+accuracy for our ﬁts. There are deviations around zero income
+in Figs. 6, 7, and 15. The ﬁts could be improved there by mul-
+tiplying the exponential function by a polynomial. However,
+the data may not be accurate at the low end because of under-
+reporting. For example, ﬁling a tax return is not required for
+incomes below a certain threshold, which ranged in 1999 from
+$2,750 to $14,40030. As the Lorenz curves in Figs. 8 and 17
+show, there are also deviations at the high end, possibly where
+Pareto’s power law is supposed to work. Nevertheless, the
+exponential law gives an overall good description of income
+distribution for the great majority of the population.
+
+Figs. 6 and 7 demonstrate that the exponential law (7) ﬁts
+the individual income distribution very well. The Lorenz data
+for the individual income follow Eq. (10) without ﬁtting pa-
+rameters, and the Gini coefﬁcient is close to the calculated
+value 0.5 (Fig. 8).
+
+It is interesting to study the distribution of the Gini index
+across the globe. We present in Fig. 18 data from a World
+Bank publication48. This is an question of utmost importance
+for the World Bank since the distribution of the Gini index
+
+World distribution of Gini index, 1988 and 1993
+
+United Kingdom, IR data for 1996
+
+100% 
+
+15
+
+l
+
+s
+d
+o
+h
+e
+s
+u
+o
+h
+ 
+r
+o
+f
+ 
+x
+e
+d
+n
+i
+ 
+i
+n
+G
+
+i
+
+0.6
+
+0.5
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+0
+
+1
+
+9
+
+9
+
+3
+
+1
+
+9
+
+8
+
+8
+
+l
+
+e
+p
+o
+e
+p
+
+ 
+f
+
+o
+
+ 
+t
+
+n
+e
+c
+r
+e
+p
+
+ 
+
+0.375
+
+e
+v
+i
+t
+
+l
+
+a
+u
+m
+u
+C
+
+ W.Europe
+N.America
+
+Asia
+    
+
+S.America
+
+         
+
+Africa
+      
+
+E.Europe
+  FSU  
+
+10%
+
+Boltzmann−Gibbs
+
+100% 
+
+1%
+
+0.1%
+
+10%
+0
+
+0.01%
+
+10
+
+Pareto
+
+100
+
+20
+
+40
+
+Total net capital, kpounds
+
+60
+
+80
+
+100
+
+Total net capital (wealth), kpounds
+
+1000
+
+FIG. 18: Distribution of Gini index for households across the globe
+for two different years, 1988 and 199348. For West Europe and North
+America, the Gini index is close to 0.375, the value predicted in Sec.
+II F. A sharp increase in inequality is observed in the Eastern Europe
+and the Former Soviet Union (FSU) republics after the fall of the
+“iron curtain” when socialist economies were replaced by market-
+like economies.
+
+reﬂects the degree of inequality (poverty) in various regions
+of the globe. For West Europe and North America, the Gini
+index is close to 0.375, the value we predicted in Sec. II F. A
+sharp increase in inequality is observed in the Eastern Europe
+and the Former Soviet Union (FSU) republics after the fall of
+the “iron curtain” when socialist economies where replaced
+by market-like economies. We conjecture that the high value
+of the Gini index in Asia may be due to the fact that a typical
+family in Asia has only one earner, so the Gini index is close
+to a value of 0.5 as observed for individuals.
+
+As the evidence from Fig. 17 and Fig. 18 shows the value of
+the Gini index varies in time and across the globe, but for the
+Western world it is close to the value of 0.375, as predicted in
+Sec. II F.
+
+G. Distribution of wealth
+
+In this section, we discuss the cumulative probability dis-
+tribution of wealth N (w)=(the number of people whose in-
+dividual wealth is greater than w)/(the total number of peo-
+ple). A plot of N vs. w is equivalent to a plot of a person’s
+rank in wealth vs. wealth, which is often used for top rich-
+est people37. We will use the power law, N (w) ∝ 1/wα,
+and the exponential law N (w) ∝ exp(−w/W ), to ﬁt the
+data. These distributions are characterized by the exponent
+α and the “temperature” W . The corresponding probability
+densities, P (w) = −dN (w)/dw, also follow a power law or
+an exponential law. For the exponential law, it is also use-
+ful to deﬁne the temperatures W (2) (also known as the me-
+dian) and W (10) using the bases of 1/2 and 1/10: N (w) ∝
+(1/2)w/W (2)
+
+∝ (1/10)w/W (10).
+
+FIG. 19: Left panel: Cumulative probability distribution of to-
+tal net capital (wealth) shown in log-log, log-linear (inset) coordi-
+nates. Points: the actual data. Solid lines: ﬁts to the exponential
+(Boltzmann-Gibbs) and power (Pareto) laws.
+
+The distribution of wealth is not easy to measure, because
+people do not report their total wealth routinely. However,
+when a person dies, all assets must be reported for the pur-
+pose of inheritance tax. Using these data and an adjustment
+procedure, the British tax agency, the Inland Revenue (IR), re-
+constructed wealth distribution of the whole UK population.
+In Figs. 19 and 20, we present the 1996 data obtained from
+their Web site38. Fig. 19 shows the cumulative probability as
+a function of the personal total net capital (wealth), which is
+composed of assets (cash, stocks, property, household goods,
+etc.) and liabilities (mortgages and other debts). The main
+panel illustrates in the log-log scale that above 100 k£ the
+data follow a power law with the exponent α = 1.9. The
+inset shows in the log-linear scale that below 100 k£ the
+data is very well ﬁtted by an exponential distribution with
+the temperature WUK = 59.6 k£ (W (2)
+UK = 41.3 k£ and
+W (10)
+
+UK = 137.2 k£).
+Since we have estabilished that the distribution of wealth
+has an exponential regime followed by a power-law tail, we
+plot the Lorenz curve for wealth in the right panel of Fig. 20.
+As in Sec. II B the horizontal and vertical coordinates are the
+cumulative population x(w) and the cumulative wealth y(w):
+
+x(w) =Z w
+y(w) =Z w
+
+0
+
+0
+
+P (w′) dw′,
+
+w′P (w′) dw′ /Z ∞
+
+0
+
+(16)
+
+w′P (w′) dw′.
+
+(17)
+
+As in the case of US income data Fig. 10, there is an abrupt
+change in the Lorenz curve for the top few percent of peo-
+ple. We interpret this fact in the same way as in Sec. II D,
+as a “Bose condensation of wealth”. Again, we calculate f
+the fraction of the total wealth of the society if all people are
+described by the exponential law, to the actual total wealth
+of the society. For the United Kingdom in 1996, this frac-
+
+United Kingdom, IR data for 1996
+
+100%
+
+h
+
+t
+l
+
+a
+e
+w
+
+ 
+f
+
+o
+
+ 
+t
+
+n
+e
+c
+r
+e
+p
+
+ 
+
+e
+v
+i
+t
+
+l
+
+a
+u
+m
+u
+C
+
+90
+
+80
+
+70
+
+60
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0
+0
+
+16%
+
+10 20 30 40 50 60 70 80 90 100%
+
+Cumulative percent of people
+
+100%
+
+10%
+
+1%
+
+ 
+)
+r
+(
+
+P
+
+r
+ 
+,
+
+n
+o
+
+i
+t
+c
+n
+u
+
+f
+ 
+y
+t
+i
+s
+n
+e
+d
+
+ 
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+P
+
+0.1%
+
+1
+
+United States, IRS data for 1997
+
+10
+
+100
+
+Adjusted Gross Income, r (k$)
+
+16
+
+1000
+
+FIG. 20: Points: Lorenz plot for wealth, United Kingdom 199638.
+Solid curve: The Lorenz curve given by (18) with a condensate frac-
+tion of b = 16%.
+
+tion was f = 0.84, which means that the “condensate” has
+b = 1 − f = 16% of the total wealth of the system. The
+functional form for the Lorenz curve for wealth is
+
+y = (1 − b)[x + (1 − x) ln(1 − x)] + bδ(1 − x).
+
+(18)
+
+This function is plotted as a solid line in Fig. 20. One can
+see that the data systematically deviate from the exponential
+law because of the wealth concentrated in the power-law tail;
+however, the deviation is not very big. The so-called Gini
+coefﬁcient17,35, which measures the inequality of wealth dis-
+tribution, has increased from 64% in 1984 to 68% in 199638.
+This value is bigger than the Gini coefﬁcient 50% for a purely
+exponential distribution35.
+
+While there seems to be no controversy about the fact that
+a few people hold a ﬁnite fraction of the entire wealth, the
+speciﬁc value of this fraction varies widely in the literature.
+Fractions as high as 80-90% were reported in the literature43
+without any support from data. We provide a clear procedure
+of how to calculate this factor, and we ﬁnd that b = 16%.
+
+H. Other distributions for income and wealth
+
+As we discussed in the introduction, Sec. II A there have
+been many proposed functional forms for the distribution of
+income and wealth. In this section we will investigate several
+of them.
+
+In Secs. II B, II D, II E and II G we have shown ample evi-
+dence to support our ﬁndings that the distribution on income
+and wealth have a similar structure with an exponential part
+followed by a power-law tail. These results immediately in-
+validate the proposed Pareto or Gamma distributions as the
+correct distribution of income.
+
+Another popular distribution which has been proposed for
+many years as the distribution of income is the lognormal
+
+FIG. 21: Points: Calculated probability density P (r) for United
+States IRS income data for 1997 multiplied by income r, i.e. rP (r).
+Curve: Fit of data with function ˜P (r) = rPLN (r) (19) with a
+quadratic function. Clearly, the lognormal distribution fails to de-
+scribe the data points accurately.
+
+distribution20. The lognormal distribution has the expression
+
+PLN (r) =
+
+1
+
+r√2πσ2
+
+exp(cid:20)−
+
+(ln r − µ)2
+
+2σ2
+
+(cid:21) ,
+
+(19)
+
+where µ and σ are two parameters. As given by (19) the
+functional form of the lognormal distribution makes it hard
+to compare it with data. But the function ˜P (r) = rPLN (r)
+is a quadratic function in a log-log plot. In Fig. 21 we plot-
+ted ln ˜P (r) versus ln r for the 1997 income data from IRS25.
+As it can be seen from Fig. 21 a ﬁt of ˜P (r) with a quadratic
+function cannot be made. The data points show the power-
+law regime for high incomes. We conclude that the lognormal
+distribution does not describe the distribution of income.
+
+The distribution of wealth has essentially the same struc-
+ture as the distribution of income. An exponential regime
+for low wealth values and a power-law tail for high wealth
+values. Contrary to the distribution of income, the distribu-
+tion of wealth appears to have a continuous derivative in the
+cross-over between the two regimes (see the discussion at the
+beginning of Sec. II D). The shape of the wealth distribution
+suggests a modiﬁcation of the regular exponential Boltzmann-
+Gibbs distribution for values of wealth w ≫ W . In the past
+years, in the context of non-extensive statistical mechanics,
+Tsallis has proposed a viable alternative to the Boltzmann-
+Gibbs distribution46.
+
+The Tsallis distribution can be obtained by maximizing
+a generalized entropy and is the subject of a lot of current
+research. The appeal of the Tsallis distribution is that it
+has power-law tails for large arguments, and that in certain
+limit it becomes the exponential distribution. The Tsallis
+distribution46 has the expression
+
+Pq(w) =
+
+1
+
+WT (cid:20)1 + (q − 1)
+
+1−q
+
+w
+
+WT(cid:21) q
+
+,
+
+(20)
+
+100%
+
+10%
+
+1%
+
+l
+
+e
+p
+o
+e
+p
+
+ 
+f
+
+o
+
+ 
+t
+
+n
+e
+c
+r
+e
+p
+
+ 
+
+e
+v
+i
+t
+
+l
+
+a
+u
+m
+u
+C
+
+100%
+80%
+60%
+
+40%
+
+20%
+
+0.1%
+
+0
+
+United Kingdom, IR data for 1996
+
+(a)
+(b)
+(c)
+
+20
+
+40
+
+Total net capital, kpounds
+
+60
+
+80
+
+100
+
+10
+
+100
+
+Total net capital (wealth), kpounds
+
+1000
+
+Points:
+
+FIG. 22:
+Internal Revenue wealth data for individuals,
+199638. Curve (a): Fit with the Kaniadakis distribution (21). Curve
+(b): Fit with the Tsallis distribution (20). Curve (c): Fit with the
+Bouchaud-Mezard/Solomon-Richmond distribution (22). The inset
+shows the same three curves in a log-linear scale. The deviations of
+model (22) from data are evident for small values of income.
+
+where WT is the dimensional parameter of the Tsallis distribu-
+tion, analogous to the temperature of the exponential distribu-
+tion. In the limit q → 1, the distribution goes to the exponen-
+tial form Pq=1(w) ∝ e−w/WT . For q > 1, the distribution has
+a power-law decay Pq(w) ∼ (1/w)q/q−1 for values w ≫ W .
+In Fig. 22 we present the ﬁt of UK wealth data with the
+Tsallis distribution. Overall, the quality of the ﬁt is good. The
+parameters of the Tsallis distribution implied by the ﬁt are:
+q = 1.42, and for the Tsallis temperature WT = 41k£.
+
+Another distribution proposed by Kaniadakis47 in the con-
+text of non-extensive statistical mechanics has the form of a
+deformed exponential
+
+Pκ(x) =(cid:16)p1 + κ2x2 − κx(cid:17)1/κ
+
+,
+
+(21)
+
+where x = w/Wκ. For κ → 0, the distribution has the ex-
+ponential form Pκ=0(w) = e−w/Wκ. For large arguments
+w ≫ W , the distribution (21) has the power-law behavior
+Pκ(w) ≈ (1/w)1/κ. The ﬁt with the Kaniadakis distribution
+is even better than that with the Tsallis distribution, as shown
+in Fig. 22. The parameters of the ﬁt for the Kaniadakis dis-
+tribution are: κ = 0.33 and for the Kaniadakis temperature
+Wκ = 45k£.
+
+A distribution for wealth put forward by Bouchaud and
+M´ezard33, and independently by Solomon and Richmond32,
+is
+
+Pα(x) =
+
+(α − 1)α
+Γ(α)
+
+exp(− α−1
+x )
+xα+1
+
+,
+
+(22)
+
+where x = w/Wc. This distribution has an exponentially
+sharp cut-off for wealths w ≪ Wc, and a power-law tail
+Pα(w) ∝ 1/wα+1 for w ≫ Wc. The ﬁt of the UK wealth
+
+17
+
+data with the distribution (22) is presented in Fig. 22. The
+values we obtain for the parameters are: α = 1.93 and
+Wc = 74 k£. The distribution (22) has its maximum at
+xmax = (α − 1)/(α + 1) = 0.32, which essentially states
+that for w > 0.32Wc = 23k£ the distribution is a power law.
+As seen in Fig. 22 this claim is not supported by data. More-
+over, the percent of people in the power-law tail predicted by
+dxPα(x) = 81%, is clearly much
+larger than what is observed from the Lorenz curve for wealth,
+Fig. 20.
+
+the distribution (22),R ∞
+
+xmax
+
+All three proposed distributions (20,21,22) seem to capture
+well the power-law tail. In the inset of Fig. 22 a log-linear
+scale is used, and this makes the discrepancy between (22)
+and data much more evident. The distribution (22) is clearly
+inappropriate for low incomes.
+
+I. Conclusions
+
+Our analysis of the data shows that there are two clear
+regimes in the distribution of individual income. For low and
+moderate incomes up to approximately 95% of the total pop-
+ulation, the distribution is well described by an exponential,
+while the income of the top 5% individuals is described by a
+power-law (Pareto) regime.
+
+The exponential Boltzmann-Gibbs distribution naturally
+applies to quantities that obey a conservation law, such as en-
+ergy or money35. However, there is no fundamental reason
+why the sum of incomes (unlike the sum of money) must be
+conserved. Indeed, income is a term in the time derivative
+of one’s money balance (the other term is spending). Maybe
+incomes obey an approximate conservation law, or somehow
+the distribution of income is simply proportional to the distri-
+bution of money, which is exponential35.
+
+Another explanation involves hierarchy. Groups of peo-
+ple have leaders, which have leaders of a higher order, and
+so on. The number of people decreases geometrically (ex-
+ponentially) with the hierarchical level. If individual income
+increases linearly with the hierarchical level, then the income
+distribution is exponential. However, if income increases mul-
+tiplicatively, then the distribution follows a power law31. For
+moderate incomes below $100,000, the linear increase may
+be more realistic. A similar scenario is the Bernoulli trials28,
+where individuals have a constant probability of increasing
+their income by a ﬁxed amount.
+
+We found scaling in the cumulative probability distributions
+N (r) of individual income r derived from the tax statistics for
+different years in the UK and for different states in the US. The
+distributions Ni(r) have the scaling form f (r/Ri), where the
+scale Ri (the temperature) varies from one data set i to an-
+other, but the scaling function f does not. The function f has
+an exponential (Boltzmann-Gibbs) form at the low end, which
+covers about 95% of individuals. At the high end, it follows
+a power (Pareto) law with the exponents about 2.1 for the UK
+and 1.7 for the US. Wealth distribution in the UK also has a
+qualitatively similar shape with the exponent about 1.9 and
+the temperature WUK = 60 k£. Some of the other values of
+the exponents found in literature are 1.5 proposed by Pareto
+
+himself (α = 1.5), 1.36 found by Levy and Solomon37 for the
+distribution of wealth in the Forbes 400 list, and 2.05 found by
+Souma44 for the high end of income distribution in Japan. The
+latter study is similar to our work in the sense that it also uses
+tax statistics and explores the whole range of incomes, not just
+the high end. Souma44 ﬁnds that the probability density P (r)
+at lower incomes follows a log-normal law with a maximum
+at a nonzero income. This is in contrast to our results, which
+suggest that the maximum of P (r) is at zero income. The dis-
+repancy may be due to the high threshold for tax reporting in
+Japan, which distorts the data at the low end. On the other
+hand, if the data is indeed valid, it may reﬂect the actual dif-
+ference between the social stuctures of the US/UK and Japan.
+
+III. DISTRIBUTION OF STOCK-PRICE FLUCTUATIONS
+
+A.
+
+Introduction
+
+Stochastic dynamics of stock prices is commonly described
+by a geometric (multiplicative) Brownian motion, which gives
+a log-normal probability distribution for stock price changes
+(returns)50. However, numerous observations show that the
+tails of the distribution decay slower than the log-normal
+distribution predicts (the so-called “fat-tails” effect)51,52,53.
+Particularly, much attention was devoted to the power-law
+tails54,55. The geometric Brownian motion model has two pa-
+rameters: the drift µ, which characterizes the average growth
+rate, and the volatility σ, which characterizes the noisiness of
+the process. There is empirical evidence and a set of stylized
+facts indicating that volatility, instead of being a constant pa-
+rameter, is driven by a mean-reverting stochastic process56,57.
+Various mathematical models with stochastic volatility have
+been discussed in literature58,59,60,61.
+
+In this chapter, we study a particular stochastic volatil-
+ity model, where the square root of the stock-price volatil-
+ity, called the variance, follows a random process known in
+ﬁnancial literature as the Cox-Ingersoll-Ross process and in
+mathematical statistics as the Feller process57,60. We solve the
+Fokker-Planck equation for this model exactly and ﬁnd the
+joint probability distribution of returns and variance as a func-
+tion of time, conditional on the initial value of variance. The
+solution is obtained in two different ways: using the method of
+characteristics62 and the method of path integrals63,64,65. The
+latter is more familiar to physicists working in ﬁnance61,66.
+
+While returns are readily known from a ﬁnancial time se-
+ries data, variance is not given directly, so it acts as a hidden
+stochastic variable. Thus, we integrate the joint probability
+distribution over variance and obtain the marginal probability
+distribution of returns unconditional on variance. The latter
+distribution can be directly compared with ﬁnancial data. We
+ﬁnd excellent agreement between our results and the Dow-
+Jones data for the period of 1982–2001. Using only four ﬁt-
+ting parameters, our equations very well reproduce the proba-
+bility distribution of returns for time lags between 1 and 250
+trading days. This is in contrast to popular ARCH, GARCH,
+EGARCH, TARCH, and similar models, where the number of
+parameters can easily go to a few dozen67.
+
+18
+
+Our result for the probability distribution of returns has the
+form of a one-dimensional Fourier integral, which is easily
+calculated numerically or, in certain asymptotical limits, an-
+alytically. For large returns, we ﬁnd that the probability dis-
+tribution is exponential in log-returns, which implies a power-
+law distribution for returns, and we calculate the time depen-
+dence of the corresponding exponents. In the limit of long
+times, the probability distribution exhibits scaling. It becomes
+a function of a single combination of return and time, with
+the scaling function expressed in terms of a Bessel function.
+The Dow-Jones data follow the predicted scaling function for
+seven orders of magnitude.
+
+The original
+
+theory of option pricing was developed
+by Black and Scholes for the geometric Brownian motion
+model50. Numerous attempts to improve it using stochastic
+volatility models have been made57,58,59,60,61. Particularly, op-
+tion pricing for the same model as in our paper49 was inves-
+tigated by Heston60. Empirical studies68 show that Heston’s
+theory fares better than the Black-Scholes model, but still
+does not fully capture the real-market option prices. Since
+our paper49 gives a closed-form time-dependent expression
+for the probability distribution of returns that agrees with ﬁ-
+nancial data, it can serve as a starting point for a better theory
+of option pricing.
+
+B. The model
+
+We consider a stock, whose price St, as a function of time t,
+obeys the stochastic differential equation of a geometric (mul-
+tiplicative) Brownian motion50:
+
+dSt = µSt dt + σtSt dW (1)
+
+t
+
+.
+
+(23)
+
+Here the subscript t indicates time dependence, µ is the drift
+parameter, W (1)
+is the standard random Wiener process81, and
+σt is a time-dependent parameter, called the stock volatility,
+which characterizes the noisiness of the Wiener process.
+
+t
+
+Since any solution of (23) depends only on σ2
+
+t , it is conve-
+t , which is called
+nient to introduce the new variable vt = σ2
+the variance. We assume that vt obeys the following mean-
+reverting stochastic differential equation:
+
+dvt = −γ(vt − θ) dt + κ√vt dW (2)
+
+t
+
+.
+
+(24)
+
+t
+
+Here θ is the long-time mean of v, γ is the rate of relaxation
+to this mean, W (2)
+is the standard Wiener process, and κ is a
+parameter that we call the variance noise. Eq. (24) is known
+in ﬁnancial literature as the Cox-Ingersoll-Ross (CIR) process
+and in mathematical statistics as the Feller process57 (p. 42).
+Alternative equations for vt, with the last term in (24) replaced
+by κ dW (2)
+, are also discussed in literature58.
+However, in this chapter, we study only the case given by Eq.
+(24).
+
+or by κvt dW (2)
+
+t
+
+t
+
+We take the Wiener process appearing in (24) to be corre-
+
+lated with the Wiener process in (23):
+
+dW (2)
+
+t = ρ dW (1)
+
+t +p1 − ρ2 dZt,
+
+(25)
+
+where Zt is a Wiener process independent of W (1)
+, and ρ ∈
+[−1, 1] is the correlation coefﬁcient. A negative correlation
+(ρ < 0) between W (1)
+is known as the leverage
+effect57 (p. 41).
+
+and W (2)
+
+t
+
+t
+
+t
+
+It is convenient to change the variable in (23) from price
+St to log-return rt = ln(St/S0). Using Itˆo’s formula69, we
+obtain the equation satisﬁed by rt:
+
+drt =(cid:16)µ −
+
+vt
+
+2(cid:17) dt + √vt dW (1)
+
+t
+
+.
+
+(26)
+
+The parameter µ can be eliminated from (26) by changing the
+variable to xt = rt − µt, which measures log-returns relative
+to the growth rate µ:
+
+dxt = −
+
+vt
+2
+
+dt + √vt dW (1)
+
+t
+
+.
+
+(27)
+
+Where it does not cause confusion with rt, we use the term
+“log-return” also for the variable xt.
+
+Equations (27) and (24) deﬁne a two-dimensional stochas-
+tic process for the variables xt and vt. This process is charac-
+terized by the transition probability Pt(x, v | vi) to have log-
+return x and variance v at time t given the initial log-return
+x = 0 and variance vi at t = 0. Time evolution of Pt(x, v | vi)
+is governed by the Fokker-Planck (or forward Kolmogorov)
+equation69
+
+∂
+∂t
+
+P = γ
+
+∂
+∂v
+
++ρκ
+
+∂2
+
+∂x ∂v
+
+1
+2
+
+∂
+∂x
+
+[(v − θ)P ] +
+∂2
+∂x2 (vP ) +
+
+1
+2
+
+(vP ) +
+
+(vP )
+
+(28)
+
+κ2
+2
+
+∂2
+∂v2 (vP ).
+
+The initial condition for (28) is a product of two delta func-
+tions
+
+Pt=0(x, v | vi) = δ(x) δ(v − vi).
+
+(29)
+
+The variance v is a positive quantity, so Eq. (28) is deﬁned
+only for v > 0. However, when solving (28), it is convenient
+to extend the domain of v so that v ∈ (−∞,∞). If 2γθ > κ2,
+such an extension does not change the solution of the equa-
+tion, because, given that P = 0 for v < 0 at the initial time
+t = 0, the condition Pt(x, v < 0) = 0 is preserved for all
+later times t > 0. In order to demonstrate this, let us consider
+(28) in the limit v → 0:
+P = −(cid:18)γθ −
+
+2 (cid:19) ∂P
+
++ γP + ρκ
+
+∂P
+∂x
+
+∂
+∂t
+
+(30)
+
+κ2
+
+∂v
+
+.
+
+Eq. (30) is a ﬁrst-order partial differential equation (PDE),
+which describes propagation of P from negative v to positive
+v with the positive velocity γθ − κ2/2. Thus, the nonzero
+function P (x, v > 0) does not propagate to v < 0, and
+Pt(x, v < 0) remains zero at all times t. Alternatively, it
+is possible to show50 (p. 67) that, if 2γθ > κ2, the random
+process (24) starting in the domain v > 0 can never reach the
+domain v < 0.
+
+the
+
+variance
+
+itself,
+
+The probability
+
+distribution
+
+of
+
+Πt(v) =R dx Pt(x, v), satisﬁes the equation
+
+∂
+∂t
+
+Πt(v) =
+
+∂
+∂v
+
+[γ(v − θ)Πt(v)] +
+
+κ2
+2
+
+∂2
+∂2v
+
+[vΠt(v)] ,
+
+(31)
+
+which is obtained from (28) by integration over x. Eq. (31)
+has the stationary solution
+
+19
+
+Π∗(v) =
+
+αβ+1
+
+Γ(β + 1)
+
+vβe−αv, α =
+
+2γ
+κ2 ,
+
+β = αθ − 1,
+
+(32)
+which is the Gamma distribution. The maximum of Π∗(v) is
+reached at vmax = β/α = θ − κ2/2γ. The width w of Π∗(v)
+can be estimated using the curvature at the maximum w ≈
+(κ2/2γ)p2γθ/κ2 − 1. The shape of Π∗(v) is characterized
+by the dimensionless ratio
+
+χ =
+
+vmax
+
+w
+
+=r 2γθ
+
+κ2 − 1.
+
+(33)
+
+When 2γθ/κ2 → ∞, χ → ∞ and Π∗(v) → δ(v − θ).
+
+C. Solution of the Fokker-Planck equation
+
+Since x appears in (28) only in the derivative operator
+
+∂/∂x, it is convenient to make the Fourier transform
+
+Pt(x, v | vi) =
+
+1
+
+2πZ +∞
+
+−∞
+
+dpx eipxxP t,px(v | vi).
+
+Inserting (34) into (28), we ﬁnd
+
+P = γ
+
+∂
+
+∂v(cid:2)(v − θ)P(cid:3)
+
+v − iρκpx
+
+∂
+∂v
+
+x − ipx
+
+2
+
+∂
+∂t
+
+−(cid:20) p2
+
+κ2
+2
+
+v −
+
+∂2
+
+∂v2 v(cid:21) P .
+
+(34)
+
+(35)
+
+Eq. (35) is simpler than (28), because the number of variables
+has been reduced to two, v and t, whereas px only plays the
+role of a parameter.
+
+Since Eq. (35) is linear in v and quadratic in ∂/∂v, it can
+
+be simpliﬁed by taking the Fourier transform over v
+
+1
+
+2πZ +∞
+
+−∞
+
+(36)
+
+P t,px(v | vi) =
+
+dpv eipv vePt,px (pv | vi).
+The PDE satisﬁed by ePt,px(pv | vi) is of the ﬁrst order
+(cid:20) ∂
+
++(cid:18)Γpv +
+
+iκ2
+2
+
+x + px
+
+p2
+v +
+
+ip2
+
+∂t
+
+2
+
+(cid:19) ∂
+∂pv(cid:21)eP = −iγθpveP ,
+
+(37)
+
+where we introduced the notation
+
+Γ = γ + iρκpx.
+
+Eq. (37) has to be solved with the initial condition
+
+(38)
+
+(39)
+
+The solution of the PDE (37) is given by the method of
+
+characteristics62:
+
+ePt=0,px (pv | vi) = exp(−ipvvi).
+ePt,px (pv | vi) = exp(cid:18)−i˜pv(0)vi − iγθZ t
+
+0
+
+dτ ˜pv(τ )(cid:19) ,
+
+(40)
+
+where the function ˜pv(τ ) is the solution of the characteristic
+(ordinary) differential equation
+
+d˜pv(τ )
+
+dτ
+
+= Γ˜pv(τ ) +
+
+iκ2
+2
+
+˜p2
+v(τ ) +
+
+i
+2
+
+(p2
+
+x − ipx)
+
+(41)
+
+with the boundary condition ˜pv(t) = pv speciﬁed at τ = t.
+The solution (40) can be also obtained using the method of
+path integrals described in Sec. III D. The differential equa-
+tion (41) is of the Riccati type with constant coefﬁcients70,
+and its solution is
+
+˜pv(τ ) = −i
+
+2Ω
+k2
+
+1
+
+ζeΩ(t−τ ) − 1
+
++ i
+
+Γ − Ω
+k2
+
+,
+
+where we introduced the frequency
+
+Ω =pΓ2 + κ2(p2
+
+x − ipx).
+
+and the coefﬁcient
+
+ζ = 1 − i
+
+2Ω
+
+κ2pv − i(Γ − Ω)
+
+.
+
+(42)
+
+(43)
+
+(44)
+
+Substituting (42) into (40) and taking the Fourier trans-
+
+forms (34) and (36), we get the solution
+
+1
+
+(2π)2ZZ +∞
+
+−∞
+
+Pt(x, v | vi) =
+
+× exp(cid:26)−i˜pv(0)vi +
+
+dpx dpv eipxx+ipv v
+
+(45)
+
+γθ(Γ − Ω)t
+
+κ2
+
+2γθ
+κ2 ln
+
+−
+
+ζ − e−Ωt
+
+ζ − 1 (cid:27)
+
+of the original Fokker-Planck equation (28) with the initial
+condition (29), where ˜pv(τ = 0) is given by (42).
+
+D. Path-Integral Solution
+
+The Fokker-Planck equation (35) can be though of as a
+
+Schr¨odinger equation in imaginary (Euclidean) time:
+
+∂
+∂t
+
+P t,px(v | vi) = − ˆHpx(ˆpv, ˆv)P t,px(v | vi)
+
+(46)
+
+with the Hamiltonian
+
+ˆH =
+
+κ2
+2
+
+ˆp2
+v ˆv − iγ ˆpv(ˆv − θ) +
+
+p2
+x − ipx
+
+2
+
+ˆv + ρκpx ˆpv ˆv. (47)
+
+In (47) we treat ˆpv and ˆv as canonically conjugated op-
+erators with the commutation relation [ˆv, ˆpv] = i. The
+transition probability P px (v, t| vi) is the matrix element of
+the evolution operator exp(− ˆHt) and has a path-integral
+representation63,64,65
+P t,px(v | vi) = hv|e− ˆHt|vii =Z Dv Dpv eSpx [pv (τ ),v(τ )].
+
+(48)
+
+Here the action functional Spx [pv(τ ), v(τ )] is
+
+20
+
+and the dot denotes the time derivative. The phase-space path
+integral (48) is the sum over all possible paths pv(τ ) and v(τ )
+with the boundary conditions v(τ = 0) = vi and v(τ = t) =
+v imposed on v.
+
+It is convenient to integrate the ﬁrst term on the r.h.s. of (49)
+
+by parts:
+
+Spx = i[pv(t)v − ˜pv(0)vi] − iγθZ t
+δv(τ )(cid:21) v(τ ),
+−Z t
+
+dτ(cid:20)i ˙pv(τ ) +
+
+δH
+
+0
+
+0
+
+dτ pv(τ )
+
+(50)
+
+where we also separated the terms linear in v(τ ) from the
+Hamiltonian (47). Because v(τ ) enters linearly in the action
+(50), taking the path integral over Dv generates the delta-
+functional δ [pv(τ ) − ˜pv(τ )], where ˜pv(τ ) is the solution of
+the ordinary differential equation (41) with a boundary con-
+dition speciﬁed at τ = t. Taking the path integral over Dpv
+resolves the delta-functional, and we ﬁnd
+
+P t,px(v | vi) =
+
++∞Z−∞
+
+dpv
+2π
+
+ei[pv v− ˜pv (0)vi]−iγθR t
+
+0
+
+dτ ˜pv(τ ),
+
+(51)
+
+where ˜pv(τ = t) = pv. Eq. (51) coincides with (40) after the
+Fourier transform (36).
+
+E. Averaging over variance
+
+Normally we are interested only in log-returns x and do not
+care about variance v. Moreover, whereas log-returns are di-
+rectly known from ﬁnancial data, variance is a hidden stochas-
+tic variable that has to be estimated. Inevitably, such an esti-
+mation is done with some degree of uncertainty, which pre-
+cludes a clear-cut direct comparison between Pt(x, v | vi) and
+ﬁnancial data. Thus, we introduce the probability distribution
+
+Pt(x| vi) =Z +∞
+
+−∞
+
+dv Pt(x, v | vi),
+
+(52)
+
+where the hidden variable v is integrated out. The integration
+of (45) over v generates the delta-function δ(pv), which ef-
+fectively sets pv = 0. Substituting the coefﬁcient ζ from (44)
+with pv = 0 into (45), we ﬁnd
+
+1
+
+2πZ +∞
+
+−∞
+2 + γ
+
+Pt(x| vi) =
+× e− 2γθ
+
+dpx eipxx−vi
+
+p2
+
+x−ipx
+
+Γ+Ω coth (Ωt/2)
+
+κ2 ln(cosh Ωt
+
+Ω sinh Ωt
+
+2 )+ γΓθt
+κ2 .
+
+(53)
+
+To check the validity of (53), let us consider the case κ = 0.
+In this case, the stochastic term in (24) is absent, so the time
+evolution of variance is deterministic:
+
+Spx =Z t
+
+0
+
+dτ {ipv(τ ) ˙v(τ ) − Hpx [pv(τ ), v(τ )]} ,
+
+(49)
+
+P (κ=0)
+t
+
+(x| vi) =
+
+1
+
+√2πtvt
+
+exp(cid:18)−
+
+(x + vtt/2)2
+
+2vtt
+
+(cid:19) ,
+
+v(t) = θ + (vi − θ)e−γt.
+
+Then process (27) gives a Gaussian distribution for x,
+
+(54)
+
+(55)
+
+tR t
+
+with the time-averaged variance vt = 1
+0 dτ v(τ ). Eq. (55)
+demonstrates that the probability distribution of stock price S
+is log-normal in the case κ = 0. On the other hand, by taking
+the limit κ → 0 and integrating over px in (53), we reproduce
+the same expression (55).
+Eq. (53) cannot be directly compared with ﬁnancial time
+series data, because it depends on the unknown initial variance
+vi. In order to resolve this problem, we assume that vi has the
+stationary probability distribution Π∗(vi), which is given by
+(32).82 Thus we introduce the probability distribution Pt(x)
+by averaging (53) over vi with the weight Π∗(vi):
+
+Pt(x) =Z ∞
+
+0
+
+dvi Π∗(vi) Pt(x| vi).
+
+(56)
+
+The integral over vi is similar to the one of the Gamma func-
+tion and can be taken explicitly. The ﬁnal result is the Fourier
+integral
+
+Pt(x) =
+
+1
+
+2πZ +∞
+
+−∞
+
+dpx eipxx+Ft(px)
+
+(57)
+
+with
+
+Ft(px) =
+
+γΓθt
+κ2
+
+2γθ
+
+κ2 ln(cid:20)cosh
+
+Ωt
+2
+
++
+
+Ω2 − Γ2 + 2γΓ
+
+2γΩ
+
+sinh
+
+Ωt
+
+2 (cid:21) .
+
+(58)
+
+−
+
+The variable px enters (58) via the variables Γ from (38) and
+Ω from (43). It is easy to check that Pt(x) is real, because
+ReF is an even function of px and ImF is an odd one. One
+can also check that Ft(px = 0) = 0, which implies that Pt(x)
+
+is correctly normalized at all times: R dx Pt(x) = 1. The
+
+second term in the r.h.s. of (58) vanishes when ρ = 0, i.e.
+when there are no correlations between stock price and vari-
+ance. The simpliﬁed result for the case ρ = 0 is given in III F
+by Eqs. (72), (73), and (74).
+
+Eqs. (57) and (58) for the probability distribution Pt(x) of
+log-return x at time t are the central analytical result of the
+chapter. The integral in (57) can be calculated numerically
+or, in certain regimes discussed in Secs. III F and III G, an-
+alytically. In Fig. 23, the calculated function Pt(x), shown
+by solid lines, is compared with the Dow-Jones data, shown
+by dots. (Technical details of the data analysis are discussed
+in Sec. III H.) Fig. 23 demonstrates that, with a ﬁxed set of
+the parameters γ, θ, κ, µ, and ρ, Eqs. (57) and (58) very well
+reproduce the distribution of log-returns x of the Dow-Jones
+index for all times t. In the log-linear scale of Fig. 23, the tails
+of ln Pt(x) vs. x are straight lines, which means that that tails
+of Pt(x) are exponential in x. For short times, the distribution
+is narrow, and the slopes of the tails are nearly vertical. As
+time progresses, the distribution broadens and ﬂattens.
+
+F. Asymptotic behavior for long time t
+
+Eq. (24) implies that variance reverts to the equilibrium
+value θ within the characteristic relaxation time 1/γ. In this
+
+21
+
+Dow Jones data, 1982−2001
+
+250 days
+
+40 days
+
+20 days
+
+5 days
+
+104
+
+103
+
+102
+
+101
+
+100
+
+100
+
+10
+
+1
+
+t
+
+)
+x
+(
+
+P
+
+ 
+,
+y
+t
+i
+s
+n
+e
+d
+
+ 
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+P
+
+−0.4 −0.2
+
+0
+
+0.2
+
+1 day
+
+−0.4
+
+−0.3
+
+−0.2
+
+−0.1
+
+0
+Log−return, x
+
+0.1
+
+0.2
+
+0.3
+
+FIG. 23: Probability distribution Pt(x) of log-return x for different
+time lags t. Points: The Dow-Jones data for t = 1, 5, 20, 40, and 250
+trading days. Solid lines: Fit of the data with Eqs. (57) and (58). For
+clarity, the data points and the curves for successive t are shifted up
+by the factor of 10 each. The inset shows the curves without vertical
+shift.
+
+section, we consider the asymptotic limit where time t is much
+longer than the relaxation time: γt ≫ 2. According to (38)
+and (43), this condition also implies that Ωt ≫ 2. Then Eq.
+(58) reduces to
+
+Ft(px) ≈
+
+γθt
+κ2 (Γ − Ω).
+
+Let us change of the variable of integration in (57) to
+
+px =
+
+ω0
+
+˜px + ip0,
+
+κp1 − ρ2
+, ω0 =qγ2 + κ2(1 − ρ2)p2
+
+0.
+
+where
+
+p0 =
+
+κ − 2ργ
+2κ(1 − ρ2)
+
+Substituting (60) into (38), (43), and (59), we transform (57)
+to the following form
+
+(59)
+
+(60)
+
+(61)
+
+(62)
+
+(63)
+
+(64)
+
+0
+
+ω0e−p0x+Λt
+
+πκp1 − ρ2 Z ∞
+κp1 − ρ2(cid:18)x + ρ
+
+ω0
+
+Pt(x) =
+
+where
+
+A =
+
+and
+
+d˜px cos(A˜px)e−B√1+ ˜p2
+
+x,
+
+γθt
+
+κ (cid:19) , B =
+
+γθω0t
+
+κ2
+
+,
+
+Λ =
+
+γθ
+2κ2
+
+2γ − ρκ
+1 − ρ2 .
+
+to72,
+
+According
+to
+BK1(√A2 + B2)/√A2 + B2, where K1 is the ﬁrst-order
+modiﬁed Bessel function.
+
+integral
+
+equal
+
+(62)
+
+the
+
+in
+
+is
+
+Dow−Jones data, 1982−2001
+
+t
+
+N
+
+102
+
+0
+
+t
+
+/
+)
+x
+
+p
+(
+p
+x
+e
+)
+x
+(
+
+P
+
+ 
+,
+y
+t
+i
+l
+i
+
+b
+a
+b
+o
+r
+p
+d
+e
+z
+
+ 
+
+i
+l
+
+a
+m
+r
+o
+n
+e
+R
+
+100
+
+10−2
+
+10−4
+
+10−6
+
+10 days
+20 days
+30 days
+40 days
+80 days
+100 days
+150 days
+200 days
+250 days
+
+0
+1
+
+0.9
+
+0.8
+
+0.7
+
+0.6
+
+0.5
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+t
+
+G
+
+ 
+,
+t
+
+i
+
+ 
+
+h
+g
+e
+w
+n
+a
+s
+s
+u
+a
+G
+
+i
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+γ t
+
+22
+
+100 
+
+)
+
+m
+
+x
+(
+
+P
+
+t
+
+10 
+
+1 
+1
+
+10
+
+Time lag, t (days)
+
+100
+
+−10 −8
+
+−6
+
+−4
+
+−2
+
+2
+
+4
+
+6
+
+8
+
+10
+
+0
+z
+
+0
+0
+
+40
+
+80
+
+120
+
+160
+
+200
+
+240
+
+Time lag, t (days)
+
+FIG. 24: Renormalized probability density Pt(x)ep0x/Nt plotted as
+a function of the scaling argument z given by (66). Solid line: The
+scaling function P∗(z) = K1(z)/z from (65), where K1 is the ﬁrst-
+order modiﬁed Bessel function. Symbols: The Dow-Jones data for
+different time lags t.
+
+FIG. 25: The fraction Gt of the total probability contained in the
+Gaussian part of Pt(x) vs. time lag t. Inset: Time dependence of the
+probability density at maximum Pt(xm) (points), compared with the
+Gaussian t−1/2 behavior (solid line).
+
+Thus, Eq. (57) in the limit γt ≫ 2 can be represented in the
+
+scaling form
+
+Pt(x) = Nt e−p0xP∗(z), P∗(z) = K1(z)/z,
+
+(65)
+
+where the argument z = √A2 + B2 is
+κs (x + ργθt/κ)2
+
+z =
+
+ω0
+
+1 − ρ2
+
+κ (cid:19)2
++(cid:18) γθt
+
+and the time-dependent normalization factor Nt is
+
+,
+
+(66)
+
+Nt =
+
+eΛt,
+
+(67)
+
+ω2
+
+0γθt
+
+πκ3p1 − ρ2
+
+Eq. (65) demonstrates that, up to the factors Nt and e−p0x, the
+dependence of Pt(x) on the two arguments x and t is given by
+the function P∗(z) of the single scaling argument z in (66).
+Thus, when plotted as a function of z, the data for different
+x and t should collapse on the single universal curve P∗(z).
+This is beautifully illustrated by Fig. 24, where the Dow-Jones
+data for different time lags t follows the curve P∗(z) for seven
+decades.
+In the limit z ≫ 1, we can use the asymptotic expression72
+K1(z) ≈ e−zpπ/2z in (65) and take the logarithm of P .
+Keeping only the leading term proportional to z and omitting
+the subleading term proportional to ln z, we ﬁnd
+
+ln
+
+for
+
+Pt(x)
+Nt ≈ −p0x − z
+
+z ≫ 1.
+Let us examine Eq. (68) for large and small |x|.
+In the ﬁrst case |x| ≫ γθt/κ, Eq. (66) gives z ≈
+ω0|x|/κp1 − ρ2, so Eq. (68) becomes
+
+(68)
+
+ω0
+
+(69)
+
+ln
+
+Pt(x)
+Nt ≈ −p0x −
+
+κp1 − ρ2|x|.
+
+Thus, the probability distribution Pt(x) has the exponential
+tails (69) for large log-returns |x|. Notice that, in the consid-
+ered limit γt ≫ 2, the slopes d ln P/dx of the exponential
+tails (69) do not depend on time t. Because of p0, the slopes
+(69) for positive and negative x are not equal, thus the distri-
+bution Pt(x) is not symmetric with respect to up and down
+price changes. According to (61), this asymmetry is enhanced
+by a negative correlation ρ < 0 between stock price and vari-
+ance.
+
+In the second case |x| ≪ γθt/κ, by Taylor-expanding z in
+(66) near its minimum and substituting the result into (68), we
+get
+
+ln
+
+Pt(x)
+N′t ≈ −p0x −
+
+ω0(x + ργθt/κ)2
+2(1 − ρ2)γθt
+
+,
+
+(70)
+
+where N′t = Nt exp(−ω0γθt/κ2). Thus, for small log-
+returns |x|, the probability distribution Pt(x) is Gaussian with
+the width increasing linearly in time. The maximum of Pt(x)
+in (70) is achieved at
+
+xm(t) = −
+
+γθt
+
+2ω0(cid:18)1 + 2
+
+ρ(ω0 − γ)
+
+κ
+
+(cid:19) .
+
+(71)
+
+Eq. (71) gives the most probable log-return xm(t) at time t,
+and the coefﬁcient in front of t constitutes a correction to the
+average growth rate µ, so that the actual growth rate is ¯µ =
+µ + dxm/dt.
+
+As Fig. 23 illustrates, ln Pt(x) is indeed linear in x for large
+|x| and quadratic for small |x|, in agreement with (69) and
+(70). As time progresses, the distribution, which has the scal-
+ing form (65) and (66), broadens. Thus, the fraction Gt of the
+total probability contained in the parabolic (Gaussian) portion
+of the curve increases, as illustrated in Fig. 25.
+
+In the remainder of the section, we explain the way the
+Gaussian weight of the distribution has been calculated. As
+
+explained in Sec. III H, the case relevant for comparison with
+the data is ρ = 0.
+In this case, by shifting the contour of
+integration in (57) as follows px → px + i/2, we ﬁnd
+
+eipxx+Ft(px),
+
+(72)
+
+where
+
+Ft(px) =
+
+and
+
+dpx
+2π
+
+2γθ
+
+−∞
+
+γ2θt
+κ2 −
+
+Pt(x) = e−x/2Z +∞
+κ2 ln(cid:20)cosh
+Ω =pγ2 + κ2(p2
+
+Ωt
+2
+
++
+
+Ω2 + γ2
+
+2γΩ
+
+sinh
+
+x + 1/4).
+
+)
+
+x
+
+p
+(
+m
+
+I
+
+Ωt
+
+2 (cid:21)(73)
+
+(74)
+
+23
+
++
+p
+3
+
++
+p
+1
+
+p
+s
+
+0
+
+−
+p
+1
+
++
+p
+2
+
+iq+
+
+−iq−
+
+−
+p
+2
+
+Re(p
+)
+x
+
+Now the function Ft(px) is real and symmetric: Ft(px) =
+Ft(−px). Thus, the integral in (72) is a symmetric function of
+x. So it is clear that the only source of asymmetry of Pt(x) in
+x is the exponential prefactor in (72), as discussed at the end
+of Sec. III H. Eqs. (72), (73), and (74) are much simpler than
+those for ρ 6= 0.
+
+Let us expand the integral in (72) for small x:
+
+Pt(x) ≈ e−x/2(cid:18)µ0 −
+
+1
+2
+
+µ2x2(cid:19) ,
+
+(75)
+
+where the coefﬁcients are the ﬁrst and the second moments of
+exp[Ft(px)]
+
++∞Z−∞
+
++∞Z−∞
+
+µ0(t) =
+
+dpx
+2π
+
+eFt(px), µ2(t) =
+
+dpx
+2π
+
+p2
+xeFt(px).
+
+(76)
+On the other hand, we know that Pt(x) is Gaussian for small
+x. So we can write
+
+Pt(x) ≈ µ0 e−x/2e−µ2x2/2µ0 ,
+
+(77)
+
+with the same coefﬁcients as in (75). If we ignore the exis-
+tence of fat tails and extrapolate (77) to x ∈ (−∞,∞), the
+total probability contained in such a Gaussian extrapolation
+will be
+
+Gt =
+
+dx µ0 e−x/2−µ2x2/2µ0 =s 2πµ3
++∞Z−∞
+
+µ2
+
+0
+
+eµ0/8µ2 .
+
+(78)
+
+Obviously, Gt < 1, because the integral (78) does not take
+into account the probability contained in the fat tails. Thus,
+the difference 1 − Gt can be taken as a measure of how much
+the actual distribution Pt(x) deviates from a Gaussian func-
+tion.
+
+We calculate the moments (76) numerically for the function
+F given by (73), then determine the Gaussian weight Gt from
+(78) and plot it in Fig. 25 as a function of time. For t → ∞,
+Gt → 1, i.e. Pt(x) becomes Gaussian for very long time lags,
+which is known in literature55. In the opposite limit t → 0,
+Ft(px) becomes a very broad function of px, so we cannot
+calculate the moments µ0 and µ2 numerically. The singular
+limit t → 0 requires an analytical study.
+
+FIG. 26: Complex plane of px. Dots: The singularities of Ft(px).
+Circled crosses: The accumulation points ±iq±
+∗ of the singularities
+in the limit γt ≫ 2. Symbol ×: Saddle point ps, which is located
+in the upper half-plane for x > 0. Dashed line: The contour of
+integration displaced from the real axis in order to pass through the
+saddle point ps.
+
+Fig. 25 shows that, at sufﬁciently long times, the total prob-
+ability contained in the non-Gaussian tails becomes negligi-
+ble, which is known in literature55. The inset in Fig. 25 illus-
+trates that the time dependence of the probability density at
+maximum, Pt(xm), is close to t−1/2, which is characteristic
+of a Gaussian evolution.
+
+G. Asymptotic behavior for large log-return x
+
+In the complex plane of px, function F (px) becomes sin-
+gular at the points px where the argument of any logarithm
+in (58) vanishes. These points are located on the imaginary
+axis of px and are shown by dots in Fig. 26. The singu-
+larity closest to the real axis is located on the positive (neg-
+ative) imaginary axis at the point p+
+1 (p−1 ). At these two
+points, the argument of the last logarithm in (58) vanishes, and
+we can approximate F (px) by the dominant, singular term:
+F (px) ≈ −(2γθ/κ2) ln(px − p±1 ).
+For large |x|, the integrand of (57) oscillates very fast as a
+function of px. Thus, we can evaluate the integral using the
+method of stationary phase70 by shifting the contour of inte-
+gration so that is passes through a saddle point of the argument
+ipxx + F (px) of the exponent in (57). The saddle point posi-
+tion ps, shown in Fig. 26 by the symbol ×, is determined by
+the equation
+
+ix = −
+
+dF (px)
+
+dpx
+
+(cid:12)(cid:12)(cid:12)(cid:12)px=ps
+
+≈
+
+2γθ
+
+κ2 ×
+
+1
+
+1
+
+ps−p+
+ps−p−
+
+1
+
+1
+
+, x > 0,
+
+, x < 0.
+
+(79)
+
+For a large |x| such that |xp±1 | ≫ 2γθ/κ2, the saddle point ps
+is very close to the singularity point: ps ≈ p+
+1 for x > 0 and
+
+1
+
+γ t
+
+2
+
+3
+
+Dow−Jones data, 1982−2001
+
+24
+
+104
+
+x
+e
+d
+n
+
+I
+ 
+s
+e
+n
+o
+J
+−
+w
+o
+D
+
+103
+
+10
+
+20
+
+30
+50
+Time lag, t (days)
+
+40
+
+60
+
+70
+
+80
+
+82
+
+84
+
+86
+
+88
+
+90
+
+92
+Year
+
+94
+
+96
+
+98
+
+00
+
+02
+
+0
+180
+
+160
+
+140
+
+120
+
+100
+
+80
+
+60
+
+40
+
+20
+
+0
+0
+
+x
+d
+/
+)
+x
+(
+
+P
+n
+
+ 
+
+t
+
+l
+ 
+
+d
+−
+=
+t+
+q
+
+ 
+,
+
+e
+p
+o
+s
+ 
+
+l
+
+e
+h
+T
+
+FIG. 27: small Solid line: The slope q+
+t = −d ln P/dx of the expo-
+nential tail for x > 0 as a function of time. Points: The asymptotic
+approximation (82) for the slope in the limit γt ≪ 2. Dashed line:
+The saturation value q+
+
+∗ for γt ≫ 2, Eq. (81).
+
+FIG. 28: Log-linear plot of the Dow-Jones versus time, for the pe-
+riod 1982-2001. The straight solid line through the data points repre-
+sents a ﬁt of the Dow-Jones index with an exponential function with
+growth rate µ = 13.3%/year.
+
+ps ≈ p−1 for x < 0. Then the asymptotic expression for the
+probability distribution is
+
+H. Comparison with Dow-Jones time series
+
+Pt(x) ∼( e−xq+
+
+exq−
+t ,
+
+t , x > 0,
+x < 0,
+
+(80)
+
+where q±t = ∓ip±1 (t) are real and positive. Eq. (80) shows
+that, for all times t, the tails of the probability distribution
+Pt(x) for large|x| are exponential. The slopes of the exponen-
+tial tails, q± = ∓ d ln P/dx, are determined by the positions
+p±1 of the singularities closest to the real axis.
+These positions p±1 (t) and, thus, the slopes q±t depend
+on time t. For times much shorter than the relaxation time
+(γt ≪ 2), the singularities lie far away from the real axis.
+As time increases, the singularities move along the imaginary
+axis toward the real axis. Finally, for times much longer than
+the relaxation time (γt ≫ 2), the singularities approach lim-
+iting points: p±1 → ±iq±
+, which are shown in Fig. 26 by
+∗
+circled ×’s. Thus, as illustrated in Fig. 27, the slopes q±t
+monotonously decrease in time and saturate at long times:
+
+q±t → q±
+∗
+
+= ±p0 +
+
+for γt ≫ 2.
+
+(81)
+
+ω0
+
+κp1 − ρ2
+
+The slopes (81) are in agreement with Eq. (69) valid for γt ≫
+2. The time dependence q±t at short times can be also found
+analytically:
+
+q±t ≈ ±p0 +sp2
+
+0 +
+
+4γ
+
+κ2(1 − ρ2)t
+
+for γt ≪ 2.
+
+(82)
+
+The dotted curve in Fig. 27 shows that Eq. (82) works very
+well for short times t, where the slope diverges at t → 0.
+
+To test the model against ﬁnancial data, we downloaded
+daily closing values of the Dow-Jones industrial index for the
+period of 20 years from 1 January 1982 to 31 December 2001
+from the Web site of Yahoo73. The data set contains 5049
+points, which form the time series {Sτ}, where the integer
+time variable τ is the trading day number. We do not ﬁlter the
+data for short days, such as those before holidays.
+
+t
+
+Given {Sτ}, we use the following procedure to extract the
+probability density P (DJ)
+(r) of log-return r for a given time
+lag t. For the ﬁxed t, we calculate the set of log-returns
+{rτ = ln Sτ +t/Sτ} for all possible times τ. Then we par-
+tition the r-axis into equally spaced bins of the width ∆r and
+count the number of log-returns rτ belonging to each bin. In
+this process, we omit the bins with occupation numbers less
+than ﬁve, because we consider such a small statistics unreli-
+able. Only less than 1% of the entire data set is omitted in this
+procedure. Dividing the occupation number of each bin by
+∆r and by the total occupation number of all bins, we obtain
+the probability density P (DJ)
+(r) for a given time lag t. To
+ﬁnd P (DJ)
+(x), we replace r → x + µt. In Fig. 28 we plot
+the value of the Dow-Jones index, and the ﬁt with an expo-
+nential function corresponding to an inﬂation rate µ. In Fig.
+29 we illustrate the histogram corresponding to the probabil-
+ity density P (DJ)
+(r) for a time lag t = 5 days. The ﬁrst and
+last bin in Fig. 29 show all the events outside the two vertical
+dashed lines. These events are very rare, contribute less than
+1% to the entire number of data points, and therefore they are
+discarded in the ﬁtting process.
+
+t
+
+t
+
+t
+
+Assuming that the system is ergodic, so that ensemble aver-
+aging is equivalent to time averaging, we compare P (DJ)
+(x)
+extracted from the time series data and Pt(x) calculated in
+
+t
+
+500
+
+450
+
+400
+
+350
+
+300
+
+250
+
+200
+
+150
+
+100
+
+50
+
+t
+
+n
+u
+o
+c
+ 
+
+i
+
+n
+B
+
+0
+
+−0.09
+
+−0.06
+
+Dow−Jones data, 1982−2001
+
+−0.03
+
+0
+
+Five day log−return, r
+
+0.03
+t=5
+
+0.06
+
+0.09
+
+FIG. 29: Histogram of ﬁve day log-returns rt=5. The ﬁrst and the
+last bin, which are separated from the rest by the two vertical dashed
+lines, are discarded in the ﬁtting process. The population of the
+ﬁrst (last) bin contains all the extreme events from −∞(+∞) to the
+left(right) dashed line.
+
+t
+
+previous sections, which describes ensemble distribution. In
+the language of mathematical statistics, we compare our the-
+oretically derived population distribution with the sample dis-
+tribution extracted from the time series data. We determine
+parameters of the model by minimizing the mean-square devi-
+ationPx,t | ln P (DJ)
+(x)− ln Pt(x)|2, where the sum is taken
+over all available x and t = 1, 5, 20, 40, and 250 days.
+These values of t are selected because they represent differ-
+ent regimes: γt ≪ 1 for t = 1 and 5 days, γt ≈ 1 for t = 20
+days, and γt ≫ 1 for t = 40 and 250 days. As Figs. 23 and
+24 illustrate, our expression (57) and (58) for the probability
+density Pt(x) agrees with the data very well, not only for the
+selected ﬁve values of time t, but for the whole time interval
+from 1 to 250 trading days. However, we cannot extend this
+comparison to t longer than 250 days, which is approximately
+1/20 of the entire range of the data set, because we cannot
+reliably extract P (DJ)
+
+(x) from the data when t is too long.
+
+t
+
+The values obtained for the four ﬁtting parameters (γ, θ, κ,
+µ) are given in Table III. Within the scattering of the data, we
+do not ﬁnd any discernible difference between the ﬁts with the
+correlation coefﬁcient ρ being zero or slightly different from
+zero. Thus, we conclude that the correlation ρ between the
+noise terms for stock price and variance in Eq. (25) is practi-
+cally zero, if it exists at all. Our conclusion is in contrast with
+the value ρ = −0.58 found in74 by ﬁtting the leverage corre-
+lation function introduced in75. Further study is necessary in
+order to resolve this discrepancy. Nevertheless, all theoretical
+curves shown in this chapter are calculated for ρ = 0, and they
+ﬁt the data very well.
+
+All four parameters (γ, θ, κ, µ) shown in Table III have the
+dimensionality of 1/time. The ﬁrst line of the Table gives their
+values in the units of 1/day, as originally determined in our ﬁt.
+The second line shows the annualized values of the parameters
+
+25
+
+γ
+
+Units
+1/day 4.50 × 10−2 8.62 × 10−5 2.45 × 10−3 5.67 × 10−4
+1/year
+
+11.35
+
+0.143
+
+0.022
+
+0.618
+
+µ
+
+θ
+
+κ
+
+TABLE III: Parameters of the model obtained from the ﬁt of the
+Dow-Jones data. We also ﬁnd ρ = 0 for the correlation coefﬁcient
+and 1/γ = 22.2 trading days for the relaxation time of variance.
+
+in the units of 1/year, where we utilize the average number of
+252.5 trading days per calendar year to make the conversion.
+The relaxation time of variance is equal to 1/γ = 22.2 trading
+days = 4.4 weeks ≈ 1 month, where we took into account that
+1 week = 5 trading days. Thus, we ﬁnd that variance has a
+rather long relaxation time, of the order of one month, which
+is in agreement with the conclusion of Ref.74.
+
+Using the numbers given in Table III, we ﬁnd the value
+of the parameter 2γθ/κ2 = 1.296. Since this parameter is
+greater than one, the stochastic process (24) never reaches the
+domain v < 0, as discussed in Sec. III B.
+
+The effective growth rate of stock prices is determined by
+the coordinate rm(t) where the probability density Pt(rm) is
+maximal. Using the relation rm = xm + µt and Eq. (71), we
+ﬁnd that the actual growth rate is ¯µ = µ− γθ/2ω0 = 13% per
+year. This number coincides with the average growth rate of
+the Dow-Jones index obtained by a simple ﬁt of the time series
+{Sτ} with an exponential function of τ. The effective stock
+growth rate ¯µ is comparable with the average stock volatility
+after one year σ = √θ = 14.7%. Moreover, the parameter
+(33), which characterizes the width of the stationary distribu-
+tion of variance, is equal to χ = 0.54. This means that the
+distribution of variance is broad, and variance can easily ﬂuc-
+tuate to a value twice greater than the average value θ. Thus,
+even though the average growth rate of stock index is posi-
+dr Pt(r) = 17.7%
+
+tive, there is a substantial probabilityR 0
+
+to have negative growth for t = 1 year.
+
+According to (81), the asymmetry between the slopes of
+exponential tails for positive and negative x is given by the
+parameter p0, which is equal to 1/2 when ρ = 0 (see also the
+discussion of Eq. (72) at the end of Sec. III F). The origin
+of this asymmetry can be traced back to the transformation
+from (23) to (26) using Itˆo’s formula. It produces the term
+0.5vt dt in the r.h.s. of (26), which then generates the second
+term in the r.h.s. of (28). The latter term is the only source of
+asymmetry in x of Pt(x) when ρ = 0. However, in practice,
+the asymmetry of the slopes p0 = 1/2 is quite small (about
+∗ ≈ ω0/κ = 18.4.
+2.7%) compared with the average slope q±
+
+−∞
+
+I. Conclusions
+
+We derived an analytical solution for the probability dis-
+tribution Pt(x) of log-returns x as a function of time t for
+the model of a geometrical Brownian motion with stochastic
+variance. The ﬁnal result has the form of a one-dimensional
+Fourier integral (57) and (58).
+[In the case ρ = 0, the
+equations have the simpler form (72), (73), and (74).] Nu-
+merical evaluation of the integral (57) is simple compared
+
+with computationally-intensive numerical solution of the orig-
+inal Fokker-Planck PDE or Monte-Carlo simulation of the
+stochastic processes.
+
+IV. PATH-INTEGRAL SOLUTION OF THE
+COX-INGERSOLL-ROSS/FELLER MODEL
+
+26
+
+Our result agrees very well with the Dow-Jones data, as
+shown in Fig. 23. Comparing the theory and the data, we de-
+termine the four (non-zero) ﬁtting parameters of the model,
+particularly the variance relaxation time 1/γ = 22.2 days.
+For time longer than 1/γ, our theory predicts scaling behavior
+(65) and (66), which the Dow-Jones data indeed exhibits over
+seven orders of magnitude, as shown in Fig. 24. The scal-
+ing function P∗(z) = K1(z)/z is expressed in terms of the
+ﬁrst-order modiﬁed Bessel function K1. Previous estimates
+in literature of the relaxation time of volatility using various
+indirect indicators range from 1.5 days57 (p. 80) to less than
+one day and more than few tens of days51 (p. 70) for S&P 500
+and 73 days for the half-life of the Dow-Jones index56. Since
+we have a very good ﬁt of the entire probability distribution
+function for times from 1 to 250 trading days, we believe that
+our estimate, 22.2 days, is much more reliable. A close value
+of 19.6 days was found in Ref.74.
+
+As Fig. 23 shows, the probability distribution Pt(x) is ex-
+ponential in x for large |x|, where it is characterized by time-
+dependent slopes d ln P/dx. The theoretical analysis pre-
+sented in Sec. III G shows that the slopes are determined by
+the singularities of the function Ft(px) from (58) in the com-
+plex plane of px that are closest to the real axis. The cal-
+culated time dependence of the slopes d ln P/dx, shown in
+Fig. 27, agrees with the data very well, which further supports
+our statement that 1/γ = 22.2 days. Exponential tails in the
+probability distribution of stock log-returns have been noticed
+in literature before51 (p. 61),76, however time dependence of
+the slopes has not been recognized and analyzed theoretically.
+In Ref.55, the power-law behavior of the tails has been em-
+phasized. However, the data for S&P 500 were analyzed in
+Ref.55 only for short time lags t, typically shorter than one
+day. On the other hand, our data analysis is performed for the
+time lags longer than one day, so the results cannot be directly
+compared.
+
+Our analytical expression for the probability distribution
+of returns can be utilized to calculate option pricing. No-
+tice that it is not necessary to introduce the ad-hoc function
+λ(S, v, t), the market-price of risk, as is typically done in
+literature50,57,58,59,60, because now Pt(x) is known explicitly.
+Using the true probability distribution of returns Pt(x) should
+improve option pricing compared with the previous efforts in
+literature.
+
+Although we tested our model for the Dow-Jones index,
+there is nothing speciﬁc in the model which indicates that it
+applies only to stock market data. It would be interesting to
+see how the model performs when applied to other time series,
+for example, the foreign exchange data77, which also seem to
+exhibit exponential tails.
+
+In this section we provide details on the path-integral solu-
+tion of the variance process (24). The stochastic differential
+equation of the Cox-Ingersoll-Ross/Feller process, Eq. (24),
+is
+
+dxt = −γ(xt − θ)dt + κ√xtdWt.
+
+(83)
+
+Here θ is the long-time mean of x, γ is the rate of relaxation
+to this mean, Wt is the standard Wiener process, and κ is a
+parameter that controls the amplitude of the noise. Eq. (83) is
+known in ﬁnancial literature as the Cox-Ingersoll-Ross (CIR)
+process and it was used to model of interest rate dynamics.
+Feller79 used equation (83) to model population extinction in
+biological systems. Recently, the same equation (83) was used
+to model the thermal reversal of magnetization in a magnetic
+grain80.
+
+One quantity of interest to calculate is the conditional (tran-
+sition) probability P (x, t| xi, ti), which gives the probability
+to ﬁnd the system at position x at time t, given that it was
+at position xi at initial time ti. The transition probability
+P (x, t| xi, ti) of the stochastic process described by (83) sat-
+isﬁes the Fokker-Planck equation
+
+∂
+∂t
+
++
+
+P (x, t| xi, ti) =
+κ2
+2
+
+∂2
+∂2x
+
+∂
+∂x
+
+[γ(x − θ)P (x, t| xi, ti)]
+
+[xP (x, t| xi, ti)]
+
+(84)
+
+The Fokker-Planck equation (84) can be though of as a
+Schr¨odinger equation in imaginary (Euclidean) time written
+in the coordinate “x” representation,
+
+∂
+∂t
+
+P (x, t| xi, ti) = − ˆH(ˆp, ˆx)P (x, t| xi, ti)
+
+(85)
+
+with the Hamiltonian
+
+ˆH =
+
+κ2
+2
+
+ˆp2 ˆx − iγ ˆp(ˆx − θ).
+
+(86)
+
+In the coordinate representation, the momentum operator ˆp is
+given by the derivative operator ˆp = −id/dx. The canoni-
+cal commutation relation holds true: [ˆx, ˆp] = i. Using this
+analogy with quantum mechanics, the transition probability
+P (x, t| xi, ti) can be found using the method of path inte-
+grals. The transition probability is the matrix element of the
+evolution operator ˆU (t, ti) = exp(− ˆH(t − ti)) between the
+initial state | xii, and ﬁnal state hxf |,
+
+P (xf , tf | xi, ti) = hxf | e− ˆH(tf−ti) | xii.
+
+(87)
+
+The standard construction of the path integral is obtained
+by splitting the time interval [ti, tf ] into M time steps of equal
+size ǫ = (tf − ti)/M . One uses the multiplication property of
+the transition probability to write
+
+hxf|e− ˆH(tf−ti)|xii =Z M−1Yj=1
+
+(dxj )
+
+×
+
+MYj=1
+hxj|e− ˆH(tj−tj−1)|xj−1i.
+
+(88)
+
+The contribution coming from interval (tj, tj+1) is evaluated
+as
+
+hxj|e− ˆH(tj−tj−1)|xj−1i =Z dpjhxj|pji
+×hpj|e− ˆH(tj−tj−1)|xj−1i.
+
+(89)
+
+The matrix element inside the integral in Eq.(89) can be now
+evaluated to
+
+hpj|e− ˆH(tj−tj−1)|xj−1i ≈ e−ǫH(pj ,xj−1)hpj|xj−1i.
+
+(90)
+
+Substitute the scalar product
+
+hxj|pji =
+
+eipj xj
+√2π
+
+hpj|xj−1i =
+
+e−ipj xj−1
+√2π
+
+,
+
+(91)
+
+and Eq.(90) back into (89), to obtain
+
+P (xf , tf | xi, ti) =Z M−1Yj=1
+×ePM
+
+j=1
+
+dxjZ MYj=1
+
+dpj
+2π
+
+ipj (xj−xj−1)−ǫH(pj ,xj−1)
+
+.
+
+(92)
+
+where
+
+H(pj, xj−1) =
+
+κ2
+2
+
+p2
+j xj−1 − iγpj(xj−1 − θ)
+
+(93)
+
+By taking the limit M → ∞ in Eq.(92), one arrives at the path
+integral expression
+
+P (xf , tf | xi, ti) =Z DxDp eS[x,p]
+
+(94)
+
+where the action functional S[xt, pt] is given by
+
+S[xt, pt] =Z tf
+
+ti
+
+dt(cid:20)ipt ˙xt −
+
+κ2
+2
+
+p2
+
+t xt + iγpt (xt − θ)(cid:21) .
+
+(95)
+The phase-space path integral from Eq.(94) has to be calcu-
+lated over all continuous paths p(t) and x(t) satisfying the
+boundary conditions x(ti) = xi and x(tf ) = xf .
+
+For most path-integrals in physics,
+
+the path integral is
+quadratic in momenta and because of that it is customary to
+integrate ﬁrst the momenta p(t) to obtain the Lagrangean of
+the problem, and be left with the path integral over the coor-
+dinate x(t). This route can be taken here too, but the resulting
+Lagrangean will have a position dependent mass, which un-
+necessary complicates the remaining integration over the co-
+ordinate. It is important to notice that the problem is linear
+in the coordinate x(t) and quadratic in p(t), so the original
+Schr¨odinger formulation will be simpler in the momentum
+representation. In the path-integral formulation, it turns out
+that the integration over x(t) is trivial and gives a delta func-
+tional.
+
+27
+
+Both the continuous expression (94) and the discrete one
+(92) have their own computational advantages. In the follow-
+ing, I will use the discrete form (92), because for this problem,
+it allows for a quick and transparent solution. The exponent
+in (92) can be rearranged in the form
+
+MXj=1
+
+S = i(pM xf − p0xi) − iǫγθ
+
+pj
+
+(96)
+
+p2
+
++ i
+
+κ2
+2
+
+1/2).
+
+j(cid:21)
+
+M−1Xj=1
+
+xj(cid:20)(pj−1 − pj) + ǫγpj + iǫ
+where I made the notation p0 = p1 − ǫ(γp1 + iκ2p2
+The path integral over the coordinate can be taken one by
+one, starting with the one over dxM−1. The result is a delta
+M /2). The inte-
+function 2πδ(pM−1 − pM + ǫγpM + iǫκ2p2
+gration over pM−1 resolves the delta function for the value
+of pM−1 equal to pM−1 ≡ (1 − ǫ ˆT )pM , where the operator
+ˆT = γ(·) + k2(·)2/2. The integral over dxM−2 is done next,
+with the result 2πδ(pM−2−(1− ˆT )2pM ), followed by the inte-
+gral over dpM−2. The procedure is repeated until the last pair
+dx1 dp1. In this way we get p0 = (1−ǫ ˆT )p1 = (1−ǫ ˆT )M pM .
+P (xf , tf | xi, ti) =Z ∞
+(97)
+where in (97), pj ≡ (1−ǫ ˆT )(M−j)pM for j = 0, M. Because
+of the approximation used in (90), Eq.(97) is valid only when
+the number of time splittings M → ∞. In this limit we have
+pj − pj−1
+= ˆT pt with p(tf ) = pM
+(98)
+t is a
+
+i(pM xf−p0xi)−iǫγθPM
+
+The differential equation dpt/dt = ˆT pt = γpt + i κ2
+Bernoulli equation and has the solution
+
+The value of the transition probability is
+
+= ˆT pj −→
+
+dpM
+2π
+
+dpt
+dt
+
+2 p2
+
+−∞
+
+pj
+
+j=1
+
+e
+
+ǫ
+
+1
+
++ iκ2
+
+2γ )e−γ(t−tf ) − iκ2
+
+2γ
+
+.
+
+(99)
+
+the transition probability in the
+
+pt =
+
+( 1
+pM
+The expression for
+M → ∞ limit is
+P (xf , tf | xi, ti) =Z ∞
+
+−∞
+
+dpM
+2π
+
+e
+
+i(pM xf−p0xi)−iγθR tf
+
+ti
+
+dt pt
+
+(100)
+where pt is given by Eq.(99). The time integral in (100) can
+be evaluated as
+
+Z tf
+
+ti
+
+where
+
+dt pt = −
+
+2i
+
+κ2Z γT
+
+0
+
+dy
+
+ζey − 1
+
+2i
+κ2 ln
+
+= −
+
+ζ − e−γT
+ζ − 1
+
+(101)
+
+ζ = 1 −
+
+2iγ
+κ2pM
+
+,
+
+and T = tf − ti.
+
+(102)
+
+After minor rearrangements in the argument of the logarithm,
+the ﬁnal result is given in the form of a Fourier integral
+
+P (xf , tf | xi, ti) =Z ∞
+
+−∞
+
+dpM
+2π
+
+ei(pM xf−p0xi)
+
+)
+p
+(
+m
+
+I
+
+C
+−
+
+C
++
+
+iλ
+
+0
+
+Re(p)
+
+FIG. 30: The complex plane of p. The branch cut due to the denomi-
+nator of Eq. (106) is shown as a broken line. The contour C has been
+deformed so that it encircles the branch cut.
+
+× exp(cid:26)−
+
+2γθ
+
+κ2 ln(cid:20)1 +
+
+iκ2
+2γ
+
+(1 − e−γT )pM(cid:21)(cid:27) (103)
+
+where
+
+p0 ≡ p(t = ti) =
+
+pM e−γT
+2γ (1 − e−γT )pM
+
+1 + iκ2
+
+(104)
+
+Although, the integral from Eq.(103) seems complicated, it
+can be evaluated exactly by integration in the complex plane.
+Introduce the following notations
+
+ν = 2γθ/κ2,
+
+The integral in (103) becomes
+
+(105)
+
+and λ = 2γ/κ2(1 − exp(−γT )).
+expnipxf − i pe−γT
+
+(1 + ip/λ)ν
+
+1+ip/λ xio
+
+dp
+2π
+
+P (xf , tf | xi, ti) =Z +∞
+
+−∞
+
+(106)
+There is a branch point singularity in the complex plane of
+p which is situated on the imaginary axis, for p = iλ. We
+take the branch cut to extend from iλ to i∞. For positive
+xf , the contour of integration is deformed so that it encircles
+the branch cut. The complex plane of p, and the contour of
+integration are presented in FIG.30. The contribution from
+the contour C can be split into two parts, one from the part
+to the left of the cut C− and the other part, to the right of the
+cut C+. The Bessel function Jν(z) has the following integral
+representation due to Schl¨aﬂi
+
+28
+
+The modiﬁed Bessel function Iν (z) is deﬁned in terms of the
+usual Bessel function Jν(z) of imaginary argument by the re-
+lation
+
+Iν(z) = e− iπν
+
+2 Jν (eiπ/2z)
+
+for − π < arg(z) ≤ π/2.
+(109)
+
+This relation allows to write the ﬁnal result as
+P (xf , tf | xi, ti) = λν e−λ(xf +xie−γT )
+×(cid:18) xi
+
+λ2e−γT(cid:19) 1−ν
+
+Iν−1(2qxixf λ2 exp(−γT )),
+
+xf
+
+2
+
+(110)
+
+were λ and ν are given by (105), and T = tf − ti.
+
+The normalization of the probability density,
+
+Z ∞
+
+0
+
+dxf P (xf , tf | xi, ti) = 1,
+
+can be proved easily by making use of the result
+
+Z ∞
+
+0
+
+dx xν+1e−αx2
+
+Iν (βx) =
+
+βν
+
+(2α)ν+1 eβ2/4α.
+
+(111)
+
+We can check the validity of expression (110) by taking
+
+several limiting cases:
+
+the
+
+• In the
+
+limit T → ∞,
+
+transition probability
+P (xf , tf | xi, ti) should become the stationary probability dis-
+tribution (given in our paper). The argument of the Bessel
+function from (110) goes to zero in the limit T → ∞. The
+modiﬁed Bessel function Iν (z) has the following small argu-
+ment behavior
+
+Iµ(z) ≈
+
+1
+
+Γ(µ + 1)(cid:16) z
+2(cid:17)µ
+
+for
+
+z → 0+.
+
+(112)
+
+Substituting the expression (112) into (110), we obtain
+
+P (xf , tf | xi,−∞) ≡ P∗(xf ) =
+
+λν
+Γ(ν)
+
+xν−1
+f
+
+e−λxf .
+
+(113)
+
+which is the stationary distribution.
+
+• In the short time limit, T → 0 (λ → ∞),
+
+the
+probability distribution should approach a delta function,
+P (xf , ti | xi, ti) = δ(xf − xi). The argument of the Bessel
+function from (110) goes to inﬁnity in the limit T → 0. The
+modiﬁed Bessel function Iν (z) has the following large argu-
+ment behavior
+
+Jν(z) =
+
+1
+
+2πi(cid:16) z
+
+2(cid:17)νZ (0+)
+
+−∞
+
+dt t−ν−1et−z2/4t,
+
+(107)
+
+Iµ(z) ≈
+
+ez
+√2πz
+
+for
+
+z → ∞
+
+(114)
+
+where the integral is taken along a contour around the branch
+cut on the negative real axis, encircling it in the counterclock-
+wise direction. By making the change of variable p → −ip in
+probability
+(106),
+P (xf , tf | xi, ti) can be expressed in terms of the Bessel func-
+tion as
+
+transition
+
+the
+
+P (xf , tf | xi, ti) = λν e−λ(xf +xie−γT )
+×(cid:18)−
+
+λ2e−γT(cid:19) 1−ν
+
+Jν−1(2iqxixf λ2 exp(−γT )).
+
+xi
+xf
+
+2
+
+(108)
+
+Substituting (114) back into (110), we obtain
+
+P (xf , tf | xi, ti) = f (xi/xf ) lim
+
+= δ(xf − xi)
+
+λ→∞r λ
+
+4πxi
+
+e−λ(√xf−√xi)2
+
+(115)
+
+† Email:adrian.dragulescu@constellation.com
+1 J. D. Farmer, Computing in Science and Engineering 1, #6, p.
+26 (1999); R. N. Mantegna and H. E. Stanley, An Introduction to
+Econophysics (Cambridge University Press, Cambridge, 2000).
+
+2 G. H. Wannier, Statistical Physics (Dover, New York, 1987).
+3 It is also implied that the system is extensive. We study only ex-
+tensive models, so the nonextensive generalization of entropy by
+C. Tsallis, J. Stat. Phys. 52, 479 (1988); Braz. J. Phys. 29, 1 (1999)
+is not relevant for our consideration.
+
+4 D. M. Mueth, H. M. Jaeger, and S. R. Nagel, Phys. Rev. E 57,
+3164 (1998); M. L. Nguyen and S. N. Coppersmith, Phys. Rev. E
+59, 5870 (1999).
+
+5 M. Shubik, in The Economy as an Evolving Complex System II,
+edited by W. B. Arthur, S. N. Durlauf, and D. A. Lane (Addison-
+Wesley, Reading, 1997) p. 263.
+
+6 S. Ispolatov, P. L. Krapivsky, and S. Redner, Eur. Phys. J. B 2, 267
+
+(1998).
+
+7 C. R. McConnell and S. L. Brue, Economics: Principles, Prob-
+
+lems, and Policies (McGraw-Hill, New York, 1996).
+
+8 E. W. Montroll and M. F. Shlesinger, Proc. Natl. Acad. Sci.
+USA 79, 3380 (1982); O. Malcai, O. Biham, and S. Solomon,
+Phys. Rev. E 60, 1299 (1999); D. Sornette and R. Cont, J.
+Phys. I (France) 7, 431 (1997); J.-P. Bouchaud and M. M´ezard,
+cond-mat/0002374.
+
+9 E. M. Lifshitz and L. P. Pitaevski˘ı, Physical Kinetics (Pergamon
+
+Press, New York, 1993).
+
+10 A. Chakraborti and B. K. Chakrabarty, Eur. Phys. J. B. 17 167
+
+(2000).
+
+11 Martin Shubik, The Theory of Money and Financial Institutions,
+
+vol. 2 (The MIT Press, Cambridge, 1999), p. 192.
+
+12 P. Bak, S. F. Nørrelykke, and M. Shubik, Phys. Rev. E 60, 2528
+
+(1999).
+
+13 Masanao Aoki, New Approaches to Macroeconomic Modeling
+
+(Cambridge University Press, Cambridge, 1996).
+
+14 V. Pareto, Cours d’Economie Politique (Lausanne, 1897).
+15 G.F. Shirras, Economic Journal 45, 663 (1935).
+16 B. Mandelbrot, Internat. Economic Review 1, 79 (1960).
+17 N. Kakwani, Income Inequality and Poverty (Oxford University
+
+Press, Oxford, 1980).
+
+18 F. Levy, Science 236, 923 (1987).
+19 R. Gibrat, Les In´egalit´es Economique (Sirely, Paris, 1931).
+20 E.W. Montroll, M.F. Shlesinger, J. Stat. Phys. 32, 209 (1983).
+21 M. Kalecki, Econometrica 13, 161 (1945).
+22 M. Levy, S. Solomon, Int. J. Mod. Phys. C 7, 595 (1996); D.
+
+Sornette, R. Cont, J. Phys. I (France) 7, 431 (1997).
+23 The U.S. Census data, http://ferret.bls.census.gov/.
+24 The PSID Web site,
+
+http://www.isr.umich.edu/src/psid/.
+
+25 Statistics of Income–1997, Individual Income Tax Returns, Pub.
+
+1304, Rev. 12-99 (IRS, Washington DC, 1999)
+See http://www.irs.ustreas.gov/prod/tax stats/soi/.
+
+26 P. Sailer, M. Weber, Household and Individual
+
+Income
+(IRS, Washington DC, 1998),
+
+Data from Tax Returns
+http://ftp.fedworld.gov/pub/irs-soi/petasa98.pdf.
+
+27 T. Petska, M. Strudler, R. Petska, Further Examination of the
+Distribution of Individual Income and Taxes Using a Con-
+sistent and Comprehensive Measure of Income (IRS, 2000),
+http://ftp.fedworld.gov/pub/irs-soi/disindit.exe.
+
+28 W. Feller, An Introduction to Probability Theory and Its Applica-
+
+29
+
+P60-191 (Census Bureau, Washington, 1996),
+http://www.census.gov/hhes/www/p60191.html.
+
+30 1040: Forms and Instructions (IRS, Washington, 1999).
+31 H.F. Lydall, Econometrica 27, 110 (1959).
+32 Zhi-Feng Huang, S. Solomon, cond-mat/0103170; S. Solomon, P.
+
+Richmond, cond-mat/0102423, Physica A 299, 1 (2001).
+33 J.-P. Bouchaud, M. Mezard, Physica A 282, 536 (2000).
+34 D. Sornette, R. Cont, J. Phys. I (France) 7, 431 (1997).
+35 A. A. Dr˘agulescu, V. M. Yakovenko, Eur. Phys. J. B. 20, 585
+
+(2001).
+
+36 A. A. Dr˘agulescu, V. M. Yakovenko, Eur. Phys. J. B 17, 723
+
+(2000).
+
+37 M. Levy, S. Solomon, Physica A 242, 90 (1997).
+38 Distribution of Personal Wealth, Inland Revenue,
+
+http://www.inlandrevenue.gov.uk/stats/distribution2000.pdf.
+
+39 Personal Incomes,
+
+Inland Revenue, 1998-99: Table 3.3 of
+http://www.inlandrevenue.gov.uk/stats/, ﬁle income2000.pdf. For
+1997-98:
+http://www.inlandrevenue.gov.uk/stats/table3 3a. htm.
+
+40 Annual Abstract of Statistics, Ofﬁce of National Statistics,
+
+http://www.statistics.gov.uk.
+
+41 T. Cranshaw, Pareto, Poverty and Riches, unpublished.
+42 Individual Tax Statistics by States in 1998, IRS,
+
+http://www.irs.gov/tax stats/soi/ind st.html,
+ﬁle 98IN54CM.EXE.
+
+43 P. W. Anderson, in The Economy as an Evolving Complex System
+
+(Reading, MA, Addison-Wesley, 1988).
+
+44 W. Souma, cond-mat/0011373.
+45 The Interactive Currency Table, http://www.xe.net/ict/.
+46 S. Abe and Y. Okamoto (Eds.) Nonextensive Statistical Mechanics
+
+and its Applications, (Springer-Verlag, Berlin, 2001)
+
+47 G. Kaniadakis and A. M. Scarfone, Physica A 305, 69 (2002).
+48 B. Milanovic, World Bank Working Paper 2244,
+
+(1999),
+http://www.worldbank.org/poverty/inequal/abstracts/ recent.htm.
+
+49 A. A. Dr˘agulescu and V. M. Yakovenko,
+http://arXiv.org/abs/cond-mat/0203046.
+
+50 P. Wilmott, Derivatives (John Wiley & Sons, New York, 1998).
+51 J. P. Bouchaud and M. Potters, Theory of Financial Risks (Cam-
+
+bridge University Press, Cambridge, 2001).
+
+52 R. N. Mantegna and H. E. Stanley, An Introduction to Econo-
+
+physics (Cambridge University Press, Cambridge, 2000).
+
+53 J. Voit, The Statistical Mechanics of Financial Markets (Springer,
+
+Berlin, 2001).
+
+54 B. B. Mandelbrot, Journal of Business 36, 393 (1963).
+55 R. N. Mantegna and H. E. Stanley, Nature 376, 46 (1995); P.
+Gopikrishnan, M. Meyer, L. A. N. Amaral, and H. E. Stanley,
+European Physical Journal B 3, 139 (1998); P. Gopikrishnan, V.
+Plerou, L. A. N. Amaral, M. Meyer, and H. E. Stanley, Physical
+Review E 60, 5305 (1999).
+
+56 R. F. Engle and A. J. Patton, Quantitative Finance 1, 237 (2001).
+57 J. P. Fouque, G. Papanicolaou, and K. R. Sircar, Derivatives in Fi-
+nancial Markets with Stochastic Volatility (Cambridge University
+Press, Cambridge, 2000); International Journal of Theoretical and
+Applied Finance, 3, 101 (2000).
+
+58 J. Hull and A. White, Journal of Finance 42, 281 (1987);
+C. A. Ball and A. Roma, Journal of Financial and Quantitative
+Analysis 29, 589 (1994); R. Sch¨obel and J. Zhu, European Fi-
+nance Review 3, 23 (1999).
+
+59 E. M. Stein and J. C. Stein, Review of Financial Studies 4, 727
+
+tions, vol. 2 (John Wiley, New York, 1966) p. 10.
+
+29 D.H. Weinberg, A Brief Look at Postwar U.S. Income Inequality,
+
+(1991).
+
+60 S. L. Heston, Review of Financial Studies 6, 327 (1993).
+
+61 B. E. Baaquie, Journal de Physique I (France) 7, 1733 (1997).
+62 R. Courant and D. Hilbert, Methods of Mathematical Physics, vol.
+
+2 (John Wiley & Sons, New York, 1962).
+
+63 R. P. Feynman and A. R. Hibbs, Quantum Mechanics and Path
+
+Integrals (McGraw-Hill, New York, 1965).
+
+64 L. S. Schulman, Techniques and Application of Path Integration
+
+(John Wiley & Sons, New York, 1981).
+
+65 H. Kleinert, Path Integrals in Quantum Mechanics, Statistics, and
+
+Polymer Physics (World Scientiﬁc, Singapore, 1995).
+
+66 E. Bennati, M. Rosa-Clot, and S. Taddei, International Journal of
+
+Theoretical and Applied Finance 2, 381 (1999).
+
+67 D. G. McMillan, Applied Economics Letters 8, 605 (2001).
+68 R. G. Tompkins, Journal of Futures Markets 21, 43 (2001); Y.-N.
+Lin, N. Strong, and X. Xu, Journal of Futures Markets 21, 197
+(2001); G. Fiorentini, A. Leon, and G. Rubio, Journal of Empiri-
+cal Finance, to be published.
+
+69 C. W. Gardiner, Handbook of Stochastic Methods for Physics,
+Chemistry, and the Natural Sciences (Springer-Verlag, Berlin,
+1993).
+
+70 C. M. Bender and S. A. Orszag, Advanced Mathematical Methods
+for Scientists and Engineers (Springer-Verlag, New York, 1999).
+71 Y. Liu, P. Gopikrishnan, P. Cizeau, M. Meyer, C.-K. Peng, and H.
+
+E. Stanley, Physical Review E 60, 1390 (1999).
+
+72 I. S. Gradshteyn and I. R. Ryzhik, Table of Integrals, Series, and
+
+30
+
+Products (Academic Press, New York, 1996), formula 3.914.
+
+73 Yahoo Finance http://ﬁnance.yahoo.com/. To download data, type
+in the symbol box: “ˆDJI”, and then click on the link: “Download
+Spreadsheet”.
+
+74 J. Masoliver and J. Perell´o, preprints
+
+http://lanl.arXiv.org/abs/cond-mat/0111334 and
+http://lanl.arXiv.org/abs/cond-mat/0202203.
+
+75 J.-P. Bouchaud, A. Matacz, and M. Potters, Physical Review Let-
+
+ters 87, 228701 (2001).
+
+76 L. C. Miranda and R. Riera, Physica A 297, 509 (2001).
+77 R. Friedrich, J. Peinke and C. Renner, Physical Review Letters
+84, 5254 (2000); C. Renner, J. Peinke and R. Friedrich, Physica A
+298, 499 (2001).
+
+78 J. C. Cox, J. E. Ingersoll, S. A. Ross The Journal of Business, 52,
+
+No. 1, 51 (1979).
+
+79 W. Feller, The Annals of Mathematics, 2nd Ser., 54, No. 1, 173
+
+(1951).
+
+80 V. L. Safonov, Journal of Applied Physics, 85, No.8, 4370 (1999).
+81 The inﬁnitesimal increments of the Wiener process dWt are nor-
+mally distributed (Gaussian) random variables with zero mean and
+the variance equal to dt.
+
+82 An attempt to determine the probability distribution of volatility
+
+empirically for the S&P 500 stock index was done in Ref.71.
+
+

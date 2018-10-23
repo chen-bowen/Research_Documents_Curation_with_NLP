@@ -1,0 +1,854 @@
+6
+1
+0
+2
+
+ 
+t
+c
+O
+6
+
+ 
+
+ 
+ 
+]
+
+.
+
+A
+N
+h
+t
+a
+m
+
+[
+ 
+ 
+
+2
+v
+2
+1
+6
+9
+0
+
+.
+
+6
+0
+6
+1
+:
+v
+i
+X
+r
+a
+
+An algorithm (CoDeFi) for overcoming the curse of
+
+dimensionality in mathematical ﬁnance
+
+Philippe G. LeFloch a and Jean-Marc Mercier b
+
+aLaboratoire Jacques-Louis Lions & Centre National de la Recherche Scientiﬁque
+
+Universit´e Pierre et Marie Curie, 4 Place Jussieu, 75252 Paris, France.
+
+bMPG-Partners, 136 Boulevard Haussmann, 75008 Paris, France.
+
+Abstract
+
+We present an algorithm (CoDeFi) which overcomes the curse of dimensionality (CoD) in scientiﬁc computations
+and, especially, in mathematical ﬁnance (Fi). Our method applies a broad class of partial diﬀerential equations
+such as Kolmogorov-type equations and, for instance, the Black and Scholes equation. As a main feature, our
+algorithm allows one to solve partial diﬀerential equarions in large dimensions and provides a general framework
+for stochastic problems. In insurance or ﬁnance applications, the number of dimensions corresponds to the number
+of risk sources and it is crucial to have a numerical method that remains robust and reliable in large dimensions.
+
+R´esum´e. Nous pr´esentons un algorithme (CoDeFi) pour r´esoudre le probl`eme de la mal´ediction dimensionnelle
+(CoDe, en anglais) pour le calcul scientiﬁque et, en particulier, pour aborder des probl`emes provenant la ﬁnance
+(Fi). Notre m´ethode s’applique `a une large classe d’´equations aux d´eriv´ees partielles telles que les ´equations de
+Kolmogorov et, par exemple, l’´equation de Black et Scholes. La sp´eciﬁcit´e de notre m´ethode est de permettre la
+r´esolution d’´equations aux d´eriv´ees partielles en grandes dimensions et de fournir un environnement g´en´eral pour
+les probl`emes stochastiques. Dans les applications dans le secteur de l’assurance ou de la ﬁnance, le nombre de
+dimensions correspond au nombre de sources de risques et il est crucial d’avoir une m´ethode num´erique qui reste
+robuste et pr´ecise en grandes dimensions.
+
+Version fran¸caise abr´eg´ee
+
+La mal´ediction dimensionnelle (CoD, ce terme provenant d’un article de 1957 de R.E. Bellman) apparaˆıt
+lorsque le temps de calcul augmente exponentiellement avec le nombre de dimensions, qui correspond au nombre
+de sources de risque (ou sous-jacents) dans les applications en math´ematiques ﬁnanci`eres. Nous proposons dans
+cette Note une approche g´en´erale `a ce probl`eme ouvert depuis plusieurs d´ecennies. Notre approche est bas´ee sur
+une combinaison de techniques provenant de la th´eorie des ´equations aux d´eriv´ees partielles : des trajectoires
+de Monte-Carlo, une m´ethode num´erique classique qui n’est pas ”maudite” (c’est-`a-dire non aﬀect´ee par CoD),
+et des maillages de calcul mobiles. De tels maillages permettent de r´esoudre les ´equations de Kolmogorov en
+utilisant des m´ethodes non structur´ees conjointement avec une technique de transport optimal. Nous utilisons
+´egalement une calibration “z´ero-erreur” qui nous permet d’assurer une description pr´ecise de la dynamique du
+processus sous-jacent. Toutes ces techniques sont regroup´ees dans un environnement de calcul scientiﬁque, que
+nous avons d´evelopp´e (CoDeFi) et qui peut ˆetre vu comme un environnement de mesure de risque tr`es g´en´eral,
+bas´e l’algorithme pr´esent´e en d´etail dans [3]-[4].
+
+Email addresses: contact@philippelefloch.org (Philippe G. LeFloch), jean-marc.mercier@mpg-partners.com (Jean-Marc
+
+Mercier).
+
+Cette note pr´esente ces technologies et propose un premier benchmark pour le cas multi-dimensionnel, en le
+compl´etant jusqu`a la 64 `eme dimension (ou 64 sources de risque). A notre connaissance, peu d’autres technologies
+pourraient compl´eter ce test. La quantiﬁcation optimale [1] ou l’analyse par ondelette [9] pourraient ˆetre utilis´es
+jusqu´’`a disons 10 dimensions. Au del`a, les techniques type Monte-Carlo am´ericain [7] pourraient peut-ˆetre fournir
+des bornes inf´erieures, ces m´ethodes ´etant connues pour fournir des exercices sub-optimaux. Nous concluons
+en notant que ce mˆeme environnement de calcul est utilis´e pour des simulations dans le cadre de probl`emes
+hyperboliques nonlin´eaires [3].
+
+English version
+
+1. Introduction and main strategy
+
+1.1 Fokker-Planck-Kolmogorov problems. We denote by µ = µ(t, x) (t ≥ 0, x ∈ RD) the probability density
+measure of a stochastic process. Here D denotes the number of dimensions, i.e. usually the number of risk
+sources, also called underlyings, in the applications in mathematical ﬁnance. We suppose that this process
+deﬁnes a Markov chaining process and follows a Fokker-Planck equation of the form
+
+(1)
+where L(t,·) is a (usually unknown) positive diﬀerential operator of parabolic type. In fact, we are interested in
+the adjoint of Fokker-Planck equations, that is, backward Kolmogorov equations with unknown P = P (t, x) ∈
+RM (deﬁned for 0 ≤ t ≤ T and x ∈ RD):
+
+∂tµ + Lµ = 0,
+
+∂tP − L∗P = 0, P (T,·) = PT ∈ RM ,
+
+(2)
+where L∗ denotes the adjoint and the equation is submitted to a terminal Cauchy data PT = PT (x) at some
+(future) time T > 0. This is typically the case of ﬂows (e.g. cash or asset based ﬂows) in mathematical ﬁnance.
+We also consider here nonlinear systems extending (2), which we can formulate as an optimal-stopping problem
+
+either ∂tP − L∗P = 0 or else both ∂tP − L∗P ≥ 0 and S(t, x, P ) = 0.
+
+(3)
+Here, the mapping S = S(t, x, P ) : RD+1+M → RP is interpreted as a “strategy”. In this context, the following
+two rather distinct problems arise:
+1- The calibration problem. This consists in ﬁnding out a probability measure µ(t,·), satisfying a list of
+
+integral constraints at some (future) times denoted by T1, T2, . . . , TI > 0. These constraints have the form
+
+P i(·) µ(Ti,·) = Ci,
+
+i = 1, . . . , I,
+
+(4)
+
+(cid:90)
+
+RD
+
+in which the functions P i and the functions Ci (refered to as observables) are prescribed. Starting from a local
+volatility model ”`a la Dupire”, several methods are available in order to handle this (undetermined) problem;
+we refer for instance [12] for a review of commonly used methods.
+2- The valuation problem. The probability measure µ(t,·) being now given, the second problem of interest
+consists in expliciting L and solving the equation (3), leading to the output measure computed from the surface
+{t, x, P (t, x)}. There exists also several numerical methods devoted to solving (2) and (3); see for instance [13]
+for a survey of Monte-Carlo-type methods (that are able to handle linear problems like (2)) and PDE (partial
+diﬀerential equation) lattice-based methods (able to handle also the nonlinear problems (3)).
+Note that we need to compute the whole “surface” {t, x, P (t, x)} to compute properly the nonlinear solution
+to (3). Even for linear problems like (2), this surface contains all the information required for risk measurement
+applications (of operational or regulatory nature). To our knowledge, only a PDE approach is capable to compute
+the surface {t, x, P (t, x)}. However, this approach cannot be used for problems that can involve hundreds of
+dimensions, say. No method yet is capable to tackle the calibration and valuation problems above in a systematic
+and general manner. For instance, optimal quantization [1] or wavelet analysis [9] could be used, but for only up
+to about 10 dimensions. Above this threshold, American-Monte Carlo methods [7] could be used and provide
+lower bounds to solutions of (3), but these methods are known to compute sub-optimal exercising. The lack
+of numerical methods able to handle large dimensions was identiﬁed ﬁrst by Bellman in 1957 and, since then
+is refered to as the Curse of dimensionality. In other words, a general, swiss-knife method is important for
+applications and, if the same methodology could be used by practitionners, then risk measures could be compared
+in a meaningful way conﬁdently aggregated in order to deduce macro-economical indicators.
+1.2 Application to mathematical ﬁnance. For instance, one could treat the scalar strategy S(t, x, P ) = P −
+(x − K)+ (with Q+ := max(Q, 0)) corresponding to an optimal strategy for American-type options having
+strike K ∈ R. The vector-valued function P = P (t, x) in general determines the fair value of contracts under
+
+2
+
+the strategy S, when the underlying stochastic process is worth x ∈ RD at a future time t ≥ 0. The method we
+now propose provides a very general framework since all the stochastic models usually deﬁned by prescribing
+speciﬁc stochastic processes, (such as normal, log-normal, stochastic volatility, local volatility or local correlation
+models...) ﬁt into the Fokker-Planck setting (1). Moreover, the applications in mathematical ﬁnance involve
+contraints of the form (4) which we can handle here. As stated above, all classical risk measurements can be
+RD P (t,·)µ(t,·)
+corresponds to the fair value if t = 0 (and future value if t > 0) of contracts viewed from today (t = 0), since
+d=1..D is the gradient operator. Similarly for regulatory
+{x:P (t,x)<αP t} P (t,·)µ(t,·), where t is
+
+deduced from the knowledge of the solutions of (3). For instance for operational measures, P t :=(cid:82)
+RD ∇P (t,·)µ(t,·) computes its hedge, where ∇ :=(cid:0) ∂
+(cid:82)
+type measures, a VaR (Value At Risk) can be expressed as a quantile (cid:82)
+expressed from the knowledge of the function of t (cid:55)→(cid:82)
+
+the VaR time horizon, since 0 < α < 1 is a conﬁdence threshold. A CVA (Credit Value Adjustment) can be
+
+RD P +(t,·)µ(t,·).
+
+(cid:1)
+
+∂xd
+
+1.3 Purposes and main ideas. The method CoDeFi which we propose in this Note is based on several novel
+numerical techniques, which lead us to a framework for handling the calibration problem as well as the valuation
+problem, in a high dimensional setting. Our CoDeFi algorithm is based on two main ingredients. Our ﬁrst idea
+is a localisation principle: we use a change of variable to localize the system of equations (3) into the unit
+cube, denoted Λ = [0, 1]D. To properly introduce this change of variable, we recall a standard result from the
+theory of optimal transport (cf. Villani [11]), going back to Brenier [2]) allowing one to regard the quantile of a
+probability measure as a change of variable:
+µ(t,·) = S(t,·)#m,
+
+(5)
+where S(t,·)#m stands for the pull-back of the Lebesgue measure m on Λ. For our purpose, we think of S(t,·)
+as a map inducing a natural change of variable within Monte-Carlo methods. Hence, S(t,·) can be used together
+with a random generator and allows us to sample some underlying process at any time t, by writing
+
+S(t,·) = ∇h : Λ (cid:55)→ RD,
+
+h convex.
+
+Et(P, µ) :=
+
+P (·)µ(t,·) (cid:39) 1
+N
+
+RD
+
+P ◦ S(t, Yn), n = 1, . . . , N,
+
+(6)
+
+(cid:90)
+
+(cid:88)
+
+n=1,...,N
+
+where P is any function, and the matrix Y = {Yn ∈ Λ}n=1,...,N ∈ RN×D consists of random vectors. Our
+localization principle then consists in considering the following transported (into the unit cube) version of (3):
+
+(cid:0)∂tP − L∗P(cid:1) ◦ S ≥ 0 and S(t, S, P ◦ S) = 0
+
+either(cid:0)∂tP − L∗P(cid:1) ◦ S = 0
+
+or else both
+
+(7)
+
+One important incentive for using the change of variables above is to transform the Kolmogorov problem (2)
+into a self-adjoint problem. (See [4] for the details.)
+
+Our second ingredient is an unstructured mesh technique in order to solve the problem (7) in a robust
+and inexpensive way. Our motivation here is clear: random sampling methods (such as Monte-Carlo ones (6))
+are not sensible to the Curse of Dimensionality. Hence, if a PDE-based method is able to use the sampling
+vectors Y as a mesh, then the resulting solver will not be aﬀected by the CoD. In the rest of this note, we build
+upon these two main ideas and provide details on the implementation of the CoDeFi algorithm.
+
+2. The calibration and valuation algorithms
+
+2.1 Generation of the computational grid. There are two essentials parameters, central in all notations, and
+main limiting factors in term of computational cost, that is, the number D of underlyings or risk sources, and
+the number N of grid points. The overall complexity of the CoDeFi algorithm is bounded by O((N + D)3)
+operations. For such a number of operations, the relative error commited to solve Kolmogorov equations (3)
+is  = O(1/N )%. To have some ﬁgures in mind, CoDeFi solves today Kolmogorov equations (3) with D = 64,
+N = 512, with time of order 15 minutes, for a precision of order 1/512 ∼ 0.2%, using one core of the eight of
+an Intel 4770 processor.
+We specify here the choice of the N sampling-set Y = {Yn ∈ Λ}n=1,...,N ∈ RN×D, used as a mesh for the
+PDE engine. CoDeFi is primarily a Monte-Carlo method, and can use any kind of sampling-set of the uniform
+law over Λ as grid. For instance Figure 1 shows the plot of a two-dimensional grid of 200 points, with Delaunay
+√
+mesh, using the Mersenne Twister generator mt19937, see [8]. We recall that Pseudo-random generator owns a
+statistical convergence rate of order  = O(1/
+N )%. This error holds for Monte-Carlo integration formula of
+kind (6) and bounded variations functions P .
+
+Another alternative is to use quasi-random sequences. Figure 1 also shows the plot of a 200 points grid using
+a Sobol, see [10], low-discrepancy generator. We recall that Sobol generators have a convergence rate of order
+ = O((ln N )D/N )%, for bounded variations functions P and formula (6).
+
+3
+
+Table 1
+Market values of European Call SX5E Mat 3M. Spot 3064.03
+
+Strike αi
+
+Value Ci
+
+0.8
+
+559.2
+
+0.9
+
+292.6
+
+0.95
+
+180.7
+
+0.975
+
+133.6
+
+1
+
+93.76
+
+1.025
+
+61.59
+
+1.05
+
+37.99
+
+1.1
+
+11.34
+
+1.2
+
+0.31
+
+Finally, since mesh repartition is an important feature for PDE methods, we propose to use special sequences,
+that we call optimal discrepancy sequences, to generate the grid. Such sequences reaches the above cited rate
+of convergence, of order  = O(1/N )%, for ﬁnite sums of convex and concave functions P and formula (6).
+However such sequences require O(N 2D) operations to compute. Since PDE methods works usually with few
+grid points (N = 512 is enough), we prefer sacrifying computational time to mesh quality.
+
+Quasi Random Sequence
+
+Sobol sequence
+
+Optimal Discrepancy Sequence
+
+Figure 1. Diﬀerent grids with Delaunay meshes
+
+2.2 The calibration algorithm. We are now given a mesh as a matrix Y = {Yn ∈ Λ}n=1,...,N ∈ RN×D,
+determined as in the previous section. As quoted above, the calibration algorithm consists in ﬁnding a probability
+measure µ(t,·) that ﬁts constraints (4). Due to Brenier result, this is equivalent to ﬁnding out a quantile S(t,·) -
+see (5) - ﬁtting constraints. Let µ0(t,·) a given, smooth ”prior” probability measure - in practice, we use normal
+or log-normal processes as priors - and denotes S0(t,·) its quantile, known explictely. From a numerical point of
+view, we solve the calibration problem ﬁnding a matrix S(t) = {Sn(t) := ∇h(t, Yn)}n=1,...,N ∈ RN×D, h convex,
+satisfying for each distinct time Ti,
+
+(cid:88)
+
+n=1,...,N
+
+inf
+
+S(Ti)∈RND
+
+(cid:107)S(Ti) − S0(Ti)(cid:107)2,
+
+const.
+
+1
+N
+
+P i(Ti, Sn(Ti)) = C i,
+
+i = 1, . . . , I,
+
+where (cid:107)·(cid:107)2 denotes the standard Frobenius norm of matrixes and S0(t) = {S0(t, Yn)}n=1,...,N ∈ RN D. The solu-
+tion of this problem can be computed with classical Lagrangian methods, and is not sensitive to the CoD. We can
+(cid:107)µ(Ti)−
+also show that this problem is equivalent to ﬁnding a discrete measure minimizing inf µ(Ti):= 1
+µ0(Ti,·)(cid:107)W 2 under constraints (4), where (cid:107)·(cid:107)W 2 denotes the Wasserstein distance and δX the Dirac mass weight-
+ing a point X ∈ RD. Starting from distinct calibrated times Ti, standard bootstrap arguments and interpolation
+allows to retrieve the whole surface t (cid:55)→ S(t) ∈ RN D for any times if needed.
+
+(cid:80) δSn(Ti)
+
+N
+
+Note that the constraints setting (4) is a quite general one. In particular, we can use a set of constraints to
+
+– Expectations: we can match any of the D marginal expectations T (cid:55)→ Fd(T ) :=(cid:82) xdµ(T,·) of any distribu-
+
+match exactly classical statistical measures. For instance
+
+tions using the constraint Fd(T, x) = xd in (4);
+
+Figure 2. Calibrated SX5E quantile for N = 256, D = 1.
+
+4
+
+Table 2
+Price of European Best-of options MAT 10Y
+
+MC N = 1048576
+
+N=32
+
+N=128
+
+D=1
+
+0.12578
+
+0.128275
+
+0.126521
+
+N=512
+
+0.125921
+
+(cid:16)
+
+(cid:17)2
+Cd1,d2(T, x) = (xd1−Fd1 (T ))(xd1−Fd2 (T ))
+
+constraints Vd(T, x) =
+
+xd − Fd(T )
+
+Vd1 (T )Vd2 (T )
+
+in (4);
+
+D=4
+
+0.35941
+
+0.340435
+
+0.349573
+
+0.359632
+
+D=16
+
+0.68796
+
+0.678092
+
+0.693397
+
+0.688982
+
+D=64
+
+1.0166
+
+0.927398
+
+0.982611
+
+1.0144
+
+– Variances: we can match any of the D marginal variances T (cid:55)→ Vd(T ) of any distributions using the
+
+– Correlations: we can match any correlation matrix T (cid:55)→ Cd1,d2 (T ), d1, d2 = 1..D, using the constraints
+
+, 1 ≤ d1 < d2 ≤ D in (4);
+
+2.3 Application to mathematical ﬁnance. For instance, consider Table 1, describing real constraints, corre-
+sponding to quotes of call options written over index SX5E having maturity 3 months (3M), that is P i(Ti, x) =
+(x−αiS(0))+, Ti = 3M , where αi is a percentage of today value S(0). Then Figure 2 shows a quantile calibrated
+to these quotes at time 3M. Constraints like (4) cannot be always matched. Even in an operational context,
+arbitrage occurs in market data and an important feature of our approach is that, since we solve a constrained
+problem, the calibration remains stable but cannot match constraints. Indeed, we can use this calibration algo-
+rithm to detect market arbitrages within a large variety of situations, and might also propose an explanation to
+highlight them.
+
+2.4 An example. To illustrate this feature, as well as the capacity of this calibration algorithm to handle
+higher dimensions and numerous constraint eﬃciently, consider a independant log-normal process Xd = eZd/10,
+d = 1.D, where Zd denotes a standard normal process. Table (2) presents, for D = 1, 4, 16, 64, N = 32, 128, 512,
+the computation of the expectation (6), for the function P (T, x) = (|x|∞ − K)+, with K = 1, (called a Best-
+of option), where |x|∞ = supd=1..D(|xd|), and T = 10Y . Table 2-line MC- presents reference computations
+using N = 1048576 × D sequence of a pseudo-random Mersenne twister MT19937, that are conﬁdent with
+√
+a relative error estimated to 0, 1% ∼ 1/
+1048576. The others columns presents the same computations, but
+using calibrated sequences S(T ) as described in this section, matching all expectations, all variances, and the
+whole correlation identity matrix, that is 2144 constraints for D = 64. Indeed, we noticed that this calibration
+procedure accelerates the convergence rate of Monte-Carlo sampling (6), as could be expected.
+2.5 The valuation algorithm. We now present some numerical results for (3), once the calibration step has
+been performed. In this valuation phase, we suppose that the quantile S(t,·) of the probability measure µ(t,·)
+is known, and the sampling set S(t) ∈ RN×D is computed as described in the previous section.
+Consider the linear equation (2) and denotes P (t) ∼ P (t, S(t)) ∈ RN×M an approximated solution, where t
+belongs to a ﬁxed time-grid. Let s ≤ t two consecutive times of this time grid. Then (2) is approximated using
+a classical Crank-Nicolson approach, and the solution is computed accordingly to
+
+P (s) = Π(t,s)P (t), Π(t,s) :=
+
+π(t,s)
+n,m
+
+∈ RN×N ,
+
+n,m=1,...,N
+
+(8)
+
+(cid:16)
+
+(cid:17)
+
+This matrix can be interpreted in a Markov-chaining process setting: π(t,s)
+
+where the matrix Π(t,s) (the approximated generator to the Kolmogorov equation (2)) is computed explicitly.
+n,m is the probability that the stochastic
+m ∈ RD. Hence an important property of this matrix is
+process jumps from the state St
+to be bi-stochastic, reﬂecting the fact that the underlying process deﬁnes a martingale process. Obviously, this
+bi-stochastic property is obtained after projecting the quantile t (cid:55)→ S(t,·) into a proper space of functions. In
+particular, consider any constraints P i(Ti,·) to the underlying process, see (4). Then, this bi-stochastic property
+implies the following discrete conservation of expectations for any time
+
+n ∈ RD to the state Ss
+
+P i(t, Sn(t)),
+
+0 ≤ t ≤ Ti
+
+(9)
+
+(cid:88)
+
+Ci =
+
+1
+N
+
+n=1,...,N
+
+For instance, considering the example treated in Table 2, (9) implies that the correlation matrix of the un-
+derlying process perfectly ﬁt the identity matrix for any time 0 ≤ t ≤ T . Solutions to the nonlinear prob-
+lem (3) are approximated adding nonlinear terms to the linear solution (8) at each time, as follows: P (s) =
+
+max(cid:0)Π(t,s)P (t),S(s, S(s), Π(t,s)P (t))(cid:1). Hence, once the transition matrices Π(t,s) computed, computing (3) is
+
+5
+
+Table 3
+American Call SX5E Mat 3M. Spot 3064.03
+
+Strike %
+
+Call values
+
+0.8
+
+0.9
+
+0.95
+
+0.975
+
+1
+
+1.025
+
+1.05
+
+1.1
+
+1.2
+
+comp. time
+
+559.224
+
+292.61
+
+180.78
+
+133.59
+
+93.76
+
+61.59
+
+37.99
+
+11.34
+
+0.31
+
+N=16
+
+650.54
+
+346.98
+
+209.90
+
+151.00
+
+103.16
+
+66.53
+
+40.23
+
+19.47
+
+0.31
+
+0.02 s.
+
+N=64
+
+650.54
+
+347.17
+
+210.27
+
+152.27
+
+104.19
+
+67.19
+
+40.68
+
+11.83
+
+0.31
+
+0.06 s.
+
+N=256
+
+650.54
+
+347.17
+
+210.29
+
+152.22
+
+104.33
+
+67.37
+
+40.79
+
+11.92
+
+0.31
+
+1.52 s.
+
+N=1024
+
+650.54
+
+347.20
+
+210.32
+
+152.23
+
+104.37
+
+67.40
+
+40.82
+
+11.91
+
+0.32
+
+77 s.
+
+mainly a matter of matrix-matrix multiplication. Indeed, for vector valued solutions of size M = N D (i.e. ∼
+32000 for N = 512, D = 64), no signiﬁcant slow down are noticed. Moreover, matrix-matrix multiplication is
+usually a quite optimized code, and this backward step can be easily distributed.
+
+3. Numerical experiments
+3.1 One-dimensional experiments. Our ﬁrst test is a one dimensional test, that consists in solving (3), with
+the same data as presented in Table 1, but using the strategy S(t, x, P ) = P − (x − Ki)+, corresponding to an
+american option exercise. We considered the data set in Table 1 to calibrate the underlying process, hence the
+quantile is the same as plotted in Figure 2. The qualitative properties of the solution are plotted in a serie of three
+ﬁgures, illustrating the retropagation steps for the special case Ki = 3064. The ﬁrst one, Figure 3, represents the
+n )}n=1..256. The second
+initial conditions at time T = 3M . It plots more precisely the surface {S3M
+n )}n=1..256. The third one plots the solution
+one, ﬁgure (3), plots the solution at time t = 1M , {S1M
+at time t = 6D, {S6D
+
+n )}n=1..256, that is the last computation time.
+
+n , P (6D, S6D
+
+n , P (1M, S1M
+
+n , P (3M, S3M
+
+Expectations of the solution at time T = 6D, that corresponds to fair american options prices, are presented
+in Table 3, with diﬀerents number of points N - we recall that N drives the precision of the computations
+- and diﬀerent strikes Ki, but the same as used for the calibration process. It has already been noted that
+these numerical schemes are very stable and accurate [5], as conﬁrmed by this table. Computation time is also
+conﬁrming the N 3 behavior of the algorithm. For D = 1, we could specialize the algorithm to get a complexity
+of order O(N ) (as in [5]), but we prefer to use the same algorithm, independently of the dimension D.
+
+Payoﬀ T = 3M
+
+T = 1M
+
+T = 6D
+
+Figure 3. P (T, S) at diﬀerent retropopagation time, N = 256
+
+3.2 Multi-dimensional experiments. Illustrating the multi-dimensional case is not an easy task, since there is
+no available benchmark. Hence, we propose here a benchmark, for which the error can be estimated. Consider
+the European Best-of options in Table 2, and consider the strategy S(t, x, P ) = P − (|x|∞ − 1)+ for times
+t = 1Y, . . . , 10Y , corresponding to a virtual product with annual exercise (Bermudean style option). Since the
+
+6
+
+Table 4
+Price of Bermudean Best-of options MAT 10Y
+
+MC N = 1048576
+
+D=1
+
+0.12578
+
+D=4
+
+0.35941
+
+D=16
+
+0.68796
+
+D=64
+
+1.0166
+
+N=32
+
+N=128
+
+N=512
+
+0.128275
+
+(0 %, 0.14 s.) 0.40047
+
+(8.1 %, 0.21s.)
+
+0.684418
+
+(0.46 %,2.3s.)
+
+0.927398
+
+(0.36 %, 152s.)
+
+0.126521
+
+(0 %, 1.30 s.) 0.38120
+
+(4.3 %, 2.49s.) 0.711784
+
+(1.30 %, 14.4s.) 0.985387
+
+(0.14 %, 304s.)
+
+0.125921
+
+(0 %, 121 s.)
+
+0.39757
+
+(5.0 %, 148s.)
+
+0.699329
+
+(0.74 %, 280s.)
+
+1.01721 (0.13 %, 1665s.)
+
+initial condition P (T, x) = (|x|∞ − 1)+ is convex, the solution remains convex, and the strategy should never
+be exercised, i.e. P (t, x) ≥ (|x|∞ − 1)+, where P is solution to the linear problem (2). The expectations of the
+solution (i.e. the fair price) can be estimated using results in Table 2.
+
+(cid:80)
+
+Table 4 presents the expection of the solution 1
+N
+
+n=1,...,N P i(t, Sn(t)), for t = 6D, computed with our
+algorithm. The error is estimated as a percentage with respect to (2), as well as an indicative computational
+time. These results show that the strategy is slightly exercized, i.e. the solution to the linear problem (2) does
+not satisfy P (t, x) ≥ (|x|∞−1)+ as expected. Indeed, this indicates that, even if we are using a numerical scheme
+that is convergent and stable, the solution presents small oscillations which could probably by suppressed by
+improving this step of the method.
+
+3.3 Concluding remarks. In this note we presented a methodology to solve parabolic / hyperbolic equations
+set in high dimensions. Even if it remains perfectible, the proposed can already conﬁdently be used in an
+industrial environment to compute risk measurements. There are numerous potential applications linked to the
+curse of dimensionality. We identiﬁed some of them in the insurance industry, but mainly in the ﬁnancial sector.
+Above pricing and hedging, allowing to issue new ﬁnancial products, more adapted to clients needs, or market
+abitraging, we are adressing risk measurements: indeed, the test realized in this paper shown that CoDeFi could
+compute accurate Basel-based regulatory measures as RWA (Risk Weighted Asset) or CVA (Credit Valuation
+Adjustment) on a single laptop, whereas farm of thousand of computers are used on a daily basis today with
+approximation methods. Finally, such a framework could be helpful in systemic risk measurements, that can be
+accurately modeled with high dimensional Kolmogorov equations like (3).
+
+References
+
+[1] V. Bally, G. Pages, and J. Printems, First-order schemes in numerical quantization method, Math. Finance 13 (2003), 116.
+
+[2] Y. Brenier, Polar factorization and monotone re-arrangements of vector-valued functions, Comm. Pure Appl. Math. 44 (1991),
+
+375–417.
+
+[3] P.G. LeFloch, J.M., Mercier, Revisiting the method of characteristics via a convex hull algorithm, J. Comput. Phys. 298
+
+(2015), 95–112.
+
+[4] P.G. LeFloch and J.M., Mercier, A framework to solve high-dimensional Kolmogorov equations, in preparation.
+
+[5] J.M., Mercier, Optimally transported schemes and applications in mathematical ﬁnance, Nov. 2008, notes available at
+
+http://www.crimere.com/blog/jean-marc/?p=336
+
+[6] J.M., Mercier, A high-dimensional pricing framework for ﬁnancial instruments valuation, April 2014, notes available at
+
+http://ssrn.com/abstract=2432019.
+
+[7] F.A. Longstaff and E.S. Schwartz, Valuing American options by simulation: a simple least-squares approach, The Rev.
+
+Financ. Studies 14 (2001), 113–147.
+
+[8] M. Matsumoto and T. Nishimura, Mersenne twister: a 623-dimensionally equidistributed uniform pseudo-random number
+
+generator, ACM Trans. Model. Comput. Simul. 8, (1998) 3–30.
+
+[9] P. von Peterdorff and C. Schwab, Numerical solution of parabolic equations in high dimensions, Math. Modl. Numer.
+
+Anal. 38 (2004), 93–127.
+
+[10] I.M. Sobol, Distribution of points in a cube and approximate evaluation of integrals, Zh. Vych. Mat. Mat. Fiz. 7 (1967),
+
+784802 (in Russian), translated in U.S.S.R Comput. Maths.
+
+[11] C.Villani, Optimal transport: old and new, Springer Verlag, 2006.
+
+[12] C. Homescu, Implied volatility surface: construction methodologies and characteristics, arXiv:1107.1834, unpublished.
+
+[13] M. Broadie and J. B. Detemple, Option pricing: valuation models and applications, Management Sc. 50 (2004), 1145–1177.
+
+7
+
+

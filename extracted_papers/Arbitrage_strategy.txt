@@ -1,0 +1,168 @@
+0
+1
+0
+2
+
+ 
+
+b
+e
+F
+4
+1
+
+ 
+
+ 
+ 
+]
+
+.
+
+N
+G
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+0
+4
+7
+2
+
+.
+
+2
+0
+0
+1
+:
+v
+i
+X
+r
+a
+
+ARBITRAGE STRATEGY
+
+CONSTANTINOS KARDARAS
+
+Abstract. An arbitrage strategy allows a ﬁnancial agent to make certain proﬁt out of nothing,
+i.e., out of zero initial investment. This has to be disallowed on economic basis if the market is
+in equilibrium state, as opportunities for riskless proﬁt would result in an instantaneous movement
+of prices of certain ﬁnancial instruments. The principle of not allowing for arbitrage opportunities
+in ﬁnancial markets has far-reaching consequences, most notably the option-pricing and hedging
+formulas in complete markets.
+
+It is diﬃcult to imagine of a normative condition that is more widely-accepted and unquestionable
+in the minds of anyone involved in the ﬁeld of Quantitative Finance other than the absence of
+arbitrage opportunities in a ﬁnancial market. Put plainly, an arbitrage strategy allows a ﬁnancial
+agent to make certain proﬁt out of nothing, i.e., out of zero initial investment. This has to be
+disallowed on economic basis if the market is in equilibrium state, as opportunities for riskless
+proﬁt would result in an instantaneous movement of prices of certain ﬁnancial instruments.
+
+Let us give an illustrative example of an arbitrage strategy in the foreign exchange market,
+commonly called the triangular arbitrage. Suppose that Kate, in London, is buying1 the U.S. dollar
+for €0.685. Tom, in San Francisco, is buying Japanese yen for $0.009419. Finally, Toru, in Tokyo,
+is buying one euro for U155.02. All these transactions are supposed to be able to occur at the
+same time. There is something particular in the situation just-described — something that could
+allow you to make riskless proﬁt. Let us see how. You borrow $10, 000 from your rich aunt Clara
+and tell her you will return the money in a matter of minutes. First, you approach Mary and
+change all your dollars to euros. This means that you will get €6, 850. With the euros in-hand,
+you contact Toru and change them into yen — you will get U(6, 850 × 155.02) = U1, 061, 887.
+Finally, you call Tom, wire him all your yen and change them back to dollars, which gets you
+$(1, 061, 887 × 0.009419) ≡ $10, 001.91. You give the $10, 000 back to you aunt Clara as promised,
+and you have managed to create $1.91 out of thin air.
+
+Although the above example is over-simplistic,
+
+it gives a clear idea of what arbitrage is: a
+position on a combination of assets that requires zero initial capital and results in a proﬁt with no
+risk involved. Let us now walk a step further and see what will happen under the situation of the
+preceding example. As more and more investors become aware of the discrepancy between prices,
+they will all try to use the same smart strategy that you used for their beneﬁt. Everyone will be
+trying to exchange U.S. dollars for euros in the ﬁrst step of the arbitrage, which will drive Mary to
+start buying U.S. dollar for less than €0.685, as a result of high demand for the euros she is selling.
+Similarly, Tom will start buying Japanese yen for less than $0.009419 and Toru will be buying euro
+for less than U155.02. Very soon, the situation will be such that nobody is able to make a riskless
+proﬁt anymore.
+
+The economic rationale behind asking for non-existence of arbitrage opportunities is exactly
+based on the discussion of the previous paragraph. If arbitrage opportunities were present in the
+
+1All the prices we are referring to in this example are bid prices of the currencies involved.
+
+1
+
+2
+
+CONSTANTINOS KARDARAS
+
+market, a multitude of investors would try to take advantage of them simultaneously. Therefore,
+there would be an almost instantaneous move of the prices of certain ﬁnancial instruments as a
+response to a supply-demand imbalance. This price movement will continue until there is no longer
+any opportunity for riskless proﬁt available.
+
+It is important to note that the above, somewhat theoretical, discussion does not imply that
+arbitrage opportunities never exist in practice. On the contrary, it has been observed that oppor-
+tunities for some, albeit usually minuscule, riskless proﬁt appear frequently as a consequence of the
+huge amount of distant geographic trading locations, as well as a result of the numerous ﬁnancial
+products that have sprung and are sometimes interrelated in complicated ways. Realizing that
+such opportunities exist is a matter of rapid access to information that a certain group of investors,
+so-called arbitrageurs2, has. It is rather the existence of arbitrageurs acting in ﬁnancial markets
+that ensures that when arbitrage opportunities exist, they will be ﬂeeting.
+
+The principle of not allowing for arbitrage opportunities in ﬁnancial markets has far-reaching
+consequences and has immensely boosted research in Mathematical Finance. The ground-breaking
+papers of F. Black and M. Scholes [1] and R. Merton [4], published at 19733, were the ﬁrst instances
+explaining how absence of arbitrage opportunities leads to rational pricing and hedging formulas for
+European-style options in a geometric Brownian motion ﬁnancial model. This idea was consequently
+taken up and generalized by many authors, and has lead to a profound understanding of the interplay
+between the economics of ﬁnancial markets and the mathematics of stochastic processes, reaching
+deep results.
+
+We close the discussion of arbitrages on a funny and light note. Such is the ﬁrm belief on the
+principle of not allowing for arbitrage opportunities in ﬁnancial modeling, that even jokes have been
+created in order to substantiate it further. We quote directly from Chapter 1 of [2], which can be
+used as an excellent, though more mathematically advanced, introduction to arbitrage.
+
+A professor working in Mathematical Finance and a normal4 person go on a walk
+and the normal person sees a €100 bill lying on the street. When the normal person
+wants to pick it up, the professor says: “Don’t try to do that.
+It is absolutely
+impossible that there is a €100 bill lying on the street. Indeed, if it were lying on
+the street, somebody else would have picked it up before you”.
+
+References
+
+[1] F. Black and M. Scholes, The pricing of options and corporate liabilities, The Journal of Political Economy,
+
+81 (1973), pp. 637–654.
+
+[2] F. Delbaen and W. Schachermayer, The mathematics of arbitrage, Springer Finance, Springer-Verlag, Berlin,
+
+2006.
+
+[3] J. C. Hull, Options, Futures, and Other Derivatives (7th Edition), Prentice Hall, May 2008.
+[4] R. C. Merton, Theory of Rational Option Pricing, Bell Journal of Economics, 4 (1973), pp. 141–183.
+
+Constantinos Kardaras, Mathematics and Statistics Department, Boston University, 111 Cumming-
+
+ton Street, Boston, MA 02215, USA.
+
+E-mail address: kardaras@bu.edu
+
+2See [3] for a classiﬁcation of investor types.
+3For this work, the authors were awarded the Nobel prize in Economics in 1997.
+4Is this bold distancing from normality of Mathematical Finance professors, clearly implied from the authors of
+[2], a decisive step towards illuminating the perception they have of their own personalities? Or is it just a gimmick
+used to add another humorous ingredient to the joke? The answer is left for the reader to determine.
+
+

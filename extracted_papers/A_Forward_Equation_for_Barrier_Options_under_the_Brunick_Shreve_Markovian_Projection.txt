@@ -1,0 +1,2960 @@
+6
+1
+0
+2
+
+ 
+
+p
+e
+S
+6
+1
+
+ 
+
+.
+
+ 
+ 
+]
+F
+M
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+5
+v
+8
+1
+6
+3
+
+.
+
+1
+1
+4
+1
+:
+v
+i
+X
+r
+a
+
+A FORWARD EQUATION FOR BARRIER OPTIONS UNDER THE
+
+BRUNICK&SHREVE MARKOVIAN PROJECTION
+
+BEN HAMBLY†, MATTHIEU MARIAPRAGASSAM† & CHRISTOPH REISINGER†
+
+Abstract. We derive a forward equation for arbitrage-free barrier option prices in continuous semi-
+martingale models, in terms of Markovian projections of the stochastic volatility process. This leads to
+a Dupire-type formula for the coeﬃcient derived by Brunick and Shreve for their mimicking diﬀusion
+and can be interpreted as the canonical extension of local volatility for barrier options. Alternatively, a
+forward partial-integro diﬀerential equation (PIDE) allows computation of up-and-out call prices under
+such a model, for the complete set of strikes, barriers and maturities from a single equation. In the same
+way as the vanilla forward Dupire PDE, the above-named forward PIDE can serve as a building block for
+an eﬃcient calibration routine including barrier option quotes. We propose a discretisation scheme for
+the PIDE as well as a numerical validation.
+
+1. Introduction
+
+Eﬃcient pricing and hedging of exotic derivatives requires a model which is rich enough to re-price
+accurately a range of liquidly traded market products. The case of calibration to vanilla options is
+now widely documented and has been considered extensively in the literature since the work of Dupire
+[10] in the context of local volatility models (see also Gy¨ongy’s formula [18]). Nowadays, the exact
+re-pricing of call options is a must-have standard, and LSV (local-stochastic volatility) models are the
+state-of-the-art in many ﬁnancial institutions because of their superior dynamic properties over pure local
+volatility. Various sophisticated calibration techniques are in use in the ﬁnancial industry, for example,
+based on the work of Guyon and Labord`ere [17] as well as Ren, Madan and Qian [20]. However,
+practitioners are increasingly interested in taking into account the quotes of touch and barrier options
+as well; the extra information they embed can be valuable in obtaining arbitrage-free values of exotic
+products with barrier features.
+
+A few published works already address this question from diﬀerent angles and under diﬀerent as-
+sumptions. For example, in Crosby and Carr [5] a particular class of models gives a calibration to both
+vanillas and barriers. Model-independent bounds on the price of double no-touch options were inferred
+from vanilla and digital option quotes in Cox and Obloj [7]. Pironneau [19] proves that the Dupire
+equation is still valid for a given barrier level, in a local volatility setting. The direct generalisation of
+this result to general stochastic volatility models appears not to be straightforward.
+
+† Mathematical Institute & Oxford-Man Institute
+
+University of Oxford
+Oxford OX2 6HD|6ED, UK
+{ben.hambly, matthieu.mariapragassam, christoph.reisinger}@maths.ox.ac.uk
+
+The authors gratefully acknowledge the ﬁnancial support of the Oxford-Man Institute of Quantitative Fin-
+ance and BNP Paribas London for this research project.
+
+1
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+2
+
+In our work, we approach the problem from the Brunick-Shreve mimicking point of view [3] in the
+general framework of continuous stochastic volatility models. We derive a condition to be satisﬁed by
+the expectation of the stochastic variance conditional on the spot and its running maximum, (St, Mt),
+in order to reproduce barrier prices. This conditional expectation is often referred to as a Markovian
+projection. For simplicity, we focus on up-and-out call options with no rebate and continuous monitoring
+of the barrier, but the analysis extends to other payoﬀ types. In the case of double barrier options, one
+would also have to consider the running minimum leading to an additional dimension and boundary term.
+The derivation is inspired by the work of Derman & Kani [9] and Dupire [10, 11]. In that context,
+Gy¨ongy’s mimicking result [18] provides the ﬁnancial engineer with a recipe to build a low-dimensional
+Markovian process which reproduces exactly any marginal density of the spot price process for all times
+t. Brunick and Shreve [3] extend Gy¨ongy’s result to path functionals of the underlying process, of which
+the running maximum is a special case. In particular, they prove for any stochastic volatility process the
+existence of a mimicking low-dimensional Markovian process with the same joint density for (St, Mt).
+
+In [13], Forde presents a way to retrieve the mimicking coeﬃcient by deriving a forward equation
+for the characteristic function of (St, Mt); computation of the coeﬃcient is possible via an inverse two-
+dimensional Fourier-Laplace transform. Here, we present an alternative method to retrieve the mimicking
+coeﬃcient, which lies closer to the well-known Dupire formula and can hence beneﬁt from the earlier
+work in the ﬁeld of vanilla calibration.
+
+We derive a partial-integro diﬀerential equation (PIDE) in strike, barrier level and maturity for up-
+and-out calls priced under the Brunick-Shreve model. This forward diﬀerential equation has the same
+useful properties (and drawbacks) as the Dupire forward PDE. As a consequence, it can be used to price
+a set of up-and-out calls in one single resolution. In this regard, our method shares some similarities
+with the forward equations derived by Carr and Hirsa [6]. We highlight a few key diﬀerences though.
+First, we consider the class of stochastic volatility models rather than local volatility models with a
+jump term. In working directly with Brunick and Shreve’s Markovian projection onto (St, Mt), we need
+to consider the running maximum explicitly in our derivation. This complicates the proof and makes
+the idea used in [6] – employing stopping times – not applicable in our case. For the above type of
+Markovian projection, one gets an unusual “integro” term in the PIDE involving a second derivative,
+which requires particular care in the numerical solution. In contrast, the “integro” term in [6] comes
+from the jump process and is not treated in the same way as ours.
+
+A very recent paper by Guyon [16] explains how path-dependant volatility models, like the Brunick-
+Shreve one, may be very useful to replicate a market’s spot-volatility dynamics, in particular highlighting
+the running maximum. It is important to note, though, that the diﬀusion of interest can be a fairly
+general stochastic process in our framework. More speciﬁcally, the variance process does not need to
+contain the running maximum in its parametrisation, and we do not particularly advocate the dynamic
+use of such a model here. Indeed, by doing so, one may ﬁnd oneself with the logical conundrum that
+the model for the underlying depends on the time of inception of the option, i.e., the time the clock
+starts for the running maximum. The view we take here is that the Brunick-Shreve projection is a “code
+book” (to borrow a term from [4]) for barrier option prices, to which other models may be calibrated.
+Additionally, the forward PIDE enables in principle the pricing over a wide set of up-and-out call deals,
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+3
+
+creating a possible eﬃcient direct solver for the inverse problem, i.e., to retrieve model parameters from
+any desired model class via the projected volatility σ(St, Mt, t).
+
+The remainder of this paper is organised as follows. In Section 2, we introduce the modelling setup
+and hypotheses and derive, as our ﬁrst main result, a forward equation (in terms of the maturity) for
+barrier option prices, where the strike and barrier levels are spatial variables. Next, in Section 3, we
+derive a Dupire-type formula for barrier options, leading to a known setup for the reader familiar with
+vanilla calibration. In order to build the ﬁrst step of a calibration routine to reprice up-and-out call
+options, we deduce a forward PIDE in Section 4 with better stability properties and develop a numerical
+solution scheme. Finally, in Section 5, we show that the forward PIDE and the “classical” backward
+pricing PDE agree on the price of barrier options, which validates our approach. Section 6 concludes.
+
+2. Setup and Main Result
+
+´
+time t, and continuously compounded deterministic dividend q(t). Then D(t) = exp(−
+discount factor, and Q(t) = exp(
+
+We consider a market with a risk-free, deterministic and possibly time-dependent short rate, r(t) at
+t
+0 r(u) du) is the
+We assume the existence of a ﬁltered probability space (χ, F,{Ft}t≥0, Q) with a (not necessarily
+
+t
+0 q(u) du) is the dividend capitalisation.
+
+unique) risk-neutral measure Q, under which the price process of a risky asset follows
+
+´
+
+(2.1)
+where W is a standard Brownian motion and αt is a continuous and positive Ft-adapted semi-martingale
+such that
+
+= (r(t) − q(t)) dt + αt dWt,
+
+dSt
+St
+
+EQ(cid:20)ˆ
+
+t
+
+0
+
+(cid:21)
+
+< ∞.
+
+α2
+uS2
+
+u du
+√
+
+(2.2)
+
+A practically important example is αt = f (St, t)
+
+Vt with a local volatility function f and a CIR
+
+process V , which is often referred to as a local stochastic volatility (LSV) model.
+
+In this paper, we consider an up-and-out call option on S with continuously monitored barrier B,
+
+strike K, and maturity T . The arbitrage-free price under Q is
+
+C(K, B, T ) = EQ(cid:2)D(T )(ST − K)+1MT <B
+
+(cid:3),
+
+where 1A is the indicator function of event A and
+
+Mt = max
+0≤u≤t
+
+Su
+
+the running maximum process of S. Adaptations of our results to other types of barrier options (such
+as put payoﬀs, down-and-out barriers etc) are easily possible using a similar derivation to below.
+
+We now derive the ﬁrst main result which links the barrier option price to the Markovian projection
+of the stochastic volatility (2.1) onto the spot and its running maximum (St, Mt)t≥0, which we deﬁne by
+
+σ2|S,M (K, B, T ) = EQ(cid:2)α2
+
+T | ST = K, MT = B(cid:3).
+
+(2.3)
+
+A recent result by Brunick and Shreve [3], which we apply to the process log(St), shows that under
+the integrability condition (2.2) on α, the function σ|S,M is measurable, and gives the existence of a
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+one-dimensional “mimicking” process (cid:98)S with running maximum (cid:99)M , such that for all t
+where (cid:98)S is the weak solution of
+d(cid:98)St(cid:98)St
+with a standard Brownian motion (cid:99)W on a suitable probability space, and
+
+(St, Mt) law= ((cid:98)St,(cid:99)Mt),
+(cid:16)(cid:98)St,(cid:99)Mt, t
+(cid:17)
+
+= (r(t) − q(t)) dt + σ
+
+d(cid:99)Wt,
+
+(2.4)
+
+(2.5)
+
+4
+
+σ(K, B, T ) = σ|S,M (K, B, T ).
+
+Remark. We can take two views of (2.5) from the perspective of derivative pricing. First, we can think
+of σ in (2.5) as a model in its own right, with a local volatility which additionally depends on the
+running maximum – see [16] for a discussion of “path-dependent” volatility models. This extra ﬂexibility
+of matching the path-dependence of the local volatility allows calibration to barrier contracts as well as
+vanillas, yet keeps the market complete.
+
+Second, and more common, a diﬀerent volatility model may be used, for instance the aforementioned
+LSV model. In that case, the mimicking Brunick-Shreve model will give the same barrier option prices
+as the higher-dimensional diﬀusion as barrier option values are characterised precisely by the joint
+distribution of spot and running maximum. This property is important for calibration purposes as we
+will describe later. In either case, σ plays a similar role for barrier options as the Dupire local volatility
+does for vanillas.
+
+Assumption 1. We assume that σ in (2.5) is bounded and C2,1,0(Ω × R+). This implies that ((cid:98)S,(cid:99)M )
+equivalently, ((cid:98)St,(cid:99)Mt) – has a twice diﬀerentiable transition density φ under Q, with bounded derivatives.
+
+is Markovian (see [2]; bounded and locally Lipschitz is suﬃcient). We also assume that (St, Mt) – or,
+
+Proposition 1. Under Assumption 1, the density φ is the classical solution of the following Kolmogorov
+forward equation in the region Ω = {(x, y) : 0 < x < y, S0 < y},
+
+∂φ
+∂t
+
+(2.6)
+
+(2.7)
+
+(2.8)
+
++ (r(t) − q(t))
+∂
+∂x
+
+∂
+∂x
+
+(cid:0)σ2x2φ(cid:1) +
+
+(cid:0)σ2x2φ(cid:1) = 0,
+(cid:0)σ2x2φ(cid:1) = (r(t) − q(t)) x φ,
+
+∂2
+(xφ) − 1
+∂x2
+2
+∂
+1
+∂y
+2
+φ(S0, S0, t) = 0,
+φ(x, y, 0) = δ(x − S0)δ(y − S0),
+
+(x, y) ∈ Ω, t > 0,
+
+x = y, t > 0,
+
+t > 0,
+(x, y) ∈ Ω.
+
+For completeness, we give a derivation of these equations in Appendix A.
+This initial-boundary value problem is the adjoint to the backward equation satisﬁed by the option
+value C as a function of St, Mt and t, which has a homogeneous Neumann boundary condition on
+the diagonal S = M .
+
+Remark. The assumption of smoothness of the joint density is non-trivial. For the Black-Scholes model,
+with constant σ, the joint density function is known explicitly and smooth. In a recent work, [14] show
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+5
+
+the existence of the joint density – not necessarily diﬀerentiable – of an Itˆo process X and its running
+minimum X, where the local volatility is a suﬃciently smooth and suitably bounded function of Xt
+and X t. We also note that although the density features in our proof, it does not appear in the ﬁnal
+result itself, and we conjecture that the regularity assumption may be weakened. Nonetheless, forward
+equations involving the transition density are widely used for calibration in practice and we envisage that
+(2.6) can also be a useful building block for calibration in the present framework. Therefore, it seems
+reasonable to require that the model has enough regularity for the density to satisfy such an equation.
+
+The time zero value of barrier options can then be written as
+
+C(K, B, T ) = D(T )
+
+(x − K)+1y<B φ(x, y, T ) dx dy
+
+(2.9)
+
+= D(T )
+
+K∨S0
+
+K
+
+y
+
+(x − K) φ(x, y, T ) dx dy.
+
+ˆ ∞
+ˆ
+
+S0
+B
+
+ˆ ∞
+ˆ
+
+0
+
+We can now extend the argument from Dupire [10] for European calls to derive a forward equa-
+
+tion for barriers.
+
+Theorem 2. Under (2.2) and Assumption 1, the value C(K, B, T ) of an up-and-out barrier call satisﬁes,
+for all 0 < K < B and T > 0,
++ (r(T ) − q(T ))K
+
+∂2C(K, B, T )
+
+∂2C(K, B, T )
+
+∂C(K, B, T )
+
+=
+
+∂B∂T
+
+∂K∂B
+
+(cid:18)
+
+σ2|S,M (K, B, T )K 2 ∂3C(K, B, T )
+1
+2
+(B − K)B2σ2|S,M (B, B, T )
+− 1
+2
+
+∂K 2∂B
+
+d
+dB
+
+− q(T )
+∂B
+∂3C(K, B, T )
+
+(cid:23)
+
+∂K 2∂B
+
+(cid:19)
+
+,
+
+K=B
+
+(2.10)
+
+where σ|S,M is given by (2.3).
+
+Proof. Because of Brunick and Shreve’s mimicking result, (2.4) and (2.5), and the smoothness as-
+sumption, we can work with a density satisfying the forward equation (2.6) and (2.7). We denote
+µ(t) = r(t) − q(t). Diﬀerentiating (2.9) with respect to B and T in the ﬁrst equation, using (2.6) in the
+second, and integrating by parts in the third, we obtain
+(x − K)
+
+= −r(T )
+
+∂2C(K, B, T )
+
+∂C(K, B, T )
+
+(x, B, T ) dx
+
++ D(T )
+
+ˆ
+
+B
+
+∂T ∂B
+
+∂B
+
+∂φ
+∂t
+
+K
+
++
+
+−µ(T )
+
+∂
+∂x
+
+(xφ(x, B, T )) +
+
+1
+2
+
+∂2
+∂x2
+
+(cid:0)σ2(x, B, T )x2φ(x, B, T )(cid:1)(cid:21)
+
+dx
+
+= −r(T )
+ˆ
+
+D(T )
+
+= −r(T )
+
+(cid:20)
+
+∂C(K, B, T )
+
+B
+
+∂B
+(x − K)
+
+K
+∂C(K, B, T )
+
+(cid:34)
+
++
+
+∂B
+−B(B − K)φ(B, B, T ) +
+
+ˆ
+
+B
+
+µ(T )D(T )
+
+D(T )(cid:0)σ2(K, B, T )K 2φ(K, B, T ) − σ2(B, B, T )B2φ(B, B, T )(cid:1) +
+
+K
+
+(x − K)φ(x, B, T ) dx + K
+
+(cid:0)σ2(x, B, T )x2φ(x, B, T )(cid:1)(cid:21)
+
+(cid:20) ∂
+
+∂x
+
+.
+
+x=B
+
+D(T )(B − K)
+
+1
+2
+1
+2
+
+(cid:35)
+
+φ(x, B, T ) dx
+
++
+
+ˆ
+
+B
+
+K
+
+(cid:20) ∂
+
+∂x
+
+ˆ
+
+Using the boundary condition (2.7) in the second line of
+
+(cid:0)σ2(B, B, T )B2φ(B, B, T )(cid:1) =
+
+d
+dB
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+6
+
+(cid:20) ∂
+(cid:0)σ2(x, B, T )x2φ(x, B, T )(cid:1)(cid:21)
+(cid:0)σ2(x, B, T )x2φ(x, B, T )(cid:1)(cid:21)
+(cid:20) ∂
+
+∂x
+
+x=B
+
+(cid:20) ∂
+
+∂B
+
++
+
+(cid:0)σ2(x, B, T )x2φ(x, B, T )(cid:1)(cid:21)
+
+x=B
+
++ 2µ(T )Bφ(B, B, T ),
+
+= −
+
+∂x
+
+we get, by another application of the product rule,
+
+(cid:0)(B − K)σ2(B, B, T )B2φ(B, B, T )(cid:1) = −(B − K)
+
+d
+dB
+
+x=B
+
+(cid:0)σ2(x, B, T )x2φ(x, B, T )(cid:1)(cid:21)
+
++
+
+2µ(T )(B − K)Bφ(B, B, T ) + σ2(B, B, T )B2φ(B, B, T ).
+
+x=B
+
+The result now follows by diﬀerentiating (2.9) once more to obtain
+
+(2.11)
+
+∂2C(K, B, T )
+
+∂K∂B
+
+∂3C(K, B, T )
+
+∂K 2∂B
+
+and substituting everything above.
+
+= −D(T )
+
+B
+
+φ(x, B, T ) dx,
+
+K
+
+= D(T )φ(K, B, T ),
+
+(cid:3)
+
+Remark. We can think of (2.10) in two ways. Given a model, either via σ directly or via a speciﬁcation
+that allows computation of the Markovian projection, the forward equation allows computation of barrier
+option prices across all strikes, maturities and barriers as the solution of a single PDE. Conversely, if
+barrier call prices are observed on the market, (2.10) allows inferences on the Markovian projection (2.3)
+of the volatility. As is the case with the Dupire formula for European calls, a continuum of prices is not
+available and some sort of interpolation is required and can be notoriously unstable. We will return to
+these points in depth in the following sections.
+
+For future reference, we deﬁne
+
+(cid:101)C(K, B, T ) = EQ(cid:2)D(T )Q(T )(ST − K)+1MT <B
+
+(cid:3),
+
+the capitalisation of the market price with dividends. By doing so, we eliminate the term q(T ) ∂C(K,B,T )
+
+if we replace C(K, B, T ) by (cid:101)C(K, B, T ) in (2.10). We will work with (cid:101)C in the remainder of the article.
+
+∂B
+
+3. A Dupire-Type Formula for Barrier Options
+
+The program we aim to complete is summarized in Fig. 3.1. Equation (2.10) cannot be solved for
+the Markovian projection σ|S,M directly, due to the presence of the term σ|S,M (B, B, T ). We derive
+a formula for σ|S,M as follows.
+
+At K = 0, (2.10) still holds and integration with respect to B gives
+
+∂(cid:101)C(0, B, T )
+
+∂T
+
+σ2|S,M (B, B, T )B3 ∂3(cid:101)C(K, B, T )
+
+∂K2∂B
+
+= − 1
+2
+
+(3.1)
+
+(cid:37)
+
+∀(B, T ) ∈ ]S0, +∞[ × R+∗ ,
+
+K=B
+
+noticing that because of (2.11) and (2.8) no integration constant appears.
+foreign no-touch option,
+
+It links the price of the
+
+(3.2)
+
+F N T (B, T ) = D(T )EQ
+
+[ST 1MT <B] =
+
+(cid:101)C(0, B, T )
+
+Q(T )
+
+,
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+7
+
+=
+
+σ2|S(K, t)
+
+σ2|S,M (K, B, t) = EQ(cid:2)α2
+
+↓
+
+Gy¨ongy [18]
+
+t | St = K(cid:3)
+
+EQ(cid:2)α2
+t | St = K ∩ Mt = B(cid:3) =
+
+=
+
+Dupire [10]
+
+↓
+
+∂C
+
+∂T −(r−q)(C−K ∂C
+∂K )
+
+1
+
+2 K2 ∂2C
+∂K2
+
+(3.4)
+
+↑
+
+Brunick & Shreve [3]
+
+Figure 3.1. Analogy of results for European and barrier options.
+
+to the market-implied joint-density of (St, Mt) at K = B; see (2.11). If we substitute (3.1) into the
+last term of (2.10), we get
+
+∂2(cid:101)C(K, B, T )
+∂2(cid:101)C(K, B, T )
+1
+=
+2
+Therefore, as B ≥ K in the case of interest,
+− (B − K)
+
+∂2(cid:101)C(K, B, T )
+
+∂(cid:101)C(0, B, T )
+
++ (r(T ) − q(T ))K
+
+∂K∂B
+
+∂B∂T
+
+(3.3)
+
+σ2|S,M (K, B, T )K 2 ∂3(cid:101)C(K, B, T )
+∂2(cid:101)C(0, B, T )
+
+∂K 2∂B
+
+∂B∂T
+
+∂T
+
+B
+
+− K
+B2
+
++ (r(T ) − q(T ))K
+
+∂2(cid:101)C(K, B, T )
+σ2|S,M (K, B, T )K 2 ∂3(cid:101)C(K, B, T )
+
+∂K∂B
+
+.
+
+∂K 2∂B
+
+=
+
+∂T ∂B
+
+1
+2
+
+(cid:16) (B−K)+
+
+∂(cid:101)C(0,B,T )
+
+∂
+
++
+
+B
+
+∂T
+
+∂B
+
+(cid:17)
+
+.
+
+By rearrangement of (3.3) we get the following Dupire-type formula.
+
+Corollary 3. Under the assumptions of Theorem 2, the unique Brunick-Shreve mimicking volatility for
+up-and-out call options is
+
+(cid:118)(cid:117)(cid:117)(cid:116) ∂2(cid:101)C(K,B,T )
+
+∂B∂T
+
+∂(cid:101)C(0,B,T )
+
+∂T
+
+− K
+
+B2
+
+(3.4)
+
+σ|S,M (K, B, T ) =
+
+∂2(cid:101)C(0,B,T )
+∂T ∂B + (r(T ) − q(T ))K ∂2(cid:101)C(K,B,T )
+− (B−K)
+2 K 2 ∂3(cid:101)C(K,B,T )
+,
+0 ≤ K ≤ B, T ≥ 0 .
+
+∂K2∂B
+
+∂K∂B
+
+B
+
+1
+
+This formula suﬀers from similar issues to those one ﬁnds with the evaluation of the standard Dupire
+formula, in that derivatives of the value function over a continuum of strikes and maturities are required.
+Practical approximations using the sparsely available data are necessarily sensitive to the method of
+interpolation.
+
+This is exacerbated here as (2.10) involves derivatives up to order four. The formula (3.4) can be
+expected to be numerically somewhat more stable since we replaced the higher-order derivative with
+respect to the strike at barrier level with ﬁrst and second order derivatives at zero strike. In addition
+to the numerical improvement, it is also easier in practice to retrieve barrier prices at zero strike with
+foreign no-touch prices, recalling (3.2), for which quotes are often available (e.g., in the FX markets).
+
+4. A Forward Partial-Integro Differential Equation For Barrier Options
+
+It is well known that ill-posed parameter estimation problems can often be regularised through a penal-
+ised optimisation routine, a good example of which is the calibration of local volatility through Tikhonov
+regularisation as presented, e.g., by Cr´epey [8], Egger and Engl [12], as well as Achdou and Pironneau [1].
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+8
+
+However, in order to achieve this, a suitable forward partial diﬀerential equation is required. We
+now propose a further rearrangement of (2.10), which is more suited to the numerical computation of
+C(K, B, T ) taking the Markovian projection σ|S,M as input.
+4.1. Formulation as PIDE. Equation (2.10) can also be expressed in PIDE form by integrating with
+respect to B. We start by integrating the diﬀusive term of (2.10),
+
+´
+
+B
+S0∨K
+
+2 σ2|S,M (K, b, T )K2 ∂3(cid:101)C(K,b,T )
+
+∂K2∂b
+
+1
+
+db =
+
+1
+
+2 σ2|S,M (K, B, T )K2 ∂2(cid:101)C(K,B,T )
+2 σ2|S,M (K, S0 ∨ K, T )K2 ∂2(cid:101)C(K,S0∨K,T )
+− 1
+´
+−
+B
+S0∨K
+
+2 K2 ∂2(cid:101)C(K,b,T )
+
+∂K2
+∂σ2|S,M (K,b,T )
+
+db.
+
+∂K2
+
+∂K2
+
+∂b
+
+1
+
+(4.1)
+
+(4.2)
+
+(4.3)
+
+(4.4)
+
+The term in the second line vanishes for all K and T . Indeed, when S0 ≥ K this option is already
+knocked-out. When S0 < K, the term is also zero as explained below in (4.5). The other terms can all
+be directly integrated with respect to B taking into account that, similarly, no integration constant will
+appear. This allows us to deﬁne the following initial boundary value problem.
+
+Corollary 4. Under the assumptions of Theorem 2, the up-and-out call price follows the Volterra-type
+PIDE, expressed as an initial boundary value problem,
+
+∂(cid:101)C(K, B, T )
+
+∂(cid:101)C(K, B, T )
+
++ (r(T ) − q(T ))K
+
+∂K
+σ2|S,M (B, B, T )B2(B − K)
+
+− 1
+2
+
+∂3(cid:101)C(B, B, T )
+
+∂K 2∂B
+
+∂T
+
+− 1
+2
+
+σ2|S,M (K, B, T )K 2 ∂2(cid:101)C(K, B, T )
+K 2 ∂2(cid:101)C(K, b, T )
+
+∂K 2
+
+−
+
+ˆ
+
+B
+
+=
+
+S0∨K
+
+∂σ2|S,M (K, b, T )
+
+1
+db ,
+2
+(K, B, T ) ∈ [0, +∞[ × ]S0, +∞[ × R+∗ ,
+
+∂K 2
+
+∂b
+
+(cid:101)C(K, B, 0) = (S0 − K)+1S0<B,
+(cid:101)C(B, B, T ) = 0,
+(cid:101)C(K, S0, T ) = 0,
+
+T = 0,
+
+K = B,
+
+B = S0.
+
+Figure 4.1. PIDE Domain and Boundaries
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+9
+
+The initial condition (4.2) is the payoﬀ obtained at maturity. Condition (4.3) expresses the fact
+that the option gets knocked out before being in-the-money if K = B, while (4.4) says the option gets
+knocked out immediately at inception if S0 = B.
+
+Remark. We note that in the models we will consider, no boundary condition needs to be speciﬁed at
+K = 0, since the coeﬃcients of the K-derivatives vanish suﬃciently fast as K → 0. This is the case, e.g.,
+if σ2|S,M and its B-derivative are bounded when K → 0.
+
+In fact, a boundary condition at K = 0 could be derived by diﬀerentiating (2.9) twice,
+
+= D(T )Q(T )
+
+B
+
+φ(0, y, T ) dy = D(T )Q(T )Q(S0 < MT < B | ST = 0)ψ(0, T ),
+
+∂2(cid:101)C(0, B, T )
+
+∂K2
+
+ˆ
+
+S0
+
+where ψ(0, T ) is the density of ST at 0. The latter is equal to zero since the density of the spot at zero
+is zero under the log-spot model in (2.1). Linearity conditions, also known as “Zero Gamma” for spot
+PDEs, are commonly used in ﬁnance and particularly useful for exotic contracts. They usually lead to
+stable numerical schemes (see Windcliﬀ [23]).
+
+We also note that
+
+(4.5)
+
+∂2(cid:101)C(B, B, T )
+
+∂K2
+
+= D(T )Q(T )Q(S0 < MT < B | ST = B)ψ(B, T ) = 0,
+
+because if the spot is equal to B at T , then the probability that the running maximum is smaller than
+B is zero. While we will use the Dirichlet condition on the boundary K = B for computations, (4.5)
+allows us to express the third order cross derivative in the second line of (4.1) by a third order derivative
+only with respect to K. Indeed,
+
+0 =
+
+d
+dB
+
+leading to
+
+(4.6)
+
+(cid:32)
+
+(cid:33)
+
+∂2(cid:101)C(B, B, T )
+∂3(cid:101)C(B, B, T )
+
+∂K2
+
+∂K3
+
+=
+
+∂3(cid:101)C(B, B, T )
+= − ∂3(cid:101)C(B, B, T )
+
+∂K3
+
+∂K2∂B
+
++
+
+.
+
+∂3(cid:101)C(B, B, T )
+
+∂K2∂B
+
+,
+
+The domain sketched in Fig. 4.1 is unbounded for large B. We denote BM ax the maximum value of
+barrier levels we will consider in the numerical solution. Note that because of the structure of (4.1),
+no boundary condition is needed for B = BM ax.
+
+4.2. Finite Diﬀerence Approximation. We deﬁne a uniform mesh which contains M +1 time points,
+N + 1 spatial points in the strike and P + 1 in the barrier variable, leading to the following deﬁnition
+of the step sizes:
+
+∆K = BM ax−S0
+Ki = i∆K,
+Bj = S0 + j∆B, ∆B = BM ax−S0
+Tm = m∆T ,
+
+P +1
+∆T = TM ax
+M +1 ,
+
+N +1
+
+,
+,
+
+i ∈(cid:74)0, N(cid:75),
+j ∈(cid:74)0, P(cid:75),
+m ∈(cid:74)0, M(cid:75).
+
+For simplicity, we impose ∆K = ∆B. This will ensure that for any Bj, the corresponding mesh line will
+contain at least all (Bu, Bj) for all u smaller than j, which is useful for the following algorithm.
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+10
+
+We can identify an interesting property of (4.1), especially visible with the substitution (4.6), in order
+to approximate the solution inductively on a discrete lattice. At B = S0, the solution is known to be
+uniformly zero over the strike and time variable. Assume now an approximate solution is known up to
+a certain B. Moving from B to B + ∆B, and approximating the integral by a quadrature rule, gives
+a PDE in time and strike at level B + ∆B, which can be solved by ﬁnite diﬀerences. From now on,
+we will refer to the PDE at a given barrier level Bj as a “PDE layer”. We can then solve the PIDE
+for each layer at points Bj from S0 to BM ax.
+
+We denote the discrete solution vector in such a layer by
+
+(cid:104)(cid:101)C(K0, Bj, Tm), . . . ,(cid:101)C(Bj, Bj, Tm)
+(cid:105)(cid:48)
+
+um
+
+.,j =
+
+of size nj = Bj−K0
+of size n × n.
+
+∆K
+
++ 1, where (cid:48) denotes the transpose. We also denote by In the identity matrix
+
+Derivatives. Derivatives are approximated by centered ﬁnite diﬀerences at each space point except at
+K = 0 and K = Bj, where they are computed, respectively, forward and backward. For the time
+being, the boundary conditions are not taken into account. We assume equally spaced points and
+deﬁne two operators as follows:
+
+(4.7)
+
+δKum
+
+i,j =
+
+δKKum
+
+i,j =
+
+2∆K
+
+i+1,j − um
+um
+i−1,j
+i+1,j − 2um
+um
+∆2
+K
+
+i,j + um
+
+i−1,j
+
+.
+
+The usual matrix derivative operator can be deﬁned for both the ﬁrst and second order derivative:
+
+
+
+2
+
+−1
+− 1
+0
+...
+0
+
+, D2 =
+
+1
+∆2
+K
+
+1
+
+0
+
+1
+2
+
+0
+. . .
+. . .
+. . . − 1
+...
+
+2
+
+...
+. . .
+. . .
+
+0
+...
+0
+
+0
+
+1
+2
+
+0 −1 1
+
+D =
+
+1
+∆K
+
+,
+
+
+
+1 −2
+1 −2
+. . .
+0
+...
+. . .
+...
+0
+
+(0)
+...
+
+1
+
+1
+. . .
+. . .
+
+0
+0
+
+0
+
+...
+
+(0)
+. . .
+. . .
+
+0
+...
+0
+...
+. . .
+. . .
+0
+1 −2 1
+1 −2 1
+
+
+
+.
+
+We also deﬁne the forward time diﬀerence operator
+
+δT um
+
+i,j =
+
+i,j − um
+um+1
+
+i,j
+
+∆T
+
+.
+
+Integral. The integral term will be computed using the trapezoidal quadrature rule. This yields an order
+two consistent approximation. The term of interest is
+
+F (Ki, Bj, Tm) =
+
+ˆ
+
+Bj
+S0∨K
+
+− 1
+2
+
+K2
+i
+
+∂2(cid:101)C(Ki, b, Tm)
+
+∂σ2|S,M (Ki, b, Tm)
+
+db.
+
+∂K2
+
+∂b
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+11
+
+Let us assume that we know an approximation to the solution of the PIDE for the discrete set of barriers
+(Bn)n<j. We also know that, when the barrier is at the spot level, the integrand is zero. Hence,
+
+F (Ki, Bj, Tm) = − j−1(cid:88)
++ O(cid:0)∆2
+
+− 1
+4
+
+K2
+i
+
+n=1
+
+∂2(cid:101)C(Ki, Bn, Tm)
+
+1
+2
+
+K2
+i
+
+(cid:32)
+∂2(cid:101)C(Ki, Bj, Tm)
+(cid:1).
+
+∂K2
+
+∂K2
+
+B
+
+∂σ2|S,M (Ki, Bn, Tm)
+
+∂B
+
+∆B
+
+∂σ2|S,M (Ki, Bj, Tm)
+
+∂B
+
+∆B
+
+(cid:33)
+
+(4.8)
+
+The sum in the ﬁrst line can be computed for all Ki and Tm in a forward induction over j, as the
+solution is known for all the barrier levels involved. This sum is then treated as a source function for
+the PDE layer of level Bj. We deﬁne a vector
+
+(cid:19) (cid:21)
+
+(cid:20)
+
+(cid:18)
+
+−(cid:80)j−1
+
+n=1
+
+f m
+.,j =
+
+1
+2 K2
+
+i δKKum
+i,n
+
+∂σ2|S,M (Ki,Bn,Tm)
+
+∂B
+
+∆B
+
+.
+
+i=0,1,...,nj
+
+The remaining term in (4.8) gives a small correction to the diﬀusion at Bj and we can incorporate it
+in the discretisation of the corresponding diﬀusive term of (4.1).
+
+Boundary Derivative Term. To approximate the “boundary derivative” at (B, B, T ) in (4.1), we use (4.6)
+and a ﬁrst order approximation to the third derivative with discretisation matrix written as
+
+0 . . . 0 0 −1 3 −3 1
+
+...
+...
+0 . . . 0 0 −1 3 −3 1
+
+(0)
+
+...
+
+...
+
+...
+
+...
+
+...
+
+.
+
+Φ =
+
+1
+∆3
+K
+
+As this term is present in the discretised equation for all interior mesh points, this reduces the consistency
+order in ∆K of the overall scheme to one. We found higher order ﬁnite diﬀerences to be unstable.
+
+Remark. A second order accurate stable scheme can be obtained by using (2.11) to replace the third order
+derivative at the boundary by the density, which can be found by solving the Kolmogorov forward equation
+(2.6) numerically.
+
+PIDE in Terms of Matrix Operations. If we take into account the ﬁnite diﬀerence approximations and
+quadrature rule for the integral, it is now possible to give a discretised PIDE, for a given triplet (i, j, m) ∈
+
+(cid:33)
+
+(cid:74)0, N(cid:75) ×(cid:74)0, M(cid:75) ×(cid:74)0, P(cid:75) by
+i,j + (r(Tm) − q(Tm))KiδKum
+
+δT um
+
+(cid:32)
+
+i,j − 1
+2
+
+σ2|S,M (Ki, Bj, Tm) − 1
+2
+
+∂σ2|S,M (Ki, Bj, Tm)
+
+∂B
+
+∆B
+
+K2
+
+i δKKum
+i,j
+
+(4.9)
+
++
+
+σ2|S,M (Bj, Bj, Tm)B2
+
+1
+2
+
+− j−1(cid:88)
+
+n=1
+
+j (Bj − K)+δ−
+∂σ2|S,M (Ki, Bn, Tm)
+
+KKBum
+
+nj ,j =
+
+∂B
+
+∆B,
+
+1
+2
+
+K2
+
+i δKKum
+i,j
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+12
+
+and specify the coeﬃcient matrices
+
+.,j = (r(Tm) − q(Tm))diag(cid:0)K0, ..., Knj
+
+Am
+
+(cid:32)
+(cid:18)(cid:16)
+
+.,j = − 1
+Bm
+2
+
+.,j = − 1
+Cm
+2
+
+diag
+
+σ2|S,M (Ki, Bj, Tm)K2
+
+diag
+
+σ2|S,M (Bj, Bj, Tm)B2
+
+(cid:32)(cid:18)
+
+(cid:18)
+
+.,j = − 1
+Bm
+2
+
+diag
+
+σ2|S,M
+
+Ki, Bj − ∆B
+2
+
+, Tm
+
+K2
+i
+
+Remark. We can also approximate Bm
+
+.,j further by Taylor expansion,
+
+K2
+i
+
+i − 1
+2
+
+(cid:1),
+j (Bj − Ki)+(cid:17)
+(cid:19)
+
+,
+
+(cid:33)
+i∈(cid:74)0,nj(cid:75)
+
+∆B
+
+∂σ2|S,M (Ki, Bj, Tm)
+
+∂B
+
+(cid:19)
+
+.
+
+i∈(cid:74)0,nj(cid:75)
+(cid:19)
+i∈(cid:74)0,nj(cid:75)
+
+(cid:33)
+
++ O(cid:0)∆2
+
+B
+
+(cid:1),
+
+which has a negative sign irrespective of the mesh size and does not alter the convergence order.
+
+Under forward Euler time stepping, the complete scheme can be more compactly written as
+
+.,j − um
+um+1
+
+.,j
+
+∆T
+
++ Lm
+
+.,j = f m
+.,jum
+.,j,
+.,jD + Bm
+Lm
+.,j = Am
+
+.,jD2 + Cm
+
+.,jΦ.
+
+Under θ-time-stepping, the scheme becomes
+
+(cid:16)
+
+(cid:17)
+
+.,j =(cid:0)Inj − (1 − θ)∆T Lm
+
+.,j
+
+um+1
+
+(cid:1)um
+
+Inj + θ∆T Lm+1
+
+.,j
+
+.,j + θ∆T f m+1
+
+.,j + (1 − θ)∆T f m
+.,j.
+
+This includes the second-order accurate Crank-Nicolson scheme for θ = 0.5, which is used for our
+numerical computations.
+
+This section shows that we can adapt the classical tools of ﬁnite diﬀerence methods in order to solve this
+PIDE. Each of the layers being a one-dimensional PDE, it is solved by successive roll-forward performed
+by a Gaussian elimination. Although the Thomas algorithm cannot be applied directly since Lm
+.,j is not
+tri-diagonal (even after applying the necessary boundary conditions), a sparse Gaussian elimination will
+still be O(n) as the dense sub-matrix has a ﬁxed number of columns.
+
+Solution Algorithm. We conclude with a summary of a possible algorithm to solve the PIDE numerically:
+
+(cid:1)
+
+.,j =(cid:0)(S0 − Ki)+1S0<Bj
+
+Algorithm 1 PIDE Discretisation
+i∈(cid:74)0,N(cid:75)
+u0
+um
+.,0 = 0
+(cid:16)
+f m
+.,0 = 0
+for ( j = 0 ; j ≤ P ; j + +) do
+(cid:17)
+um
+.,j
+
+solve Bj−layer PDE for
+
+(cid:16)
+
+Inj + θ∆T Lm+1
+.,j+1 from f m
+
+.,j
+
+compute f m
+
+end for
+
+(cid:17)
+.,j =(cid:0)Inj − (1 − θ)∆T Lm
+m∈(cid:74)0,M(cid:75):
+
+.,j
+
+um+1
+
+.,j and um
+
+.,j (for j < P )
+
+(cid:1)um
+
+.,j + θ∆T f m+1
+
+.,j + (1 − θ)∆T f m
+
+.,j
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+13
+
+5. Numerical Results
+
+5.1. Pricing Under the Mimicking Brunick-Shreve Model. For validation purposes of the forward
+equation, we will use a numerical solution of the backward pricing PDE in the Brunick-Shreve model.
+The backward PDE gives the price over a range of S and M and t, for ﬁxed K, B and T .
+Augmented State Feynman-Kac PDE. Recall that the spot diﬀusion of the underlying under Q is
+
+(5.1)
+
+= (r(t) − q(t)) dt + σ(St, Mt, t) dWt.
+
+dSt
+St
+
+We note that the spot process is not Markovian anymore due to the dependence of the volatility on the
+running maximum. Hence, we cannot use the standard one dimensional Feynman-Kac PDE with Dirich-
+let boundary condition, but need to augment the state space even for barrier options (as well as European
+options). Assume that strike K, barrier B and maturity T are all ﬁxed. Then, following identical steps
+to the derivation by Shreve [21] in the Black-Scholes case, we get the following (see Appendix A).
+
+Proposition 5. Under a Brunick-Shreve model (5.1), the up-and-out call price C deﬁned in the region
+ΩB = {(x, y) : 0 < x < y, S0 < y < B} is the solution to the following initial boundary value problem:
+
+(5.2)
+
+∂C
+∂t
+
++ (r(t) − q(t))x
+
+∂C
+∂x
+
++
+
+1
+2
+
+x2σ2(x, y, t)
+
+∂2C
+
+∂x2 − r(t)C = 0,
+
+C(0, y, t) = 0,
+C(x, y, T ) = (x − K)+1y<B,
+
+(cid:23)
+
+∂C(x, y, t)
+
+∂y
+
+x=y
+
+= 0,
+
+C(x, B, t) = 0,
+
+(x, y) ∈ ΩB, 0 < t < T,
+t ≤ T,
+y > S0,
+
+y > S0,
+x > 0, t ≤ T.
+
+Finite Diﬀerence Approximation. We brieﬂy explain the numerical solution of (5.2).
+
+We ﬁrst notice that (5.2) is a classical Black-Scholes PDE (where the volatility is a function of S,
+a “parameter” M , and t), and derivatives with respect to y only enter via the Neumann boundary
+condition (on the diagonal x = y). This means that for a ﬁxed y, we have to solve a Black-Scholes
+type PDE on [0, y] × {y}. From now on, the one-dimensional PDE for a given level of y will be
+referred to as a “PDE layer”.
+
+If y = B, then C(x, y, t) = 0 for all x. We can then use the Neumann boundary condition to bootstrap
+backwards in y from B to S0. To illustrate the idea, consider now y = B − ∆y for a mesh size ∆y, then
+∂C(x, y, t)
+
++ O(∆y) = 0 =⇒ C(y, y, t) = C(y, y + ∆y, t) + O(cid:0)∆2
+
+C(y, y + ∆y, t) − C(y, y, t)
+
+(cid:23)
+
+(cid:1).
+
+y
+
+∂y
+
+x=y
+
+=
+
+∆y
+
+We can build the next PDE layer at y using an approximate Dirichlet boundary condition at x = y,
+C(y, y, t) ≈ C(y, y + ∆y, t) (here, 0). Subsequent PDE layers can be constructed similarly by backward
+reasoning. We will describe a higher-order version below. The solution in each layer will then depend
+on layers with greater y via this boundary condition. The premium value is retrieved from C(S0, S0, 0).
+We now describe the construction of meshes of the form (xj(y), y)j=1,...,Nx(y) for layer y, as well as
+of the spacing of points in the y-direction. The best accuracy was achieved numerically with a reﬁned
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+14
+
+running maximum grid close to S0 and, for each y, a uniformly spaced spot grid (except for nodes close
+to the diagonal, as detailed below).
+
+Denote by ∆y a desired target mesh width. Then for the y-mesh we choose Ny =
+
+an exponential grading as deﬁned in [22], so that ∀ i∈(cid:74)0, Ny(cid:75):
+
+(cid:108) B−S0
+
+(cid:109)
+
+∆y
+
+points with
+
+yi = (S0 − θ) + θ exp(λzi),
+λ = 2,
+
+θ =
+
+zi =
+
+.
+
+B − S0
+eλ − 1
+i
+
+,
+
+(Ny + 1)
+
+The construction of the mesh, illustrated in Figure 5.1, ensures that yi lies on the grid of the PDE
+layer of levels yi+1 and yi+2, and hence no interpolation is needed to retrieve the boundary condition
+for the next PDE layer as described in the next paragraph.
+
+Figure 5.1. Mesh construction for backward equation. The spot grid is recomputed
+for every PDE layer to be (xj(yi), yi), where xj = j∆x, j < Nx − 2, xNx−j = yi−j,
+j ∈ {0, 1, 2}, ∆x = yi−2/(Nx − 2) and Nx = (cid:100)yi/∆y(cid:101) to keep the spacing approximately
+constant.
+
+In order to increase accuracy from the numerical boundary condition described at the start of this
+section, we use second order Taylor expansion in y-direction instead of a simple backward ﬁnite diﬀerence
+for all yi with i < Ny − 1. The bootstrap idea stays the same. Indeed, write c(y) = c(yi, y, t) where
+2 (y − yi)2c(cid:48)(cid:48)(yi) + o(cid:0)(y − yi)2(cid:1) (as c(cid:48)(yi) = 0 by the boundary condition).
+yi is a certain given level of the y-discretisation and c(cid:48)(y) = ∂c(yi,y,t)
+. We consider a Taylor expansion
+around y = yi: c(y) = c(yi) + 1
+(yi+2−yi)2−(yi+1−yi)2 (c(yi+1) − c(yi+2)). This
+Using this at points yi+1 and yi+2, we get c(yi) = c(yi+2) +
+is then used as a boundary value at yi. The ﬁrst layer at Ny − 1 is treated with a ﬁrst order backward
+diﬀerence as described previously.
+
+(yi+2−yi)2
+
+∂y
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+15
+
+5.2. Numerical Validation. Our numerical validation consists in pricing a set of up-and-out call op-
+tions for diﬀerent strikes, maturities and barriers with:
+
+(1) the Forward PIDE (4.1) and one numerical solution for the whole set of deal parameters;
+(2) the Backward Feynman-Kac PDE (5.2) and as many solutions as triplets of deal parameters.
+
+The goal is to make them match with about one basis point tolerance.
+
+The Brunick-Shreve volatility is generated with an SVI parametrisation in both barrier and strike
+
+dimension (details can be found in [15]) deﬁned as
+
+(cid:18)
+(cid:115)
+
+1
+2
+
+(cid:18)
+(cid:18)
+
+(cid:18) x
+
+(cid:19)
+
+S0
+
+(cid:113)
+
+(cid:19)
+
+(cid:18)
+
+(cid:19)
+
+(cid:19)(cid:19)
+
+, t + 1
+
+,
+
+(cid:18) y
+
+S0
+
+log
+
+(cid:19)
+
+(5.3)
+
+σ(x, y, t) =
+
+σSV I
+
+log
+
+, t + 1
+
++ σSV I
+
+σSV I (k, t) =
+
+a + b
+
+ρ(k − m) +
+
+(k − m)2 + σ2
+
+.
+
+The Brunick-Shreve volatility surface has a shape as in Figure 5.2.
+
+Figure 5.2. Assumed Brunick-Shreve volatility surface as per (5.3), where a = 0.04, b =
+0.2, σ = 0.2, ρ = m = 0, and T ∈ {0.1, 0.5, 1}.
+
+The spot is S0 = 100, the risk-free rate is r = 0.1 and the dividend yield is q = 0.05.
+We use the numerical schemes as described in 4.2 and 5.1 for the PIDE and PDE solution, respectively,
+with Crank-Nicolson time stepping. The discretisation parameters are N = P = Ny = 1000 space steps
+(with Nx adjusted as described) and M = 1000 time steps.
+
+We compare prices for (K, B, T ) covering the set [0, 120] × [100, 120] × {1} with 120 points in strike
+and 40 points in barrier levels, see Table 1. The error is computed as the relative error if the net present
+value (NPV) is above one and as absolute error otherwise.
+
+Average Diﬀerence Maximum Diﬀerence
+
+4.6e-5
+
+3.5e-4
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+16
+
+Table 1. Diﬀerence between forward and backward solutions over strikes between 0 and
+120, and up-and-out barriers between 100 and 120, all for maturity 1.
+
+We can analyse more precisely the behaviour for a few barrier levels. For example, Figure 5.3 shows
+
+the diﬀerence as a function of strike. The associated values for a barrier ﬁxed at 120 are in Table 2.
+
+Strike Forward Backward Rel.
+Diﬀ.
+
+PIDE
+
+PDE
+
+42.1486
+37.8568
+33.5650
+29.2732
+24.9815
+20.6929
+16.4264
+12.2535
+8.3436
+4.9677
+2.4168
+0.8472
+0.1547
+0.0023
+0.0000
+
+42.1486
+37.8567
+33.5649
+29.2731
+24.9815
+20.6928
+16.4263
+12.2536
+8.3438
+4.9680
+2.4170
+0.8472
+0.1546
+0.0023
+0.0000
+
+0
+9
+18
+27
+36
+45
+54
+63
+72
+81
+90
+99
+108
+117
+120
+Table 2. Results and relative er-
+rors for diﬀerent strikes; barrier =
+120, forward = 105.13.
+
+1e-06
+1e-06
+2e-06
+2e-06
+3e-06
+3e-06
+2e-06
+5e-06
+2e-05
+6e-05
+9e-05
+9e-07
+1e-04
+8e-05
+
+0
+
+Figure 5.3. Forward PIDE vs
+Backward PDE:
+up-and-out call option prices with
+Brunick-Shreve volatility, S = 100
+and T = 1.
+
+The results match with the desired accuracy.
+
+6. Conclusions
+
+In this paper, we provided a new and numerically eﬀective way to work with observed barrier option
+prices to determine the Brunick-Shreve Markovian projection of a stochastic variance of a semi-martingale
+S with running maximum M onto (St, Mt). The present Dupire-type formula, which provides similar
+advantages (and disadvantages) as the standard Dupire approach for vanillas, was then re-arranged to
+obtain a forward PIDE, which is convenient to control the numerical stability of best ﬁt algorithms
+[8]. There is a well-known literature on the calibration of vanilla options through Markovian projection
+for LSV models (see Guyon and Labord`ere [17] and Ren, Madan and Quian [20]). We believe that
+extending these methods combined with the Forward PIDE we presented in this paper will lead to novel
+calibration algorithms for barrier options.
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+17
+
+Acknowledgements
+
+The authors thank Marek Musiela from the Oxford-Man Institute, Alan Bain and Simon Mc-
+
+Namara from BNP Paribas London as well as an anonymous referee for their insightful comments.
+
+References
+
+[1] Yves Achdou and Olivier Pironneau. Computational Methods for Option Pricing. Frontiers in applied mathematics.
+
+Society for Industrial and Applied Mathematics, Philadelphia, 2005.
+
+[2] Gerard Brunick. Uniqueness in law for a class of degenerate diﬀusions with continuous covariance. Probab. Theory
+
+Relat. Fields, 155:265–302, 2011.
+
+[3] Gerard Brunick and Steven Shreve. Mimicking an Itˆo process by a solution of a stochastic diﬀerential equation. Ann.
+
+Appl. Probab., 23(4):1584–1628, 2013.
+
+[4] Ren´e Carmona and Sergey Nadtochiy. Local volatility dynamic models. Finan. Stoch., 13(1):1–48, 2009.
+[5] Peter Carr and John Crosby. A class of L´evy process models with almost exact calibration to both barrier and vanilla
+
+FX options. Quant. Finance, 10(10):1115–1136, 2010.
+
+[6] Peter Carr and Ali Hirsa. Forward evolution equations for knock-out options. In Michael C. Fu, Robert A. Jarrow,
+Ju-Yi J. Yen, and Robert J. Elliott, editors, Advances in Mathematical Finance, Applied and Numerical Harmonic
+Analysis, pages 195–217. Birkh¨auser Boston, 2007.
+
+[7] Alexander M.G. Cox and Jan Ob(cid:32)l´oj. Robust pricing and hedging of double no-touch options. Finan. Stoch., 15(3):573–
+
+605, 2011.
+
+[8] St´ephane Cr´epey. Tikhonov regularization. Encyclopedia of Quantitative Finance, pages 1807–1812, 2010.
+[9] Emanuel Derman, Iraj Kani, and Michael Kamal. Trading and hedging local volatility. Goldman Sachs, Quantitative
+
+Strategies Research Notes, 1996.
+
+[10] Bruno Dupire. A uniﬁed theory of volatility. In Peter Carr, editor, Derivatives Pricing: The Classic Collection. Risk
+
+Books, London, 2004.
+
+[11] Bruno Dupire. Functional Itˆo calculus. Bloomberg Portfolio Research Paper 2009-04-FRONTIERS, Bloomberg, 2009.
+
+SSRN: http://ssrn.com/abstract=1435551.
+
+[12] Herbert Egger and Heinz W Engl. Tikhonov regularization applied to the inverse problem of option pricing: convergence
+
+analysis and rates. Inv. Probl., 21(3):1027, 2005.
+
+[13] Martin Forde. On the Markovian projection in the Brunick-Shreve mimicking result. Stat. & Probab. Lett., 85:98–105,
+
+2013.
+
+[14] Martin Forde, Andrey Pogudin, and Hongzhong Zhang. Hitting times, occupation times, tri-variate laws and the
+
+forward Kolmogorov equation for one-dimensional diﬀusion with memory. Adv. Appl. Probab., 45(3):595–893, 2013.
+
+[15] Jim Gatheral. The Volatility Surface: a Practitioner’s Guide. John Wiley & Sons, Hoboken, N.J, 2006.
+[16] Julien Guyon. Path-dependent volatility. Risk Magazine, Sept. 2014.
+[17] Julien Guyon and Pierre Henry-Labordere. The smile calibration problem solved. Soci´et´e G´en´erale, SSRN.1885032,
+
+2011.
+
+[18] Istv´an Gy¨ongy. Mimicking the one-dimensional marginal distributions of processes having an Itˆo diﬀerential. Probab.
+
+Theory Relat. Fields, 71(4):501–516, 1986.
+
+[19] Olivier Pironneau. Dupire-like identities for complex options. Compte rendu de l’acad´emie des sciences I, 344:127–133,
+
+2007.
+
+[20] Yong Ren, Dilip Madan, and Michael Qian Qian. Calibrating and pricing with embedded local volatility models. Risk
+
+Magazine, Sep. 2007.
+
+[21] Steven E. Shreve. Stochastic Calculus for Finance II: Continuous-time Models. Springer Finance. Springer-Verlag, New
+
+York, 2004.
+
+[22] Richard White. Numerical solution to PDEs with ﬁnancial applications. OpenGamma Quantitative Research, 2013.
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+18
+
+[23] Heath Windcliﬀ, Peter A. Forsyth, and Ken R.Vetzal. Analysis of the stability of the linear boundary condition for the
+
+Black-Scholes equation. J. Comput. Fin., 8:65–92, 2004.
+
+Appendix A. Derivation of the Kolmogorov Forward and Backward Equations
+
+In this section, we derive the forward and backward Kolmogorov equations for a model of the type
+
+= (r(t) − q(t)) dt + σ(St, Mt, t) dWt,
+
+dSt
+St
+Mt = max
+0≤u≤t
+
+Su
+
+and under Assumption 1.
+
+The Backward Equation (Derivation of Proposition 5). We ﬁrst note that the up-and-out call
+is a traded contract. As a consequence, the discounted price process D(t)Ct is a martingale under the
+risk-neutral measure Q. Hence
+
+D(t)Ct = EQ(cid:2)D(T )(ST − K)+1MT <B | Ft
+(cid:3)
+D(t)v(x, y, t) = EQ(cid:2)D(T )(ST − K)+1MT <B | St = x, Mt = y(cid:3)
+
+0 ≤ t ≤ T.
+
+Furthermore, as (St, Mt) is a Markovian vector, there exists a function v such that
+
+∀(x, y) ∈ ΩB, 0 ≤ t ≤ T.
+
+We assume that v is smooth and belongs to the space C2,1,1(ΩB × R+). Now write
+
+Ct = v(St, Mt, t).
+
+By the Itˆo-Doeblin lemma and recalling that the running maximum process M has ﬁnite variation,
+
+zero quadratic variation and zero cross-variation with S,
+
+d(D(t)Ct) = −r(t)D(t)Ct dt + D(t)
+
+dt +
+
+∂v
+∂x
+
+dSt +
+
+∂v
+∂y
+
+dMt +
+
+1
+2
+
+∂2v
+∂x2 d[S]t
+
+The process D(t)Ct is a martingale if and only if
+
+(A.1)
+
+∂v
+∂t
+
+− r(t)v + (r(t) − q(t))x
+
+∂v
+∂x
+
++
+
+1
+2
+
+∂x2 = 0,
+
+(x, y) ∈ ΩB, 0 < t < T,
+
+(cid:21)
+
+.
+
+(cid:20) ∂v
+
+∂t
+
+(cid:23)
+
+σ2x2 ∂2v
+∂v
+∂y
+
+x=y
+
+This gives the desired backward PDE. We note that the boundary condition is equivalent to
+
+(A.2)
+
+dv(y, y, t)
+
+dy
+
+=
+
+∂v(x, y, t)
+
+∂x
+
+= 0,
+
+y > S0.
+
+(cid:23)
+
+.
+
+x=y
+
+The Forward Equation (Derivation of Proposition 1). We assume as before that the joint density
+function φ of the process (St, Mt) exists and belongs to the space C2,1,1(Ω × R+).
+
+Let h ∈ C2,1(Ω) be a test function of two (spatial) variables. We also assume that h and its derivatives
+
+vanish for x = 0. We denote µ(t) = r(t) − q(t).
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+19
+
+We apply the Itˆo-Doeblin lemma and get:
+
+h(St, Mt) = h(S0, M0)
+
+(cid:21)
+
+du
+
+∂2h(Su, Mu)
+
+∂x2
+
+µ(u)Su
+
+∂h(Su, Mu)
+
+∂x
+
++
+
+1
+2
+
+σ2(Su, Mu, u)S2
+u
+
+ˆ
+
+σ(Su, Mu, u)Su
+
+∂h(Su, Mu)
+
+∂x
+
+dWu +
+
+t
+
+∂h(Su, Mu)
+
+0
+
+∂y
+
+dMu .
+
+(cid:20)
+
+ˆ
+ˆ
+
+t
+
+t
+
+0
+
++
+
++
+
+EQ
+ˆ ∞
+
+Iσ(y) =
+
+Iµ(y) =
+
+(cid:23)
+
+(cid:18)
+(cid:18)
+
+ˆ
+ˆ
+
+y
+
+y
+
+0
+
+(cid:23)
+
+By taking expectations we can write
+
+0
+
+[h(St, Mt)] = h(S0, M0) + EQ(cid:20)ˆ
+
+EQ
+
+(cid:21)
+
++EQ(cid:20)ˆ
+
+t
+
+1
+2
+
+0
+
+t
+
+µ(t)Su
+
+∂h(Su, Mu)
+
+∂x
+
+0
+
+du
+
+∂2h(Su, Mu)
+
+∂x2
+
+du
+
+(cid:21)
+
++ EQ(cid:20)ˆ
+
+0
+
+t
+
+∂h(Su, Mu)
+
+∂y
+
+(cid:21)
+
+dMu
+
+.
+
+Hence, we can introduce the density function φ of (S, M ), assumed twice diﬀerentiable,
+
+diﬀerentiate with respect to t, and write for all t > 0
+
+[h(St, Mt)] =
+
+y
+
+h(x, y)φ(x, y, t) dx dy ,
+
+S0
+
+0
+
+ˆ ∞
+
+1
+2
+
+EQ(cid:20)ˆ
+
+0
+
+d
+dt
+
+t
+
+∂h(Su, Mu)
+
+∂y
+
+(cid:21)
+
+dMu
+
+,
+
+dx dy =
+
+Iµ(y) dy +
+
+S0
+
+Iσ(y) dy +
+
+S0
+
+ˆ ∞
+
+ˆ
+
+y
+
+h
+
+∂φ
+∂t
+
+S0
+
+0
+
+(A.3)
+
+where, explicitly with all arguments,
+
+σ2(Su, Mu, u)S2
+u
+ˆ
+
+ˆ ∞
+
+(cid:19)
+
+φ(x, y, t) dx ,
+
+σ2(x, y, t)x2 ∂2h(x, y)
+
+(cid:19)
+
+∂x2
+
+µ(t)x
+
+0
+
+∂h(x, y)
+
+∂x
+
+φ(x, y, t) dx .
+
+For Iσ, we can perform integration by parts twice to get
+
+Iσ(y) =
+
+∂h(x, y)
+
+∂x
+
+ˆ
+
+y
+
+x=y
+
++
+
+h(x, y)
+
+0
+
+For the integral of Iσ, since
+
+σ2(y, y, t)y2φ(y, y, t) − h(y, y)
+
+∂2σ2(x, y, t)x2φ(x, y, t)
+
+dx .
+
+∂x2
+
+∂h(x, y)
+
+∂x
+
+=
+
+x=y
+
+dh(y, y)
+
+dy
+
+− ∂h(x, y)
+
+∂y
+
+(cid:23)
+
+,
+
+x=y
+
+(cid:23)
+
+∂σ2(x, y, t)x2φ(x, y, t)
+
+∂x
+
+x=y
+
+we can integrate the ﬁrst term by parts with respect to y,
+
+20
+
+(cid:35)
+
+dy
+
+dσ2(y, y, t)y2φ(y, y, t)
+
+dy
+
++
+
+(cid:21)
+
+dx dy
+
+ˆ ∞
+
+S0
+
+Iσ(y) dy = −
+
++
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+(cid:34)
+
+∂σ2(x, y, t)x2φ(x, y, t)
+
+(cid:23)
+(cid:20) ∂2σ2(x, y, t)x2φ(x, y, t)
+
+∂x
+
+x=y
+
+∂x2
+
+ˆ ∞
+ˆ ∞
+ˆ ∞
+
+S0
+
+S0
+
+h(y, y)
+
+ˆ
+
+y
+
+0
+
+h(x, y)
+
+(cid:23)
+
+σ2(y, y, t)y2φ(y, y, t) dy
+
+S0
+
+x=y
+
+∂y
+
+∂h(x, y)
+
+−
+− h(S0, S0)σ2(S0, S0, t)S2
+ˆ
+
+0 φ(S0, S0, t).
+
+(cid:21)
+
+dx.
+
+For Iµ, we integrate by parts once,
+
+Iµ(y) = µ(t)h(y, y)yφ(y, y, t) −
+
+y
+
+h(x, y)
+
+(r(t) − q(t))
+
+∂xφ(x, y, t)
+
+We insert in (A.3),
+
+(A.4)
+
+ˆ
+
+y
+
+0
+
+ˆ ∞
+ˆ ∞
+
+S0
+
+h(x, y)
+
+(cid:34)
+
+h(y, y)
+
+S0
+
+(cid:23)
+
+− 1
+ˆ ∞
+2
+
+−
+
+∂h(x, y)
+
+S0
+
+∂y
+
+x=y
+
+(cid:20) ∂φ(x, y, t)
+
+∂t
+
++ µ(t)
+
+(cid:32)
+
+0
+
+∂xφ(x, y, t)
+
+∂x
+
+− 1
+2
+
+µ(t)yφ(y, y, t) − 1
+2
+
+∂σ2(x, y, t)x2φ(x, y, t)
+
+∂y
+
+∂x
+
+(cid:18) ∂2σ2(x, y, t)x2φ(x, y, t)
+
+(cid:19)(cid:21)
+
+∂x2
+
++ 2
+
+x=y
+
+EQ(cid:20)ˆ
+
+0
+
+d
+dt
+
+t
+
+∂h(Su, Mu)
+
+∂y
+
+∂x
+
+(cid:21)
+
+dMu
+
+.
+
+∂σ2(x, y, t)x2φ(x, y, t)
+
+dx dy =
+
+(cid:23)
+
+(cid:33)(cid:35)
+
+dy
+
+x=y
+
+h(S0, S0)σ2(S0, S0, t)S2
+
+0 φ(S0, S0, t)
+
+σ2(y, y, t)y2φ(y, y, t) dy +
+
+(cid:20)
+
+(cid:23)
+
+Let us ﬁrst consider all functions h of compact support on Ω. Hence h and its derivatives are assumed
+dMu is
+
+to additionally vanish for x = y. Since Mt only grows when Mt = St, the term
+zero. Then (A.4) becomes
+
+∂h(Su,Mu)
+
+t
+0
+
+∂y
+
+ˆ ∞
+
+ˆ
+
+y
+
+S0
+
+0
+
+h(x, y)
+
+(cid:20) ∂φ(x, y, t)
+
+∂t
+
++ µ(t)
+
+∂xφ(x, y, t)
+
+∂x
+
+where we conclude that for all (x, y, t) in (Ω × R+∗ )
+− 1
+2
+
+∂xφ(x, y, t)
+
+∂φ(x, y, t)
+
++ µ(t)
+
+∂x
+
+∂t
+
+´
+(cid:19)(cid:21)
+
+− 1
+2
+
+(cid:18) ∂2σ2(x, y, t)x2φ(x, y, t)
+(cid:19)
+(cid:18) ∂2σ2(x, y, t)x2φ(x, y, t)
+
+∂x2
+
+∂x2
+
+= 0 .
+
+Let us now consider all functions h which do not vanish at x = y but only depend on the space variable
+x such that we deﬁne g(x) = h(x, y) with g in the space C2(R+). In that case, the terms
+∂h
+∂y dMu
+and
+
+σ2y2φ(cid:5)
+
+x=y dy vanish. From (A.4) we can write
+
+∂h(x,y)
+
+∂y
+
+(cid:32)
+
+(cid:23)
+
+(cid:107)
+
+(cid:34)
+
+x=y
+
+´ ∞
+ˆ ∞
+
+S0
+
+0 =
+
+g(y)
+
+S0
+
+µ(t)yφ(y, y, t) − 1
+2
+
+∂σ2(x, y, t)x2φ(x, y, t)
+
+∂y
+
++ 2
+
+x=y
+
+∂σ2(x, y, t)x2φ(x, y, t)
+
+∂x
+
+x=y
+
+dy −
+
+If additionally we impose g to vanish at x = S0, then we conclude that for all (x, y, t) in (Ω × R+∗ )
+
+1
+2
+
+g(S0)σ2(S0, S0, t)S2
+
+0 φ(S0, S0, t).
+
+dx dy = 0 ,
+
+t
+0
+
+´
+(cid:33)(cid:35)
+
+(cid:23)
+
+A FORWARD EQUATION FOR BARRIER OPTIONS
+
+(cid:23)
+
+µ(t)yφ(y, y, t) =
+
+1
+2
+
+∂σ2(x, y, t)x2φ(x, y, t)
+
+∂y
+
+∂σ2(x, y, t)x2φ(x, y, t)
+
+∂x
+
++
+
+x=y
+
+21
+
+(cid:23)
+
+.
+
+x=y
+
+Finally, for all functions g which do not vanish at x = S0 we are left with
+
+g(S0, t)σ2(S0, S0, t)S2
+
+0 φ(S0, S0, t) = 0 ,
+
+which concludes the proof.
+
+Remark. It is straightforward to generalise the approach to work directly under (2.1), say under a local-
+stochastic volatility model, to derive forward and backward equations for the joint density of St, Mt and
+the stochastic variance Vt. We ﬁnd again the dual operator with respect to the L2 inner product, now
+with three spatial dimensions.
+
+

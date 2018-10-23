@@ -1,0 +1,768 @@
+5
+1
+0
+2
+
+ 
+
+b
+e
+F
+4
+
+ 
+
+ 
+ 
+]
+E
+C
+.
+s
+c
+[
+ 
+ 
+
+1
+v
+9
+1
+1
+1
+0
+
+.
+
+2
+0
+5
+1
+:
+v
+i
+X
+r
+a
+
+A discontinuous Galerkin method for cohesive
+
+zone modelling
+
+Peter Hansbo and Kent Salomonsson
+
+Department of Mechanical Engineering, J¨onk¨oping University, S-551 11
+
+J¨onk¨oping, Sweden
+
+Abstract
+
+We propose a discontinuous ﬁnite element method for small strain elasticity allowing
+for cohesive zone modeling. The method yields a seamless transition between the
+discontinuous Galerkin method and classical cohesive zone modeling. Some relevant
+numerical examples are presented.
+
+1
+
+Introduction
+
+In this paper we develop a discontinuous ﬁnite element method for cohesive
+zone modeling using the approach ﬁrst suggested by Hansbo and Hansbo [3].
+Unlike in the standard pre–failure treatment of cohesive zones, which consists
+of tying the meshes together using a penalty approach, we use a combination
+of Nitsche’s method and the cohesive law governing the interelement stiﬀness,
+thus allwoing the same discretization method in both pre–failure and post–
+failure regimes. This means that the method is consistent with the original
+diﬀerential equation and no large penalty parameters are required for accurate
+solutions even in the pre–failure regime. The approach was implemented for
+cohesive cracks by Heintz and Hansbo [4] in an XFEM setting, but here we
+consider a discontinuous Galerkin method allowing for discontinuities appear-
+ing only between elements.
+
+An approach similar to ours has been suggested by Mergheim, Kuhl, and Stein-
+mann [7], an later used by Pretchel et al. [8] and Wu et al. [11]. The method of
+[7] however uses a diﬀerent blending of Nitsche’s method and cohesive zones.
+There a discontinuous Galerkin method is used only in the pre–failure regime
+and a switch to a standard cohesive zone approximation is performed at a
+given traction threshold. To ensure a continuous transition between the dis-
+cretization methods, a matching of discrete tractions between the two cases is
+
+Preprint submitted to Elsevier
+
+10 September 2018
+
+performed. This matching is cumbersome in a more general situation of non-
+matching meshes across the cohesive zone. In this paper we avoid this switch
+and a more generally applicable method results.
+
+An outline of the remainder of the paper is as follows. In Section 2 we deﬁne our
+discrete method in a linear setting; in Section 3 we discuss and motivate the
+cohesive law that we favour and the resulting secant compliance we use in our
+numerical solution process; and in Section 4 we give some numerical examples
+of our approach. Finally, in Section 5, we give some concluding remarks.
+
+2 The model problem and discretization method
+
+2.1 Linear elasticity with a single cohesive interface
+
+has restrictions to the diﬀerent domains ui = u|Ωi, and we denote by(cid:74)u(cid:75) =
+
+W consider ﬁrst an elasticity problem in nsd = 2 or 3 dimensions with a smooth
+boundary Γ dividing Ω into two parts Ω1 and Ω2. The displacementu = [ui]nsd
+i=1
+u1|Γ − u2|Γ and let n denote the outward normal vector to ∂Ω and to Ω1 on
+Γ. Then, a linear elasticity problem with cohesive layer Γ can be written: Find
+u and and the symmetric stress tensor σ = [σij]nsd
+
+i,j=1 such that
+
+σ = λ ∇ · uI + 2µε(u)
+
+(1)
+
+in Ω1 ∪ Ω2,
+−∇ · σ = f in Ω1 ∪ Ω2,
+u = g on ∂ΩD,
+σ · n = h on ∂ΩN
+
+(cid:74)σ · n(cid:75) = 0 on Γ
+(cid:74)u(cid:75) = −Kσ · n on Γ
+(cid:32) ∂ui
+(cid:105)nsd
+
+∂uj
+∂xi
+
+(cid:33)
+
+∂xj
+
+1
+2
+
+2
+
+Here λ and µ are positive constants called the Lam´e constants, satisfying
+0 < µ1 < µ < µ2 and 0 < λ < ∞, and ε (u) = [εij(u)]nsd
+i,j=1 is the strain tensor
+with components
+
+εij(u) =
+
++
+
+.
+
+(cid:104)(cid:80)nsd
+
+Furthermore, ∇·σ =
+i,j=1 with δij = 1 if i = j and
+δij = 0 if i (cid:54)= j, f and h are given loads, g is a given boundary displacement,
+and n is the outward unit normal to ∂Ω. Finally, K is a symmetric positive
+semi–deﬁnite ﬂexibility matrix (constitutive law on F ). For example, with
+
+, I = [δij]nsd
+
+j=1 ∂σij/∂xj
+
+i=1
+
+isotropic elasticity on F we have that
+
+K = α I + (β − α)n ⊗ n,
+
+or Kij = αδij + (β − α)ninj,
+
+where ⊗ denotes outer product, with α ≥ 0 and β ≥ 0 denoting the compli-
+cancy in the direction tangential and normal to F , respectively, cf. [3]. (In this
+paper, a more general compliance, with cross coupling between normal and
+tangential directions will be considered.)
+
+2.2 A discontinuous Galerkin method for linear cohesive zones
+
+Consider a subdivision of Ω into a geometrically conforming ﬁnite element
+partitioning T h = {T} of Ω. Let
+
+P k(T ) = {v: each component of v is a polynomial of degree ≤ k on T},
+
+W h = {v ∈ [L2(Ω)]nsd : v|T ∈ [P k(T )]nsd ∀T ∈ T h}.
+
+We also introduce the set of element faces in the mesh, F = {F}, and we split
+F into three disjoint subsets
+
+F = FI ∪ FD ∪ FN ,
+
+where FI is the set of faces in the interior of Ω and FD and FN are the sets
+of faces on the Dirichlet and Neumann part of the boundary, respectively.
+Further, with each face we associate a ﬁxed unit normal n such that for faces
+on the boundary n is the exterior unit normal. We denote the jump of a
+for F ∈ FD, and the average (cid:104)v(cid:105) = (v+ + v−)/2 for F ∈ FI, and (cid:104)v(cid:105) = v+ for
+F ∈ FD, where v± = lim↓0 v(x ∓  n) with x ∈ F .
+
+function v ∈ W h at an internal face F ∈ FI by(cid:74)v(cid:75) = v+ − v−, and(cid:74)v(cid:75) = v+
+
+For the modelling of cohesive interfaces, we here assume that the solution may
+be discontinuous across each element face F , and thus the role of Γ in (1) is
+now taken by all element faces.
+The DG method can then be formulated as follows: Seek uh ∈ W h such that
+
+ah(uh, v) = Lh(v)
+
+for all v ∈ W h.
+
+(2)
+
+3
+
+(cid:90)
+
+The bilinear form is deﬁned by
+
+T∈T h
+
+T
+
+σ(uh) : ε(v) dx
+
+(cid:88)
+(cid:68)
+σ(uh) · n
+(cid:104)σ(v) · n(cid:105) ·(cid:16)(cid:113)uh(cid:121) + K
+(cid:104)σ(v) · n(cid:105) ·(cid:16)
+(cid:16)
+(cid:16)(cid:113)uh(cid:121) + K
+
+(cid:69) · ((cid:74)v(cid:75) + K (cid:104)σ(v) · n(cid:105)) ds
+(cid:68)
+(cid:69)(cid:17)
+σ(uh) · n
+(cid:69)(cid:17)
+(cid:68)
+σ(uh) · n
+(cid:69)(cid:17)(cid:17) · ((cid:74)v(cid:75) + K (cid:104)σ(v) · n(cid:105)) ds,
+(cid:68)
+σ(uh) · n
+
+Sh
+
+K
+
+ds
+
+ds
+
+(cid:90)
+(cid:90)
+(cid:90)
+(cid:90)
+
+F
+
+F
+
+F
+
+ah(uh, v) =
+
+F∈FI∪FD
+
+F∈FI∪FD
+
+− (cid:88)
+− (cid:88)
+(cid:88)
+(cid:88)
+
++
+
++
+
+F∈FI∪FD
+
+F∈FI∪FD
+
+F
+
+and the linear functional by
+
+(cid:90)
+
+Lh(v) =
+
+(cid:90)
+
+(cid:90)
+
+h · v ds − (cid:88)
+
+(cid:88)
+F∈FN
+(Shg) · (v + Kσ(v) · n) ds.
+
+F∈FD
+
+F
+
+F
+
+Ω
+
+f · v dx +
+(cid:90)
+(cid:88)
+
++
+
+F∈FD
+
+F
+
+σ(v) · n · g ds
+
+Here Sh is a matrix which depends on the interface conditions of the problem,
+the local meshsize, and a penalty parameter γ := (2µ + 3λ)γ0, where γ0 is
+a dimensionless number which has to be large enough for the method to be
+stable. The stability of the method increases with increasing ﬂexibility, so the
+choice of γ0 needed for stability in the case of zero ﬂexibility can be used in all
+other cases (numerical values for γ0 can be found, e.g., in [5]). More precisely,
+on a face F with diameter hF ,
+
+(cid:32)hF
+
+γ
+
+Sh|F =
+
+I + K
+
+(cid:33)−1
+
+(3)
+
+(4)
+
+(5)
+
+(6)
+
+On each face F , the mesh parameter hF is deﬁned by
+
+
+
+(cid:16)
+
+(cid:17)
+meas(T +) + meas(T −)
+meas(T )/meas(F )
+
+hF =
+
+/2 meas(F )
+
+for F ⊂ ∂T + ∩ ∂T −,
+for F ⊂ ∂T ∩ ∂ΩD.
+
+We note that as the ﬂexibility goes to zero, we approach a standard discon-
+tinuous Galerkin method for elasticity. Looking instead at the limit case of
+h → 0 (assuming K is invertible) we retrieve a standard formulation for co-
+hesive laws where the only term contributing to the stiﬀness matrix from the
+interfaces is the interface stiﬀness term
+
+(cid:88)
+
+(cid:90)
+
+F∈FI∪FD
+
+F
+
+(cid:16)
+
+K−1(cid:113)uh(cid:121)(cid:17) ·(cid:74)v(cid:75) ds.
+
+4
+
+The proposed method thus seamlessly blends discontinuous Galerkin with
+standard FEM for cohesive interfaces.
+
+ah(u − uh, v) = 0
+
+By use of Green’s formula, we readily establish that the method (2) is consis-
+tent in the sense that
+
+(7)
+for all v ∈ W h and for uh suﬃciently regular, which is key to retrieving
+optimal accuracy of the method. Stability follows from the analysis in [2,3,5].
+We also mention the work of Juntunen and Stenberg [6], where an analysis of
+this approach for handling general boundary conditions for Poisson’s equation
+is given.
+
+3 Cohesive law implementation
+
+We are now interested in the case when the interface compliance depends
+
+on the jump of the solution, K = K((cid:74)u(cid:75)). In the numerical solution of the
+
+cohesive zone FE model, we replace this compliance by a corresponding secant
+compliance as follows.
+
+The compliance between the elements can be deﬁned a priori by cohesive zone
+models. Frequently, cohesive zone models that are easy to implement are cho-
+sen to model the initiation of cracks. These models are often un-coupled, mean-
+ing that there is no relationship between the normal and tangential stresses
+other than the fracture criterion. However, it is reasonable to imagine that the
+tangetial stiﬀness is eﬀected by the reduction of the normal stiﬀness. Thus,
+in order to couple the cohesive behavior of the interfaces in mixed mode, we
+choose to derive the traction-separation laws from a weighted energy release
+rate surface, cf. [10,1].
+
+We denote the energy release rates in pure normal and pure tangetial direc-
+tions ΓI (un) and ΓII (ut), respectively, where, for convenience, the normal and
+
+tangetial jumps in displacement are denoted by un =(cid:74)u(cid:75) · n and ut =(cid:74)u(cid:75) · t,
+
+where t is the tangent vector to the given face, such that n and t constitute
+a right-handed ON system. The energy release rates are obtained from the
+interface traction on FI according to
+
+(8)
+
+(9)
+
+ΓI (un) = ΓI (un, 0) =
+
+ΓII (ut) = ΓI (0, ut) =
+
+un(cid:90)
+σ ( ˜un, 0) · n d ˜un,
+ut(cid:90)
+
+σ (0, ˜ut) · t d ˜ut.
+
+0
+
+0
+
+5
+
+By use of a polar coordinate system, a dimensionless eﬀective separation λ
+can be deﬁned together with an angle ϕ that determines the mode mix. The
+mode mix and the eﬀective separation are deﬁned as
+
+(cid:19)
+(cid:18) uncun
+(cid:19)2
+(cid:18) ut
+(cid:19)2
+
+utcut
+
+,
+
++
+
+utc
+
+ϕ = arctan
+
+(cid:115)(cid:18) un
+
+unc
+
+λ =
+
+(10)
+
+(11)
+
+.
+
+Here, unc and utc are the critical normal and tangential separations in pure
+modes. The normal and tangential separations, un/unc and ut/utc , are deﬁned
+as the projections of the eﬀective separation on each respective pure mode axis,
+cf. Fig. 1.
+
+Fig. 1. Illustration of eﬀective separation and mode-mixity
+
+It then follows that un and ut are given by
+
+un = λunc cos (ϕ) ,
+
+ut = λutc sin (ϕ) .
+
+(12)
+
+(13)
+
+In order to obtain the complete contributions of the energy release rates in
+each pure mode and not the projections, some additional deﬁnitions, un and
+ut are introduced. For example, we may choose to deﬁne un := λunc and ut :=
+λutc. As a ﬁrst step in the development of the cohesive law, two independent
+functions are ﬁtted to experimentally measured energy release rate curves, see
+ΓI and ΓII in Fig.2.
+
+6
+
+Fig. 2. Schematic illustration of the ﬁtted energy release rate curves in normal and
+tangential directions.
+
+The shapes of the traction-separation curves in each pure mode, respectively,
+are obtained by diﬀerentiating the energy release rates in each pure mode with
+respect to each pure mode relative separation, un and ut. From these curves,
+laws are chosen that captures the most essential features of the curves. Figure
+3 shows two idealized schematic curves.
+
+In order to capture the behavior of the cohesive law in mixed mode, the two
+energy release rate curves in Fig. 2 are combined to yield a surface where the
+axes are total energy release rate, Γ , relative normal and relative tangential
+separations, un and ut respectively, see Fig. 4.
+
+Fig. 3. Schematic illustration of normal (solid) and tangential (dashed) traction-sep-
+aration curves.
+
+The surface representing the weighted energy release rate, Γ (λ, ϕ) is generated
+by a weighted sum of the experimentally determined energy release rates in
+
+7
+
+00.050.10.150.20.2501020304050Displacement (mm)Tractions (MPa)pure normal, ΓI, and pure tangential, ΓII, directions according to
+
+ΓI (λ, ϕ) = f (ϕ) ΓI (λ) u2
+
+nc + (1 − f (ϕ)) ΓII (λ) u2
+
+tc
+
+(14)
+
+where f (ϕ) is the weight function.
+
+The stresses for any given mode mix are given by partial diﬀerentiation of Γ
+with respect to each relative separation, un and ut, respectively.
+
+σ · n =
+
+∂Γ
+∂un
+
+=
+
+∂Γ
+∂λ
+
+∂λ
+∂un
+
++
+
+∂Γ
+∂ϕ
+
+∂ϕ
+∂un
+
+,
+
+σ · t =
+
+∂Γ
+∂ut
+
+=
+
+∂Γ
+∂λ
+
+∂λ
+∂ut
+
++
+
+∂Γ
+∂ϕ
+
+∂ϕ
+∂ut
+
+(15)
+
+(16)
+
+Fig. 4. Weighted potential surface.
+
+The secant compliance is computed as follows. We ﬁrst establish the secant
+stiﬀness matrix ST as
+σ · n
+un
+
+σ · n
+ut
+
+n ⊗ n +
+
+σ · t
+un
+
+σ · t
+ut
+
+t ⊗ t +
+
+n ⊗ t +
+
+t ⊗ n,
+
+ST =
+
+followed by computing the secant compliance as K T = S−1
+stiﬀness, Sh|F , is then given by
+
+T . The interface
+
+Sh|F =
+
+I + K T
+
+(17)
+
+(cid:33)−1
+
+(cid:32) hF
+
+γ
+
+8
+
+4 Numerical example
+
+A specimen with two inclusions and an initial crack, see Fig. 5, is used as
+a simple example to show the applicability of the modeling technique. The
+dimensions of the specimen are given by; W = H = 1.00 mm, D = 0.20
+mm, a = 0.20 mm. The lower right inclusion is located at center coordinate
+(0.75, 1.00) mm and the top left inclusion is located at (0.45, 1.10) mm. The
+crack is located at center coordinates (0.40, 0.90) mm and it is inclined at an
+angle of 33◦ to the horizontal axis. The boundary conditions for the specimen
+are set to be clamped on the bottom edge, i.e. ux(x, 0) = uy(x, 0) = 0. The
+top boundary is constrained horizontally ux(x, 2H ) = 0 and the displacement
+is controlled vertically uy(x, 2H ) = ∆, see Fig. 5. Two diﬀerent set-ups are
+modeled for comparison. The ﬁrst is a specimen where the inclusions have
+the same material properties as the rest of the specimen with elastic material
+properties; E = 10 MPa and ν = 0.45. The second is a specimen where the
+Young’s modulus of the inclusions is 100 times greater than in the rest of
+the specimen. The maximum cohesive strengths are set to 1 MPa and the
+maximum critical separations are set to 0.02 mm in the cohesive sawtooth
+model giving a fracture energy of 0.1 J/mm2. Note that these properties are
+the same for both set-ups.
+
+One of the major issues with this type of modeling is mesh dependency. How-
+ever, if a large number of elements is used the mesh dependency is obviously
+reduced. Furthermore, the compliance between all continuum elements in-
+troduce numerical issues which can be reduced by an increase of the elastic
+stiﬀness of the cohesive zone model suﬃciently to minimize the compliance.
+
+Fig. 5. Dimensions of the Single Edge Notched specimen.
+
+In the present model, the compliance is allowed to be initially zero and then
+gradually increase as the load is increased. Damage initiation, and essentially
+
+9
+
+crack propagation, is enabled by a decrease of the stiﬀness according to (17)
+where the interfaces, as stated in the deﬁnition of the method, are given as
+the boundaries between all the continuum elements (this is of course not a re-
+quirement, as a mix of continuous and discontinuous methods is also possible).
+Thus, cracks are free to form, nucleate and propagate along the continuum
+element boundaries by Nitsche’s method instead of the standard approach of
+using cohesive elements, as in, e.g., [9,12].
+
+For the ﬁrst set-up, see Fig. 6, the crack initiates as expected and then it
+propagates without considering the inclusions. In the second set-up, however,
+the crack is arrested by the stiﬀer inclusion boundary and deﬂects downwards
+around the lower right inclusion to ﬁnally to continue to propagate to the free
+edge of the specimen. It can be seen for both set-ups that there is virtually no
+compliance issues prior to any cracks forming. Both simulations, thus shows
+the applicability of the modeling technique.
+
+Fig. 6. Increasing deformation from left to right for the ﬁrst set-up.
+
+Fig. 7. Increasing deformation from left to right for the second set-up.
+
+10
+
+−0.500.511.500.511.522.5−0.500.511.500.511.522.5−0.500.511.500.511.522.5−0.500.511.500.511.522.5−0.500.511.500.511.522.5−0.500.511.500.511.522.55 Concluding remarks
+
+In this paper, we have suggested an FE method which seamlessly blends the
+discontinuous Galerkin method with classical cohesive zone models. There is
+no need for interface elements as the interelement stiﬀness is represented by a
+modiﬁcation of the weak form. There is no need to identify threshold values
+for transitions between discretization approaches since the same bilinear form
+is used for all cases of interface stiﬀness. The method also directly allows
+for modeling cohesive zones between non–matching meshes, unlike the similar
+approach suggested previously in [7], which does not immediately generalize
+to this case.
+
+References
+
+[1] T. Andersson, K. Salomonsson, and M.D. Thouless. Weighted energy release
+
+rate methodology for modelling mixed mode cohesive laws. In preparation.
+
+[2] S. C. Brenner. Korn’s inequalities for piecewise H 1 vector ﬁelds. Math. Comp.,
+
+73(247):1067–1087, 2004.
+
+[3] A. Hansbo and P. Hansbo. A ﬁnite element method for the simulation of
+strong and weak discontinuities in solid mechanics. Comput. Methods Appl.
+Mech. Engrg., 193(33-35):3523–3540, 2004.
+
+[4] P. Hansbo and P. Heintz. Finite element modeling of cohesive cracks by nitsche’s
+method. In E. E. Gdoutos, editor, Fracture of Nano and Engineering Materials
+and Structures, pages 947–948. Springer Netherlands, 2006.
+
+[5] P. Hansbo and M. G. Larson.
+
+for
+incompressible and nearly incompressible elasticity by Nitsche’s method.
+Comput. Methods Appl. Mech. Engrg., 191(17-18):1895–1908, 2002.
+
+Discontinuous Galerkin methods
+
+[6] M. Juntunen and R. Stenberg. Nitsche’s method for general boundary
+
+conditions. Math. Comp., 78(267):1353–1374, 2009.
+
+[7] J. Mergheim, E. Kuhl, and P. Steinmann.
+
+A hybrid discontinuous
+Galerkin/interface method for the computational modelling of failure. Comm.
+Numer. Methods Engrg., 20(7):511–519, 2004.
+
+[8] M. Prechtel, P. Ronda Leiva, R. Janisch, A. Hartmaier, G. Leugering,
+P. Steinmann, and M. Stingl. Simulation of fracture in heterogeneous elastic
+materials with cohesive zone models. Int. J. Fract., 168(1):15–29, 2011.
+
+[9] K. Salomonsson and T. Andersson. Modeling and parameter calibration of an
+
+adhesive layer at the meso level. Mech. Mater., 40(1-2):48–65, 2008.
+
+11
+
+[10] K. Salomonsson and T. Andersson. Weighted potential methodology for
+mixed mode cohesive laws.
+In E. Dvorkin, M. Goldschmit, and M. Storti,
+editors, Mec´anica Computacional Vol XXIX, Proceedings of the IX Argentinian
+Congress on Computational Mechanics, pages 8355–8374. Asociaci´on Argentina
+de Mec´anica Computacional, 2010.
+
+[11] L. Wu, D. Tjahjanto, G. Becker, A. Makradi, A. J´erusalem, and L. Noels.
+A micro–meso-model of intra-laminar fracture in ﬁber-reinforced composites
+based on a discontinuous galerkin/cohesive zone method. Eng. Fract. Mech.,
+104:162–183, 2013.
+
+[12] X. P. Xu and A. Needleman. Numerical simulations of fast crack growth in
+
+brittle solids. J. Mech. Phys. Solids, 42(9):1397–1434, 1994.
+
+12
+
+

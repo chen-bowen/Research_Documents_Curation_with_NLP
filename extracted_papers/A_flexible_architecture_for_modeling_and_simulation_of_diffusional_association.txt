@@ -1,0 +1,909 @@
+A ﬂexible architecture for modeling and simulation of
+
+diffusional association
+
+Fiete Haack
+
+University of Rostock
+
+Institute of Computer Science
+
+Albert-Einstein-Str. 21
+18059 Rostock, Germany
+
+Stefan Leye
+
+University of Rostock
+
+Institute of Computer Science
+
+Albert-Einstein-Str. 21
+18059 Rostock, Germany
+
+fiete.haack@uni-rostock.de
+
+stefan.leye@uni-rostock.de
+
+Adelinde M. Uhrmacher
+
+University of Rostock
+
+Institute of Computer Science
+
+Albert-Einstein-Str. 21
+18059 Rostock, Germany
+
+adelinde.uhrmacher@uni-rostock.de
+
+Up to now, it is not possible to obtain analytical solutions for complex molecular association pro-
+cesses (e.g. Molecule recognition in Signaling or catalysis).
+Instead Brownian Dynamics (BD)
+simulations are commonly used to estimate the rate of diffusional association, e.g. to be later used in
+mesoscopic simulations.
+Meanwhile a portfolio of diffusional association (DA) methods have been developed that exploit BD.
+However, DA methods do not clearly distinguish between modeling, simulation, and experiment set-
+tings. This hampers to classify and compare the existing methods with respect to, for instance model
+assumptions, simulation approximations or speciﬁc optimization strategies for steering the computa-
+tion of trajectories.
+To address this deﬁciency we propose FADA (Flexible Architecture for Diffusional Association) - an
+architecture that allows the ﬂexible deﬁnition of the experiment comprising a formal description of
+the model in SpacePi, different simulators, as well as validation and analysis methods.
+Based on the NAM (Northrup-Allison-McCammon) method, which forms the basis of many existing
+DA methods, we illustrate the structure and functioning of FADA. A discussion of future validation
+experiments illuminates how the FADA can be exploited in order to estimate reaction rates and how
+validation techniques may be applied to validate additional features of the model.
+
+1 Introduction
+
+Quantitative modeling and simulation in systems biology is often hampered by the lack of reaction rates,
+which require repetitive time resolved measurements in the wet lab. Wet lab experiments are extremely
+costly with respect to facilities and time and one estimated rate often corresponds to someone’s doctoral
+degree [33]. Thus, it is not surprising that the idea of calculating reaction rates from ”‘ﬁrst principles”’
+and hence to forego the need of wet-lab experiments is quite attractive.
+Every reaction consists of a diffusion controlled binding event and the subsequent chemical reaction -
+accompanied with conformational changes. In case of diffusion-controlled reactions, i.e., reactions in
+which the reaction process is faster than the diffusional encounter of the particles, the rate of association
+is the rate limiting step. Therefore the estimation of the diffusional association (DA) rate is the ﬁrst and
+most important step in determining the reaction rate of a chemical reaction.
+
+E. Merelli and P. Quaglia (Eds.)
+From Biology To Concurrency and back 2010 (FBTC’10)
+EPTCS 19, 2010, pp. 70–84, doi:10.4204/EPTCS.19.5
+
+c(cid:13) Fiete Haack & Stefan Leye & Adelinde M. Uhrmacher
+This work is licensed under the
+Creative Commons Attribution License.
+
+Fiete Haack & Stefan Leye & Adelinde M. Uhrmacher
+
+71
+
+A large portfolio of stochastic [26, 35, 4] and continuum models ([7, 30]) has been developed and im-
+plemented in several software packages [5, 14, 32]. However, in these approaches model, simulator, and
+experiment are closely intertwined as they have been developed with an emphasis on execution efﬁciency
+rather than separation of concerns. As a consequence, existing methods can hardly be related or even
+compared to each other. This hampers reuse and extensions. It has been shown that the efﬁciency of
+simulators depend on the model [19]. Consequently the development of different simulators for the same
+model and their conﬁguration on demand is one source of efﬁciency [11], which in the above approaches
+cannot be exploited easily. Furthermore, an impartial validation of the models is impossible, since the
+lacking separation between model and simulator does not allow experiments with different simulation
+engines in order to identify the valid ones.
+The scope of this work is to present the software architecture FADA (Flexible Architecture for Diffu-
+sional Association), implemented in JAMES II (JAva-based Multipurpose Environment for Simulation)
+[17]. FADA unites different models and simulation engines for the computation of diffusional associ-
+ation processes and is further structured in terms of modeling, simulation and experiment settings. By
+exploiting the plug-in architecture of JAMES II, we can incorporate independent implementations of
+those components. Our aim is to include independent model components for the representation of par-
+ticles, interparticle forces, and motion functions, which allows the ﬂexible parametrization of the model
+for a repeatable and comparable execution in the context of an experiment. At the same time the ar-
+chitecture supports simulation engines, that are independent of the parametrization of the model. The
+simulation engines themselves may also contain independent components, like random number genera-
+tors, parallelizations, etc., which can be exchanged or extended. FADA further allows experimentation
+with the created models, by exploiting existing methods as well as allowing the implementation of new
+methods for experiment design and analysis.
+Based on the simple stochastic NAM (Northrup-Allison-McCammon) method [26], we present a formal
+description of a basic model for stochastic modeling of association processes. Thereby, the SpacePi-
+Calculus [20] serves as description language. Using the presented toymodel, we show an exemplary
+workﬂow for a validation experiment and discuss the most important steps of the validation experiment.
+Finally, we present ﬁrst results and give an outlook to our future experiments.
+
+2 Brownian Dynamics in Diffusional Association
+
+Bimolecular binding plays a central role in numerous biological processes, reaching from ligand binding,
+protein-protein encounter to signal transmission at synaptic junctions. The bimolecular binding process
+can be divided into two parts: the diffusional association to form an encounter complex, and the subse-
+quent formation of the fully bound complex by nondiffusional rearrangements. The encounter complex
+is more considered to be an ensemble of possible conformations, than a well deﬁned (transition) state
+[3]. Due to the relatively slow diffusion of macromolecules in solutions, the potential reaction partners
+stay in close vicinity once they met and thus undergo several microcollisions before diffusing apart. By
+this means the molecules’ reactive groups can be properly aligned, such that subsequent conformational
+changes and eventually the desired chemical reaction may occur. As the rate of diffusional association
+marks an upper limit for the binding process, we consider the diffusional encounter of two particles, i.e.,
+the estimation of bimolecular association rates in the ﬁrst place.
+Brownian dynamics (BD) simulations are the most common approach to simulate the diffusional en-
+counter. BD describes the diffusive motion of particles in solution, whose mass is signiﬁcantly larger
+than the surrounding solvent. Thereby, the molecules may still be represented on an accurate atomic
+
+72
+
+Flexible Architecture for Diffusional Association
+
+level (including interparticle forces), but the internal dynamics of the molecule are disregarded and the
+surrounding solvent is only implicitly taken into account by stochastic forces and friction. As a result
+of these simpliﬁcations the resolution of macromolecular motion is reduced to ∼ 1 ˚A. This allows BD
+to perform larger time steps (∼1 picoseconds for proteins under normal viscosity conditions) compared
+to MD simulations, while the resolution is still detailed enough for the simulation of molecular binding
+processes.
+In order to compute the actual rate of diffusional association, the Smoluchowski diffusion equation [31]
+needs to be solved. This equation describes the time evolution in terms of the probability density function
+of a particle undergoing Brownian movement in a force ﬁeld. Due to the large variety of simultaneous
+interactions, the diffusion equation can usually only be solved analytically for systems with simple ge-
+ometry and rudimentary modelling of interparticle forces. This is why most DA-methods are based on
+the work of Northrup, Allison and McCammon [26], who established to connect BD simulations with
+the estimation of association rates.
+With increasing computational capabilities, there have also been successful attempts to use contin-
+uum models for the estimation of association rates, recently [32]. However, the accurate modeling of
+diffusion-controlled processes in the context of realistic biomolecular systems is still challenging. The
+incorporation of the effects of ionic strength, protein charges, and steric repulsions has proven to be the
+rate limiting step for most of the existing approaches. Therefore, it is important to ﬁnd simple but accu-
+rate model descriptions for these interparticle forces and effective algorithms for their evaluation. This
+applies for both approaches, continuum and particle based methods.
+
+2.1 State of the art
+One of the most common setup for the simulation of biomolecular diffusional association is incorporated
+in the NAM (Northrup-Allison-McCammon) method [26]. The basic setup for the NAM method is rather
+simple, as illustrated in ﬁgure 1. We consider two particles of arbitrary shape in threedimensional space.
+For the sake of simplicity the movement of both particles is modeled as relative motion. This means one
+of the particle is ﬁxed in the center of the coordinate system (named particle A), while the other particle
+moves relatively from the perspective of the ﬁxed particle (named particle B). The space around the ﬁxed
+particle is divided by a spherical surface of radius b into an outer region r > b and an inner region r < b.
+In order to estimate the rate of the diffusional association k, one usually simulates several thousands
+of BD trajectories and measures the fraction of “reactive” trajectories. The rate of association is then
+computed by the product of the analytically computed rate k(b) and the probability β ∞ estimated from
+simulations:
+
+k = kD(b)β ∞.
+
+(1)
+
+The rate kD(b) is the steady state rate at which particles with distance r > b collide with the spherical
+surface at r = b. It is deﬁned as
+
+kD(b) = 4π
+
+dr
+
+,
+
+(2)
+
+(cid:20)(cid:90) ∞
+
+exp(E(r)/kBT )
+
+b
+
+r2D
+
+(cid:21)−1
+
+where E(r) is the centrosymmetric interaction energy between the particles depending on their separation
+distance r. If the particles are noninteracting spheres, i.e. no forces or hydrodynamic interactions exist
+for r > b, kD(b) is given by the Smoluchowski result:
+
+kD(b) = 4πD0b,
+
+(3)
+
+Fiete Haack & Stefan Leye & Adelinde M. Uhrmacher
+
+73
+
+Figure 1: Schematic representation of the NAM method. Particle B associates with particle A at the
+active site while Particle B‘ diffuses into inﬁnite seperation.
+
+with D0 being the standard Smoluchowski mutual diffusion coefﬁcient. The quantity β ∞ on the other
+hand is the probability that particles reaching a separation b will subsequently have at least one collision
+with the ﬁxed particle rather than escape into inﬁnity. β ∞ is usually given by
+
+β ∞ =
+
+β
+
+1− (1− β )Ω , with Ω =
+
+kD(b)
+kD(q)
+
+.
+
+Although the development of the NAM method dates back to the 1980’s, most of today’s used methods
+are still derived from this simple method. However large improvements have been made in adequately
+modelling the interparticle forces and in optimizing, i.e. steering the simulation of the BD-trajectories.
+
+Modeling of Force Fields Molecules carry partial charges which generate an electrostatic potential at
+the molecule’s surface. As soon as two molecules overcome a certain distance, their diffusional move-
+ment becomes biased by the forces that their electric charges exert on each other.
+Such intermolecular forces strongly inﬂuence the speed of association. In diffusional association these
+forces are typically given by the sum of the electrostatic and exclusion forces. Electrostatic interac-
+tions and hydrophobic desolvation typically speed up the association, whereas charge desolvation (i.e.,
+a penalty for bringing a charge close to a low dielectric molecular cavity) and steric repulsion terms
+lower the speed of association. As a result, the association rate of different pairs of molecules may range
+between 103 − 109Ms−1.
+Electrostatic interactions are typically computed by the Poisson-Boltzmann equation (PBE). There exist
+several methods exploiting numerical solvers tackling the PBE even for larger systems [9]. However,
+such numerical methods are still too time consuming to be applied in each step of the million steps of a
+BD trajectory. The search for a simplistic, but accurate approximation of intermolecular forces is there-
+fore one of the most challenging problems in the modeling and simulation of diffusional association.
+A variety of different electrostatic models have been used in BD simulations. They mainly vary in the
+
+q-surfaceb-surfaceParticle BParticle AEscapeReactionParticle B'74
+
+Flexible Architecture for Diffusional Association
+
+level of detail employed in the modeling of the charge distribution and the approximation used to present
+the electrostatic interactions of the system.
+One of the most basic method is the test charge method. Here the electrostatic potential is computed for
+the ﬁxed protein (particle A) on a grid. The second molecule (particle B) is considered as a collection
+of point charges in the solvent dielectric that moves on the potential grid of the ﬁxed protein. The low
+dielectric and ion exclusion volume of the second molecule are ignored. Although the method is rather
+coarse, it has been the standard method for a long time.
+More accurate electrostatic models, with almost the same computational effort, have been proposed by
+Gabdoulline and Wade [13] and by Beard and Schlick [1]. Gabdoulline and Wade extended the standard
+“test-charge” approach to the effective charge model. Here the electrostatic potential is ﬁrst calculated
+by a numerical solution of the PBE and for each molecule separately. Afterwards, the molecules are
+parameterized by ﬁtting effective charges on the molecules such that the previously calculated external
+potential is fully represented. This has the advantage of getting a simple, but rather realistic electrostatic
+model of the molecules, by solving the PBE numerically only once. Beard and Schlick have developed a
+similar approach to reproduce the electric ﬁeld of the PBE. They parameterize the molecule by effective
+surface charges and apply this approximation in a Debye-H¨uckel model.
+The introduction of a charge desolvation term brought further progress in the development of modeling
+techniques for DA. The charge desolvation term describes the penalty due to bringing a charge close to
+a low dielectric molecular cavity. A combination of the effective charges approach, the charge desolva-
+tion term and an appropriate reaction criteria has been used as a single protocol, in order to simulate the
+association of several protein pairs with the same model [15].
+
+Sampling Many molecular systems contain energy barriers, that have to be crossed before the particles
+can associate. Such energy barriers are e.g. one or several unfavorable states with respect to steric repul-
+sion of electrostatic forces. In these cases the fraction of reactive trajectories is very small. Consequently
+one has to perform an infeasible amount of BD trajectories until a converged association rate is reached.
+With the Weighted Brownian dynamics (WEB) [18], Huber and Kim adapted the NAM method to over-
+come reaction barriers. Instead of modeling the association of a single pair of particles, the WEB method
+replaces the moving particle of the NAM method by an ensemble of weighted pseudo-particles and di-
+vides the conﬁguration space into a number of bins along the reaction coordinate.
+Each bin is assigned a probability based on a Boltzmann distribution and initially ﬁlled with a number
+of weighted particles. During simulation the pseudoparticles are split and combined in order to equally
+sample the bins, i.e. all parts of the conﬁguration space. WEB produces consistent results compared to
+the NAM approach. For fast associating processes WEB needs approximately the same computational
+time as the NAM method. However, for slow associating processes, WEB gains a 3-fold speed up in
+comparison to the NAM method [27].
+
+3 The structure of FADA
+
+In this section, we will introduce the Flexible Architecture for Diffusional Association (FADA) which
+has been implemented in Java. Therefore, we will summarize the requirements for FADA, resulting from
+state of the art of Brownian dynamics modeling described in the previous section. Based on that, we will
+explain the interplay of the architecture’s basic components, while the following two sections will get
+into more detail about the components themselves.
+
+Fiete Haack & Stefan Leye & Adelinde M. Uhrmacher
+
+75
+
+3.1 Requirements
+In order to create a ﬂexible architecture that allows to implement a variety of DA methods, we need a
+basic model illuminating the biological setting of association processes for all possible implementations.
+Such a model needs to describe two or more molecules of some shape and certain properties in solution.
+These molecules move under constraints. Thus, their motion has to be modeled by a certain movement
+function, which deﬁnes velocity and direction of the movements with respect to the given constraints.
+For molecular systems these constraints mainly refer to the potential of mean forces, which incorporates
+ionic strength of the water molecules as well as intrinsic interactions between the particles.
+To summarize, the general model of DA consists of three main components: Particles Model (Individual),
+Movement Model, Potential of Mean Force Model. These components have to be implemented by every
+DA approach and thus form the basis of our DA model.
+For each DA approach, these components are reﬁned by specifying the mathematical model in terms
+of rules and parameters. A language should be available, to specify models in a user-friendly way. A
+speciﬁc simulator will then be responsible for the execution. It should be possible to apply different
+simulator components that allow different execution strategies. This is of great use for model validation
+(since biased components can be identiﬁed [24]) and it also provides the possibility of automatically
+choosing the best algorithm (simulator) for the given simulation model [11]. Consequently, a ﬂexible
+experimentation workﬂow is required, that allows the conﬁguration of model and simulator, as well as
+experiment design and analysis methods to exploit, extend and compare existing techniques.
+
+3.2 Basic components of FADA
+The key point of FADA’s design is the clear distinction between model, simulator and experiment. It
+follows the philosophy of JAMES II [17, 16], whose plug-in structure is the foundation for FADA.
+Hence, for each of the three steps different components and methods can be created, allowing a ﬂexible
+combination and application of them (see Figure 2).
+
+Figure 2: The structure of FADA.
+
+However, since the area of application for FADA is the DA process, some of these components have
+to follow a speciﬁc structure. A model can be speciﬁed with the SpacePi-Calculus (see Section 4). It
+comprises the two basic components: Individual, to describe particles and MotionModel to describe
+their movement. A PMFModel component, describing additional properties of the particles is under
+development (see Section 6). Accordingly, simulation engines executing those models can be created.
+
+76
+
+Flexible Architecture for Diffusional Association
+
+The simulator components may be exchanged and extended by exploiting the plug-in architecture. So far
+a DA simulator comprises components for the generation of random numbers, for the collision detection,
+and for stepsize control if the collision detection works time-stepped. Validation experiments can be
+conﬁgured and executed using the validation environment FAMVal [24]. Those experiments follow
+six basic steps (see Section 5). For each step, methods and techniques may be created, extended, or
+exchanged (again by exploiting the plug-in architecture) in order to allow a ﬂexible conﬁguration of
+experiments.
+
+4 Modeling and simulation with FADA
+
+In the following we will specify the NAM method in SpacePi [20] and thereby show the exemplary
+deﬁnition of a simulation model and illustrate the functioning of FADA.
+SpacePi is an extension of the π-Calculus [25], that incorporates time and space. The π-Calculus allows
+the deﬁnition of multiple parallel processes and their interactions. However, in contrast to standard π,
+SpacePi allows to assign a position (in two- or three-dimensional space) to a process. Further a movement
+function can be assigned to each process, describing its spatial motion. Constraints can be deﬁned, such
+that the possible interactions of the processes depends on the spatial conﬁguration of the system, i.e.,
+the position, or precisely the relative distance of the two particles. SpacePi thus provides all important
+features, that we need to specify the NAM model
+
+4.1 Model Speciﬁcation for Association Processes
+Before the NAMmodel can be speciﬁed in SpacePi, it is necessary to introduce the basic notations of
+the SpacePi formalism. SpacePi extends the π process with spatial notion to allow free movement of the
+processes. Each process P is associated with certain position −→p ∈ V,V ∈ Rd, where −→p is a vector space
+with norm (cid:107)·(cid:107)v. The modeling of movements demands the inclusion of time, as the speed of the motion
+could not be expressed otherwise. In SpacePi time is expressed by intervals (δt) and the communication
+takes place during the time intervals. Therefor a single rule is introduced to ensure the progress from
+time interval to time interval, while all other rules deﬁne the activities taking place during each interval.
+During a time interval the velocity and direction of motion are constant. Thus the movement function
+reads m = V ×X → V , which takes the current position of the process and a set of additional parameters
+X and calculates the new position with respect to X. Note that X as well as a function for selecting
+parameters χ ∈ X needs to be provided by the model. The movement function generates a target vector
+of the process. The target vector is added to the current position in order to receive the target position
+−→t = −→p + m(−→p , χ), which is the position reached after the time interval δt.
+Based on the previous deﬁnitions a process can be associated with its current position and a movement
+−→p
+function m. We thus write a process in SpacePi as P
+m . The formal description of a SpacePi process is as
+follows:
+
+πi . P
+
+−→p i
+i, mi
+
+| P
+
+−→p 1
+1, m1
+
+| P
+
+−→p i
+2, m2
+
+−→p
+m | nil
+| (new x)P
+
+−→p
+m ::= ∑
+P
+i∈I
+−→
+0
+m(
+
+−→
+0 ,χ)
+
+Nil is a shorthand for nil
+point of origin of V.
+The action π refers to a channel through which the concurrent processes may communicate. Sending
+and receiving x over the channel ch with radius r is denoted by ch!(x,r) and ch?(x,r), respectively.
+
+and describes an empty process without movement and a position at the
+
+Fiete Haack & Stefan Leye & Adelinde M. Uhrmacher
+
+77
+
+Two processes may only communicate, if their distance is closer than the given action radius r. A
+communication action with r = ∞ resembles the semantics of the π calculus, i.e.
+the channel has no
+spatial restriction. Based on the given notations of the SpacePi formalism, we can now specify the
+NAM model. Our system consists of two Brownian particles moving in R3. The motion is described
+in terms of Brownian motion. We thus deﬁne the movement function as mov(Pi, pos,t) = post with
+post(Pi) = post−1(Pi) + S, and S being a R3 random variables drawn from a normal distribution with
+mean (cid:104)S(cid:105) = 0 and derivation of (cid:104)S2(cid:105) = 2Dδt. D is the diffusion coefﬁcient, which has to be provided
+by the parametrization of the model. The movement function resembles the mean displacement of a
+Brownian particle based on the Ermak-McCammon Equation [10] under no inﬂuence of interparticle
+forces. There are two events, that we want to monitor. Either the two particles react, i.e. collide, or the
+particles diffuse into inﬁnite seperation.
+The speciﬁcation of the model in SpacePi is shown in ﬁgure 3. Please note that no potential mean force
+model is speciﬁed. The model consists of three different processes FixedParticle, MovingParticle and
+ExitParticle. The ﬁrst two processes describe the two particles under consideration. Since we model the
+movement of both particles as relative motion, only the MovingParticle is associated with a (Brownian)
+movement function (bMove). The process FixedParticle is ﬁxed in the center of the coordinate system
+and does not move. The expression coll?(∼,r) describes the collision event, which occurs as soon as
+the two particles reach a distance smaller than the given action radius r. Thereby the channel’s name, the
+radius of the complementary channel actions, and the location of the processes are taken into account.
+After the collision, i.e. reaction event, the processes terminate. The third process ExitParticle is an
+auxillary process that allows to realize the escape event.
+
+'
+
+Position declarations
+posF := x = 0 ∧ y = 0 ∧ z = 0
+posM := rand(x,y,z) s.t. (x2 + y2 + z2) = b
+posE := rand(x,y,z) s.t. (x2 + y2 + z2) = q
+
+Radius declarations
+rreact = 10
+
+Potential of mean force declarations
+fpm f : not deﬁned
+
+Motion declarations
+bMove(): ˙x2 + ˙y2 + ˙z2 < q,
+
+x = posE (x) ∧ y = posE (y) ∧ z = posE (z) otherwise
+
+Process deﬁnitions
+FixedParticle = coll?(∼,r).0
+MovingParticle[bMove] = coll!(∼,r).0
+ExitParticle = coll?(∼,r).0
+
+Initial process
+FixedParticle | MovingParticle | ExitParticle
+
+&
+
+Figure 3: A simplistic SpacePi model based on the NAM model for diffusional association of two
+particles. An expression ch?(∼,r) denotes that an empty message is to be received on channel ch with
+radius r.
+
+$
+
+%
+
+78
+
+Flexible Architecture for Diffusional Association
+
+In order to model the escape of the moving particle, the NAM model deﬁnes a separation distance
+q at which the two particles have diffused into inﬁnite separation. As neither π nor SpacePi calculus
+offer a way to represent boundaries, we incorporate the distance constraint into the movement func-
+tion. The idea is to place the ExitParticle outside of the q-surface and change the movement function
+of the MovingParticle, such that MovingParticle will collide with ExitParticle as soon as it reaches
+the separation distance q. We thus extend the movement of the process MovingParticle as follows
+mov(PM, pos,δt) = post with post(PM) = post−1(PM)+S, (iff (cid:107)post(PM)+S(cid:107) < q, post(PM) = pos(PE)
+otherwise). Thereby PM stands for MovingParticle and PE for ExitParticle. Due to the direct displace-
+ment of MovingParticle to the position of ExitParticle, the two particles collide instantaneously when
+MovingParticle has passed the distance q. The collision of both processes coll?(∼,r) is similar to
+the collision action of FixedParticle and MovingParticle. After this collision, i.e. escape event, the
+processes also terminate. Although the speciﬁed model is far from representing a realistic biological
+association process (for this a potential mean force model has to be included), the model serves as a
+good example to present the general idea, of how association processes can be expressed by a model
+formalism, evaluated by a simulator and ﬁnally be validated through validation experiments. Further the
+simplicity of the model allows us to calculate an accurate analytical solution, to validate our approach.
+
+4.2 Simulation of the model
+
+The simulator evaluates a parameterized instance of the described simulation model. For the simulation
+of the trajectory we use a simple step simulator, which calculates the mean displacement of the moving
+particle in each time step and checks for collision events. Therefore the simulator needs to implement a
+Random Number Generator (RNG) and a collision detection algorithm, which are realized as plug-ins. A
+separate implementation of these components (RNG and collision detection) allows to use different sim-
+ulator conﬁgurations by applying different algorithms in each component. So far, JAMES II offers over
+10 different RNG implementations, that may all be used by FADA. For the collision detections, we im-
+plemented two approaches, a time stepped and an event-triggered one. The time-stepped one, measures
+the distance between the particles at distinct time steps and reports a collision when the distance is 0. To
+minimize the amount of undetected collisions (i.e., two particles have a distance = 0 inbetween two time
+steps but > 0 at the steps) , a stepsize control is required for which we implemented two versions as well.
+The ﬁrst one creates a constant stepsize over the whole simulation run. The second version determines
+the stepsize depending on the distance of the moving particle to the reaction or escaping sphere (the
+lesser the distance the smaller the time step). The event-triggered collision detection precalculates the
+time point at which the particles should collide, depending on the actual movement and position. If no
+movement update happens before the calculated time point, the reaction happens. This variant requires
+more complicated calculations (compared to the time-stepped version) but produces an exact simulation.
+Another beneﬁt of the given separation of model and simulation, is the chance to optimize each compo-
+nent separately (e.g., by advanced step-size adaptations, heuristics, parallelization, etc.). This allows the
+integration of specialized solutions created by experts. Furthermore, additional features of the model can
+be reﬂected by new components for the simulator (e.g., a component handling the PMF model).
+
+5 Experimentation with FADA
+
+To conduct experiments with the BD model and simulator, FADA exploits the validation environment
+FAMVal. FAMVal is based on six steps that have been identiﬁed as being crucial for structuring vali-
+
+Fiete Haack & Stefan Leye & Adelinde M. Uhrmacher
+
+79
+
+dation experiments [23, 24]. In this section, we describe those steps and explain how each of them has
+been adapted in order to test the reaction rate of the BD model from Section 4.1 against the results of the
+state of the art and present some results.
+
+Important steps of a validation experiment
+
+5.1
+The ﬁrst and most important step is the speciﬁcation of requirements for the model to be validated.
+Thereby, the parameters for the whole experiment are deﬁned, inﬂuencing each of the following steps.
+
+The second step is the conﬁguration of the model, where interesting points in the model’s parameter
+
+space are selected in order to achieve the required information about the validity of the model.
+
+The third step is the execution of the model. Valid simulation engines and components are required
+for a reliable simulation result. Therefore, simulation runs have to be repeated with different simulator
+settings, to identify those biasing the simulation output due to approximation issues, bugs or side effects.
+The fourth step is the observation of the model execution, to produce the required simulation output.
+In the ideal case, only those properties of the model are observed, that are required to make a decision
+about whether the model fulﬁlls the requirements or not. More observations would produce overhead,
+less would hamper the analysis of the results.
+
+The analysis of the observed data is the ﬁfth step. It comprises two parts: the analysis of a single
+simulation run and the analysis of a set of replications.
+In general, the second part is based on the
+results of the ﬁrst one, but occasions exist where just one of them is necessary (e.g., the comparison
+of trajectories over a set of replications to calculate the monte-carlo variability). To execute a proper
+analysis, the required amount of simulation end times and required replications has to be determined.
+
+Finally, the last step is the evaluation. It takes the result of the analysis as well as the requirements
+into account. Feedback for the conﬁguration step may be produced, leading to iterative experiments
+which can be exploited for parameter estimation and optimization tasks in general.
+
+5.2 An example experiment
+The comparison of the simulation results of a newly developed model to those of a well-established
+model is a typical example for a model validation experiment [28]. We describe such an experiment to
+validate the model of section 4.1 following the described structure of FADA.
+The basic demand for the model is that its estimated rate constant rs = kD(b)β ∞ matches the analytical
+solution ra = 4πDa, where a is the reaction criterion, i.e., the minimum separation required for the two
+particles to react. In this case, the probability β that is required to estimate the rate rs can be directly
+computed by:
+
+βa =
+
+· q− b
+q− a
+
+a
+b
+
+We can thus use the probability rate βs as requirement, instead of the reaction rate constants. Hence, for
+a valid model the rate βs of simulation runs terminating with a reaction of the two particles, needs to
+match the rate βa. For our setting, the analytical rate βa has the value of 0.111. Besides the given rate,
+an error tolerance e is required, denoting the maximum distance between βs and βa for the model to be
+considered valid, with a given conﬁdence c. In our experiment we set e to 0.05 and c to 0.99. Since
+the reaction rate constant is only dependent on the reaction criterion, the parameter b, q, and D may be
+chosen arbitrarily. Typically q is chosen sufﬁciently larger than b, in order to allow a signiﬁcant fraction
+of trajectories to react. For the conﬁguration we used a ﬁxed minimum reaction criterion a = 10 ˚A and
+
+80
+
+Flexible Architecture for Diffusional Association
+
+ﬁxed distances b = 50 ˚A, and q = 100 ˚A. The radius of the particles has been set to 4 ˚A. This choice of
+parameters is based on the experiment settings used by [27]. Since we selected the parameters by hand
+(in contrast to using an algorithm, like a parameter sweep), they have to be reﬂected in the deﬁnition of
+the requirements.
+For the execution of the model we used two different RNG’s, the standard Java RNG and the Mersenne
+Twister, to investigate, whether a change of the RNG may have an inﬂuence on the simulation results.
+Furthermore, for executing the model we tried both implemented collision detection variants and for
+the time-stepped one both stepsize controls. The default stepsize was 0.1 milliseconds and the adapted
+one was 0.01 milliseconds. To calculate the association rate of two molecules just one observation is of
+importance, which is the fact whether the two particles have reacted or not. Therefore, the end state of
+reach simulation run has to be collected. The end of a simulation run is reached, either if the two particles
+collided or if the distance between them reached a given threshold. No additional effort had to be put in
+the analysis of the single simulation runs. The information about the end state of a run does not have to
+be post-processed in order to calculate βs. This value is created during the analysis of the conﬁguration
+(i.e., the replications with the same model parameter conﬁguration). Thereby, a list holding the end state
+of each simulation is maintained and after the required replications have been ﬁnished, the number of
+runs where the particles have reacted is summed up and divided by the count of all replications. It is
+not sufﬁcient to skip the list and calculate the sum on the way, since the intermediate results are used to
+calculate the standard error, which is required to calculate the count of necessray replications to ensure
+that the resulting rate lies in the given error range e with conﬁdence c [8].
+The evaluation basically comprises the comparison of the given rate to that, produced by the simulation.
+If the difference lies in the given tolerance e, the model can be considered valid for the used parameter
+conﬁguration. Since the conﬁgurations are selected by hand at the beginning of the experiment, no loop
+and therefore no feedback from the evaluation to the conﬁguration is required.
+
+Experiment Results Figure 4 shows the results of the described experiment. The exchange of the
+random number generator did not make any signiﬁcant difference for the results. Therefore, we just
+present the results of the Mersenne Twister. The simulations with the event-triggered collision detection
+produced association rates, that did lie inside the error tolerance. However, a signiﬁcant difference exists
+between the results produced by the time-stepped collision detection and the analytical result. As the
+
+Validation steps
+
+Speciﬁcation
+
+Conﬁguration
+
+Execution
+
+Observation
+
+Analysis
+
+Evaluation
+
+Realization
+
+determine βa, e, c
+
+conﬁgure the following steps
+
+diffusion coefﬁcient D
+initial particle distance b
+
+minimal collision distance a
+
+minimal exit distance q
+
+Mersenne Twister/Default RNG
+
+time stepped/event triggered
+
+ﬁxed/adaptive steps
+
+end state
+
+calculate βs by taking the average over all runs
+
+calculate the required replications
+
+compare βs to βa
+
+Table 1: Overview over the steps in a validation experiment and the realization to validate the BD model.
+
+Fiete Haack & Stefan Leye & Adelinde M. Uhrmacher
+
+81
+
+Figure 4: Results of the validation experiment.
+
+diffusion coefﬁcient is increased, the association rate produced by the simulation is decreased, while the
+reference rate stays constant. The differences are higher with the constant stepsize than with the adaptive
+stepsize. They can be explained by the less precise simulation with the time-stepped collision detection.
+If the collision happens between two steps and the two particles do not overlap in the second step, the
+collision can not be detected. As the particles have a lower diffusion coefﬁcient and therefore move
+slower i.e., they pass a smaller distance between two time steps, the probability of missing a collision
+is lower. Similarly, if the time step is adapted when a particle approaches the other one (and therefore
+again the passed distance between two time steps is decreased), less collisions are missed.
+The experiment shows the importance of testing different simulation engine conﬁgurations during a
+validation experiment. The type of the collision detection as well as the stepsize control had a high impact
+on the experiment results. If for instance just the time-stepped detection with the constant stepsize would
+have been used, the biased results would have led to the conclusion that the given model conﬁguration is
+invalid which it was not.
+
+6 Outlook
+
+The model presented and used here for testing purposes is simplistic. In order to include more realistic
+dynamics, e.g., for interparticle forces and reaction criteria, it is necessary to extend the model described
+in section 4.1. Since SpacePi allows an arbitrary deﬁnition of the movement function, different ap-
+proaches for the modeling of the potential mean force can be integrated. Therefore, one has to deﬁne the
+corresponding functions, i.e., declaring the potential of mean force model (see ﬁgure 3), that calculate
+the impact of the interparticle forces, while taking in account the position of the two particles. The value
+of this force ﬁeld evaluation is then used in order to parametrize the movement function of the moving
+particle. However, in addition it is necessary to parameterize the processes in terms of (local) charges of
+the particles and also introduce a parameter for the ionic strength of the surrounding solvent.
+Another interesting, but challenging step is the integration of more complex reaction criteria. Therefore
+a more detailed parametrization of the processes in terms of shape and size is necessary. A promising ap-
+proach, to solve this problem has been reported by [29], who introduced labels to the SpacePi formalism.
+In our validation experiment we estimated the association rate of the presented model. It could be easily
+validated as the value is analytically known. However, in any realistic application of this procedure this
+will not be the case. Thus, the validity of the used model has to be ensured. Therefore, it is necessary
+
+0,00000,02000,04000,06000,08000,10000,12000,020,2220betadiffusion coefficientreferenceevent‐triggeredadapted stepsizeconstant stepsize82
+
+Flexible Architecture for Diffusional Association
+
+to gain conﬁdence in the model with adequate methods. One way to achieve this conﬁdence is to check
+the plausibility of the model’s behavior. In the following we want to give an overview over methods, that
+might be applied in order to check the plausibility of the BD model.
+During the speciﬁcation step the requirements the model has to fulﬁll, have to be deﬁned. Those require-
+ments have to be pointed out with respect to the overall goal of the model - the calculation of association
+rates. Therefore it is important to identify those properties of the model, that inﬂuence the association
+rates and that can be checked for their plausibility. For instance, the end states of the simulation runs
+do not give good insights into the validity of the model since a reference association rate to check the
+plausibility of their occurrence is not available. The plausibility of a model does not just depend on the
+behavior of one single conﬁguration. If neighbor conﬁgurations show unexpected behavior, problems in
+the model structure might exist that could inﬂuence the results of the conﬁguration under investigation.
+Hence, experiments with different conﬁgurations can give new insights about the model structure. Fur-
+thermore, the reusability of the model is increased, if different parameter settings have been checked for
+their plausibility. If new particles with different properties have to be investigated it might be sufﬁcient
+to adapt the model parameters instead of creating an entire new model. However, those parameters have
+to be covered during the validation process. An algorithm exploring the parameter space [6] is required
+therefore. Future parameters of the model (e.g., forceﬁeld, rotational diffusion, ionization of solvent)
+have to be considered in this phase.
+For the execution of the model, different simulation engines and components have to be provided, to
+investigate bias produced by different algorithms. To get decent information about the behaviour of the
+modeled particles, more complex observations are required. As mentioned before, the end state of the
+simulation is not sufﬁcient anymore. However, more detailed information about the behaviour particles,
+like e.g., their movement trajectory could give hints about whether issues exist, that could bias the po-
+tential reactions.
+To analyze the simulation output results, techniques to analyze simulation traces [22] may be used. Fur-
+thermore, techniques from Runtime Veriﬁcation [2] and simulation-based model-checking [12] could
+be well suited. Thereby, expected paths of the particles would be coded into LTL-formulae and the
+model-checker could check, whether the movement trajectories produced by the simulation runs follow
+the path. This analysis technique could be used twofold for validation experiments. On the one hand, it
+could by used directly to validate the reaction events, e.g., something must be wrong if the trajectories
+of the particles should have led to a reaction, but now reaction occurred. On the other hand, it could
+be used, to validate certain parts of the model, e.g., something must be wrong if the trajectories of the
+particles contradict their movement functions.
+The evaluation of the analysis results is not constrained. A simple comparison of the results, to given
+speciﬁcations is imaginable, which however would not offer hints about the problem if the comparison
+turns out to be negative. One technique giving such hunts and supporting model debugging, is face
+validation. The analysis results are post-processed to create ﬁgures that support the modeler during
+the process of ﬁnding errors in the model. Those ﬁgures might facilitate the browsing through model
+structure and experiment results [34] or display interactions between the model’s components [21].
+
+7 Conclusion
+
+We introduced the basic concept of FADA, an architecture for the modeling, simulation, and experimen-
+tation of diffusional association processes. FADA uses SpacePi-Calculus expressions for the deﬁnition
+of models. Those models comprise two particles, whose reaction behaviour is under investigation. So far,
+
+Fiete Haack & Stefan Leye & Adelinde M. Uhrmacher
+
+83
+
+this behaviour is solely based on the movement functions of the particles, but additional features (e.g.,
+interparticle forces, detailed molecule representation, decent reaction criteria) are under development.
+We proposed a simple simulation engine relying on the three components collision detection, random
+number generator and stepsize control. According to additional model features, the simulator will be
+adapted by new components in the future. For the experimentation, FADA distinguishes six steps in
+order to conduct a validation experiment. Exemplarily, we described the realization of those steps for
+the validation of the association rate of a BD model. The results of this experiment showed that the
+simulation engine has an impact on the behaviour of the simulated model and that different simulator
+conﬁgurations have to be used in order to sort out invalid ones. With new features of the model, the real-
+ized steps of the experimentation process have to be adapted. This is especially important, if the model
+has to be validated with no reference association rate at hand, which is the case, if the model should be
+used to estimate association rates. For both tasks, the validation of DA models as well as the estimation
+of reaction rates based on them, FADA can be used.
+
+References
+
+[1] DA Beard & T. Schlick (2001): Modeling salt-mediated electrostatics of macromolecules: the discrete sur-
+
+face charge optimization algorithm and its application to the nucleosome. Biopolymers 58, pp. 106–115.
+
+[2] Saddek Bensalem & Doron A. Peled, editors (2009): Runtime Veriﬁcation. Springer.
+[3] O. G. Berg & P. H. von Hippel (1985): Diffusion-Controlled Macromolecular Interactions. Annual Review
+
+of Biophysics and Biophysical Chemistry 14(1), pp. 131–158.
+
+[4] H. Berry (2002): Monte Carlo simulations of enzyme reactions in two dimensions: fractal kinetics and spatial
+
+segregation. Biophys. J. 83, pp. 1891–1901.
+
+[5] J. Briggs, J. Madura, M. Davis, M. Gilson, J. Antosiewicz, B. Luty, R. Wade, B. Bagheri, A. Ilin, R. Tan &
+J. A. McCammon. (1995): University of Houston Brownian Dynamics Program User’s Guide and Program-
+mer’s Manual Release 5.1. Cambridge University Press, New York.
+
+[6] B. Calvez & G. Hutzler (2005): Parameter Space Exploration of Agent-Based Models. In: Knowledge-Based
+
+Intelligent Information and Engineering Systems. pp. 633–639.
+
+[7] D. Y. Chan & B. Halle (1984): The Smoluchowski-Poisson-Boltzmann description of ion diffusion at charged
+
+interfaces. Biophys. J. 46, pp. 387–407.
+
+[8] C. A. Chung (2004): Simulation modeling handbook: a practical approach. CRC Press.
+[9] M. E. Davis & J. A. McCammon (1989): Calculating electrostatic forces from grid-calculated potentials. J.
+
+Comp. Chem. 10, pp. 386–391.
+
+[10] D.L. Ermak & J.A. McCammon (1978): Brownian dynamics with hydrodynamics interactions. J. Chem.
+
+Phys 69, pp. 1352–1360.
+
+[11] R. Ewald, S. Leye & A. M. Uhrmacher (2009): An Efﬁcient and Adaptive Mechanism for Parallel Simulation
+In: PADS ’09: Proceedings of the 2009 ACM/IEEE/SCS 23rd Workshop on Principles of
+
+Replication.
+Advanced and Distributed Simulation. pp. 104–113.
+
+[12] F. Fages & A. Rizk (2007): On the Analysis of Numerical Data Time Series in Temporal Logic. In: M. Calder
+
+& S. Gilmore, editors: CMSB. pp. 48–63.
+
+[13] R. R. Gabdoulline & R Wade (1996): Effective charges for macromolecules in solvent. J Phys Chem 100, pp.
+
+3868–3878.
+
+[14] R. R. Gabdoulline & R. C. Wade. (1997): Simulation of the diffusional association of barnase and barstar.
+
+Biophys. J. 72, pp. 1917–1929.
+
+[15] R. R. Gabdoulline & R. C. Wade (2001): Protein-protein association: investigation of factors inﬂuencing
+
+association rates by Brownian dynamics simulations. J. Mol. Biol. 306(5), pp. 1139–1155.
+
+84
+
+Flexible Architecture for Diffusional Association
+
+[16] J. Himmelspach, R. Ewald & A. M. Uhrmacher (2008): A ﬂexible and scalable experimentation layer for
+
+JAMES II. In: S.J. Mason, R.R. Hill, L. Moench & O. Rose, editors: WSC. pp. 827–835.
+
+[17] J. Himmelspach & A. M. Uhrmacher (2007): Plug’n simulate. In: Spring Simulation Multiconference. pp.
+
+137–143.
+
+[18] G. A. Huber & S. Kim (1996): Weighted-ensemble Brownian dynamics simulations for protein association
+
+reactions. Biophys. J. 70, pp. 97–110.
+
+[19] M. Jeschke & R. Ewald (2008): Large-Scale Design Space Exploration of SSA. In: CMSB ’08: Proceedings
+
+of the 6th International Conference on Computational Methods in Systems Biology. pp. 211–230.
+
+[20] M. John, R. Ewald & A. M. Uhrmacher (2008): A Spatial Extension to the Pi Calculus. In: Electronic Notes
+
+in Theoretical Computer Science, 194. pp. 133–148.
+
+[21] P. Kemper & C. Tepper (2006): Traviando - Debugging Simulation Traces with Message Sequence Charts.
+In: QEST ’06: Proceedings of the 3rd international conference on the Quantitative Evaluation of Systems.
+pp. 135–136.
+
+[22] Jack P. C. Kleijnen, Russel C. H. Cheng & Bert Bettonvil (2000): Validation of trace-driven simulation
+models: more on bootstrap tests. In: J. A. Joines, R. R. Barton, K. Kang & P. A. Fishwick, editors: WSC.
+pp. 882–892.
+
+[23] S. Leye, J. Himmelspach & A. M. Uhrmacher (2009): A discussion on experimental model validation. In:
+Adam Brentnall Ajith Abraham Richard Zobel David Al-Dabass, Alessandra Orsoni, editor: Proceedings of
+the 11th International Conference on Computer Modeling and Simulation. pp. 161–167.
+
+[24] S. Leye & A. M. Uhrmacher (2010): A ﬂexible and extensible architecture for experimental model validation.
+
+In: Simutools.
+
+[25] R. Milner (1999): Communicating and Mobile Systems: the Pi-Calculus. Cambridge University Press.
+[26] S. H. Northrup, S. A. Allison & J. A. McCammon (1984): Brownian dynamics simulation of diffusion-
+
+inﬂuenced bimolecular reactions. J. Chem. Phys. 80, pp. 1517 – 1524.
+
+[27] A. Rojnuckarin, D. R. Livesay & S. Subramaniam (2000): Bimolecular reaction simulation using Weighted
+Ensemble Brownian dynamics and the University of Houston Brownian Dynamics program. Biophys J. 79(2),
+pp. 686–693.
+
+[28] R. G. Sargent (2008): Veriﬁcation and Validation of Simulation Models. In: S.J. Mason, R.R. Hill, L. Moench
+
+& O. Rose, editors: Proc. of the 39th WSC. pp. 157–169.
+
+[29] A. Sch¨afer & M. John (2009): Conceptional Modeling and Analysis of Spatio-Temporal Processes in
+
+Biomolecular Systems. In: APCCM, 96. Australian Computer Society. CPRIT, pp. 39–48.
+
+[30] J. L. Smart & J. A. McCammon (1998): Analysis of synaptic transmission in the neuromuscular junction
+
+using a continuum ﬁnite element model. Biophys. J 75, pp. 1679–1688.
+
+[31] M. V. Smoluchowski (1917): Versuch einer mathematischen Theorie der Koagulationskinetik kolloider Lo-
+
+sungen. Z. Phys. Chem. 92, pp. 129–168.
+
+[32] Y Song, Y Zhang, T Shen, C. L. Bajaj, J. A. McCammon & N. A. Baker (2004): Finite Element Solution of
+
+the Steady-State Smoluchowski Equation for Rate Constant Calculations. Biophys. J. 86, pp. 2017–2029.
+
+[33] K. Takahashi (2008): An Exact Brownian Dynamics Method for Cell Simulations.
+
+In: Springer Berlin /
+Heidelberg, editor: Computational Methods in Systems Biology 6th International Conference CMSB 2008,
+Rostock, Germany, October 12-15, 2008. Proceedings. p. Computational Methods in Systems Biology.
+
+[34] A. Unger & H. Schumann (2009): Visual Support for the Understanding of Simulation Processes. In: Pro-
+
+ceedings of IEEE Paciﬁc Visualization Symposium.
+
+[35] R. C. Wade, M. E. Davis, B. A. Luty, J. D. Madura & J. A. McCammon. (1993): Gating of the active site of
+triose phosphate isomerase: Brownian dynamics simulations of ﬂexible peptide loops in the enzyme. Biophys.
+J 64, pp. 9–15.
+
+

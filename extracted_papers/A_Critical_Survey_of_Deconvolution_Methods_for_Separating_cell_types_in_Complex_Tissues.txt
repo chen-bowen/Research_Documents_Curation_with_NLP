@@ -1,0 +1,2481 @@
+SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+1
+
+A Critical Survey of Deconvolution Methods for
+
+Separating cell-types in Complex Tissues
+Shahin Mohammadi∗,1, Neta Zuckerman(cid:63),2, Andrea Goldsmith2, and Ananth Grama∗,1
+1Department of Computer Sciences, Purdue University, West Lafayette, IN 47907, USA
+2Department of Electrical Engineering, Stanford University, Stanford, CA 94305, USA
+
+5
+1
+0
+2
+
+ 
+t
+c
+O
+5
+1
+
+ 
+
+ 
+ 
+]
+E
+C
+.
+s
+c
+[
+ 
+ 
+
+1
+v
+3
+8
+5
+4
+0
+
+.
+
+0
+1
+5
+1
+:
+v
+i
+X
+r
+a
+
+!
+
+Abstract—Identifying properties and concentrations of components
+from an observed mixture, known as deconvolution, is a fundamental
+problem in signal processing. It has diverse applications in ﬁelds rang-
+ing from hyperspectral imaging to denoising readings from biomedical
+sensors. This paper focuses on in-silico deconvolution of signals as-
+sociated with complex tissues into their constitutive cell-type speciﬁc
+components, along with a quantitative characterization of
+the cell-
+types. Deconvolving mixed tissues/cell-types is useful in the removal of
+contaminants (e.g., surrounding cells) from tumor biopsies, as well as
+in monitoring changes in the cell population in response to treatment
+or infection. In these contexts, the observed signal from the mixture of
+cell-types is assumed to be a convolution, using a linear instantaneous
+(LI) mixing process, of the expression levels of genes in constitutive cell-
+types. The goal is to use known signals corresponding to individual cell-
+types along with a model of the mixing process to cast the deconvolution
+problem as a suitable optimization problem.
+
+In this paper, we present a survey and in-depth analysis of models,
+methods, and assumptions underlying deconvolution techniques. We
+investigate the choice of the different loss functions for evaluating es-
+timation error, constraints on solutions, preprocessing and data ﬁltering,
+feature selection, and regularization to enhance the quality of solutions,
+along with the impact of these choices on the performance of commonly
+used regression-based methods for deconvolution. We assess different
+combinations of these factors and use detailed statistical measures to
+evaluate their effectiveness. Some of these combinations have been
+proposed in the literature, whereas others represent novel algorithmic
+choices for deconvolution. We identify shortcomings of current methods
+and avenues for further investigation. For many of the identiﬁed short-
+comings, such as normalization issues and data ﬁltering, we provide
+new solutions. We summarize our ﬁndings in a prescriptive step-by-
+step process, which can be applied to a wide range of deconvolution
+problems.
+
+Index Terms—Deconvolution, Gene expression, Linear regression,
+Loss function, Range ﬁltering, Feature selection, Regularization
+
+1 INTRODUCTION
+
+S OURCE separation, or deconvolution, is the problem
+
+of estimating individual signal components from
+their mixtures. This problem arises when source sig-
+nals are transmitted through a mixing channel and
+the mixed sensor readings are observed. Source sepa-
+ration has applications in a variety of ﬁelds. One of
+∗ Corresponding authors: mohammadi@purdue.edu, ayg@cs.purdue.edu
+(cid:63) Currently at: Genentech Inc., South San Francisco, CA 94080, USA
+
+its early applications was in processing audio signals
+[10–13]. Here, mixtures of different sound sources, such
+as speech or music, are recorded simultaneously using
+several microphones. Various frequencies are convolved
+by the impulse response of the room and the goal is
+to separate one or several sources from this mixture.
+This has direct applications in speech enhancement,
+voice removal, and noise cancellation in recordings from
+populated areas. In hyperspectral imaging, the spectral
+signature of each pixel is observed. This signal is the
+combination of pure spectral signatures of constitutive
+elements mixed according to their relative abundance. In
+satellite imaging, each pixel represents sensor readings
+for different patches of land at multiple wavelengths. In-
+dividual sources correspond to reﬂectances of materials
+at different wavelengths that are mixed according to the
+material composition of each pixel [1–5].
+
+Beyond these domains, deconvolution has applica-
+tions in denoising biomedical sensors. Tracing electrical
+current in the brain is widely used as a proxy for
+spatiotemporal patterns of brain activity. These patterns
+have signiﬁcant clinical applications in diagnosis and
+prediction of epileptic seizures, as well as characteriz-
+ing different stages of sleep in patients with sleep dis-
+orders. Electroencephalography (EEG) and magnetoen-
+cephalography (MEG) are two of the most commonly
+used techniques for cerebral imaging. These techniques
+measure voltage ﬂuctuations and changes in the electro-
+magnetic ﬁelds, respectively. Superconducting QUantum
+Interference Device (SQUID) sensors used in the latter
+technology are susceptible to magnetic coupling due
+to geometry and must be shielded carefully against
+magnetic noise. Deconvolution techniques are used to
+separate different noise sources and ameliorate the effect
+of electrical and magnetic coupling in these devices [6–9].
+At a high level, mixing channels can be classiﬁed as
+follows: (i) linear or nonlinear, (ii) instantaneous, de-
+layed, or convolutive, and (iii) over/under determined.
+When neither the sources nor the mixing process is avail-
+able, the problem is known as blind source separation
+(BSS). This problem is highly under-determined in gen-
+
+SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+2
+
+eral, and additional constraints; such as independence
+among sources, sparsity, or non-negativity; are typically
+enforced on the sources in practical applications. On the
+other hand, a new class of methods has been developed
+recently, which is known as semi or guided BSS [7,
+10, 12, 13]. In these methods, additional information is
+available a priori on the approximate behavior of either
+sources or the mixing process. In this paper, we focus
+on the class of over-determined, linear instantaneous (LI)
+mixing processes, for which a deformed prior on sources
+is available. In this case, the parameters of the linear
+mixer, as well as the true identity of the original sources
+are to be determined.
+
+experimental cell separation techniques have been pro-
+posed to enrich samples for cell-types of interest. How-
+ever, these experimental methods not only involve sig-
+niﬁcant time, effort, and expense, but may also result in
+insufﬁcient RNA abundance for further quantiﬁcation of
+gene expression. In this case, ampliﬁcation steps may
+introduce technical artifacts into the gene expression
+data. Furthermore, sorting of cell-types must be em-
+bedded in the experiment design for the desired subset
+of cells, and any subsequent separation is infeasible.
+Computational methods, on the other hand, are capable
+of sorting mixtures at different levels of resolution and
+for arbitrary cell-type subsets of interest.
+
+The organization of the remainder of the paper is
+as follows: in Section 2.1 we introduce the basic ter-
+minology from biology needed to formally deﬁne the
+deconvolution problem in the context of quantifying cell-
+type fractions in complex tissues. The formal deﬁnition
+of the deconvolution problem and its relationship to
+linear regression is deﬁned in Section 2.2. Sections 2.3
+and 2.4 review different choices and examples of the
+objective function used in regression. An overview of
+computational methods for biological deconvolution is
+provided in Section 2.5. Datasets and evaluation mea-
+sures used in this study are described in Sections 3.1
+and 3.2, respectively. The effect of the loss function, con-
+straint enforcement, range ﬁltering, and feature selection
+choices on the performance of deconvolution methods
+is evaluated systematically in Sections 3.4-3.8. Finally, a
+summary of our ﬁndings is provided in Section 4.
+
+2 BACKGROUND AND NOTATION
+2.1 Biological Underpinnings
+The central dogma of biology describes the ﬂow of genetic
+information within cells – the genetic code, represented
+in DNA molecules, is ﬁrst transcribed to an intermediate
+construct, called messenger RNA (mRNA), which in turn
+translates into proteins. These proteins are the functional
+workhorses of the cell. Genes, deﬁned as the minimal
+coding sections of the DNA, contain the recipe for mak-
+ing proteins. These instructions are utilized dynamically
+by the cell to adapt to different conditions. The amounts
+of various proteins in a cell can be measured at a time
+point. This corresponds to the level of protein expression.
+This process is limited by the availability of high-quality
+antibodies that can speciﬁcally target each protein. The
+amount of active mRNA in a cell, however, can be
+measured at the genome scale using high-throughput
+technologies such as microarrays and RNASeq. The for-
+mer is an older technology that relies on the binding
+afﬁnity of complementary base pairs (alphabets used in
+the DNA/RNA molecules), while the latter is a newer
+technique, using next generation sequencing (NGS). This
+technique estimates gene expression based on the over-
+lap of mRNA fragments with known genomic features.
+Since microarrays have been used for years, extensive
+databases from different studies are publicly available.
+
+In the context of molecular biology, deconvolution
+methods have been used to identify constituent cell-
+types in a tissue, along with their relative proportions.
+The inherent heterogeneity of tissue samples makes it
+difﬁcult to identify separated, cell-type speciﬁc signa-
+tures, i.e., the precise gene expression levels for each
+cell-type. Relative changes in cell proportions, combined
+with variations attributed to the changes in the biological
+conditions, such as disease state, complicate identiﬁca-
+tion of true biological signals from mere technical varia-
+tions. Changes in tissue composition are often indicative
+of disease progression or drug response. For example,
+coupled depletion of speciﬁc neuronal cells with the
+gradual increase in the glial cell population is indicative
+of neurodegenerative disorders. An increasing propor-
+tion of malignant cells, as well as a growing fraction of
+tumor inﬁltrating lymphocytes (TIL) compared to sur-
+rounding cells, directly inﬂuence tumor growth, metas-
+tasis, and clinical outcomes for patients [14, 15]. Decon-
+volving tissue biopsies allows further investigation of
+the interaction between tumor and micro-environmental
+cells, along with its role in the progression of cancer.
+
+The expression level of genes, which is a proxy for
+the number of present copies of each gene product,
+is one of the most common source factors used for
+separating cell-types and tissues. In the linear mixing
+model, the expression of each gene in a complex mixture
+is estimated as a linear combination of the expression of
+the same gene in the constitutive cell-types. In silico de-
+convolution methods for separating complex tissues can
+be coarsely classiﬁed as either full deconvolution, in which
+both cell-type speciﬁc expressions and the percentages
+of each cell-type are estimated, or partial deconvolution
+methods, where one of these data sources is used to
+compute the other [16]. These two classes loosely relate
+to BSS and guided-BSS problems. Note that in cases
+where relative abundances are used to estimate cell-
+type-speciﬁc expressions, the problem is highly under-
+determined, whereas in the complementary case of com-
+puting percentages from noisy expressions of puriﬁed
+cells, it is highly over-determined. The challenge is to
+select the most reliable features that satisfy the linearity
+assumption. We provide an in-depth review of the recent
+deconvolution methods in Section 2.5.
+
+In contrast to computational methods, a variety of
+
+SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+3
+
+RNASeq datasets, in comparison, are relatively smaller
+but growing rapidly in scale and coverage. Both of these
+technologies provide reliable proxies for the amount of
+proteins in cells, with RNASeq being more sensitive, es-
+pecially for lowly expressed genes. A drawback of these
+methods, however, is that the true protein expression is
+also regulated by additional mechanisms, such as post-
+transcriptional modiﬁcations, which cannot be assayed
+at the mRNA level.
+
+The expression level of genes is tightly regulated in
+different stages of cellular development and in response
+to environmental changes. In addition to these biological
+variations due to cellular state,
+intermediate steps in
+each technology introduce technical variations in repeated
+measurement of gene expression in the same cell-type.
+To enhance reproducibly of measurements, one normally
+includes multiple instances of the same cell-type in each
+experiment, known as technical replicates. The expression
+proﬁles from these experiments provide a snapshot of
+the cell under different conditions. In addition to bi-
+ological variation of genes within the same cell-type,
+there is an additional level of variation when we look
+across different cell-types. Some genes are ubiquitously
+expressed in all cell-types to perform housekeeping func-
+tions, whereas other genes exhibit speciﬁcity or selec-
+tivity for one, or a group of cell-types, respectively. A
+compendium of expression proﬁles of different cells at
+different developmental stages is the data substrate for
+in silico deconvolution of complex tissues.
+
+2.2 Deconvolution: Formal Deﬁnition
+We introduce formalisms and notation used in dis-
+cussing different aspects of in silico deconvolution of
+biological signals. We focus on models that assume
+linearity, that is, the expression signature of the mixture
+is a weighted sum of the expression proﬁle for its
+constitutive cell-types. In this case, sources are cell-type
+speciﬁc references and the mixing process is determined
+by the relative fraction of cell-types in the mixture.
+
+We ﬁrst introduce the mathematical constructs used:
+• M ∈ Rn×p: Mixture matrix, where each entry M(i, j)
+represents the raw expression of gene i, 1 ≤ i ≤ n,
+in heterogeneous sample j, 1 ≤ j ≤ p. Each sample,
+represented by m, is a column of the matrix M, and
+is a combination of gene expression proﬁles from
+constituting cell types in the mixture.
+• H ∈ Rn×r: Reference signature matrix for the ex-
+pression of primary cell types, with multiple bio-
+logical/technical replicates for each cell-type. In this
+matrix, rows correspond to the same set of genes as
+in M, columns represent replicates and there is an
+underlying grouping among columns that collects
+proﬁles corresponding to the same cell-type.
+• G ∈ Rn×q: Reference expression proﬁle, where
+the expression of similar cell-types in matrix H is
+represented by the average value.
+• C ∈ Rq×p: Relative proportions of each cell-type
+in the mixture sample. Here, rows correspond to
+
+cell-types and columns represent samples in mixture
+matrix M.
+
+Using this notation, we can formally deﬁne deconvo-
+lution as an optimization problem that seeks to identify
+“optimal” estimates for matrices G and C, denoted by
+ˆG and ˆC, respectively. Since G and/or C are not known
+a priori, we use an approximation that is based on the
+linearity assumption. In this case, we aim to ﬁnd ˆG and
+ˆC such that their product is close to the mixture matrix,
+M. Speciﬁcally, given a function δ that measures the
+distance between the true and approximated solutions,
+also referred to as the loss function, we aim to solve:
+
+δ( ˆG ˆC, M)
+
+min
+0≤ ˆG, ˆC
+
+(1)
+
+In partial deconvolution, either C or G, or their noisy
+representation, is known a priori and the goal is to ﬁnd
+the other unknown matrix. When matrix G, referred to
+as the reference proﬁle, is known, the problem is over-
+determined and we seek to distinguish features (genes)
+that closely conform to the linearity assumption, from
+the rest of the (variable) genes. In this case, we can solve
+the problem individually for each mixture sample. Let us
+denote by m and ˆc the expression proﬁle and estimated
+cell-type proportion of a mixture sample, respectively.
+Then, we can rewrite Equation 1 as:
+
+δ(Gˆc, m)
+
+min
+0≤ˆc
+
+(2)
+
+This formulation is essentially a linear regression prob-
+lem, with an arbitrary loss function. On the other hand,
+in the case of full deconvolution, we can still estimate C
+in a column-by-column fashion. However, estimating G
+is highly under-determined and we must use additional
+sources to restrict the search space. One such source
+of information is the variation across samples in M,
+depending on the cell-type concentrations in the latest
+estimated value of C. In general, most regression-based
+methods for full deconvolution use an iterative scheme
+that starts from either noisy estimates of G and C, or a
+random sample that satisﬁes given constraints on these
+matrices, and successively improves over this initial
+approximation. This iterative process can be formalized
+as follows:
+
+ˆC ← argmin
+0≤ ˆC
+ˆG ← (argmin
+0≤ ˆG
+
+(δ( ˆG ˆC − M))
+(δ( ˆCT ˆGT − M)T ))T
+
+(3)
+
+Please note that the updating ˆG is typically row-wise
+(for each gene), whereas updation of ˆC is column-wise
+(for each sample). Non-negative matrix factorization
+(NMF) is a dimension reduction technique that aims to
+factor each column of the given input matrix as a non-
+negative weighted sum of non-negative basis vectors,
+with the number of basis vectors being equal or less
+
+SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+4
+
+than the number of columns in the original matrix. The
+alternating non-negative least squares formulation (ANLS)
+for solving NMF can be formulated using the frame-
+work introduced in Equation 3. There are additional
+techniques for solving NMF, including the multiplicative
+updating rule and the hierarchical alternating least squares
+(HALS) methods, all of which are special cases of block-
+coordinate descent [25]. Two of the most common loss
+functions used in NMF are the Frobenius and Kullback-
+Leibler (KL) divergence [25].
+
+In addition to non-negativity (NN), an additional sum-
+to-one (STO) constraint is typically applied over columns
+of the matrix ˆC, or the sample-speciﬁc vector ˆc. This
+constraint restricts the search space, which can poten-
+tially enhance the accuracy of the results, and simpliﬁes
+the interpretation of values in ˆc as relative percentages.
+Finally, another fundamental assumption that is mostly
+neglected in prior work is the similar cell quantity
+(SCQ) constraint. The similar cell quantity assumption
+states that all reference proﬁles and corresponding mix-
+tures must be normalized to ensure that they represent
+the expression level of the “same number of cells.” If
+this constraint is not satisﬁed, differences in the cell-
+type counts directly affect concentrations by rescaling the
+estimated coefﬁcients to adjust for the difference.
+
+In this paper, we focus on different loss functions (δ
+functions), as well as the role of constraint enforcement
+strategies,
+in estimating ˆc. These constitute the key
+building blocks of both partial and full deconvolution
+methods.
+
+2.3 Choice of Objective Function
+In linear regression, often a slightly different notation is
+used, which we describe here. We subsequently relate it
+to the deconvolution problem. Given a set of samples,
+i=1, where xi ∈ Rk and yi ∈ R, the regression
+{(xi, yi)}m
+problem seeks to ﬁnd a function f (x) that minimizes
+the aggregate error over all samples. Let us denote the
+ﬁtting error by ri = yi − f (xi). Using this notation, we
+can write the regression problem as:
+
+m(cid:88)
+
+L(ri)
+
+i=1
+
+f∈F
+
+argmin
+
+(4)
+where the loss function L measures the cost of estimation
+error. We focus on the class of linear functions, that is
+fw(x) = wT x, for which we have ri = yi − wT xi. In this
+formulation, yi corresponds to the expression level of a
+gene in the mixture, vector xi is the expression level of
+the same gene in the reference cell types, and w is the
+fraction of each cell-type in the mixture. We can represent
+{xi}m
+i=1 in the compact form by matrix X, in which row
+i corresponds to xi.
+
+In cases where the number of parameters is greater
+than the number of samples, that is matrix X is a
+fat matrix, minimizing Equation 4, directly, can result
+in the over-ﬁtting problem. Furthermore, when features
+(columns of X) are highly correlated, solution may
+
+change drastically in response to small changes in the
+samples, speciﬁcally among the correlated features. This
+condition, known as multicollinearity, can result in inac-
+curate estimates, in which coefﬁcients of similar features
+are greatly different. To remedy these problems, we can
+add a regularization term, which incorporates additional
+constraints (such as sparsity or ﬂatness) to enhance the
+stability of results. We re-write the problem with the
+added regularizer as:
+
+{ m(cid:88)
+(cid:124)
+
+i=1
+
+argmin
+w∈Rk
+
+L(yi − wT xi)
+
+(cid:123)(cid:122)
+
+Overall loss
+
++ λR(w)
+
+(cid:124) (cid:123)(cid:122) (cid:125)
+
+}
+Regularizer
+
+(5)
+
+(cid:125)
+
+where the λ parameter controls the relative importance
+of estimation error versus regularization. There are dif-
+ferent choices and combinations for the loss function L
+and regularizer function R, which we describe in the
+following sections.
+
+2.3.1 Choice of Loss Functions
+There are a variety of options for suitable loss functions.
+Some of these functions are known to be asymptotically
+optimal for a given noise density, whereas others may
+yield better performance in practice when assumptions
+underlying the noise model are violated. We summarize
+the most commonly used set of loss functions:
+
+• If we assume that the underlying model is perturbed
+by Gaussian white noise, the squared or quadratic
+loss, denoted by L2, is known to be asymptotically
+optimal. This loss function is used in classical least
+squares regression and is deﬁned as:
+
+L2(ri) = r2
+
+i = (yi − wT xi)2
+
+• Absolute deviation loss, denoted by L1, is the opti-
+mal choice if noise follows a Laplacian distribution.
+Formally, it is deﬁned as:
+
+L1(ri) = |ri| = |yi − wT xi|
+
+• Huber’s loss function, denoted by L(M )
+huber,
+
+Compared to L2, the choice of L1 is preferred in the
+presence of outliers, as it is less sensitive to extreme
+values
+is a
+parametrized combination of L1 and L2. The main
+idea is that L2 loss is more susceptible to outliers,
+while it is more sensitive to small estimation errors.
+To combine the best of these two functions, we can
+deﬁne a half-length parameter M, which we use to
+transition from L2 to L1. More formally:
+
+L(M )
+Huber(ri) =
+
+if |ri| ≤ M
+r2
+i ,
+M (2|ri| − M ), otherwise
+
+• The loss function used in support vector regression
+(SVR) is the -insensitive loss, denoted by L()
+.
+Similar to Huber loss, there is a transition phase be-
+tween small and large estimation errors. However,
+
+
+
+(cid:40)
+
+SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+5
+
+Formally, it can be deﬁned as:
+
+R1(w) =(cid:107) w (cid:107)1=
+
+k(cid:88)
+
+i=1
+
+|wi|.
+
+(7)
+
+In addition to these two regularizers, their combina-
+tions have also been introduced in the literature. One
+such example is elastic net, which uses a convex combi-
+nation of the two, that is Relastic(w) = αR1(w) + (1 −
+α)R2(w). Another example is group Lasso, which, given
+a grouping G among cell-types, enforces ﬂatness among
+members of the group, while enhancing the sparsity
+pattern across groups. This regularizer function can be
+L2(w(Gi)), where w(Gi) is the
+
+written as Rgroup =(cid:80)
+
+Gi
+
+weight of cell-types in the ith group.
+
+Fig. 1. Comparison of different loss functions
+
+-insensitive loss does not penalize the errors that
+are smaller than a threshold. Formally, we deﬁne
+-insensitive loss as:
+
+(cid:40)
+
+L()
+ (ri) = max(0,|ri| − )
+
+=
+
+if |ri| ≤ 
+0,
+|ri| − , otherwise
+
+Figure 1 provides a visual representation of these loss
+functions, in which we use M = 1 and  = 1
+2 for the
+Huber and -insensitive loss functions, respectively. Note
+that for small residual values, |ri| ≤ M = 1, Huber and
+square loss are equivalent. However, outside this region
+Huber loss becomes linear.
+
+2.3.2 Choice of Regularizers
+When the reference proﬁle contains many cell-types that
+may not exist in mixtures, or in cases where constitutive
+cell-types are highly correlated, regularizing the objec-
+tive function can sparsify the solution or enhance the
+conditioning of the problem. We describe two commonly
+used regularizers here:
+
+• The norm-2 regularizer is used to shrink the regres-
+sion coefﬁcient vector w to ensure that it is as ﬂat
+as possible. A common use of this regularizer is
+in conjunction with L2 loss to remedy the multi-
+collinearity problem in classical least squares regres-
+sion. This regularizer is formally deﬁned as:
+
+R2(w) =(cid:107) w (cid:107)2
+2=
+
+k(cid:88)
+
+i=1
+
+2.4 Examples of objective functions used in practice
+2.4.1 Ordinary Least Squares (OLS)
+The formulation of OLS is based on squared loss, L2.
+Formally, we have:
+
+minw{ m(cid:88)
+
+L2(ri)} = minw{ m(cid:88)
+
+(yi − wT xi)2}
+
+i=1
+
+i=1
+
+= minw (cid:107) y − Xw (cid:107)2
+
+2
+
+where row i of the matrix X, also known as the design
+matrix, corresponds to xi. This formulation has a closed
+form solution given by:
+
+ˆw = (XT X)−1XT y
+
+In this formulation, we can observe that norm-2 regu-
+larization is especially useful in cases where the matrix
+X is ill-conditioned and near-singular, that is, columns
+are dependent on each other. By shifting XT X towards
+the identity matrix, we ensure that the eigenvalues are
+farther from zero, which enhances the conditioning of
+the resulting combination.
+
+2.4.2 Ridge Regression
+One of the main issues with the OLS formulation is that
+the design matrix, X, should have full column rank k.
+Otherwise, if we have highly correlated variables, the
+solution suffers from the multicollinearity problem. This
+condition can be remedied by incorporating a norm-2
+regularizer. The resulting formulation, known as ridge
+regression, is as follows:
+
+minw{ m(cid:88)
+
+L2(ri) + λR2(w)}
+
+i=1
+
+= minw (cid:107) y − Xw (cid:107)2
+
+2 +λ (cid:107) w (cid:107)2
+
+2
+
+w2
+i .
+
+(6)
+
+Similar to OLS, we can differentiate w.r.t. w to ﬁnd the
+
+close form solution for Ridge regression given by:
+
+• Another common regularizer is the norm-1 regu-
+larizer, which is used to enforce sparsity over w.
+
+ˆw = (XT X + λI)−1XT y
+
+−3−2−101230123456789ResidualLossComparisson of different loss functions (ε = 0.75, M = 1.00)  L1L2Huberε−insensitiveThis formulation is especially useful for producing
+sparse solutions by introducing zero elements in vector
+w. However, while being convex, it does not have a
+closed form solution.
+
+2.4.4 Robust Regression
+It is known that L2(r) is dominated by the largest ele-
+ments of the residual vector r, which makes it sensitive
+to outliers. To remedy this problem, different robust
+regression formulations have been proposed that use
+alternative loss functions. Two of the best-known for-
+mulations are based on the L1 and Lhuber loss functions.
+The L1 formulation can be written as:
+
+minw{ m(cid:88)
+
+L1(ri)} = minw{ m(cid:88)
+
+|yi − wT xi|}
+
+i=1
+
+= minw (cid:107) y − Xw (cid:107)1
+
+i=1
+
+However, for the Huber loss function, while it can be
+deﬁned similarly, it is usually formulated as an alterna-
+tive convex Quadratic Program (QP):
+
+minx,z,t{ 1
+2
+Subject to: − t ≤ Xw − y − z ≤ t
+
+2 +M 1T t}
+
+(cid:107) z (cid:107)2
+
+(8)
+
+which can be solved more efﬁciently using the following
+equivalent QP variant [17]:
+
+(cid:40)
+
+2 +M 1T (r + s)}
+
+minx,z,r,s{ 1
+(cid:107) z (cid:107)2
+2
+Xw − y − z = r − s
+0 ≤ r, s
+
+Subject to:
+
+in which, given the unit norm assumption introduced in
+Section 2.2, we assume that b = 0. The dual problem for
+the primal in Equation 10 can be written in matrix form
+as:
+
+maxα+,α−
+
+(cid:110)
+1T(cid:0)(α+ − α−) (cid:12) y(cid:1)
+
+−1T (α+ + α−)
+−(α+ − α−)T K(α+ − α−)
+
+(cid:111)
+
+(cid:40)
+
+Subject to:
+
+1T (α+ − α−) = 0
+0 ≤ α+, α− ≤ C
+
+(11)
+
+In this formulation, 1 is a vector of all ones, (cid:12) is
+the element-wise product, and K is the kernel matrix
+deﬁned as K = XXT . The dual formulation is often used
+to solve -SVR, because it can be easily extended to use
+different kernel functions to map xi to a d-dimensional
+non-linear feature space. Additionally, when m (cid:28) k,
+such as the case of high-dimensional feature spaces,
+it provides a better way to solve the SVR problem.
+However, the primal problem provides a more straight-
+forward interpretation. In addition, in the case where
+k (cid:28) m, it provides superior performance. To show the
+similarity with Equation 5, we can rewrite Equation 10
+using the -insensitive loss function as follows:
+
+L(yi − wT xi) + λR2(w)}
+
+(12)
+
+minw{ m(cid:88)
+
+i=1
+
+where λ = 1
+
+2C [19].
+
+(9)
+
+SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+6
+
+2.4.3 Least Absolute Selection and Shrinkage Operator
+(LASSO) Regression
+Combining the OLS with a norm-1 regularizer, we have
+the LASSO formulation:
+
+the variants of SVR is -SVR,
+in which parameter 
+deﬁnes the margin, or the -tube. The primal formulation
+of -SVR with linear kernel can be written as [18]:
+
+minw{ m(cid:88)
+
+L2(ri) + λR1(w)}
+
+minw,ξ+
+
+i ,ξ
+
+−
+i
+
+i=1
+
+= minw (cid:107) y − Xw (cid:107)2
+
+2 +λ (cid:107) w (cid:107)1
+
+Subject to:
+
+{ 1
+2
+
+(ξ+
+
+2 +C
+
+(cid:107) w (cid:107)2
+
+m(cid:88)
+yi − w · xi ≤  + ξ+
+
+−( + ξ
+i ) ≤ yi − w · xi
+−
+0 ≤ ξ+
+−
+i , ξ
+i
+
+i + ξ
+
+i=1
+
+i
+
+i )}
+−
+
+(10)
+
+In both of these formulations, the scalar M corre-
+sponds to half-length parameter of the Huber’s loss
+function.
+
+2.4.5 Support Vector Regression
+In machine learning, Support Vector Regression (SVR) is
+a commonly used technique that aims to ﬁnd a regres-
+sion by maximizing the margins around the estimated
+separator hyperplane from the closest data points on
+each side of it. This margin provides the region in which
+estimation errors are ignored. SVR has been recently
+used to deconvolve biological mixtures, where it has
+been shown to outperform other methods [15]. One of
+
+2.5 Overview of Prior in silico Deconvolution Meth-
+ods
+A majority of existing deconvolution methods fall into
+two groups – they either use a regression-based frame-
+work to compute G, C, or both; or perform statistical
+inference over a probabilistic model. Abbas et al. [20]
+present one of the early regression-based methods for
+estimating C. This method is designed to identify cell-
+type concentrations from a known reference proﬁle of
+immune cells. Their method is based on Ordinary Least
+Squares (OLS) regression and does not consider either
+non-negativity or sum-to-one constraints explicitly, but
+rather it enforces these constraints implicitly after the
+optimization procedure. An extension of this approach
+
+SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+7
+
+is proposed by Qiao et al. [21], which uses non-negative
+least squares (NNLS) to explicitly enforce non-negativity
+as part of the optimization. Gong et al. [22] present a
+quadratic programming (QP) framework to explicitly
+encode both constraints in the optimization problem
+formulation. They also propose an extension to this
+method, called DeconRNASeq, which applies the same
+QP framework to RNASeq datasets. More recently New-
+man et al. [15] propose robust linear regression (RLR) and
+ν-SVR regression instead of L2 based regression, which
+is highly susceptible to noise. Digital cell quantiﬁcation
+(DCQ) [23] is another approach designed for monitoring
+the immune system during infection. Compared to prior
+methods, DCQ forces sparsity by combining R2 and
+R1 regularization into an elastic net. This regularization
+is essential for successfully identifying the subset of
+active cells at each stage, given the larger number of
+cell-types included in their panel (213 immune cell sub-
+populations). In contrast to these techniques, Shen-Orr
+et al. [24] propose a method, call csSAM, which is specif-
+ically designed to identify genes that are differentially
+expressed among puriﬁed cell-types. The core of this
+method is regression over matrix C to estimate matrix
+G.
+
+Full regression-based methods use variations of block-
+coordinate descent to successively identify better esti-
+mates for both C and G [25]. Venet et al. [26] present
+one of the early methods in this class, which uses an
+NMF-like method coupled with a heuristic to decorrelate
+columns of G in each iteration. Repsilber et al. [27]
+propose an algorithm called deconf, which uses alter-
+nating non-negative least squares (ANLS) for solving
+NMF, without the decorrelation step of Vennet et al.,
+while implicitly applying constraints on C and G at
+each iteration. Inspired by the work of Pauca et al. on
+hyperspectral image deconvolution [4], Zuckerman et al.
+[28] propose an NMF method based on the Frobenius
+norm for gene expression deconvolution. They use gra-
+dient descent to solve for C and G at each step, which
+converges to a local optimum of the objective function.
+Given that the expression domain of cell-type speciﬁc
+markers is restricted to unique cells in the reference pro-
+ﬁle, Gaujoux et al. [29] present a semi-supervised NMF
+(ssNMF) method that explicitly enforces an orthogonal-
+ity constraint at each iteration over the subset of markers
+in the reference proﬁle. This constraint both enhances
+the convergence of the NMF algorithm, and simpliﬁes
+the matching of columns in the estimated cell-type ex-
+pression to the columns of the reference panel, G. The
+Digital Sorting Algorithm (DSA) [30] works as follows: if
+concentration matrix C is known a priori, it directly uses
+quadratic programming (QP) with added constraints on
+the lower/upper bound of gene expressions to estimate
+matrix G. Otherwise, if fractions are also unknown, it
+uses the average expression of given marker genes that
+are only expressed in one cell-type, combined with the
+STO constraint, to estimate concentrations matrix C ﬁrst.
+Population-speciﬁc expression analysis (PSEA) [36] per-
+
+forms a linear least squares regression to estimate quanti-
+tative measures of cell-type-speciﬁc expression levels, in
+a similar fashion as the update equation for estimating
+ˆG in Equation 3. In cases where the matrix C is not
+known a priori, PSEA exploits the average expression of
+marker genes that are exclusively expressed in one of the
+reference proﬁles as reference signals to track the variation
+of cell-type fractions across multiple mixture samples.
+
+In addition to regression-based methods, a large class
+of methods is based on probabilistic modeling of gene
+expression. Erikkila et al. [31] introduce a method, called
+DSection, which formulates the deconvolution problem
+using a Bayesian model. It incorporates a Bayesian prior
+over the noisy observation of given concentration pa-
+rameters to account for their uncertainty, and employs a
+MCMC sampling scheme to estimate the posterior distri-
+bution of the parameters/latent variables, including G
+and a denoised version of C. The in-silico NanoDissec-
+tion method [32] uses a classiﬁcation algorithm based on
+linear SVM coupled with an iterative adjustment process
+to reﬁne a set of provided, positive and negative, marker
+genes and infer a ranked list of genome-scale predictions
+for cell-type-speciﬁc markers. Quon et al. [33] propose a
+probabilistic deconvolution method, called PERT, which
+estimates a global, multiplicative perturbation vector to
+correct for the differences between provided reference
+proﬁles and the true cell-types in the mixture. PERT for-
+mulates the deconvolution problem in a similar frame-
+work as Latent Dirichlet Allocation (LDA), and uses the
+conjugate gradient descent method to cyclically optimize
+the joint likelihood function with respect to each latent
+variable/parameter. Finally, microarray microdissection
+with analysis of differences (MMAD) [34] incorporates
+the concept of the effective RNA fraction to account for
+source and sample-speciﬁc bias in the cell-type fractions
+for each gene. They propose different strategies depend-
+ing on the availability of additional data sources. In
+cases where no additional information is available, they
+identify genes with the highest variation in mixtures
+as markers and assign them to different reference cell-
+types using k-means clustering, and ﬁnally use these de
+novo markers to compute cell-type fractions. MMAD uses
+a MLE approach over the residual sum of squares to
+estimate unknown parameters in their formulation.
+
+3 RESULTS AND DISCUSSION
+We now present a comprehensive evaluation of various
+formulations for solving deconvolution problems. Some
+of these algorithimic combinations have been proposed
+in literature, while others represent new algorithmic
+choices. We systematically assess the impact of these
+algorithmic choices on the performance of in-silico de-
+convolution.
+
+3.1 Datasets
+
+1) In vivo mixtures with known percentages: We
+use a total of ﬁve datasets with known mixtures.
+
+SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+8
+
+We use CellMix to download and normalize these
+datasets [35], which uses the soft format data avail-
+able from Gene Expression Omnibus (GEO).
+
+• BreatBlood [22] (GEO ID: GSE29830): Breast
+and blood from human specimens are mixed
+in three different proportions and each of the
+mixtures is measured three times, with a total
+of nine samples.
+
+• CellLines [20] (GEO ID: GSE11058): Mixture
+of human cell lines Jurkat (T cell leukemia),
+THP-1 (acute monocytic leukemia), IM-9 (B
+lymphoblastoid multiple myeloma) and Raji
+(Burkitt B-cell lymphoma) in four different con-
+centrations, each of which is repeated three
+times, resulting in a total of 12 samples.
+
+• LiverBrainLung [24] (GEO ID: GSE19830): This
+dataset contains three different rat
+tissues,
+namely brain, liver, and lung tissues, which are
+mixed in 11 different concentrations with each
+mixture having three technical replicates, for a
+total of 33 samples.
+
+• RatBrain [36] (GEO ID: GSE19380): This con-
+tains four different cell-types, namely rat’s
+neuronal, astrocytic, oligodendrocytic and mi-
+croglial cultures, and two replicates of ﬁve
+different mixing proportions, for a total of 10
+samples.
+
+together
+
+• Retina [37] (GEO ID: GSE33076): This dataset
+pools
+from two different
+mouse lines and mixed them in eight differ-
+ent combinations and three replicates for each
+mixture, resulting in a total of 24 samples.
+
+retinas
+
+TABLE 1
+
+Summary statistics of each dataset
+
+Dataset
+BreastBlood
+CellLines
+LiverBrainLung
+PERT Cultured
+PERT Uncultured
+RatBrain
+Retina
+
+# features
+
+54675
+54675
+31099
+22215
+22215
+31099
+22347
+
+# samples
+
+9
+12
+33
+2
+4
+10
+24
+
+# references
+
+2
+4
+3
+11
+11
+4
+2
+
+and ˆP = 100 × ˆCnorm. Finally, let rjk = pjk − ˆpjk be
+the residual estimation error of cell-type k in sample j.
+Using this notation, we can deﬁne three commonly used
+measures of estimation error as follows:
+
+1) Mean absolute difference (mAD): This is among
+the easiest measures to interpret. It is deﬁned as
+the average of all differences for different cell-type
+percentages in different mixture samples. More
+speciﬁcally:
+
+mAD =
+
+1
+p × q
+
+p(cid:88)
+
+q(cid:88)
+
+j=1
+
+k=1
+
+|rjk|
+
+2) Root mean squared distance (RMSD): This mea-
+sure is one of the most commonly used distance
+functions in the literature. It is formally deﬁned as:
+
+(cid:118)(cid:117)(cid:117)(cid:116) 1
+
+p × q
+
+p(cid:88)
+
+q(cid:88)
+
+j=1
+
+k=1
+
+r2
+jk
+
+mAD =
+
+2) Mixtures with available cell-sorting data through
+ﬂow-cytometry: For this experiment, we use two
+datasets available from Qiao et al. [21]. We directly
+download these datasets from the supplementary
+material of the paper. These datasets are post-
+processed by the supervised normalization of mi-
+croarrays (SNM) method to correct for batch ef-
+fects. Raw expression proﬁles are also available for
+download under GEO ID GSE40830. This dataset
+contains two sub-datasets:
+
+• PERT Uncultured: This dataset contains un-
+cultured human cord blood mono-nucleated
+and lineage-depleted (Lin-) cells on the ﬁrst
+day.
+
+• PERT Cultured: This dataset contains culture-
+derived lineage-depleted human blood cells
+after four days of cultivation.
+
+Table 1 summarizes overall statistics related to each of
+
+these datasets.
+
+3.2 Evaluation Measures
+Let us denote the actual and estimated coefﬁcient matri-
+ces by C and ˆC , respectively. We ﬁrst normalize these
+measures to ensure each column sums to one. Then, we
+deﬁne the corresponding percentages as P = 100×Cnorm
+
+3) Pearson’s correlation distance: Pearson’s correla-
+tion measures the linear dependence between es-
+timated and actual percentages. Let us vectorize
+percentage matrices as p = vec(P) and ˆp = vec( ˆP).
+Using this notation, the correlation between these
+two vectors is deﬁned as:
+
+ρp,ˆp =
+
+cov(p, ˆp)
+σ(p)σ(ˆp)
+
+(13)
+
+where cov and σ correspond to covariance and
+standard variation of vectors, respectively. Finally,
+we deﬁne the correlation distance measure as
+R2D = 1 − ρp,ˆp.
+
+3.3 Implementation
+
+All codes and experiments have been implemented in
+Matlab. To implement different formulations of the de-
+convolution problem, we used CVX, a package for spec-
+ifying and solving convex programs [38, 39]. We used
+Mosek together with CVX, which is a high-performance
+solver for large-scale linear and quadratic programs [40].
+All codes and datasets are freely available at github.
+com/shmohammadi86/DeconvolutionReview.
+
+SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+9
+
+Fig. 2. Average computational time for each loss function
+in different datasets
+
+Fig. 3. Agreement among different evaluation measures
+across different datasets
+
+3.4 Effect of Loss Function and Constraint Enforce-
+ment on Deconvolution Performance
+
+We perform a systematic evaluation of the four different
+loss functions introduced in Section 2.3.1, as well as
+implicit and explicit enforcement of non-negativity (NN)
+and sum-to-one (STO) constraints over the concentration
+matrix ( ˆC), on the overall performance of deconvolution
+methods for each dataset. There are 16 conﬁgurations of
+loss functions/constraints for each test case. Addition-
+ally, for Huber and Hinge loss functions, where M and
+ are unknown, we perform a grid search with 15 values
+in multiples of 10 spanning the range {10−7,··· , 107}
+to ﬁnd the best values for these parameters. In order to
+evaluate an upper bound on the “potential” performance
+of these two loss functions, we use the true concen-
+trations in each sample, c, to evaluate each parameter
+choice. In practical applications, the RMSD of residual
+error between m and Gˆc is often used to select the
+optimal parameter. This is not always in agreement with
+the choice made based on known c.
+
+For each test dataset, we compute the three evaluation
+measures deﬁned in Section 3.2. Additionally, for each
+of these measures, we compute an empirical p-value
+by sampling random concentrations from a Uniform
+distribution and enforcing NN and STO constraints on
+the resulting random sample. In our study, we sampled
+10, 000 concentrations for each dataset/measure, which
+results in a lower bound of 10−4 on the estimated p-
+values. Figure 2 presents the time each loss function
+takes to compute per sample, averaged over all con-
+straint combinations. The actual times taken for Huber
+and Hinge losses are roughly 15 times those reported
+here, which is the number of experiments performed
+to ﬁnd the optimal parameters for these loss functions.
+From these results, L2 can be observed to have the
+fastest computation time, whereas LHuber is the slow-
+est. Measures L1 and LHinge ﬁt in between these two
+extremes, with L1 being faster the majority of times. We
+can directly compare these computation times, because
+we formulate all methods within the same framework;
+thus, differences in implementations do not impact direct
+comparisons.
+
+Computation time, while important, is not the critical
+measure in our evaluation. The true performance of a
+conﬁguration (selection of loss function and constraints)
+is measured by its estimation error. In order to rank
+different conﬁgurations, we ﬁrst assess the agreement
+among different measures. To this end, we evaluate each
+dataset as follows: for each experiment, we compute
+mAD, RMSD, and R2D independently. Then, we use
+Kendall rank correlation, a non-parametric hypothesis
+test for statistical dependence between two random vari-
+ables, between each pair of measures and compute a log-
+transformed p-value for each correlation. Figure 3 shows
+the agreement among these measures across different
+datasets. Overall, RM SD and mAD measures show
+higher consistency, compared to R2D measure. However,
+the mAD measure is easier to interpret as a measure of
+percentage loss for each conﬁguration. Consequently, we
+choose this measure for our evaluation in this study.
+
+Using mAD as the measure of performance, we eval-
+uate each conﬁguration over each dataset and sort
+the results. Figure 4 shows various combinations for
+each dataset. The RatBrain, LiverBrainLung, Breast-
+Blood, and CellLines datasets achieve high perfor-
+mance. Among these datasets, RatBrain, LiverBrain-
+Lung, and BreastBlood had the L2 loss function as
+the best conﬁguration, with the CellLines dataset being
+less sensitive to the choice of the loss function. Another
+surprising observation is that for the majority of con-
+ﬁgurations, enforcing the sum-to-one constraint worsens
+the results. We investigate this issue in greater depth in
+Section 3.5.
+
+For Retina, as well as both PERT datasets, the overall
+performance is worse than the other datasets. In the case
+of PERT, this is expected, since the ﬂow-sorted propor-
+tions are used as an estimate of cell-type proportions.
+Furthermore, the reference proﬁles come from a different
+study and therefore have greater difference with the true
+cell-types in the mixture. However, the Retina dataset
+exhibits unusually low performance, which may be at-
+tributed to multiple factors. As an initial investigation,
+we performed a quality control (QC) over different
+samples to see if errors are similarly distributed across
+samples. Figure 5 presents per-sample error, measured
+
+BreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrainRetina0510152025303540Average time (s) per sample  L2L1HuberHingeBreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrainRetinaRMSDmADR2DSPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+10
+
+Let Gmin(i) = min{G(i, 1),··· , G(i, q)} and Gmax(i) =
+max{G(i, 1),··· , G(i, q)}. Given that all concentrations
+are bound between 0 ≤ c(k) ≤ 1;∀1 ≤ k ≤ k,
+the minimum and maximum values that an estimated
+mixture value for the ith gene can attain are Gmin(i) and
+Gmax(i), respectively (by setting c(k) = 1 for min/max
+value, and 0 everywhere else). Using this notation, we
+can identify features that violate STO as follows:
+
+m(i) ≤ Gmin(i) ∀1 ≤ i ≤ n
+Gmax(i) ≤ m(i) ∀1 ≤ i ≤ n
+
+{Violating reference}
+{Violating mixture}
+
+The ﬁrst condition holds because expression values in
+reference proﬁles are so large that we need the sum of
+concentrations to be lower than one to be able to match
+the corresponding gene expression in the mixture. The
+second condition holds in cases where the expression of
+a gene in the mixture is so high that we need the sum
+of concentrations to be greater than one to be able to
+match it. In other words, for feature i, these constraints
+identify extreme expression values in reference proﬁles
+and mixture samples, respectively. Using these condi-
+tions, we compute the total number of features violating
+STO condition in each dataset.
+
+Figure 6 presents violating features in mixtures and
+reference proﬁles, averaged over all mixture samples in
+each dataset. We normalize and report the percent of
+features to account for differences in the total number
+of features in each dataset. We ﬁrst observe that for the
+majority of datasets, except Retina and BreastBlood, the
+percent of violating features is much smaller than vio-
+lating features in reference proﬁles. These two datasets
+also have the highest number of violating features in
+their reference proﬁles, summing to a total of approxi-
+mately 60% of all features. This observation is likely due
+to the normalization used in pre-processing microarray
+proﬁles. Speciﬁcally, one must not only normalize M and
+G independently, but also with respect to each other.
+We suggest using control genes that are expressed in
+all cell-types with low variation to normalize expression
+proﬁles. A recent study aimed to identify subsets of
+housekeeping genes in human tissues that respect these
+conditions [41]. Another choice is using ribosomal pro-
+teins, the basic building blocks of the cellular translation
+machinery, which are expressed in a wide range of
+species. The Remove Unwanted Variation (RUV) [42]
+method is developed to remove batch effects from mi-
+croarray and RNASeq expression proﬁles, but also to
+normalize them using control genes. A simple extension
+of this method can be adopted to solve the normalization
+difference between mixtures and references.
+
+Next, we evaluate how ﬁltering these features affects
+deconvolution performance of each dataset. For each
+case, we run deconvolution using all conﬁgurations
+and report the change (delta mAD) independently. Fig-
+ure 7 presents changes in the mAD estimation error
+
+Fig. 4. Overall performance of different loss/constraints
+combinations over all datasets
+
+Fig. 5. Sample-based error of the Retina dataset, based
+on L2 with explicit NN and STO
+
+by mAD, with median and median absolute deviation
+(MAD) marked accordingly. Interestingly, for the 4th, 6th,
+and 8th mixtures, the third replicate has much higher
+error than the rest. In the expression matrix, we observed
+a lower correlation between these replicates and the
+other two replicates in the batch. Additionally, for the
+7th mixture, all three replicates show high error rates.
+We expand on these results in later sections to identify
+additional reasons that contribute to the low deconvolu-
+tion performance of the Retina dataset.
+Finally, we note that in all test cases the performance
+of L1,LHuber, and LHinge are comparable, while LHuber
+and LHinge needed an additional step of parameter
+tuning. Consequently, we only consider L1 as a repre-
+sentative of this “robust” group of loss functions in the
+rest of our study.
+
+3.5 Agreement of Gene Expressions with Sum-to-
+One (STO) Constraint
+Considering the lower performance of conﬁgurations
+that explicitly enforce STO constraints, we aim to in-
+vestigate whether features (genes) in each dataset re-
+this constraint. Under the STO and NN con-
+spect
+straints, we use simple bounds for identifying violating
+features, for which there is no combination of con-
+centration values that can satisfy both STO and NN.
+Let m(i) be the expression value of the ith gene in
+the given mixture, and G(i, 1),··· , G(i, q) be the cor-
+responding expressions in different reference cell-types.
+
+0246810121416BreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrainRetinamAD of Estimation (Lower the Better)  L2 (NN=Imp, STO=Imp)L2 (NN=Exp, STO=Imp)L1 (NN=Imp, STO=Exp)Huber (NN=Imp, STO=Exp)L2 (NN=Imp, STO=Exp)Huber (NN=Imp, STO=Imp)L1 (NN=Imp, STO=Imp)Hinge (NN=Imp, STO=Imp)Hinge (NN=Imp, STO=Exp)L1 (NN=Exp, STO=Exp)Hinge (NN=Exp, STO=Exp)Huber (NN=Exp, STO=Exp)Huber (NN=Exp, STO=Imp)Hinge (NN=Exp, STO=Imp)L1 (NN=Exp, STO=Imp)L2 (NN=Exp, STO=Exp)0510152025303540SamplesGSM819140GSM819141GSM819142GSM819143GSM819144GSM819145GSM819146GSM819147GSM819148GSM819149GSM819150GSM819151GSM819152GSM819153GSM819154GSM819155GSM819156GSM819157GSM819158GSM819159GSM819160GSM819161GSM819162GSM819163mAD of Estimated C per SampleSPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+11
+
+datasets. They observe that expression values for mi-
+croarray measurements are skewed for the lowly ex-
+pressed genes (approximately < 10). This allows us to
+choose the lower bound based on experimental evidence.
+In our study, we search for the optimal bounds over
+a log2-linear space; thus, we set a threshold of 23 on
+the minimum expression values, which is closest to the
+bound proposed by Kawaji et al. [44].
+
+Fig. 6. Percent of features in each dataset that violate the
+STO constraint
+
+Fig. 7. Performance of deconvolution methods after re-
+moving violating features
+
+after removing violating features in both m and G
+before performing deconvolution. Similar to previous
+experiments, the Retina dataset exhibits widely different
+behavior than the rest of the datasets. Removing this
+dataset from further consideration, we ﬁnd that the
+overall performance over all datasets improves, with
+the exception of the RatBrain dataset. In the case of
+the RatBrain dataset, we hypothesize that the initially
+superior performance can be attributed to highly ex-
+pressed features. These outliers, that happens to agree
+with the true solution, result in over-ﬁtting. Finally, we
+note a correlation between observed enhancements and
+the level of violation of features in m. Consistent with
+this observation, we obtain similar results when we only
+ﬁlter violating features from mixtures, but not reference
+proﬁles.
+
+3.6 Range Filtering– Finding an Optimal Threshold
+Different upper/lower bounds have been proposed in
+the literature to preﬁlter expression values prior to de-
+convolution. For example, Gong et al. [22] suggest an
+effective range of [0.5, 5000], whereas Ahn et al. [43]
+observe an optimal range of [24 − 214]. To facilitate
+the choice of expression bounds, we seek a systematic
+way to identify an optimal range for different datasets.
+Kawaji et al. [44] recently report on an experiment to
+assess whether gene expression is quantiﬁed linearly in
+mixtures. To this end, they mix two cell-types (THP-1
+and HeLa cell-lines) and see if experimentally measured
+expressions match with the computationally simulated
+
+Choosing an upper bound on the expression values is
+a harder problem, since it relates to enhancing the perfor-
+mance of deconvolution methods by removing outliers.
+Additionally, there is a known relationship between
+the mean expression value and its variance [45], which
+makes these outliers noisier than the rest of the features.
+This becomes even more important when dealing with
+puriﬁed cell-types that come from different labs, since
+highly expressed time/micro-environment dependent
+genes would be signiﬁcantly different than the ones in
+the mixture [21]. A simple argument is to ﬁlter genes that
+the range of expression values in Affymetrix microarray
+technology is bounded by 216 (due to initial normaliza-
+tion and image processing steps). Measurements close
+to this bound are not reliable as they might be satu-
+rated and inaccurate. However, practical bounds used
+in previous studies are far from these extreme values. In
+order to examine the overall distribution of expression
+values, we analyze different datasets independently. For
+each dataset, we separately analyze mixture samples
+and reference proﬁles, encoded by matrices M and G,
+respectively. For each of these matrices, we vectorize the
+expression values and perform kernel smoothing using
+the Gaussian kernel to estimate the probability density
+function.
+
+Figure 8(a) and Figure 8(b) show the distribution of
+log-transformed expression values for mixtures and ref-
+erence proﬁles, respectively. These expression values are
+greater than our lower bound of 23. In agreement with
+our previous results, we observe an unusually skewed
+distribution for the Retina dataset, which in turn con-
+tributes to its lower performance compared to other ideal
+mixtures. Additionally, we observe that approximately
+80% of the features in this dataset are smaller than 23,
+which are ﬁltered and not shown in the distribution
+plot. For the rest of the datasets, in both mixtures and
+references, we observe a bell-shaped distribution with
+most of the features captured up to an upper bound
+of 28 − 210. Another exception to this pattern is the
+CellLines dataset, which has a heavier tail than other
+datasets, especially in its reference proﬁle.
+
+Next, we systematically evaluate the effect of range
+ﬁltering by analyzing upper bounds increasing in factors
+of 10 in the range {25,··· , 216}. In each case, we remove
+all features that at least one of the reference proﬁles
+or mixture samples has a value exceeding this upper
+bound. Figure 9 illustrates the percent of features that are
+retained, as we increase the upper bound. As mentioned
+earlier, approximately 80% of the features in the Retina
+dataset are lower than 23, which is evident from the
+
+BreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrainRetina05101520253035% of Violating Features  MixturesReferencesBreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrainRetina−6−4−20246Delta mAD (Higher the Better)  L2 (NN=Imp, STO=Imp)L2 (NN=Imp, STO=Exp)L2 (NN=Exp, STO=Imp)L2 (NN=Exp, STO=Exp)L1 (NN=Imp, STO=Imp)L1 (NN=Imp, STO=Exp)L1 (NN=Exp, STO=Imp)L1 (NN=Exp, STO=Exp)SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+12
+
+(a) Mixtures
+
+(a) Cultured
+
+(b) Reference Proﬁles
+
+Fig. 8. Distribution of expression values
+
+Fig. 9. Percent of covered features during range ﬁltering
+
+maximum percent of features left to be bounded by 20%
+in this ﬁgure. Additionally, consistent with our previous
+observation over expression densities, more that 80% of
+the features are covered between 28 − 210, except for the
+CellLine dataset.
+
+Finally, we perform deconvolution using the remain-
+ing features given each upper bound. The results are
+mixed, but a common trend is that removing highly
+expressed genes decreases performance of ideal mixtures
+with known concentrations, while enhancing the perfor-
+mance of PERT datasets. Figure 10(a) and Figure 10(b)
+show the changes in mAD error, compared to unﬁltered
+deconvolution, for the PERT dataset. In each case, we
+observe improvements up to 7 and 8 percent, respec-
+tively. The red and green points on the diagram show the
+signiﬁcance of deconvolution. Interestingly, while both
+
+(b) Uncultured
+
+Fig. 10. Performance of PERT datasets during range
+ﬁltering
+
+methods show similar improvements, all data points for
+cultured PERT seem to be insigniﬁcant, whereas uncul-
+tured PERT shows signiﬁcance for the majority of data-
+points. This is due to the weakness of our random model,
+which is dependent on the number of samples and is
+not comparable across datasets. Uncultured PERT has
+twice as many samples as cultured PERT, which makes
+it less likely to have any random samples achieving as
+good an mAD as the observed estimation error. This
+dependency on the number of samples can be addressed
+by deﬁning sample-based p-values. Another observation
+is that for the uncultured dataset, all measures have
+been improved, except L1 with explicit NN and STO
+constraints. On the other hand, for the cultured dataset,
+both L1 and L2 with the explicit NN constraint perform
+well, whereas implicitly enforcing NN deteriorates their
+performance. Cultured and uncultured datasets have
+their peak at 210 and 212, respectively.
+
+For the rest of the datasets, range ﬁltering decreased
+performance in a majority of cases, except the Retina
+dataset, which had an improved performance at 26 with
+the best result achieved with L1 with both explicit NN
+and STO enforcement. This changed the best observed
+performance of this datasest, measured as mAD, to be
+close to 7. These mixed results make it harder to choose
+a threshold for the upper bound, so we average results
+over all datasets to ﬁnd a balance between improvements
+
+34567891011121314151600.010.020.030.040.050.060.07Range of expression values (log2 scale)Density  BreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrainRetina34567891011121314151600.010.020.030.040.050.060.07Range of expression values (log2 scale)Density  BreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrainRetina56789101112131415160102030405060708090100log2 of the upper bound on expression valuesPercent of covered features  BreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrainRetina5678910111213141516−4−202468Log2 of the Upper Bound on Expression ValuesChanges in mAD Estimation Error (Higher the Better)  L2 (NN=Imp, STO=Imp)L2 (NN=Imp, STO=Exp)L2 (NN=Exp, STO=Imp)L2 (NN=Exp, STO=Exp)L1 (NN=Imp, STO=Imp)L1 (NN=Imp, STO=Exp)L1 (NN=Exp, STO=Imp)L1 (NN=Exp, STO=Exp)5678910111213141516−8−6−4−20246810Log2 of the Upper Bound on Expression ValuesChanges in mAD Estimation Error (Higher the Better)  L2 (NN=Imp, STO=Imp)L2 (NN=Imp, STO=Exp)L2 (NN=Exp, STO=Imp)L2 (NN=Exp, STO=Exp)L1 (NN=Imp, STO=Imp)L1 (NN=Imp, STO=Exp)L1 (NN=Exp, STO=Imp)L1 (NN=Exp, STO=Exp)SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+13
+
+Fig. 11. Average performance of range ﬁltering over all
+datasets
+
+Fig. 13. Sorted log2-transformed gene expressions in
+different datasets
+
+Fig. 12. Dataset-speciﬁc changes in the performance of
+deconvolution methods after ﬁltering expression ranges to
+ﬁt within [23 − 212]
+
+in PERT and overall deterioration in other datasets.
+Figure 11 presents the averaged mAD difference across
+all datasets. This suggests a “general” upper bound ﬁlter
+of 212 to be optimal across all datasets.
+
+We use this threshold to ﬁlter all datasets and per-
+form deconvolution on them. Figure 12 presents the
+dataset-speciﬁc performance of range ﬁltering with ﬁxed
+bounds, measured by changes in the mAD value com-
+pared to the original deconvolution. As observed from
+individual performance plots, range ﬁltering is most
+effective in cases where the reference proﬁles differ
+signiﬁcantly from the true cell-types in the mixture, such
+as the case with the PERT datasets. In ideal mixtures,
+since cell-types are measured and mixed at the same
+time/laboratory, this distinction is negligible. In these
+cases, highly expressed genes in mixtures and refer-
+ences coincide with each other and provide additional
+clues for the regression. Consequently, removing these
+highly expressed genes often degrades the performance
+of deconvolution methods. This generalization of the
+upper bound threshold, however, should be adopted
+with care, since each dataset exhibits different behavior
+in response to range ﬁltering. Ideally, one must ﬁlter
+each dataset individually based on the distribution of
+expression values. Furthermore, in practical applications,
+gold standards are not available to aid in the choice of
+cutoff threshold.
+
+We now introduce a new method that adaptively
+identiﬁes an effective range for each dataset. Figure 13
+
+Fig. 14. Example of adaptive ﬁltering over CellLines
+dataset
+
+illustrates the log2 normalized value of maximal expres-
+sion for each gene in matrices M and G, sorted in
+ascending order. In all cases, intermediate values exhibit
+a gradual increase, whereas the top and bottom elements
+in the sorted list show a steep change in their expression.
+We aim to identify the critical points corresponding to
+these sudden changes in the expression values for each
+dataset. To this end, we select the middle point as a
+point of reference and analyze the upper and lower
+half, independently. For each half, we ﬁnd the point on
+the curve that has the longest distance from the line
+connecting the ﬁrst (last) element to the middle element.
+Application of this process over the CellTypes dataset
+is visualized in Figure 14. Green points in this ﬁgure
+correspond to the critical points, which are used to deﬁne
+the lower and upper bound for the expression values of
+this dataset.
+
+We use this technique to identify adaptive ranges
+for each dataset prior to deconvolution. Table 2 sum-
+marizes the identiﬁed critical points for each dataset.
+Figure 15 presents the dataset-speciﬁc performance of
+each method after adaptive range ﬁltering. While in
+most cases the results for ﬁxed and adaptive range
+ﬁltering are compatible, and in some cases adaptive
+ﬁltering gives better results, the most notable difference
+is the degraded performance of LiverBrainLung, and,
+to some extent, RatBrain datasets. To further investigate
+this observation, we examine individual experiments for
+these datasets for ﬁxed thresholds. Figure 16 illustrates
+individual plots for each dataset. The common trend
+here is that in both cases range ﬁltering, in general, de-
+
+5678910111213141516−6−5−4−3−2−1012log2 of the upper bound on expression valuesMean mAD Change (Higher the Better)  L2 (NN=Imp, STO=Imp)L2 (NN=Imp, STO=Exp)L2 (NN=Exp, STO=Imp)L2 (NN=Exp, STO=Exp)L1 (NN=Imp, STO=Imp)L1 (NN=Imp, STO=Exp)L1 (NN=Exp, STO=Imp)L1 (NN=Exp, STO=Exp)BreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrainRetina−8−6−4−202468Delta mAD (Higher the Better)  L2ImpImpL2ImpExpL2ExpImpL2ExpExpL1ImpImpL1ImpExpL1ExpImpL1ExpExp01020304050607080901000246810121416Percent of Covered Featureslog2 Expression Values  BreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrainRetina01020304050607080901000246810121416Percent of covered featureslog2 expression valueSPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+14
+
+Summary of adaptive ranges for each dataset
+
+TABLE 2
+
+BreastBlood
+CellLines
+LiverBrainLung
+PERT Cultured
+PERT Uncultured
+RatBrain
+Retina
+
+4.2842
+5.2814
+3.3245
+4.9416
+5.1674
+3.3726
+2.4063
+
+LowerBound UpperBound
+
+9.4314
+11.6942
+9.9324
+10.9224
+11.5042
+9.9698
+6.7499
+
+(a) LiverBrainLung
+
+Fig. 15. Dataset-speciﬁc changes in the performance of
+deconvolution methods after adaptive range ﬁltering
+
+grades the performance of deconvolution methods for all
+conﬁgurations. In other words, extreme values in these
+datasets are actually helpful in guiding the regression,
+and any ﬁltering negatively impacts performance. This
+suggests that range ﬁltering, in general, is not always
+helpful in enhancing the deconvolution performance,
+and in fact in some cases; for example the ideal datasets
+such as LiverBrainLung, RatBrain, and BreastBlood; it
+can be counterproductive.
+
+3.7 Selection of Marker Genes – The Good, Bad, and
+Ugly
+Selecting marker genes that uniquely identify a certain
+tissue or cell-type, prior to deconvolution, can help in
+improving the conditioning of matrix G, thus improv-
+ing its discriminating power and stability of results, as
+well as decreasing the overall computation time. A key
+challenge in identifying “marker” genes is the choice of
+method that is used to assess selectivity of genes. Var-
+ious parametric and nonparametric methods have been
+proposed in literature to identify differentially expressed
+genes between two groups [46, 47] or between a group
+and other groups [48]. Furthermore, different methods
+have been developed in parallel to identify tissue-speciﬁc
+and tissue-selective genes that are unique markers with
+high speciﬁcity to their host tissue/cell type [49–52].
+While choosing/developing accurate methods for iden-
+tifying reliable markers is an important challenge, an
+in-depth discussion of the matter is beyond the scope
+of this article. Instead, we adopt two methods used in
+the literature. Abbas et al. [20] present a framework
+for choosing genes based on their overall differential
+expression. For each gene, they use a t-test to compare
+
+(b) RatBrain
+
+Fig. 16. Individual performance plots for range ﬁltering in
+datasets which range ﬁltering exhibits negative effect on
+the deconvolution
+
+the cell-type with the highest expression with the second
+and third highest expressing cell-type. Then, they sort all
+genes and construct a sequence of basis matrices with
+increasing sizes. Finally, they use condition number to
+identify an “optimal” cut among top-ranked genes that
+minimizes the condition number. Newman et al. [15]
+propose a modiﬁcation to the method of Abbas et al.,
+in which genes are not sorted based on their overall
+differential expression, but according to their tissue-
+speciﬁc expression when compared to all other cell-
+types. After preﬁltering differentially expressed genes,
+they sort genes based on their expression fold ratio and
+use a similar cutoff that optimizes the condition number.
+Note that the former method increases the size of the
+basis matrix by one at each step, while the latter method
+increases it by q (number of cell-types). The method of
+Newman et al. has the beneﬁt that it chooses a similar
+number of markers per cell-type, which is useful in cases
+where one of the references has a signiﬁcantly higher
+number of markers.
+
+We implement both methods and assess their per-
+formance over the datasets. We observe slightly better
+performance with the second method and use it for the
+rest of our experiments. Due to unexpected behavior
+of the Retina dataset, as well as a low number of
+signiﬁcant markers in all our trials, we eliminate this
+dataset from further study. In identifying differentially
+
+BreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrainRetina−8−6−4−202468Delta mAD (Higher the Better)  L2ImpImpL2ImpExpL2ExpImpL2ExpExpL1ImpImpL1ImpExpL1ExpImpL1ExpExp5678910111213141516−25−20−15−10−505log2 of the upper bound on expression valuesChanges in mAD estimation error  L2 (NN=Imp, STO=Imp)L2 (NN=Imp, STO=Exp)L2 (NN=Exp, STO=Imp)L2 (NN=Exp, STO=Exp)L1 (NN=Imp, STO=Imp)L1 (NN=Imp, STO=Exp)L1 (NN=Exp, STO=Imp)L1 (NN=Exp, STO=Exp)5678910111213141516−9−8−7−6−5−4−3−2−101log2 of the upper bound on expression valuesChanges in mAD estimation error  L2 (NN=Imp, STO=Imp)L2 (NN=Imp, STO=Exp)L2 (NN=Exp, STO=Imp)L2 (NN=Exp, STO=Exp)L1 (NN=Imp, STO=Imp)L1 (NN=Imp, STO=Exp)L1 (NN=Exp, STO=Imp)L1 (NN=Exp, STO=Exp)SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+15
+
+Fig. 17. Effect of marker selection on the performance of
+deconvolution methods
+
+Fig. 18. Effect of marker selection, after range ﬁltering,
+on the performance of deconvolution methods
+
+expressed genes, a key parameter is the q-value cutoff to
+report signiﬁcant features. The distribution of corrected
+p-values exhibits high similarity among ideal mixtures,
+while differing signiﬁcantly in CellLines mixtures and
+both PERT datasets. We ﬁnd the range of 10−3 − 10−5
+to be an optimal balance between these two cases
+and perform experiments to test different cutoff values.
+Figure 17 shows changes in the mAD measure after
+applying marker detection, using a q-value cutoff of
+10−3, which resulted in the best overall performance in
+our study. We observe that the PERT Uncultured and
+LiverBrainLung datasets have the highest gain across
+the majority of conﬁgurations, while BreastBlood and
+RatBrain exhibit an improvement in experiments with
+L1 while their L2 performance is greatly decreased.
+Finally, for the PERT Cultured and CellLines datasets,
+we observe an overall decrease in performance in almost
+all conﬁgurations.
+
+Next, we note that the internal sorting based on fold-
+ratio intrinsically prioritizes highly expressed genes and
+is susceptible to noisy outliers. To test this hypothesis, we
+perform a range selection using a global upper bound of
+1012 prior to the marker selection method and examine
+if this combination can enhance our previous results. We
+ﬁnd the q-value threshold of 10−5 to be the better choice
+in this case. Figure 18 shows changes in performance of
+different methods when we preﬁlter expression ranges
+prior to marker selection. The most notable change is
+that both the PERT Cultured and the CellLines, which
+were among the datasets with the lowest performance
+in the previous experiment, are now among the best-
+performing datasets, in terms of overall mAD enhance-
+ment. We still observe a higher negative impact on L2 in
+this case, but the overall amplitude of the effect has been
+dampened in both BreastBlood and RatBrain datasets.
+We note that there is no prior knowledge as to the
+“proper” choice of the marker selection method in the
+literature and that their effect on the deconvolution per-
+formance is unclear. An in-depth comparison of marker
+detection methods can beneﬁt future developments in
+this ﬁeld. An ideal marker should serve two purpose:
+(i) be highly informative of the cell-type in which it is
+expressed, (ii) shows low variance due to spatiotemporal
+changes in the environment (changes in time or microen-
+
+Fig. 19. High-level classiﬁcation of genes
+
+vironment). Figure 19 shows a high-level classiﬁcation
+of genes. An ideal marker is an invariant, cell-type
+speciﬁc gene, marked with green in the diagram. On the
+other hand, variant genes, both universally expressed
+and tissue-speciﬁc, are not good candidates, especially
+in cases where references are adopted from a different
+study. These genes, however, comprise ideal subsets
+of genes that should be updated in full deconvolution
+while updating matrix G, since their expression in the
+reference proﬁle may differ signiﬁcantly from the true
+cell-types in the mixture. It is worth mentioning that
+the proper ordering to identify best markers is to ﬁrst
+identify tissue-speciﬁc genes and then prune them based
+on their variability. Otherwise, when selecting invariant
+genes, we may select many housekeeping genes, since
+their expression is known to be more uniform compared
+to tissue-speciﬁc genes.
+
+Another observation relates to the case in which
+groups of proﬁles of cell-types have high similarity
+within the group, but are signiﬁcantly distant from the
+rest. This makes identifying marker genes more chal-
+lenging for these groups of cell-types. An instance of
+this problem is when we consider markers in the PERT
+datasets. In this case, erythrocytes have a much larger
+number of distinguishing markers compared to other
+references. This phenomenon is primarily attributed to
+the underlying similarity between undifferentiated cell-
+types in the PERT datasets, and their distance from the
+fully differentiated red blood cells. In these cases, it is
+beneﬁcial to summarize each group of similar tissues
+using a “representative proﬁle” for the whole group,
+and to use a hierarchical structure to recursively identify
+markers at different levels of resolution [52].
+
+Finally, we examine the common choice of condition
+
+BreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrain−6−4−20246810Delta mAD (Higher the Better)  L2ImpImpL2ImpExpL2ExpImpL2ExpExpL1ImpImpL1ImpExpL1ExpImpL1ExpExpBreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrain−8−6−4−202468Delta mAD (Higher the Better)  L2ImpImpL2ImpExpL2ExpImpL2ExpExpL1ImpImpL1ImpExpL1ExpImpL1ExpExpSPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+16
+
+number as the optimal choice to select the number of
+markers. First, unlike the “U” shape plot reported in
+previous studies, in which condition number initially
+decreases to an optimal point and then starts increasing,
+we observe variable behavior in the condition number
+plot, both for Newman et al. and Abbas et al. methods.
+This makes the generalization of condition number as
+a measure applicable to all datasets infeasible. Addi-
+tionally, we note that the lowest condition number is
+achieved if G is fully orthogonal, that is GT G = κI for
+any constant κ. By selecting tissue-selective markers, we
+can ensure that the product of columns in the resulting
+matrix is close to zero. However, the norm-2 of each
+column can still be different. We developed a method
+that speciﬁcally grows the basis matrix by accounting
+for the norm equality across columns. We ﬁnd that in
+all cases our basis matrix has a lower condition number
+than both the Newman et al. and Abbas et al. methods,
+but it did not always improve the overall performance
+of deconvolution methods using different loss functions.
+Further study on the optimal choice of the number
+of markers is another key question that needs further
+investigation
+
+3.8 To Regularize or Not to Regularize
+We now evaluate the impact of regularization on the per-
+formance of different deconvolution methods. To isolate
+the effect of the regularizer from prior ﬁltering/feature
+selection steps, we apply regularization on the original
+datasets. The R1 regularizer is typically applied in cases
+where the solution space is large, that is, the total num-
+ber of available reference cell-types is a superset of the
+true cell-types in the mixture. This type of regularization
+acts as a “selector” to choose the most relevant cell-
+types and zero-out the coefﬁcients for the rest of the cell-
+types. This has the effect of enforcing a sparsity pattern.
+Datasets used in this study are all controlled benchmarks
+in which references are hand-picked to match the ones in
+the mixture; thus, sparsifying the solution does not add
+value to the deconvolution process. On the other hand,
+an R2 regularizer, also known as Tikhonov regulariza-
+tion, is most commonly used when the problem is ill-
+posed. This is the case, for example, when the underlying
+cell-types are highly correlated with each other, which
+introduces dependency among columns of the basis
+matrix. In order to quantify the impact of this type
+of regularization on the performance of deconvolution
+methods, we perform an experiment similar to the one
+in Section 3.4 with an added R2 regularizer. In this
+experiment, we use L1 and L2 loss functions, as we
+previously showed that the performance of the other two
+loss functions is similar to L1. Instead of using Ridge
+regression introduced in Section 2.4.2, we implement
+an equivalent formulation, (cid:107) m − Gc (cid:107)2 +λ (cid:107) c (cid:107)1,
+which traces the same path but has higher numerical
+accuracy. To identify the optimal value of the λ param-
+eter that balances the relative importance of solution
+
+Fig. 20. Effect of L2 regularization on the performance of
+deconvolution methods
+
+ﬁt versus regularization, we search over the range of
+{10−7,··· , 107}. It is notable here that when λ is close
+to zero, the solution is identical to the one without
+regularization, whereas when λ → ∞ the deconvolution
+process is only guided by the solution size. Similar to the
+range ﬁltering step in Section 3.6, we use the minimum
+mAD error to choose the optimal value of λ.
+
+Figure 20 presents changes in mAD error, compared to
+original errors, after regularizing loss functions with the
+R2 regularizer. From these observations, it appears that
+PERT Cultured has the most gain due to regularization,
+whereas for PERT Uncultured, the changes are smaller.
+A detailed investigation, however, suggests that in the
+majority of cases for PERT Cultured, the performance
+gain is due to over shrinkage of vector c to the case of
+being almost uniform. Interestingly, the choice of uni-
+form c has lower mAD error for this dataset compared
+to most other results. Overall, both of the PERT datasets
+show signiﬁcant improvements compared to the original
+solution, which can be attributed to the underlying
+similarity among hematopoietic cells. On the other hand,
+an unexpected observation is the performance gain over
+L1 conﬁgurations for the BreastBlood dataset. This is
+primarily explained by the limited number of cell-types
+(only two), combined with the similar concentrations
+used in all samples (only combinations of 67% and 33%).
+To gain additional insight into the parameters used in
+each case during deconvolution, we plot the optimal λ
+values for each conﬁguration in each dataset. Figure 21
+summarizes the optimal values of the λ parameter. Large
+values indicate a beneﬁcial effect for regularization,
+whereas small values are suggestive of negative impact.
+In all cases where the overall mAD score has been
+improved, their corresponding λ parameter was large.
+However, large values of λ do not necessarily indicate a
+signiﬁcant impact on the ﬁnal solution, as is evident in
+the CellLines and LiverBrainLung datasets. Finally, we
+observe that cases where the value of λ is close to zero
+are primarily associated with the L2 loss function.
+
+3.9 Summary
+Based on our observations, we propose the following
+guidelines for the deconvolution of expression datasets:
+
+BreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrain−10123456789Delta mAD (Higher the Better)  L2ImpImpL2ImpExpL2ExpImpL2ExpExpL1ImpImpL1ImpExpL1ExpImpL1ExpExpREFERENCES
+
+17
+
+ﬁnd that ﬁxed thresholding is not effective and develop
+an adaptive method for ﬁltering each dataset individu-
+ally. Furthermore, we observed that range ﬁltering is not
+always beneﬁcial for deconvolution and, in fact, in some
+cases it can deteriorate the performance. We implement
+two commonly used marker selection methods from
+the literature to assess their effect on the deconvolution
+process. Orthogonalizing reference proﬁles can enhance
+the discriminating power of the basis matrix. However,
+due to known correlation between the mean and vari-
+ance of expression values, this process alone does not
+always provide satisfactory results. Another key factor to
+consider is the low biological variance of genes in order
+to enhance the reproducibility of the results and allow
+deconvolution with noisy references. The combination
+of range ﬁltering and marker selection eliminates genes
+with high mean expression, which in turn enhances the
+observed results. Finally, we address the application of
+Tikhonov regularization in cases where reference cell-
+types are highly correlated and the regression problem
+is ill-posed.
+
+We summarize our ﬁndings in a simple set of guide-
+lines and identify open problems that need further inves-
+tigation. Areas of particular interest for future research
+include: (i) identifying the proper set of ﬁlters based on
+the datasets, (ii) expanding deconvolution problem to
+cases with more complex, hierarchical structure among
+reference vectors, and (iii) selecting optimal features to
+reduce computation time while maximizing the discrim-
+inating power.
+
+ACKNOWLEDGMENT
+This work is supported by the Center for Science of
+Information (CSoI), an NSF Science and Technology Cen-
+ter, under grant agreement CCF-0939370, and by NSF
+Grant BIO 1124962.
+
+REFERENCES
+[1] N. Gillis, “Successive Nonnegative Projection Al-
+gorithm for Robust Nonnegative Blind Source Sep-
+aration,” SIAM Journal on Imaging Sciences, vol. 7,
+no. 2, pp. 1420–1450, Jan. 2014.
+
+[2] W.-K. Ma et al., “A Signal Processing Perspective
+on Hyperspectral Unmixing: Insights from Remote
+Sensing,” IEEE Signal Processing Magazine, vol. 31,
+no. 1, pp. 67–81, Jan. 2014.
+
+[3] D. Nuzillard and A. Bijaoui, “Blind source sepa-
+ration and analysis of multispectral astronomical
+images,” Astronomy& astrophysics supplement series,
+vol. 147, pp. 129–138, Nov. 2000.
+
+[4] V. P. Pauca, J. Piper, and R. J. Plemmons, “Nonneg-
+ative matrix factorization for spectral data analy-
+sis,” Linear Algebra and its Applications, vol. 416, no.
+1, pp. 29–47, Jul. 2006.
+
+Fig. 21. Optimal value of λ for each dataset/conﬁguration
+pair
+
+1) Pre-process reference proﬁles and mixtures us-
+ing invariant, universally expressed (housekeep-
+ing) genes to ensure that the similar cell quantity
+(SCQ) constraint is satisﬁed.
+
+2) Filter violating features that cannot satisfy the sum-
+
+to-one (STO) constraint.
+
+3) Filter lower and upper bounds of gene expressions
+
+using adaptive range ﬁltering.
+
+4) Select invariant (among references and between
+references and samples) cell-type-speciﬁc markers
+to enhance the discriminating power of the basis
+matrix.
+5) Solve the regression using the L1 loss function with
+explicit constraints (check), together with an R2
+regularizer, or group LASSO if sparsity is desired
+among groups of tissues/cell-types.
+
+6) Use the L-curve method to identify the optimal
+balance between the regression ﬁt and the regu-
+larization penalty.
+
+4 CONCLUDING REMARKS
+In this paper, we present a comprehensive review of
+different methods for deconvolving linear mixtures of
+cell-types in complex tissues. We perform a systematic
+analysis of the impact of different algorithmic choices
+on the performance of the deconvolution methods, in-
+cluding the choice of the loss function, constraints on
+solutions, data ﬁltering, feature selection, and regular-
+ization. We ﬁnd L2 loss to be superior in cases where
+the reference cell-types are representative of constitutive
+cell-types in the mixture, while L1 outperforms the L2
+in cases where this condition does not hold. Explicit
+enforcement of the sum-to-one (STO) constraint typi-
+cally degrades the performance of deconvolution. We
+propose simple bounds to identify features violating this
+constraint and evaluate the total number of violating
+features in each dataset. We observe an unexpectedly
+high number of features that cannot satisfy the STO
+condition, which can be attributed to problems with
+normalization of expression proﬁles, speciﬁcally normal-
+izing references and samples with respect to each other.
+In terms of ﬁltering the range of expression values, we
+
+−8−6−4−202468BreastBloodCellLinesLiverBrainLungPERT_CulturedPERT_UnculturedRatBrainlog10(λ)  L2 (NN=Imp, STO=Imp)L2 (NN=Imp, STO=Exp)L2 (NN=Exp, STO=Imp)L2 (NN=Exp, STO=Exp)L1 (NN=Imp, STO=Imp)L1 (NN=Imp, STO=Exp)L1 (NN=Exp, STO=Imp)L1 (NN=Exp, STO=Exp)REFERENCES
+
+18
+
+[5] E. Villeneuve and H. Carfantan, “Hyperspec-
+tral data deconvolution for galaxy kinematics
+with mcmc,” in Signal Processing Conference (EU-
+SIPCO), 2012 Proceedings of the 20th European, 2012,
+pp. 2477–2481.
+
+[6] A. C. Tang, B. A. Pearlmutter, M. Zibulevsky, and
+S. A. Carter, “Blind source separation of multi-
+channel neuromagnetic responses,” Neurocomput-
+ing, vol. 3233, pp. 1115 –1120, 2000.
+
+[7] C. Hesse and C. James, “On semi-blind source
+separation using spatial constraints with applica-
+tions in eeg analysis,” Biomedical Engineering, IEEE
+Transactions on, vol. 53, no. 12, pp. 2525–2534, 2006.
+[8] C. Vaya, J. J. Rieta, C. Sanchez, and D. Moratal,
+“Convolutive blind source separation algorithms
+applied to the electrocardiogram of atrial ﬁbrilla-
+tion: Study of performance,” IEEE Transactions on
+Biomedical Engineering, vol. 54, no. 8, pp. 1530–1533,
+2007.
+
+[9] K. Zhang and A. Hyv¨arinen, “Source separation
+and higher-order causal analysis of MEG and
+EEG,” CoRR, vol. abs/1203.3533, 2012.
+
+[10] M. Pedersen, U. Kjems, K. Rasmussen, and
+L. Hansen, “Semi-blind source separation using
+head-related transfer functions [speech signal sep-
+aration],” in Acoustics, Speech, and Signal Processing,
+2004. Proceedings. (ICASSP ’04). IEEE International
+Conference on, vol. 5, 2004, V–71316 vol.5–.
+
+[11] M. Yu, W. Ma,
+
+J. Xin, and S. Osher, “Multi-
+channel
+l1 regularized convex speech enhance-
+ment model and fast computation by the split
+bregman method,” Audio, Speech, and Language
+Processing, IEEE Transactions on, vol. 20, no. 2,
+pp. 661–675, 2012.
+
+[12] E. Vincent, N. Bertin, R. Gribonval, and F. Bimbot,
+“From blind to guided audio source separation:
+How models and side information can improve
+the separation of sound,” IEEE Signal Processing
+Magazine, vol. 31, no. 3, pp. 107–115, May 2014.
+
+[13] N. Souvira`a-Labastie, A. Olivero, E. Vincent, and
+F. Bimbot, “Multi-channel audio source separation
+using multiple deformed references,” IEEE Trans-
+actions on Audio, Speech and Language Processing,
+vol. 23, no. 11, pp. 1775–1787, Jun. 2015.
+
+[14] A. Kuhn, A. Kumar, A. Beilina, A. Dillman, M. R.
+Cookson, and A. B. Singleton, “Cell population-
+speciﬁc expression analysis of human cerebel-
+lum.,” BMC genomics, vol. 13, p. 610, 2012.
+
+[15] A. M. Newman et al., “Robust enumeration of
+cell subsets from tissue expression proﬁles,” Nature
+Methods, no. MAY 2014, pp. 1–10, 2015.
+
+[16] S. S. Shen-Orr and R. Gaujoux, “Computational de-
+convolution: extracting cell type-speciﬁc informa-
+tion from heterogeneous samples.,” Current opinion
+in immunology, vol. 25, no. 5, pp. 571–8, Oct. 2013.
+[17] O. L. Mangasarian and D. R. Musicant, “Robust
+linear and support vector regression,” IEEE Trans.
+
+Pattern Anal. Mach. Intell., vol. 22, no. 9, pp. 950–
+955, 2000.
+
+[18] V. Vapnik, Statistical learning theory. Wiley, 1998.
+[19] A. J. Smola and B. Sch¨olkopf, “A tutorial on sup-
+port vector regression,” Statistics and Computing,
+vol. 14, no. 3, pp. 199–222, 2004.
+
+[20] A. R. Abbas, K. Wolslegel, D. Seshasayee, Z. Mod-
+rusan, and H. F. Clark, “Deconvolution of blood
+microarray data identiﬁes cellular activation pat-
+terns in systemic lupus erythematosus.,” PloS one,
+vol. 4, no. 7, e6098, 2009.
+
+[21] W. Qiao, G. Quon, E. Csaszar, M. Yu, Q. Morris,
+and P. W. Zandstra, “PERT: a method for ex-
+pression deconvolution of human blood samples
+from varied microenvironmental and developmen-
+tal conditions.,” PLoS computational biology, vol. 8,
+no. 12, e1002838, 2012.
+
+[22] T. Gong et al., “Optimal deconvolution of tran-
+scriptional proﬁling data using quadratic program-
+ming with application to complex clinical blood
+samples.,” PloS one, vol. 6, no. 11, e27156, 2011.
+
+[23] Z. Altboum et al., “Digital cell quantiﬁcation iden-
+immune cell dynamics during in-
+tiﬁes global
+ﬂuenza infection,” Molecular Systems Biology, vol.
+10, no. 2, pp. 720–720, Mar. 2014.
+
+[25]
+
+[24] S. S. Shen-Orr et al., “Cell type-speciﬁc gene ex-
+pression differences in complex tissues.,” Nature
+methods, vol. 7, no. 4, pp. 287–9, 2010.
+J. Kim, Y. He, and H. Park, “Algorithms for non-
+negative matrix and tensor factorizations: a uniﬁed
+view based on block coordinate descent frame-
+work,” Journal of Global Optimization, vol. 58, no.
+2, pp. 285–319, 2013.
+
+[26] D. Venet, F. Pecasse, C. Maenhaut, and H. Bersini,
+“Separation of samples into their constituents us-
+ing gene expression data,” Bioinformatics, vol. 17,
+no. Suppl 1, S279–S287, 2001.
+
+[27] D. Repsilber et al., “Biomarker discovery in het-
+erogeneous tissue samples -taking the in-silico de-
+confounding approach.,” BMC bioinformatics, vol.
+11, p. 27, 2010.
+
+[28] N. S. Zuckerman, Y. Noam, A. J. Goldsmith, and
+P. P. Lee, “A self-directed method for cell-type
+identiﬁcation and separation of gene expression
+microarrays.,” PLoS computational biology, vol. 9,
+no. 8, e1003189, 2013.
+
+[29] R. Gaujoux and C. Seoighe, “Semi-supervised
+Nonnegative Matrix Factorization for gene expres-
+sion deconvolution: a case study.,” Infection, genet-
+ics and evolution : journal of molecular epidemiology
+and evolutionary genetics in infectious diseases, vol.
+12, no. 5, pp. 913–21, 2012.
+
+[30] Y. Zhong, Y.-W. Wan, K. Pang, L. M. L. Chow,
+and Z. Liu, “Digital sorting of complex tissues for
+cell type-speciﬁc gene expression proﬁles.,” BMC
+bioinformatics, vol. 14, p. 89, 2013.
+
+[31] T. Erkkil¨a, S. Lehmusvaara, P. Ruusuvuori, T.
+I. Shmulevich, and H. L¨ahdesm¨aki,
+
+Visakorpi,
+
+SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+19
+
+“Probabilistic analysis of gene expression measure-
+ments from heterogeneous tissues.,” Bioinformatics
+(Oxford, England), vol. 26, no. 20, pp. 2571–7, 2010.
+[32] W. Ju et al., “Deﬁning cell-type speciﬁcity at the
+transcriptional level in human disease.,” Genome
+research, vol. 23, no. 11, pp. 1862–73, 2013.
+
+[33] G. Quon, S. Haider, A. G. Deshwar, A. Cui, P. C.
+Boutros, and Q. Morris, “Computational puriﬁca-
+tion of individual tumor gene expression proﬁles
+leads to signiﬁcant improvements in prognostic
+prediction.,” Genome medicine, vol. 5, no. 3, p. 29,
+2013.
+
+[34] D. A. Liebner, K. Huang, and J. D. Parvin,
+“MMAD: microarray microdissection with analy-
+sis of differences is a computational tool for de-
+convoluting cell type-speciﬁc contributions from
+tissue samples.,” Bioinformatics (Oxford, England),
+vol. 30, no. 5, pp. 682–9, 2014.
+
+[35] R. Gaujoux and C. Seoighe, “CellMix: a compre-
+hensive toolbox for gene expression deconvolu-
+tion.,” Bioinformatics (Oxford, England), vol. 29, no.
+17, pp. 2211–2, 2013.
+
+[36] A. Kuhn, D. Thu, H. J. Waldvogel, R. L. M. Faull,
+and R. Luthi-Carter, “Population-speciﬁc expres-
+sion analysis (PSEA) reveals molecular changes in
+diseased brain.,” Nature methods, vol. 8, no. 11,
+pp. 945–7, 2011.
+
+[37] S. Siegert et al., Transcriptional code and disease map
+
+for adult retinal cell types, 2012.
+
+[38] M. Grant and S. Boyd, “Graph implementations for
+nonsmooth convex programs,” in Recent Advances
+in Learning and Control, V. Blondel, S. Boyd, and
+H. Kimura, Eds., ser. Lecture Notes in Control
+and Information Sciences, http://stanford.edu/
+∼boyd/graph dcp.html, Springer-Verlag Limited,
+2008, pp. 95–110.
+
+[39] CVX: matlab software for disciplined convex program-
+ming, version 2.1, http://cvxr.com/cvx, Mar. 2014.
+software,
+
+optimization
+
+[40] The
+
+MOSEK
+
+http://www.mosek.com/.
+
+[41] E. Eisenberg and E. Y. Levanon, Human housekeep-
+
+[42]
+
+[43]
+
+ing genes, revisited, 2013.
+J. A. Gagnon-Bartsch and T. P. Speed, “Using
+control genes to correct for unwanted variation
+in microarray data.,” Biostatistics (Oxford, England),
+vol. 13, no. 3, pp. 539–52, 2012.
+J. Ahn et al., “DeMix: deconvolution for mixed
+cancer transcriptomes using raw measured data.,”
+Bioinformatics (Oxford, England), vol. 29, no. 15,
+pp. 1865–71, 2013.
+
+[44] H. Kawaji et al., “Comparison of CAGE and RNA-
+seq transcriptome proﬁling using clonally ampli-
+ﬁed and single-molecule next-generation sequenc-
+ing,” Genome Research, vol. 24, no. 4, pp. 708–717,
+Apr. 2014.
+
+[45] Y Tu, G Stolovitzky, and U Klein, “Quantitative
+noise analysis for gene expression microarray ex-
+periments.,” Proceedings of the National Academy of
+
+Sciences of the United States of America, vol. 99, no.
+22, pp. 14 031–14 036, 2002.
+
+[46] M. Jeanmougin, A. de Reynies, L. Marisa, C. Pac-
+card, G. Nuel, and M. Guedj, “Should we abandon
+the t-test in the analysis of gene expression mi-
+croarray data: a comparison of variance modeling
+strategies.,” PloS one, vol. 5, no. 9, e12336, Jan. 2010.
+[47] N. R. Clark et al., “The characteristic direction:
+a geometrical approach to identify differentially
+expressed genes,” BMC Bioinformatics, vol. 15, no.
+1, p. 79, 2014.
+
+[48] K Van Deun, H Hoijtink, L Thorrez, L Van Lom-
+mel, F Schuit, and I Van Mechelen, “Testing the
+hypothesis of tissue selectivity: the intersection-
+union test and a Bayesian approach.,” Bioinformat-
+ics (Oxford, England), vol. 25, no. 19, pp. 2588–94,
+Oct. 2009.
+
+[49] F. M. G. Cavalli, R. Bourgon, W. Huber, J. M.
+Vaquerizas, and N. M. Luscombe, “SpeCond: a
+method to detect condition-speciﬁc gene expres-
+sion.,” Genome biology, vol. 12, no. 10, R101, Jan.
+2011.
+
+[50] K. Kadota, J. Ye, Y. Nakai, T. Terada, and K.
+Shimizu, “ROKU: a novel method for identiﬁca-
+tion of tissue-speciﬁc genes.,” BMC bioinformatics,
+vol. 7, p. 294, Jan. 2006.
+
+[51] K. D. Birnbaum and E. Kussell, “Measuring cell
+identity in noisy biological systems.,” Nucleic acids
+research, vol. 39, no. 21, pp. 9093–107, Nov. 2011.
+
+[52] S. Mohammadi and A. Grama, “A novel method to
+enhance the sensitivity of marker detection using
+a reﬁned hierarchical prior of tissue similarities,”
+Tech. Rep., Jun. 2015.
+
+Shahin Mohammadi received his Master’s de-
+gree in Computer Science from Purdue Uni-
+versity in Dec. 2012 and is currently a Ph.D.
+candidate at Purdue. His research interests in-
+clude computational biology, machine learning,
+and parallel computing. His current work spans
+different areas of Bioinformatics/Systems Biol-
+ogy and aims to develop computational methods
+coupled with statistical models for data-intensive
+problems, with application in mining the human
+tissue-speciﬁc transcriptome and interactome.
+
+Neta Zuckerman received her PhD degree in
+computational biology from the University of Bar-
+Ilan, Israel in June 2010. She has completed her
+post-doctorate in 2015 as a computational biol-
+ogist at Stanford University, School of Medicine
+and City of Hope as well as a visiting scholar at
+the department of Electrical Engineering, Stan-
+ford University. Her research interests focus on
+investigating the role of
+immune cells in the
+setting of various diseases, speciﬁcally cancer,
+utilizing algorithm development and microarray
+data analysis. Neta is currently a computational biologist at Genentech
+Inc.
+
+SPECIAL ISSUE OF PROCEEDINGS OF IEEE - FOUNDATIONS & APPLICATIONS OF SCIENCE OF INFORMATION, VOL. X, NO. X, X 2015
+
+20
+
+Andrea Goldsmith Andrea Goldsmith is the
+Stephen Harris professor in the School of En-
+gineering and a professor of Electrical Engineer-
+ing at Stanford University. Her research interests
+are in information theory and communication
+theory, and their application to wireless commu-
+nications as well as biology and neuroscience.
+She has received several awards for her work
+including the IEEE ComSoc Edwin H. Armstrong
+Achievement Award, the IEEE ComSoc and In-
+formation Theory Society Joint Paper Award,
+and the National Academy of Engineering Gilbreth Lecture Award.
+She is author of 3 textbooks, including Wireless Communications, all
+published by Cambridge University Press, as well as an inventor on 28
+patents.
+
+Ananth Grama received the PhD degree from
+the University of Minnesota in 1996. He is cur-
+rently a Professor of Computer Sciences and
+Associate Director of the Center for Science of
+Information at Purdue University. His research
+interests span areas of parallel and distributed
+computing architectures, algorithms, and appli-
+cations. On these topics, he has authored sev-
+eral papers and texts. He is a member of the
+American Association for Advancement of Sci-
+ences.
+
+

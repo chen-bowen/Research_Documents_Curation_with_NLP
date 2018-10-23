@@ -1,0 +1,1367 @@
+An Introduction to Hedge Funds
+
+Sovan Mitra
+
+9
+0
+0
+2
+
+ 
+r
+p
+A
+7
+1
+
+ 
+
+ 
+ 
+]
+
+.
+
+N
+G
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+2
+v
+1
+3
+7
+2
+
+.
+
+4
+0
+9
+0
+:
+v
+i
+X
+r
+a
+
+Abstract
+
+This report was originally written as an industry white paper on Hedge Funds. This
+
+paper gives an overview to Hedge Funds, with a focus on risk management issues. We
+
+deﬁne and explain the general characteristics of Hedge Funds, their main investment
+
+strategies and the risk models employed. We address the problems in Hedge Fund
+
+modelling, survey current Hedge Funds available on the market and those that have
+
+been withdrawn. Finally, we summarise the supporting and opposing arguments for
+
+Hedge Fund usage.
+
+A unique value of this paper, compared to other Hedge Fund literature freely avail-
+
+able on the internet, is that this review is fully sourced from academic references (such
+
+as peer reviewed journals) and is thus a bona ﬁde study.
+
+This paper will be of interest to: Hedge Fund and Mutual Fund Managers, Quan-
+
+titative Analysts, “Front” and “Middle” oﬃce banking functions e.g. Treasury Man-
+
+agement, Regulators concerned with Hedge Fund Financial Risk Management, Private
+
+and Institutional Investors, Academic Researchers in the area of Financial Risk Man-
+
+agement and the general Finance community.
+
+Key words: Hedge Funds, risk management, risk measurement, regulation.
+
+1. Introduction and Outline
+
+According to the European Central Bank [Gar05], the Hedge Fund industry is grow-
+
+ing rapidly with a total of US $1 trillion worth of assets under their control globally. A
+
+Hedge Fund’s size is typically less than US $100 million, with nearly half under US $25
+
+million [Gar05]. They represent a small percentage of the asset management industry
+
+(see [Gar05]) yet they exert a disproportionately massive inﬂuence on the ﬁnancial and
+
+economic sector in relation to their size (see Fung [FH00a]). This is due to Hedge
+
+Funds generally using dynamic and leveraged trading strategies, which is in contrast
+
+to Mutual Funds that typically engage in buy-and-hold strategies. Thus it is apparent
+
+Preprint submitted to Elsevier
+
+April 17, 2009
+
+Hedge Funds have a signiﬁcant inﬂuence in ﬁnancial markets, yet knowledge of them
+
+is relatively little.
+
+In this paper we introduce Hedge Funds, attempting to ﬁrstly propose a deﬁnition
+
+for Hedge Funds as no common consensus has yet been agreed within the Finance
+
+community. We then explain the common investment strategies applied by Hedge
+
+Funds e.g. event driven, long-only investment. In the next section, we survey the main
+
+risk models applied to analysing Hedge Funds whilst also discussing the diﬃculties in
+
+actually measuring Hedge Fund risks. Finally we ﬁnish by surveying current Hedge
+
+Funds available on the market and famous Hedge Funds that have been withdrawn.
+
+It is important to note that knowledge and performance of the Hedge Fund indus-
+
+try is guarded with substantial secrecy. Consequently, the quality of information used
+
+in any Hedge Fund study, can never be as good as those for other investment products
+
+e.g. Mutual Funds (see Fung [FH00a],Fung [FH99a], Do et al. [DFW05]).
+
+2. Introduction to Hedge Funds
+
+Within the investment industry, many fund types exist: Hedge Funds, investment
+
+trusts, unit trusts etc... yet the term Hedge Fund has no explicit deﬁnition. In fact the
+
+European Central Bank states in its report on Hedge Funds [Gar05] that no common
+
+Hedge Fund deﬁnition exists. Deﬁning a Hedge Fund is in fact more problematic than
+
+it appears. To appreciate the diﬃculty in deﬁning a Hedge Fund, it is instructive to
+
+know its brief history.
+
+2.1. Brief History of the Hedge Funds Industry
+
+According to Fung [FH99a], the ﬁrst ever Hedge Fund was formed by Albert Wislow
+
+Jones in 1949, so called as the main investment strategy was to take hedged equity
+
+investments. By hedging (the act of removing risk in some investment by taking an
+
+investment in another (typically related) investment) Winslow was able to eliminate
+
+some market risks.
+
+Hedge Funds then became ﬁrst well-known after an article in Fortune(1966) mention-
+
+ing Jones’s fund signiﬁcantly outperforming other Mutual Funds [FH99a]. Although
+
+this article initiated wide interest in Hedge Funds, their popularity diminished as it
+
+fell victim to the bear markets of 1969-70 and 1973-4. A decade later (1986), interest
+
+was revived by Robertson’s infamous Tiger Fund [FH99a], which achieved compound
+
+annual returns of 43% for 6 years after all expenses. Fung in [FH99a] corroborates
+
+2
+
+the impact that the publicity of Robertson’s Fund had on the Hedge Fund industry
+
+by showing the rapid expansion of Hedge Funds and CTA funds (commodity trading
+
+advisor funds (similar to Hedge Funds)) from 1985-97.
+
+With numerous Hedge Fund investors and the fact that Hedge Funds were virtually
+
+unregulated compared to other funds, a multitude of new Hedge Fund trading strate-
+
+gies evolved, including the use of derivatives e.g. options. Now all these funds came to
+
+be known as Hedge Funds yet many of them were using investment strategies beyond
+
+simply “hedging” that A.Winslow ﬁrst employed (see [Gar05] for more details). To
+
+complicate matters further, as Hedge Fund strategies developed so also did funds other
+
+than Hedge Funds begin employing Winslow’s equity hedging strategy, thus hedging
+
+was no longer unique to Hedge Funds. Today, the word “hedge” in Hedge Funds has
+
+become a misnomer, more of a historical hangover from Alfred Winslow rather than a
+
+description.
+
+2.2. A Deﬁnition of Hedge Funds
+
+As the European Central bank states [Gar05]:
+
+“there is no common deﬁnition of what constitutes a Hedge Fund,it can be described as
+
+an unregulated or loosely regulated fund which can freely use various active investment
+
+strategies to achieve positive absolute returns”.
+
+As the European Central Bank implies, a Hedge Fund is diﬃcult to deﬁne partly
+
+because of a lack of clarity of agreement on its term and also due to its diverse trading
+
+spectrum. They are typically characterised by high leveraging, derivatives trading and
+
+short selling compared to Mutual Funds. One way of deﬁning a Hedge Fund is by
+
+comparing the similarities and diﬀerences with Mutual Funds. In a sense Hedge Funds
+
+are similar to any other portfolio investment in 3 respects:
+
+• they are funded by capital from investors, rather than bank loans or other sources
+
+of capital;
+
+• they invest in publicly traded securities e.g. equities and bonds;
+
+• the capital is “managed” or invested by expert fund managers.
+
+The key diﬀerences between Hedge Funds and Mutual Funds lies in the degree of
+
+regulation, the level and variety of risky investment strategies. Whereas Mutual Funds
+
+are required to adhere to strict ﬁnancial regulations, including the types and levels of
+
+3
+
+risks, Hedge Funds are free to pursue virtually any investment strategy with any level
+
+of risk.
+
+Secondly, Hedge Fund investors are typically high net worth individuals or institu-
+
+tional investors e.g. pension funds [Gar05], partly because Hedge Funds typically
+
+require high minimum investment amounts. A graph taken from the European Central
+
+Bank [Gar05] shows the composition of Hedge Fund investors from 1992-2004.
+
+Mutual funds on the other hand, are typically targetted at the general public and
+
+will accept any investor who can meet the minimum investment amount. Hedge Funds
+
+in fact are banned from advertising and in some cases the investors are required to be
+
+“accredited”.
+
+A third key diﬀerence is the fund portfolio composition. As Fung [FH99a] states,
+
+the majority of Mutual Funds are composed of equities and bonds. Hedge fund port-
+
+folio compositions are far more varied, with possibly a signiﬁcant weighting in non-
+
+equity/bond assets e.g. derivatives.
+
+A fourth key diﬀerence is that the historical return characteristics and distribution
+
+of Hedge Funds tend to diﬀer signiﬁcantly from Mutual Funds. For example, Capocci
+
+et al.
+
+[CH04] and Getmansky [GLM04] demonstrate that Hedge Funds empirically
+
+display serial correlation in returns. According to Brown [Bro01], Hedge Funds do not
+
+perform signiﬁcantly better than most investment funds; Hedge Funds between 1989-
+
+95 earned 300 basis points below the S&P 500. However, other studies conclude that
+
+4
+
+Hedge Funds produce excess market returns (see [CH04],[DFW05]). A graph below
+
+from [Gar05] gives the performance of Hedge Funds compared to key indexes. The
+
+CSFB/Tremont index is a Hedge Fund index, the “equivalent” of the FTSE-100 for
+
+UK stocks.
+
+2.3. Hedge Fund Performance Benchmark Targets
+
+With Mutual Funds only 1 type of performance benchmark typically exists; the
+
+fund is expected to match or excel a particular index e.g. FTSE-100 index, S&P 500
+
+index. This is an example of a relative return target, which some Hedge Funds adopt as
+
+their benchmark. However for Hedge Funds another benchmark exists called absolute
+
+return targets.
+
+An absolute return target is the typical benchmark choice for Hedge Funds and is
+
+the opposite of relative return.
+
+It is a ﬁxed return target and the fund is expected
+
+to match/excel it regardless of the overall market performance. Hedge fund managers
+
+use two main approaches to achieve absolute return targets: Market Timing and the
+
+Non-Directional approach.
+
+Market Timing
+
+this approach takes positions by anticipating the market trend or direction (either
+
+5
+
+moving up/down). This approach potentially oﬀers high returns, as demonstrated by
+
+Georg Soros in his Quantum Fund when speculating on the British Pound in 1992.
+
+Non-Directional
+
+An example of Non-Directional is A.Winslow’s Hedge Fund; it is a fund that eliminates
+
+some market risks, hence it can be considered non-directional, whilst also beneﬁtting
+
+from relative price movements of assets. According to Fung [FH99a] the non-directional
+
+approach has evolved over the last decade and is continuing to develop.
+
+2.4. Hedge Fund Organisation
+
+Hedge Funds typically prefer to concentrate their eﬀorts on the key activity of max-
+
+imising investment return, so non-essential operations are outsourced e.g. “back oﬃce”
+
+functions. Actual trading transactions too are outsourced to “Prime Brokers”. Prime
+
+brokers are banks or securities ﬁrms, oﬀering brokerage and other ﬁnancial services to
+
+large institutional clients e.g. Pension Funds. It is also worth noting that Hedge Funds
+
+typically reside “oﬀshore” to take advantage of more favourable tax treatments and
+
+regulations.
+
+2.5. Fund of Hedge Funds (FOHF)
+
+A Fund of Hedge Funds is simplistically a Mutual Fund that invests in multiple
+
+Hedge Funds e.g 15-25 diﬀerent Hedge Funds, furthermore F3 funds or fund of FOHF
+
+also exist. All these funds provide diversiﬁcation beneﬁts and a method of investing in
+
+Hedge Funds without requiring the skill to personally assess Hedge Funds individually.
+
+Also, FOHF normally have signiﬁcantly lower minimum investment levels compared to
+
+a standard Hedge Fund, thus increasing investment access to the general public.
+
+3. Hedge Fund Investment Strategies
+
+The investment strategies employed by various Mutual funds are well documented,
+
+ranging from value investing to buying growth stocks, with each having particular risk
+
+and return implications. On the contrary, Hedge Fund investment strategies are far
+
+less well documented and the variety of strategies are greater than for Mutual Funds.
+
+Consequently, there is no widely accepted categorisation of Hedge Fund strategies,for
+
+example, Stonham in [Sto99b] identiﬁes 14 Hedge Fund strategy categories whereas
+
+Fung [FH99a] only has 7.
+
+We now describe the 7 main Hedge Fund investment strategies as given by Fung
+
+[FH99a], which in turn are taken from MAR (Managed Account Reports (one of the
+
+6
+
+oldest sources of global managed futures information )). The advantage of applying
+
+such strategy categorisation is that diﬀerent Hedge Fund return characteristics can be
+
+explained by them (see [FH99a]).
+
+3.1. Event Driven
+
+An event driven strategy means a position is taken to take advantage of price moves
+
+arising from new market information release or events occurring. A good example of
+
+such a strategy is to capitalise on merger and acquisition announcements, which cause
+
+the target company’s share price to rise. An example is given below; Mark’s and
+
+Spencer’s share price rose on announcement of a takeover by Philip Green at the end
+
+of May 2004.
+
+3.2. Global
+
+The Global strategy is an all-round category for funds that invest in assets beyond
+
+those based in their home market. Other than that, no more speciﬁc technique is asso-
+
+ciated with this. A typical example would be a Hedge Fund investing in an emerging
+
+market such as India.
+
+3.3. Global/Macro
+
+The Global/Macro strategies utilise macroeconomic analysis to capitalize on asset
+
+price changes that are strongly linked to macroeconomics e.g. currencies, bonds, stock
+
+indices, and commodities. As the name implies, this startegy is applied on a global
+
+7
+
+scale. For example, George Soross Quantum Fund reputedly made US$1 billion in 1
+
+day on September 1992 by speculating the British Pound would exit the European
+
+Exchange Rate Mechanism.
+
+3.4. Market Neutral
+
+Market neutral investment refers to funds that hedge against market risk factors,
+
+thereby becoming ”neutral” to the market. This strategy proﬁts by speculating on
+
+relative price movements between assets or indexes. Examples of this method include
+
+long-short equity, stock index arbitrage, ﬁxed income arbitrage. A good example of
+
+the long-short equity method is the classic 1949 A.W. Jones Hedge Fund, who took
+
+long and short positions in equities.
+
+3.5. Sector
+
+Sector Hedge Fund investing concentrate on investing in speciﬁc sectors e.g. airlines,
+
+telecoms, utilities sectors etc... . The investment instrument itself can be a variety of
+
+types e.g. short selling, long and leveraged positions.
+
+3.6. Short Selling and Long-Only
+
+Short selling and long-only Hedge Funds are those funds which will only invest by
+
+shorting or going long respectively.
+
+8
+
+4. Hedge Fund Risk Models
+
+The necessity for Hedge Fund risk modelling and management originates from 2
+
+areas:
+
+• Hedge Funds experiencing some of the greatest losses ever witnessed by the in-
+
+vestment community;
+
+• new regulatory pressure enforcing more stringent Hedge Fund risk management.
+
+Firstly, Hedge Funds have been responsible for numerous catastrophic losses, caus-
+
+ing them to completely collapse and initiate a contagion eﬀect by aﬀecting numerous
+
+economic and ﬁnancial sectors. The most notorious example of such a catastrophic
+
+loss being the Long Term Capital Management Hedge Fund, which lost US$2.1 Billion
+
+[Sto99b] and almost brought down the entire US ﬁnancial system.
+
+Secondly, as already mentioned, Mutual Funds are tightly regulated whereas Hedge
+
+Funds face little regulation. However, as Hedge Funds have gained public attention
+
+and therefore more investment interest, this along with spectacular Hedge Fund disas-
+
+ters have prompted increased Hedge Fund regulation.
+
+It was not until after the 1997 Asian Currency Crisis though that regulators became
+
+interested in regulating Hedge Fund activities [FH00a]. The IMF (International Mon-
+
+etary Fund) initiated a study on the market inﬂuence of Hedge Funds by Eichengreen
+
+[ES98]. This study described Hedge Funds activities and the potential problem of the
+
+market impact of Hedge Funds.
+
+Moreover in 2004, the Securities and Exchange Commission now required Hedge Fund
+
+managers and sponsors to register as investment advisors under the Investment Advi-
+
+sor’s Act of 1940. This greatly increases the number of requirements placed on Hedge
+
+Funds e.g. keeping records and creating a code of ethics. For more information on
+
+SEC regulation visit the SEC website http://www.sec.gov/.
+
+9
+
+10
+
+We now describe some of the quantitative risk models employed in modelling Hedge
+
+Fund risks.
+
+4.1. Markowitz ’s Portfolio Theory
+
+Markowitz’s Portfolio Theory (from hereon MPT) is typically applied to assets/portfolios
+
+whose return probability distributions approximate to a Normal distribution. Although
+
+this approximation is not strictly correct for Hedge Funds, it is still a workable risk
+
+model. In fact Fung and Hsieh in [FH99b] apply it to rank Hedge Fund performances.
+
+Markowitz proposed a portfolio’s risk is equal to the variance of the portfolio’s re-
+
+turns. If we deﬁne the weighted expected return of a portfolio Rp as
+
+Rp =
+
+N
+
+X
+
+i=1
+
+wiµi,
+
+then the portfolio’s variance σ2
+
+p is
+
+N
+
+N
+
+σ2
+p =
+
+X
+
+X
+
+σijwiwj,
+
+i=1
+
+j=1
+
+where
+
+• N is the number of assets in a portfolio;
+
+11
+
+(1)
+
+(2)
+
+• i,j are the asset indices and i, j ∈ {1, ..., N} ;
+
+• wi is the asset weight, subject to the constraints:
+
+0 ≤ wi ≤ 1,
+
+N
+
+X
+
+i=1
+
+wi = 1;
+
+• σij is the covariance of asset i with asset j;
+
+• µi is the expected return for asset i.
+
+MPT also introduces the idea of an eﬃcient frontier. For a given set of funds or assets
+
+available to invest in, an upper concave boundary exists on the maximum portfolio re-
+
+turns possible as risk or variance increases. Furthermore this concave relation between
+
+risk and return incorporates the theory of expected utility concavely increasing with
+
+risk.
+
+Notice that MPT shows that some funds can perform lower than the risk free rate.
+
+Naturally one wishes to choose the market portfolio which maximises return for a
+
+given level of risk/volatility as shown.
+
+12
+
+4.2. CAPM (Capital Asset Pricing Model)
+
+Capocci and Hubner [CH04] state that in the 1980s CAPM and its variants (e.g.
+
+Jensen’s measure) were applied to Hedge fund risk measurement. The CAPM model,
+
+based on MPT, was invented by Sharpe [Sha64]:
+
+Ra = Rf + β(Rm − Rf ) + ε,
+
+where
+
+• Ra is expected return of an asset;
+
+• Rf is the risk-free rate of return;
+
+• Rm is the expected market return;
+
+• ε is the error term;
+
+• β =
+
+σam
+σmm
+
+;
+
+• σam is the market and asset’s covariance;
+
+• σmm is the market’s variance.
+
+The CAPM model is applied generally in ﬁnance to determine a theoretically appro-
+
+priate return of an asset. It presumes that investors must be compensated for investing
+
+in a risky asset in 2 ways 1)time value of money and 2)risk itself. The time value of
+
+money is accounted for by the risk-free rate Rf whereas the return from risk arises from
+
+β(Rm − Rf ). The term (Rm − Rf ) represents the expected risk premium, which is the
+
+return obtained above the risk-free rate for investing in a risky asset. The beta term
+
+can be considered the ”sensitivity” of the asset’s risk to market risk (both measured
+
+by variance). Consequently more ”sensitive” assets ought to produce higher returns by
+
+CAPM. The graph below shows how asset return is linearly related to beta and that
+
+no beta implies a risk-free rate of return.
+
+13
+
+4.3. Sharpe Ratio and the Modiﬁed Sharpe Ratio
+
+The Sharpe Ratio S, invented by Sharpe [Sha66], is based on MPT’s risk measure
+
+(variance):
+
+where σp is the portfolio return’s standard deviation.
+
+S =
+
+Rp − Rf
+
+σp
+
+,
+
+The Sharpe ratio can be intepretted as ”(Return - Risk-free rate)/risk” since Sharpe
+
+considers standard deviation to be a risk measure. The Sharpe ratio provides a portfolio
+
+risk measure in terms of the quality of the portfolio’s return at its given level of risk. A
+
+discussion on the Sharpe ratio can be found at Sharpe’s website (www.stanford.edu/ wf-
+
+sharpe/).
+
+Fung and Hsieh in [FH00b] and [FH99b] use a modiﬁed version of the Sharpe ratio
+
+to rank Hedge Fund performance so to speciﬁcally cater for Hedge Fund return distri-
+
+butions. This is simply the Sharpe ratio without subtracting the risk free rate from
+
+the numerator:
+
+Modiﬁed Sharpe Ratio=
+
+Rp
+σp
+
+.
+
+4.4. Jenson’s Alpha and Treynor ratio
+
+Based on CAPM, Jensen formulated a portfolio risk measure to quantify portfolio
+
+returns above that predicted by CAPM called α:
+
+α = Rp − [Rf + βp(Rm − Rf )].
+
+One can interpret α as a measure of ”excess returns” or portfolio manager’s investment
+
+ability or i.e. ”beating the market”.
+
+The Treynor ratio is a lesser well known portfolio ratio measure, similar to the Sharpe
+
+ratio, but assesses portfolio performance on a CAPM model basis:
+
+Treynor Ratio=
+
+Rp − Rf
+
+βp
+
+.
+
+Like the Sharpe ratio, the Treynor ratio can be interpretted as the ”quality” of portfolio
+
+return for the given level of risk but risk measured on a CAPM theory basis.
+
+14
+
+4.5. Three Factor Model of Fama and French
+
+The CAPM model is a single factor model that compares a portfolio with the market
+
+as a whole. Fama and French modiﬁed this model in [FF93] to take into account 2
+
+empirical observations about asset classes that tend to have higher returns:
+
+• small sized companies;
+
+• value stocks (companies with high book to market value).
+
+Having a higher return implies a higher risk premium associated with them. The 3
+
+factor model accounts for these higher premiums with the following equation:
+
+Ra = Rf + βp1(Rm − Rf ) + βp2SM B + βp3HM L + ε,
+
+where
+
+• SMB is the diﬀerence in return for small and large sized companies;
+
+• HML is the diﬀerence in return for high book to market value and low book to
+
+market value companies;
+
+• βp1, βp2, βp3 are regression gradients (slopes).
+
+Essentially the 3 factor model is a multiple linear regression equation. Jagadeesh and
+
+Titman in [JT93] modify the CAPM model by adding a momentum to account for
+
+return. Fung and Hsieh in [FH04] apply both these models to long/short equity Hedge
+
+Funds, giving regression results.
+
+4.6. Sharpe’s Asset Class Factor Model
+
+Sharpe in [Sha92] invented an asset factor model for risk measurement of Mutual
+
+Funds but Fung and Hsieh in [FH97] have applied it to Hedge Funds. This model
+
+essentially suggests that most Mutual Fund performances can be replicated by a small
+
+number of major asset classes e.g.
+
+large capitalisation growth stocks, large capitali-
+
+sation value stocks, small capitalisation stocks etc...
+
+. Using Fung and Hsieh [FH97]
+
+notation Sharpe’s model is:
+
+subject to:
+
+• wk = X
+
+xjλj;
+
+j
+
+Rp = X
+
+wkFk + ǫ,
+
+k
+
+15
+
+• ǫ = X
+
+xjǫj,
+
+j
+
+where
+
+• j is the asset class;
+
+• k is the total number of asset classes;
+
+• xj is the weighting of asset class j;
+
+• λj is the factor loading for asset j (change in fund return/change in asset j return);
+
+• ǫj is the error term for asset j
+
+Thus Hedge Fund return is a weighted average of a small number of asset classes, rather
+
+than a weighted average of a large number of individual asset returns as in MPT.
+
+4.7. VaR (Value at Risk)
+
+VaR (value at risk) was invented by JP Morgan in 1994 as a general risk manage-
+
+ment tool and has now become the industry standard for risk. It has become a popular
+
+and important risk measure primarily because of the Basel Committee, who standard-
+
+ise international banking regulations and practises. Gupta and Liang in [GL05] applied
+
+VaR to Hedge Funds, speciﬁcally for assessing a Hedge Fund’s suﬃcient capital ade-
+
+quecy.
+
+VaR tells us in monetary terms how much one’s portfolio can expect to lose, for a
+
+given cumulative probability and for a given time horizon. For example, for a cumu-
+
+lative probability of 99% over a period of 1 day, the VaR amount would tell us the
+
+amount by which one would expect the portfolio to lose e.g.$100.
+
+VaR can be calculated by simulation using historical data or some mathematical
+
+formula. VaR can also be calculated by the “variance-covariance method” (also known
+
+as the delta-normal method) but makes unrealistic assumptions about portfolio returns
+
+e.g. returns are normally distributed.
+
+5. Problems with Hedge Fund Risk Modelling
+
+Most portfolio risk measures make unrealistic modelling assumptions, particularly
+
+with respect to the assumed return probability distributions for mutual funds. Risk
+
+measurement assumptions become even more unrealistic for Hedge Funds. We now
+
+explain the diﬃculties in Hedge Fund risk measurement.
+
+16
+
+5.1. Non-Normal Return Distribution
+
+As stated by Do et al.[DFW05], Hedge Fund returns do not approximate to normal
+
+distributions, thus popular portfolio risk measures (which assume a normal distribu-
+
+tion) are inappropriate e.g. Sharpe ratio. Furthermore Fung in [FH99a] shows that
+
+the empirical probability distribution of monthly returns for Hedge and Mutual Funds
+
+diﬀer signiﬁcantly.
+
+Fung [FH99a] proposes the reason for a non-normal return distribution is a result
+
+of the diverse trading strategies employed by Hedge Funds. Fung ﬁrstly suggests that
+
+Mutuals engage in buy-and-hold strategies whereas Hedge Funds engage in much more
+
+shorter term trading strategies. Secondly, Hedge Funds apply substantial leveraging,
+
+whereas Mutuals have limited or strict regulation on leveraging. Additionally, the
+
+relatively regulation-free investment environment of Hedge Funds leads to complex
+
+management strategies and high performance incentives -these all aﬀect Hedge Fund
+
+returns.
+
+5.2. Investment Strategy and Return Distribution
+
+It has been empirically observed that diﬀerent investment strategies signiﬁcantly
+
+alter the return distribution, particularly the mean and standard deviation. For exam-
+
+ple standard deviation, a common risk metric, varies from a low 2.1% in market neutral
+
+funds to 16.3% in Global/Macro funds [FH99a]. Consequently, it has been argued it
+
+would be better to apply separate risk measures for each Hedge Fund type (according
+
+to its strategy), rather than treating all Hedge Funds as part of 1 homogenous class.
+
+5.3. Hedge Fund Failure Rate
+
+Hedge fund survival rates are signiﬁcantly lower than other funds [Gar05] and sub-
+
+stantially vary; cumulative failure rates after 7 years range from 32-66% depending
+
+on the Hedge Fund’s size. The table below from the European Central Bank [Gar05]
+
+describes this:
+
+17
+
+Thus the inclusion of non-existent Hedge Funds poses a problem when assessing the
+
+overall performance of Hedge Funds (similar to the survivorship bias issue with Mutual
+
+Fund performance).
+
+6. Hedge Funds Available On The Market
+
+6.1. Close Man Hedge Fund
+
+Close Man Hedge Fund is an absolute return Hedge Fund. This fund applies the
+
+market neutral investment strategy (speciﬁcally ﬁxed income arbitrage) by investing
+
+solely in Capital Guaranteed Bonds issued by The Royal Bank of Scotland. Thus the
+
+fund is theoretically insulated from market risks but can still beneﬁt from price move-
+
+ments using a variety of techniques. For this particular fund, Close Man will engage
+
+in leveraging and using swaps (a type of derivative) to boost returns.
+
+See Close Man’s website http://www.closefm.com/ for more detail.
+
+6.2. RAB Capital
+
+RAB Capital is a unique Hedge Fund in that it is one of the few UK Hedge Funds
+
+(or more speciﬁcally FOHF) that is listed on the London Stock Exchange (ticker sym-
+
+bol RAB.L).Their funds are accessible to the general public rather than high net worth
+
+individuals, although RAB warns “These funds are not appropriate for a novice in-
+
+vestor”. They specialise in a variety of absolute return funds, some of which employ
+
+the long-only investment strategy, where assets are bought on the basis that they are
+
+18
+
+considered undervalued.
+
+See RAB Capital’s website http://www.rabcap.com/ for more detail.
+
+6.3. Thames River Capital
+
+Thames River Capital is an absolute return based Hedge Fund, oﬀering a range of
+
+regulated and unregulated funds. Each fund uses various investment strategies, ranging
+
+from Global strategies (see Global Emerging Market Fund) to market neutral strategies
+
+using high leverage.
+
+See Thames River Capital’s wesbite http://www.thamesriver.co.uk/ for more detail.
+
+6.4. Ikos Hedge Fund
+
+The founder and co-owner of her own hedge fund has made Elena Ambrosiadou one
+
+of the richest women in Britain according to the 2006 Sunday Times Rich List. This
+
+hedge fund engages in “program trading” whereby trades are executed according to a
+
+computer program. This method of trading has the advantage removing any subjective
+
+decision making from speculation but can also result in investments that one would
+
+strongly and intuitively disapprove.
+
+Ikos focus on exchange rate investing but also
+
+speculate in equities.
+
+For more information on Ikos see http://www.ikosam.com/.
+
+7. Famous Hedge Funds Withdrawn From The Market
+
+All major funds are susceptible to collapsing, however, in the case of Hedge Funds
+
+this is more frequent and the losses tend to be substantially higher.
+
+It is therefore
+
+quite informative to understand some of the spectacular Hedge Fund losses. We now
+
+describe some Hedge Funds that were previously available on the market but have now
+
+ceased trading.
+
+7.1. George Soros’s Quantum Fund
+
+Perhaps the most famous Hedge Fund investor is Soros, who in 1 day made US$1
+
+billion on September 6, 1992, by short selling the British pound.
+
+In 1992, Britain
+
+was part of the ERM (European Exchange Rate Mechanism) and Soros was able to
+
+anticipate the currency devaluation of the British Pound. Consequently by employing
+
+the Global/Macro investment strategy, Soros managed to net a proﬁt of US$1 billion in
+
+1 day. However years later, his fund suﬀered massive losses; in 1998 Russia’s defaulting
+
+crisis created a loss of US $2 billion.
+
+19
+
+7.2. Long Term Capital Management (LTCM)
+
+Perhaps the most notorious Hedge Fund collapse was in September 1998; LTCM
+
+announced it had lost 44% of its investors’ capital in August alone (US$2.1 Billion)
+
+[Sto99b]. For a detailed case study of LTCM see Stonham in [Sto99b],[Sto99a].
+
+LTCM began trading with over $1 billion of investor capital. LTCM applied the Hedge
+
+Fund strategy of market neutral investment;LTCM used the method of ﬁxed income
+
+arbitrage, taking advantage of temporary changes in prices. The market neutral strat-
+
+egy was successful from 1994-98 but in 1998 Russian ﬁnancial markets fell into crisis.
+
+However, LTCM speculated that the situation would quickly return back to normal
+
+again, so LTCM took large, unhedged positions. Unfortunately, Russia began default-
+
+ing on its debts in August 1998, causing LTCM to experience losses approaching $4
+
+billion as it was signiﬁcantly exposed to Russian government bonds. The US Federal
+
+Government then devised a rescue plan for LTCM to avert a major US ﬁnancial crisis
+
+and panic.
+
+7.3. Robertson’s Tiger Management Fund
+
+Robertson’s Hedge Fund invested by going long on undervalued stocks whilst simul-
+
+taneously short selling what he considered overvalued stocks. For years this strategy
+
+was extremely successful, giving annual returns of 43% from 1980-86, so he continued
+
+applying this strategy during the technology boom. During the tech boom, Robertson
+
+rightly considered many stocks to be overvalued and so began short selling such stocks
+
+with the expectation overvalued stocks would eventually fall. Yet during the tech boom
+
+a speculation bubble formed, causing the overvalued stocks to continue to rise beyond
+
+expectation. Consequently Robertson’s fund collapsed in 2000 after heavy losses, just
+
+before the speculative bubble itself collapsed.
+
+8. The Case For and Against Hedge Funds
+
+Despite the potential to provide substantial returns, it would appear conclusive
+
+that Hedge Funds ought to be abolished or at least highly regulated. However the
+
+issue is far more complex than one assumes. We now elaborate on the beneﬁts and
+
+disadvantages of Hedge Funds.
+
+8.1. The Case for Preserving Hedge Funds
+
+It can be argued Hedge Funds provide an economic beneﬁt to markets, in particular
+
+they aid price discovery. It has been suggested that Hedge Funds take contrarian posi-
+
+tions; they do not engage in “herd-mentality” trading, unlike Mutual Funds. Therefore
+
+20
+
+Hedge Funds buy or sell assets according to the perceived fair value.
+
+A second economic beneﬁt of Hedge Funds is that they aid competition and the eco-
+
+nomic concept of the ”invisible hand” [DTZ05] and thrive on market ineﬃciencies.
+
+As traders do not have instantaneous and costless access to market information, asset
+
+mispricing or an arbitrage opportunities must occur e.g. an asset trading in 2 diﬀer-
+
+ent markets may have diﬀerent prices. Hedge Funds take advantage of such arbitrage
+
+opportunities and so push prices to their no-arbitrage price.
+
+Another important economic beneﬁt of Hedge Funds is liquidity provision. Hedge
+
+Funds typically invest in riskier assets that many investors would not consider. Hedge
+
+Funds therefore provide much needed capital for investments.
+
+Hedge Funds can actually reduce overall risk rather than increase it. Firstly, Hedge
+
+Funds take on riskier investments, thereby “absorbing” some of the risk that would be
+
+concentrated in a smaller number of funds. Additionally Hedge Funds are more willing
+
+to invest in volatile markets, thereby “absorbing” the eﬀects of market shocks.
+
+Hedge Funds are important as an investment product in itself. They provide sophis-
+
+ticated investors with another vehicle for high returns that would not be available in
+
+traditional Mutual Funds [DTZ05]. They also provide diversiﬁcation (a method of re-
+
+ducing risk without reducing return by investing in more than 1 asset) as they represent
+
+a diﬀerent investment class.
+
+A second beneﬁt from a investor’s perspective is that Hedge Funds can provide ”abso-
+
+lute” returns. Hedge Funds can achieve this because they pursue a variety of sophisti-
+
+cated investment strategies. Traditional Mutual Funds are limited in trading strategies
+
+due to heavy regulation.
+
+8.2. The Case Against Hedge Funds
+
+Rather than aid market functioning, Hedge Funds have been criticized for doing
+
+more harm than good. Firstly, rather than contrarian investing, Hedge Funds engage
+
+in ”herding” [DTZ05]. Notable examples include the 1992 ERM crisis and the 1997
+
+Asian Currency Crisis.
+
+Secondly, it was suggested Hedge Funds provide much needed capital by investing in
+
+risky assets, yet Hedge Funds have been blamed for exhausting liquidity in the market
+
+21
+
+[DTZ05]. Due to Hedge Funds typically taking large positions and the trading strate-
+
+gies they pursue, they are unable to make trades without causing a massive price moves
+
+due to illiquidity (Fung supports this idea in [FH00a]). Additionally, Hedge Funds are
+
+usually heavily leveraged, increasing the likelihood of illiquidity e.g.LTCM. However,
+
+Gupta in [GL05] investigates capital adequacy using VaR (value at risk) measures and
+
+concludes that most Hedge Funds are adequately funded.
+
+Thirdly, Hedge Funds can prevent eﬃcient market functioning by causing market price
+
+distortions, rather than aiding price discovery. Large volume trades can cause signiﬁ-
+
+cant price movements, rather than price movements occurring due to company/economic
+
+fundamentals. Fung in [FH00a] cites such examples as the 1992 ERM Crisis but con-
+
+cludes that Hedge Funds overall do not distort prices beyond their company/economic
+
+fundamentals.
+
+The Hedge Fund as a viable alternative investment product has also been heavily
+
+disapproved. For instance some quotes from leading academics on Hedge Funds:
+
+• “If you want to invest in something where they steal your money and don’t tell
+
+you what they‘re doing, be my guest., Eugene Fama.
+
+• “If there’s a license to steal, it’s in the hedge fund arena”, Burton Malkiel.
+
+In an article in Forbes (May 14, 2004) Bernard Condon claims that “You would do
+
+better giving your money to a monkey” than investing in Hedge Funds. As a managed
+
+investment product Hedge Funds command the highest management fees, typically
+
+around 20%, compared to mutual funds that normally charge around 1%. Addition-
+
+ally Hedge Fund investors have tougher withdrawal constraints.
+
+Secondly as Fama mentions, Hedge Funds have poor transparency. Regulatory bodies
+
+such as the SEC do not dictate the same strict rules for Hedge Funds that it does for
+
+Mutual Funds: there are no rules on publishing records on asset holdings and ﬁnancial
+
+performance, lack of transparency increases the chances of investors being unable to
+
+eﬀectively assess risk.
+
+Finally, Hedge Funds have a higher failure rate than Mutual Funds and thus a higher
+
+credit risk. Hedge Fund face less regulation on leveraging and investment strategies,
+
+thus are susceptible to a higher probability of default e.g. LTCM. Consequently there
+
+22
+
+is less likelihood of capital recovery.
+
+9. Conclusion
+
+Hedge Funds are clearly a complex and unique investment product that can pro-
+
+duce extraordinary gains as well as losses. They have and continue to thrive on the
+
+unregulated aspects of the business, spawning a variety of innovative investment tech-
+
+niques. It has only been in the past 10 years that regulatory bodies have focussed on
+
+Hedge Fund regulation to avert previous Hedge Fund disasters e.g. LTCM.
+
+Despite the clear necessity to understand such a powerful investment, knowledge and
+
+understanding of the Hedge Fund industry remains relatively poor. There is no consen-
+
+sus on the speciﬁc deﬁnition of a Hedge Fund, very little literature is devoted to Hedge
+
+Fund risk modelling and their various investment techniques. Consequently there is a
+
+large scope for future research into Hedge Fund risk management.
+
+23
+
+References
+
+[Bro01] SJ Brown. Hedge funds: Omniscient or just plain wrong. Paciﬁc-Basin
+
+Finance Journal, 9(4):301–311, 2001.
+
+[CH04] D. Capocci and G. H¨ubner. Analysis of hedge fund performance. Journal of
+
+Empirical Finance, 11(1):55–89, 2004.
+
+[DFW05] V. Do, R. Faﬀ, and J. Wickramanayake. An empirical analysis of hedge
+
+fund performance: The case of Australian hedge funds industry. Journal of
+
+Multinational Financial Management, 15(4-5):377–93, 2005.
+
+[DTZ05] J. Danielsson, A. Taylor, and J.P. Zigrand. Highwaymen or heroes: Should
+
+hedge funds be regulated?: A survey.
+
+Journal of Financial Stability,
+
+1(4):522–543, 2005.
+
+[ES98] Mathieson D. Chadha B. Jansen A. Kodres L. Eichengreen, B. and
+
+S. Sharma. Hedge Fund and Financial Market Dynamics.
+
+International
+
+Monetary Fund, 1998.
+
+[FF93] E.F. Fama and K.R. French. Common risk factors in the returns on stocks
+
+and bonds. Journal of Financial Economics, 33(1):3–56, 1993.
+
+[FH97] W. Fung and DA Hsieh. Empirical characteristics of dynamic trading strate-
+
+gies: the case of hedge funds. Review of Financial Studies, 1997.
+
+[FH99a] W. Fung and D.A. Hsieh. A Primer on Hedge Funds. Journal of Empirical
+
+Finance, 6(3):309–331, 1999.
+
+[FH99b] W. Fung and D.A. Hsieh. Is Mean-Variance Analysis Applicable to Hedge
+
+Funds? Economic Letters, 62(1):53–58, 1999.
+
+[FH00a] W. Fung and D.A. Hsieh. Measuring the market impact of hedge funds q.
+
+Journal of Empirical Finance, 7:1–36, 2000.
+
+[FH00b] W. Fung and D.A. Hsieh. Performance Characteristics of Hedge Funds and
+
+Commodity Funds: Natural vs. Spurious Biases. The Journal of Financial
+
+and Quantitative Analysis, 35(3):291–307, 2000.
+
+[FH04] W. Fung and D.A. Hsieh. Extracting portable alphas from equity long-short
+
+hedge funds. Journal of Investment Management, 2(4):1–19, 2004.
+
+24
+
+[Gar05] D. Garbaravicius. F.,Hedge Funds and Their Implications for Financial Sta-
+
+bility, ECB. Occasional Paper Series, 34, 2005.
+
+[GL05] A. Gupta and B. Liang. Do hedge funds have enough capital? A value-at-
+
+risk approach star, open. Journal of Financial Economics, 77(1):219–253,
+
+2005.
+
+[GLM04] M. Getmansky, A.W. Lo, and I. Makarov. An Econometric Model of Serial
+
+Correlation and Illiquidity in Hedge Fund Returns. Journal of Financial
+
+Economics, 74(3):529–610, 2004.
+
+[JT93] N. Jegadeesh and S. Titman. Returns to Buying Winners and Selling Losers:
+
+Implications for Stock Market Eﬃciency. The Journal of Finance, 48(1):65–
+
+91, 1993.
+
+[Sha64] W.F. Sharpe. Capital Asset Prices: A Theory of Market Equilibrium under
+
+Conditions of Risk. The Journal of Finance, 19(3):425–442, 1964.
+
+[Sha66] W.F. Sharpe. Mutual Fund Performance. The Journal of Business,
+
+39(1):119–138, 1966.
+
+[Sha92] W.F. Sharpe. Asset Allocation: Management Style and Performance Mea-
+
+surement. Journal of Portfolio Management, 18(2):7–19, 1992.
+
+[Sto99a] Paul Stonham. Too Close To The Hedge: The Case Of Long Term Capital
+
+Management. Part Two: Near-Collapse And Rescue. European Management
+
+Journal,Volume 17, Issue 4 ,Pages 382-390, 1999.
+
+[Sto99b] Paul Stonham. Too Close To The Hedge:the Case of Long Term Capital
+
+Management LP Part One:Hedge Fund Analytics. European Management
+
+Journal,Vol. 17,p282-289, 1999.
+
+25
+
+

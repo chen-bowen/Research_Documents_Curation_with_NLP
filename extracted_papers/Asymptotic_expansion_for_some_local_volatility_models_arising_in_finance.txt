@@ -1,0 +1,5879 @@
+8
+1
+0
+2
+
+ 
+
+p
+e
+S
+8
+1
+
+ 
+
+ 
+ 
+]
+
+.
+
+R
+P
+h
+t
+a
+m
+
+[
+ 
+ 
+
+1
+v
+6
+9
+5
+6
+0
+
+.
+
+9
+0
+8
+1
+:
+v
+i
+X
+r
+a
+
+Asymptotic expansion for some local volatility models
+
+arising in ﬁnance
+
+Sergio Alberverio1 , Francesco Cordoni2
+Luca Di Persio3 , Gregorio Pellegrini4
+
+1University of Bonn - HCM , BiBoS, IZKS
+
+Bonn, Germany
+
+email: albeverio@iam.uni-bonn.de
+
+2University of Verona - Dept. of Computer Science
+
+Strada le Grazie, 15, Verona, Italy
+
+email: francescogiuseppe.cordoni@univr.it
+
+3University of Verona - Dept. of Computer Science
+
+Strada le Grazie, 15, Verona, Italy
+
+email: luca.dipersio@univr.it
+
+4Intern at Gruppo Generali, Italy
+
+Trieste, Italy
+
+email: gregorio.pellegrini@gmail.com
+
+Abstract
+
+In this paper we study the small noise asymptotic expansions for certain classes of
+local volatility models arising in ﬁnance. We provide explicit expressions for the involved
+coeﬃcients as well as accurate estimates on the remainders. Moreover, we perform a detailed
+numerical analysis, with accuracy comparisons, of the obtained results by mean of the
+standard Monte Carlo technique as well as exploiting the polynomial Chaos Expansion
+approach.
+Key Words and Phrases: Local volatility models; Small noise asymptotic expansions;
+Corrections to the Black-Scholes type models; Jump-diﬀusion models; Polynomial drift;
+Exponential drift; Polynomial Chaos Expansion method; Monte Carlo techniques.
+
+1 Introduction
+
+In the present paper we shall provide small noise asymptotic expansions for some local volatil-
+ity models (LVMs) arising in ﬁnance. Our approach is based on the rigorous results on asymptotic
+expansions for solutions of ﬁnite dimensional SDE’s obtained in [Albeverio et al.(2013)] (follow-
+ing the approach proposed in [Gardiner (2004), Sec.6.2]); some extensions to a class of SPDE’s
+and inﬁnite dimensional SDE’s have been presented in [Albeverio et al.(2011), Albeverio et al.(2016a),
+Albeverio et al.(2016b)]. In particular we consider underlyings whose behavior is characterized
+by a stochastic volatility term of small amplitude ǫ with respect to which we perform a for-
+mal, based on [Gardiner (2004), Sec. 6.2], resp. asymptotic, based on [Albeverio et al.(2013)],
+expansion. The latter implies that the equation characterizing the particular LVM of interest
+is approximated by a ﬁnite recursive system of a number N of linear equations with random
+coeﬃcients. We then exploit the solutions of the latter system to provide a formal, resp. an
+asymptotic, approximation of smooth functions of the original solution for the particular LVM
+of interest. In a similar way we derive the corresponding approximation for the expected value
+of the related option price in a risk neutral setting. Errors estimates and explicit expressions for
+the involved approximations are also provided for some speciﬁc cases, together with a detailed
+numerical analysis.
+
+1
+
+We would like to recall that LVMs are commonly used to analyse options markets where the
+underlying volatility strongly depends on the level of the underlying itself. Let us mention that
+although time-homogeneous local volatilities are supposedly inconsistent with the dynamics of
+the equity index implied volatility surface, see, e.g., [Mandelbrot et al.(2004)], some authors, see,
+e.g., [Crepey (2004)], claim that such models provide the best average hedge for equity index
+options.
+
+Let us also note that, particularly during recent years, diﬀerent asymptotic expansions
+approaches to other particular problems in mathematical ﬁnance have been developed, see,
+e.g., [Andersen et al.(2013), Bayer et al.(2014), Benarous et al.(2013), Benhamou et al.(2009),
+Breitung(1994), Cordoni et al.(2015), Fouque et al. (2009), Friz et al.(2015), Fujii et al.(2012),
+Gatheral et al.(2012), Gulisashvili (2012), Kusuoka et al.(2000), Lütkebohmert (2004), Shiraya et al.(2017),
+Takahashi et al.(2014), Uchida et al.(2004), Yoshida (2003)], see also [Albeverio et al.(2012), Imkeller et al.(2009),
+Peszat et al.(2005)] for applications of similar expansion to other areas.
+
+The present paper is organized as follows: in Sect. 2 the basic general asymptotic expansions
+approach, based on [Albeverio et al.(2013)] is presented. Then, in Sec. 3 we apply the afore-
+mentioned results to important examples in ﬁnancial mathematics. In particular in Sec. 3 we
+study a perturbation up to the ﬁrst order around the Black-Scholes model as well as a correction
+with jumps for the case of a generic smooth volatility function f . We then give more detailed
+results for the case of an exponential volatility function f ,in 3.1 with Brownian motion driving,
+in 3.2 with an additional jump term. In 3.3 we shall present detailed corresponding results for
+the case of a polynomial volatility function f , in 3.4 we treat the case of corrections for f being
+a polynomial and the noise containing jumps. To validate our expansions we present their nu-
+merical implementations obtained by exploiting the Polynomial Chaos Expansion approach as
+well as the standard Monte Carlo technique, also providing a detailed comparison between the
+two implementations in terms of accuracy.
+
+2 The asymptotic expansion
+
+2.1 The general setting
+
+We shall consider the following stochastic diﬀerential equation (SDE), indexed by a parameter
+
+ǫ ≥ 0
+
+(dX ǫ
+
+X ǫ
+
+t = µǫ (X ǫ
+0 = xǫ
+0 ∈ R,
+
+t ) dt + σǫ (X ǫ
+t ∈ [0,∞)
+
+t ) dLt ,
+
+;
+
+(1)
+
+where Lt, t ∈ [0,∞), is a real–valued Lévy process of jump diﬀusion type, subject to some
+restrictions which will be speciﬁed later on and µǫ : Rd → R, σǫ : Rd → Rd×d are Borel mea-
+surable functions for any ǫ ≥ 0 satisfying some additional technical conditions in order to have
+existence and uniqueness of strong solutions, e.g., locally Lipschitz and sublinear growth at in-
+ﬁnity, see, e.g., [Applebaum(2009), Arnold(1974), Mandrekar et al.(2015), Gihman et al.(1972),
+Imkeller et al.(2009), Shreve (2004)]. If the Lévy process Lt has a jump component, then X ǫ
+t in
+eq. (1) has to be understood as X ǫ
+s, see, e.g., [Mandrekar et al.(2015)] for details.
+
+t− := lims↑t X ǫ
+
+Hypothesis 2.1. Let us assume that:
+(i) µǫ, σǫ ∈ C k+1(R) in the space variable, for any ﬁxed value ǫ ≥ 0 and for all k ∈ N0 := N∪{0};
+
+(ii) the maps ǫ 7→ αǫ(x), where α = µ, σ, are in CM (I) in ǫ, for some M ∈ N, for every ﬁxed
+
+x ∈ R and where I := [0, ǫ0], ǫ0 > 0.
+
+Our goal is to show that under Hypothesis 2.1 and some further smoothness conditions on
+t , i = 0, 1, . . . , N appearing
+t of equation (1) can be represented as a power series with respect to
+
+µǫ and σǫ (needed for the construction of the random coeﬃcients X i
+in (2) below), a solution X ǫ
+the parameter ǫ, namely
+
+X ǫ
+
+t = X 0
+
+t + ǫX 1
+
+t + ǫ2X 2
+
+t + ··· + ǫN X N
+
+t + RN (t, ǫ) ,
+
+(2)
+
+2
+
+where X i : [0,∞) → R, i = 0, . . . , N , are continuous functions, while |RN (t, ǫ)| ≤ CN (t)ǫN +1,
+∀N ∈ N and ǫ ≥ 0, for some CN (t) independent of ǫ, but in general dependent of randomness,
+through X 0
+t are determined recursively as solutions
+of random diﬀerential equations in terms of the X j
+
+t . For n ∈ N, the functions X i
+
+t , . . . , X N
+
+t , X 1
+
+t , j ≤ i − 1, ∀i ∈ {1, . . . , N}.
+
+Before giving the proof of the validity of the expression in eq. (2), let us recall the following
+
+result, see, e.g., [Giaquinta et al.(2000)].
+Lemma 2.2. Let f be a real (resp. complex) valued function in CM+1 (B(x0, r)), r > 0, x0 ∈ R
+for some M ∈ N0, where (B(x0, r) denotes the ball of center x0 and radius r.
+
+Then for any x ∈ B(x0, r) the following Taylor expansion formula holds
+(x − x0)p + RM(cid:0)DM+1f (x0, x)(cid:1) ,
+
+Xp=0
+with Dpf (x0) := Dpf (x)|x=x0
+the p−th derivative at x0 and
+
+Dpf (x0)
+
+f (x) =
+
+p!
+
+M
+
+RM(cid:16)f (M+1)(x0, x)(cid:17) := (x − x0)M+1CM (x0, x) ,
+
+CM (x0, x) :=
+
+M + 1
+
+(M + 1)!Z 1
+
+0
+
+(1 − s)M DM+1f (x0 + s(x − x0))ds .
+
+with
+
+We have
+
+|CM (x0, x)| ≤
+
+and also
+
+M + 1
+
+(M + 1)! Z 1
+
+0
+
+(1 − s)M sup
+
+x∈B(x0,r)|DM +1f (x0 + s(x − x0))|ds =: ˜CM (x0) < +∞
+
+(3)
+
+|RM(cid:16)f (M +1)(x0, x)(cid:17) | ≤ |CM (x, x0)||x − x0|M +1 ≤ ˜CM (x0)|x − x0|M +1 , M ∈ N0 .
+
+With this lemma in mind, let us then consider a function f : R+×R → R, and fǫ(x) := f (ǫ, x),
+ǫ ≥ 0, x ∈ R. If we then suppose that for any ﬁxed x ∈ R, f is of class C K+1(I) in ǫ for some
+K ∈ N0, I = [0, ǫ0], ǫ0 > 0, we can write the Taylor expansion of f around ǫ = 0, w.r.t. ǫ ∈ I
+for any ﬁxed x ∈ R, as follows
+
+fǫ(x) =
+
+K
+
+Xj=0
+
+fj(x)ǫj + Rfǫ
+
+K (ǫ, x) ,
+
+(4)
+
+where fj is the j−th coeﬃcient in the expansion provided by Lemma 2.2, while supx |Rfǫ
+K (ǫ, x)| ≤
+CK,f ǫK+1 for some CK,f > 0, independent of ǫ. Assume in addition that x 7→ fj(x) are in CM+1,
+j = 0, . . . , K, for some M ∈ N0, then, applying Lemma 2.2 to the function fj in B(x0, r), r > 0,
+we obtain
+
+fǫ(x) =
+
+K
+
+Xj=0
+
+ǫj" M
+Xγ=0
+
+Dγfj(x0)
+
+γ!
+
+(x − x0)γ + RM (f (M+1)
+
+j
+
+(x0, x))# + Rfǫ
+
+K (ǫ, x) ,
+
+(5)
+
+with RM (f (M+1)
+(4).
+
+j
+
+(x0, x)) estimated as in Lemma 2.2 (with fj replacing f ) and Rfǫ
+
+K (ǫ, x) as in
+
+Let us now take x = x(ǫ) assuming ǫ 7→ x(ǫ) in C N +1, with 0 ≤ ǫ ≤ ǫ0, 0 < ǫ0 < 1 and
+
+x(0) = x0 ∈ R. Then by Lemma 2.2
+
+x(ǫ) =
+
+N
+
+Xj=0
+
+ǫjxj + Rx
+
+N (ǫ), N ∈ N0,
+
+xj ∈ R, j = 0, 1, . . . , N ,
+
+(6)
+
+3
+
+with f replaced by x, M replaced by N , x by ǫ, x0 by 0, DM+1(f (·)) by f (M+1)(·) and
+RM (f (M+1)(x0, x)) by Rx
+
+N (ǫ). In particular
+
+with ˜CN (0) independent of ǫ.
+
+Plugging (6) into (5) we get
+
+|Rx
+
+N (ǫ)| ≤ ˜CN (0)ǫN +1 ,
+
+fǫ(x(ǫ)) =
+
+=
+
+K
+
+Xj=0
+Xj=0
+
+K
+
+M
+
+ǫj
+Xγ=0
+
+ǫj
+ Xγ≤M
+
++ Rfǫ
+
+K (ǫ, x(ǫ)) .
+
+Dγ fj(x0)
+
+γ!
+
+Dγ fj(x0)
+
+γ!
+
+(x(ǫ) − x0)γ + RM(cid:16)f
+N (ǫ)!γ
+  N
+Xk=1
+
+ǫkxk + Rx
+
+(M +1)
+j
+
+(x0, x(ǫ))(cid:17)
++ RM(cid:16)f
+
+(M +1)
+j
+
+K (ǫ, x(ǫ)) =
+
+ + Rfǫ
+(x0, x(ǫ))(cid:17)
+
+
+(7)
+
+(8)
+
+The estimates on RM , Rfǫ
+
+K and Rx
+
+N have been given above in Lemma 2.2, resp. after (4),
+
+resp. (7).
+
+By Newton’s formula we have that, ∀ γ ∈ N0, the following holds
+
+N
+
+
+Xj=1
+
+
+ǫj xj + Rx
+
+γ
+
+N (ǫ)
+
+
+where we have used the notation
+
+=
+
+γ
+
+X∗
+
+γ!
+
+γ1! . . . γN+1!
+
+ǫγ1+2γ2+···+N γN xγ1
+
+1 . . . xγN
+
+N (Rx
+
+N (ǫ))γN +1 ,
+
+(9)
+
+=
+
+γ
+
+X∗
+
+γ
+
+Xγ1,...,γN +1=0
+
+γ1+2γ2+···+N γN +γN +1=γ
+
+;
+
+hence using (9) to rewrite (8) we obtain the following.
+Lemma 2.3. If, for 0 ≤ ǫ < ǫ0, ǫ 7→ x(ǫ) is in C N +1(I), I = [0, ǫ0], and ǫ 7→ fǫ(y) is C K+1(R)
+in ǫ ∈ I and for any y ∈ R, y 7→ fǫ(y) is in CM+1, the following expansion in powers of ǫ holds:
+
+fǫ(x(ǫ)) =
+
+Dγ fj(x0)
+
+γ!
+
+γ
+
+X∗
+
+K
+
+M
+
+ǫj
+Xj=0
+Xγ=0
+
++ RM(cid:16)f
+
+(M +1)
+j
+
+(x0, x(ǫ))(cid:17)i + Rfǫ
+
+K (ǫ, x(ǫ)) ,
+
+γ!
+
+γ1! . . . γN+1!
+
+ǫγ1+2γ2+···+N γN xγ1
+
+1 . . . xγN
+
+N (Rx
+
+N (ǫ))γN +1
+
+(10)
+
+The estimates for the remainders are as follow
+
+|Rx
+
+N (ǫ)| ≤ ˜CN (0)ǫN +1 ,
+
+RM(cid:16)f (M+1)
+
+j
+
+(x0, x(ǫ))(cid:17) ≤ ˜CM (x0)|x − x0|M+1 ,
+x, ǫ |Rfǫ
+K (ǫ, x)| ≤ CK,f ,
+sup
+
+with ˜CN (0), ˜CM (x0) and CK,f independent of ǫ.
+
+Taking eq. (10) into account, we can group all the terms with the same power k ∈ N0 of ǫ.
+Calling [fǫ(x(ǫ))]k the coeﬃcient of ǫk, and using k = j + γ with j = 0, . . . , K, γ1 + 2γ2 + ··· +
+N γN = γ with γ = 0, . . . , M , we have the following, see, [Albeverio et al.(2013)].
+proposition 2.4. Let x(ǫ) be as in (6) let fǫ as in (4) with fj ∈ CM+1, j = 0, . . . , K. Then
+
+fǫ(x(ǫ)) =
+
+K+M
+
+Xk=0
+
+ǫk [fǫ(x(ǫ))]k + RK+M (ǫ) ,
+
+with |RK+M (ǫ)| ≤ CK+M ǫK+M+1, for some constant CK+M ≥ 0, independent of ǫ, 0 ≤ ǫ ≤ ǫ0,
+and coeﬃcients [fǫ(x(ǫ))]k deﬁned by
+
+4
+
+[fǫ(x(ǫ))]0 = f0(x0);
+[fǫ(x(ǫ))]1 = Df0(x0)x1 + f1(x0);
+
+[fǫ(x(ǫ))]2 = Df0(x0)x2 +
+
+[fǫ(x(ǫ))]3 = Df0(x0)x3 +
+
+1
+2
+1
+6
+
+D2f0(x0)x2
+
+1 + Df1(x0)x1 + f2(x0);
+
+D3f0(x0)x3
+
+1 + Df1(x0)x2 + Df2(x0)x1 + D2f1(x0)x2
+
+1 + f3(x0).
+
+The general case has the following form
+
+[fǫ(x(ǫ))]k = Df0(x0)xk +
+
+1
+k!
+
+Dkf0(x0)xk
+
+1 + fk(x0) + Bf
+
+k (x0, x1, . . . , xk−1) , k = 1, . . . , K + M
+
+(11)
+
+where Bf
+
+k is a real function depending on (x0, x1, . . . , xk−1) only.
+
+remark 2.5. We observe that [fǫ(x(ǫ))]k depends linearly on xk, non linearly in the inhomo-
+geneity involving the coeﬃcients xj , 0 ≤ j ≤ k − 1 in (6). If x(ǫ) satisﬁes (6) and both µǫ and
+σǫ have the properties of the function fǫ in (4), then the coeﬃcients µǫ(x(ǫ)) and σǫ(x(ǫ)) on
+the right hand side of (1) can be rewritten in powers of ǫ, for 0 ≤ ǫ ≤ ǫ0, as follows
+
+µǫ(x(ǫ)) =
+
+σǫ(x(ǫ)) =
+
+Kµ+Mµ
+
+Kσ+Mσ
+
+Xk=0
+Xk=0
+
+[µǫ(x(ǫ))]k ǫk + Rµ
+
+Kµ+Mµ
+
+(ǫ);
+
+[σǫ(x(ǫ))]k ǫk + Rσ
+
+Kσ +Mσ (ǫ) ;
+
+where the natural numbers Kα and Mα, α = µ, σ depend on the functions µǫ, resp. σǫ, and
+
+|Rα
+
+Kα+Mα (ǫ)| ≤ CKα+MαǫKα+Mα+1 ,
+
+for some constants CKα+Mα depending on Cj, j = 0, . . . , Kα + Mα but independent of ǫ, and
+0 ≤ ǫ ≤ ǫ0.
+2.2 The asymptotic character of the expansion of the solution X ǫ
+
+t of
+
+the SDE in powers of ǫ
+
+theorem 2.6. Let us assume that the coeﬃcients αǫ, α = µ, σ, of the stochastic diﬀerential
+equation (1) are in C Kα (I) as functions of ǫ, ǫ ∈ I = [0, ǫ0], ǫ0 > 0, and in CMα (R) as functions
+of x. Let us also assume that αǫ are such that there exists a solution X ǫ
+t in the probabilistic
+strong, resp. weak sense of (1) and that the recursive system of random diﬀerential equations
+
+dX j
+
+t = [µǫ (X ǫ
+
+t )]j dt + [σǫ (X ǫ
+
+t )]j dLt,
+
+j = 0, 1, . . . , N, t ≥ 0 ,
+
+has a unique solution.
+
+Then there exists a sequence ǫn ∈ (0, ǫ0], ǫ0 > 0, ǫn ↓ 0 as n → ∞ such that X ǫn
+
+asymptotic expansion in powers of ǫn, up to order N , in the following sense:
+
+t
+
+has an
+
+X ǫn
+
+t = X 0
+
+t + ǫnX 1
+
+t + ··· + ǫN
+
+n X N
+
+t + RN (ǫn, t) ,
+
+with
+
+st − limǫn↓0
+
+sups∈[0,t] |RN (ǫn, s)|
+
+ǫN +1
+n
+
+≤ CN +1 ,
+
+for some deterministic CN +1 ≥ 0, independent of ǫ ∈ I, where st − lim stands for the limit in
+probability.
+
+Proof. We proceed by slightly modifying the proof in [Albeverio et al.(2013)] since we have to
+take care of the presence of the explicit dependence on ǫ of the drift coeﬃcient.
+
+5
+
+We shall use the fact that
+
+TN (ǫ, t) := hX ǫ
+
+t −PN
+
+ǫN +1
+
+j=0 ǫjX j
+
+ti
+
+, ǫ ∈ (0, ǫ0] ,
+
+satisﬁes a random diﬀerential equation of the form
+
+with coeﬃcients Aαǫ
+
+ǫN+1dTN (ǫ, t) = Aµǫ
+
+t , . . . , X N
+
+N+1(cid:16)X 0
+
+N +1, α = µ, σ given by
+
+t , RN (t, ǫ)(cid:17) dt + Aσǫ
+N+1 (y0, y1, . . . , yN , y) =
+αǫ
+
+
+ǫj yj + ǫN+1y
+ −
+
+Xj=0
+
+N
+
+Aαǫ
+
+N+1(cid:16)X 0
+
+t , . . . , X N
+
+t , RN (t, ǫ)(cid:17) dLt ,
+
+N
+
+Xj=0
+
+ǫj αj (y0, y1, . . . , yN )
+ ,
+
+with αj, j = 0, 1, . . . , N the expansion coeﬃcients of αǫ in powers of ǫ ∈ I.
+By Taylor’s theorem one proves
+
+1
+ǫN +1 sup
+
+s∈[0,t]|Aαǫ
+
+N +1(cid:0)X 0
+
+s , . . . , X N
+
+s , RN
+
+s (ǫ)(cid:1)| ≤ CN +1,
+
+ǫ ∈ (0, ǫ0] ,
+
+for some CN +1 ≥ 0, independent of ǫ, 0 ≤ ǫ ≤ ǫ0.
+
+From this one deduces that one can ﬁnd a sequence ǫn → 0 as n → ∞ s.t.
+s (ǫn)(cid:1)|
+
+s∈[0,t]|Aαǫn
+
+st − lim ǫn↓0
+n→∞
+
+N +1(cid:0)X 0
+
+s , . . . , X N
+
+s , RN
+
+ǫN +1
+n
+
+sup
+
+1
+
+exists and it is bounded by CN +1.
+
+Under some assumptions on µǫ, σǫ and L it follows then from a theorem by Skorohod, on the
+continuous dependence of solutions of SDE’s on the coeﬃcients, see, e.g. [Gihman et al.(1972)],
+that
+
+st − lim ǫn↓0
+n→∞
+
+sup
+
+s∈[0,t]|TN (ǫn, s)|
+
+exists and it is bounded by CN +1, which proves the result.
+
+See [Albeverio et al.(2013)] for more details.
+
+remark 2.7. In the context where Lt is a standard Brownian motion, results of the above type
+have been obtained before in connection with Malliavin calculus in [Watanabe (1987)], see, e.g.
+also [Takahashi (1999)]. In very recent work [Shiraya et al.(2017)] have partially extended the
+result of [Takahashi (1999)] to the case of a noise with jumps and with a small coeﬃcient only
+in the Gaussian noise. Note that in our case the small parameter enters in the full volatility in
+front of the noise Lt. Asymptotic expansions in the case of Lt with jumps have also been dis-
+cussed using PDE methods in [Benhamou et al.(2009)], see also [Matsuoka et al.(2004)]. Here
+the coeﬃcients appearing in the expansion for the option price are expressed in terms of the
+greeks.
+
+Also in the work of [Pagliarani et al.(2013)], PDE and Fourier transformation methods are
+used to handle an expansion of the solution of the Kolmogorov equation associated with processes
+with stochastic volatility and general jumps terms. Expansions in terms of nested systems of
+linearized SDE’s also occur in [Fouque et al. (2009)] and [Takahashi et al.(2012)].
+remark 2.8. It can be seen that in general the k−th equation for X k
+mogeneous linear equation in X k
+with a random inhomogeneity depending on X k
+
+t , but with random coeﬃcients depending on X 0
+
+in Th. 2.6 is a nonho-
+and
+
+t . Thus it has the general form
+
+t , . . . , X k−1
+
+t
+
+t
+
+dX k
+
+t
+
+t , . . . , X k−1
+
+t =fk(cid:0)X 0
++ ˜gk(cid:0)X 0
+
+t dt + gk(cid:0)X 0
+(cid:1) X k
+t(cid:1) dLt + hk(cid:0)X 0
+
+t , . . . , X k−1
+
+t
+
+(cid:1) X k
+
+t , . . . , X k−1
+t dLt ,
+
+t
+
+(cid:1) dt
+
+for some continuous functions fk, gk, ˜gk and hk.
+
+(12)
+
+6
+
+Let us now look at particular cases.
+
+example 2.1. Let µǫ = (a + ǫb)x and σǫ = (σ0 + ǫσ1)x with a, b, σ0 and σ1 some real constants.
+Applying Proposition 2.4 we get
+
+σ0X 0
+
+s dLs ,
+
+aX 0
+
+s ds +Z t
+
+0
+
+X 0
+
+X 1
+
+0
+
+t = x0 +Z t
+t =Z t
+t =Z t
+
+aX 1
+
+aX k
+
+0
+
+0
+
+X k
+
+0
+
+s ds +Z t
+s ds +Z t
+
+0
+
+bX 0
+
+0
+
+s ds +Z t
+ds +Z t
+
+0
+
+s
+
+bX k−1
+
+σ1X 0
+
+s dLt +Z t
+
+0
+
+σ1X k−1
+
+s
+
+σ0X 1
+
+s dLt ,
+
+(13)
+
+dLs +Z t
+
+0
+
+σ0X k
+
+t dLt, k ≥ 2 .
+
+If we consider the special case of remark 2.5 where µǫ(x) = ax + b, independent of ǫ, σǫ(x) =
+cx + ǫ ˜dx, for some real constants a, b, c and ˜d, independent of ǫ, and where the Lévy process is
+taken to be a standard Brownian motion, Lt = Wt, then by eq. (11) we have that X k
+t satisﬁes
+a linear equation with constant coeﬃcients for any k ∈ N, thus applying standard results, see,
+e.g., [Arnold(1974)], an explicit solution for X k
+Let us describe this in the case where we have a set of K coupled linear stochastic equations
+
+t can be retrieved.
+
+with random coeﬃcients of the form
+
+(dXt = [A(t)Xt + f (t)] dt +Pm
+
+0 = xk
+
+0 ∈ R,
+
+t ≥ 0
+
+X k
+
+i=1 [Bi(t)Xt + gi(t)] dW i
+t ,
+
+(14)
+
+where, A and Bi are K × K matrices, f and gi RK−valued deterministic functions. All the
+coeﬃcients A, B, f and g are assumed to be measurable. The solution of equation (14) is then
+given by
+
+Xt = Φ(t)"x0 +Z t
+
+0
+
+Φ−1(s) f (s) −
+
+Bi(s)gi(s)! ds +
+
+m
+
+Xi=1
+
+m
+
+Xi=1Z t
+
+0
+
+gi(s)dW i
+
+s#
+
+(15)
+
+where Φ(t) is the fundamental K×K matrix solution of the corresponding homogeneous equation,
+i.e. it is the solution of the problem
+
+(dΦ(t) = A(t)Φ(t)dt +Pm
+Φ(0) = I, t ≥ 0 ,
+
+i=1 Bi(t)Φ(t)dW i
+t ,
+
+,
+
+(16)
+
+being I the unit K × K matrix.
+remark 2.9. In the case where K = 1 we have that Φ reduces to a scalar and is given by
+
+Φ(t) = exp(cid:26)Z t
+
+0 (cid:18)A(s) −
+
+1
+2
+
+B2(s)(cid:19) ds +Z t
+
+0
+
+B(s)dWs(cid:27) .
+
+Still in the case K = 1 but with a more general noise, i.e. Wt in eq. (14) replaced by a Lévy
+process composed by a Brownian motion plus Wt a jump component expressed by ˜N , eq. (16) is
+replaced by
+
+(dΦ(t) = A(t)Φ(t)dt + B(t)Φ(t)dWt +RR0
+
+Φ(0) = I,
+
+t ≥ 0
+
+Φ(t−)C(t, x) ˜N (dt, dx) ,
+
+.
+
+(17)
+
+with A, B and C Lipschitz and with at most linear growth, and where ˜N (dt, dx) is a Poisson
+compensated random measure to be understood in the following sense: ˜N (t, A) := N (t, A)−tν(A)
+for all A ∈ B(R0), 0 6∈ ¯A, with ¯A the closure of A, N being a Poisson random measure on R+×R0
+(|x|2 ∧ 1)ν(dx) < ∞, ν is the Lévy measure
+and ν(A) := E(N (1, A), while R0 := R \ {0} and RR0
+to ˜N , see, e.g. [Applebaum(2009), Imkeller et al.(2009), Mandrekar et al.(2015)].
+
+7
+
+Denoting then eq. (17) for short as
+
+with
+
+dΦ(t) = Φ(t−)dX(t) ,
+dX(t) = A(t)dt + B(t)dWt +ZR0
+
+C(t, x) ˜N (dt, dx) ,
+
+(18)
+
+(19)
+
+we have then that the solution to eq. (18) is explicitly given, in terms of the coeﬃcients and
+noise, and the solution of eq. (19), by
+
+Φ(t) = exp(cid:26)1 +Z t
+
+0 (cid:18)A(s) −
+
+1
+2
+
+B2(s)(cid:19) ds +Z t
+
+0
+
+B(s)dWs
+
+(1 + ∆Xs) e−∆Xs ,
+
+C(s, x) ˜N (ds, dx)(cid:27) Y0<s≤t
+
++ZR0
+is the jump at time s ∈ (0, t]. The stochastic process (20) is called
+where ∆X(s) := Xs − Xs
+Doléans-Dade exponential (or stochastic exponential) and it is usually denoted by Φ(t) = E(Xt).
+The Doléans-Dade exponential has a wide use in ﬁnance since it is the natural extension to the
+Lévy case of the standard geometric Brownian motion, see, e.g., [Arnold(1974), Gardiner (2004)]
+for a more extensive treatment of the fundamental solution of the homogeneous equation for sys-
+tems of linear SDE’s and [Applebaum(2009)] for more details on the Doléans-Dade exponential.
+
+−
+
+(20)
+
+3 Corrections around the Black-Scholes price (with Brow-
+
+nian, resp. Brownian plus jumps)
+
+We shall study an asset Sǫ
+
+t evolving according to the particular stochastic diﬀerential equation
+(SDE) governing the Black-Scholes (BS) model, with the possible addition of some driving term
+[Black et al.(1973), Shreve (2004)], resp.
+determined by a compound Poisson process, see, e.g.
+[Benhamou et al.(2009), Merton (1976), Albeverio et al.(2006)]. Our aim is to apply the theory
+developed in Sec. 2 in order to give corrections around the price given by the BS model for an
+option with terminal payoﬀ Φ written on the underlying Sǫ
+t (Φ is a given real valued function
+assumed here to be suﬃciently smooth). In particular, if we consider the return process deﬁned
+as X ǫ
+t being supposed to be strictly positive, at least almost surely) we have that
+the price P (t, T ) at time t of the option with ﬁnal payoﬀ Φ with maturity time T , 0 ≤ t ≤ T , is
+given by
+
+t := logSǫ
+
+t (Sǫ
+
+(21)
+
+P (t, T ) = EQh er(T−t)Φ(XT )(cid:12)(cid:12)(cid:12)Fti ,
+
+where Q is a relevant equivalent martingale measure, called in ﬁnancial application risk-neutral
+measure, EQ [·|·] the corresponding conditional expectation given the σ−algebra Ft at time t
+associated with the underlying Brownian motion, r > 0 is the constant interest rate. We refer to,
+e.g., [Black et al.(1973), Brigo et al.(2006), Cox et al.(1985), Filipovic (2009), Kim et al.(1999),
+Shreve (2004)] for a general introduction to option pricing.
+
+From Theorem 2.6 and using Lemma 2.3 we deduce that Φ(X ǫ
+
+t ) has an asymptotic expansion
+
+in powers of ǫ ∈ [0, ǫ0), ǫ0 > 0, in the sense of Theorem 2.6, of the form
+
+Φ(X ǫ
+
+t ) =
+
+H
+
+Xk=0
+
+ǫk [Φ(X ǫ
+
+t )]k + RH (ǫ, t) ,
+
+(22)
+
+with
+
+sup
+
+s∈[0,t]|RH (ǫ, s)| ≤ CH+1(t)ǫH+1 ,
+
+for any H ∈ N and the coeﬃcients can be computed from the expansions coeﬃcients of X ǫ
+discussed in section 2.
+
+t , as
+
+8
+
+More concretely we will deal with two particular cases. In the ﬁrst case we have an asset Sǫ
+evolving according to a geometric Brownian motion with a small perturbation in the diﬀusion.
+Namely the asset evolves, in a risk neutral setting, according to
+
+t = Sǫ
+
+(dSǫ
+s0 = s0 , t ≥ 0 ,
+
+t (cid:2)(σ0 + ǫσ1 ¯f (Sǫ
+
+t ))dWt(cid:3) ,
+
+,
+
+(23)
+
+where σ0 6= 0 and σ1 are real constants, s0 > 0, and Wt is a Q Brownian motion adapted
+to the ﬁltration (Ft)t, ¯f (Sǫ
+In particular
+the existence and uniqueness of a strong solution to equation (23) follows under the general
+assumption of ¯f ∈ C1 from [McKean (1969), Problem 3.3.2]. We have assumed σ0 and σ1 to be
+time independent for the sake of simplicity. The generalization to time dependent functions is
+quite immediate, with no complication in the results developed in what follows.
+
+t ) with f a given smooth function on R.
+
+t ) := f (X ǫ
+
+Suppose, for all t ≥ 0, Sǫ
+
+t := log Sǫ
+
+t > 0 a.s. (which is the case if ǫ is suﬃciently small). Applying Itô’s
+t , the return of the asset
+
+t , we end up with the following evolution for X ǫ
+
+lemma to X ǫ
+price
+
+X ǫ
+
+t = x0 −Z t
+
+0 (cid:20) σ2
+
+0
+2
+
++ ǫσ0σ1f (X ǫ
+
+s) + ǫ2 σ2
+
+1f (X ǫ
+
+s)2
+
+2
+
+(cid:21) ds +Z t
+
+0
+
+[σ0 + ǫσ1f (X ǫ
+
+s)] dWs ,
+
+(24)
+
+where we have set x0 := logs0.
+
+Applying the results obtained in Sec. 2 and expanding eq. (24) to the second order in ǫ we
+
+get
+
+σ2
+0
+2
+
+t + σ0Wt,
+
+σ0σ1f (X 0
+
+X 0
+t = x0 −
+t = −Z t
+X 1
+t = −Z t
+
+X 2
+
+0
+
+with law N (cid:0)x0 + µt, σ2
+0t(cid:1) ,
+
+0
+
+s )ds +Z t
+σ1f(cid:0)X 0
++ 2σ0σ1f′(cid:0)X 0
+
+s(cid:1) dWs,
+s(cid:1) X 1
+
+2
+
+s )2
+
+1f (X 0
+
+0 (cid:18) σ2
+0t(cid:17) denotes the Gaussian distribution of mean µt and variance σ2
+
+s(cid:19) ds +Z t
+
+σ1f′(cid:0)X 0
+
+s(cid:1) X 1
+
+s dWs ,
+
+0
+
+(25)
+
+0t, f′ the
+
+where N (cid:16)− σ2
+
+derivative of f .
+
+0
+
+2 t, σ2
+
+The second model we will deal with, following [Merton (1976), Benhamou et al.(2009)], is
+
+the previous one with an addition of a small compound Poisson process
+
+Zt =
+
+Ji ,
+
+Nt
+
+Xi=1
+
+with Nt a standard Poisson process with intensity λ > 0 and (Ji)i=1,...,Nt being independent
+normally distributed random variables, namely such that
+Ji has law N (γ, δ2) ,
+
+for some γ ∈ R and δ > 0.
+
+We thus have that the Lévy measure ν(dz) of Z reads as
+
+ν(dz) =
+
+λ
+√2πδ
+
+e− (z−γ)2
+
+2δ2 dz ,
+
+z ∈ R ,
+
+and the cumulant function of Z is
+
+κ(ζ) = λ(cid:18)eγζ+ δ2 ζ2
+
+2 − 1(cid:19) .
+
+In particular we assume the asset Sǫ to evolve according to a geometric Lévy process with a
+small perturbation in the diﬀusion. Namely the asset evolves, in a risk neutral setting, according
+to
+
+(dSǫ
+t = Sǫ
+Sǫ
+0 = s0 > 0 , t ≥ 0 ,
+
+t h(σ0 + ǫσ1 ¯f (Sǫ
+
+t ))dWt + ǫPNt
+
+i=1 Jii ,
+
+.
+
+(26)
+
+9
+
+Again the existence and uniqueness of a strong solution to equation (26) can be obtained by ar-
+guments similar to the ones used in [McKean (1969), Problem 3.3.2] together with the properties
+
+i=1 Ji.
+
+of PNt
+
+process X ǫ
+
+t evolves according to
+
+Proceeding as above, and applying Itô’s lemma to X ǫ
+
+t := log Sǫ
+
+t , we have that the log-return
+
+2
+
+0
+2
+
+X ǫ
+
+s)2
+
+1f (X ǫ
+
++ ǫσ0σ1f (X ǫ
+
+(σ0 + ǫσ1f (X ǫ
+
+s) + ǫ2 σ2
+
+0 (cid:20) σ2
+
+(cid:21) ds + ǫλt(cid:16)eγ+ δ2
+
+t =x0 −Z t
++Z t
+for ǫ ∈ I = [0, ǫ0], ǫ0 > 0.
+In the present case it is more tricky to deal with the risk neutral probability measure Q.
+Under suitable assumptions on the coeﬃcients and noise one can assure the existence (but not
+necessarily the uniqueness) of an equivalent probability measure Q. We will assume the process
+(27) to evolve under a risk-neutral measure Q, see, e.g. [Applebaum(2009)].
+
+2 − 1(cid:17)
+
+s)) dWs + ǫ
+
+Xi=1
+
+(27)
+
+Ji ,
+
+Nt
+
+0
+
+In particular we will use two speciﬁc forms for the function f , that is an exponential function
+and a polynomial function. The former is of special interest for its general application to integral
+transforms, such as Fourier or Laplace transforms, see, e.g. Section 3.1, Remark 3.3. The latter
+mimics a polynomial volatility process (these type of processes have been widely used in ﬁnance
+since they can be easily implemented, see, e.g. [Carr et al.(2013)] and reference therein).
+
+3.1 A correction given by an exponential function
+
+Let us consider the ﬁrst model described by equations (24) and (25), i.e. an asset Sǫ evolving
+according to a geometric Brownian motion under the unique risk neutral probability measure Q,
+recalling that X ǫ
+t . Let us ﬁrst look at the particular case f (x) = eαx, for some α ∈ R.
+We take into account the particular case of an exponential function due to the fact that it can be
+easily extended to the much more general case where the function f can be written as a Fourier
+transform or a Laplace transform of some bounded measure on the real line, as it will be further
+discussed in Rem. 3.3 below. We then get the following proposition.
+
+t = logSǫ
+
+proposition 3.1. Let us consider the SDE (24) in the particular case where f (x) = eαx, for
+some α ∈ R0 := R \ {0}, σ0 ∈ R0.
+are given by
+
+t + R2(ǫ, t) holds, where the coeﬃcients
+
+Then the following expansion X ǫ
+
+t + ǫ2X 2
+
+t + ǫX 1
+
+t = X 0
+
+σ2
+0
+2
+
+t + σ0Wt,
+
+with law N (cid:18)x0
+
+σ2
+0
+2
+
+t, σ2
+
+0t(cid:19) ;
+
+0
+
+X 1
+
+X 0
+t = x0 −
+t =Z t
+αZ t
+αZ t
+
+t = C1
+
++ C4
+
+X 2
+
+0
+
+0
+
+KαeαX 0
+
+s ds +
+
+e2αX 0
+
+s ds + C2
+
+eαX 0
+
+s Z s
+
+0
+
+σ1
+
+ασ0 (cid:16)eαX 0
+t − 1(cid:17) ;
+t Z t
+
+αeαX 0
+
+eαX 0
+
+0
+
+s ds + C3
+
+αZ t
+
+0
+
+eαX 0
+
+r drds + C5
+
+αe2αX 0
+
+t + C6
+
+αeαX 0
+
+t + C7
+α ,
+
+eαX 0
+
+s ds
+
+(28)
+
+with
+
+Kα := σ1(
+
+σ0
+2 −
+1
+α := −σ2
+C3
+1(
+2
+
+ασ0
+2 − σ0) , C1
++ 2) , C4
++
+
+α
+2
+
+C5
+
+α :=
+
+σ2
+1
+2ασ2
+0
+
+, C6
+
++ α +
+
+1
+2
+
+1(cid:18) 5
+2 −
+
+α := − σ2
+α := − Kασ1α(cid:16)2σ0 −
+α := −
+
+σ2
+1
+ασ2
+0
+
+α :=
+
+, C7
+
+σ0
+2
+σ2
+1
+2ασ2
+0
+
+.
+
+Kα
+
+σ0σ1(cid:19) , C2
+2 (cid:17) ,
+
+ασ0
+
++
+
+α := Kα
+
+σ1
+σ0
+
+,
+
+10
+
+Furthermore R2(ǫ, t) satisﬁes the bound
+
+st − limǫn↓0
+
+sups∈[0,t] |R2(ǫ, s)|
+
+ǫ3
+n
+
+≤ C3 ,
+
+for some subsequence ǫn ↓ 0 and with some constant C3 ≥ 0.
+Proof. The proof consists in a repeated application of the Itô formula and the stochastic Fubini
+theorem.
+
+In fact substituting f (x) = eαx into system (25) we immediately obtain
+
+X 0
+
+t = x0µt + σ0Wt,
+
+σ0σ1eαX 0
+
+X 1
+
+X 2
+
+0
+
+t = −Z t
+t = −Z t
+
+0 (cid:18) σ2
+
+1
+2
+
+e2αX 0
+
+σ1eαX 0
+
+with law N (cid:0)x0 + µt, σ2
+0t(cid:1) ;
+s ds +Z t
+s(cid:19) ds +Z t
+
+s + 2σ0σ1αeαX 0
+
+s dWs;
+
+s X 1
+
+0
+
+0
+
+σ1αeαX 0
+
+s X 1
+
+s dWs.
+
+(29)
+
+To compute X 1
+
+t we apply Itô’s lemma to the function g(X 0
+
+t ) = eαX 0
+
+t to get
+
+eαX 0
+
+t = 1 +Z t
+
+0
+
+(eαX 0
+
+s αµ +
+
+α2
+2
+
+0eαX 0
+σ2
+
+s )ds +Z t
+
+0
+
+eαX 0
+
+s ασ0dWs .
+
+(30)
+
+Expressing the latter integral involving dWs by the other terms in eq. (30) and substituting
+
+it in the stochastic integral of X 1
+
+t in the system (29) we get the result for X 1
+
+t in eq. (28).
+
+In order to derive the expression for X 2
+
+t we use again Itô’s lemma, in particular eq. (30),
+
+getting from (29)
+
+e2αX0
+
+s + 2σ0σ1αeαX0
+
+s X 1
+
+ασ1eαX0
+
+s X 1
+
+s dWs =
+
+0 (cid:18) σ2
+
+1
+2
+
+X 2
+
+0
+
+t = −Z t
+−Z t
++Z t
+|
+
+0
+
+σ2
+
+1(2α +
+
+)e2αX0
+
+1
+2
+
+σ2
+1 α
+σ0
+
+e2αX0
+
+s dWs
+
+2ασ2
+
+eαX0
+
+0
+ασ2
+1
+σ0
+
+s ds +Z t
+−Z t
+|
+
+0
+
+}
+
+(2)
+
+{z
+
+(1)
+
+{z
+
+0 Z s
+
+0
+
+0
+
+1 eαX0
+
+s(cid:19) ds +Z t
+s ds −Z t
++Z t
+|
+
+}
+
+s dWs
+
+0
+
+2Kασ1σ0αeαX0
+
+s eαX0
+
+r drds
+
+Kαασ1eαX0
+
+eαX0
+
+r drdWs
+
+.
+
+0
+
+s Z s
+{z
+
+(3)
+
+}
+
+For the terms (1) and (2) we use eq. (30), resp. Itô’s lemma applied to the function g(X 0
+t ) =
+e2αX 0
+t , as before to replace the stochastic integral by an integral against Lebesgue measure.
+In order to treat the term (3) we use the stochastic Fubini theorem, see, e.g. Th. 6.2 in
+[Filipovic (2009)], to get
+
+(3) =
+
+Kασ1
+
+σ0 Z t
+0 Z s
+
+0
+
+ασ0eαX 0
+
+s eαX 0
+
+r drdWs =
+
+Kασ1
+
+σ0 Z t
+
+0
+
+eαX 0
+
+r Z t
+
+r
+
+ασ0eαX 0
+
+s dWsdr .
+
+Using the expression for the integral in dWs coming from (30) we then get
+
+(3) =
+
+=
+
+Kασ1
+
+σ0 Z t
+
+0
+
+Kασ1
+
+eαX 0
+
+σ0
+
+eαX 0
+
+r Z t
+
+r
+
+t Z t
+
+0
+
+×Z t
+0 Z s
+
+0
+
+eαX 0
+
+s eαX 0
+
+r drds .
+
+ασ0eαX 0
+
+s dWsdr =
+
+eαX 0
+
+s ds −
+
+Kασ1
+
+σ0 Z t
+
+0
+
+e2αX 0
+
+s ds −
+
+Kασ1
+
+σ0
+
+(αµ +
+
+α2σ2
+0
+
+2
+
+)×
+
+Substituting now everything into the original system (29), rearranging and grouping the
+
+integrals of the same type we get the desired result in (28).
+
+The estimate on the remainder is a consequence of Theorem 2.6.
+
+11
+
+remark 3.2. Our aim in Prop. 3.1 is to discuss in details a particular choice of volatility func-
+tion around the Black-Scholes one. We obtain explicit formulae for the expansion coeﬃcients,
+keeping control of the remainder. This expansion can be seen as a particular, but more explicit,
+case of the one discussed in [Takahashi (1999), Prop. 2.1].
+
+remark 3.3. The particular choice of f (x) = eαx can easily be extended to any real function
+eixy̺(dα),
+eαx̺(dα), of some positive measure ̺ on R0 (e.g. a symmetric probability
+τ replaced by
+
+which can be written as a Fourier transform, resp. Laplace transform, f (x) = RR0
+resp. f (x) = RR0
+RR0
+
+τ ̺(dα), which are ﬁnite if, e.g. RR0 |Kα|̺(dα) < ∞, resp. ̺
+
+measure) resp. which has ﬁnite Laplace transform. Formula (28) holds with KαeαX 0
+
+has, e.g., compact support. In fact eq. (30) gets replaced by
+
+τ ̺(dα), resp. RR0
+
+KαeiαX 0
+
+KαeαX 0
+
+eαX 0
+
+ZR0
+
+t ̺(dα) =1 +ZR(cid:20)Z t
++ZR(cid:20)Z t
+
+0
+
+0 (cid:18)eαX 0
+
+eαX 0
+
+α2
+2
+
+s αµ +
+
+0eαX 0
+σ2
+s ασ0dWs(cid:21) ̺(dα) .
+
+s(cid:19) ds(cid:21) ̺(dα)
+
+(31)
+
+By repeating the steps used before and exploiting again the Stochastic Fubini’s theorem we get
+the statements in Prop. 3.1 extended to these more general cases.
+
+If we assume the payoﬀ function x 7→ Φ(x) to be smooth, x ∈ R+, we can expand Φ(X ǫ
+
+t ) in
+powers of ǫ using the formulae in Prop. 2.4. Then, exploiting eq. (22) with H = 1, i.e. stopping
+at the ﬁrst order, we get
+
+Φ (X ǫ
+
+t ) = Φ(X 0
+
+t ) + ǫΦ′(X 0
+
+t )X 1
+
+t + R1(ǫ, t) ,
+
+(32)
+
+with sups∈[0,t] |R1(ǫ, s)| ≤ ˜C(s)ǫ2, for some ˜C independent of ǫ (Φ′ is the derivative of Φ).
+Calling Φ1 the terms on the r.h.s. in eq. (32) minus the reminder term R1(ǫ, t) we get that
+the corresponding corrected fair price P r1(0; T ), up to the ﬁrst order in ǫ, of an option written
+on the underlying Sǫ
+
+t at time t = 0 with maturity T , reads as follow
+
+t := eX ǫ
+
+P r1(0; T ) = e−rT EQ [Φ1(X ǫ
+
+= P rBS + ǫe−rT EQ(cid:2)Φ′(X 0
+
+T )] = e−rT EQ(cid:2)Φ(X 0
+T(cid:3) ,
+
+T )X 1
+
+T ) + ǫΦ′(X 0
+
+T )X 1
+
+T(cid:3) =
+
+where P rBS stands for the standard B-S price with underlying S0
+
+t := eX 0
+
+t , see, e.g [Black et al.(1973)].
+
+(33)
+
+This formula yields thus, for a smooth payoﬀ function, the corrected price up to the ﬁrst
+order, with an error term related to the "full price" and bounded in modulus by C2ǫ2 for a
+constant C2 ≥ 0 independent of ǫ.
+remark 3.4. It is worth to recall that the payoﬀ function usually fails to be smooth such as in
+the case of European call options where Φ(x) = (ex − K)+, K > 0 being the strike price. The
+latter payoﬀ function presents namely a point of non diﬀerentiability at eX = K. Anyhow we
+can consider a smoothed version of the payoﬀ function, namely Φh := Φ ∗ ρh, with ρh some
+smooth kernel s.t. Φh → Φ as h → ∞ in distributional sense. With the smoothed payoﬀ function
+Φh, eq. (33) is well deﬁned. In particular the ﬁrst derivative appearing in eq. (33) is given
+by a regularized version of 1[x>ln K](x). Heuristically, interchanging the limits involved in the
+expansion with the removing of regularization we can look at P r1(0, T ) as given by (33) also
+in the case of the payoﬀ function Φ(x) = (ex − K)+, x ∈ R, as approximation of the price,
+with Φ′(x) = 1[x>ln K](x) given as above.
+In the case of smooth coeﬃcients, using methods
+of [Watanabe (1987)], the problem of handling distributional Φ can be handled eﬃciently, see,
+[Takahashi et al.(2012)].
+
+We have the following result.
+
+proposition 3.5. Let us consider the particular case of an European call option Φ with payoﬀ
+given by Φ(X ǫ
+proximated price up to the ﬁrst order, P r1(0; T ), in the sense of remark 3.4, is explicitly given
+by
+
+t − K(cid:1)+, K being the strike price. Then the ap-
+
+t − K, 0} =: (cid:0)eX ǫ
+
+T ) = max{eX ǫ
+
+P r1(0; T ) = PBS + ǫK1sα+1
+
+0
+
+I1(s, T, α) − ǫK2s0N (d1) + ǫK3sα+1
+
+0 N (d(2α + 1)) ,
+
+(34)
+
+12
+
+with N (x) the cumulative function of the standard Gaussian distribution and
+
+d(α) =
+
+1
+
+σ0√T (cid:18)log
+
+σ2
+0
+
+s0
+K
+
++(cid:18)r −
+2 T , K2 =
+eαµsZR×R
+
+σ
+
+ασ0
+
+K1 = Kαe−
+I1(s, T, α) =Z T
+
+0
+
+σ2
+0
+2
+
+α(cid:19) T(cid:19) ,
+, K3 =
+
+σ1
+ασ0
+
+d1 := d(1) ,
+
+d2 := (d1 + σ0√T ) ,
+
+σ2
+0
+2 T α(α+1)+αrT ,
+
+e
+
+1{x+y>√T d2}eσ0xe(1+α)σ0y φ(x, 0, T − s)φ(y, 0, s)dxdyds ,
+
+where we have denoted by φ(x; µ, σ) the density function of the normal distribution with mean
+
+µ and variance σ, PBS denotes the usual B–S price with underlying S0
+Proof. Given the exponential function f (x) = eαx, where α ∈ R, the approximated price up to
+the ﬁrst order, P r1(0; T ) of an European call option with payoﬀ function Φ(X ǫ
+T − K(cid:1)+
+is
+
+T ) =(cid:0)eX ǫ
+
+t = eX 0
+t .
+
+P r1(0; T ) = PBS + ǫe−rT EQ(cid:2)Φ′(X 0
+= PBS + ǫe−rT(EQ"1[X T
+− K2EQh1[X T
+0 >ln(K)]eX 0
+
+T )X 1
+
+T(cid:3) =
+0 >ln(K)]eX 0
+
+KαeαX 0
+
+T Z T
+Ti + K2EQh1[X T
+0 >ln(K)]eX 0
+
+0
+
+s ds#+
+
+T eαX 0
+
+Ti) ,
+
+(35)
+
+where PBS is the standard B-S price with underlying S0
+
+t = eX 0
+t .
+
+Let us ﬁrst compute the integral
+
+ǫe−rT EQ"1[X 0
+
+T >ln(K)]eX 0
+
+T Z T
+
+0
+
+KαeαX 0
+
+s ds#
+
+By means of Fubini Theorem, we can exchange the expectation with respect to the integration
+in time so that we obtain
+
+ǫe−rT KαZ T
+
+0
+
+EQh1[X 0
+
+t >ln(K)]eX 0
+
+T eαX 0
+
+sids .
+
+From the deﬁnition of X 0
+
+T and X 0
+
+s , for every ﬁxed 0 < s < T , we have
+
+(36)
+
+X 0
+X 0
+
+T = x0 + µT + σ0WT ,
+s = x0 + µs + σ0Ws ,
+
+are two correlated random variables, by means of the Wiener processes involved. By algebraic
+manipulation let us deﬁne WT = WT −Ws +Ws, where X := WT −Ws is N (0, T −s) independent
+with respect to Ws. Then X 0
+
+T = x0 + µT + σ0X + σ0Ws and (36) becomes
+
+ǫe−rT KαZ T
+
+0
+
+EQ(cid:20)1nσ0X+σ0Ws>ln( K
+
+s0
+
+= ǫe−rT Kαs(1+α)
+
+0
+
+erT e−
+
+)−µToe(1+α)x0+µT eαµseσ0X e(1+α)σ0Ws(cid:21)ds =
+2 T×
+
+σ2
+0
+
+×Z T
+
+0
+
+eαµsEQ(cid:20)1nσ0X+σ0Ws>ln( K
+
+s0
+
+)−µToeσ0X e(1+α)σ0Ws(cid:21)ds .
+
+The expectation with respect to the risk-neutral measure can be exchanged with the time
+
+integration. Moreover by exploiting the independence of X and Ws, we get the ﬁnal result
+
+ǫKαs
+
+(1+α)
+0
+
+e−
+
+= ǫs
+
+(1+α)
+0
+
+σ2
+0
+
+0
+
+eαµsZR×R
+
+2 T Z T
+eαµsZR×R
+
+K1Z T
+
+0
+
+1{x+y>−√T d2}eσ0xe(1+α)σ0y φ(x, 0, T − s)φ(y, 0, s)dxdyds =
+
+1{x+y>−√T d2}eσ0xe(1+α)σ0yφ(x, 0, T − s)φ(y, 0, s)dxdyds .
+
+13
+
+2 dx = s0erT N (d1) .
+
+Ti = −ǫK2s0N (d1)
+
+(38)
+
+(39)
+
+(40)
+
+e −x2
+
+2 dx =
+
+√2− σ0√T
+
+√2 (cid:17)2
+
+dx .
+
+e−(cid:16) x
+
+√2 − σ0√T
+
+√2 (cid:17)2
+
+σ2
+0 T
+2 dx =
+
+e
+
+(37)
+
+Then we have from the deﬁnition of X 0
+T
+
+σ2
+0
+
+= s0erT e−
+
+0 >ln(K)]eX 0
+
+Eh1[X T
+
+Ti =Zx>−d2
+
+ex0+µT +σ0√T x 1
+√2π
+1
+2 T Zx>−d2
+√2π
+1
+e−(cid:16) x
+√2π
+By setting y = x − σ0√T , the integral in (37) reads as
+1
+Ti = s0erT Zy>−d1
+√2π
+Eventually by multiplying by −ǫe−rTK2, we obtain
+0 >ln(K)]eX 0
+
+= s0erT Zx>−d2
+
+Eh1[X T
+
+0 >ln(K)]eX 0
+
+e− y2
+
+− ǫe−rTK2Eh1[X T
+
+Let us now compute the last term in the bracket { } in (35). We have
+e(1+α)(x0+µT +σ0√T x) 1
+K2Eh1[X T
+√2π
+
+0 >ln(K)]eX0
+
+T eαX0
+
+Ti = K2Zx0+µT +σ0√T x>ln(K)
+= K2Zx>−d2
+= K2s
+
+e(1+α)rT e−(1+α)
+
+(1+α)
+0
+
+e(1+α)(x0+µT )e(1+α)σ0√T x 1
+√2π
+T Zx>−d2
+e(1+α)σ0√T x 1
+√2π
+
+e −x2
+
+2 dx =
+
+σ2
+0
+2
+
+e −x2
+
+2 dx =
+
+e −x2
+
+2 dx
+
+The integrand function can be recast as
+
+e(1+α)σ0√T xe −x2
+
+2 =
+
+1
+√2π
+
+1
+√2π
+
+e−(cid:16) x
+
+√2− (1+α)σ0√T
+
+√2
+
+(cid:17)2
+
+σ2
+2 (1+α)2T .
+0
+
+e
+
+By the change of variable x 7→ y = x − (1 + α)σ0√T , the domain of integration becomes
+0 T(cid:19) =
+
+y > −d2 − (1 + α)σ0T = −
+
+1
+
+σ0√T (cid:18)ln(cid:18) K
+σ0√T (cid:18)ln(cid:18) K
+
+s0(cid:19) − rT + σ2
+s0(cid:19) + rT +
+
+0/2 − (1 + α)σ2
+σ2
+(2α + 1)T(cid:19) =
+0
+2
+
+1
+
+= −
+= −d(2α + 1) .
+
+Therefore (40) becomes
+
+0 >ln(K)]eX 0
+
+T eαX 0
+
+e(1+α)rT e−(1+α)
+
+Ti =
+
+σ2
+0
+2 T e
+
+K2Eh1[X T
+= K2s(1+α)
+= K2s(1+α)
+
+0
+
+0
+
+e(1+α)rT eα(1+α)
+
+σ2
+0
+2 T N (d(2α + 1))
+
+σ2
+0
+
+2 (1+α)2T Zy>−d(2α+1)
+
+1
+√2π
+
+e −y2
+
+2 dy =
+
+Eventually by multiplying by ǫe−rT we get
+
+K2Eh1[X T
+
+0 >ln(K)]eX 0
+
+T eαX 0
+
+0
+
+Ti = K2s(1+α)
+= ǫK3s(1+α)
+
+0
+
+N (d(2α + 1))
+
+eαrT eα(1+α)
+
+σ2
+0
+2 T N (d(2α + 1)) =
+
+14
+
+By Prop. 3.5 we have that the explicit computation of the corrected fair price is reduced to
+a numerical evaluation of a deterministic integral, which might be more eﬃcient than directly
+simulating the random variables involved.
+
+remark 3.6. Our result in Prop. 3.5 covers the case of a perturbation around the classical Black–
+Scholes model. This is diﬀerent in this sense from the one discussed in [Takahashi (1999)].
+
+remark 3.7. We could have also considered the second order perturbation P r2(0; T ) around the
+BS price. This is given by
+
+P r2(0; T ) = P r1(0; T ) + ǫ2e−rT EQ(cid:2)Φ(X 0
+
+T )′X 2
+
+T(cid:3) + e−rT EQhΦ(X 0
+
+T )′′(cid:0)X 1
+
+T(cid:1)2i ,
+
+with P r1 the up to ﬁrst order price in eq. (33). For the particular case of a European call option
+we have that Φ′′ = δ(X − log K)eX + 1[X>log K]eX, with δ the Dirac measure at the origin. Thus
+the correction up to the second order of the BS price for a European call option reads
+
+P r2(0; T ) = P r1 + ǫ2K4s2α+1
+
+0
+
++ ǫ2K5s2α+1
++ ǫ2K7s2α+1
++ ǫ2K9sα+1
+
+0
+
+0
+
+I1(s, T, 2α)+
+I2(s, T ) + ǫ2K6sα+1
+I3(r, s, T ) + ǫ2K8s2α+1
+
+0
+
+I1(s, T, α)+
+0 N (d(−3 − 4α)) +
+
+0 N (d(−1 − 2α)) + ǫ2K10s0N (d(1)) ,
+
+(41)
+
+with P r1 as in eq. (34), the notations as in Prop. 3.5 and
+
+σ2
+0
+
+σ2
+0
+
+σ2
+0
+
+)e−
+
+σ2
+0
+2 T ,
+
+σ2
+0
+2 (α+1)T ,
+
+σ1
+ασ0
+
+α + 2Kα
+
+αeαrT−
+
+α + 2K 2
+
+α)e−
+
+α + 2Kα
+
+σ1
+
+ασ0(cid:19) e−
+
+K4 =(cid:18)C1
+K6 = (C3
+K8 = C5
+αe
+
+2 T , K5 = C2
+2 T , K7 = (C4
+2 T α(2α+1)+2αrT , K9 = (C6
+α +
+K10 = (C7
+α −
+I2(s, T ) =Z T
+0 ZR×R
+× φ(x; y, T − s)φ(y; 0, s) dx dy ds ,
+0 Z s
+I3(r, s, T ) =Z T
+× φ(x; y, T − s)φ(y; z, s − r)φ(z; 0, r) dx dy dz dr ds ,
+
+0 ZR×R×R
+
+√T d(1)]eαµs+(2α+1)σ0 y+(α+1)σ0x×
+
+1[x+y>−
+
+σ1
+ασ0
+
+σ1
+ασ0
+
+) ,
+
+σ2
+0
+2 T α(α+1)+αrT ,
+
+)e
+
+1[x+y+z>−√T d(1)]eαµ(s+r)+σ0x+(1+α)σ0y+(1+2α)σ0z×
+
+3.1.1 Numerical results concerning the pricing formula in Prop. 3.5.
+
+We will now use the techniques based on the multi-element Polynomial Chaos Expansion
+(PCE) approach, to show the accuracy of the above derived approximated pricing formula in
+Proposition 3.5.
+
+In what follows we will numerically compute the ﬁrst order correction of the price of an
+
+European call option, whose payoﬀ function is(cid:0)eX ǫ
+
+on the second summand of
+
+T − K(cid:1)+. In particular we focus our attention
+
+Also, X 0
+
+T and X 1
+
+T are deﬁned as in Prop. 3.1.
+
+P r1(0; T ) = PBS + ǫe−rT EQ(cid:2)Φ′(X 0
+
+T )X 1
+
+T(cid:3) .
+
+(42)
+
+The expectation is computed by means of the standard Monte Carlo method, using 10000
+independent realization, and by mean of the multi-element PCE, see, e.g. [Bonollo et al.(2015a),
+
+15
+
+Crestaux et al.(2009), Ernst et al.(2012), Peccati et al.(2011)] and references therein, for a de-
+tailed introduction to such a method. Indeed, the random variable of interest is
+
+0 (ω)>ln(K)} exp(X 0
+
+1{X T
+
+T )X 1
+
+T .
+
+For both methods we will use the available analytical expression of X 0
+the function f (x). In what follows D := {X T
+variables involved, (42) becomes
+
+0 (ω) > ln(K)}.
+
+In particular exploiting the linearity of the expectation and the deﬁnition of the two random
+
+T and X 1
+
+T , depending on
+
+EQ"1DeX 0
+
+T Z T
+
+0
+
+KαeαX 0
+
+s ds# + K2EQh1DeX 0
+
+T eαX 0
+
+Ti − K2EQh1DeX 0
+Ti
+
+(43)
+
+Then we perform a multi-element PCE-approximation of each random variable in (43), set-
+ting the degree of the approximation to be p = 15, since the degree of precision reached for
+such approximation seems to be suﬃcient. For higher degree the computational costs increase
+as well as numerical ﬂuctuations, as witnessed exploiting the Non Intrusive Spectral Projection
+(NISP) toolbox developed within the Scilab open source software for mathematics and engineer-
+ing sciences, becomes relevant for multi-element approximation.
+It is worth to mention that
+multi-element PCE is nothing else that a PCE focused on D. Moreover the global statistics are
+given by D, scaled by means of the weight w.
+
+The numerical values of the parameters are gathered in Table 1.
+
+Parameters
+
+Values
+
+α
+0.1
+
+r
+
+0.03
+
+σ1
+0.15
+
+K
+100
+
+T
+0.5
+
+Table 1: Numerical values of the parameters employed in further computations
+
+The fair price is numerically determined for the set of spot prices s0 ∈ {90, 100, 110} and
+volatility value σ0 ∈ {15%, 25%, 35%}.
+The PCE computation will be compared with standard Monte-Carlo simulation for the inte-
+grals and expansions in (43). The number of independent realizations is set as 10000. Moreover
+as benchmark we use the results presented in Proposition 3.1. These data are collected in Tables
+2, 3, 4.
+
+σ0 = 15%
+
+σ0 = 25%
+
+σ0 = 35%
+
+Results
+Error
+Time
+Results
+Error
+Time
+Results
+Error
+Time
+
+Analytical
+12.38180
+
+14.09613
+
+15.08779
+
+ǫ = 0.1
+PCE
+
+12.37737
+4.4374e-03
+
+0.0580
+14.08919
+6.9451e-03
+
+0.0530
+15.07774
+1.0044e-02
+
+0.0690
+
+standard MC Analytical
+
+ǫ = 0.01
+PCE
+
+standard MC
+
+12.36010
+2.3950e-01
+
+0.3200
+14.14155
+1.7882e-01
+
+0.3060
+15.30850
+1.4500e-01
+
+0.3460
+
+2.22240
+
+2.22195
+
+2.23204
+
+4.31567
+
+6.58042
+
+4.4374e-04
+
+2.3995e-02
+
+0.0530
+4.31498
+
+0.2890
+4.28696
+
+6.9451e-04
+
+1.7755e-02
+
+0.0690
+6.57941
+
+0.4130
+6.57030
+
+1.0044e-03
+
+1.4255e-02
+
+0.0630
+
+0.3420
+
+Table 2: Numerical values for PCE and MC estimation of eq.
+σ1 = 0.15, r = 0.03 and T = 0.5.
+
+(43), for s0 = 90, α = 0.1,
+
+3.2 A correction given by an exponential function and jumps
+
+In what follows we extend the results in Sec. 3.1 to the second model in Sec. 3. In particular
+we will consider a correction up to the ﬁrst order around the BS price (for a European call
+option) where both diﬀusive and jump perturbations are taken into account. We consider an
+
+16
+
+σ0 = 15%
+
+σ0 = 25%
+
+σ0 = 35%
+
+Results
+Error
+Time
+Results
+Error
+Time
+Results
+Error
+Time
+
+Analytical
+39.39600
+
+28.38116
+
+25.56320
+
+ǫ = 0.1
+PCE
+
+39.38877
+7.2374e-03
+
+0.0610
+28.37206
+9.0927e-03
+
+0.0520
+25.55082
+1.2374e-02
+
+0.0530
+
+standard MC Analytical
+
+ǫ = 0.01
+PCE
+
+standard MC
+
+38.97870
+3.2398e-01
+
+0.3180
+28.57793
+2.1197e-01
+
+0.3000
+25.60074
+1.6429e-01
+
+0.3190
+
+8.42541
+
+8.42468
+
+8.46801
+
+9.82235
+
+12.03973
+
+7.2374e-04
+
+3.2376e-02
+
+0.3160
+9.82144
+
+0.3260
+9.82024
+
+9.0927e-04
+
+2.1097e-02
+
+0.0590
+
+12.03850
+1.2374e-03
+
+0.0550
+
+0.2860
+
+12.03580
+1.6466e-02
+
+0.2940
+
+Table 3: Numerical values for PCE and MC estimation of eq. (43), for s0 = 100, σ1 = 0.15,
+r = 0.03 and T = 0.5.
+
+σ0 = 15%
+
+σ0 = 25%
+
+σ0 = 35%
+
+Results
+Error
+Time
+Results
+Error
+Time
+Results
+Error
+Time
+
+Analytical
+69.70042
+
+45.21665
+
+37.87932
+
+ǫ = 0.1
+PCE
+
+69.69460
+5.8153e-03
+
+0.0560
+45.20739
+9.2595e-03
+
+0.0690
+37.86590
+1.3416e-02
+
+0.0530
+
+standard MC Analytical
+18.07600
+
+69.68928
+2.6109e-01
+
+0.4000
+45.04317
+2.0951e-01
+
+0.3460
+37.32253
+1.7161e-01
+
+0.3510
+
+17.54193
+
+19.09570
+
+ǫ = 0.01
+PCE
+
+18.07542
+5.8153e-04
+
+0.0700
+
+17.54100
+9.2595e-04
+
+0.0550
+
+19.09436
+1.3416e-03
+
+0.0660
+
+standard MC
+
+18.08538
+2.5932e-02
+
+0.3330
+
+17.52920
+2.0818e-02
+
+0.3120
+
+19.11644
+1.7169e-02
+
+0.3240
+
+Table 4: Numerical values for PCE and MC estimation of equation 25, for s0 = 110, σ1 = 0.15,
+r = 0.03 and T = 0.5.
+
+asset whose return evolves according to eq. (27) and consider as before the particular case where
+f (x) = eαx, α ∈ R0. Carrying out the asymptotic expansion in powers of ǫ, 0 ≤ ǫ ≤ ǫ0, and
+stopping it at the second order we get the following proposition:
+
+proposition 3.8. Let us assume X ǫ
+t evolves according to eq. (27) with f (x) = eαx, for some
+α ∈ R, then we have the asymptotic expansion up to the second order in powers of ǫ, 0 ≤ ǫ ≤ ǫ0,
+t = X 0
+X ǫ
+
+t + R2(ǫ, t), where the coeﬃcients are given by
+
+t + ǫ2X 2
+
+t + ǫX 1
+
+σ1
+
+with law N (cid:0)x0 + µt, σ2
+0t(cid:1) ;
+t − 1(cid:17) + λt(cid:16)eγ+ δ2
+2 − 1(cid:17) +
+ασ0 (cid:16)eαX 0
+t Z t
+αZ t
+
+eαX 0
+
+eαX 0
+
+s ds+
+
+αeαX 0
+
+0
+
+0
+
+Ji ;
+
+Nt
+
+Xi=1
+
+2 − 1(cid:17) ν(dx)Z t
+
+0
+
+eαX 0
+
+s ds
+
+0
+
+r drds
+
+eαX 0
+
+s Z s
+αλ(cid:16)eγ+ δ2
+2 − 1(cid:17)Z t
+λ(cid:16)eγ+ δ2
+Xi=1
+Xi=1
+Ji −
+
+σ1
+σ0
+
+eαX 0
+
+Nt
+
+Nt
+
+0
+
+t
+
+JiZ t
+
+0
+
+eαX 0
+
+s ds ,
+
++ C5
+
+αe2αX 0
+
+t + C6
+
+αeαX 0
+
+t + C7
+
+α + C8
+
+t λ(cid:16)eγ+ δ2
+− teαX 0
+9 Z t
+Xi=1
+
++ C α
+
+Ns
+
+0
+
+2 − 1(cid:17) +
+
+JieαX 0
+
+s ds +
+
+σ1
+σ0
+
+σ1
+σ0
+
+(44)
+
+seαX 0
+
+s ds
+
+X 0
+
+t = x0 + µt + σ0Wt,
+
+X 1
+
+KαeαX 0
+
+s ds +
+
+0
+
+t =Z t
+αZ t
+αZ t
+
++ C3
+
+0
+
+0
+
+X 2
+
+t =C1
+
+e2αX 0
+
+s ds + C2
+
+eαX 0
+
+s ds + C4
+
+17
+
+with the constants as in Prop. 3.1 and
+
+C8
+
+α =
+
+σ1
+σ0
+
+αµ +
+
+σ0σ1
+
+2
+
+α2 − 2σ0σ1α, C9
+
+α = 2σ0σ1α −
+
+σ1
+σ0
+
+αµ −
+
+σ0σ1
+
+2
+
+α2 .
+
+Proof. The proof follows from Prop. 3.1 just taking into account the presence of the Poisson
+random measure terms and applying Itô’s lemma, together with the stochastic Fubini theorem.
+
+remark 3.9. As mentioned in remark 3.3 it is easy to extend Prop. 3.8 and formula (33) to
+eαx̺(dα), with assumptions
+
+the case where f (x) = eαx is replaced by RR0
+
+corresponding to those in remark 3.3.
+
+eiαx̺(dα), resp. RR0
+
+proposition 3.10. Let us consider the model described by (27) in the particular case of an
+European call option Φ with payoﬀ given by Φ(X ǫ
+price up to the ﬁrst order P r1
+
+ν (0; T ), in the sense explained in remark 3.4, is explicitly given by
+
+t − K(cid:1)+. Then the approximated
+
+P r1
+
+ν(0; T ) = P r1 + ǫT s0N (d1)(cid:16)eγ+ δ2
+
+T ) = (cid:0)eX ǫ
+2 − 1(cid:17) + ǫT s0N (d1) δλ ,
+
+where P r1 is the corrected fair price up to the ﬁrst order as given in eq. (34) (the notations are
+as Prop. 3.5).
+
+Proof. The proof is analogous of the proof of Prop. 3.5 adding the jump process. The claim
+follows then from the independence of the jump process and of the Brownian motion together
+
+with the fact that EhPNt
+
+i=1 Jii = δT λ as consequence of the deﬁnition of Ji in Section 3.1.
+
+3.2.1 Numerical results concerning the pricing formula in Prop. 3.8
+
+We consider numerically the model discussed in Prop. 3.10, assuming that the Ji are inde-
+
+pendent and normally distributed random variable
+
+Ji ∼ N (γ, δ2)
+
+γ = 0.05,
+
+δ = 0.02 ,
+
+and λ = 2. In particular we are aiming at numerically computing the expectations in the second
+summand of (42), which in the present case reads
+
+KαeαX 0
+
+EQ"1DeX 0
+T Z T
+T λT (cid:16)eγ+ δ2
++K2EQh1DeX 0
+
+s ds# + K2EQh1DeX 0
+2 − 1(cid:17)i + K2EQ"1DeX 0
+
+0
+
+T eαX 0
+
+NT
+
+Ti − K2EQh1DeX 0
+Ti
+Xi=1
+
+T
+
+Ji# .
+i=1 Jii = λT δ, we get
+
+By means of independence of the jumps and EthPNT
+s ds# + K2EQh1DeX 0
+Ti − K2EQh1DeX 0
+Ti
+2 − 1(cid:17)i + K2λT δEQh1DeX 0
+Ti .
+
+EQ"1DeX 0
+T Z T
+T λT (cid:16)eγ+ δ2
+K2EQh1DeX 0
+
+KαeαX 0
+
+T eαX 0
+
+0
+
+We are going to compute (64) by multi-element PCE-approximations.
+
+(45)
+
+(46)
+
+The other parameters entering the model are taken from Table 1 and the three spot price
+
+considered are s0 ∈ {90, 100, 110}. The results are presented in Tables 5, 6, 7.
+
+18
+
+σ0 = 15%
+
+σ0 = 25%
+
+σ0 = 35%
+
+Results
+Error
+Time
+Results
+Error
+Time
+Results
+Error
+Time
+
+Analytical
+12.51812
+
+14.31171
+
+15.34622
+
+ǫ = 0.1
+PCE
+
+12.51387
+4.2567e-03
+
+0.0830
+14.30550
+6.2145e-03
+
+0.0850
+15.33806
+8.1646e-03
+
+0.0880
+
+standard MC Analytical
+
+ǫ = 0.01
+PCE
+
+standard MC
+
+12.56922
+2.4285e-01
+
+0.5250
+14.15258
+1.8182e-01
+
+0.5050
+15.39336
+1.4758e-01
+
+0.5630
+
+2.23603
+
+2.23560
+
+2.21394
+
+4.33723
+
+6.60626
+
+4.2567e-04
+
+2.4069e-02
+
+0.0860
+4.33661
+
+0.5160
+4.34650
+
+6.2145e-04
+
+1.8295e-02
+
+0.0880
+6.60544
+
+0.5190
+6.61219
+
+8.1646e-04
+
+1.4754e-02
+
+0.0990
+
+0.5080
+
+Table 5: Numerical values for PCE and MC estimation of equation 25, for s0 = 90, α = 0.1,
+σ1 = 0.15, r = 0.03, λ = 2, γ = 0.05, δ = 0.02 and T = 0.5.
+
+σ0 = 15%
+
+σ0 = 25%
+
+σ0 = 35%
+
+Results
+Error
+Time
+Results
+Error
+Time
+Results
+Error
+Time
+
+Analytical
+39.80797
+
+28.78634
+
+25.96991
+
+ǫ = 0.1
+PCE
+
+39.80128
+6.6879e-03
+
+0.0870
+28.77863
+7.7114e-03
+
+0.0900
+25.96051
+9.3989e-03
+
+0.1070
+
+standard MC Analytical
+
+ǫ = 0.01
+PCE
+
+standard MC
+
+39.84062
+3.2715e-01
+
+0.5490
+28.54522
+2.1566e-01
+
+0.5370
+26.21060
+1.6859e-01
+
+0.5240
+
+8.46660
+
+8.46593
+
+8.48244
+
+9.86287
+
+12.08041
+
+6.6879e-04
+
+3.2848e-02
+
+0.0860
+9.86209
+
+0.5270
+9.86723
+
+7.7114e-04
+
+2.1567e-02
+
+0.0910
+
+12.07947
+9.3989e-04
+
+0.0920
+
+0.6180
+
+12.05190
+1.6726e-02
+
+0.5180
+
+Table 6: Numerical values for PCE and MC estimation of equation 25, for s0 = 100, α = 0.1,
+σ1 = 0.15, r = 0.03, λ = 2, γ = 0.05, δ = 0.02 and T = 0.5.
+
+σ0 = 15%
+
+σ0 = 25%
+
+σ0 = 35%
+
+Results
+Error
+Time
+Results
+Error
+Time
+Results
+Error
+Time
+
+Analytical
+70.37793
+
+45.81367
+
+38.43779
+
+ǫ = 0.1
+PCE
+
+70.37303
+4.9058e-03
+
+0.0850
+45.80646
+7.2116e-03
+
+0.0950
+38.42848
+9.3058e-03
+
+0.0910
+
+standard MC Analytical
+18.14375
+
+70.57558
+2.6286e-01
+
+0.4990
+45.98197
+2.1243e-01
+
+0.5270
+38.04608
+1.7688e-01
+
+0.5370
+
+17.60163
+
+19.15155
+
+ǫ = 0.01
+PCE
+
+18.14326
+4.9058e-04
+
+0.0850
+
+17.60091
+7.2116e-04
+
+0.0910
+
+19.15062
+9.3058e-04
+
+0.0990
+
+standard MC
+
+18.20012
+2.6111e-02
+
+0.5210
+
+17.59774
+2.1281e-02
+
+0.5180
+
+19.13383
+1.7692e-02
+
+0.5430
+
+Table 7: Numerical values for PCE and MC estimation of equation 25, for s0 = 110, α = 0.1,
+σ0 = 0.15, r = 0.03, λ = 2, γ = 0.05, δ = 0.02 and T = 0.5.
+
+3.3 A correction given by a polynomial function
+
+Let us consider eq. (24) with f a polynomial correction, namely f (x) = PN
+αi ∈ R and N ∈ N0. We then get the following proposition.
+proposition 3.11. Let us consider the case of the B-S model corrected by a non-linear term
+given by (24) with f (x) = PN
+i=0 αixi, for some αi ∈ R, then the expansion coeﬃcients for the
+
+i=0 αixi, with
+
+19
+
+solution X ǫ
+
+t of (24) up to the second order are given by the system
+
+X 2
+
+t =
+
+X 0
+
+t = x0 + µt + σ0Wt,
+
+X 1
+
+t =
+
+˜Ki(X 0
+
+t )i+1 −
+
+2N +1
+
+N
+
+N
+
+Xi=1
+Xk=1
+Xi=1
+Xi=1
+
+N
+
++
+
++
+
+C1
+
+N
+
+k (X 0
+
+t )k −
+Xj=0Z t
+0 Z s
+t )iZ s
+Xj=0
+
+(X 0
+
+N
+
+0
+
+0
+
+N
+
+Ki(X 0
+
+s )ids + σ1α0Wt;
+
+with law N (cid:0)x0 + µt, σ2
+0t(cid:1) ;
+Xi=0Z t
+Xk=1 Z t
+
+s )kds+
+
+k (X 0
+
+C2
+
+0
+
+0
+
+2N +1
+
+C3
+
+i,j (X 0
+
+s )i−1(X 0
+
+r )jdrds
+
+C4
+
+i,j(X 0
+
+r )jdr .
+
+(47)
+
+where the constants are given by
+
+Ki =
+
+
+where
+
+µαi + σ0σ1
+
+σ0σ1αi + σ1
+σ0
+σ0σ1α0 + σ0σ1α1
+2
+σ0σ1αN + σ1
+µαN ,
+σ0
+
+,
+
+2 αi+1(i + 1),
+i = 0 ,
+
+i = N ,
+
+i 6= 0, i 6= N ,
+
+˜Ki =
+
+σ1
+σ0
+
+αi
+
+(i + 1)
+
+,
+
+C1
+
+k = γ1
+
+k + γ2
+
+k + γ3
+k ,
+
+Pk=i+j+1 µiαi + σ1
+
+σ0 − σ0
+
+N αN (σ0σ1αN + σ1
+σ0
+
+µαN ),
+
+2 (i + j + 1),
+
+k,
+
+σ2
+1
+
+2 (cid:17) α2
+
+2σ0σ1αii ˜Kj ,
+
+γ2
+
+γ1
+
+2
+
+σ0
+2 ,
+µ σ1
+σ0
+
+k =
+
+k =((cid:16) (−1)k+1
+k = Xi+j=k−1
+i,j = −( σ1
+
+σ0
+σ1
+σ0
+
+0,
+
+γ3
+
+C3
+
+C4
+
+i,j =
+
+σ1
+σ0
+
+αiKj ,
+
+α1K0,
+iαiKj + σ0σ1
+
+2 iαiKj(i − 1),
+
+k 6= 1, k 6= 2N ,
+k = 0 ,
+k = 2N ,
+
+if 1 ≤ k ≤ N,
+otherwise
+
+.
+
+if i = 1, j = 0 ,
+otherwise .
+
+Proof. The proof consists in a series of applications of Itô’s formula and stochastic Fubini the-
+i=0 αixi into system
+orem, see, e.g.
+(25) we obtain
+
+[Filipovic (2009)] Th. 6.2. In fact, substituting f (x) = PN
+
+X 0
+
+t = x0 + µt + σ0Wt,
+
+0
+
+σ2
+1
+
+X 1
+
+t = −Z t
+t = −Z t
++Z t
+
+σ0σ1  N
+Xi=0
+2   N
+Xi=0
+σ1  N
+Xi=0
+
+0
+
+0
+
+αi(X 0
+
+αi(X 0
+
+s )i!
+s )!′
+
+X 2
+
+αi(X 0
+
+X 1
+
+s dWs .
+
+with law N (cid:0)x0 + µt, σ2
+0t(cid:1) ;
+σ1  N
+s )i! ds +Z t
+Xi=0
+s )!′
++ 2σ1  N
+Xi=0
+
+αi(X 0
+
+X 1
+
+αi(X 0
+
+0
+
+2
+
+s ds
+
+s )i! dWs;
+
+(48)
+
+20
+
+To compute X 1
+
+t obtaining eq. (47) we apply Itô’s lemma to the function g(X 0
+
+t ) = αi+1(X 0
+
+t )i+1
+
+to get
+
+(X 0
+
+t )i+1 =Z t
++Z t
+
+0 (cid:18)µ(i + 1)(X 0
+s )i 1
+2
+
+σ2
+0i(i + 1)(X 0
+
+s )i−1(cid:19) ds+
+
+(X 0
+
+s )i(i + 1)σ0dWs .
+
+0
+Then, summing up we obtain
+
+N
+
+Xi=1Z t
+
+0
+
+(X 0
+
+s )i(i + 1)σ0dWs =
+
+−
+
+N
+
+N
+
+Xi=1
+Xi=1Z t
+
+(X 0
+
+s )i+1+
+
+0 (cid:18)µ(i + 1)(X 0
+
+s )i +
+
+1
+2
+
+σ2
+0i(i + 1)(X 0
+
+s )i−1(cid:19) ds .
+
+Substituting now eq. (50) into X 1 in eq. (48) we obtain the following
+
+(49)
+
+(50)
+
+X 1
+
+t =
+
+−
+
+−
+
+N
+
+N
+
+σ1
+σ0
+
+Xi=1
+Xi=1Z t
+Xi=1Z t
+
+N
+
+0
+
+0
+
+αi
+
+(i + 1)
+
+(X 0
+
+t )i+1+
+
+σ0σ1αi(X 0
+
+s )i −
+
+N
+
+Xi=1Z t
+
+0
+
+µ(i + 1)
+
+σ1αi
+
+σ0(i + 1)
+
+(X 0
+
+s )i+
+
+1
+2
+
+σ2
+0i(i + 1)
+
+σ1αi
+
+σ0(i + 1)
+
+(X 0
+
+s )i−1ds ,
+
+and rearranging the terms we then get the desired result in (47) for X 1
+t .
+
+Substituting the expression of X 1
+
+t into X 2
+
+X 2
+t = −
+
+α2
+i (X 0
+
+s )2ids −
+
+2σ0σ1αii ˜Kj(X 0
+
+s )i−1(X 0
+
+s )j+1ds =
+
+t we obtain
+N
+
+Xi,j=1Z t
+
+0
+
+2σ0σ1αiiKj(X 0
+
+s )i−1(X 0
+
+r )jdrds+
+
+σ1αiiKj(X 0
+
+s )i−1(X 0
+
+s )j+1dW s
+
+σ1αiiKj(X 0
+
+s )i−1(X 0
+
+r )jdrdW s .
+
+N
+
+0
+
+0
+
+N
+
+N
+
+σ2
+1
+2
+
+Xi=1Z t
+Xi=1Z t
+0 Z s
+Xj=0
+Xi,j=1Z t
+Xi=1Z t
+0 Z s
+Xj=0
+
+N
+
+N
+
+N
+
+0
+
+0
+
+=
+
++
+
+−
+
+Exploiting again the stochastic Fubini theorem, from eq. (50) and grouping the terms with the
+same powers we obtain (47).
+
+proposition 3.12. Let us consider the particular case of N = 1, i.e. a linear perturbation,
+namely f (x) = α0 + α1x, αi ∈ R, i = 0, 1. Then the terms up to the ﬁrst order in equation (47)
+read
+
+X 0
+
+t = x0 + µt + σ0Wt ,
+
+X 1
+
+t = β1t + β2t2 + β3Wt + β4W 2
+
+t + β5tWt −Z t
+
+0
+
+β6Wsds ,
+
+(51)
+
+with
+
+σ0σ1α1
+
+2
+
+,
+
+β3 = α1σ0 + x0σ1α1 ,
+
+σ0σ1α1µ
+
+β1 = −σ0σ1α0 − σ0σ1α1x0 −
+β2 = −
+β4 =
+
+2
+σ0σ1α1
+
+β5 = σ1α1µ,
+
+,
+
+,
+
+2
+
+β6 = σ1α1µ + σ2
+
+0σ1α1 .
+
+21
+
+The ﬁrst order correction (in the sense discussed in remark 3.4), of the price of an European
+
+call option Φ with payoﬀ given by Φ(X ǫ
+
+P r1(0; T ) =PBS + ǫs0(β1 + σ0β3 + β4)T N (d1) + ǫs0(β2 + σ2
+
+0β4)T 2N (d1)
+
+T ) =(cid:0)eX ǫ
+
+T − K(cid:1)+ is explicitly given by
++ ǫs0(β3 + 2σ0β4T + T β5)√T φ (−d1) − ǫs0β4T d1φ(d1)+
++ ǫs0T 2β5σ0T 2N (d1) − ǫs0e+
+
+σ2
+0
+2 T β6I(s, T ) ,
+
+(52)
+
+where the notation is as in Prop. 3.5 and we have denoted for short by φ(x) the density function
+of the standard Gaussian law and we have set
+
+I(s, T ) =Z T
+
+0 ZR×R
+
+1[x+y>−√T d1]eσ0(x+y)yφ(x; 0, T − s)φ(y; 0, s)dx dy ds .
+
+Proof. Let us consider the linear function f (x) = α0 +α1x, where α0, α1 ∈ R. The approximated
+price up to the ﬁrst order, P r1(0; T ) of an European call option with payoﬀ function Φ(X ǫ
+T ) =
+(cid:0)eX ǫ
+T − K(cid:1)+ is
+
+(53)
+
+P r1(0; T ) = PBS + ǫe−rT EQ(cid:2)Φ(X 0
+
+T )X 1
+
+T(cid:3)
+
+where PBS is the standard B-S price with underlying s0(t) = eX 0
+t .
+
+In particular we have that X 0
+
+T and X T
+
+1 are deﬁned as
+
+X 0
+
+T = x0 + µT + σ0WT
+
+X 1
+
+T = β1T + β2T 2 + β3WT + β4W 2
+
+T + β5T WT − β6Z T
+
+0
+
+Wsds .
+
+(54)
+
+(55)
+
+By linearity of the expectation, (53) becomes, collecting the terms with coeﬃcients β3 and β5,
+
+P r1(0; T ) = PBS + ǫe−rT(EQhβ1T 1{X T
+0 >ln(K)}eX 0
+0 >ln(K)}eX 0
+
++ EQhβ2T 2
++ EQhβ4W 2
+
+Ti+
+0 >ln(K)}eX 0
+Ti + EQhβT
+3,5WT 1{X T
+Ti + EQ"β61{X T
+
+T 1{X T
+
+1{X T
+
+Ti+
+0 >ln(K)}eX 0
+Wsds#) ,
+T Z T
+
+0 >ln(K)}eX 0
+
+0
+
+(56)
+
+with βT
+
+3,5 := β3 + T β5.
+
+From the deﬁnition of X 0
+
+T we have that
+
+ǫe−rT EQhβ1T 1{X T
+
+0 >ln(K)}eX 0
+
+Ti = ǫT β1s0N (d1) ,
+
+and as above we have
+
+ǫe−rT EQhβ2T 2
+
+0 >ln(K)}eX 0
+
+1{X T
+
+Ti = ǫT 2β2s0N (d1)
+
+Concerning the third term in (56), we have that,
+
+βT
+
+3,5EQhWT 1{X T
+
+σ2
+0
+
+= βT
+
+3,5s0erT e−
+
+= βT
+
+3,5s0erT e−
+
+Ti =
+0 >ln(K)}eX 0
+2 T√T Zx>−d2
+eσ0√T xx
+2 T√T Zx>−d2
+
+1
+√2π
+
+x
+
+σ2
+0
+
+2 dx =
+
+e− x2
+
+1
+√2π
+√2− σ0√T
+e−(cid:16) x
+
+√2 (cid:17)2
+
+σ2
+0
+2 T dx ,
+
+e
+
+22
+
+and by setting y = x − σ0√T , we get that the r.h.s. is given by
+e− y2
+
+βT
+
+2 dy =
+
+3,5s0erT√T Zy>−d1(cid:16)σ0√T + y(cid:17) 1
+√2π
+3,5T s0erT σ0N (d1) − βT
+3,5T s0erT σ0N (d1) + βT
+3,5
+
+3,5
+
+= βT
+
+= βT
+
+2 (cid:21)+∞
+√T s0erT (cid:20) 1
+e− y2
+√2π
+√T s0erT φ(−d1, 0, 1) .
+
+−d1
+
+=
+
+Hence the third term in (56) reads
+
+ǫe−rT EQhβ3WT 1{X T
+
+0 >ln(K)}eX 0
+
+Exploiting the deﬁnition of X 0
+
+Ti = ǫβ3T σ0s0N (d1) + ǫβ3s0√T φ(−d1, 0, 1) .
+
+T occurring in the fourth term in (56), as well as similar
+
+algebraic computation as in the previous previous section, we get
+
+EQhβ4W 2
+
+T 1{X T
+
+0 >ln(K)}eX 0
+
+σ2
+0
+
+Ti = β4s0erT e−
+= β4s0erT T Zy>−d1
+
+2 T Zx>−d2
+
+T x2eσ0√T x 1
+√2π
+e− y2
+
+(y + σ0√T )2 1
+√2π
+
+2 dy .
+
+e− x2
+
+2 dx =
+
+Developing the square and using the linearity property of the integral we get that the r.h.s.
+
+is equal to
+
+y2 1
+Zy>−d1
+√2π
+y2 1
+=Zy>−d1
+√2π
+
+2σ0√T y
+
+2 dy +Zy>−d1
+2 dy +Zy>−d1
+e− y2
+e− y2
+2 dy + 2σ0√T φ(−d1, 0, 1) + σ2
+e− y2
+
+0T N (d1) .
+
+1
+√2π
+
+The ﬁrst term is computed using integration by parts,
+
+Zy>−d1
+
+y2 1
+√2π
+
+e− y2
+
+2 dy = −d1φ(d1) + N (d1)
+
+therefore
+
+σ2
+0T
+
+1
+√2π
+
+e− y2
+
+2 dy =
+
+ǫe−rT EQhβ4W 2
+= ǫβ4s0T(cid:16)−d1φ(d1) + N (d1) + 2σ0√T φ(−d1, 0, 1) + σ2
+
+0 >ln(K)}eX 0
+
+Ti =
+
+T 1{X T
+
+0T N (d1)(cid:17) .
+
+To compute the ﬁfth term in (56) we use Fubini theorem to exchange the expectation with
+
+the integral with respect to time, getting
+
+T Wsdsi .
+For every ﬁxed s ∈ [0, T ], Ws and WT , the latter is included in X T
+0 by its very deﬁnition, are
+Gaussian random variable jointly distributed. Therefore exploiting basic properties of Brownian
+motion we can recast them by means of a sum of independent random variable, namely
+
+0 >ln(K)}eX 0
+
+EQh1{X T
+
+(57)
+
+β6Z T
+
+0
+
+Ws = Y ∼ N (0, s) ,
+WT = WT − Ws + Ws = X + Y .
+
+In particular X ∼ N (0, T − s) and it is independent with respect to Y . Thus (57) reads
+
+β6Z T
+
+0 ZR×R
+
+= β6s0erT e−
+
+σ2
+0
+2
+
+1{x+y>−
+
+√T d2}
+T Z T
+0 ZR×R
+
+ex0+µT eσ0(x+y)y
+
+x2
+
+e
+
+2(T −s)
+
+1
+√2π
+
+1
+√2π
+
+e− y2
+
+2s ds =
+
+1{x+y>−√T d2}
+
+eσ0(x+y)yφ(x; 0; T − s)φ(y, 0, s)dxdyds ,
+
+and the claim follows.
+
+23
+
+3.3.1 Numerical results concerning the pricing formula in Prop. 3.12
+
+Let us consider the case of the B-S model corrected by a linear term given as in Prop. 3.12
+by f (x) = α0 + α1x. We compute the ﬁrst order correction of the price of an European call
+option with Φ(X ǫ
+
+T −K)+ as payoﬀ function, according to Prop. 3.12.
+
+T ) = (eX ǫ
+
+Our aim is computing the expectation in (42) in the present case. By the very deﬁnition of
+
+X T
+
+0 and X T
+
+1 and the form of Φ′, it reads as
+
+EQh1DeX T
++EQh1DeX T
+
+0 β1Ti + EQh1DeX T
+Ti + EQh1DeX T
+
+0 β2T 2i + EQh1DeX T
+0 β3WTi
+0 β5T WTi − EQ"1DeX T
+
+0 β4W 2
+
+0 β6Z T
+
+0
+
+(58)
+
+Wsds#
+
+Each random variable in the brackets is approximated by means of a multi-element PCE of
+degree p = 15 and respectively by means of standard Monte Carlo methods, using N = 10000
+independent simulations of the random variable involved.
+
+The accuracy of PCE is represented by its absolute error, using as benchmark the analytical
+value coming from (52). Due to the Law of Large Numbers, the accuracy of MC-estimation of
+(33) is provided by its standard error (SEM C ). Upon considering N = 10000 realizations (Yj)
+of the random variable Y := Φ′(X 0
+T inside the expectation in the r.h.s. of equation (33), let
+us compute
+
+T )X 1
+
+SEM C =
+
+(59)
+
+ˆσ
+√N
+N PN
+
+where ˆσ2 = 1
+
+j=1 (Yj − µM C )2 and µM C = 1
+
+j=1 Yj.
+
+The numerical values of the parameters involved are collected in Table 8
+
+N−1PN
+
+Parameters
+
+Values
+
+α0
+0.3
+
+α1
+0.5
+
+r
+
+0.03
+
+σ1
+0.1
+
+K
+100
+
+T
+0.5
+
+Table 8: Numerical values of the parameters employed in further computations
+
+The computations are made setting the parameters as in Table 8 and for a set of volatility
+
+values σ0 ∈ {15%, 25%, 35%} and for a set of increasing spot price s0 ∈ {90, 100, 110}.
+
+Analytical
+
+ǫ = 0.1
+PCE
+
+standard MC Analytical
+
+ǫ = 0.01
+PCE
+
+standard MC
+
+σ0 = 15%
+
+σ0 = 25%
+
+σ0 = 35%
+
+Results
+Error
+Results
+Error
+Results
+Error
+
+1.45057
+
+1.45049
+
+1.44774
+
+1.12927
+
+1.12927
+
+1.12870
+
+7.9315e-05
+
+8.2194e-03
+
+7.9315e-06
+
+8.2548e-04
+
+3.82504
+
+3.82488
+
+3.83225
+
+3.28856
+
+3.28855
+
+3.28849
+
+1.5990e-04
+
+1.1922e-02
+
+1.5990e-05
+
+1.1596e-03
+
+6.44932
+
+6.44905
+
+6.44766
+
+5.71657
+
+5.71654
+
+5.71482
+
+2.7379e-04
+
+1.5876e-02
+
+2.7379e-05
+
+1.5413e-03
+
+Table 9: Numerical values for PCE and MC estimation of equation (42), s0 = 90, α0 = 0.3,
+α1 = 0.5, σ1 = 0.10, r = 0.03, K = 100 and T = 0.5.
+
+3.4 A correction given by a polynomial function and jumps
+
+In the present section we generalize the results obtained in the previous subsection 3.3 adding
+a compensated Poisson random measure. In particular let us assume that the normal return of
+the asset price evolves according to eq. (27) with a polynomial f . Then we have the following
+proposition.
+
+proposition 3.13. Let us consider the case of the B-S model with added compensated Poisson
+i=0 αixi, for some αi ∈ R,
+
+noise and corrected by a non-linear term given by (27) with f (x) =PN
+
+24
+
+σ0 = 15%
+
+σ0 = 25%
+
+σ0 = 35%
+
+Results
+Error
+Results
+Error
+Results
+Error
+
+Analytical
+
+ǫ = 0.1
+PCE
+
+standard MC Analytical
+
+ǫ = 0.01
+PCE
+
+standard MC
+
+5.53650
+
+5.53637
+
+5.53931
+
+5.03945
+
+5.03944
+
+5.04061
+
+8.50577
+
+11.50225
+
+1.2763e-04
+
+9.2641e-03
+
+1.2763e-05
+
+9.3834e-04
+
+8.50556
+
+2.0666e-04
+11.50192
+3.3318e-04
+
+8.52655
+
+1.3297e-02
+11.49891
+1.7426e-02
+
+7.83481
+
+10.63364
+
+7.83479
+
+2.0666e-05
+10.63361
+3.3318e-05
+
+7.83473
+
+1.3194e-03
+10.63396
+1.7601e-03
+
+Table 10: Numerical values for PCE and MC estimation of equation (42), s0 = 100, α0 = 0.3,
+α1 = 0.5, σ1 = 0.10, r = 0.03, K = 100 and T = 0.5.
+
+σ0 = 15%
+
+σ0 = 25%
+
+σ0 = 35%
+
+Results
+Error
+Results
+Error
+Results
+Error
+
+Analytical
+12.70933
+
+15.16320
+
+17.99767
+
+ǫ = 0.1
+PCE
+
+12.70924
+9.7072e-05
+15.16299
+2.0462e-04
+17.99732
+3.5427e-04
+
+12.72127
+1.2457e-02
+15.16028
+1.5486e-02
+18.01788
+2.0558e-02
+
+standard MC Analytical
+12.37689
+
+14.53658
+
+17.10754
+
+ǫ = 0.01
+PCE
+
+12.37688
+9.7072e-06
+14.53656
+2.0462e-05
+17.10750
+3.5427e-05
+
+standard MC
+
+12.37642
+1.2373e-03
+14.53696
+1.5493e-03
+17.10605
+1.9645e-03
+
+Table 11: Numerical values for PCE and MC estimation of equation (42), s0 = 110, α0 = 0.3,
+α1 = 0.5, σ1 = 0.10, r = 0.03, K = 100 and T = 0.5.
+
+then the expansion coeﬃcients for the solution X ǫ
+the system
+
+t of (27) up to the second order are given by
+
+ds
+
+(60)
+
+N
+
+Ki(X 0
+
+with law N (cid:0)x0 + µt, σ2
+0 t(cid:1) ;
+Xi=0Z t
+Xk=1 Z t
+
+s )kds +
+
+k(X 0
+
+C2
+
+2N+1
+
+N
+
+N
+
+0
+
+0
+
+s )ids + σ1α0Wt − λt(cid:18)eγ+ δ2
+
+2 − 1(cid:19) +
+
+Ji ;
+
+Nt
+
+Xi=1
+
+i,j (X 0
+
+s )i−1(X 0
+
+r )j drds
+
+C3
+
+Xj=0Z t
+0 Z s
+Xi=1
+i λ(cid:18)eγ+ δ2
+2 − 1(cid:19)Z t
+
+0
+
+N−1
+
+s(cid:0)X 0
+s(cid:1)i
+
+0
+
+0
+
+C5
+
+C4
+
+i,j (X 0
+
+r )j dr +
+
+Xi=0
+2 − 1(cid:19) +
+λ(cid:18)eγ+ δ2
+σ1α1Wsdsλ(cid:18)eγ+ δ2
+2 − 1(cid:19) − σ1tα1Wtλ(cid:18)eγ+ δ2
+2 − 1(cid:19)
+2 − 1(cid:19)Z t
+αiσ1λ(cid:18)eγ+ δ2
+Xi=2
+0 (cid:0)X 0
+s(cid:1)i
+σ1αi(cid:0)X 0
+s(cid:1)i
+σ1αiZ t
+0 ZR0(cid:0)X 0
+Xi=1
+s(cid:1)i
+Ji(cid:0)X 0
+s(cid:1)i
+
+ds + σ1α1Wt +
+
+i Z t
+
+Xi=0
+
+Xi=1
+
+N−1
+
+Ji +
+
+C5
+
+ds
+
+ds
+
+Ns
+
+Nt
+
+N
+
+0
+
+Ji
+
+Nt
+
+Xi=1
+
+X 0
+
+t = x0 + µt + σ0Wt,
+
+X 1
+
+X 2
+
+N
+
+0
+
+N
+
+N
+
++
+
+C1
+
+2N+1
+
+t =
+
+t =
+
+(X 0
+
+k(X 0
+
+˜Ki(X 0
+
+t )i+1 −
+
+Xi=1
+Xk=1
+t )k −
+t )iZ s
+Xj=0
+Xi=1
+t(cid:1)i
+− αi+1σ1t(cid:0)X 0
++Z t
+Xi=2
+Xi=2
+i =
+
+
+−
+
++
+
+N
+
+N
+
+i 6= N ,
+
+˜Ki =
+
+σ1
+σ0
+
+αi
+
+(i + 1)
+
+.
+
+where the constants are as in Prop. 3.11 and
+
+C5
+
+σ2
+0σ1α2 + 2σ0σ1α1,
+σ1µαi+1(i + 1) + σ2
+αN σ1N µ + 2σ0σ1N αN +1,
+
+i = 0 ,
+
+0
+
+2 (i + 2)(i + 1) + 4σ0σ1αi+1,
+
+i 6= 0, i 6= N ,
+
+and
+
+Proof. The proof is analogous to the one in Prop. 3.11 taking into account the compensated
+Poisson random measure terms and applying Itô’s lemma together with the stochastic Fubini
+theorem.
+
+25
+
+proposition 3.14. Let us consider the particular case of N = 1, i.e. a linear perturbation,
+namely f (x) = α0 + α1x in Prop. 3.13. Then the terms up to the ﬁrst order in equation (60)
+read
+
+X 0
+X 1
+
+t = x0 + µt + σ0Wt ,
+t = β1t + β2t2 + β3Wt + β4W 2
+
+t +
+
++ β5tWt −Z t
+
+0
+
+β6Wsds − λt(cid:16)eγ+ δ2
+
+2 − 1(cid:17) +
+
+Ji ,
+
+Nt
+
+Xi=1
+
+(61)
+
+the constants being as in Prop. 3.12.
+Also, the ﬁrst order correction of the price of an European call option Φ with payoﬀ given by
+
+Φ(X ǫ
+
+T ) =(cid:0)eX ǫ
+
+T − K(cid:1)+ (in the sense of remark 3.4) is explicitly given by
+P r1(0; T ) = P r1 + ǫT s0N (d(1))(cid:16)eγ+ δ2
+
+2 − 1(cid:17) + ǫT s0N (d(1)) δλ ,
+
+where P r1 is the corrected fair price up to the ﬁrst order as given in eq. (52) and the notations
+are as above.
+
+(62)
+
+Proof. The proof is similar to the one in Prop. 3.12.
+
+3.4.1 Numerical results concerning the pricing formula in Prop. 3.13
+
+The Ji are assumed to be independent and normally distributed random variables
+
+Ji ∼ N (γ, δ2) ,
+
+for all i ∈ {1, 2, . . . , NT} ,
+
+γ = 0.05,
+
+δ = 0.02 ,
+
+and λ = 2. In particular we are aiming at computing the expectation in (42) for the model
+described in Prop. 3.13. In the present case we have that this expectation in equal to
+
+0 β4W 2
+
+EQh1DeX T
++EQh1DeX T
++K2EQh1DeX 0
+
+0 β1Ti + EQh1DeX T
+Ti + EQh1DeX T
+T λT (cid:16)eγ+ δ2
+
+0 β2T 2i + EQh1DeX T
+0 β3WTi
+0 β5T WTi − EQ"1DeX T
+0 β6Z T
+Ji# .
+Xi=1
+
+2 − 1(cid:17)i + K2EQ"1DeX 0
+
+NT
+
+0
+
+T
+
+Wsds#
+
+(63)
+
+By means of the independence of the jumps and EhPNT
+
+i=1 Jii = δλT , we can rewrite (63) as
+
+EQh1DeX T
++EQh1DeX T
++K2EQh1DeX 0
+
+0 β1Ti + EQh1DeX T
+Ti + EQh1DeX T
+T λT (cid:16)eγ+ δ2
+
+0 β3WTi
+0 β2T 2i + EQh1DeX T
+0 β5T WTi − EQ"1DeX T
+0 β6Z T
+2 − 1(cid:17)i + K2λT δEQh1DeX 0
+Ti .
+
+0 β4W 2
+
+0
+
+Wsds#
+
+(64)
+
+We shall then compute multi-element PCE-approximations for this expression.
+
+The parameters are taken from Table 8 and the three spot prices, resp, volatilities, considered
+
+are s0 ∈ {90, 100, 110}, resp. σ0 ∈ {15%, 25%, 35%}.
+
+4 Conclusions
+
+In this work we have focused our attention on the analysis of the small noise asymptotic
+expansions for particular classes of local volatility models arising in ﬁnance. We have given
+
+26
+
+Analytical
+
+ǫ = 0.1
+PCE
+
+standard MC Analytical
+
+ǫ = 0.01
+PCE
+
+standard MC
+
+σ0 = 15%
+
+σ0 = 25%
+
+σ0 = 35%
+
+Results
+Error
+Results
+Error
+Results
+Error
+
+1.45057
+
+1.45049
+
+1.44774
+
+1.12927
+
+1.12927
+
+1.12870
+
+7.9315e-05
+
+8.2194e-03
+
+7.9315e-06
+
+8.2548e-04
+
+3.82504
+
+3.82488
+
+3.83225
+
+3.28856
+
+3.28855
+
+3.28849
+
+1.5990e-04
+
+1.1922e-02
+
+1.5990e-05
+
+1.1596e-03
+
+6.44932
+
+6.44905
+
+6.44766
+
+5.71657
+
+5.71654
+
+5.71482
+
+2.7379e-04
+
+1.5876e-02
+
+2.7379e-05
+
+1.5413e-03
+
+Table 12: Numerical values for PCE and MC estimation of equation (42), s0 = 90, α0 = 0.3,
+α1 = 0.5, σ1 = 0.10, r = 0.03, K = 100,λ = 2, γ = 0.05, δ = 0.02 and T = 0.5.
+
+σ0 = 15%
+
+σ0 = 25%
+
+σ0 = 35%
+
+Results
+Error
+Results
+Error
+Results
+Error
+
+Analytical
+
+ǫ = 0.1
+PCE
+
+standard MC Analytical
+
+ǫ = 0.01
+PCE
+
+standard MC
+
+5.53650
+
+5.53637
+
+5.53931
+
+5.03945
+
+5.03944
+
+5.04061
+
+8.50577
+
+11.50225
+
+1.2763e-04
+
+9.2641e-03
+
+1.2763e-05
+
+9.3834e-04
+
+8.50556
+
+2.0666e-04
+11.50192
+3.3318e-04
+
+8.52655
+
+1.3297e-02
+11.49891
+1.7426e-02
+
+7.83481
+
+10.63364
+
+7.83479
+
+2.0666e-05
+10.63361
+3.3318e-05
+
+7.83473
+
+1.3194e-03
+10.63396
+1.7601e-03
+
+Table 13: Numerical values for PCE and MC estimation of equation (42), s0 = 100, α0 = 0.3,
+α1 = 0.5, σ1 = 0.10, r = 0.03, K = 100, λ = 2, γ = 0.05, δ = 0.02 and T = 0.5.
+
+σ0 = 15%
+
+σ0 = 25%
+
+σ0 = 35%
+
+Results
+Error
+Results
+Error
+Results
+Error
+
+Analytical
+12.70933
+
+15.16320
+
+17.99767
+
+ǫ = 0.1
+PCE
+
+12.70924
+9.7072e-05
+15.16299
+2.0462e-04
+17.99732
+3.5427e-04
+
+12.72127
+1.2457e-02
+15.16028
+1.5486e-02
+18.01788
+2.0558e-02
+
+standard MC Analytical
+12.37689
+
+ǫ = 0.01
+PCE
+
+12.37688
+9.7072e-06
+14.53656
+2.0462e-05
+17.10750
+3.5427e-05
+
+standard MC
+
+12.37642
+1.2373e-03
+14.53696
+1.5493e-03
+17.10605
+1.9645e-03
+
+14.53658
+
+17.10754
+
+Table 14: Numerical values for PCE and MC estimation of equation (42), s0 = 110, α0 = 0.3,
+α1 = 0.5, σ1 = 0.10, r = 0.03, K = 100, λ = 2, γ = 0.05, δ = 0.02 and T = 0.5.
+
+explicit expressions for the associated coeﬃcients, along with accurate estimates on the remain-
+ders. Furthermore we have provided a detailed numerical analysis, with accuracy comparisons,
+of the obtained results exploiting the standard Monte Carlo technique as well as the so called
+Polynomial Chaos Expansion approach. We would like to underline that our approach allows to
+consider, other than the well know Gaussian noise component, a realistic stochastic perturbation
+of jump type.
+
+In a future work we plan to use the latter extension, along with the described asymptotic
+expansion techniques, to study particular types of implied volatilities models and further related
+functionals, as suggested by one of the anonymous reviewer. Such developments will be also the
+basis for an extensive calibration work on real ﬁnancial data.
+
+Acknowledgement
+
+The ﬁrst author gratefully acknowledges the hospitality and the support received from the
+University of Verona in the framework of the Cooperint internationalization program, by the
+CIRM (Centro Internazionale per la Ricerca Matematica) funded by the FBK (Fondazione Bruno
+Kessler) and by the University of Trento. The second and the third author would like to thank
+the Gruppo Nazionale per l’Analisi Matematica, la Probabilità e le loro Applicazioni (GNAMPA)
+
+27
+
+for the ﬁnancial support that has funded the present research within the project called Set-valued
+and optimal transportation theory methods to model ﬁnancial markets with transaction costs both
+in deterministic and stochastic frameworks.
+
+28
+
+References
+
+[Albeverio et al.(2011)] S. Albeverio, L. Di Persio & E. Mastrogiacomo (2011) Small noise
+asymptotic expansion for stochastic PDE’s, the case of a dissipative polynomially bounded
+non linearity I, Tohôku Mathematical Journal, 63, 877–898.
+
+[Albeverio et al.(2016a)] S. Albeverio, L. Di Persio, E. Mastrogiacomo & B. Smii (2016a) A Class
+of Lévy Driven SDEs and their Explicit Invariant Measures, to be published in Potential
+Analysis.
+
+[Albeverio et al.(2016b)] S. Albeverio, L. Di Persio, E. Mastrogiacomo & B. Smii (2016b) In-
+variant measures for SDEs driven by Lévy noise. A case study for dissipative nonlinear drift
+in inﬁnite dimension, submitted.
+
+[Albeverio et al.(2012)] S. Albeverio, A. Hilbert & V Kolokoltsov (2012) Uniform asymptotic
+bounds for the heat kernel and the trace of a stochastic geodesic ﬂow, Stochastics An
+International Journal of Probability and Stochastic Processes, 84, 315-333.
+
+[Albeverio et al.(2013)] S. Albeverio & B. Smii (2013) Asymptotic expansions for SDE’s with
+
+small multiplicative noise, Stochastic processes and their applications, 125.3, 1009-1031.
+
+[Albeverio et al.(2016c)] S. Albeverio & V. Steblovskaya (2016c) Asymptotics of Gaussian inte-
+
+grals in inﬁnite dimensions, paper in preparation.
+
+[Albeverio et al.(2006)] S. Albeverio, M. Schmitz, V. Steblovskaya & K. Wallbaum (2006) A
+model with interacting assets driven by Poisson processes, Stochastic analysis and applica-
+tions 24.1 241-261.
+
+[Andersen et al.(2013)] L. Andersen & A. Lipton (2012) Asymptotics for Exponential Lévy Pro-
+cesses and their Volatility Smile: Survey and New Results, Int. J. Theor. Appl. Finance, 16
+135 0001.
+
+[Applebaum(2009)] D. Applebaum (2009) Lévy processes and stochastic calculus, Cambridge
+
+Studies in Advanced Mathematics Vol. 116, Cambridge University Press, Cambridge.
+
+[Arnold(1974)] L. Arnold (1974) Stochastic diﬀerential equations:
+
+theory and applications,J.
+
+Wiley & Sons.
+
+[Bayer et al.(2014)] C. Bayer & P. Laurence (2014) Asymptotics beats Monte Carlo: The case
+of correlated local vol baskets Communications on Pure and Applied Mathematics, 67(10),
+1618-1657.
+
+[Benarous et al.(2013)] A. Benarous & P. Laurence (2013) Second Order Expansion for Implied
+Volatility in Two Factor Local Stochastic Volatility Models and Applications to the Dynamic
+λ− Sabr Model, Large Deviations and Asymptotic Methods in Finance, Springer Interna-
+tional Publishing, 89-136.
+
+[Benhamou et al.(2009)] E. Benhamou, E. Gobet, & M. Miri (2009) Smart expansion and fast
+
+calibration for jump diﬀusions, Finance and Stochastics, 13, 563-589.
+
+[Black et al.(1973)] F. Black & M. Scholes (1973) The Pricing of Options and Corporate Liabil-
+
+ities, Journal of Political Economy, 81, 637-654.
+
+[Bonollo et al.(2015a)] M. Bonollo, L. Di Persio & G. Pellegrini (2015a) Polynomial Chaos Ex-
+
+pansion approach to interest rate models, Journal of Probability and Statistics, 2015.
+
+[Bonollo et al.(2015b)] M. Bonollo, L. Di Persio & G. Pellegrini (2015b) A computational spec-
+
+tral approach to interest rate models, arXiv preprint arXiv:1508.06236.
+
+[Breitung(1994)] K. Breitung (1994) Asymptotic approximations for probability integrals,
+
+Springer.
+
+29
+
+[Brigo et al.(2006)] D. Brigo & F. Mercurio (2006) Interest rate models: theory and practice,
+
+Springer Finance,Springer-Verlag, Berlin.
+
+[Carr et al.(2013)] P. Carr, T. Fisher & J. Ruf (2013) Why are quadratic normal volatility
+
+models analytically tractable?, SIAM Journal on Financial Mathematics, 4.1 185–202.
+
+[Cordoni et al.(2015)] F. Cordoni & L. Di Persio (2015) Small noise expansion for the Lévy
+
+perturbed Vasicek model, International Journal of Pure and Applied Mathematics, 98.2.
+
+[Cox et al.(1985)] J.C. Cox, J.E. Ingersoll & S.A. Ross (1985) A theory of the term structure of
+
+interest rates, Econometrica, 53 385-407.
+
+[Crepey (2004)] S. Crepey (2004) Delta hedging vega risk, Quant. ﬁnance, 4 559-579.
+
+[Crestaux et al.(2009)] T. Crestaux, O.P. Le Maître & J.M. Martinez (2009) Polynomial chaos
+expansion for sensitivity analysis, Reliability Engineering and System Safety, 94.7 1161-
+1172.
+
+[Ernst et al.(2012)] O.G. Ernst, A. Muglera, H.J. Starkloﬀa & E. Ullmann (2012) On the con-
+vergence of generalized polynomial chaos expansions, ESAIM: Mathematical Modelling and
+Numerical Analysis, 46.2 317-339.
+
+[Filipovic (2009)] D. Filipovic (2009) Term-structure models, Springer Finance,Springer-Verlag,
+
+Berlin.
+
+[Fouque et al. (2009)] J.P. Fouque, G. Papanicolau & R. Sircar (2000) Derivatives in ﬁnancial
+
+markets with stochastic volatility, Cambridge University Press.
+
+[Friz et al.(2015)] P.K. Friz, J. Gatheral, A. Guliashvili, A. Jacquier & J. Teichman (2015) Large
+Deviations and Asymptotic Methods in Finance, Springer Proceedings in Mathematics &
+Statistics, 110.
+
+[Fujii et al.(2012)] M.Fuji & T. Akihiko (2012) Perturbative Expansion of FBSDE in an Incom-
+
+plete Market with Stochastic Volatility, The Quarterly Journal of Finance, 2.03.
+
+[Funahashi et al.(2016)] H. Funahashi & M. Kijima (2016). A chaos expansion approach for the
+
+pricing of contingent claims, J. Computational Finance, 13, 1-31.
+
+[Gardiner (2004)] C.W. Gardiner (2004) Handbook of stochastic methods for physics, chemistry
+
+and natural sciences, Springer series in Synergetics, Springer-Verlag, Berlin.
+
+[Gatheral et al.(2012)] J. Gatheral, E.P. Hsu, P. Laurence, C. Ouyang & T.H. Wang (2012)
+Asymptotics of implied volatility in local volatility models, Mathematical Finance, 4 591-
+620.
+
+[Giaquinta et al.(2000)] M. Giaquinta & G. Modica (2000) An introduction to functions of sev-
+
+eral variables, Birkhäuser, Basel.
+
+[Gihman et al.(1972)] I.I. Gihman & A.V. Skorokhod (1972) Stochastic diﬀerential equations,
+
+Springer-Verlag, New York.
+
+[Gulisashvili (2012)] A. Gulisashvili (2012) Analytically Tractable Stochastic Stock Price Models,
+
+Springer.
+
+[Imkeller et al.(2009)] P. Imkeller, I. Pavlyukevich & T. Wetzel (2009) First exit times for Lévy-
+driven diﬀusions with exponentially light jumps, The Annals of Probability, 37.2 530-564.
+
+[Kallenberg (2006)] O. Kallenberg (2006), Foundations of modern probability, Springer Science
+
+& Business Media.
+
+[Kim et al.(1999)] Y.J. Kim & N. Kunitomo (1999) Pricing options under stochastic interest
+
+rates: a new approach, Asia-Paciﬁc Financial Markets, 6.1 49-70.
+
+30
+
+[Kunitomo et al.(2003)] N. Kunitomo & A. Takahashi (2003) On validity of the asymptotic
+expansion approach in contingent claim analysis, The Annals of Applied Probability, 13.3
+914-952.
+
+[Kunitomo et al.(2001)] N. Kunitomo & A. Takahashi (2001), The asymptotic expansion ap-
+proach to the valuation of interest rate contingent claims, Mathematical Finance 11.1: 117-
+151.
+
+[Kusuoka et al.(2000)] S. Kusuoka & N. Yoshida (2000) Malliavin calculus, geometric mixing,
+and expansion of diﬀusion functionals, Probability Theory and Related Fields, 116.4 457-
+484.
+
+[Le Maitre (2010)] O.P. Le Maitre & O.M. Knio (2010) Introduction: Uncertainty Quantiﬁcation
+
+and Propagation, Springer Netherlands.
+
+[Lorig (2012)] M. Lorig (2012) Local Lévy Models and their Volatility Smile, arXiv preprint
+
+arXiv:1207.1630v1 .
+
+[Lütkebohmert (2004)] E. Lütkebohmert (2004) An asymptotic expansion for a Black–Scholes
+
+type model, Bulletin des sciences mathématiques, 128.8 661-685.
+
+[Mandelbrot et al.(2004)] B. Mandelbrot & R.L. Hudson O.P. (2004) The Misbehavior of Mar-
+
+kets: A fractal view of ﬁnancial turbulence, Basic books, New York.
+
+[Mandrekar et al.(2015)] V. Mandrekar & B. Rüdiger (2015) Stochastic Integration in Banach
+
+Spaces Theory and Applications, Springer, Berlin.
+
+[Matsuoka et al.(2004)] R. Matsuoka & Y. Uchida (2004) A new computational scheme for com-
+puting Greeks by the asymptotic expansion approach, Asia-Paciﬁc Financial Markets, 11.4
+393-430.
+
+[McKean (1969)] H.P. McKean (1969) Stochastic integrals, American Mathematical Soc.
+
+[Merton (1976)] R. Merton (1976) Option pricing when underlying stock returns are discontin-
+
+uous, Journal of ﬁnancial economics, 3.1 125-144.
+
+[Pagliarani et al.(2013)] S. Pagliarani & A. Pascucci & C. Riga (2013), Adjoint expansions in
+
+local Lévy models, SIAM Journal on Financial Mathematics 4.1: 265-296.
+
+[Peccati et al.(2011)] G. Peccati & M.S. Taqqu (2011) Wiener Chaos: Moments, Cumulants and
+
+Diagrams: A Survey with Computer Implementation, Springer Verlag.
+
+[Peszat et al.(2005)] S. Peszat & F. Russo (2005) Large-noise asymptotic for one-dimensional
+
+diﬀusions, Bernoulli, 11.2 247-262.
+
+[Rudin (1986)] W. Rudin (1986) Real and complex analysis, New York: McGraw-Hill Inc.
+
+[Shiraya et al.(2017)] K. Shiraya & A. Takahashi (2017) An asymptotic expansion for local-
+
+stochastic volatility with jump models, Stochastics 89.1: 65-88.
+
+[Shreve (2004)] S.E. Shreve (2004) Stochastic calculus for ﬁnance II, Springer Finance, Springer-
+
+Verlag, New York.
+
+[Takahashi (1999)] A. Takahashi (1999) An asymptotic expansion approach to pricing ﬁnancial
+
+contingent claims, Asia-Paciﬁc Financial Markets 6.2: 115-151.
+
+[Takahashi et al.(2014)] A. Takahashi & Y. Tsuruki (2014) A new improvement solution for
+approximation methods of probability density functions, No. CIRJE-F-916. CIRJE, Faculty
+of Economics, University of Tokyo.
+
+[Takahashi et al.(2012)] A. Takahashi & T. Yamada (2012), An asymptotic expansion with push-
+
+down of Malliavin weights, SIAM Journal on Financial Mathematics 3.1: 95-136.
+
+31
+
+[Uchida et al.(2004)] M. Uchida & N. Yosida (2004) Asymptotic expansion for small diﬀusions
+
+applied to option pricing, Stat. Inference Stoch. Process 3 189-223.
+
+[Wan et al.(2005)] X. Wan & G.E. Karniadakis (2005) An adaptive multi-element generalized
+polynomial chaos method for stochastic diﬀerential equations, Journal of Computational
+Physics 209.2 617-642.
+
+[Wan et al.(2006)] X. Wan & G.E. Karniadakis (2006) Beyond Wiener–Askey expansions: han-
+
+dling arbitrary pdfs, Journal of Scientiﬁc Computing 27.1-3 455-464.
+
+[Watanabe (1987)] S. Watanabe (1987), Analysis of Wiener functionals (Malliavin calculus) and
+
+its applications to heat kernels The annals of Probability : 1-39.
+
+[Wiener (1938)] N. Wiener (1938) The Homogeneous Chaos, American Journal of Mathematics
+
+60 897–936.
+
+[Yoshida (2003)] N. Yoshida (2003) Conditional expansions and their applications, Stochastic
+
+processes and their applications 107.1 53-81.
+
+[Yoshida (1992)] N. Yoshida (1992) Asymptotic expansion for statistics related to small diﬀu-
+
+sions J. Japan Stat. Soc. 22.2: 139-159.
+
+32
+
+

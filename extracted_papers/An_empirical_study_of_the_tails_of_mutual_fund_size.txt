@@ -1,0 +1,1039 @@
+0
+1
+0
+2
+
+ 
+
+y
+a
+M
+7
+2
+
+ 
+
+ 
+ 
+]
+
+.
+
+N
+G
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+6
+7
+9
+4
+
+.
+
+5
+0
+0
+1
+:
+v
+i
+X
+r
+a
+
+An empirical study of the tails of mutual fund size
+
+Yonathan Schwarzkopf1, 2 and J. Doyne Farmer2,3
+
+1California Institute of Technology, Pasadena, CA 91125.
+
+2Santa Fe Institute, Santa Fe, NM 87501.
+
+3Luiss Guido Carli, ROMA Italy.
+
+(Dated: September 17, 2018)
+
+The mutual fund industry manages about a quarter of the assets in the U.S. stock market and
+thus plays an important role in the U.S. economy. The question of how much control is concentrated
+in the hands of the largest players is best quantitatively discussed in terms of the tail behavior of
+the mutual fund size distribution. We study the distribution empirically and show that the tail is
+much better described by a log-normal than a power law, indicating less concentration than, for
+example, personal income. The results are highly statistically signiﬁcant and are consistent across
+ﬁfteen years. This contradicts a recent theory concerning the origin of the power law tails of the
+trading volume distribution. Based on the analysis in a companion paper, the log-normality is to be
+expected, and indicates that the distribution of mutual funds remains perpetually out of equilibrium.
+
+PACS numbers: 89.65.Gh,89.75.Da,02.60.Ed
+
+I.
+
+INTRODUCTION
+
+As of 2007 the mutual fund industry controlled 23% of
+household taxable assets in the United States1. In abso-
+lute terms this corresponded to 4.4 trillion USD and 24%
+of U.S. corporate equity holdings. Large players such as
+institutional investors are known to play an important
+role in the market [1]. This raises the question of who
+has this inﬂuence: Are mutual fund investments concen-
+trated in a few dominant large funds, or spread across
+many funds of similar size? Are there mutual funds that
+are so large that they are “too big to fail”?
+
+This question is best addressed in terms of the behavior
+of the upper tail of the mutual fund size distribution.
+The two competing hypotheses usually made in studies
+of ﬁrms are Zipf’s law vs. a lognormal. Zipf’s law means
+that the distribution of the size s is a power law with tail
+exponent ζs ≈ 1, i.e.
+
+P (s > X) ∼ X −ζs ,
+
+Log-normality means that log s has a normal distribu-
+tion, i.e. the density function pLN (s) obeys
+(log(s) − µs)2
+
+p(s) =
+
+1
+
+sσ√2π
+
+exp(cid:18)−
+
+(cid:19) .
+
+2σ2
+s
+
+From the point of view of extreme value theory this dis-
+tinction is critical, since it implies a completely diﬀerent
+class of tail behavior2. These are both heavy tailed, but
+
+1 Data is taken from the Investment Company Institute’s 2007
+
+fact book available at www.ici.org.
+
+2 According to extreme value theory a probability distribution
+can have only four possible types of tail behavior. The ﬁrst
+three correspond to distributions with ﬁnite support, thin tails,
+and tails that are suﬃciently heavy that some of the moments
+do not exist, i.e. power laws. The fourth category corresponds
+to distributions that in a certain sense do not converge;
+it is
+remarkable that most known distributions fall into one of the
+ﬁrst three categories [2].
+
+Zipf’s law is much more heavy tailed. For a log-normal
+all the moments exist, whereas for Zipf’s law none of the
+moments exist. For Zipf’s law an estimator of the mean
+fails to converge.
+In practical terms, for mutual funds
+this would imply that for any sample size N , with sig-
+niﬁcant probability an individual fund can be so large
+that it is bigger than all other N − 1 ﬁrms combined. In
+contrast, for a log-normal, in the limit as N → ∞ the
+relative size of a single fund becomes negligible.
+This question takes on added meaning because the as-
+sumption that mutual funds follow Zipf’s law has been
+argued to be responsible for the observed power law dis-
+tribution of trading volume [3, 4]. Gabaix et al. have
+also asserted that the mutual fund distribution follows
+Zipf’s law and have used this in a proposed explanation
+for the distribution of price returns [5, 6].
+
+We resolve this empirically using the Center for Re-
+search in Security Prices (CRSP) dataset and ﬁnd that
+the equity fund size distribution is much better described
+by a log-normal distribution.
+
+Our results are interesting in the broader context of the
+literature on ﬁrm size. Mutual funds provide a particu-
+larly good type of ﬁrm to study because there are a large
+number of funds and their size is accurately recorded. It
+is generally believed that the resulting size distribution
+from aggregating across industries has a power law tail
+that roughly follows Zipf’s law, but for individual indus-
+tries the tail behavior is debated3. A large number of
+stochastic process models have been proposed to explain
+this4. Our results add support to the notion that for
+single industries the distribution is log-normal.
+
+The log-normality of the distribution of mutual funds
+is also interesting for what it suggests about the under-
+lying processes that determine mutual fund size.
+In a
+
+3 Some studies have found that the upper tail is a log-normal
+
+[7–13] while others have found a power law [12–14]
+
+4 For past stochastic models see [5, 7, 9, 15–19]
+
+0
+10
+
+)
+
+X
+>
+s
+(
+P
+
+−2
+
+10
+
+−1
+
+10
+
+−2
+
+10
+
+−3
+
+10
+
+−4
+
+10
+
+3
+10
+
+−2
+
+10
+
+4
+10
+
+0
+10
+
+5
+10
+
+2
+10
+
+X
+
+4
+10
+
+FIG. 1. The CDF for the mutual fund size s (in millions of
+2007 dollars) is plotted with a double logarithmic scale. The
+cumulative distribution for funds existing at the end of the
+years 1993, 1998 and 2005 are given by the full, dashed and
+dotted lines respectively.
+Inset: The upper tail of the CDF for the mutual funds existing
+at the end of 1998 (dotted line) is compared to an algebraic
+relation with exponent −1 (solid line).
+
+companion paper [21] we develop a model for the random
+process of mutual fund entry, exit and growth under the
+assumption of market eﬃciency, and show that this gives
+a good ﬁt to the data studied here. We show that while
+the steady-state solution is a power law, the timescale
+for reaching this solution is very slow. Thus given any
+substantial non-stationarity in the entry and exit pro-
+cesses the distribution will remain in its non-equilibrium
+log-normal state. See the discussion in Section V.
+
+II. DATA SET
+
+We analyze the Center for Research in Security Prices
+(CRSP) Survivor-Bias-Free US Mutual Fund Database5.
+The database is survivor bias free as it contains historical
+performance data for both active and inactive mutual
+funds. We study monthly data from 1991 to 20056 on
+all reported equity funds. We deﬁne an equity fund as
+one whose portfolio consists of at least 80% stocks. The
+results are not qualitatively sensitive to this, e.g. we get
+essentially the same results even if we use all funds. The
+data set has monthly values for the Total Assets Managed
+(TASM) by the fund and the Net Asset Value (NAV).
+We deﬁne the size s of a fund to be the value of the
+TASM, measured in millions of US dollars and corrected
+for inﬂation relative to July 2007. Inﬂation adjustments
+are based on the Consumer Price Index, published by the
+BLS.
+
+5 The US Mutual Fund Database can be purchased from the Cen-
+
+ter for Research in Security Prices (www.crsp.com).
+
+6 There is data on mutual funds starting in 1961, but prior to
+1991 there are very few entries. There is a sharp increase in
+1991, suggesting incomplete data collection prior to 1991.
+
+2
+
+III.
+
+IS THE TAIL A POWER LAW?
+
+Despite the fact that the mutual fund industry oﬀers a
+large quantity of well-recorded data, the size distribution
+of mutual funds has not been rigorously studied. This is
+in contrast with other types of ﬁrms where the size distri-
+bution has long been an active research subject. The fact
+that the distribution is highly skewed and heavy tailed
+can be seen in Figure 1, where we plot the cumulative
+distribution of sizes P (s > X) of mutual fund sizes in
+three diﬀerent years.
+
+A visual inspection of the mutual fund size distribution
+suggests that it does not follow Zipf’s law7. In the inset of
+Figure 1 we compare the tail for funds with sizes s > 102
+million to a power law s−ζs , with ζs = −1. Whereas a
+power law corresponds to a straight line when plotted on
+double logarithmic scale, the data show substantial and
+consistent downward curvature. The main point of this
+paper is to make more rigorous tests of the power law vs.
+the log-normal hypothesis. These back up the intuitive
+impression given by this plot, indicating that the data
+are not well described by a power law.
+
+To test the validity of the power law hypothesis we
+[20]. They
+use the method developed by Clauset et al.
+use the somewhat strict deﬁnition8 that the probability
+density function p(s) is a power law if there exists an
+smin such that for sizes larger than smin, the functional
+form of the density p(s) can be written
+
+p(s) =
+
+ζs
+
+smin (cid:18) s
+
+smin(cid:19)−(ζs+1)
+
+,
+
+(1)
+
+where the distribution is normalized in the interval
+[smin,∞). There are two free parameters smin and ζs.
+This crossover size smin is chosen such that it minimizes
+the Kolmogorov-Smirnov (KS) statistic D, which is the
+distance between the CDF of the empirical data Pe(s)
+and that of the ﬁtted model Pf (s), i.e.
+
+D = max
+
+s≥smin |Pe(s) − Pf (s)| .
+
+Using this procedure we estimate ζs and smin for the
+years 1991- 2005 as shown in Table I. The values of
+ζs computed in each year range from 0.78 to 1.36 and
+average ¯ζs = 1.09 ± 0.04. If indeed these are power laws
+this is consistent with Zipf’s law. But of course, merely
+
+7 Previous work on the size distribution of mutual funds by Gabaix
+et al. [5, 6, 19] argued for a power law while we argue here for a
+log-normal.
+
+8 In extreme value theory a power law is deﬁned as any function
+that in the limit s → ∞ can be written p(s) = g(s)s−(ζs +1)
+where g(s) is a slowly varying function. This means it satisﬁes
+lims→∞ g(ts)/g(s) = C for any t > 0, where C is a positive
+constant. The test for power laws in reference [20] is too strong
+in the sense that it assumes that there exists an s0 such that for
+s > s0, g(s) is constant.
+
+computing an exponent and getting a low value does not
+mean that the distribution is actually a power law.
+
+To test the power law hypothesis more rigorously we
+follow the Monte Carlo method utilized by Clauset et
+al. Assuming independence, for each year we generate
+10, 000 synthetic data sets, each drawn from a power law
+with the empirically measured values of smin and ζs. For
+each data-set we calculate the KS statistic to its best
+ﬁt. The p-value is the fraction of the data sets for which
+the KS statistic to its own best ﬁt is larger than the KS
+statistic for the empirical data and its best ﬁt.
+
+The results are summarized in Table I. The power law
+hypothesis is rejected with two standard deviations or
+more in six of the years and rejected at one standard de-
+viation or more in twelve of the years (there are ﬁfteen
+in total). Furthermore there is a general pattern that as
+time progresses the rejection of the hypothesis becomes
+stronger. We suspect that this is because of the increase
+in the number of equity funds. As can be seen in Ta-
+ble I, the total number of equity funds increases roughly
+linearly in time, and the number in the upper tail Ntail
+also increases.
+
+We conclude that the power law tail hypothesis is ques-
+tionable but cannot be unequivocally rejected in every
+year. Stronger evidence against it comes from compari-
+son to a log-normal, as done in the next section.
+
+IV.
+
+IS THE TAIL LOG-NORMAL?
+
+A visual comparison between the two hypotheses can
+be made by looking at the Quantile Quantile (QQ) plots
+for the empirical data compared to each of the two hy-
+potheses. In a QQ-plot we plot the quantiles of one distri-
+bution as the x-axis and the other’s as the y-axis. If the
+two distributions are the same then we expect the points
+to fall on a straight line. Figure 2 compares the two hy-
+potheses, making it clear that the log-normal is a much
+better ﬁt than the power law. For the log-normal QQ
+plot most of the large values in the distribution fall on
+the dashed line corresponding to a log-normal distribu-
+tion, though the very largest values are somewhat above
+the dashed line. This says that the empirical distribu-
+tion decays slightly faster than a log-normal. There are
+two possible interpretations of this result: Either this is a
+statistical ﬂuctuation or the true distribution really has
+slightly thinner tails than a log-normal. In any case, since
+a log-normal decays faster than a power law, it strongly
+suggests that the power law hypothesis is incorrect and
+the log-normal distribution is a better approximation.
+
+A more quantitative method to address the question of
+which hypothesis better describes the data is to compare
+the likelihood of the observation in both hypotheses [20].
+We deﬁne the likelihood for the tail of the distribution to
+be
+
+L = Ysj ≥smin
+
+p(sj).
+
+6
+
+(a)
+
+s
+e
+
+l
+i
+t
+
+n
+a
+u
+Q
+w
+a
+L
+
+ 
+
+ 
+r
+e
+w
+o
+P
+
+5.5
+
+5
+
+4.5
+
+4
+
+3.5
+
+3
+3
+
+3.5
+5
+Empirical Quantiles
+
+4.5
+
+4
+
+5.5
+
+(b)
+
+s
+e
+
+l
+i
+t
+
+n
+a
+u
+Q
+
+ 
+l
+
+a
+m
+r
+o
+n
+−
+g
+o
+L
+
+5
+
+4.5
+
+4
+
+3.5
+
+5.5
+
+3
+3
+
+3.5
+5
+Empirical Quantiles
+
+4.5
+
+4
+
+3
+
+5.5
+
+FIG. 2. A Quantile-Quantile (QQ) plot for the upper tail
+of the size distribution of equity funds. The quantiles are the
+base ten logarithm of the fund size, in millions of dollars. The
+empirical quantiles are calculated from the size distribution
+of funds existing at the end of the year 1998. The empirical
+data were truncated from below such that only funds with size
+s ≥ smin were included in the calculation of the quantiles. (a)
+A QQ-plot with the empirical quantiles as the x-axis and the
+quantiles for the best ﬁt power law as the y-axis. The power
+law ﬁt for the data was done using the maximum likelihood
+described in Section III, yielding smin = 1945 and α = 1.107.
+(b) A QQ-plot with the empirical quantiles as the x-axis and
+the quantiles for the best ﬁt log-normal as the y-axis, with
+the same smin as in (a). The log-normal ﬁt for the data was
+done used the maximum likelihood estimation given smin (2)
+yielding µ = 2.34 and σ = 2.5.
+
+We
+
+power
+
+law
+
+deﬁne
+
+the
+as
+pP L(sj ) with the probability den-
+sity of the power law tail given by (1). The lognormal
+pLN (sj) with
+
+LP L = Qsj ≥smin
+likelihood is deﬁned as LLN = Qsj ≥smin
+
+the probability density of the lognormal tail given by
+
+likelihood
+
+pLN (s) =
+
+=
+
+p(s)
+
+1 − P (smin)
+√2
+s√πσ (cid:20)erfc(cid:18) ln smin − µ
+
+√2σ
+
+(2)
+
+(cid:19)(cid:21)−1
+
+exp(cid:20)−
+
+(ln s − µ)2
+
+2σ2
+
+(cid:21) .
+
+The more probable that the empirical sample is drawn
+from a given distribution, the larger the likelihood for
+that set of observations. The ratio indicates which dis-
+tribution the data are more likely drawn from. We deﬁne
+the log likelihood ratio as
+
+R = ln(cid:18) LP L
+
+LLN(cid:19) .
+
+(3)
+
+For each of the years 1991 to 2005 we computed the max-
+imum likelihood estimators for both the power law ﬁt
+and the log-normal ﬁt to the tail, as explained above and
+in Section III. Using the ﬁt parameters, the log like-
+lihood ratio was computed and the results are summa-
+rized graphically in Figure 3 and in Table I. The ratio
+is always negative, indicating that the likelihood for the
+log-normal hypothesis is greater than that of the power
+law hypothesis in every year.
+It seems clear that tails
+of the mutual fund data are much better described by a
+log-normal than by a power law.
+
+variable
+
+91
+
+92
+
+93
+
+94
+
+95
+
+96
+
+97
+
+98
+
+99
+
+00
+
+01
+
+02
+
+03
+
+04
+
+05 mean std
+
+R
+
+N
+
+-0.50 -1.35 -1.49 -1.71 -3.29 -18.42 -2.25 -1.29 -6.57 -4.96 -2.63 -2.95 -2.00 -1.05 -0.99 -3.43 4.45
+
+372 1069 1509 2194 2699 3300 4253 4885 5363 5914 6607 7102 7794 8457 8845
+
+-
+
+-
+
+E[s] (mn)
+385
+Std[s] (bn) 1.98 0.99
+
+810
+
+480
+1.7
+
+398
+448
+1.66 1.68
+
+E[ω]
+
+5.58 4.40 4.40 3.86 3.86
+
+Std[ω]
+
+1.51 1.98 2.09 2.43 2.50
+
+ζs
+
+smin
+Ntail
+
+1.33 1.36 1.19 1.15 1.11
+955
+877
+
+800
+
+695
+
+708
+
+81
+
+129
+
+232
+
+256
+
+280
+
+1067
+
+p-value
+
+0.58 0.48 0.02 0.45 0.07
+
+0
+
+527
+2.41
+
+3.91
+
+2.46
+
+0.78
+182
+
+559
+619
+2.82 3.38
+
+3.84 3.85
+
+2.50 2.51
+
+748
+4.05
+
+4.06
+
+2.46
+
+1.08 1.10
+0.95
+1494 1945 1147
+
+481
+
+635
+474
+3.37 2.69 1.87 2.45 2.64 2.65
+
+335
+
+425
+
+458
+
+519
+2.42
+
+134
+0.8
+
+3.97 3.60 3.37 3.55 3.51 3.59
+
+3.96 0.54
+
+2.45 2.63 2.42 2.49 2.59 2.50
+
+2.34 0.29
+
+0.97 1.01 1.07 1.07 1.10 1.14
+903
+868 1085 1383
+
+728
+
+836
+
+283
+
+290
+550
+0.01 0.11 5 10−4 0.04 0.03 0.07 0.08 0.08 0.15
+
+557
+
+662
+
+652
+
+717
+
+494
+
+630
+
+1.09 0.14
+974
+408
+
+-
+
+-
+
+0.15 0.19
+
+TABLE I. Table of monthly parameter values for equity funds deﬁned such that the portfolio contains a fraction of at least 80% stocks. The values for each of the
+monthly parameters (rows) were calculated for each year (columns). The mean and standard deviation are evaluated for the monthly values in each year.
+R - the base 10 log likelihood ratio of a power law ﬁt relative to a log-normal ﬁt as given by equation (3). A negative value of R indicates that the log-normal
+hypothesis is a likelier description than a power law. For all years the value is negative meaning that the log-normal distribution is more likely.
+N - the number of equity funds existing at the end of each year.
+E[ω] - the mean log size of funds existing at the end of each year.
+Std[ω] - the standard deviation of log sizes for funds existing at the end of each year.
+E[s] - the mean size (in millions) of funds existing at the end of each year.
+Std[s] - the standard deviation of sizes (in billions) for funds existing at the end of each year.
+ζs - the power law tail exponent (1).
+smin - the lower tail cutoﬀ (in millions of dollars) above which we ﬁt a power law (1).
+Ntail - the number of equity funds belonging to the upper tail s.t. s ≥ smin.
+p-value - the probability of obtaining a goodness of ﬁt at least as bad as the one calculated for the empirical data, under the null hypothesis of a power law upper tail.
+
+4
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+−8
+
+log−normal tail
+
+power law tail
+
+−6
+
+−4
+
+−2
+
+0
+
+2
+
+4
+
+6
+
+8
+
+FIG. 3. A histogram of the base 10 log likelihood ratios R
+computed using (3) for each of the years 1991 to 2005. A
+negative log likelihood ratio implies that it is more likely that
+the empirical distribution is log-normal then a power law. The
+log likelihood ratio is negative in every year, in several cases
+strongly so.
+
+V.
+
+IMPLICATIONS OF LOG-NORMALITY
+
+The log-normal nature of the size distribution has im-
+portant implications on the role investor behavior plays
+in the mutual fund industry. Is the size distribution of
+mutual funds, i.e. the concentration of assets, determined
+through investor choice or is it just a consequence of the
+random nature of the market? In a companion paper [21]
+we propose that the size distribution can be explained
+by a simple random process model. This model, char-
+acterizing the entry, exit and growth of mutual funds as
+a random process, is based on market eﬃciency, which
+dictates that fund performance is size independent and
+fund growth is essentially random. This model provides
+a good explanation of the concentration of assets, sug-
+gesting that other eﬀects, such as transaction costs or
+the behavioral aspects of investor choice, play a smaller
+role.
+
+The fact that the fund distribution is a log-normal is
+interesting because, as we argue in the companion paper,
+
+5
+
+this indicates a very slow convergence toward equilib-
+rium. There we ﬁnd a time-dependent solution for the
+underlying random process of mutual fund entry, exit,
+and growth, and show that the size distribution evolves
+from a log-normal towards a Zipf power law distribution.
+However, the relaxation to the steady-state solution is ex-
+tremely slow, with time scales on the order of a century or
+more. Given that the mutual fund industry is still young,
+the distribution remains in its non-equilibrium state as
+a log-normal. Furthermore, given that the properties of
+the entry and exit processes are not stable over long pe-
+riods of time, the non-equilibrium log-normal state will
+very likely persist indeﬁnitely.
+
+VI. CONCLUSIONS
+
+We have shown in unequivocal terms that the mutual
+fund size distribution is much closer to a log-normal than
+to a power law. Thus, while the distribution is concen-
+trated, it is not nearly as concentrated as it might be.
+Among other things this suggests that that the power law
+distribution observed for trading volume by Gopikrish-
+nan et al. [22] cannot be explained based on a power law
+distribution for funds. The companion paper discussed
+in the previous section [21] constructs a theory that ex-
+plains the log-normality based on the random nature of
+the mutual fund entry, exit and growth, and the very
+long-time scales required for convergence to the steady-
+state power law solution.
+
+ACKNOWLEDGMENTS
+
+We would like to thank A. Clauset and C. R. Shalizi for
+useful comments. YS would like to thank Mark B. Wise.
+We gratefully acknowledge ﬁnancial support from NSF
+grant HSD-0624351. Any opinions, ﬁndings and conclu-
+sions or recommendations expressed in this material are
+those of the authors and do not necessarily reﬂect the
+views of the National Science Foundation.
+
+[1] G. Corsetti, P. A. Pesenti, and N. Roubini, SSRN eLi-
+
+http://ideas.repec.org/a/tpr/qjecon/v121y2006i2p461-504.html.
+
+brary(2001).
+
+[3] M.
+
+[2] J. P. Embrechts, C. Kluppelberg, and T. Mikosch,
+Modeling Extremal Events for Insurance and Finance
+(Springer-Verlag, Berlin, 1997).
+Solomon,
+
+Ram,
+International Journal of Modern Physics C 7, 65 (1996).
+[4] S. Solomon and P. Richmond, Physica A Statistical
+Mechanics and its Applications 299, 188 (Oct. 2001),
+arXiv:cond-mat/0102423.
+
+Levy,
+
+and
+
+G.
+
+S.
+
+[5] X. Gabaix, P. Gopikrishnan, V. Plerou, and H. E. Stan-
+
+ley, Nature 423, 267 (May 2003).
+
+[6] X. Gabaix,
+
+P. Gopikrishnan, V. Plerou,
+
+H. E. Stanley, The Quarterly Journal
+nomics
+
+2006),
+
+(May
+
+121,
+
+461
+
+available
+
+and
+of Eco-
+at
+
+[7] Simon, Herbert A. and Bonini, Charles P., The American
+
+Economic Review 48, 607 (Sep 1958), ISSN 0002-8282.
+
+[8] M. H. R. Stanley, S. V. Buldyrev, S. Havlin, R. N. Man-
+tegna, M. A. Salinger, and H. E. Stanley, Economics Let-
+ters 49, 453 (Oct 1995).
+
+[9] I. Y. and S. H. A., Skew Distribution and the Size of
+
+Business Firms (North Holland, 1977).
+
+[10] M. H. R. Stanley, L. A. N. Amaral, S. V. Buldyrev,
+S. Havlin, H. Leschhorn, P. Maass, M. A. Salinger, and
+H. E. Stanley, Nature 379, 804 (Feb. 1996).
+
+[11] L. A. N. Amaral, S. V. Buldyrev, S. Havlin, P. Maass,
+M. A. Salinger, H. E. Stanley, and M. H. R. Stanley,
+Physica A 244, 1 (Oct 1997).
+
+6
+
+[12] G. Bottazzi and A. Secchi, Review of Industrial Organi-
+
+[17] B. Mandelbrot, The Journal of Business 36, 394 (Oct
+
+zation 23 (Dec 2003).
+
+1963).
+
+[13] G. Dosi, Statistical Regularities in the Evolution of In-
+dustries. A Guide through some Evidence and Challenges
+for the Theory, LEM Papers Series 2005/17 (Labora-
+tory of Economics and Management (LEM), Sant’Anna
+School of Advanced Studies, Pisa, Italy, 2005) available
+at http://ideas.repec.org/p/ssa/lemwps/2005-17.html.
+
+[14] R. L. Axtell, Science 293, 1818 (Sep 2001).
+[15] R. Gibrat, “Les inegalites economiques,” (1931).
+[16] H. A. Simon, Biometrika 42, 425 (Dec 1955).
+
+[18] J. Sutton, Journal of Economic Literature 35, 40 (Mar
+
+1997), ISSN 0022-0515.
+
+[19] X. Gabaix, R. Ramalho, and J. Reuter, Power laws and
+mutual fund dynamics, Tech. Rep. (Massachusetts Insti-
+tute of Technology, 2003).
+
+[20] A. Clauset, C. R. Shalizi, and M. E. J. Newman, SIAM
+
+Reviews(2007).
+
+[21] Y. Schwarzkopf and J. D. Farmer, What drives mutual
+fund asset concentration?, Tech. Rep. (Santa Fe Institute,
+2010) http://ssrn.com/abstract=1173046.
+
+[22] P. Gopikrishnan, V. Plerou, X. Gabaix, and H. E. Stan-
+
+ley, Phys. Rev. E 62, R4493 (Oct 2000).
+
+

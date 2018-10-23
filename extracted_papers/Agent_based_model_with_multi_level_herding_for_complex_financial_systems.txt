@@ -1,0 +1,890 @@
+1
+
+Agent-based model with multi-level herding for complex
+ﬁnancial systems
+Jun-Jie Chen1,2, Lei Tan1,2, Bo Zheng1,2∗
+1Department of Physics, Zhejiang University, Hangzhou 310027, China, 2Collaborative Innovation
+Center of Advanced Microstructures, Nanjing University, Nanjing 210093, China
+∗ E-mail: zhengbo@zju.edu.cn
+
+Abstract
+
+In complex ﬁnancial systems, the sector structure and volatility clustering are respectively important
+features of the spatial and temporal correlations. However, the microscopic generation mechanism of the
+sector structure is not yet understood. Especially, how to produce these two features in one model remains
+challenging. We introduce a novel interaction mechanism, i.e., the multi-level herding, in constructing
+an agent-based model to investigate the sector structure combined with volatility clustering. According
+to the previous market performance, agents trade in groups, and their herding behavior comprises the
+herding at stock, sector and market levels. Further, we propose methods to determine the key model
+parameters from historical market data, rather than from statistical ﬁtting of the results. From the
+simulation, we obtain the sector structure and volatility clustering, as well as the eigenvalue distribution
+of the cross-correlation matrix, for the New York and Hong Kong stock exchanges. These properties are
+in agreement with the empirical ones. Our results quantitatively reveal that the multi-level herding is
+the microscopic generation mechanism of the sector structure, and provide new insight into the spatio-
+temporal interactions in ﬁnancial systems at the microscopic level.
+
+5
+1
+0
+2
+
+ 
+r
+p
+A
+8
+
+ 
+
+ 
+ 
+]
+
+.
+
+N
+G
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+1
+1
+8
+1
+0
+
+.
+
+4
+0
+5
+1
+:
+v
+i
+X
+r
+a
+
+2
+
+Financial markets are complex systems with many-body interactions. In recent years, large amounts
+of historical ﬁnancial data have sparked the interest of scientists in various ﬁelds, including physicists, to
+quantitatively investigate the properties of the markets. With physical concepts and methods, plenty of
+results have been obtained1–19.
+
+From the view of physicists, the dynamic behavior and community structure of complex ﬁnancial
+In stock markets, it is
+systems can be characterized by temporal and spatial correlation functions.
+well-known that the volatilities are long-range correlated in time, which is the so-called volatility clus-
+tering2, 3, 6, 7, 20. As to higher-order time correlations, it is discovered that the correlation between past
+returns and future volatilities is negative for almost all the stock markets in the world4, 11, 21–24, while
+currently the correlation is found to be positive only for the Chinese stock market11, 25. In other words,
+the positive and negative returns inﬂuence the volatilities asymmetrically, which is known as the volatility
+asymmetry. During the ﬁnancial crisis, the volatility asymmetry experiences local minima for developed
+economies, while reaches local maxima for transition economies26. The spacial structure of the stock mar-
+kets is explored by investigating the cross-correlation of stocks12, 18, 27–35. With the random matrix theory
+(RMT), communities can be identiﬁed, which are usually associated with business sectors31–33. The cross-
+correlation matrix C of price returns is analyzed to investigate the interactions between stocks12, 18, 29–35.
+The largest eigenvalue of C deviates signiﬁcantly from the theoretical distribution of the Wishart ma-
+trix, which is the cross-correlation matrix of non-correlated time series. This eigenvalue represents the
+market mode, i.e., the price co-movement of the entire market, and the components of the corresponding
+eigenvector is relatively uniform for all stocks. For developed markets, each eigenvector of other large
+eigenvalues is dominated by the stocks in a certain business sector18, 30, 31. These large eigenvalues stand
+for the sector modes.
+
+The spatio-temporal correlations are theoretically crucial in the understanding of the price dynamics,
+and practically useful for the optimization of the investment portfolio. The sector structure and volatility
+clustering are, respectively, important features of the spatial and temporal correlations, which we focus
+on in this paper. In recent years, various models have been proposed to study volatility clustering with
+certain success6, 15, 36–39, but the models for the sector structure are phenomenological and usually without
+interactions of investors12, 40. On the other hand, although many activities have been devoted to the sector
+structure, its microscopic generation mechanism is not yet understood. Both the sector structure and
+volatility clustering are important characteristics of stock markets, and it remains challenging how to
+produce these two properties in one model.
+
+As a powerful simulation technique, agent-based modeling is widely applied in various ﬁelds37, 38, 41–45.
+Recently, an agent-based model is proposed for simulating the cumulative distribution of returns and
+volatility clustering in stock markets15. The concept in constructing the model is to determine the key
+parameters from empirical data instead of setting them artiﬁcially. In this paper, we construct an agent-
+based model with a novel interaction mechanism, i.e., the multi-level herding, to investigate the sector
+structure combined with volatility clustering. Further, we propose methods to determine the key model
+parameters from historical market data rather than from statistical ﬁtting of the results.
+
+Results
+
+In stock markets, the temporal evolution of stock prices and interactions between stocks are complicated.
+The price dynamics of a market naturally contains that of each individual stock. Recent research has
+reported that the price dynamics of a market can be decomposed into diﬀerent modes of motion, such as
+the market mode and sector mode18, 30, 31. The market mode is driven by interactions that are common
+for all stocks in the market, and the sector mode is dominated by interactions of stocks within a sector.
+Therefore, the price dynamics of a market is multi-level.
+In ﬁnancial markets, herding is one of the
+collective behaviors46–50. Investors cluster into groups when making decisions, and these groups can be
+large. Since investors’ herding behavior is essential to the price dynamics, it may be multi-level as well.
+
+In our model, we suppose that agents’ herding is composed of three diﬀerent levels, that is, herding at
+stock, sector and market levels.
+
+3
+
+Multi-level herding. Our model is constructed based on the agents’ daily trading, i.e., buying,
+selling and holding stocks. In the model, there are N agents, n stocks and nsec sectors. Each sector
+contains n/nsec stocks. Every agent holds only one stock, which is randomly chosen from the n stocks.
+In a real market, an investor may hold diﬀerent stocks. For simplicity, we suppose a reasonable investor
+would trade his stocks separately, according to the performance of each stock, even if his operation is
+based on an investment portfolio. Thus, the scenario for one investor holding, e.g., three stocks is basically
+the same as that for three investors with each holding one stock.
+The stock price of the i-th stock on day t is denoted by Yi(t), and the logarithmic price return is
+Ri(t) = ln[Yi(t)/Yi(t − 1)]. Since investors’ trading decisions in a real market is based on the previous
+stock performance of diﬀerent time scales, the investment horizon is introduced in our model for better
+description of agents’ behavior. It has been reported in ref. 15 that the relative portion ξl of investors with
+a l days investment horizon follows a power-law decay, ξl ∝ l−1.12. The maximum investment horizon is
+l=1 l−1.12. Agents’
+trading decisions are made according to the past price returns. On day t + 1, for an agent holding stock
+m=0 Ri(t − m) represents the basis for estimating the previous
+stock performance. We introduce a weighted average return R(cid:48)
+i(t) to describe the basis of all agents
+m=0 Ri(t − m), R(cid:48)
+
+denoted by L. With the condition of(cid:80)L
+i with a investment horizon of l days,(cid:80)l−1
+holding stock i. Since ξl is the weight of(cid:80)l−1
+i(t) = k · L(cid:88)
+(cid:80)L
+m=l ξm) to ensure that the ﬂuctuation scale of R(cid:48)
+
+l=1 ξl = 1, we normalize ξl to be ξl = l−1.12/(cid:80)L
+
+We set the coeﬃcient k = 1/((cid:80)L
+
+i(t) is deﬁned as
+
+Ri(t − m)
+
+l=1
+
+i(t)|max = |Ri(t)|max (see Supplementary Information S1). If L = 1, R(cid:48)
+
+i(t) is consistent
+i(t)
+
+l−1(cid:88)
+
+(cid:35)
+
+.
+
+R(cid:48)
+
+(cid:34)
+
+ξl
+
+l=1
+
+m=0
+
+(1)
+
+with the one of Ri(t), i.e., |R(cid:48)
+is just identical to Ri(t).
+
+In the model, agents’ herding behavior comprises the herding at stock, sector and market levels. For
+convenience, we denote an agent holding stock i by “agent in stock i”. If stock i belongs to sector j, this
+agent can be denoted by “agent in sector j” as well. A group formed by agents in stock i or by agents
+in sector j is respectively denoted by “group in stock i” or “group in sector j”. The schematic diagram
+of the multi-level herding is displayed in Fig. 1(a). The agents in a same stock ﬁrst cluster into groups.
+This herding behavior at stock level is similar to the herding in other models which simulate only one
+stock. In a real market, the stocks in a same sector share the characteristics of the sector. Thus in our
+model, the groups in each sector further form larger groups, which is the herding at sector level. At last,
+the groups formed at sector level cluster into even larger ones, since all sectors share common features of
+the whole market. This is the herding at market level.
+
+(i) Herding at stock level. The agents in each individual stock ﬁrst cluster into groups, which are
+called I-groups. We introduce a herding degree DI to quantify the herding behavior at this level. On day
+t, the herding degree for the i-th stock is
+
+DI
+
+i (t) = ¯ni(t)/Ni,
+
+(2)
+
+where ¯ni(t) denotes the average number of agents in each I-group, and Ni is the number of agents in
+the i-th stock. Agents’ herding behavior is based on their estimation of the previous stock performance.
+Since agents’ basis for estimation on day t is |R(cid:48)
+
+i(t − 1)|, we set ¯ni(t) = |R(cid:48)
+
+i(t − 1)|. Thus,
+
+i(t − 1)|/Ni.
+In the i-th stock, the number of I-groups is Ni/¯ni(t) = 1/DI
+i (t), and the agents randomly join in one
+of the I-groups. After the herding at stock level for all the n stocks, the number of I-groups in the j-th
+
+i (t) = |R(cid:48)
+DI
+
+(3)
+
+sector and in the whole market are, respectively, denoted by N I
+
+j (t) and N I
+
+M (t),
+
+ N I
+j (t) =(cid:80)
+M (t) =(cid:80)
+
+N I
+
+i∈j
+
+i
+
+[1/DI
+
+i (t)]
+
+[1/DI
+
+i (t)]
+
+.
+
+4
+
+(4)
+
+Here i ∈ j represents the stock i in sector j.
+
+(ii) Herding at sector level. The stocks in a same sector share the characteristics of the sector. At
+this level, agents’ herding behavior is driven by the price co-movement of the sector, i.e., the prices of
+stocks in a sector tend to rise and fall at the same time. Thus the I-groups in a same sector would further
+form larger groups, which are called S-groups. Here we introduce HM and Hj to characterize the price
+co-movement degrees for stocks in the whole market and in sector j, respectively. For the j-th sector, the
+average number of I-groups in each S-group is set to be n · (Hj − HM ), which represents the pure price
+co-movement of the sector. Therefore the herding degree is
+
+j (t) = n · (Hj − HM )/N I
+DS
+
+j (t).
+
+(5)
+
+In sector j, the number of S-groups is 1/DS
+
+j (t), and each I-group joins in one of the S-groups.
+
+the percentage of connected I-groups, i.e., I-groups which co-move with each other. ¯H = ((cid:80)
+
+(iii) Herding at market level. Agents’ herding behavior at this level is driven by the price co-movement
+of the entire market. The S-groups in diﬀerent sectors share common features of the whole market, and
+thus cluster into larger groups. These groups are called M-groups. In the model, both the herding degrees
+at sector and market levels are computed based on the I-groups. The co-movement degree Hj represents
+j Hj/nsec)
+stands for the average percentage of connected I-groups. Since the group formation at this level is driven
+by the price co-movement of the whole market, we suppose that the number of connected I-groups should
+be the same for diﬀerent sectors and equal to ¯H · N I
+j (t), and call
+it the eﬀective number of I-groups for the j-th sector. N M
+M (t). On
+the other hand, n · HM represents the price co-movement for stocks in the whole market. Thus for the
+S-groups in sector j, the herding degree at market level is
+
+M (t). We denote ¯H · N I
+
+j (t) satisﬁes Hj · N M
+
+j (t) = ¯H · N I
+
+M (t)/Hj by N M
+
+j (t) = n · HM /N M
+DM
+
+j (t),
+
+(6)
+
+j (t). The total number of M-groups in the market is the maximum
+j (t) for diﬀerent j. With all M-groups numbered, an S-group in sector j joins in one of the ﬁrst
+
+and the number of M-groups is 1/DM
+of 1/DM
+1/DM
+
+j (t) M-groups.
+In the formation of S-groups, the I-groups in a same stock tend not to join in a same S-group, otherwise
+these I-groups would have gathered together during the herding at stock level. Similarly, in the formation
+of M-groups, the S-groups in a same sector tend not to join in a same M-group. In other words, an I-group
+prefers to join in an S-group with no other I-groups from the same stock, and an S-group prefers to join
+in an M-group with no other S-groups from the same sector.
+
+After the herding for the three levels, all agents cluster into M-groups. Since intraday trading is
+not persistent in empirical trading data51, we suppose that each day only one trading decision is made
+by every agent. The agents in a same M-group make a same trading decision with a same probability.
+Considering each agent operates one share, we denote the decision of the α-th agent on day t by
+
+ 1
+
+−1
+0
+
+φα(t) =
+
+buy
+sell
+hold
+
+,
+
+(7)
+
+and the probabilities of buying, selling and holding decisions of M-groups are denoted by Pbuy, Psell
+and Phold, respectively. The same as the previous models15, 17, we suppose that the buying and selling
+
+probabilities are equal, i.e., Pbuy = Psell = P , thus Phold = 1− 2P . The return of the i-th stock is deﬁned
+as the diﬀerence of the demand and supply of this stock, i.e., the diﬀerence between the number of agents
+buying and selling the stock,
+
+φα(t).
+
+(8)
+
+Here α ∈ i represents the agent α in stock i.
+
+Ri(t) =
+
+(cid:88)
+
+α∈i
+
+5
+
+Determination of parameters HM and Hj. The New York Stock Exchange (NYSE) and Hong
+Kong Stock Exchange (HKSE) are the two representative stock markets considered in this paper. The
+NYSE is one of the world’s most mature markets in the West, and the HKSE is an important market in
+Asia. We collect the daily closing price data of 150 stocks in the NYSE and HKSE, respectively (Methods).
+For the comparison of diﬀerent time series of returns, the normalized return ri(t) is introduced,
+
+where (cid:104)···(cid:105) represents the average over time t, and σ =(cid:112)(cid:104)R2
+
+ri(t) = [Ri(t) − (cid:104)Ri(t)(cid:105)]/σ,
+
+(9)
+i (t)(cid:105) − (cid:104)Ri(t)(cid:105)2 is the standard deviation of
+
+Ri(t).
+
+The parameters HM and Hj are introduced to characterize the price co-movement degrees for stocks
+in the whole market and in sector j, respectively. Actually, the price co-movement of stocks can be
+characterized by the similarities in the signs and amplitudes of the returns for diﬀerent stocks. We
+denote the number of stocks in a sector by ns, thus ns = n/nsec. In the calculation of HM , we simply set
+ns = n. On each day t, according to the sign of ri(t), these stocks are grouped into two market trends,
+i.e., the rising and the falling. The amplitudes of the rising and falling trends on day t are deﬁned as
+v+(t) and v−(t), respectively,
+
+.
+
+(10)
+
+(cid:26) v+(t) =(cid:80)
+v−(t) =(cid:80)
+
+i,ri(t)>0 r2
+i,ri(t)<0 r2
+
+i (t)/ns
+i (t)/ns
+
+(cid:26) vd(t) = max{v+(t), v−(t)}
+
+vn(t) = min{v+(t), v−(t)} .
+
+The two trends are usually not in balance, and we suppose that these ns stocks are dominated by either of
+the two trends, according to the magnitudes of v+(t) and v−(t). The amplitude vd(t) of the dominating
+trend and the amplitude vn(t) of the non-dominating one are
+
+(11)
+
+We call the stocks grouped into the dominating trend the “dominating stocks”. The price co-movement
+is a common property for all the ns stocks, hence the total amplitude is vd(t) − vn(t). Besides, we take
+into consideration the similarity in the signs of the returns for these stocks. This similarity is deﬁned as
+the percentage of the dominating stocks. The number of the dominating stocks is denoted by nd(t), and
+the percentage is ζ(t) = nd(t)/ns. We take the average over time t for ζ(t) and vd(t) − vn(t), denoted
+
+respectively by (cid:104)ζ(t)(cid:105) and(cid:10)vd(t) − vn(t)(cid:11). Then, the co-movement degree HM and Hj are
+
+(cid:26) HM = (cid:104)ζ(t)(cid:105) ·(cid:10)vd(t) − vn(t)(cid:11)(cid:12)(cid:12)market
+Hj = (cid:104)ζ(t)(cid:105) ·(cid:10)vd(t) − vn(t)(cid:11)(cid:12)(cid:12)j-th sector
+
+.
+
+(12)
+
+Here |market and |j-th sector represent the calculations for the stocks in the whole market and in the j-th
+sector, respectively. These parameters for the NYSE and HKSE are shown in Table 1.
+
+Simulation of the model. The number of stocks is n = 150 and the number of sectors is nsec = 5,
+which are the same as those of the empirical data we collect for the NYSE and HKSE (Methods). We
+set the number of agents N to be 600, 000, and the maximum investment horizon L to be 1000 trading
+days (Methods).
+In our model, the investment horizons of 94 percent of agents are shorter than 500
+days (Methods), which is similar to the previous research15. Estimated from the historical market data
+and investment report, the buying or selling probability is P = 0.363 for the NYSE and P = 0.317 for
+
+6
+
+i(t) according to equation (1), and then DI
+
+the HKSE (Methods). With HM and Hj determined for the NYSE and HKSE respectively, our model
+produces the time series Ri(t) of each stock. The schematic diagram of the simulation procedure is
+displayed in Fig. 1(b):
+Initially, the returns of the ﬁrst L time steps are set to be 0 for all the n stocks. On day t, we calculate
+agents’ basis R(cid:48)
+i (t) according to equation (3) for each stock i.
+The agents in the i-th stock randomly join in one of the 1/DI
+i (t) I-groups. Next, the I-groups in the j-th
+sector join in one of the 1/DS
+j (t) S-groups, and then each S-group in the j-th sector joins in one of the
+1/DM
+j (t) M-groups. After the herding for these three levels, the agents in a same M-group make a same
+trading decision (buy, sell or hold) with the same probability (Pbuy, Psell or Phold). Thus the returns
+for each stock on day t are calculated with equation (8). The groups disband after their decisions are
+made. Repeating this procedure, we obtain the time series of returns for all the stocks in the market.
+For equilibration, the ﬁrst 10, 000 data points of returns are abandoned for each stock, and the length of
+the time series from simulation is the same as that of the empirical data.
+
+Simulation results.
+From the calculation for the simulated returns, we obtain the sector structure and volatility clustering.
+For each stock i, the volatility clustering is characterized by the auto-correlation function of volatilities2, 6,
+which is deﬁned as
+
+function of volatilities averaged over all stocks is A(t) =(cid:80)
+
+(13)
+i = (cid:104)|ri(t(cid:48))|2(cid:105)−(cid:104)|ri(t(cid:48))|(cid:105)2, and (cid:104)···(cid:105) represents the average over time t(cid:48). Thus, the auto-correlation
+i Ai(t)/n. As shown in Fig. 2, for both the
+
+Ai(t) = [(cid:104)|ri(t(cid:48))||ri(t(cid:48) + t)|(cid:105) − (cid:104)|ri(t(cid:48))|(cid:105)2]/A0
+i .
+
+Here A0
+
+NYSE and HKSE, A(t) for the simulations is in agreement with that for the empirical data.
+
+To characterize the spacial structure, we ﬁrst compute the equal-time cross-correlation matrix C 12, 29, 52,
+
+of which each element is
+
+Cij = (cid:104)ri(t)rj(t)(cid:105).
+
+(14)
+Here (cid:104)···(cid:105) represents the average over time t, and Cij measures the correlation between the returns of
+the i-th and j-th stocks. From the deﬁnition, C is a real symmetric matrix with Cii = 1, and the values
+of other elements Cij are in the interval [−1, 1]. The ﬁrst, second and third largest eigenvalues of C
+are denoted by λ0, λ1 and λ2, respectively. Now we focus on the components ui(λ) of the eigenvector
+for the three largest eigenvalues. The empirical result of the NYSE is displayed in Fig. 3(a). For λ0,
+the components of the corresponding eigenvector are relatively uniform. The eigenvectors of λ1 and λ2
+are dominated by sector (5) and sector (1) respectively, with the components signiﬁcantly larger than
+those in other sectors. These features are reproduced in our simulation, and the results are shown in
+Fig. 3(b). The empirical result of the HKSE is displayed in Fig. 4(a). The eigenvectors of λ1 and λ2
+are respectively dominated by sector (1) and sector (2), and these features are simulated by our model,
+shown in Fig. 4(b). For the HKSE, the scenario is somewhat complicated53, since a company in the
+HKSE usually runs various business. As a result, the components of the eigenvector of λ0 are not so
+uniform as those in the NYSE. The dominating sectors for λ1 and λ2 are less prominent, especially for
+λ2.
+
+Also, the distribution of the eigenvalues is calculated from the simulated returns. As displayed in
+Fig. 5, for the NYSE and HKSE, the bulk of the distribution of eigenvalues and the three largest eigen-
+values from the simulation are in agreement with those from the empirical data.
+
+Discussion
+
+In ﬁnancial markets, the sector structure and volatility clustering are respectively important features
+of the spatial and temporal correlations. However, the microscopic generation mechanism of the sector
+structure is not yet understood. Especially, how to produce these two features in one model remains
+challenging.
+
+7
+
+To investigate the sector structure combined with volatility clustering, we construct an agent-based
+model with a novel interaction mechanism, that is, the multi-level herding. The model is based on
+the individual and collective behaviors of investors in real markets. According to the previous market
+performance, agents trade in groups, and their herding behavior comprises the herding at stock, sector and
+market levels. The key parameters, HM and Hj, are introduced to characterize the price co-movement
+degrees for stocks in the whole market and in sector j, respectively. We propose methods to determine
+these parameters from historical market data rather than from statistical ﬁtting of the results. Other
+parameters L and P are also estimated from the empirical ﬁndings.
+
+With parameters determined for the NYSE and HKSE respectively, our model produces the corre-
+sponding time series of returns. From these time series, we obtain the sector structure and volatility
+clustering, as well as the eigenvalue distribution of the cross-correlation matrix C. These properties are
+in agreement with the empirical ones. Our results quantitatively reveal that the multi-level herding is
+the microscopic generation mechanism of the sector structure, and provide new insight into the spatio-
+temporal interactions in ﬁnancial systems at the microscopic level. The mechanism of the multi-level
+herding, including the concept of characterizing the price co-movement with parameters HM and Hj, can
+also be applied to other complex systems with similar community structures.
+
+Methods
+
+Data. Our data are obtained from “Yahoo! Finance” (http://ﬁnance.yahoo.com). We collect the daily
+data of closing prices of 150 large-cap stocks from 5 business sectors in the NYSE, i.e., the Basic Materials,
+Consumer Goods, Industrial Goods, Services and Utility, with 30 stocks from each sector. The data are
+from Jan., 1990 to Dec., 2006 with 4286 data points for every stock. For comparison, we also collect the
+daily closing price data of 150 stocks in the HKSE to form 5 sectors, with 30 stocks in each sector, and most
+of these stocks are large-cap stocks. The data are from Jan, 2003 to Sep., 2011 with 2146 data points for
+each stock. The sector structure of the HKSE is somewhat complicated53, since a company in the HKSE
+usually runs various business. According to the dominating stocks of eigenvectors of the cross-correlation
+matrix C, the sectors in the HKSE are not so strict as those in the NYSE, and may be composed of
+two business sectors. Speciﬁcally, the second sector comprises 14 stocks from the Conglomerates and 16
+stocks from the Industrial Goods. The third sector consists of 12 stocks from the Basic Materials and
+18 stocks from the Technology. The stocks in other three sectors are, respectively, from the Real Estate
+Development, Services and Consumer Goods.
+
+Parameter N and L. To simulate the properties of a real stock market, the number of agents N
+should not be too small, since we suppose that every agent operates only one share of a stock. We set
+N = 600, 000, i.e., 4000 agents holding a same stock on average. The simulation results are not sensitive
+to N . For example, we obtain almost the same results for N = 450, 000 or N = 750, 000. N has no
+inﬂuence on the sector structure and the eigenvalue distribution of the matrix C, and slightly aﬀects
+the amplitude of the auto-correlation function A(t) of volatilities averaged over stocks. The investment
+horizons of investors range from one day to more than one year54. Considering there could be some
+investors with long investment horizon in the stock market, we set L = 1000 trading days in our model.
+Thus according to the relative portion of investors, the investment horizons of 94 percent of agents are
+shorter than 500 days, suggesting that most agents do not estimate previous market performance over a
+too long time period. L aﬀects the temporal and spatial properties little. Similar with N , the simulation
+results are almost the same for, e.g., L = 800 or L = 1200.
+
+Determination of parameter P . We ﬁrst determine the daily buying, selling and holding probabil-
+ities of a single investor in a real market, which is denoted by pbuy, psell and phold respectively. pbuy and
+psell are supposed to be equal, i.e., pbuy = psell = p. The time series of returns of the 150 stocks in the
+NYSE are from Jan., 1990 to Dec., 2006. According to “The 2010 Institutional Investment Report”55,
+the average percentage of institutional holdings of shares in the top 1000 U.S. corporations during these
+
+8
+
+years is 60.3 percent (see Supplementary Information S2). There are two kinds of investors in stock
+markets, that is individual and institutional investors. The percentage of holding shares for the individ-
+ual investors is thus 39.7 percent. According to ref. 15, the yearly average ratio between the number of
+shares an investor trades and the number of shares he holds is 1.64. This ratio corresponds to the yearly
+average trading times of an investor. Since institutional investors contribute little of the trading times15,
+we ignore their trades. So the yearly trading times for an individual investor is 1.64/0.397 = 4.13. Since
+there are 250 trading days in every year, the daily trading probability is 4.13/250 = pbuy(t)+psell(t) = 2p.
+Therefore, p is 0.00826 for the NYSE. For the HKSE, the corresponding empirical data are not available
+to us, and we assume that p is 0.00826 as well.
+
+The agents in a same M-group are connected. We suppose that if one agent in the group decides
+to buy or sell the stock, the whole group would make the same decision.
+In the model, the average
+number of agents in an M-group is n · HM . Therefore, the buying or selling probability of an M-group is
+P = 1 − (1 − p)n·HM . Thus, P is 0.363 for the NYSE and 0.317 for the HKSE.
+
+References
+
+1. Mantegna, R. N. & Stanley, H. E. Scaling behaviour in the dynamics of an economic index. Nature
+
+376, 46–49 (1995).
+
+2. Gopikrishnan, P., Plerou, V., Amaral, L. A. N., Meyer, M. & Stanley, H. E. Scaling of the distri-
+
+bution of ﬂuctuations of ﬁnancial market indices. Phys. Rev. E 60, 5305 (1999).
+
+3. Liu, Y. et al. Statistical properties of the volatility of price ﬂuctuations. Phys. Rev. E 60, 1390
+
+(1999).
+
+4. Bouchaud, J. P., Matacz, A. & Potters, M. Leverage eﬀect in ﬁnancial markets: the retarded
+
+volatility model. Phys. Rev. Lett. 87, 228701 (2001).
+
+5. Tino, P., Schittenkopf, C. & Dorﬀner, G. Financial volatility trading using recurrent neural net-
+
+works. IEEE Trans. Neural Netw. 12, 865–874 (2001).
+
+6. Krawiecki, A., Ho(cid:32)lyst, J. A. & Helbing, D. Volatility clustering and scaling for ﬁnancial time series
+
+due to attractor bubbling. Phys. Rev. Lett. 89, 158701 (2002).
+
+7. Gabaix, X., Gopikrishnan, P., Plerou, V. & Stanley, H. E. A theory of power-law distributions in
+
+ﬁnancial market ﬂuctuations. Nature 423, 267–270 (2003).
+
+8. Sornette, D. Critical market crashes. Phys. Rep. 378, 1–98 (2003).
+
+9. Bonanno, G., Caldarelli, G., Lillo, F. & Mantegna, R. N. Topology of correlation-based minimal
+
+spanning trees in real and model markets. Phys. Rev. E 68, 046130 (2003).
+
+10. Johnson, N. F., Jeﬀeries, P. & Hui, P. M. Financial Market Complexity. (Oxford Univ. Press,
+
+Oxford, 2003)
+
+11. Qiu, T., Zheng, B., Ren, F. & Trimper, S. Return-volatility correlation in ﬁnancial dynamics. Phys.
+
+Rev. E 73, 065103 (2006).
+
+12. Shen, J. & Zheng, B. Cross-correlation in ﬁnancial dynamics. EPL 86, 48005 (2009).
+
+13. Zhao, L. et al. Herd behavior in a complex adaptive system. Proc. Nati. Acad. Sci. USA 108,
+
+15058–15063 (2011).
+
+9
+
+14. Preis, T., Schneider, J. J. & Stanley, H. E. Switching processes in ﬁnancial markets. Proc. Nati.
+
+Acad. Sci. USA 108, 7674–7678 (2011).
+
+15. Feng, L., Li, B., Podobnik, B., Preis, T. & Stanley, H. E. Linking agent-based models and stochastic
+
+models of ﬁnancial markets. Proc. Nati. Acad. Sci. USA 109, 8388–8393 (2012).
+
+16. Preis, T., Moat, H. S. & Stanley, H. E. Quantifying trading behavior in ﬁnancial markets using
+
+google trends. Sci. Rep. 3, 1684 (2013).
+
+17. Chen, J. J., Zheng, B. & Tan, L. Agent-based model with asymmetric trading and herding for
+
+complex ﬁnancial systems. PloS one 8, e79531 (2013).
+
+18. Jiang, X. F., Chen, T. T. & Zheng, B. Structure of local interactions in complex ﬁnancial dynamics.
+
+Sci. Rep. 4, 5321 (2014).
+
+19. Meng, H. et al. Systemic risk and spatiotemporal dynamics of the us housing market. Sci. Rep. 4,
+
+3655 (2014).
+
+20. Ding, Z., Granger, C. W. & Engle, R. F. A long memory property of stock market returns and a
+
+new model. J. Empir. Financ. 1, 83–106 (1993).
+
+21. Black, F. Studies of stock price volatility changes. Proceedings of the 1976 Meetings of the American
+
+Statistical Association, Business and Economical Statistics Section, 177–181 (1976).
+
+22. Glosten, L. R., Jagannathan, R. & Runkle, D. E. On the relation between the expected value and
+
+the volatility of the nominal excess return on stocks. J. Financ. 48, 1779–1801 (1993).
+
+23. Engle, R. F. & Ng, V. K. Measuring and testing the impact of news on volatility. J. Financ. 48,
+
+1749–1778 (1993).
+
+24. Zakoian, J. M. Threshold heteroskedastic models. J. Econ. Dyn. Control 18, 931–955 (1994).
+
+25. Shen, J. & Zheng, B. On return-volatility correlation in ﬁnancial dynamics. EPL 88, 28003 (2009).
+
+26. Tenenbaum, J. et al. Comparison between response dynamics in transition economies and developed
+
+economies. Phys. Rev. E 82, 046104 (2010).
+
+27. Erb, C. B., Harvey, C. R. & Viskanta, T. E. Forecasting international equity correlations. Financ.
+
+Anal. J. 50, 32–45 (1994).
+
+28. Solnik, B., Boucrelle, C. & Le Fur, Y. International market correlation and volatility. Financ. Anal.
+
+J. 52, 17–34 (1996).
+
+29. Laloux, L., Cizeau, P., Bouchaud, J. P. & Potters, M. Noise dressing of ﬁnancial correlation
+
+matrices. Phys. Rev. Lett. 83, 1467 (1999).
+
+30. Gopikrishnan, P., Rosenow, B., Plerou, V. & Stanley, H. E. Quantifying and interpreting collective
+
+behavior in ﬁnancial markets. Phys. Rev. E 64, 035106 (2001).
+
+31. Plerou, V. et al. Random matrix approach to cross correlations in ﬁnancial data. Phys. Rev. E 65,
+
+066126 (2002).
+
+32. Utsugi, A., Ino, K. & Oshikawa, M. Random matrix theory analysis of cross correlations in ﬁnancial
+
+markets. Phys. Rev. E 70, 026110 (2004).
+
+33. Pan, R. K. & Sinha, S. Collective behavior of stock price movements in an emerging market. Phys.
+
+Rev. E 76, 046116 (2007).
+
+10
+
+34. Podobnik, B., Wang, D., Horvatic, D., Grosse, I. & Stanley, H. E. Time-lag cross-correlations in
+
+collective phenomena. EPL 90, 68001 (2010).
+
+35. Jiang, X. F. & Zheng, B. Anti-correlation and subsector structure in ﬁnancial systems. EPL 97,
+
+48006 (2012).
+
+36. Lux, T. & Marchesi, M. Volatility clustering in ﬁnancial markets: A microsimulation of interacting
+
+agents. International Journal of Theoretical and Applied Finance 3, 675–702 (2000).
+
+37. Giardina, I., Bouchaud, J. P. & M´ezard, M. Microscopic models for long ranged volatility correla-
+
+tions. Physica A 299, 28–39 (2001).
+
+38. Challet, D., Marsili, M. & Zhang, Y. C. Stylized facts of ﬁnancial markets and market crashes in
+
+minority games. Physica A 294, 514–524 (2001).
+
+39. Ren, F., Zheng, B., Qiu, T. & Trimper, S. Score-dependent payoﬀs and minority games. Physica
+
+A 371, 649–657 (2006).
+
+40. Ma, W. J., Hu, C. K. & Amritkar, R. E. Stochastic dynamical model for stock-stock correlations.
+
+Phys. Rev. E 70, 026101 (2004).
+
+41. Bonabeau, E. Agent-based modeling: methods and techniques for simulating human systems. Proc.
+
+Nati. Acad. Sci. USA 99, 7280–7287 (2002).
+
+42. Evans, T. P. & Kelley, H. Multi-scale analysis of a household level agent-based model of landcover
+
+change. J. Environ. Manage. 72, 57–72 (2004).
+
+43. Ren, F., Zheng, B., Qiu, T. & Trimper, S. Minority games with score-dependent and agent-
+
+dependent payoﬀs. Phys. Rev. E 74, 041111 (2006).
+
+44. Farmer, J. D. & Foley, D. The economy needs agent-based modelling. Nature 460, 685–686 (2009).
+
+45. Schwarz, N. & Ernst, A. Agent-based modeling of the diﬀusion of environmental innovationsan
+
+empirical approach. Technol. Forecast. Soc. 76, 497–511 (2009).
+
+46. Eguiluz, V. M. & Zimmermann, M.G. Transmission of information and herd behavior: an applica-
+
+tion to ﬁnancial markets. Phys. Rev. Lett. 85, 5659–5662 (2000).
+
+47. Cont, R. & Bouchaud, J. P. Herd behavior and aggregate ﬂuctuations in ﬁnancial markets. Macroe-
+
+con. Dyn. 4, 170–196 (2000).
+
+48. Hwang, S. & Salmon, M. Market stress and herding. J. Empir. Financ. 11, 585–616 (2004).
+
+49. Zheng, B., Qiu, T. & Ren, F. Two-phase phenomena, minority games, and herding models. Phys.
+
+Rev. E 69, 046115–1 (2004).
+
+50. Kenett, D. Y. et al. Index cohesive force analysis reveals that the US market became prone to
+
+systemic collapses since 2002. PLoS one 6, e19378 (2011).
+
+51. Eisler, Z. & Kertesz, J. Liquidity and the multiscaling properties of the volume traded on the stock
+
+market. EPL 77, 28001 (2007).
+
+52. Plerou, V., Gopikrishnan, P., Rosenow, B., Amaral, L. A. N. & Stanley, H. E. Universal and
+nonuniversal properties of cross correlations in ﬁnancial time series. Phys. Rev. Lett. 83, 1471
+(1999).
+
+11
+
+53. Ouyang, F. Y., Zheng, B. & Jiang, X. F. Spatial and temporal structures of four ﬁnancial markets
+
+in greater china. Physica A 402, 236–244 (2014).
+
+54. Menkhoﬀ, L. The use of technical analysis by fund managers:
+
+international evidence. J. Bank.
+
+Financ. 34, 2573–2586 (2010).
+
+55. Tonello, M. & Rabimov, S. R. The 2010 institutional investment report: trends in asset allocation
+
+and portfolio composition. The Conference Board Research Report, No. R-1468-10-RR (2010).
+
+Acknowledgments
+
+This work was supported in part by NNSF of China under Grant Nos. 11375149 and 11075137, and
+Zhejiang Provincial Natural Science Foundation of China under Grant No. Z6090130.
+
+Author contributions
+
+J.J.C., L.T. and B.Z. conceived the study; J.J.C. and L.T. designed and performed the research; J.J.C.
+and L.T. performed the statistical analysis of the data; J.J.C., L.T. and B.Z. discussed the results and
+contributed to the text of the manuscript.
+
+Additional information
+
+Competing ﬁnancial interests: The authors declare no competing ﬁnancial interests.
+
+Figure 1. The schematic diagram of (a) the multi-level herding; (b) the procedure of
+simulation. (a) “I-herding”, “S-herding” and “M-herding” denotes the herding at stock level, sector
+level and market level, respectively.
+
+MarketM-groupsM-herdingS-groupsS-herdingI-groupsI-herdingAgentsStock1Stock2Stockn-1StocknSector 1SectornsecPreviousRi(t)Ri’(t)Multi-levelHerdingM-groupsbuy, sell or holdRi(t+1)ab12
+
+Figure 2. The average auto-correlation functions of volatilities for the NYSE and HKSE,
+and for the corresponding simulations. For clarity, the curves for the HKSE have been shifted
+down by a factor of 20.
+
+Figure 3. The absolute values of the eigenvector components ui(λ) corresponding to the
+three largest eigenvalues for the cross-correlation matrix C calculated from (a) the
+empirical data in the NYSE; (b) the simulated returns for the NYSE. Stocks are arranged
+according to business sectors separated by dashed lines. (1): Basic Materials; (2): Consumer Goods;
+(3): Industrial Goods; (4): Services; (5): Utility.
+
+100101102t (day)10-310-210-1100A(t)NYSE gSimulation00.20.40.60.8100.20.40.60.81HKSE gSimulation00.10.2|ui(0)|00.10.2|ui(1)|0306090120150Stock (i)00.10.2|ui(2)|(1)(2)(3)(4)(5)NYSE00.10.2|ui(0)|00.10.2|ui(1)|0306090120150Stock (i)00.10.2|ui(2)|(1)(2)(3)(4)(5)Simulationab13
+
+Figure 4. The absolute values of the eigenvector components ui(λ) corresponding to the
+three largest eigenvalues for the cross-correlation matrix C calculated from (a) the
+empirical data in the HKSE; (b) the simulated returns for the HKSE. Stocks are arranged
+according to business sectors separated by dashed lines. Sector (2) and (3) are composed of two
+business sectors, respectively (Methods). (1): Real Estate Development; (2): Conglomerates - Industrial
+Goods; (3): Basic Materials - Technology; (4): Services; (5): Consumer Goods.
+
+Figure 5. The probability distribution of the eigenvalues of the cross-correlation matrix C
+for the NYSE and HKSE, and for the corresponding simulations. The probability distribution
+of the three largest eigenvalues is shown in the inset. For the NYSE, the three largest eigenvalues are
+(λ0, λ1, λ2) = (26.01, 7.45, 5.13), in comparison with (24.62, 7.93, 3.82) for the simulation. For the
+HKSE, the three largest eigenvalues are (λ0, λ1, λ2) = (21.70, 3.06, 1.89), in comparison with (21.43,
+4.57, 2.97) for the simulation.
+
+00.10.2|ui(0)|00.10.2|ui(1)|0306090120150Stock (i)00.10.2|ui(2)|(1)(2)(3)(4)(5)HKSE00.10.2|ui(0)|00.10.2|ui(1)|0306090120150Stock (i)00.10.2|ui(2)|(1)(2)(3)(4)(5)Simulationab00.050.10.150.2NYSE gSimulation01234Eigenvalue00.050.10.15P()HKSE gSimulation010203000.01P()010203000.01P()Table 1. The values of parameters HM and Hj for the NYSE and HKSE. HM and Hj are
+introduced to characterize the price co-movement degrees for stocks in the whole market and in sector
+j, respectively. We determine these parameters from the historical market data for each stock exchange.
+
+HM
+NYSE 0.363
+HKSE 0.306
+
+H1
+0.491
+0.426
+
+H2
+0.414
+0.406
+
+H3
+0.438
+0.364
+
+H4
+0.431
+0.361
+
+H5
+0.546
+0.340
+
+14
+
+

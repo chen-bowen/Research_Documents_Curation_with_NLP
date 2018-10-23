@@ -1,0 +1,2323 @@
+Adjoints and automatic (algorithmic)
+
+diﬀerentiation in computational ﬁnance
+
+Cristian Homescu∗
+
+Revised version: May 8, 2011†
+
+Two of the most important areas in computational ﬁnance: Greeks and, respectively, calibration, are
+based on eﬃcient and accurate computation of a large number of sensitivities. This paper gives an overview
+of adjoint and automatic diﬀerentiation (AD), also known as algorithmic diﬀerentiation, techniques to cal-
+culate these sensitivities. When compared to ﬁnite diﬀerence approximation, this approach can potentially
+reduce the computational cost by several orders of magnitude, with sensitivities accurate up to machine
+precision. Examples and a literature survey are also provided.
+
+1
+1
+0
+2
+
+ 
+l
+u
+J
+ 
+
+0
+1
+
+.
+
+ 
+ 
+]
+P
+C
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+1
+3
+8
+1
+
+.
+
+7
+0
+1
+1
+:
+v
+i
+X
+r
+a
+
+∗Email address: cristian.homescu@gmail.com
+†Original version: May 1, 2011
+
+1
+
+Contents
+
+1 Introduction
+
+2 General description of the approach
+
+2.1 Single function . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.2 Composite functions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.3 Checking the correctness of the implementation . . . . . . . . . . . . . . . . . . . . . . . .
+
+3 Simple example
+
+3.1 Forward (tangent linear) mode
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.2 Adjoint (reverse) mode . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4 Example in PDE solver framework
+4.1 Forward (tangent linear) mode
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.2 Adjoint (reverse) mode . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5 Example in Monte Carlo framework (evolution of SDE)
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.1 Forward (tangent linear) mode
+5.2 Adjoint (reverse) mode . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+6 Example in Monte Carlo framework (copula)
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.1 Forward (tangent linear) mode
+6.2 Adjoint (reverse) mode . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+7 Example in calibration/optimization framework
+
+8 Computational ﬁnance literature on adjoint and AD
+
+8.1 Computation of Greeks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.2 Calibration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+9 AD and adjoint applied within a generic framework in practitioner quant libraries
+
+9.1 Block architecture for Greeks
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.2 Real Time Counterparty Risk Management in Monte Carlo . . . . . . . . . . . . . . . . .
+
+10 Additional resources
+
+11 Conclusion
+
+3
+
+4
+4
+5
+6
+
+7
+7
+8
+
+9
+9
+10
+
+11
+11
+13
+
+13
+14
+15
+
+16
+
+16
+16
+19
+
+19
+19
+20
+
+20
+
+20
+
+2
+
+1 Introduction
+
+Two of the most important areas in computational ﬁnance: Greeks and, respectively, calibration, are based
+on eﬃcient and accurate computation of a large number of sensitivities. This paper gives an overview of
+adjoint and automatic(algorithmic) diﬀerentiation techniques to calculate those sensitivities. While only
+recently introduced in the ﬁeld of computational ﬁnance, it was successfully employed in the last 20 years
+in other areas, such as computational ﬂuid dynamics, meteorology and atmospheric sciences, engineering
+design optimization, etc: [25, 27, 42, 40, 46, 47, 33, 61, 68], to mention but a few.
+
+The computation of the sensitivities is done by performing diﬀerentiation at either continuous level or,
+respectively, at discrete level. The “continuous” adjoint approach corresponds to the case where the adjoint
+equation is formulated at the diﬀerential equation level, and then discretized. In contrast, the “discrete”
+adjoint approach starts with discretized equations, and then formulates the corresponding discrete adjoint
+equations. Consequently, the continuous adjoint is also known under “diﬀerentiate then discretize” moniker,
+while the discreet adjoint corresponds to “discretize then diﬀerentiate” moniker.
+
+The discrete adjoint approach is preferred in many occasions, for several practical reasons:
+
+• constructing the discrete adjoint equations is a more straightforward and systematic process
+
+• Automatic Diﬀerentiation software can be employed to greatly reduce the development time
+
+For this reason we will concentrate in this paper on the discrete adjoint approach, and for ease of presen-
+tation we refer to it as the adjoint approach. However, since a few papers that are reviewed here are also
+based on continuous adjoint, we will make that information explicit when we refer to those papers, and
+use the abbreviation ContAdj for the “continuous adjoint” approach.
+
+Automatic Diﬀerentiation (AD), also known as Algorithmic Diﬀerentiation, is a chain-rule-based tech-
+nique for evaluating the derivatives with respect to the input variables of functions deﬁned by a high-level
+language computer program. AD relies on the fact that all computer programs, no matter how compli-
+cated, use a ﬁnite set of elementary (unary or binary, e.g. sin(·), sqrt(·)) operations as deﬁned by the
+programming language. The value or function computed by the program is simply a composition of these
+elementary functions. The partial derivatives of the elementary functions are known, and the overall
+derivatives can be computed using the chain rule.
+
+AD has two basic modes of operations, the forward mode and the reverse mode. In the forward mode
+the derivatives are propagated throughout the computation using the chain rule, while the reverse mode
+computes the derivatives for all intermediate variables backwards (i.e., in the reverse order) through the
+computation. In the literature, AD forward mode is sometimes referred to as tangent linear mode, while
+AD reverse mode is denoted as adjoint mode.
+
+The adjoint method is advantageous for calculating the sensitivities of a small number of outputs with
+respect to a large number of input parameters. The for- ward method is advantageous in the opposite
+case, when the number of outputs (for which we need sensitivities) is larger compared to the number of
+inputs.
+
+When compared to regular methods (such as ﬁnite diﬀerencing) for computing sensitivities, AD has 2
+main advantages: reduction in computational time and accuracy. The reduction in computational time is
+assured by a theoretical result [43]that states that the cost of the reverse mode is smaller than ﬁve times
+the computational cost of a regular run. The computational cost of the adjoint approach is independent
+of the number of inputs for which we want to obtains the sensitivities with respect to, whereas the cost
+of thetangent linear approach increases linearly with the number of inputs. Regarding accuracy, AD
+computes the derivatives exactly (up to machine precision) while ﬁnite diﬀerences incur truncation errors.
+
+3
+
+The size of the step h needed for ﬁnite diﬀerence varies with the current value of of input parameters,
+making the problem of choosing h, such that it balances accuracy and stability, a challenging one. AD on
+the other hand, is automatic and time need not be spent in choosing step-size parameters, etc.
+
+AD software packages can also be employed to speed up the development time. Such tools implement
+the semantic transformation that systematically applies the chain rule of diﬀerential calculus to source
+code written in various programming languages. The generated code can operate in forward or reverse
+mode (tangent linear or adjoint model).
+
+2 General description of the approach
+
+Let us assume that we have a model dependent on a set of input parameters which produces an output Y.
+We also denote by Z = {X1, X2, ..., XN } the vector of input parameters with respect to which we want to
+compute sensitivities.
+
+2.1 Single function
+
+We assume we have a single function of the model output, denoted F (Y ). The goal is to obtain sensitivities
+of F with respect to the components of Z.
+
+Computation of the vector of sensitivities
+
+˙F =
+
+∂F
+∂Z
+
+=
+
+∂F
+∂X1
+
+˙X1 + · · · +
+
+∂F
+∂XN
+
+˙XN
+
+(2.1)
+
+is done using the forward (tangent linear) mode. If we include the trivial equations ˙X1 = ˙X1, · · · ,
+˙XN =
+˙XN , then we can rewrite the combined expressions in matrix notation. This will prove helpful when
+constructing the adjoint mode, using the fact that adjoint of a matrix A is deﬁned as its conjugate
+transpose (or simply the transpose, if the matrix A has only real elements)
+
+˙X1
+. . .
+˙XN
+˙F
+
+
+
+
+
+
+
+=
+
+
+
+
+1
+. . .
+0
+∂F
+∂X1
+
+. . .
+. . .
+. . .
+. . .
+
+0
+. . .
+1
+∂F
+∂XN
+
+
+
+
+
+
+
+˙X1
+. . .
+˙X1
+
+
+
+
+(2.2)
+
+To compute each component of the vector ∂F
+
+∂Z we need to evaluate the expression (2.1) a number of N
+times, every time with a diﬀerent input vector ˙Z = n ˙X1, . . . ,
+˙XNo .For example, to compute the derivative
+with respect to Xj, the vector ˙Z has the value ˙Z = (0, 0, . . . , 1, 0, . . . , 0), with the only nonzero element
+in the j − th position.
+
+To construct the reverse (adjoint) mode, we start with the transposed matrix equation (2.2) With the
+
+notation of ¯A for the adjoint variable corresponding to an original variable A, we have
+
+¯X1
+. . .
+¯XN
+
+
+
+
+ = 
+
+
+
+1
+. . .
+0
+
+. . .
+. . .
+. . .
+
+0
+. . .
+1
+
+∂F
+∂X1
+. . .
+∂F
+∂XN
+
+¯X1
+. . .
+¯XN
+¯F
+
+
+
+
+
+
+
+
+
+
+4
+
+Consequently, we obtain the following expressions
+
+∂F
+∂X1
+
+¯X1 = ¯X1 +
+. . .
+. . .
+¯XN = ¯XN +
+
+. . .
+
+¯F
+
+(2.3)
+
+∂F
+∂XN
+
+¯F
+
+Thus we can obtain the sensitivities in one single run of (2.3), with ¯F = 1 and the adjoint variables
+
+¯X1, . . . , ¯XN initialized to zero.
+
+2.2 Composite functions
+
+We can generalize this procedure if the output is obtained through evaluation of a composite function of
+P single functions (which is in fact how the computer codes are represented):
+
+F = F P ◦ F P −1 ◦ · · · ◦ F 1(Z)
+
+We apply the tangent linear mode to each F j, and we combine them in the recursion relationship. For
+the adjoint (reverse mode), we construct the adjoint for each F j, and we combine them in reverse order.
+Let us describe the process using the matrix notation. If we view the tangent linear as the result of the
+
+multiplication of a multiplication of a number of operator matrices
+
+M AT = M at1 · M at2 · · · M atP
+
+where each matrix M atj represents either a subroutine or a single statement, then the adjoint approach
+
+can be viewed as a product of adjoint subproblems
+
+M atT = M atT
+
+P · M atT
+
+P −1 · · · M atT
+1
+
+Let us describe how it works through an example for P=2. The computational ﬂow is described by the
+
+following diagram
+
+Z → F 1(Z) → F 2(cid:0)F 1(Z)(cid:1) → Y
+
+For simplicity, we denote by A the output of F 1(Z) and by B the output of F 2(cid:0)F 1 (Z)(cid:1) . Y is the
+
+scalar that is the ﬁnal output. For example, Y can be the value of the function to be calibrated (in the
+calibration setup) or, respectively, the price of the option (in the pricing setup, e..g. using Monte Carlo
+or ﬁnite diﬀerences). With these notations, we have
+
+Applying tangent linear methodology (essentially diﬀerentiation line by line) we have
+
+Z → A → B → Y
+
+˙A =
+
+˙B =
+
+˙Y =
+
+∂A
+∂Z
+∂B
+∂A
+∂Y
+∂B
+
+˙Z
+
+˙A
+
+˙B
+
+5
+
+Putting everything together, we get
+
+˙Y =
+
+∂Y
+∂B
+
+∂B
+∂A
+
+∂A
+∂Z
+
+˙Z
+
+Using notation from AD literature, the adjoint quantities ¯Z, ¯A, ¯B, ¯Y denote the derivatives of Y with
+respect to Z, A, B and, respectively, to Y . We note that this implies that ¯Y = 1. Diﬀerentiating again,
+and with a superscript T denoting a matrix or vector transpose, we obtain
+
+¯Z = (cid:18) ∂Y
+
+∂Z(cid:19)T
+
+= (cid:18) ∂Y
+
+∂A
+
+∂A
+
+∂Z(cid:19)T
+
+∂Z(cid:19)T
+= (cid:18) ∂A
+
+¯A
+
+In a similar way, we obtain
+
+∂A(cid:19)T
+¯A = (cid:18)∂Y
+∂B(cid:19)T
+¯B = (cid:18) ∂Y
+
+Putting everything together, we get
+
+∂B
+
+∂B
+
+= (cid:18) ∂Y
+= (cid:18) ∂Y
+
+∂A(cid:19)T
+∂B(cid:19)T
+
+= (cid:18) ∂B
+· 1 = (cid:18) ∂Y
+
+∂A(cid:19)T
+∂B(cid:19)T
+
+¯B
+
+¯Y
+
+¯Z = (cid:18) ∂A
+
+∂Z(cid:19)T (cid:18)∂B
+
+∂A(cid:19)T (cid:18) ∂Y
+
+∂B(cid:19)T
+
+¯Y
+
+We notice that the tangent linear approach proceeds forward (in forward mode)through the process
+
+˙Z → ˙A → ˙B → ˙Y
+
+while the adjoint approach proceeds backwards (in reverse mode)
+
+¯Y → ¯B → ¯A → ¯Z
+
+2.3 Checking the correctness of the implementation
+
+There are several checks that need to be made [61, 4, 39].
+
+First, at any level of the code, the development of the discrete adjoint model can be checked by appling
+
+the following identity
+
+(AQ)T (AQ) = QT (cid:2)AT (AQ)(cid:3)
+
+where Q represents the input to original code, and A represents either a single statement or a subroutine
+We compare the gradient computed using AD to the gradient computed by Finite Diﬀerence (with a
+step size such that suﬃcient convergence is obtained). We also compare the gradient computed using AD
+in Forward mode versus the gradient computed using AD in Adjoint mode. We expect those two gradients
+to be identical up to machine precision.
+
+If possible, we may use complex numbers [39, 66], to avoid roundoﬀ errors due to computations with
+
+ﬁnite diﬀerence.
+
+6
+
+3 Simple example
+
+We want to compute the gradient of the function f (a, b, c) = (w − w0)2, where w is obtained using the
+following sequence of statements
+
+u = sin (ab) + cb2 + a3c2
+
+v = exp(cid:0)u2 − 1(cid:1) + a2
+w = ln(cid:0)v2 + 1(cid:1) + cos(cid:0)c2 − 1(cid:1)
+
+The input vector is denoted by by z = {a, b, c}, intermediate variables u, w, v and output f .
+We show how the sensitivities with respect to a,b,c, namely
+
+∂f
+∂a
+
+,
+
+∂f
+∂b
+
+,
+
+∂f
+∂c
+
+are computed in both forward and adjoint mode. For forward mode we also write the expressions in matrix
+notation, to make it easier to understand how the adjoint mode is constructed.
+
+3.1 Forward (tangent linear) mode
+
+We follow the computational ﬂow, and thus we start by getting the sensitivities with respect to the
+intermediate variables, denoted by ˙u, ˙v, ˙w
+
+˙u =
+
+˙a +
+
+∂u
+∂b
+
+∂u
+∂a
+
+∂u
+∂c
+= b cos(ab) + 3a2c2
+
+˙b +
+
+˙c
+
+∂u
+∂a
+∂u
+∂b
+∂u
+∂c
+
+= a cos(ab) + 2cb
+
+= b2 + 2a3c
+
+Hence we obtain
+
+In matrix notation
+
+˙u = (cid:2)b cos(ab) + 3a2c2(cid:3) ˙a + [a cos(ab) + 2cb] ˙b +(cid:2)b2 + 2a3c(cid:3) ˙c
+
+
+
+
+˙a
+˙b
+˙c
+˙u
+
+
+
+
+=
+
+
+
+
+1
+0
+0
+
+0
+1
+0
+
+0
+0
+1
+
+b cos(ab) + 3a2c2 a cos(ab) + 2cb
+
+b2 + 2a3c
+
+
+
+
+
+
+
+˙a
+˙b
+˙c
+
+
+
+
+In a similar way we obtain
+
+˙v = 2u exp(cid:0)u2 − 1(cid:1) ˙u + 2a ˙a
+˙v − 2c sin(cid:0)c2 − 1(cid:1) ˙c
+
+v2 + 1
+
+˙w =
+
+2v
+
+˙f = 2 (w − w0) ˙w
+
+7
+
+In matrix notation
+
+( ˙v) = (cid:0) 2a 2u exp(cid:0)u2 − 1(cid:1) (cid:1)(cid:18) ˙a
+˙u (cid:19)
+v2+1 (cid:1)(cid:18) ˙c
+˙v (cid:19)
+( ˙w) = (cid:0) −2c sin(cid:0)c2 − 1(cid:1)
+(cid:16) ˙f(cid:17) = (2 (w − w0)) ( ˙w)
+
+2v
+
+To obtain the required sensitivity with respect to j − th component of input vectorz, we evaluate the
+above expressions starting with ˙z which has the j − th component set to 1 and all the other components
+set to 0.
+
+More speciﬁcally, the sensitivities at a given set of variables z(0) = (cid:8)a(0), b(0), c(0)(cid:9) are computed by
+
+calling the forward mode with the initial value ˙z deﬁned as follows:
+
+∂f
+
+∂f
+
+∂a (cid:16)z(0)(cid:17) = ˙f
+∂b (cid:16)z(0)(cid:17) = ˙f
+∂c (cid:16)z(0)(cid:17) = ˙f
+
+∂f
+
+computed with ˙z = (cid:16) ˙a, ˙b, ˙c(cid:17) = (1, 0, 0)
+computed with ˙z = (cid:16) ˙a, ˙b, ˙c(cid:17) = (0, 1, 0)
+computed with ˙z = (cid:16) ˙a, ˙b, ˙c(cid:17) = (0, 0, 1)
+
+3.2 Adjoint (reverse) mode
+
+To write the Adjoint, we need to take statements in reverse order. Employing this approach to the
+statements of the forward mode yields
+
+2v
+
+(cid:19) ( ¯w)
+2u exp(u2 − 1) (cid:19) (¯v)
+
+( ¯w) = (2 (w − w0))(cid:0) ¯f(cid:1)
+¯v (cid:19) = (cid:18) −2c sin(c2 − 1)
+(cid:18) ¯c
+(cid:18) ¯a
+¯u (cid:19) = (cid:18)
+
+
+ = 
+
+
+
+v2+1
+2a
+
+1 0 0 b cos(ab) + 3a2c2
+0 1 0
+a cos(ab) + 2cb
+0 0 1
+
+b2 + 2a3c
+
+¯a
+¯b
+¯c
+
+
+
+
+
+
+
+¯a
+¯b
+¯c
+¯u
+
+
+
+
+Thus the adjoint (reverse) mode is constructed using the following sequence of statements
+
+(3.1)
+
+¯w = 2 (w − w0) ¯f
+¯c = −2c sin(c2 − 1) ¯w
+
+¯v =
+
+2v
+
+v2 + 1
+
+¯w
+
+¯a = 2a¯v
+¯u = 2u exp(u2 − 1)¯v
+¯a = ¯a + (b cos(ab) + 3a2c2)¯u
+¯b = ¯b + (a cos(ab) + 2cb)¯u
+¯c = ¯c + (b2 + 2a3)c¯u
+
+8
+
+We can compute all 3 sensitivities of function f with respect to a, b, c by a single application of the
+
+adjoint mode (3.1), with starting point ¯z = 1. More speciﬁcally, we have
+
+∂f
+
+∂f
+
+∂a (cid:16)z(0)(cid:17) = ¯a computed with ¯a = 1
+∂b (cid:16)z(0)(cid:17) = ¯b
+computed with ¯b = 1
+∂c (cid:16)z(0)(cid:17) = ¯c
+
+computed with ¯c = 1
+
+∂f
+
+The reader is encouraged to verify that the gradient computed via the Forward mode or, respectively,
+
+the Reverse mode has identical value.
+
+4 Example in PDE solver framework
+
+The following PDE is considered for u(t, x), on the spatial domainA ≤ x ≤ B
+
+= ∂u
+∂x
+
+∂u
+∂t
+u(0, x) = u0(x)
+u(t, A) = f (t)
+u(t, B) = g(t)
+
+
+
+
+We discretize the PDE in space and time, for a spatial grid {xj}and time grid (cid:8)T k(cid:9) .We use notation
+
+of superscript for time index and subscript for spatial index. For simplicity of exposition, we discretize
+using a central diﬀerence scheme in space, a ﬁrst order scheme in time, and we consider that both spatial
+grid and, respective, temporal grid are constant, with ∆x and ∆t
+
+uk+1
+j = uk
+
+j +
+
+∆t
+
+2∆x (cid:16)uk
+
+j+1 − 2uk
+
+j (cid:17)
+j + uk−1
+
+We denote by c the ratio ∆t
+
+2∆x . With that, and incorporating the boundary conditions, we have
+
+uk+1
+1
+uk+1
+j
+uk+1
+N
+
+= f (T k+1) , fk+1
+= uk
+
+j + c(cid:16)uk
+
+= g(T k+1) , f gk+1
+
+j+1 − 2uk
+
+j + uk−1
+
+j (cid:17) j = 2...N
+
+We want to minimize the diﬀerence F , PN
+We want to compute sensitivities of F with respect to the discretized initial condition nu0
+
+, with Yj desired values to get at time T
+
+jo ,where
+
+j=1(cid:16)uM
+
+j − Yj(cid:17)2
+
+u0
+j
+
+, u0(xj)
+
+4.1 Forward (tangent linear) mode
+
+The tangent linear approach has the expression
+
+˙uk+1
+j = (1 − 2c) ˙uk
+
+j + c(cid:16) ˙uk
+
+j+1 + ˙uk
+
+j−1(cid:17)
+
+j = 2...N
+
+9
+
+In matrix notation
+
+˙uk+1
+1
+. . .
+˙uk+1
+j−1
+˙uk+1
+j
+˙uk+1
+j+1
+. . .
+˙uk+1
+N
+
+
+
+
+
+
+
+
+
+=
+
+0
+c
+. . .
+. . .
+. . .
+. . .
+0
+
+
+
+
+
+. . .
+
+1 − 2c
+
+. . .
+0
+. . .
+. . .
+. . .
+
+. . .
+c
+. . .
+c
+. . .
+. . .
+. . .
+
+. . .
+. . .
+. . .
+
+1 − 2c
+
+. . .
+. . .
+. . .
+
+. . .
+. . .
+. . .
+c
+. . .
+c
+. . .
+
+. . .
+. . .
+. . .
+. . .
+. . .
+
+1 − 2c
+
+. . .
+
+0
+. . .
+. . .
+. . .
+. . .
+c
+0
+
+
+
+
+
+
+
+
+
+˙uk
+1
+. . .
+˙uk
+j−1
+˙uk
+j
+˙uk
+j+1
+. . .
+˙uk
+N
+
+
+
+
+
+The last step is
+
+˙F = 2(cid:0)uM
+
+1 − Y1(cid:1) ˙uM
+
+1 + · · · + 2(cid:0)uM
+
+j − Yj(cid:1) ˙uM
+
+j + · · · + 2(cid:0)uM
+
+N − YN(cid:1) ˙uM
+
+N
+
+In matrix notation
+
+(cid:16) ˙F(cid:17) = (cid:16) 2(cid:0)uM
+
+1 − Y1(cid:1) . . .
+
+2(cid:16)uM
+
+j − Yj(cid:17) . . .
+
+2(cid:0)uM
+
+N − YN(cid:1) (cid:17)
+
+˙uM
+1
+. . .
+˙uM
+j
+. . .
+˙uM
+N
+
+
+
+
+
+
+
+
+
+4.2 Adjoint (reverse) mode
+
+We go backwards. and the starting point is (4.2). The corresponding adjoint statements are
+
+(4.1)
+
+(4.2)
+
+. . .
+
+. . .
+
+¯uk
+. . .
+¯uM
+j
+. . .
+¯uM
+
+1 = 2(cid:0)uM
+= 2(cid:0)uM
+N = 2(cid:0)uM
+
+1 − Y1(cid:1)
+j − Yj(cid:1) ¯F
+N − YN(cid:1) ¯F
+
+. . .
+
+. . .
+
+Then we take the transpose of the matrix operator in (4.1). The corresponding adjoint statements are,
+
+for k = M, M − 1, . . . , 1, 0
+
+2 + c¯uk+1
+
+3
+
+j−1 + (1 − 2c)¯uk+1
+
+j + c¯uk+1
+j+1
+
+2
+
+. . .
+
+. . .
+
+1 = c¯uk+1
+¯uk
+2 = (1 − 2c)¯uk+1
+¯uk
+. . .
+j = c¯uk+1
+¯uk
+. . .
+N −1 = c¯uk+1
+¯uk
+N = c¯uk+1
+¯uk
+
+. . .
+
+. . .
+
+N −2 + (1 − 2c)¯uk+1
+
+N −1
+
+N
+
+The required sensitivities are given by ¯u0
+
+j , for j = 1...N
+
+10
+
+5 Example in Monte Carlo framework (evolution of SDE)
+
+We consider the SDE for a N-dimensional X vector
+
+dX = a(X, t)dt + σ(X, t)dW
+
+The initial value for X, at time t=0, is denoted byX 0 = (cid:0)X1(T 0(cid:1) , ..., XN (T 0))
+
+For simplicity of exposition, we consider that we discretize it using Euler-Maruyama scheme, with time
+
+points T k, k = 1...M and T 0 = 0
+
+X(T k+1) − X(T k) = a(X(T k), T k)∆t + σ(X(T k), T k)∆W k
+
+∆T k = T k+1 − T k
+∆W k = ε ·pT k+1 − T k
+
+where the random number is chosen from N (0,1)
+We can recast this discretization scheme into the following expression
+
+X(T k+1) = Φ(X(T k), Θ)
+
+(5.1)
+
+where Φ may also depend on a set of model parameters Θ = {θ1, ..., θP }
+We also consider that we have to price an option with payoﬀ G(X(T ))
+We want to compute price sensitivities (“Greeks”) with respect to X 0 and, respectively, to the model
+
+parameters Θ
+
+5.1 Forward (tangent linear) mode
+
+We consider ﬁrst the sensitivities with respect to initial conditions
+
+∂G(X(T ))
+∂Xi(T 0)
+
+=
+
+N
+
+Xj=1
+
+∂G(X(T ))
+
+∂Xj(T )
+
+∂Xj(T )
+∂Xi(T 0)
+
+=
+
+N
+
+Xj=1
+
+∂G(X(T ))
+
+∂Xj(T )
+
+∆ij(T 0, T )
+
+(5.2)
+
+where we have used notation ∆ij(T 0, T k) , ∂Xj(T k)
+∂Xi(T 0)
+We rewrite (5.2) in vector matrix notation
+
+∂X(T 0) (cid:21)T
+(cid:20) ∂G(X(T ))
+
+∂X(T ) (cid:21)T
+= (cid:20) ∂G(X(T ))
+
+· ∆(T 0, T )
+
+For simplicity we write the previous relationship in the following format, using the fact that T M = T
+
+(cid:20) ∂G
+
+∂X
+
+[0](cid:21)T
+
+= (cid:20) ∂G
+
+∂X
+
+[M ](cid:21)T
+
+· ∆[M ]
+
+where the superscript T denotes the transpose
+Diﬀerentiating (5.1) yields
+
+∂X (cid:0)T k+1(cid:1)
+
+∂X (T k)
+
+=
+
+∂X (T k)
+
+∂Φ(cid:0)X(T k), Θ(cid:1)
+∂X (cid:0)T k(cid:1)
+
+∂X (T 0)
+
+⇒
+
+∂X (cid:0)T k+1(cid:1)
+
+∂X (T 0)
+
+=
+
+∂X (cid:0)T k+1(cid:1)
+
+∂X (T k)
+
+=
+
+∂Φ(X(T k),Θ)
+
+∂X(T k)
+
+∂X(T k)
+∂X(T 0) = D[k]
+
+∂X (cid:0)T k(cid:1)
+
+∂X (T 0)
+
+(5.3)
+
+11
+
+where D[k] , ∂Φ(X(T k),Θ)
+We rewrite (5.3) as
+
+∂X(T k)
+
+Then we have an iterative process
+
+∆[k + 1] = D[k] · ∆[k]
+
+(cid:20) ∂G
+
+∂X
+
+[0](cid:21)T
+
+∂X
+
+∂X
+
+= (cid:20) ∂G
+= (cid:20) ∂G
+= (cid:20) ∂G
+= (cid:20) ∂G
+
+∂X
+
+∂X
+
+[M ](cid:21)T
+[M ](cid:21)T
+[M ](cid:21)T
+[M ](cid:21)T
+
+· ∆[M ] = (cid:20) ∂G
+
+∂X
+
+[M ](cid:21)T
+
+· D[M − 1] · ∆[M − 1]
+
+(5.4)
+
+· D[M − 1] · D[M − 2] · ∆[M − 2] = . . .
+
+· D[M − 1] · · · · D[1] · ∆[1]
+
+· D[M − 1] · · · · D[0] · ∆[0]
+
+The matrix ∆[0] is the identity matrix, since
+
+∆[0] = (cid:18) ∂Xj (T 0)
+
+∂Xk(T 0)(cid:19)jk
+
+=
+
+1
+· · ·
+· · ·
+0
+
+
+
+
+· · ·
+· · ·
+· · ·
+· · ·
+
+· · ·
+· · ·
+1
+0
+
+0
+· · ·
+0
+1
+
+
+
+
+(5.5)
+
+The iterations in (5.4) employ matrix-matrix product. We will see later that the adjoint mode will
+
+involve matrix-vector product instead, which will oﬀer important computational savings.
+
+Now we move to the sensitivities with respect to model parameters
+
+∂G(X(T ))
+
+∂θp
+
+=
+
+N
+
+Xj=1
+
+∂G(X(T ))
+
+∂Xj(T )
+
+∂Xj(T )
+
+∂θp
+
+=
+
+N
+
+Xj=1
+
+∂G(X(T ))
+
+∂Xj (T )
+
+Ψjp(T )
+
+where we have used notation Ψjp(T k) , ∂Xj(T k)
+Diﬀerentiating (5.1) with respect to parameters yields
+
+∂θp
+
+∂X (cid:0)T k+1(cid:1)
+
+∂Θ
+
+=
+
+∂Φ(cid:0)X(T k), Θ(cid:1)
+
+∂X (T k)
+
+∂X(T k)
+
+∂Θ
+
++
+
+∂Φ(cid:0)X(T k), Θ(cid:1)
+
+∂Θ
+
+(5.6)
+
+(5.7)
+
+Making the notations D[k] , ∂Φ(X(T k),Θ)
+
+∂X(T k)
+
+and B[k] , ∂Φ(X(T k),Θ)
+
+∂Θ
+
+for the corresponding matrices, we
+
+rewrite (5.7) as
+
+Then we have an iterative process
+
+Ψ[k + 1] = D[k] · Ψ[k] + B[k]
+
+(cid:20) ∂G(X(T ))
+
+∂Θ
+
+∂X(T ) (cid:21)T
+= (cid:20) ∂G(X(T ))
+
+∂X(T ) (cid:21)T
+· Ψ[M ] = (cid:20) ∂G(X(T ))
+
+· (D[M − 1] · Ψ[M − 1] + B[M − 1])
+
+(5.8)
+
+(cid:21)T
+∂X(T ) (cid:21)T
+= (cid:20) ∂G(X(T ))
+∂X(T ) (cid:21)T
+= (cid:20) ∂G(X(T ))
+
+· (D[M − 1] · (D[M − 1] · Ψ[M − 1] + B[M − 1]) + B[M − 1]) = · · · =
+
+· (B[M − 1] + D[M − 1] · B[N − 2] + · · · + D[M − 1] · · · D[1] · B[0])
+
+12
+
+5.2 Adjoint (reverse) mode
+
+We construct ﬁrst the adjoint for computing the sensitivities with respect to initial condition. We start
+with the adjoint equation
+
+V [k] = DT [k] · V [k + 1]
+
+(5.9)
+
+where the superscript T denotes the transpose
+In a recursive manner we obtain
+
+V [0] = DT [0] · V [1] = DT [0] · DT [1] · V [2] = · · · = DT [0] · DT [1] · · · · DT [M − 1] · V [M ]
+
+(5.10)
+
+By taking transpose of (5.10) we have
+
+V T [0] = V T [M ] · D[M − 1] · D[M − 2] · · · · D[1] · D[0]
+
+(5.11)
+
+We set V [M ] to the value (cid:0) ∂G
+
+∂X [M ](cid:1)T
+
+and we combine (5.11) and (5.4), which gives
+
+∂G
+∂X
+
+[0] = V T [0] · ∆[0]
+
+But the matrix ∆[0] is the identity matrix, according to 5.5
+Thus we obtain the sensitivities with respect to initial conditions, namely ∂G
+
+∂X [0] by applying the recursive
+relationship (5.11) to ﬁnd V T [0]. We note that the product in this iterative process is of the matrix-vector
+type, not matrix-matrix as it was for tangent linear mode
+
+Now we move to sensitivities with respect to model parameters
+We use again the adjoint equation (5.9). With same initial condition for V [M ] , namely V [M ] =
+
+∂X [M ](cid:1)T
+(cid:0) ∂G
+
+, and evolving from time T M −k to time T M we have that
+
+∂G(X(T ))
+
+∂Θ
+
+· D[M − 1] · D[M − 2] · · · · D[M − k] · B[M − k − 1] = V [M − k]
+
+Thus we can rewrite (5.8) as
+
+∂G(X(T ))
+
+∂Θ
+
+=
+
+M −1
+
+Xk=0
+
+V T [k + 1] · B[k]
+
+(5.12)
+
+The values of adjoint vectors V [k] were computed as part of the adjoint approach for sensitivities with
+
+respect to initial conditions.
+
+The values of B[k] can be precomputed. We may be able to compute them analytically (e.g., if the
+parameters are volatilities and vol surface is assumed to have a certain parametric representation, such as
+cubic spline), otherwise we can employ the adjoint procedure.
+
+6 Example in Monte Carlo framework (copula)
+
+We follow a procedure similar to the one described in [20]
+
+Let us describe the setup. We have a state vector X of N components, an instrument with a payoﬀ
+P (X), and the probability distribution Q(X) according to which the components of X are distributed.
+For simplicity we consider a N-dimensional Gaussian copula to model the co-dependence between the
+components of the state vector, namely a joint cumulative density function of the form
+
+ΦN [Φ1 (ϕ1 (X1) , · · · , ϕN (XN )) ; ρ]
+
+13
+
+where ΦN [Z1, · · · , ZN ; ρ] is a N-dimensional multivariate Gaussian distribution with zero mean and
+a correlation matrix ρ, Φ−1 is the inverse of the standard normal cumulative distribution and ϕi (Xi),
+i=1...N are the marginal distributions of the underlying components.
+
+The option value is obtained through averaging of Monte Carlo sampling
+
+V =
+
+1
+
+NM C
+
+NM C
+
+Xj=1
+
+P (cid:16)X(i)(cid:17)
+
+where the superscript (i) denotes the i−th Monte Carlo path.
+The sampling of the N jointly distributed normal random variables (Z1, Z2, · · · , ZN ) can be done using
+several approaches, such as Cholesky factorization, spectral or singular value decomposition. We select
+Cholesky factorization
+
+ρ = C · C T because it will enable us to use an existing procedure for its adjoint. Starting from a vector
+ˆZ of independent standard normal variables, we obtain a vector Zof jointly normal random variables
+distributed according to ΦN [Z1, · · · , ZN ; ρ] through the product
+
+Z = C · ˆZ
+
+We also use the following:
+
+• if Zi is sampled from a standard normal distribution then Φ (Zi) is in U [0,1]
+
+• if Xi is distributed according to marginal distribution ϕi, then ϕ (Xi) is in U [0,1]
+
+Then Xi = ϕ−1 (Φ (Zi)) is distributed according to marginal distribution ϕi
+
+Therefore we have the following algorithm [20]
+
+1. Generate a vector Ξ of independent standard normal variables
+
+2. Correlate the components through Z = C · Ξ
+
+3. Set Ui = Φ (Zi) , i = 1...N
+
+4. Set Xi = ϕ−1
+
+i
+
+(Φ (Zi)) = ϕ−1 (Ui) , i = 1...N
+
+5. Calculate the payoﬀ estimator P (X1, ..., XN )
+
+We now show how sensitivities can be computed in this setup.
+
+The correlation matrix is an input to the procedure, so we may compute correlation risk, i.e., sensitivities
+
+of the price with respect to entries in the correlation matrix
+
+These marginal distributions may be obtained from a set of N M ARG discrete call, put, digital call
+and digital put values (which may be given as corresponding implied volatilities).We may also compute
+sensitivities with respect to those inputs, denoted by ̟j, j = 1...N M ARG
+
+6.1 Forward (tangent linear) mode
+
+Assuming that the payoﬀ function is regular enough (e.g., Lipschitz continuous) the standard pathwise
+diﬀerentiation corresponds to forward (tangent linear) mode. The diﬀerentiation is applied to steps 1-5 in
+the above algorithm. We need to pay attention if any given step is dependent (implicitly or explicitly) on
+the input parameters with respect to which we want to compute the sensitivities. Step 1 stays the same.
+
+14
+
+Step 2 and 3 are diﬀerentiated if we want correlation risk, otherwise they remain unchanged. Steps 4 and
+5 are diﬀerentiated regardless which of the two types of sensitivities of sensitivities we want to compute.
+
+To diﬀerentiate Step 4 we start from Xi = ϕ−1
+Diﬀerentiating the last equality gives the following formula, if we have the propagated derivative ˙Ui of
+
+(Ui) ⇒ Ui = ϕi(Xi).
+
+i
+
+the variable Ui (i.e., we compute the correlation risk)
+
+˙Ui =
+
+∂ϕi
+∂x
+
+(Xi) ˙Xi ⇒ ˙Xi =
+
+˙Ui
+
+∂ϕi
+∂x (Xi)
+
+If we need to compute sensitivities with respect to ̟j, then diﬀerentiating the same equality gives
+
+˙Xi =
+
+˙̟j
+
+∂ϕi
+∂x (Xi)
+
+We now present the algorithm for tangent linear mode. For ease of presentation we write explicitly the
+
+algorithm only for the case of correlation sensitivities.
+
+We assume that we want to compute the sensitivity with respect to entry ρlk of the correlation matrix
+
+1. Generate a vector Ξ of independent standard normal variables
+
+˙Clk is the sensitivity of Cholesky factor C with respect to ρlk
+
+2. Calculate ˙Z = ˙Clk · ˙Ξ, where
+3. Set ˙Ui = ∂Φ
+
+∂x (Zi) , i = 1...N
+
+4. Set ˙Xi =
+
+˙Ui
+
+∂ϕi
+∂x (Xi)
+
+, i = 1...N
+
+5. Calculate ˙P = PN
+
+i=1
+
+∂P
+∂Xi
+
+(Xi) ·
+
+˙Xi
+
+We note that the derivative of the marginal distribution, denoted by ∂ϕi
+function associated with the marginal distribution ϕi, while the derivative ∂Φ
+probability density function
+
+∂x (Xi), is the probability density
+∂x is the standard normal
+
+6.2 Adjoint (reverse) mode
+
+The adjoint mode consists of the adjoint counterparts for each of the steps in the forward mode, plus the
+adjoint of Cholesky factorization [63]. The computation is done in reverse order
+
+The resulting algorithm consists of the 5 steps described above (in the forward mode) plus the following
+
+steps corresponding to adjoint counterparts
+
+1. Calculate the adjoint of the payoﬀ estimator ¯Xk = ∂P
+∂Xk
+
+(Xk), k = 1...N
+
+2. Calculate ¯Uk =
+
+¯Xk
+∂ϕi
+∂x (ϕ−1
+k (Uk))
+
+, k = 1...N
+
+3. Calculate ¯Zk = ¯Uk
+4. Calculate ¯C = ¯Z · ΞT
+
+∂Φ
+∂x (Zk) , k = 1...N
+
+The matrix ¯C = (cid:0) ¯Cij(cid:1)i,j=1..N obtained at the end of the procedure contains all derivatives of payoﬀ
+
+estimator with respect to entries ̺ij of the correlation matrix. We can see that all these sensitivities were
+computed by running the adjoint mode only once, as opposed to the forward (tangent linear) mode, which
+had to be run separately for each entry in the correlation matrix (with a total number of runs of N 2)
+
+15
+
+7 Example in calibration/optimization framework
+
+Let us consider that we have the same SDE as in the previous chapter. We want to minimize a cost
+functional of the type
+
+F = X (M odelP rice[j] − M arketP rice[j])2
+
+with variables to be optimized being given by model parameters Θ = {θ1, ..., θP }
+The gradient of the cost functional with respect to the model parameters would have the expression
+
+· · ·
+∂F
+∂θk
+· · ·
+
+
+
+
+ = 
+
+
+
+· · ·
+
+2P (M odelP rice[j] − M arketP rice[j]) ∂(M odelP rice[j])
+
+· · ·
+
+∂θk
+
+
+
+
+The adjoint procedure enables us to compute ∂(M odelP rice[j])
+We note here that the above procedure assumes implicitly the existence of the gradient of the functional.
+It is our experience [47]that the discrete adjoint can still be applied for cases such gradient doe not exist;
+in those cases the numerical adjoint code will provide us not the gradient, but rather subgradients. Conse-
+quently, one will have to employ optimization algorithms that are especially designed to use subgradients
+instead of gradient
+
+in a similar way to (5.12)
+
+∂θk
+
+8 Computational ﬁnance literature on adjoint and AD
+
+In the last several years quite a few papers were added to the literature on adjoint/AD applied to com-
+putational ﬁnance [11, 22, 20, 21, 24, 23, 32, 30, 31, 41, 50, 48, 49, 54, 52, 55, 56, 65, 3, 9, 18, 67] . For
+selected papers we give an overview in the following sections
+
+8.1 Computation of Greeks
+
+A major part of the literature related to this topic is due to Giles, Capriotti and, respectively, Joshi (and
+their collaborators).
+
+The seminal paper of [41] applied the adjoint approach to the computation of Greeks (Delta and Vega)
+for swaptions using pathwise diﬀerentiation method in the context of LIBOR Market Model (LMM).
+The portfolio considered had portfolio had 15 swaptions all expiring at the same time, N periods in the
+future, involving payments/rates over an additional 40 periods in the future.
+Interested in computing
+Deltas, sensitivity to initial N+40 forward rates, and Vegas, sensitivity to initial N+40 volatilities. The
+computational eﬃciency was improved by a factor of 10 when the forward method was employed instead of
+ﬁnite diﬀerences. Then the adjoint approach reduced the cost by several orders of magnitude, compared to
+the forward approach: for N=80 periods, by a factor of 5 for computation of Deltas only, and respectively
+by a factor of 25 for computation of both Deltas and Vegas.
+
+This was extended in [58] to the pricing of Bermudan-style derivatives. For testing they have used ﬁve
+1xM receiver Bermudan swaptions (M = 4, 8, 12, 16, 20) with half-year constant tenor distances. The
+speedup was as follows (for M=20): by a factor of 4 for only Deltas, and by factor of 10 for both Deltas
+and Vegas.
+
+The pathwise approach is not applicable when the ﬁnancial payoﬀ function is not diﬀerentiable. To
+address these limitations, a combination the adjoint pathwise approach for the stochastic path evolution
+with likelihood ratio method (LRM) for the payoﬀ evaluation is presented in [36, 38]. This combination
+
+16
+
+is termed “Vibrato” Monte Carlo. The Oxford English Dictionary describes “vibrato” as “a rapid slight
+variation in pitch in singing or playing some musical instruments”. The analogy to Monte Carlo methods
+is the following; whereas a path simulation in a standard Monte Carlo calculation produces a precise value
+for the output values from the underlying stochastic process, in the vibrato Monte Carlo approach the
+output values have a narrow probability distribution.
+
+Applying concepts of adjoint/AD for correlation Greeks were considered in [20]. The pricing of an
+instrument based on N underlyings is done with Monte Carlo within a Gaussian copula framework, which
+connects the marginal distributions of the underlying factors. The sampling of the N jointly normal
+random variables is eﬃciently implemented by means of a Cholesky factorization of the correlation matrix.
+Correlation risk is obtained in a highly eﬃcient way by implementing the pathwise diﬀerentiation approach
+in conjunction with AD, using the adjoint of Cholesky factorization. Numerical tests on basket default
+options shows a speedup of 1-2 orders of magnitude (100 times faster than bumping for 20 names, and
+500 times for 40 names).
+
+Examples of pathwise diﬀerentiation combined with AD are shown in [18]. For a basket option priced
+in a multidimensional lognormal model, the savings are already larger than one order of magnitude for
+medium sized baskets (N=10). For “Best of” Asian options in a local volatility setting, the savings are
+reported to over one order of magnitude for a relatively small number (N=12) of underlying assets.
+
+Adjoint algorithmic diﬀerentiation can be used to implement eﬃciently the calculation of counterparty
+credit risk [22]. Numerical results show a reduction by more than two orders of magnitude in the com-
+putational cost of Credit Valuation Adjustment (CVA). The example considered is a portfolio of 5 swaps
+referencing distinct commodities Futures with monthly expiries with a fairly typical trade horizon of 5
+years, the CVA bears non-trivial risk to over 600 parameters: 300 Futures prices, and at the money volatil-
+ities, (say) 10 points on the zero rate curve, and 10 points on the Credit Default Spread(CDS) curve of
+the counterparty used to calibrate the transition probabilities of the rating transition model. required
+for the calculation of the CVA. The computational time for CVA sensitivities is less than 4 times the
+computational time time spent for the computation of the CVA alone, as predicted by AD theory. As a
+result, even for this very simple application, adjoint/AD produces risk over 150 times faster than ﬁnite
+diﬀerences: for a CVA evaluation taking 10 seconds, adjoint approach produces the full set of sensitivities
+in less than 40 seconds, while ﬁnite diﬀerences require approximately 1 hour and 40 minutes.
+
+In the framework of co-terminal swap-rate market model [51] presented an eﬃcient algorithm to imple-
+ment the adjoint method that computes sensitivities of an interest rate derivative (IRD) with respect to
+diﬀerent underlying rates, yielding a speedup of a factor of 15 for Deltas of a Bermudan callable swaption
+with rates driven by a 5-factor Brownian motion. They show a total computational order of the adjoint
+approach of order O(nF ), with n the number of co-terminal swap rates, assumed to be driven by numberF
+Brownian motions, compared to the order of standard pathwise method which is O(n3). It was extended
+to Vegas in [55], in the context of three displaced diﬀusions swap-rate market models. A slight modiﬁca-
+tion of the method of computing Deltas in generic market models will compute market Vegas with order
+O(nF ) per step. Numerical results for the considered tests show that computational cots for Deltas and
+Vegas will be not more than 1.5 times the computational cots of only Deltas. CMS spread options in
+the displaced-diﬀusion co-initial swap market model are priced and hedged in [53]. The evolution of the
+swap-rates is based on an eﬃcient two-factor predictor-corrector(PC) scheme under an annuity measure.
+Pricing options using the new method takes extremely low computational times compared with traditional
+Monte Carlo simulations. The additional time for computing model Greeks using the adjoint method can
+be measured in milliseconds. Mostly importantly, the enormous reduction in computational times does
+not come at a cost of poorer accuracy. In fact, the prices and Greeks produced by the new method are
+suﬃciently close to those produced by a one-step two-factor PC scheme with 65,535 paths.
+
+17
+
+In the framework of the displaced-diﬀusion LIBOR market model, [49] compared the discretization
+bias obtained when computing Greeks with pathwise adjoint method for the iterative predictor-corrector
+and Glasserman-Zhao drift approximations in the spot measure to those obtained under the log-Euler
+and predictor-corrector approximations by performing tests with interest rate caplets and cancellable
+receiver swaps. They have found the iterative predictor-corrector method to be more accurate and slightly
+faster than the predictor-corrector method, the Glasserman-Zhao method to be relatively fast but highly
+inconsistent, and the log-Euler method to be reasonably accurate but only at low volatilities.
+
+In the framework of the cross-currency displaced-diﬀusion LIBOR market model, [11] employs adjoint
+techniques to compute Greeks for two commonly traded cross-currency exotic interest rate derivatives:
+cross-currency swaps (CCS) and power reverse dual currency (PRDC) swaps. They measure the com-
+putational times relative to the basic implementation of the crosscurrency LIBOR market model, that is
+with standard least squares regression used to compute the exercise strategy. It was reported that, using
+the adjoint pathwise method, the computational time for all the Deltas and Vega for each step and the
+exchange Vega is only slightly larger compared to the computational time required to compute one Delta
+using ﬁnite diﬀerences.
+
+Adjoint approach was applied for computation of higher order Greeks (such as Gammas) in [52] and [54],
+where they show that the Gamma matrix (i.e. the Hessian) can be computed in AM + B times the number
+of operations where M is the maximum number of state variables required to compute the function, and
+A,B are constants that only depend on the set of ﬂoating point operations allowed.. In the ﬁrst paper
+numerical results demonstrate that the computing all n(n+1)/2 Gammas for Bermudan cancellable swaps
+in the LMM takes roughly n/3 times as long as computing the price. In the second paper numerical results
+are shown for an equity tranche of a synthetic CDO with 125 names. To compute all the 125 ﬁnite-
+diﬀerence Deltas, the computational time for doing so will be 125 times of the original pricing time (if
+we use forward diﬀerence estimates). However, it only takes up to 1.49 times of the original pricing time
+if we use algorithmic diﬀerentiation. There are 7,875 Gammas to estimate. If one uses central diﬀerence
+estimates, it will take 31,250 times of the original pricing time to achieve this. It only takes up to 195
+times to estimate all the Gammas with algorithmic Hessian methods.
+
+In the framework of Markov-functional models, [30] demonstrates how the adjoint PDE method can
+be used to compute Greeks. This paper belongs to the ContAdj category. It obtains an adjoint PDE,
+which is solved once to obtain all of the model Greeks.
+In the particular case of a separable LIBOR
+Markov-functional model the price and 20 Deltas, 40 mapping Vegas and 20 skew sensitivities (80 Greeks
+in total) of a 10-year product are computed in approximately the same time it takes to compute a single
+Greek using ﬁnite diﬀerence. The instruments considered in the paper were: interest rate cap, cancellable
+inverse ﬂoater swap and callable Bermudan swaption.
+
+In the framework of Heston model, the algorithmic diﬀerentiation approach was considered in [24]
+to compute the ﬁrst and the second order price sensitivities.. Issues related to the applicability of the
+pathwise method are discussed in this paper as most existing numerical schemes are not Lipschitz in
+model inputs. While AD/adjoint approach is usually considered for primarily providing a very substantial
+reduction in computational time of the Greeks, this paper also shows how its other major characteristic,
+namely accuracy, can be extremely relevant in some cases. Computing price sensitivities is done using
+the Lognormal (LN) scheme, the Quadratic- Exponential (QE) scheme, the Double Gamma (DG) scheme
+and the Integrated Double gamma (IDG) scheme. Numerical tests show that the sample means of price
+sensitivities obtained using the Lognormal scheme and the Quadratic-Exponential scheme can be highly
+skewed and have fat-tailed distribution while price sensitivities obtained using the Integrated Double
+Gamma scheme and the Double Gamma scheme remain stable.
+
+The adjoint/AD approach is also mentioned in the very recent “opus magna” on interest rate derivatives
+
+18
+
+[5, 6, 7], written by 2 well-known practitioners.
+
+8.2 Calibration
+
+To the best of our knowledge, [3] was the ﬁrst time that an adjoint approach was presented for calibration
+in the framework of computational ﬁnance
+
+In [57] adjoint methods are employed to speed up the Monte Carlo-based calibration of ﬁnancial market
+models. They derive the associated adjoint equation /(and thus are in ContAdj category) and propose its
+application in combination with a multi-layer method. They calibrate two models: the Heston model is
+used to conﬁrm the theoretical viability of the proposed approach, while for a lognormal variance model
+the adjoint-based Monte Carlo algorithm reduces computation time from more than three hours (for ﬁnite
+diﬀerence approximation of the gradient)to less than ten minutes
+
+The adjoint approach is employed in [59, 60] to construct a volatility surface and for calibration of local
+stochastic volatility models. The ﬁtting of market bid/ask-quotes is not a trivial task, since the quotes
+diﬀer in quality as well as quantity over timeslices and strikes, and are furthermore coupled by hundreds
+of arbitrage constraints. Nevertheless, the adjoint approach enabled on the ﬂy ﬁtting (less than 1 second)
+for real-life situations: a volatility matrix with 17 strikes and 8 maturities.
+
+AD is applied to calibration of Heston model in[44], through diﬀerentiation of vanilla pricing using char-
+acteristic functions. It takes advantage of the fact that it can be applied to complex numbers (if they are
+“equipped” with auto-diﬀerentiation). Applying AD to numerical integration algorithm is straightforward,
+and the resulting algorithm is fast and accurate.
+
+In [69] the adjoint approach (of ContAdj type) is applied to calibrate a local volatility model
+Calibration of a local volatility model is also shown in [65]
+
+9 AD and adjoint applied within a generic framework in practitioner
+
+quant libraries
+
+As more ﬁnancial companies become familiarized with the advantages oﬀered adjoint/AD approach when
+applied to computational ﬁnance, this approach will be more and more integrated in their quant libraries.
+Very recent presentations [19, 17, 44, 60, 10] at major practitioner quant conferences indicate that this eﬀort
+is under way at several banks, such as Credit Suisse, Unicredit, Nomura, etc. Within this framework one
+may imagine a situation where Greeks are computed (using AD techniques) in real time to provide hedging
+with respect to various risk factors: interest rate, counterparty credit, correlation, model parameters etc.
+Due to complexity of quant libraries, AD tools and special techniques of memory management, check-
+pointing etc can prove extremely useful, potentially leveraging knowledge acquired during AD applications
+to large software packages in other areas: meteorology, computational ﬂuid dynamics etc where such tech-
+niques were employed [43, 25, 45, 4, 39, 15, 8]
+
+9.1 Block architecture for Greeks
+
+[10] presents a “Block architecture for Greeks” , using calculators and allocators. Sensitivities are computed
+for each block component, including root-ﬁnding and optimization routines, trees and latices.
+
+Here is an example included in the presentation. First some notations: every individual function
+(routine), say f : Rm → Rn y=f(x)is termed a “calculator” function, and a corresponding “allocator”
+function is deﬁned as
+
+Gf : Rn → Rm Gf(cid:16) ∂V
+
+∂y (cid:17) = ∂V
+
+∂y ·Jf
+
+19
+
+If we have a sequence of functions f, g, h, then we calculate the Greeks by starting with the end point
+∂V
+∂V = 1 and working backwards by calling the allocator functions one-by-one in reverse order to the original
+order of the function calls.
+
+Suppose we have a pricing routine with three subroutines
+
+• f : Interpolates market data onto the relevant grid from input market objects
+
+• g : performs some calibration step on the gridded market data
+
+• h : core pricer which uses the calibrated parameters
+
+We need to write the three risk allocator functions for these three subroutines. Then we feed the starting
+point ∂V
+∂V = 1 into the pricer’s allocator to get back the vector of risks to the calibrated parameters. The
+next step is to feed this into the calibrator’s allocator to get back the vector of risks to the gridded market
+data. Finally, we feed that risk vector into the interpolator’s allocator to get back risk to the original
+input market objects.
+
+9.2 Real Time Counterparty Risk Management in Monte Carlo
+
+[19] presents a framework for Real Time Counterparty Risk Management, employing AD to compute
+Credit Valuation Adjustment (CVA), with a reduction in computational time from 100 min (using bump
+and reprice) to 10 seconds, for a a portfolio of 5 commodity swaps over a 5 years horizon (over 600 risks)
+
+10 Additional resources
+
+Additional resources include reference books [13, 16, 26, 43], results on matrix diﬀerentiation [37, 62, 63],
+the online community portal for Automatic Diﬀerentiation [2], various AD tools such as FASTOPT,
+FASTBAD, ADMAT, FAD, ADOL-C, RAPSODIA, TAPENADE [1], papers on rules to construct the
+adjoint code [43, 12, 34, 35, 28, 29, 14, 3, 64]
+
+11 Conclusion
+
+We have presented an overview of adjoint and automatic(algorithmic) diﬀerentiation techniques in the
+framework of computational ﬁnance, and illustrated the major advantages of this approach for computation
+of sensitivities: great reduction of computational time, improved accuracy, and a systematic process to
+construct the corresponding “adjoint” code from existing codes
+
+References
+
+[1] Automatic Diﬀerentiation tools. http://www.autodiff.org/?module=Tools.
+
+[2] Community portal for Automatic Diﬀerentiation. http://www.autodiff.org.
+
+[3] Y. Achdou and O. Pironneau. Computational methods for option pricing. SIAM, 2005.
+
+[4] M. Alexe, O. Roderick, J. Utke, M. Anitescu, P. Hovland, and T. Fanning. Automatic diﬀerentiation
+of codes in nuclear engineering applications. Technical report, Mathematics and Computer Science
+Division. Argonne National Lab, 2009.
+
+20
+
+[5] L.B.G. Andersen and V. V. Piterbarg. Interest Rate Modeling Volume I: Foundations and Vanilla
+
+Models. Atlantic Financial Press, 2010.
+
+[6] L.B.G. Andersen and V. V. Piterbarg. Interest Rate Modeling Volume II: Term Structure Modeling.
+
+Atlantic Financial Press, 2010.
+
+[7] L.B.G. Andersen and V. V. Piterbarg. Interest Rate Modeling Volume III: Products and Risk Man-
+
+agement. Atlantic Financial Press, 2010.
+
+[8] R.A. Bartlett, D.M. Gay, and E.T. Phipps. Automatic Diﬀerentiation of C++ codes for large-scale
+scientiﬁc computing. In V.N. Alexandrov, G.D. van Albada, P. M. A. Sloot, and J. Dongarra, editors,
+Computational Science – ICCS 2006, volume 3994 of Lecture Notes in Computer Science, pages 525–
+532, Heidelberg, 2006. Springer.
+
+[9] H. Bastani and L. Guerrieri. On the application of Automatic Diﬀerentiation to the likelihood function
+for dynamic general equilibrium models. http://www.federalreserve.gov/pubs/ifdp/2008/920/
+ifdp920.pdf, 2008.
+
+[10] M. Baxter. Practical implementation of fast Greeks in your analytics library. In The 6th Fixed Income
+
+Conference, Madrid, September 22-24, 2010.
+
+[11] C. Beveridge, M. Joshi, and W. M. Wright. Eﬃcient pricing and Greeks in the cross-currency LIBOR
+
+market model. http://ssrn.com/paper=1662229, 2010.
+
+[12] C. Bischof, B. Lang, and Andre Vehreschild. Automatic diﬀerentiation for matlab programs. Pro-
+
+ceedings in Applied Mathematics and Mechanics, 2(1):50–53, 2003.
+
+[13] C. H. Bischof, H. M. Bücker, P. Hovland, and U. Naumann. Advances in Automatic Diﬀerentiation.
+
+Springer, 2008.
+
+[14] C.H. Bischof. Automatic diﬀerentiation, tangent linear models and pseudo-adjoints.
+
+In François-
+Xavier Le Dimet, editor, High-Performance Computing in the Geosciences, volume 462 of Mathemat-
+ical and Physical Sciences, pages 59–80. Kluwer Academic Publishers, Boston, Mass., 1995.
+
+[15] C.H. Bischof, H.M. Bücker, B. Lang, A. Rasch, and E. Slusanschi. Eﬃcient and accurate derivatives
+for a software process chain in airfoil shape optimization. Future Generation Computer Systems,
+21(8):1333–1344, 2005.
+
+[16] H.M Bucker, G. Corliss, P. Hovland, and U. Naumann. Automatic Diﬀerentiation: Applications,
+
+Theory, and Implementations. Springer, 2006.
+
+[17] L. Capriotti. Adjoint algorithmic diﬀerentiation: a new paradigm in risk management.
+
+In Quant
+
+Congress Europe, London, Nov 9-11, November 2010.
+
+[18] L. Capriotti. Fast Greeks by algorithmic diﬀerentiation. Journal of Computational Finance, 14(3):3–
+
+35, 2011.
+
+[19] L. Capriotti. Making the calculation of risk through Monte Carlo methods more eﬃcient by using
+adjoint algorithmic diﬀerentiation. In Global Derivatives Trading & Risk Management, Paris, April
+11-15, 2011.
+
+21
+
+[20] L. Capriotti and M.B. Giles. Fast correlation Greeks by adjoint algorithmic diﬀerentiation. RISK,
+
+March, 2010.
+
+[21] L. Capriotti and M.B. Giles. Algorithmic diﬀerentiation: Adjoint Greeks made easy. http://ssrn.
+
+com/paper=1801522, 2011.
+
+[22] L. Capriotti, S. Lee, and M. Peacock. Real time counterparty credit risk management in Monte Carlo.
+
+http://ssrn.com/paper=1824864, 2011.
+
+[23] J.H. Chan and M. Joshi. Fast Monte-Carlo Greeks for ﬁnancial products with discontinuous pay-oﬀs.
+
+http://ssrn.com/paper=1500343, 2009.
+
+[24] J.H. Chan and M. Joshi. First and second order Greeks in the Heston model. http://ssrn.com/
+
+paper=1718102, 2010.
+
+[25] I. Charpentier and M. Ghemires. Eﬃcient adjoint derivatives: application to the meteorological model
+
+Meso-NH. Optim. Methods Software, 13:35–63, 2000.
+
+[26] G Corliss, Christele Faure andAndreas Griewank, and Laurent Hascoet. Automatic Diﬀerentiation of
+
+Algorithms. Springer, 2002.
+
+[27] P. Courtier and O. Talagrand. Variational assimilation of meteorological observations with the adjoint
+
+vorticity equation, Ii, numerical results. Q. J. R. Meteorol. Soc.,, 113:1329–1347, 1987.
+
+[28] P. Cusdin and J.-D. Müller. Deriving linear and adjoint codes for CFD using Automatic Diﬀerentia-
+tion. Technical Report QUB-SAE-03-06, QUB School of Aeronautical Engineering, 2003. Submitted
+to AIAA http://www.ea.qub.ac.uk/pcusdin/index.php.
+
+[29] P. Cusdin and J.-D. Müller. Generating eﬃcient code with Automatic Diﬀerentiation. In European
+
+Congress on Computational Methods in Applied Sciences and Engineering ECCOMAS, 2004.
+
+[30] N Denson and Joshi. Fast Greeks for Markov-functional models using adjoint PDE methods. http://
+
+ssrn.com/paper=1618026, 2010.
+
+[31] N Denson and M Joshi. Fast and accurate Greeks for the LIBOR market model. http://ssrn.com/
+
+paper=1448333, 2009.
+
+[32] N Denson and M Joshi. Flaming logs. Wilmott Journal, 1:259–262, 2009.
+
+[33] F. X. Le Dimet, I. M. Navon, and D. N. Daescu. Second order information in data assimilation.
+
+Monthly Weather Review, 130(3):629–648, 2002.
+
+[34] R. Giering and T. Kaminski. Recipes for adjoint code construction. ACM Transactions on Mathe-
+
+matical Software, 24:437–474, 1998.
+
+[35] R. Giering and T. Kaminski. Recomputations in reverse mode AD, chapter Automatic diﬀerentiation
+
+of algorithms. Springer, 2002.
+
+[36] M.B. Giles. Monte Carlo evaluation of sensitivities in computational ﬁnance. In HERCMA, 2007.
+
+[37] M.B. Giles. Collected matrix derivative results for forward and reverse mode algorithmic diﬀerentia-
+tion. In Lecture Notes in Computational Science and Engineering, Volume 64, pages 35–44. Springer,
+2008.
+
+22
+
+[38] M.B. Giles. Vibrato Monte Carlo sensitivities. In Monte Carlo and Quasi Monte Carlo Methods 2008,
+
+pages 369–382. Springer, 2008.
+
+[39] M.B. Giles, D. Ghate, and M.C. Duta. Using automatic diﬀerentiation for adjoint CFD code devel-
+
+opment. Technical report, Oxford University Computing Laboratory„ 2005.
+
+[40] M.B. Giles, D. Ghate, and M.C. Duta. Using automatic diﬀerentiation for adjoint CFD code de-
+velopment. In Recent Trends in Aerospace Design and Optimization. Tata McGraw-Hill, New Delhi,
+2006.
+
+[41] M.B. Giles and P. Glasserman. Smoking adjoints: fast Monte Carlo Greeks. RISK, January, 2006.
+
+[42] M.B. Giles and N.A. Pierce. An introduction to the adjoint approach to design. Flow, Turbulence
+
+and Control, 65(3-4):393–415, 2000.
+
+[43] A. Griewank and A. Walther. Evaluating derivatives : principles and techniques of algorithmic dif-
+
+ferentiation, 2nd edition. SIAM, 2008.
+
+[44] J Hakala. Auto-diﬀerentiation in practice. In Global Derivatives Trading & Risk Management, Paris,
+
+April 11-15, 2011.
+
+[45] L. Hascoet and B. Dauvergne. Adjoints of large simulation codes through automatic diﬀerentiation.
+REMN Revue Europeenne de Mecanique Numerique / European Journal of Computational Mechanics,
+pages 63–86, 2008.
+
+[46] C. Homescu and I. M. Navon. Numerical and theoretical considerations for sensitivity calculation of
+discontinuous ﬂow. Systems & Control Letters on Optimization and Control of Distributed Systems,
+48(3):253–260, 2003.
+
+[47] C. Homescu and I. M. Navon. Optimal control of ﬂow with discontinuities. Journal of Computational
+
+Physics, 187:660–682, 2003.
+
+[48] M Joshi and D Pitt. Fast sensitivity computations for Monte Carlo valuation of pension funds.
+
+http://ssrn.com/paper=1520770, 2010.
+
+[49] M Joshi and A Wiguna. Accelerating pathwise Greeks in the LIBOR market model. http://ssrn.
+
+com/paper=1768409, 2011.
+
+[50] M Joshi and C Yang. Eﬃcient Greek estimation in generic market models. http://ssrn.com/
+
+paper=1437847, 2009.
+
+[51] M Joshi and C Yang. Fast Delta computations in the swap-rate market model. http://ssrn.com/
+
+paper=1401094, 2009.
+
+[52] M Joshi and C Yang. Algorithmic Hessians and the fast computation of cross-Gamma risk. http://
+
+ssrn.com/paper=1626547, 2010.
+
+[53] M. Joshi and C. Yang. Fast and accurate pricing and hedging of long-dated CMS spread options.
+
+International Journal of Theoretical and Applied Finance, 13(6):839–865, 2010.
+
+[54] M Joshi and C Yang.
+
+Fast Gamma computations for CDO tranches.
+
+http://ssrn.com/
+
+paper=1689348, 2010.
+
+23
+
+[55] M Joshi and C Yang. Eﬃcient Greek estimation in generic swap-rate market models. http://ssrn.
+
+com/paper=1773942, 2011.
+
+[56] C Kaebe. Feasibility and Eﬃciency of Monte Carlo Based Calibration of Financial Market Models.
+
+PhD thesis, University of Trier, 2010.
+
+[57] C. Kaebe, J.H. Maruhn, and E.W. Sachs. Adjoint-based Monte Carlo calibration of ﬁnancial market
+
+models. Finance and Stochastics, 13:351–379, 2009.
+
+[58] M. Leclerc, Q. Liang, and I. Schneider. Fast Monte Carlo Bermudan Greeks. Risk, July:84–88, 2009.
+
+[59] J. Maruhn. On-the-ﬂy bid/ask-vol ﬁtting with applications in model calibration. In SIAM Conference
+
+on Financial Mathematics & Engineering, San Francisco, USA, November 19-20, 2010.
+
+[60] J. Maruhn. Calibration of stochastic and local stochastic volatility models. In Global Derivatives
+
+Trading & Risk Management, Paris, April 11-15, 2011.
+
+[61] I. M. Navon, X. Zou, J. Derber, and J. Sela. Variational data assimilation with an adiabatic version
+
+of the NMC spectral model. , Monthly Weather Review, 120(7):1433–1446, 1992.
+
+[62] K.B. Petersen and M.S. Pedersen. Matrix cookbook. http://www.imm.dtu.dk/pubdb/views/edoc_
+
+download.php/3274/pdf/imm3274.pdf, 2008.
+
+[63] S. Smith. Diﬀerentiation of the Cholesky algorithm. Journal of Computational and Graphical Statis-
+
+tics, 4(2):134–147, 1995.
+
+[64] S.P. Smith. A tutorial on simplicity and computational diﬀerentiation for statisticians. http://hep.
+
+physics.ucdavis.edu/~jrsmith/backwards_differentiation/nonad3.pdf, 2000.
+
+[65] J. Spilda. Adjoint methods for computing sensitivities in local volatility surfaces. Master’s thesis,
+
+University of Oxford, 2010.
+
+[66] W. Squire and G. Trapp. Using complex variables to estimate derivatives of real functions. SIAM
+
+Review, 10(1):110–112, 1998.
+
+[67] B. Stehle. Proxy scheme and Automatic Diﬀerentiation: Computing faster Greeks in Monte Carlo
+
+simulations. Master’s thesis, Imperial College, 2010.
+
+[68] O. Talagrand and P. Courtier. Variational assimilation of meteorological observations with the adjoint
+
+vorticity equation, I, Theory. Q. J. R. Meteorol. Soc., 113:1311–1328, 1987.
+
+[69] G. Turinici. Calibration of local volatility using the local and implied instantaneous variance. Journal
+
+of Computational Finance, 13(2):1–18, 2009.
+
+24
+
+

@@ -1,0 +1,945 @@
+Asymmetric return rates and wealth distribution inﬂuenced by the introduction of
+
+technical analysis into a behavioral agent based model
+
+F.M. Stefana,∗, A.P.F. Atmanb,∗∗
+
+aFederal Center for Technological Education of Minas Gerais - CEFET–MG, Av. Amazonas 7675, 30510-000, Belo Horizonte-MG, Brazil.
+
+bDepartamento de F´ısica e Matem´atica and National Institute of Science and Technology for Complex Systems, Federal Center for Technological
+
+Education of Minas Gerais - CEFET–MG. Av. Amazonas 7675, 30510-000, Belo Horizonte-MG, Brazil.
+
+7
+1
+0
+2
+
+ 
+
+v
+o
+N
+ 
+2
+2
+
+ 
+ 
+]
+
+.
+
+N
+G
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+2
+8
+2
+8
+0
+
+.
+
+1
+1
+7
+1
+:
+v
+i
+X
+r
+a
+
+Abstract
+Behavioral Finance has become a challenge to the scientiﬁc community. Based on the assumption that behavioral
+aspects of investors may explain some features of the Stock Market, we propose an agent based model to study
+quantitatively this relationship.
+In order to approximate the simulated market to the complexity of real markets,
+we consider that the investors are connected among them through a small world network; each one has its own
+psychological proﬁle (Imitation, Anti-Imitation, Random); two diﬀerent strategies for decision making: one of them
+is based on the trust neighborhood of the investor and the other one considers a technical analysis, the momentum
+of the market index technique. We analyze the market index ﬂuctuations, the wealth distribution of the investors
+according to their psychological proﬁles and the rate of return distribution. Moreover, we analyze the inﬂuence of
+changing the psychological proﬁle of the hub of the network and report interesting results which show how and when
+anti-imitation becomes the most proﬁtable strategy for investment. Besides this, an intriguing asymmetry of the return
+rate distribution is explained considering the behavioral aspect of the investors. This asymmetry is quite robust being
+observed even when a completely diﬀerent algorithm to calculate the decision making of the investors was applied to
+it, a remarkable result which, up to our knowledge, has never been reported before.
+
+Keywords: Behavioral Finance, Agent Based Models, Complex Networks, Technical Analysis
+
+1. Introduction
+
+In the last decades many researchers have devoted their studies to understand the ﬁnancial market expecting that it
+behaves as a complex system. Diﬀerent branches of the science started researching how the behavior of the investors
+work in real systems as an attempting to understand it as a whole [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]. In particular,
+we have the Economic system which works as a complex system, where people, companies and markets are at the
+microscopic level trying to increase their proﬁts predicting the behavior of the investors [14, 15, 16, 17]. We already
+know that many situations aﬀect the stock market such as the value of the index which depends on the choice of the
+investors to either buy, sell or hold their stocks. If this decision of the investors is based only on the behavior of their
+trust network, psychological tendencies arise from various processes [18]. Then, the trust neighborhood and also the
+market index behavior are driving forces in order to inﬂuence the decision making of the investors.
+
+Financial Market (FM) is the place where the ﬁnancial assets are traded 1. There are some economic functions
+provided by the FM which show how the ﬁnance is related to the economy system. The three major functions are: the
+interactions among buyers and sellers which determine the price of the traded asset, which means that they determine
+the required return on a ﬁnancial asset; liquidity which is a mechanism that FM provides to investors to sell their
+ﬁnancial assets and it can distinguish diﬀerent kinds of markets (liquidity degree); and the last one is related to
+
+∗Principal corresponding author
+∗∗Corresponding author
+Email addresses: fischer@dppg.cefetmg.br (F.M. Stefan), atman@cefetmg.br (A.P.F. Atman)
+1although, the assets do not, necessarily, have to be traded in a market
+
+Preprint submitted to Elsevier
+
+November 23, 2017
+
+reducing the search costs of transactions (the money spent to advertise the one’s intention to sell or purchase a ﬁnancial
+asset) and information costs (assessing the investment merits of a ﬁnancial asset: the amount and the likelihood of
+the cash ﬂow to be generated). The participants of the FM can be households, business entities, national government
+agencies, supranational (World Bank, European Investment Bank) etc [19].
+
+Stock market has a large number of interacting agents making decisions all the time [3, 20, 11, 12]. Many re-
+searchers are trying to study its behavior based on the similarity with a complex system. It has no central controller
+and the dynamic observed from it brings some patterns which are hard to predict such as patterns of bubbles and
+crashes. These patterns are good examples of the capacity of the market to exhibit a self-organization behavior and
+then emergent properties [2, 15, 14].
+Duncan J. Watts e Steven Strogatz show that the average distance (cid:104)l(cid:105) between two nodes increases increases
+logarithmically with the size of the network. We see that (cid:104)l(cid:105) = ln N [21, 22]. This characteristic can also be seen
+in free scale network (SFN). Then, we can infer that most SFN are a kind of small world network (SWN) [23, 22].
+Therefore, we can represent our society of investors in the stock market connected through a Scale Free Network as
+shown in the Figure 2.
+
+Several researchers from social to computation science have shown that the social networks are scale free. This
+complex network has been used as a tool to connect people in the real world [24, 25, 22]. As a consequence, it is
+able to describe social interactions and it is very important to the spread of information, playing a central role on
+the social relations [22]. In this way, we use this scale free network (SFN) to represent our society of investors in
+a ﬁnancial market which makes the most realistic connection among the investors, building their trust neighborhood
+[24, 25, 26, 27]. One of the most important characteristics of the SWN is that there is almost always a shortcut
+connecting any two nodes. In this situation, there are many alternative routes between any two points, and it is very
+likely that some will involve only a few jumps (links). Moreover, a SFN feature is that highly connected nodes have a
+greater-than-average chance of being linked to other highly connected nodes creating hubs which are highly connected
+among themselvs. Members of a hub trust network might, for instance, share information, quickly synchronizing their
+“cluster”, while for the rest of network information percolates slowly by local interactions [24, 28, 29, 22].
+
+An agent based model grounded on behavioral stochastic Cellular Automata (CA) has been implemented in order
+to reproduce the main features of the Stock Market and study it as a complex system [30]. However, to approach the
+agents to real investors, it was mandatory to consider a technical analysis in the decision making of the agents, feature
+which has not been considered in the algorithm yet. As forecasting price movements is the core of the technical
+analysis, this methodology uses past prices,volume and/or open interest in order to bring several kinds of forecasting
+techniques such as chart analysis taking into account shapes in bar charts, as gaps, spikes, ﬂags, etc, which tests the
+proﬁtability of visual chart patterns, cycle analysis and computerized technical trading systems [31, 32, 33, 34, 35, 11].
+Technical analysis is widely used among traders and ﬁnancial professionals (i.e. the participants of the FM), and is
+very often used by active day traders and market makers [35].
+
+Thus, in this work we improve the original model [30] exploring the decision making algorithm which is now
+combining two strategies to help the investor to make an investment. At each time step, the investor will consider his
+trust neighborhood and the trend of the stock market index with diﬀerent weights. In order to study the stock market
+index tendency, we are going to apply a technical analysis methodology called momentum. This indicator warns about
+latent strengths or weaknesses in the tendency by monitoring the price [31, 32, 33]. Yet, it will be taken into account
+the psychological behavior of each investor when applying these two strategies. In this way, the investor will take a
+decision of either buying, holding or selling stocks based on combination of his trust neighborhood and momentum
+technique choices.
+
+Next section, we present the methodology developed to implement the rules through the CA, the Complex Network
+and the algorithms to simulate every scenario analyzed. We are going to show how these algorithms work with the
+decision-make of the investors. We also discuss the role of the hub of the system (SFN) over the wealth distribution.
+Eventually, we will present some results from our simulation where we explain the eﬀect of both strategies over the
+wealth distribution of the investors and their proﬁtable return. In the conclusion section, we state the impressive result
+we have obtained when comparing the return rate of the anti-imitators with the imitators one.
+
+2
+
+2. Methodology
+
+In a previous work [30], we presented a Hybrid Cellular Automata (HCA) model and studied four diﬀerent kinds of
+networks (Regular, Random Conservative, Random Non-Conservative and Small World Network) and their inﬂuence
+in the Stock Market Index oscillations. This Agent-Based Model consists of the HCA which is able to apply a Monte
+Carlo process. Each node is as an investor (agent) having a psychological proﬁle (Imitator, Anti-Imitator and Random
+Trader), a state (buying, holding, selling) and a number of links (connections). By using a complex network, we
+construct the trust neighborhood of the investors which is given by the connections that each of them has through the
+SFN. The states and psychological proﬁles are placed at random into the trust network.
+
+Being an imitator means that an investor will perform the same state as the majority in his neighborhood. Anti-
+Imitator proﬁle means that an investor will perform the same state as the minority of his neighborhood. Random
+Trader proﬁle means that an investor will take his decision randomly.
+
+Thus, by setting up this new algorithm, we are going to give the system a dynamic process where all the investors
+still keep their psychological behavior, but they will not necessarily rely on their trust neighborhood. They are also
+going to take into account a technical analysis based on momentum technique [33, 32, 31, 36]. Accordingly, we have
+as the ﬁrst strategy (strategy-1) the trust neighborhood and as the second strategy (strategy-2) the technical analysis.
+The model is built by setting the trust network of the investors (strategy-1) in order to estabilish an initial time series
+(100 time steps). The index experiences a ﬂuctuation due to the dynamics of the system during these ﬁrst 100th time
+steps. After that, the algorithm starts performing a technical analysis over the time series which was just constructed.
+In this way, from the 101th time step, this new algorithm runs both two strategies.
+
+Since we are using a SFN, we know that there are some nodes without any links.
+
+In this case, these nodes
+(investors) are going to behave as stubborn ones when considering the strategy-1 [30]. Therefore, those investors who
+do not have any connections might change their states by considering only the technical analysis (strategy-2). We can
+see that at every time step all the investors will look at their neighborhood (except the ones who do not have any links)
+and will analyze the trend of the index. The HCA, then, will give the rules for choosing a new state considering the
+psychological proﬁle of the investors. By doing so, every node (agent) will be updated synchronously. At every time
+step we compute the index that was, initially, set to 100 as an initial condition. The algorithm starts running, updating
+the index considering the number of buyers and sellers. If there is more buying than selling, the net balance is going
+to be positive and it makes the index increase; on the other hand, if there is more selling, the net balance is negative
+and it makes the index decrease [30].
+
+The implementation of a particular technical analysis, which is used in real markets to study the trend of the
+index, follows the momentum (MOM) technique [31, 33, 36]. The value of the momentum, Mτ(t), will be given by
+the following three equations:
+
+M1(t) = I(t − 1) − I(t − 2)
+M2(t) = I(t − 2) − I(t − 6)
+M3(t) = I(t − 6) − I(t − 11)
+
+(1)
+
+and
+
+I stand for Momentum, Time, Time-Lag and Index, respectively.
+
+where M, t, τ
+In our model, this process (MOM) consists of computing the diﬀerence between the value of the index of the three
+diﬀerent windows: M1(t), M2(t) and M3(t). We, then, have three diﬀerent measures in a given trading interval (days
+- time steps, for instance). From the equation 1, computing Mτ(t), we can assume either positive or negative values,
+which can be seen as a expectation of the index of going up or down, respectively. Consequently, the traders expect
+an increase of the index for the next time step when Mτ(t) > 0, on the other hand, if Mτ(t) < 0 they expect a decrease.
+Based on the technical analysis, the simulations will consider the value of the momentum as being the diﬀerence of
+the values of the indices at diﬀerent time-lags (windows).
+
+We can think about the steepness of the slope of the index: As Mτ(t) can assume either negative or positive values,
+we measure how positive or negative it is for each given τ. It means that the higher a positive/negative value of the
+(Mτ(t)) is the steeper the index becomes. Thus, the value of the Mτ(t) obtained for each time-lag proposed is going to
+be used to set a probability weight on the process of buying, holding or selling, as shown on the Table 2. This table
+shows several patterns which depends on how steep the slope is, either increasing or decreasing. The probabilities
+that have been applied to this process are heuristic weights based on the combination of the three slopes, (τ = 1, 2, 3),
+which are going to be interpreted as a trend of the index.
+
+3
+
+Let us consider, for instance, if the slope gets steeper with smaller time-lag, see Figure 1, it is interpreted as the
+stock price is getting more expensive. This scenario sounds like the investors should buy stocks, once there is a high
+probability that the stock price will increase in the next time step. In this scenario we have set a probability weight of
+(1, 0, 0) (although this example is a deterministic decision meaning that every investor will buy stocks) - (Case-1) - for
+(buying, holding, selling) respectively, see row 2 on the Tables 1 and 2. Based on this table 2 and applying a Monte
+Carlo process, we set a stochastic process in order to determine whether the investor is going to decide to buy, hold or
+sell stocks.
+
+Figure 1: Left: Trend of the Index where M1(t) > M2(t) > M3(t) > 0 to which can be applied the probabilities from the 2nd row of the Table 1;
+Right: Picture shows how the values of M1(t), M2(t) and M3(t) are computed.
+
+From the neighborhood and technical analysis strategies, an investor can experience either the same decision-make
+or diﬀerent one to buy, hold or sell his stocks, see Figure A.14 and Algorithm-1. In order to study the system dy-
+namics, we have implemented a stochastic process where we will consider some diﬀerent probabilities from a normal
+distribution. It will be set the probability to be: 1%, 5%, 30%, 50%, 70%, 95% and 99% to follow the decision-make
+from the trend of the index (MOM). Moreover, it will be taken into account the behavior proﬁle of the investors in
+order to follow the decision-make given from the MOM. Considering a scenario where an investor has an imitator
+proﬁle, one will perform one’s decision as following: he/she looks at his/her trust neighborhood and then performs
+the technical analysis: if one gets from both strategies the same decision-make, one will just follow it. If the strategies
+show a diﬀerent decision-make, a stochastic process is set to decide which one will be taken. For example: strategy-
+1 (neighborhood) comes up to buy stocks; strategy-2 (technical analysis) comes up to sell stocks, thus the imitator
+investor will then have a probability, as those stated before, to decide if he is going to be inﬂuenced by the external
+factors (technical analysis) or by his neighborhood (trust network).
+
+An interesting scenario occurs when an investor has an anti-imitator proﬁle: he/she will always take the opposite
+decision which comes from the strategy-2. This situation is interesting, because we have to realize which one is the
+opposite for holding stocks (buy or sell?), for instance. Then, we set a stochastic process in order to decide which
+decision-make he/she is going to make. See Figure A.14 and Algorithm-2, .
+
+Finally, the scenario can be summarized as the following: consider that an investor has an imitator proﬁle and 20
+connections. The code shows to him how many investors are buying, holding and selling stocks. Then, at the next
+time step, he will make a decision to either buy, hold or sell depending on which the majority of his neighborhood
+was performing at that given time. Suppose that: buy=12, sell=7 and hold=1, the strategy-1 tells the investor to buy
+at the next time step. On the other hand, if the decision-make from the strategy-2 is the same as the one he already
+has, he will then buy stock at the next time step. But, if the strategy-2 gives him a contradictory decision, he will
+have a probability to follow the decision-make from the technical analysis. Considering, now, that this investor is an
+anti-imitator: if the decision-make from the strategy-2 is the same as the strategy-1, three situations can happen: ﬁrst
+one - if both strategies show buy, he will then sell; second one - if they show sell, he will then buy; and the last one
+- if they show hold, he will decide between buy or sell. On the other hand, if the decision-make from both strategies
+
+4
+
+M3(t)M2(t)M1(t)(TrendoftheIndex)timestepindex0123456789101112345678M1(t)M2(t)M3(t)(ComputingM1(t),M2(t)andM3(t))is contradictory, a stochastic decision is set to decide which decision he is going to take: if the decisions from the
+strategy-1 and strategy-2 are respectively: 1) buy-sell: he is going to buy stock; 2)buy-hold or sell-hold: he is going
+to decide between buy and sell; 3) hold-buy or hold-sell: he is going to decide between hold and sell or hold and buy,
+respectively; 4) sell-buy: he is going to sell stock.
+
+We decided to study the system after getting data from running the case-1, see Table 2, and getting statistical
+results which can be seen on the Figures 7 and 11. Those results about the wealth distribution and rate of return made
+us to think about: what if we invert the system by changing the probabilities between the imitator and anti-imitator
+proﬁles. Then, we created the case-2, see the Table 2. As expected, the system inverted the results, see Figures 7
+and 11 for the case-2, surprisingly, these results were not so strong as the case-1. We, then, set up the case-3 which
+brings the system to the balance, see Table 2, and once again the results showed, statistically, the same results as we
+had from case-1. Finally, we set up the case-4 which is the opposite probabilities of the case-3. We showed only the
+results from the simulation of the case-4, see Figure 11. Results from all these cases are discussed in the conclusion
+section where we state that the anti-imitator proﬁle has an excellent rate of return and wealth distribution compared
+to imitators proﬁle.
+
+Trend of the Index
+
+ROW M1(t) > M5(t) M5(t) > M10(t) M1(t) > 0 M5(t) > 0 M10(t) > 0
+
+A
+B
+C
+D
+E
+F
+G
+H
+I
+J
+K
+L
+M
+N
+O
+P
+Q
+R
+
+0
+1
+0
+1
+0
+1
+1
+1
+1
+0
+1
+0
+0
+1
+1
+0
+0
+0
+
+0
+1
+1
+0
+1
+0
+1
+1
+1
+1
+0
+0
+1
+0
+0
+0
+0
+1
+
+1
+1
+1
+1
+1
+1
+1
+0
+1
+0
+1
+0
+0
+0
+0
+0
+0
+0
+
+1
+1
+1
+1
+1
+0
+1
+0
+0
+1
+0
+0
+1
+0
+0
+0
+1
+0
+
+1
+1
+1
+1
+0
+1
+0
+0
+0
+0
+0
+1
+1
+0
+1
+0
+1
+0
+
+Table 1: The header of the table: M1(t), M5(t) and M10(t) stand for the momentum considering the diﬀerence for 1 time-lag, 5 time-lag and 10
+time-lag, respectively. The rows are ﬁlled in with the tautology (1:true; 0:false) and are used to build up the probabilities.
+
+5
+
+Case-1
+
+Case-2
+
+Case-3
+
+ROW P(Buy) P(Hold) P(Sell) P(Buy) P(Hold) P(Sell) P(Buy) P(Hold) P(Sell)
+PA
+0.8
+PB
+1.0
+PC
+0.8
+PD
+1.0
+PE
+0.6
+PF
+0.6
+PG
+0.6
+PH
+0.1
+PI
+1.0
+PJ
+0.2
+PK
+1.0
+PL
+0.2
+PM
+0.0
+PN
+0.1
+PO
+0.2
+PP
+0.0
+PQ
+0.0
+PR
+0.0
+SUM Σ8.2
+
+0.1
+0.0
+0.1
+0.0
+0.2
+0.2
+0.2
+0.1
+0.0
+0.2
+0.0
+0.2
+0.0
+0.1
+0.2
+0.0
+0.0
+0.0
+Σ1.6
+
+0.6
+0.7
+0.6
+0.7
+0.4
+0.4
+0.4
+0.1
+0.7
+0.2
+0.7
+0.2
+0.0
+0.1
+0.2
+0.0
+0.0
+0.0
+Σ6.0
+
+0.1
+0.0
+0.1
+0.0
+0.2
+0.2
+0.2
+0.1
+0.0
+0.2
+0.0
+0.2
+0.0
+0.1
+0.2
+0.0
+0.0
+0.0
+Σ1.6
+
+0.8
+1.0
+0.8
+1.0
+0.6
+0.6
+0.6
+0.1
+1.0
+0.2
+1.0
+0.2
+0.0
+0.1
+0.2
+0.0
+0.0
+0.0
+Σ8.2
+
+0.3
+0.3
+0.3
+0.3
+0.4
+0.4
+0.4
+0.3
+0.3
+0.4
+0.3
+0.4
+0.3
+0.3
+0.4
+0.3
+0.3
+0.3
+Σ6.0
+
+0.1
+0.0
+0.1
+0.0
+0.2
+0.2
+0.2
+0.6
+0.0
+0.4
+0.0
+0.4
+0.7
+0.6
+0.4
+0.7
+0.7
+0.7
+Σ6.0
+
+0.1
+0.0
+0.1
+0.0
+0.2
+0.2
+0.2
+0.8
+0.0
+0.6
+0.0
+0.6
+1.0
+0.8
+0.6
+1.0
+1.0
+1.0
+Σ8.2
+
+0.1
+0.0
+0.1
+0.0
+0.2
+0.2
+0.2
+0.8
+0.0
+0.6
+0.0
+0.6
+1.0
+0.8
+0.6
+1.0
+1.0
+1.0
+Σ8.2
+
+Table 2: The header of the table: Case-1 - We follow the tendency of the index of going up or down; Case-2 - We invert the tendency of the index
+of going up or down; Case-3 - We bring the system to the balance when the sum of those probabilities of buying, holding and selling has the same
+result. P(Buy), P(Hold) and P(Sell) stand for the probability given for buying, holding and selling.
+
+2.1. Complex Network
+In this section we show the properties of the trust network which connects the investors. We set a matrix whose
+size is 63 × 63, where the nodes represent the investors. The Figure 2,below, shows an example of a trust network
+with SFN morphology. As expected, it happens to have hubs highly connected which can be realized by exhibiting
+the distribution of investors by links, see Figure 2.
+
+In the case of SFN, we consider the BarabsiAlbert algorithm [26, 37] to build it. Basically, the code considers a
+preferential attachment of the links in such way that, the greater the number of links of a node (investor), the higher
+the probability of a new node to be connected to it: the rich gets richer! Thus, we are able to generate SFN up to N
+nodes and 8N links, whose distribution by node follows a power law, N((cid:96)) ∼ (cid:96)γ . The exponent measured, γ ∼ −2.5,
+agrees with the expected value for the BarabsiAlbert model for networks of comparable sizes.
+
+We can realize that this trust network (SFN) presents a power law distribution (PLD) explaining such a highly
+connected investor that we are calling by hub of the system. In this case the hub has 351 connections followed by
+other hubs which have, roughly, less than 125 connections. This behavior is characterized by the PLD.
+
+3. Results
+
+We present in this section some results for the two combined strategies. Firstly, we show the temporal series
+analysis of the stock index considering those three cases from the Table 2. Secondly, we are going to consider some
+scenarios for these combined strategy-1 and strategy-2 where we are going to dicuss the wealth distribution of the
+investors and the rate of return based on the inﬂuence of the hub (investor) in function of his psychological proﬁle.
+
+6
+
+Figure 2: Left: The graph shows that the most connected hub of the system has 351 connections followed by the one which has 116.. Right: The
+Figure shows a low density where the hubs can be seen from inside out following the proportion of its connectivity degree.
+
+3.1. Index Oscillation
+In this section we show some results for the Case-2, from Table 2. In the Figure 3 we can verify that the Hurst
+Exponent (HE) for this case is H99% = 0.4375 ± 0.001 and H70% = 0.4342 ± 0.002. This means that there are no
+tendencies on the measured and it agrees with the eﬃcient market hypothesis. The Cases 1 and 2 show two slopes for
+the HE which are going to be explored with another methodology in order to explain their role in this scenario.
+
+Figure 3: The ﬁgures show the index oscillations depending on the probabilities to follow the technical analysis and the speciﬁc case from the
+table 2 applied to set the probabilities. We verify the stochastic feature of the model by seeing the characteristic behavior of the stock market index
+quantiﬁed by the HE. Left: 99% and Case-2; Right: 70% and Case-2.
+
+3.2. Wealth Distribution
+
+This section presents some results considering diﬀerent probabilities to follow the technical analysis (MOM),
+strategy-2. From the Figure 4, we can realize how strong the MOM is by impacting on the decision-make of the
+investors. Pictures on the left, middle and right show the hub of the system set to be an imitator, random-trader
+and anti-imitator, respectively. It is notorious that, statistically, the three of them present the same results. We can
+see that the anti-imitation is the best psychological strategy adopted to work over this scenario as we have µanti =
+31878.00±23.35 R2 = 0.99345; µrandom = 19937.00±16.44 R2 = 0.99562; µimit = 7886.00±11.41 R2 = 0.98123.
+
+7
+
+-500501001502002503003504001101001000HUB HIGHLY CONNECTEDHub of the system: an investor with 351 connections Distribution of Links (Connections) by InvestorsNumber of InvestorsLinks0.1110100100010000100000100000098100102  CASE-2 - 99% - TECH ANALYSISINDEXTIME STEPS1101001000100000.1H ~ 0.4 Roughness (DFA) Linear Fit Roughness - Case2-99%roughness - w( )  0.1110100100010000100000100000098100102104 CASE-2 - 70% TECH ANALYSISINDEXTIME STEPS1101001000100000.010.11H ~ 0.4 Roughness (DFA) Linear Fit  Roughness - Case2-70%roughness - w( )  This result has been highlighted by the study of the rate of return as it is shown in the Figure 7 on the next part of this
+section, 3.3, for each one of them.
+
+From the Figure 5, we can realize that the anti-imitation still have a better return that the others proﬁles, but
+not as good as the previous scenario from Figure 4. Again, it does not matter if the hub of the system change his
+psychological proﬁle: the system response is, statistically, the same. Now, we have results from Figure 6 which show
+that the wealth distribution of the investors is the same for all of them. So, it does not matter their psychological proﬁle
+when setting the probability of 1% to follow the MOM. Simulations from several scenarios with diﬀerent probabilities
+to follow the MOM technique have provided us such a remarkable result where all the investors who are anti-imitators
+obtained a proﬁtable return by following strictly the MOM. Their richness does depend on the sort of the behavioral
+proﬁle. We can see straightaway from the simulations that all the anti-imitators got very rich, not only the hub of the
+system, but all the anti-imitators. From Figure 13, we see how the whole system displays the wealth distribution as
+we move the probabilities from 1% to 99%. For each probability, we run the system with the hub set to be an imitator
+and we then got the average of the wealth from all the imitators in the system. Then, we did the same by setting the
+hub to be a random-trader and then an anti-imitator. This Figure 13 gives an exactly idea of how the anti-imitator
+proﬁle performing a technical analysis is far more proﬁtable than the others two ones.
+
+As we increase the probability of allowing the investors to consider the strategy-2, we realize how the anti-imitators
+get much richer and the imitators get very poor. Statistically, from Figures 5 and 6, they all had the same return, but
+by increasing the probability to greater than 50%, it can be seen a huge diﬀerence between wealth distribution of each
+psychological proﬁle, see Figure 13. The results which come from the random-traders simulations just conﬁrm what
+the literature says [36, 2, 38], therefore, it brings robustness to our model.
+
+Figure 4: Proﬁt of the system as function of the hubs - 99%. Left: Hub - Imitator; Center: Hub - Random Trader; Right: Hub -
+Anti-imitator. For all of the three scenarios we can see straightaway that the anti-imitation proﬁle has a remarkable perform over the
+stock market. The results for the whole system are: µanti = 31878.00 ± 23.35 R2 = 0.99345; µrandom = 19937.00 ± 16.44 R2 =
+0.99562; µimit = 7886.00 ± 11.41 R2 = 0.98123
+
+3.3. Return Distribution
+
+This section presents results about the distribution of the rate of return considering the probabilities set to follow
+the technical analysis (MOM). We build a probability density distribution (PDF) computing the value of the stock for
+every single trading that the investor performs. We set the algorithm-1 and algorithm-2, see Figure A.14, to cumulate
+all the operations over the stock market for all the investors. From the Figure 7 we can see an asymmetry of the rate
+of return as a function of the psychological behavior. It shows us the histograms for the rate of return distribution. On
+the top-left we can see that the anti-imitator proﬁle has a better return than the others proﬁles. The imitator proﬁle,
+middle-left, has the worst one which can be seen by getting negative return. As it was to expect, on the bottom-left,
+we see that the random proﬁle has a normal distribution.The remarkable result is this asymmetric distribution between
+the anti-imitators and imitators investors. In order to compare with the scenario where we set the probability to follow
+the MOM to be 5%, we plotted the Figure 8. We see that there is no impact when choosing a speciﬁc proﬁle, because
+they all have a Gaussian distribution.
+
+In order to verify the robustness of this result we considered a diﬀerent algorithm for investor’s decision making.
+Instead of comparing between two options from trust network or technical analysis, we include both strategies in a
+
+8
+
+100001500020000250003000035000110100 HUB - IMITATOR Imitators Random Traders Anti-ImitatorsNUMBER OF INVESTORSWEALTH100001500020000250003000035000110100 HUB - RANDOM TRADER Imitators Random Traders Anti-ImitatorsNUMBER OF INVESTORSWEALTH1000015000200002500030000350000.1110100 HUB - ANTI_IMITATOR Imitators Random Traders Anti-ImitatorsNUMBER OF INVESTORSWEALTHFigure 5: Proﬁt of the system as function of the hubs - 50%. Left: Hub - Imitator; Center: Hub - Random Trader; Right: Hub -
+Anti-imitator. Even though their proﬁt are concentrated around 20000.00, we can see that the anti-imitation strategy has a better
+perform than the others ones.The results for the whole system are: µanti = 20577.95.00 ± 6.64 R2 = 0.99738; µrandom =
+20134.00 ± 5.49 R2 = 0.99967; µimit = 18963.00 ± 20.64 R2 = 0.98197
+
+Figure 6: Proﬁt of the system as function of the hubs - 1%. Left: Hub - Imitator; Center: Hub - Random Trader; Right: Hub
+- Anti-imitator. They all present, statistically, the same results. Therefore, the choice for a speciﬁc psychological proﬁle has
+no impact over the stock market.The results for the whole system are: µanti = 20081.95.00 ± 2.50 R2 = 0.9981; µrandom =
+20073.00 ± 7.16 R2 = 0.99644; µimit = 20077.00 ± 5.17 R2 = 0.99325
+
+single index. For example, if the trust network of a given investors is composed of 10 agents, and 6 are holding (value
++1), 3 holding (0) and 1 selling stocks (-1), the weight of the trust network for the index will be (6 + 0 − 1)/10 = 0.5.
+Supposing that technical analysis indicates a set of probabilities of (0.8, 0.1, 0.1) to buy, sell or hold respectively, it
+would contribute with 0.8 − 0.1 = 0.7 to that index, obtaining the value 1.2. Thus, this investor will buy stocks, since
+the result was larger than one. Otherwise, if the result was smaller than −1, the investor would sell stocks. If the value
+was remained between −1 and 1, the investor would sell ( or buy ) stocks with a probability equal to the modulus
+of the index, or holding otherwise. The Figure 7 on the right side exhibits the results obtained with this alternative
+algorithm, and displays, statistically, same results as we had on the left side. However, the range of the distribution
+was considered enlarged,
+
+This asymmetry can be explained as following: when the result from the (MOM) is to buy stocks, all the imitators
+follow that decision which makes them spend their money at a high price. As the amount of money is limited, they
+hold their stocks when do not have suﬃcient money to buy more stocks. On the other hand, the anti-imitators will sell
+their stocks at a high price. As the stock just get either more expensive or cheaper, the quantity of stock does not vanish
+at the same rate as the money of the imitator investors. Then, the imitators will have few stocks at a high price and
+the anti-imitators will have lots of money in function of the stocks which were sold. The same mechanism happens
+when the trend of the index is decreasing and the MOM says to sell. Thus, the imitators sell and the anti-imitators
+buy stocks at a price less than they have paid for. Over a period of time we have results from simulation showing that
+asymmetric rate of return depending on the behavior of the investors.
+
+9
+
+150002000025000110100 Imitators Random Trader Anti-Imitators  HUB - IMITATORNUMBER OF INVESTORSWEALTH1500020000250000.010.11101001000 Imitators Random Traders Anti-Imitators  HUB - RANDOM TRADERNUMBER OF INVESTORSWEALTH1500020000250000.11101001000 Imitators Random Trader Anti-Imitators  HUB - ANTI_IMITATORNUMBER OF INVESTORSWEALTH18500190001950020000205002100021500220000.1110100 Imitators Random TraderS Anti-Imitators NUMBER OF INVESTORSHUB - IMITATORWEALTH19500200002050021000110100 Imitators Random Trader Anti-Imitators HUB - RANDOM TRADER NUMBER OF INVESTORSWEALTH1850019000195002000020500210000.1110100  HUB ANTI_IMITATOR Imitator Random Traders Anti-ImitatorsNUMBER OF INVESTORSWEALTH4. CONCLUSION
+
+Analysing the result from Figure 2, we decided to performe a new set of simulations to make this inﬂuence clearer.
+We create two copies of a given realization of a scale free network with one third of each behavioral proﬁle. Then,
+for one copy, we chose the 300 less connected investors (5 links) to change their proﬁles and compare the evolution
+of wealth distribution of each realization. We can observe in Figure 13 that the diﬀerence between the realizations
+is marginal (comparing it with the Figure 2). Then, we take again the same two copies and now we changed the
+behavioral proﬁle of only one link - the hub - we compared the results for wealth distribution. It is clear that the
+inﬂuence of changing only the hub is much stronger than changing those 300 less connected investors (5 links each),
+evincing that the hub can alter signiﬁcantly the market.
+
+In this paper we have extended a behavioral ﬁnance model in the stock market in order to study the distribution
+of the richness among the investors. In this sense we developed an algorithm to perform a technical analysis. By
+combining the two diﬀerent techniques which are the neighborhood with their psychological proﬁle as seen in our
+previous work [30] and the table which studies the oscillation of the index for diﬀerent time-lags. This complex
+system suggests that when taking a probability greater than 50% to apply the technical analysis, there is a huge
+chance of getting richer even though having a risk of getting the least proﬁt which is still not too bad when comparing
+it with another probabilities scenarios.
+
+The simulations results have shown us how the behavior of the investors and the technical analysis (MOM) can
+bring an asymmetric rate of return where the anti-imitators investors had a proﬁtable wealth comparing with the
+imitators ones. Moreover, as much as they tend to follow MOM technique as much as we can see how proﬁtable
+anti-imitators investors become. From the Figures 11 and 13, we can clearly see how the anti-imitator improve his
+proﬁt along the period of investment. The results from simulations, considering the random-traders investors, just
+conﬁrming the results from the literature [36, 2], which make the model robust.
+
+We still need a deeper study of the weight probability given for the slope between the time-lags. Furthermore, we
+are considering to extend the amount of the resources, a relative risk aversion and make each investor to buy and sell
+from each other instead of trading straight from the stock market.
+
+10
+
+Figure 7: Rate of Return. Left side: Applying the Case-1 from the Table 2 and a probability of 99% to follow the technical analysis
+- Top-anti-imitators investors which is concentrated on the positive return side; Middle-imitators investors which is concentrated
+on the negative return side; Bottom-random-trades investors which is symmetric around the origin. Right side: the ﬁgures show,
+statistically, the same results as the ones shown at the left side when applying another technique to compute the decision-make.
+
+11
+
+-100-5005010015020011010010001000010000010000001E71E8 CASE-1 ANTI_IMITATOR-99%TRADING VOLUMERATE OF RETURN-1000-5000500100011010010001000010000010000001E71E8 MEAN FIELD - ANTI_IMITATORTRADING VOLUMERATE OF RETURN-200-150-100-50011010010001000010000010000001E71E8 CASE-1 IMITATOR-99%TRADING VOLUMERATE OF RETURN-1000-800-600-400-200020040060011010010001000010000010000001E71E8 MEAN FIELD - IMITATORTRADING VOLUMERATE OF RETURN-150-100-5005010015011010010001000010000010000001E7 CASE-1 RANDOM_TRADER-99%TRADING VOLUMERATE OF RETURN-100-5005010011010010001000010000010000001E71E8 MEAN FIELD - RANDOM TRADERTRADING VOLUMERATE OF RETURNFigure 8: Rate of Return x Wealth Distribution. The ﬁgures show the results when we apply the Case-1 from the Table 2 and a
+probability of 5% to follow the technical analysis. Left Side - Rate of Return: top-anti-imitators; middle-random-traders; bottom-
+imitators. Right Side - Wealth Distribution: top-anti-imitators; middle-random traders; bottom-imitators.
+
+12
+
+-80-60-40-2002040608010012011010010001000010000010000001E7 CASE-1 ANTI_IMITATOR-5%TRADING VOLUMERATE OF RETURN185001900019500200002050021000050100150200250300 CASE-1 - ANTI_IMITATOR-5%NUMBER OF INVESTORSWEALTH WEALTH DISTRIBUTION GAUSSIAN FIT-20-100102011010010001000010000010000001E7 CASE-1 RANDOM_TRADER-5%TRADING VOLUMERATE OF RETURN192001940019600198002000020200204002060020800050100150200250300 CASE-1 - RANDOM_TRADER-5%NUMBER OF INVESTORSWEALTH WEALTH DISTRIBUTION GAUSSIAN FIT-60-40-20020406011010010001000010000010000001E7  CASE-1 IMITATOR-5%TRADING VOLUMERATE OF RETURN192001940019600198002000020200204002060020800050100150200250300 CASE-1 - IMITATOR-5% NUMBER OF INVESTORSWEALTH WEALTH GAUSSIAN FITFigure 9: Rate of Return x Wealth Distribution. The ﬁgures show the results when we apply the Case-2 from the Table 2 and a
+probability of 99% to follow the technical analysis. Left Side - Rate of Return: top-anti-imitators; middle-imitators; bottom-random
+traders. Right Side - Wealth Distribution: top-anti-imitators; middle-imitators; bottom-random traders.
+
+13
+
+-50-40-30-20-100102030405011010010001000010000010000001E7 CASE-2 - ANTI_IMITATOR-99%TRADING VOLUMERATE OF RETURN17200174001760017800180001820018400186001880019000050100150200 WEALTH DISTRIBUTION GAUSSIAN FIT  CASE-2 - ANTI_IMITATOR-99%NUMBER OF INVESTORSWEALTH-50-40-30-20-100102030405011010010001000010000010000001E7  CASE-2 - IMITATOR-99%TRADING VOLUMERATE OF RETURN220002220022400226002280023000020406080100120140160 CASE-2 - IMITATOR-99%NUMBER OF INVESTORSWEALTH WEALTH DISTRIBUTION GAUSSIAN FIT-50-40-30-20-100102030405011010010001000010000010000001E7  CASE-2 - RANDOM_TRADER-99%TRADING VALUERATE OF RETURN192001940019600198002000020200204002060020800050100150200250300 CASE-2 RANDOM_TRADER-99%NUMBER OF INVESTORSWEALTH WEALTH DISTRIBUTION GAUSSIAN FITFigure 10: Rate of Return x Wealth Distribution. The ﬁgures show the results when we apply the Case-3 from the Table 2 and a
+probability of 99% to follow the technical analysis. Left Side - Rate of Return: top-anti-imitators; middle-imitators; bottom-random
+traders. Right Side - Wealth Distribution: top-anti-imitators; middle-imitators; bottom-random traders.
+
+14
+
+-60-40-2002040608010012011010010001000010000010000001E7 CASE-3 ANTI_IMITATOR-99%TRADING VOLUMERATE OF RETURN19000200002100022000230002400025000020406080100120  WEALTH DISTRIBUTION GAUSSIAN FITCASE-3 ANTI_IMITATOR-99%NUMBER OF INVESTORSWEALTH-200-150-100-5005011010010001000010000010000001E7 CASE-3 IMITATOR-99%TRADING VOLUMERATE OF RETURN140001500016000170001800019000020406080100120140160  CASE-3 IMITATOR-99%NUMBER OF INVESTORSWEALTH WEALTH DISTRIBUTION GAUSSIAN FIT-80-60-40-2002040608011010010001000010000010000001E7  CASE-3 RANDOM_TRADER-99%TRADING VOLUMERATE OF RETURN170001800019000200002100022000020406080100120140160 CASE-3 RANDOM_TRADER-99%NUMBER OF INVESTORSWEALTH WEALTH DISTRIBUTION GAUSSIAN FITFigure 11: The graphics show the wealth of the Hub of the system as a function of the probability adopted to follow the technical analysis strategy
+for each psychological proﬁle of the Hub. Left top: Case-1; Right top: Case-2;
+Left bottom: Case-3; Right-bottom: Case-4 (inverted tendency of the Case-3)
+
+Figure 12: The graphic shows shows the average wealth for every kind of psychological behavior as a function of the probability adopted to follow
+the technical analysis strategy applying the Case-1 from Table 2.
+
+15
+
+1%5%30%50%70%95%99%6810121416182022242628HUB WEALTH DISTRIBUTION - CASE-1 WEALTH(10^3) PROBABILITY FOR TECH ANALYSIS IMITATOR RANDOM-TRADER ANTI-IMITATOR1%5%30%50%70%95%99%6810121416182022242628 HUB WEALTH DISTRIBUTION - CASE-2 IMITATOR RANDOM-TRADER ANTI-IMITATORWEALTH (10^3)PROBABILITY FOR TECH ANALYSIS1%5%30%50%70%95%99%1516171819202122 HUB WEALTH DISTRIBUTION - CASE-3WEALTH(10^3)PROBABILITY FOR TECH ANALYSIS IMITATOR RANDOM TRADER ANTI-IMITATOR1%5%30%50%70%95%99%6810121416182022242628 HUB WEALTH DISTRIBUTION - CASE-4 IMITATOR RANDOM-TRADER ANTI-IMITATORWEALTH(10^3)PROBABILITY FOR TECH ANALYSIS1%5%30%50%70%95%99%8101214161820222426283032 IMITATOR RANDOM-TRADER ANTI-IMITATOR  SYSTEM WEALTH DISTRIBUTIONWEALTH  (10^3)PROBABILITY TO FOLLOW TECH ANALYSISFigure 13: The graphic shows the wealth of the whole system as a function of the probability adopted to follow the technical analysis strategy for
+each psychological proﬁle of the investors applying the Case-1 from Table II. Each one of them shows the average value of the system when the
+hub was set to be anti-imitator, imitator, then random-trader.
+
+16
+
+1%5%30%50%70%95%99%600080001000012000140001600018000200002200024000260002800030000 SYSTEM WEALTH DISTRIBUTION - 5 LINKSWEALTHPROBABILITY TO FOLLOW TECH ANALYSIS IMITATOR RANDOM-TRADER ANTI-IMITATOR*
+
+Appendix A. Algorithm
+
+The Algorithm-1, from Figure A.14, shows how we have set the process of verifying what is the state of the trust
+neighborhood, that means, what every single investor is performing (buying, holding, selling) at a current time and, at
+the same time, making each investor to perform a technical analysis over the temporal series of the index (MOM). The
+Algorithm-2 from A.14 shows how the stochastic process works in order to decide if an investor should eithe follow
+the MOM result or his trust neighborhood.
+
+Figure A.14: Left: The algorithm shows the strategy’s results. All the investors who are linked look at their neighborhood. The investors perform a
+technical analysis and the value of the index is updated at the same time. Right: Decision-make strategy, this algorithm takes the choices from the
+trust neighborhood and the technical analysis and perform a stochstic process to decide which one the invesor will follow.
+
+17
+
+References
+
+[1] N. Boccara, Modeling Complex Systems, Springer, 2004.
+[2] J. Bouchaud, M. Potters, Theory of ﬁnancial risk and derivative pricing, 2nd Edition, Cambridge Univ. Press, 2003.
+[3] B. le Baron, IN: Handbook of Computational Economics. L. Tesfatsion and K. Judd eds., North-Holland, 2006, Ch. Agent-based Computa-
+
+[4] B. le Baron, Chaos and nonlinear forecastability in economics and ﬁnance, Philosophical Transactions of the Royal Society of London (A)
+
+[5] B. le Baron, W. B. Arthur, R. Palmer, The time series properties of an artiﬁcial stock market, Journal of Economic Dynamics and Control 23
+
+[6] D. O. Cajueiro, B. M. Tabak, The hurst exponent over time: testing the assertion that emerging markets are becoming more eﬃcient., Physica.
+
+tional Finance, pp. 1187–1232.
+
+348 (1994) 397–404.
+
+(1999) 1487–1516.
+
+A 336 (2004) 521–537.
+
+[7] T. Ara´ujo, F. Louc¸˜a, Modeling a multi-agents system as a network, International Journal of Agent Technologies and Systems 1 (2009) 17–29.
+[8] D. Fudenberg, Game theory, MIT Press, Cambridge, 1991.
+[9] M. Hart, P. Jeﬀeries, N. F. Johnson, P. M. Hui, Crowdanticrowd theory of the minority game, Physica A: Statistical Mechanics and its
+
+[10] A. C. C. Coolen, N. Shayeghi, Generating functional analysis of minority games with inner product strategy deﬁnitions, Journal of Physics
+
+Applications 298 (3) (2001) 537–544.
+
+A: Mathematical and Theoretical 41 (32) (2008) 324005.
+
+[11] T. Lux, Emergent Statistical Wealth Distributions in Simple Monetary Exchange Models: A Critical Review, Springer Milan, 2005, pp.
+
+51–60.
+
+36 (8) (2012) 1284 – 1302.
+
+[12] T. Lux, Applications of statistical physics in ﬁnance and economics, 2009.
+[13] T. Lux, Estimation of an agent-based model of investor sentiment formation in ﬁnancial markets, Journal of Economic Dynamics and Control
+
+Press, 1999.
+
+(2001) 026118.
+
+2012.
+
+098104.
+
+[14] M. Mitchell, Complexity: A Guided Tour, Oxford University Press, Inc., New York, NY, USA, 2009.
+[15] D. Sornette, Why Stock Markets Crash - Critical Events in Complex Financial Systems, Princeton University Press, 2003.
+[16] R. N. Mantegna, H. E. Stanley, Introduction to Econophysics: Correlations and Complexity in Finance, 0th Edition, Cambridge University
+
+[17] A. Kirman, Complex Economics: Individual and Collective Rationality, Routledge, 2010.
+[18] A. Tversky, D. Kahneman, The framing of decisions and the psychology of choice, Science 211 (1981) 453–458.
+[19] F. F. J., M. F. P., J. Frank, Foundations of Financial Markets and Institutions, 4th Edition, Pearson Education (US), 2009.
+[20] T. Lux, The socio-economic dynamics of speculative markets: interacting agents, chaos, and the fat tails of return distributions, Journal of
+
+Economic Behavior & Organization 33 (2) (1998) 143 – 165.
+
+[21] M. E. J. Newman, S. H. Strogatz, D. J. Watts, Random graphs with arbitrary degree distribution and their applications, Physical Review E 64
+
+[22] M. E. J. Newman, Models of the small world, Journal of Statistical Physics 101 (3/4) (2000) 819–841.
+[23] R. Cohen, S. Havlin, Complex networks: structure, robustness and function, Cambridge university press, 2010.
+[24] P. Ball, Why society is a complex matter meeting twenty-ﬁrst century challenges with a new kind of science, Springer, Berlin New York,
+
+[25] F. C. Santos, J. M. Pacheco, Scale-free networks provide a unifying framework for the emergence of cooperation, Phys. Rev. Lett. 95 (2005)
+
+[26] R. Albert, A.-L. Barab`asi, Statistical mechanics of complex networks, Reviews of Modern Physics 74 (2002) 47–97.
+[27] M. Tumminello, T. Aste, T. Di Matteo, R. N. Mantegna, A tool for ﬁltering information in complex systems, Proceedings of the National
+
+[28] B. Hou, Y. Yao, D. Liao, Identifying all-around nodes for spreading dynamics in complex networks, Physica A: Statistical Mechanics and its
+
+Academy of Sciences USA 102 (2005) 10421–10426.
+
+Applications 391 (15) (2012) 4012 – 4017.
+
+[29] M. E. J. Newman, Models of the small world, Journal of Statistical Physics 101 (3) (2000) 819–841. doi:10.1023/A:1026485807148.
+[30] F. M. Stefan, A. P. F. Atman, Is there any connection between the network morphology and the ﬂuctuations of the stock market index?,
+
+PHYSICA A-Statistical Mechanics and its Applications 419 (2015) 630–641.
+[31] S. Achelis, Technical Analysis from A to Z, 4th Edition, McGraw-Hill, 2000.
+[32] M. Pring, Technical Analysis Explained: The Successful Investor’s Guide to Spotting Investment Trends and Turning Points, McGraw-Hill
+
+[33] J. J. Murphy, J. J. Murphy, Technical analysis of the ﬁnancial markets, New York Institute of Finance, Fishkill, N.Y., 1999.
+[34] R. D. Edwards, J. Magee, Technical analysis of stock trends / by Robert D. Edwards and John Magee, [5th ed.]. Edition, J. Magee Springﬁeld,
+
+[35] S. H. Irwin, C.-H. Park, What do we know about the proﬁtability of technical analysis?, Social Science Research Network Working Paper
+
+[36] A. E. Biondo, A. Pluchino, A. Rapisarda, D. Helbing, Are Random Trading Strategies More Successful than Technical Ones?, PLoS one
+
+[37] A.-L. Barab`asi, R. Albert, Emergence of scaling in random networks, Science 286 (1999) 509–512.
+[38] B. LeBaron, Agent-based computational ﬁnance: Suggested readings and early research, Journal of Economic Dynamics and Control 24 (5-7)
+
+Education, 2002.
+
+Mass, 1969.
+
+Series.
+
+8 (7) (2013) e68344–.
+
+(2000) 679–702.
+
+18
+
+

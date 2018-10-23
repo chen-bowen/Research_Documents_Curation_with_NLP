@@ -1,0 +1,3147 @@
+0
+1
+0
+2
+
+ 
+
+n
+a
+J
+ 
+
+8
+1
+
+ 
+ 
+]
+T
+S
+h
+t
+a
+m
+
+.
+
+[
+ 
+ 
+
+1
+v
+6
+0
+0
+3
+
+.
+
+1
+0
+0
+1
+:
+v
+i
+X
+r
+a
+
+Asymptotic equivalence and suﬃciency for volatility
+
+estimation under microstructure noise
+
+Markus Reiß
+
+Institute of Mathematics
+
+Humboldt-Universit¨at zu Berlin
+
+mreiss@mathematik.hu-berlin.de
+
+May 6, 2018
+
+Abstract
+
+The basic model for high-frequency data in ﬁnance is considered,
+
+where an eﬃcient price process is observed under microstructure noise.
+
+It is shown that this nonparametric model is in Le Cam’s sense asymp-
+
+totically equivalent to a Gaussian shift experiment in terms of the
+
+square root of the volatility function σ. As an application, simple rate-
+
+optimal estimators of the volatility and eﬃcient estimators of the in-
+
+tegrated volatility are constructed.
+
+Key words and Phrases: High-frequency data, integrated volatility, spot volatility
+
+estimation, Le Cam deﬁciency, equivalence of experiments, Gaussian shift.
+
+AMS subject classiﬁcation: 62G20, 62B15, 62M10,91B84
+
+1
+
+2
+
+Markus Reiß
+
+1
+
+Introduction
+
+In recent years volatility estimation from high-frequency data has attracted a lot
+
+of attention in ﬁnancial econometrics and statistics. Due to empirical evidence that
+
+the observed transaction prices of assets cannot follow a semi-martingale model, a
+
+prominent approach is to model the observations as the superposition of the true (or
+
+eﬃcient) price process with some measurement error, conceived as microstructure
+
+noise. The main features are already present in the basic model of observing
+
+Yi = Xi/n + εi,
+
+i = 1, . . . , n,
+
+(1.1)
+
+with an eﬃcient price process Xt = R t
+0 σ(s) dBs, B a standard Brownian motion,
+and εi ∼ N (0, δ2) all independent. The aim is to perform statistical inference on the
+volatility function σ : [0, 1] → R+, e.g. estimating the so-called integrated volatility
+R 1
+0 σ2(t) dt over the trading day.
+
+The mathematical foundation on the parametric formulation of this model has
+
+been laid by Gloter and Jacod (2001a) who prove the interesting result that the
+
+model is locally asymptotically normal (LAN) as n → ∞, but with the unusual
+rate n−1/4, while without microstructure noise the rate is n−1/2. Starting with
+
+Zhang, Mykland, and A¨ıt-Sahalia (2005), the nonparametric model has come into
+
+the focus of research. Mainly three diﬀerent, but closely related approaches have
+
+been proposed afterwards to estimate the integrated volatility: multi-scale estima-
+
+tors (Zhang 2006), realized kernels or autocovariances (Barndorﬀ-Nielsen, Hansen,
+
+Lunde, and Shephard 2008) and preaveraging (Jacod, Li, Mykland, Podolskij, and
+
+Vetter 2009). Under various degrees of generality, especially also for stochastic
+
+volatility, all authors provide central limit theorems with convergence rate n−1/4
+
+and an asymptotic variance involving the so-called quarticity R 1
+
+0 σ4(t) dt. Recently,
+also the problem of estimating the spot volatility σ2(t) itself has found some interest
+
+(Munk and Schmidt-Hieber 2009).
+
+The aim of the present paper is to provide a thorough mathematical understand-
+
+Asymptotic equivalence for volatility estimation
+
+3
+
+ing of the basic model, to explain why statistical inference is not so canonical and
+
+to propose a simple estimator of the integrated volatility which is eﬃcient. To this
+
+end we employ Le Cam’s concept of asymptotic equivalence between experiments.
+
+In fact, our main theoretical result in Theorem 6.2 states under some regularity
+
+conditions that observing (Yi) in (1.1) is for n → ∞ asymptotically equivalent to
+observing the Gaussian shift experiment
+
+dYt =p2σ(t) dt + δ1/2n−1/4 dWt,
+
+t ∈ [0, 1],
+
+with Gaussian white noise dW . Not only the large noise level δ1/2n−1/4 is appar-
+
+ent, but also a non-linear pσ(t)-form of the signal, from which optimal asymp-
+
+totic variance results can be derived. Note that a similar form of a Gaussian shift
+
+was found to be asymptotically equivalent to nonparametric density estimation
+
+(Nussbaum 1996). A key ingredient of our asymptotic equivalence proof are the
+
+results by Grama and Nussbaum (2002) on asymptotic equivalence for generalized
+
+nonparametric regression, but also ideas from Carter (2006) and Reiß (2008) play
+
+a role. Moreover, ﬁne bounds on Hellinger distances for Gaussian measures with
+
+diﬀerent covariance operators turn out to be essential.
+
+Roughly speaking, asymptotic equivalence means that any statistical infer-
+
+ence procedure can be transferred from one experiment to the other such that
+
+the asymptotic risk remains the same, at least for bounded loss functions. Techni-
+
+cally, two sequences of experiments E n and G n, deﬁned on possibly diﬀerent sample
+
+spaces, but with the same parameter set, are asymptotically equivalent if the Le
+
+Cam distance ∆(E n, G n) tends to zero. For Ei = (Xi, Fi, (Pi
+
+ϑ)ϑ∈Θ), i = 1, 2, by
+deﬁnition, ∆(E1, E2) = max(δ(E1, E2), δ(E1, E2)) holds in terms of the deﬁciency
+δ(E1, E2) = inf M supϑ∈ΘkM P 1
+ϑkT V , where the inﬁmum is taken over all ran-
+domisations or Markov kernels M from (X1, F1) to (X2, F2), see e.g. Le Cam
+
+ϑ − P 2
+
+and Yang (2000) for details. In particular, δ(E1, E2) = 0 means that E1 is more
+
+informative than E2 in the sense that any observation in E2 can be obtained from
+
+E1, possibly using additional randomisations. Here, we shall always explicitly con-
+
+4
+
+Markus Reiß
+
+struct the transformations and randomisations and we shall then only use that
+∆(E1, E2) 6 supϑ∈ΘkP 1
+same sample space.
+
+ϑkT V holds when both experiments are deﬁned on the
+
+ϑ − P 2
+
+The asymptotic equivalence is deduced stepwise. In Section 2 the regression-
+
+type model (1.1) is shown to be asymptotically equivalent to a corresponding white
+
+noise model with signal X. Then in Section 3, a very simple construction yields
+
+a Gaussian shift model with signal log(σ2(•) + c), c > 0 some constant, which is
+asymptotically less informative, but only by a constant factor in the Fisher informa-
+
+tion. Inspired by this construction, we present a generalisation in Section 4 where
+
+the information loss can be made arbitrarily small (but not zero), before applying
+
+nonparametric local asymptotic theory in Section 5 to derive asymptotic equiva-
+
+lence with our ﬁnal Gaussian shift model for shrinking local neighbourhoods of the
+
+parameters. Section 6 yields the global result, which is based on an asymptotic
+
+suﬃciency result for simple independent statistics.
+
+Extensions and restrictions are discussed in Section 7 before we use the theoret-
+
+ical insight to construct in Section 8 a rate-optimal estimator of the spot volatility
+
+and an eﬃcient estimator of the integrated volatility by a locally-constant approx-
+
+imation. Remarkably, the asymptotic variance is found to depend on the third
+
+momentR 1
+
+0 σ3(t) dt and for non-constant σ2(•) our estimator outperforms previous
+approaches applied to the basic model. Constructions needed for the proof are pre-
+
+sented and discussed alongside the mathematical results, deferring more technical
+
+parts to the Appendix, which in Section 9.1 also contains a summary of results on
+
+white noise models, the Hellinger distance and Hilbert-Schmidt norm estimates.
+
+2 The regression and white noise model
+
+In the main part we shall work in the white noise setting, which is more intuitive
+
+to handle than the regression setting, which in turn is the observation model in
+
+Asymptotic equivalence for volatility estimation
+
+5
+
+practice. Let us deﬁne both models formally. For that we introduce the H¨older ball
+
+Cα(R) := {f ∈ Cα([0, 1])|kfkC α 6 R} with kfkC α = kfk∞ + sup
+x6=y
+
+|f (x) − f (y)|
+
+|x − y|α
+
+.
+
+2.1 Deﬁnition. Let E0 = E0(n, δ, α, R, σ2) with n ∈ N, δ > 0, α ∈ (0, 1), R > 0,
+σ2 > 0 be the statistical experiment generated by observing (1.1). The volatility σ2
+
+belongs to the class
+
+S (α, R, σ2) :=nσ2 ∈ Cα(R)(cid:12)(cid:12)(cid:12) min
+
+t∈[0,1]
+
+σ2(t) > σ2o.
+
+Let E1 = E1(ε, α, R, σ2) with ε > 0, α ∈ (0, 1), R > 0, σ2 > 0 be the statistical
+
+experiment generated by observing
+
+dYt = Xt dt + ε dWt,
+
+t ∈ [0, 1],
+
+with Xt = R t
+B and σ2 ∈ S (α, R, σ2).
+
+0 σ(s) dBs as above, independent standard Brownian motions W and
+
+From Brown and Low (1996) it is well known that the white noise and the
+
+Gaussian regression model are asymptotically equivalent for noise level ε = δ/√n →
+0 as n → ∞, provided the signal is β-H¨older continuous for β > 1/2. Since Brownian
+motion and thus also our price process X is only H¨older continuous of order β < 1/2
+
+(whatever α is), it is not clear whether asymptotic equivalence can hold for the
+
+experiments E0 and E1. Yet, this is true. Subsequently, we employ the notation
+
+An . Bn if An = O(Bn) and An ∼ Bn if An . Bn as well as Bn . An and obtain:
+
+2.2 Theorem. For any α > 0, σ2 > 0 and δ, R > 0 the experiments E0 and E1
+with ε = δ/√n are asymptotically equivalent ; more precisely:
+
+∆(E0(n, δ, α, R, σ2), E1(δ/√n, h, α, R, σ2)) . Rδ−2n−α.
+
+Interestingly, the asymptotic equivalence holds for any positive H¨older regu-
+
+larity α > 0. In particular, the volatility σ2 could be itself a continuous semi-
+
+martingale, but such that X conditionally on σ2 remains Gaussian. As the proof in
+
+6
+
+Markus Reiß
+
+Section 9.2 of the appendix reveals, we construct the equivalence by rate-optimal
+
+approximations of the anti-derivative of σ2 which lies in C1+α. Similar techniques
+
+have been used by Carter (2006) and Reiß (2008), but here we have to cope with
+
+the random signal for which we need to bound the Hilbert-Schmidt norm of the
+
+respective covariance operators. Note further that the asymptotic equivalence even
+holds when the level of the microstructure noise δ tends to zero, provided δ2nα → ∞
+remains valid.
+
+3 Less informative Gaussian shift experiments
+
+From now on we shall work with the white noise observation experiment E1, where
+
+the main structures are more clearly visible. In this section we shall ﬁnd easy
+
+Gaussian shift models which are asymptotically not more informative than E1, but
+
+already permit rate-optimal estimation results. The whole idea is easy to grasp
+
+once we can replace the volatility σ2 by a piecewise constant approximation on
+
+small blocks of size h. That this is no loss of generality, is shown by the subsequent
+
+asymptotic equivalence result, proved in Section 9.3 of the appendix.
+
+3.1 Deﬁnition. Let E2 = E2(ε, h, α, R, σ2) be the statistical experiment generated
+
+by observing
+
+dYt = X h
+
+t dt + ε dWt,
+
+t ∈ [0, 1],
+
+t = R t
+
+with X h
+
+0 σ(⌊s⌋h) dBs, ⌊s⌋h := ⌊s/h⌋h for h > 0 and h−1 ∈ N, and indepen-
+dent standard Brownian motions W and B. The volatility σ2 belongs to the class
+
+S (α, R, σ2).
+
+3.2 Proposition. Assume α > 1/2 and σ2 > 0. Then for ε → 0, hα = o(ε1/2) the
+experiments E1 and E2 are asymptotically equivalent ; more precisely:
+
+∆(E1(ε, α, R, σ2), E2(ε, h, α, R, σ2)) . Rσ−3/2hαε−1/2.
+
+In the sequel we always assume hα = o(ε1/2) to hold such that we can work
+
+equivalently with E2. Recall that observing Y in a white noise model is equivalent
+
+Asymptotic equivalence for volatility estimation
+
+7
+
+to observing (R em dY )m>1 for an orthonormal basis (em)m>1 of L2([0, 1]), cf. also
+
+Subsection 9.1 below. Our ﬁrst step is thus to ﬁnd an orthonormal system (not a
+information on σ2 as possible. For any ϕ ∈
+
+basis) which extracts as much local
+L2([0, 1]) with kϕkL2 = 1 we have by partial integration
+
+Φ(t)σ(⌊t⌋h) dBt + εZ ϕ(t) dWt
+
+Z 1
+
+0
+
+ϕ(t)dYt =Z 1
+
+0
+
+= Φ(1)X h
+
+ϕ(t)X h
+
+0
+
+ϕ(t) dWt
+
+t dt + εZ 1
+1 − Φ(0)X h
+Φ2(t)σ2(⌊t⌋h) dt + ε2(cid:17)1/2
+
+0 −Z 1
+
+0
+
+0
+
+ζϕ
+
+=(cid:16)Z 1
+t ϕ(s) ds is the antiderivative of ϕ with Φ(1) = 0 and ζϕ ∼ N (0, 1)
+holds. To ensure that Φ has only support in some interval [kh, (k + 1)h], we require
+
+where Φ(t) = −R 1
+ϕ to have support in [kh, (k + 1)h] and to satisfy R ϕ(t) dt = 0. The function ϕk
+with supp(ϕk) = [kh, (k + 1)h], kϕkkL2 = 1, R ϕk(t) dt = 0 that maximizes the
+information load R Φ2
+
+k(t) dt for σ2(kh) is given by (use Lagrange theory)
+
+(3.1)
+
+ϕk(t) = √2h−1/2 cos(cid:0)π(t − kh)/h(cid:1)1[kh,(k+1)h](t),
+
+t ∈ [0, 1].
+
+(3.2)
+
+The L2-orthonormal system (ϕk) for k = 0, 1, . . . , h−1 − 1 is now used to construct
+Gaussian shift observations. In E2 we obtain from (3.1) the observations
+
+yk :=Z ϕk(t) dYt =(cid:16)h2π−2σ2(kh) + ε2(cid:17)1/2
+
+ζk,
+
+k = 0, . . . , h−1 − 1,
+
+(3.3)
+
+with independent standard normal random variables (ζk)k=0,...,h−1−1. Observing
+(yk) is clearly equivalent to observing
+
+zk := log(y2
+
+kh−2π2) − E[log(ζ2
+
+for k = 0, . . . , h−1 − 1 with ηk := log(ζ2
+
+k )] = log(cid:16)σ2(kh) + ε2h−2π2(cid:17) + ηk
+k ) − E[log(ζ2
+
+k )].
+
+(3.4)
+
+We have found a nonparametric regression model with regression function
+
+log(σ2(•) + ε2h−2π2) and h−1 equidistant observations corrupted by non-Gaussian,
+but centered noise (ηk) of variance 2. To ensure that the regression function does
+
+not change under the asymptotics ε → 0, we specify the block size h = h(ε) = h0ε
+with some ﬁxed constant h0 > 0.
+
+8
+
+Markus Reiß
+
+It is not surprising that the nonparametric regression experiment in (3.4) is
+
+equivalent to a corresponding Gaussian shift experiment. Indeed, this follows read-
+
+ily from results by Grama and Nussbaum (2002) who in their Section 4.2 derive
+
+asymptotic equivalence already for our Gaussian scale model (3.3). Note, however,
+
+that their Fisher information should be I(ϑ) = 1
+
+2 ϑ−2 and we thus have asymptotic
+
+equivalence of (3.3) with the Gaussian regression model
+
+wk = 1√2
+
+log(σ2(kh) + h−2
+
+0 π2) + γk,
+
+k = 0, . . . , h−1 − 1,
+
+where γk ∼ N (0, 1) i.i.d. Since by the classical result of Brown and Low (1996)
+the Gaussian regression is equivalent to the corresponding white noise experiment
+
+(note that log(σ2(•) + h−2
+an important and far-reaching result.
+
+0 π2) is also α-H¨older continuous), we have already derived
+
+3.3 Theorem. For α > 1/2 and σ2 > 0 the high frequency experiment
+
+E1(ε, α, R, σ2) is asymptotically more informative than the Gaussian shift exper-
+
+iment G1(ε, α, R, σ2, h0) of observing
+
+dZt = 1√2
+
+log(cid:16)σ2(t) + h−2
+
+0 π2(cid:17) dt + h1/2
+
+0 ε1/2dWt,
+
+t ∈ [0, 1].
+
+Here h0 > 0 is an arbitrary constant and σ2 ∈ S (α, R, σ2).
+
+3.4 Remark. Moving the constants from the diﬀusion to the drift part, the exper-
+
+iment G1 is equivalent to observing
+
+d ˜Zt = (2h0)−1/2 log(σ2(t) + h−2
+
+0 π2) dt + ε1/2dWt,
+
+t ∈ [0, 1].
+
+(3.5)
+
+The Gaussian shift experiment is nonlinear in σ2 which is to be expected. Writing
+ε = δ/√n gives us the noise level δ1/2n−1/4 which appears in all previous work on
+
+the model E0.
+
+To quantify the amount of information we have lost, let us study the LAN-
+
+property of the constant parametric case σ2(t) = σ2 > 0 in G1. We consider the
+
+local alternatives σ2
+
+ε = σ2
+
+0 + ε1/2 for which we obtain the Fisher information Ih0 =
+
+Asymptotic equivalence for volatility estimation
+
+9
+
+(2h0)−1h4
+
+0/(π2 + h2
+
+0σ2
+
+0)2. Maximizing over h0 yields h0 = √3πσ−1
+
+0
+
+and the Fisher
+
+information is at most equal to
+
+sup
+h0>0
+
+Ih0 = σ−3
+
+0 33/2/(32π) ≈ 0.0517σ−3
+0 .
+
+By the LAN-result of Gloter and Jacod (2001a) for E0 the best value is I(σ0) = 1
+
+8 σ−3
+
+0
+
+which is clearly larger. Note, however, that the relative (normalized) eﬃciency is
+
+√33/2/(32π)
+
+√1/8
+
+already
+
+≈ 0.64, which means that we attain about 64% of the precision
+
+when working with G1 instead of E0 or E1.
+
+4 A close sequence of simple models
+
+In order to decrease the information loss in G1, we now take into account higher
+
+frequencies in each block [kh, (k + 1)h]. In a frequency-location notation (j, k) we
+consider for k = 0, 1, . . . , h−1 − 1, j > 1
+
+ϕjk(t) = √2h−1/2 cos(jπ(t − kh)/h)1[kh,(k+1)h](t),
+
+t ∈ [0, 1].
+
+(4.1)
+
+This gives the corresponding antiderivatives
+
+Φjk(t) =
+
+√2h
+πj
+
+sin(jπ(t − kh)/h)1[kh,(k+1)h](t),
+
+t ∈ [0, 1].
+
+Not only the (ϕjk) and (Φjk) are localized on each block, also each single family
+
+of functions is orthogonal in L2([0, 1]). Working again on the piecewise constant
+
+experiment E2, we extract the observations
+
+yjk :=Z 1
+
+0
+
+ϕjk(t) dYt =(cid:16)h2π−2j−2σ2(kh) + ε2(cid:17)1/2
+
+ζjk, j > 1, k = 0, . . . , h−1 − 1,
+(4.2)
+
+with ζjk ∼ N (0, 1) independent over all (j, k). The same transformation as before
+leads for each j > 1 to the regression model for k = 0, . . . , h−1 − 1
+zjk := log(y2
+
+jk)] = log(σ2(t)+ ε2h−2π2j2)+ ηjk. (4.3)
+
+jk)− log(h2π−2j−2)− E[log(ζ2
+
+Applying the asymptotic equivalence result by Grama and Nussbaum (2002) for
+
+each independent level j separately, we immediately generalize Theorem 3.3.
+
+10
+
+Markus Reiß
+
+4.1 Theorem. For α > 1/2 and σ2 > 0 the high frequency experiment
+
+E1(ε, α, R, σ2) is asymptotically more informative than the combined experiment
+
+G2(ε, α, R, σ2, h0, J) of independent Gaussian shifts
+
+dZ j
+
+t = 1√2
+
+log(σ2(t) + h−2
+
+0 π2j2) dt + h1/2
+
+0 ε1/2dW j
+t ,
+
+t ∈ [0, 1], j = 1, . . . , J,
+
+with independent Brownian motions (W j)j=1,...,J and σ2 ∈ S (α, R, σ2). The con-
+stants h0 > 0 and J ∈ N are arbitrary, but ﬁxed.
+4.2 Remark. Let us again study the LAN-property of the constant parametric
+
+case σ2(t) = σ2 > 0 for the local alternatives σ2
+
+ε = σ2
+
+0 + ε1/2. We obtain the Fisher
+
+information
+
+Ih0,J =
+
+JXj=1
+
+(2h0)−1h4
+
+0(π2j2 + h2
+
+0σ2
+
+0)−2 =
+
+JXj=1
+
+h−1
+0
+2(π2(jh−1
+0 )2 + σ2
+
+0)2
+
+.
+
+In the limit J → ∞ and h0 → ∞ we obtain by Riemann sum approximation
+
+lim
+h0→∞
+
+lim
+J→∞
+
+Ih0,J =Z ∞
+
+0
+
+dx
+
+2(π2x2 + σ2
+
+0)2 =
+
+1
+8σ3
+0
+
+.
+
+This is exactly the optimal Fisher information, obtained by Gloter and Jacod
+
+(2001a) in this case. Note, however, that it is not at all obvious that we may let
+
+J, h0 → ∞, in the asymptotic equivalence result. Moreover, in our theory the re-
+striction hα = o(ε1/2) is necessary, which translates into h0 = o(ε(1−2α)/2α). Still,
+
+the positive aspect is that we can come as close as we wish to an asymptotically
+
+almost equivalent, but much simpler model.
+
+5 Localisation
+
+We know from standard regression theory (Stone 1982) that in the experiment G1
+we can estimate σ2 ∈ Cα in sup-norm with rate (ε log(ε−1))α/(2α+1), using that the
+log-function is a C∞-diﬀeomorphism for arguments bounded away from zero and
+
+inﬁnity. Since E1 is for α > 1/2 asymptotically more informative than G1, we can
+
+therefore localize σ2 in a neighbourhood of some σ2
+
+0. Using the local coordinate s2
+0 + vεs2 for vε → 0 we deﬁne a localized experiment, cf. Nussbaum (1996).
+
+in σ2 = σ2
+
+Asymptotic equivalence for volatility estimation
+
+11
+
+5.1 Deﬁnition. Let Ei,loc = Ei,loc(σ0, ε, α, R, σ2) for σ0 ∈ S (α, R, σ2) be the sta-
+tistical subexperiment obtained from Ei(ε, α, R, σ2) by restricting to the parameters
+
+σ2 = σ2
+
+0 + vεs2 with vε = εα/(2α+1) log(ε−1) and unknown s2 ∈ Cα(R).
+
+We shall consider the observations (yjk) in (4.2) derived from E2,loc and mul-
+
+tiplied by πj/h. The model is then a generalized nonparametric regression family
+
+in the sense of Grama and Nussbaum (2002). On the sequence space (X , F ) =
+(RN, B⊗ N) we consider for ϑ ∈ Θ = [σ2, R] the Gaussian product measure
+
+Pϑ =Oj>1
+
+N(cid:0)0, ϑ + h−2
+
+0 π2j2(cid:1).
+
+(5.1)
+
+The parameter ϑ plays the role of σ2(kh) for each k. By independence and the
+
+result for the one-dimensional Gaussian scale model, the Fisher information for ϑ
+
+is given by
+
+I(ϑ) :=Xj>1
+
+1
+2(ϑ + h−2
+0 π2j2)2
+
+=
+
+h0
+
+8ϑ3/2(cid:16) 1 + 4ϑ1/2h0e−2ϑ1/2h0 − e−4ϑ1/2h0
+
+(1 − e−2ϑ1/2h0 )2
+
+2
+
+ϑ1/2h0(cid:17),
+
+−
+
+(5.2)
+
+where the series is evaluated in Section 9.6 using Fourier analysis. Since we shall
+
+later let h0 tend to inﬁnity, an essential point is the asymptotics I(ϑ) ∼ h0.
+
+We split our observation design {kh| k = 0, . . . , h−1} into blocks Am = {kh| k =
+(m − 1)ℓ, . . . , mℓ − 1}, m = 1, . . . , (ℓh)−1, of length ℓ such that the radius vε of
+our nonparametric local neighbourhood has the order of the parametric noise level
+
+(I(ϑ)ℓ)−1/2 in each block:
+
+vε ∼ (I(ϑ)ℓ)−1/2 ⇒ ℓ ∼ h−1
+
+0 v−2
+ε .
+
+For later convenience we consider odd and even indices k separately, assuming
+
+that h−1 and ℓ are even integers. This way, for each block m observing (yjkπj/h) for
+
+j > 1 and k ∈ Am, k odd respectively k even, can be modeled by the experiments
+
+(5.3)
+
+(5.4)
+
+E odd
+
+3,m =(cid:16)X ℓ/2, F ⊗ℓ/2,(cid:16) Ok∈Am odd
+3,m =(cid:16)X ℓ/2, F ⊗ℓ/2,(cid:16) Ok∈Am even
+
+E even
+
+Pσ2
+
+0 (k/n)+vεs2(k/n)(cid:17)s2∈Cα(R)(cid:17),
+0 (k/n)+vεs2(k/n)(cid:17)s2∈Cα(R)(cid:17),
+
+Pσ2
+
+12
+
+Markus Reiß
+
+where all parameters are the same as for E2,loc. Using the nonparametric local
+
+asymptotic theory developed by Grama and Nussbaum (2002) and the indepen-
+
+dence of the experiments (E odd
+
+3,m )m (resp. (E even
+
+3,m )m), we are able to prove in Section
+
+9.4 the following asymptotic equivalence.
+
+5.2 Proposition. Assume α > 1/2, σ2 > 0 and h0 ∼ ε−p with p ∈ (0, 1 − (2α)−1)
+such that (2h)−1 ∈ N. Then observing {yj,2k+1 | j > 1, k = 0, . . . , (2h)−1 − 1} in
+experiment E2,loc is asymptotically equivalent to the local Gaussian shift experiment
+
+G3,loc of observing
+
+dYt =
+
+1
+√8σ3/2
+
+0
+
+(t)(cid:16)1 −
+
+2
+
+σ0(t)h0(cid:17)1/2
+
+vεs2(t) dt + (2ε)1/2dWt,
+
+t ∈ [0, 1],
+
+(5.5)
+
+distance tends to zero uniformly over the center of localisation σ2
+
+where the unknown s2 and all parameters are the same as in E2,loc. The Le Cam
+0 ∈ S (α, R, σ2).
+The same asymptotic equivalence result holds true for observing {yj,2k | j >
+
+1, k = 0, . . . , (2h)−1 − 1} in experiment E2,loc.
+
+Note that in this model, combining even and odd indices k, we can already infer
+
+the LAN-result by Gloter and Jacod (2001a), but we still face a second order term
+
+of order h−1
+
+0 vε in the drift. This term is asymptotically negligible only if it is of
+
+smaller order than the noise level ε1/2. To be able to choose h0 suﬃciently large,
+
+we have to require a larger H¨older smoothness of the volatility.
+
+5.3 Corollary. Assume α > 1+√17
+8 ≈ 0.64, σ2 > 0 and (2h)−1 ∈ N. Then observ-
+ing {yj,2k+1 | j > 1, k = 0, . . . , (2h)−1 − 1} in experiment E2,loc is asymptotically
+equivalent to the local Gaussian shift experiment G4,loc of observing
+
+dYt =
+
+1
+√8σ3/2
+
+0
+
+(t)
+
+vεs2(t) dt + (2ε)1/2dWt,
+
+t ∈ [0, 1],
+
+(5.6)
+
+distance tends to zero uniformly over the center of localisation σ2
+
+where the unknown s2 and all parameters are the same as in E2,loc. The Le Cam
+0 ∈ S (α, R, σ2).
+The same asymptotic equivalence result holds true for observing {yj,2k | j >
+
+1, k = 0, . . . , (2h)−1 − 1} in experiment E2,loc.
+
+Asymptotic equivalence for volatility estimation
+
+13
+
+Proof. For α > 1+√17
+and ensures that hα = o(ε1/2) holds as well as h−2
+
+the choice of h0 = ε−p for some p ∈ (
+
+8
+
+1
+
+4α+2 , 2α−1
+
+2α ) is possible
+
+0 = o(v−2
+
+ε ε). Therefore the
+
+Kullback-Leibler divergence between the observations in G loc
+
+3
+
+and in G loc
+
+4
+
+evaluates
+
+by the Cameron-Martin (or Girsanov) formula to
+
+ε−1Z 1
+
+0
+
+1
+8σ3
+
+0(t)(cid:16)(cid:16)1 −
+
+2
+
+σ0(t)h0(cid:17)1/2
+
+− 1(cid:17)2
+
+v2
+ε s4(t) dt . ε−1h2
+
+0v2
+ε .
+
+Consequently, the Kullback-Leibler and thus also the total variation distance tends
+
+to zero.
+
+In a last step we ﬁnd local experiments G5,loc, which are asymptotically equiv-
+
+alent to G4,loc and do not depend on the center of localisation σ2
+
+0. To this end we
+
+use a variance-stabilizing transform, based on the Taylor expansion
+
+√2x1/4 = √2x1/4
+
+0 + 1√8
+
+x−3/4
+0
+
+(x − x0) + O((x − x0)2)
+
+which holds uniformly over x, x0 on any compact subset of (0,∞). Inserting x =
+σ2(t) = σ2
+
+0 from our local model, we obtain
+
+0(t) + vεs2(t) and x0 = σ2
+
+p2σ(t) =p2σ0(t) + 1√8
+
+σ−3/2
+0
+
+(t)vεs2(t) + O(v2
+
+ε ).
+
+(5.7)
+
+Since v2
+
+ε = o(ε1/2) holds for α > 1/2, we can add the uninformative signal
+(t) to Y in G4,loc, replace the drift by √2σ1/2(t) and still keep convergence
+
+√2σ1/2
+
+0
+
+of the total variation distance, compare the preceding proof. Consequently, from
+
+Corollary 5.3 we obtain the following result.
+
+5.4 Corollary. Assume α > 1+√17
+8 ≈ 0.64, σ2 > 0 and (2h)−1 ∈ N. Then observ-
+ing {yj,2k+1 | j > 1, k = 0, . . . , (2h)−1 − 1} in the experiment E2,loc is asymptotically
+equivalent to the local Gaussian shift experiment G5,loc of observing
+
+dYt =p2σ(t) dt + (2ε)1/2 dWt,
+
+t ∈ [0, 1],
+
+(5.8)
+
+where the unknown is σ2 = σ2
+
+0 + vεs2 and all parameters are the same as in E2,loc.
+
+The Le Cam distance tends to zero uniformly over the center of localisation σ2
+
+0 ∈
+
+S (α, R, σ2).
+
+14
+
+Markus Reiß
+
+The same asymptotic equivalence result holds true for observing {yj,2k | j >
+
+1, k = 0, . . . , (2h)−1 − 1} in experiment E2,loc.
+
+6 Globalisation
+
+The globalisation now basically follows the usual route, ﬁrst established by Nuss-
+
+baum (1996). Essential for us is to show that observing (yjk) for j > 1 is asymptot-
+
+ically suﬃcient in E2. Then we can split the white noise observation experiment E2
+
+into two independent sub-experiments obtained from (yjk) for k odd and k even,
+
+respectively. Usually, a white noise experiment can be split into two independent
+subexperiments with the same drift and an increase by √2 in the noise level. Here,
+
+however, this does not work since the two diﬀusions in the random drift remain the
+
+same and thus independence fails.
+
+Let us introduce the L2-normalized step functions
+
+ϕ0,k(t) := (2h)−1/2(cid:0)1[(k−1)h,kh](t) − 1[kh,(k+1)h](t)(cid:1),
+
+ϕ0,0(t) := h−1/21[0,h](t).
+
+k = 1, . . . , h−1 − 1,
+
+We obtain a normalized complete basis (ϕjk)j>0,06k6h−1−1 of L2([0, 1]) such that
+observing Y in experiment E2 is equivalent to observing
+
+yjk :=Z 1
+
+0
+
+ϕjk(t) dYt,
+
+j > 0, k = 0, . . . , h−1 − 1.
+
+Calculating the Fourier series, we can express the tent function Φ0,k with Φ′0,k =
+
+ϕ0,k and Φ0,k(1) = 0 as an L2-convergent series over the dilated sine functions Φjk
+
+and Φj,k−1, j > 1:
+Φ0,k(t) =Xj>1
+
+(−1)j+1Φj,k−1(t) +Xj>1
+
+Φjk(t),
+
+k = 1, . . . , h−1 − 1.
+
+(6.1)
+
+We also have Φ0,0(t) = 2Pj>1 Φj,0(t). By partial integration, this implies (with
+
+Asymptotic equivalence for volatility estimation
+
+15
+
+L2-convergence)
+
+β0,k := hϕ0,k, Xi = −Z 1
+
+0
+
+Φ0,k(t) dX(t) =Xj>1
+
+(−1)j+1βj,k−1 +Xj>1
+
+βjk,
+
+where βjk := hϕjk, Xi
+
+for k > 1 and similarly β0,0 = 2Pj>1 βj,0. This means that the signal β0,k in
+y0,k can be perfectly reconstructed from the signals in the yj,k−1, yjk. For jointly
+Gaussian random variables we obtain the conditional law in E2
+
+L (βjk | yjk) = N(cid:16) Var(βjk)
+
+Var(yjk)
+
+yjk,
+
+ε2 Var(βjk)
+
+Var(yjk) (cid:17)
+
+Given the results by Stone (1982) and our less informative Gaussian shift ex-
+
+periment G1 for α > 1/2, σ2 > 0, there is an estimator ˆσ2
+
+ε based on (y1,k)k in E2
+
+with
+
+lim
+ε→0
+
+inf
+σ2∈S
+
+Pσ2,ε(kˆσ2
+
+ε − σ2k∞ 6 Rvε) = 1,
+
+(6.2)
+
+where vε = εα/(2α+1) log(ε−1) as in the deﬁnitions of the localized experiments.
+
+We can thus generate independent N (0, 1)-distributed random variables ρjk to
+
+construct from (yjk)j>1,k
+
+˜βjk :=
+
+Varε(βjk)
+Varε(yjk)
+
+yjk +
+
+ε Varε(βjk)1/2
+Varε(yjk)1/2 ρjk,
+
+where the variance Varε is the expression for Var where all unknown values σ2(kh)
+
+are replaced by the estimated values ˆσ2
+ε (kh). From this we can generate artiﬁcial
+observations (˜y0,k) such that the conditional law L ((˜y0,k)k | ( ˜βj,k)k) coincides with
+L ((y0,k)k | (β0,k)k), which is just a multivariate normal law with mean zero and
+tri-diagonal covariance matrix ε2(hϕ0,k, ϕ0,k′i)k,k′ .
+
+In Section 9.5 we shall prove that the Hellinger distance between the families
+of centered Gaussian random variables Y := {yjk | j > 0, k = 0, . . . , h−1 − 1} and
+˜Y := {˜y0,k | k = 0, . . . , h−1 − 1} ∪ {yjk | j > 1, k = 0, . . . , h−1 − 1} tends to zero,
+provided h−1
+4 with the choice h0 = ε−p
+
+ε = o(ε), which is possible when α > 1+√5
+2α+1 , 2α−1
+
+2α ).
+
+0 v2
+for some p ∈ (
+
+1
+
+16
+
+Markus Reiß
+
+6.1 Proposition. Assume α > 1+√5
+
+4 ≈ 0.81, σ2 > 0 and h−1 an even inte-
+ger. Then the experiment E2 is asymptotically equivalent to the product experi-
+
+ment E2,odd ⊗ E2,even where E2,odd is obtained from the observations {yj,2k+1 | j >
+1, k = 0, . . . , (2h)−1 − 1} and E2,even from the observations {yj,2k | j > 1, k =
+0, . . . , (2h)−1 − 1} in experiment E2.
+
+This key result permits to globalize the local result. In the sequel we always
+
+and σ2 > 0. We start with the asymptotic equivalence between
+
+4
+
+assume α > 1+√5
+E2 and E2,odd⊗ E2,even. Using again an estimator ˆσ2
+localize the second factor E2,even around ˆσ2
+
+ε in E2,odd satisfying (6.2) we can
+
+ε and therefore by Corollary 5.4 replace
+
+it by experiment G5,loc, see Theorem 3.2 in Nussbaum (1996) for a formal proof.
+
+Since G5,loc does not depend on the center ˆσ2
+
+ε , we conclude that E2 is asymptotically
+
+equivalent to the product experiment E2,odd⊗ G5 where G5 has the same parameters
+as E2 and is given by observing Y in (5.8). Now we use an estimator ˆσ2
+ε in G5 satis-
+
+fying (6.2), whose existence is ensured by Stone (1982), to localize E2,odd. Corollary
+
+5.4 then allows again to replace the localized E2,odd-experiment by G5 such that E2
+
+is asymptotically equivalent to the product experiment G5 ⊗ G5. Finally, taking the
+mean of the independent observations (5.8) in both factors, which is a suﬃcient
+
+statistics, (or, abstractly, due to identical likelihood processes) we see that G5 ⊗ G5
+is equivalent to the experiment G0 of observing dYt =p2σ(t) dt+√ε dWt, t ∈ [0, 1].
+
+Our ﬁnal result then follows from the asymptotic equivalence between E0 and E1
+
+as well as between E1 and E2.
+
+6.2 Theorem. Assume α > 1+√5
+4 ≈ 0.81 and δ, σ2, R > 0. Then the regression
+experiment E0(n, δ, α, R, σ2) is for n → ∞ asymptotically equivalent to the Gaussian
+shift experiment G0(δn−1/2, α, R, σ2) of observing
+
+dYt =p2σ(t) dt + δ1/2n−1/4 dWt,
+
+t ∈ [0, 1],
+
+(6.3)
+
+for σ2 ∈ S (α, R, σ2).
+
+Asymptotic equivalence for volatility estimation
+
+17
+
+7 Discussion
+
+Our results show that inference for the volatility in the high-frequency observa-
+
+tion model under microstructure noise E0 is asymptotically as diﬃcult as in the
+
+well understood Gaussian shift model G0. Remark that the constructions in Gloter
+
+and Jacod (2001a), Gloter and Jacod (2001b) rely on preliminary estimators at
+
+the boundary of suitable blocks, while we require supp Φjk = [kh, (k + 1)h] to ob-
+
+tain independence among blocks. In this context Proposition 6.1 shows asymptotic
+suﬃciency of observing only the pinned process Xt − (k+1)h−t
+t ∈ [kh, (k + 1)h], on each block due to R (αt + β)ϕjk(t) dt = 0 for j > 1, α, β ∈ R.
+
+h Xkh − t−kh
+
+h X(k+1)h,
+
+Naturally, the (Φjk)j>1 form exactly the eigenfunctions of the covariance operator
+
+of the Brownian bridge.
+
+It is interesting to note that both, model E0 and model G0, are homogeneous
+
+in the sense that factors from the noise (i.e. the dWt-term) can be moved to the
+
+drift term and vice versa such that for example high volatility can counterbalance
+
+a high noise level δ or a large observation distance 1/n. Another phenomenon is
+
+that observing E0 m-times independently, in particular with diﬀerent realisations
+
+of the process X, is asymptotically as informative as observing E0 with m2 as many
+
+observations: both experiments are asymptotically equivalent to dYt =p2σ(t)dt +
+
+m1/2δ1/2n−1/4dWt. Similarly, by rescaling we can treat observations on intervals
+
+[0, T ] with T > 0 ﬁxed: Observing Yi = XiT /n + εi, i = 1, . . . , n, in E0 with
+
+Xt =R t
+
+to observing
+
+0 σ(s) dBs, t ∈ [0, T ], is under the same conditions asymptotically equivalent
+
+dYu =p2σ(T u) du + δ1/2T −1/4n−1/4 dWu,
+
+u ∈ [0, 1],
+
+or equivalently,
+
+d ˜Yv =p2σ(v) du + δ1/2T 1/4n−1/4 dWv,
+
+v ∈ [0, T ].
+
+Concerning the various restrictions on the smoothness α of the volatility σ2, one
+
+might wonder whether the critical index is α = 1/2 in view of the classical asymp-
+
+18
+
+Markus Reiß
+
+totic equivalence results (Brown and Low 1996, Nussbaum 1996). In our approach,
+
+we still face the second order term in (5.5) and using the localized results, a much
+
+easier globalisation yields for α > 1/2 only that E0 is asymptotically not less infor-
+
+mative than observing
+
+dYt = F (σ2(t)) dt + δ1/2n−1/4dWt,
+
+t ∈ [0, 1],
+
+with F (x) = R x
+
+1 (y1/2 − 2h−1
+
+0 )1/2y−1dy/√8, which includes a small, but non-
+
+negligible second-order term since h0 cannot tend to inﬁnity too quickly.
+
+On the other hand, it is quite easy to see that for α 6 1/4 asymptotic equiva-
+
+0 σn(t) dBt with σ2
+
+lence fails. In the regression model E0 with n observations we cannot distinguish be-
+tween Xn(t) =R t
+nkC 1/4 = 2 + n−1/4,
+and standard Brownian motion (σ2 = 1) since Xn(i/n)−Xn((i−1)/n) ∼ N (0, 1/n)
+0 (p2σn(t) − √2)2 dt ∼ n−1/2, which
+i.i.d. holds. On the other hand, we have R 1
+
+n(t) = 1 + n−1/4 cos(πnt), kσ2
+
+shows that the signal to noise ratio in the Gaussian shift G0 is of order 1 and a
+
+Neyman-Pearson test between σ2
+
+n and 1 can distinguish both signals with a posi-
+
+tive probability. This diﬀerent behaviour for testing in E0 and G0 implies that both
+
+models cannot be asymptotically equivalent for α = 1/4. Note that Gloter and Ja-
+
+cod (2001a) merely require α > 1/4 for their LAN-result, but our counterexample
+
+is excluded by their parametric setting. In conclusion, the behaviour in the zone
+
+α ∈ (1/4, (1 + √5)/4] remains unexplored.
+
+8 Applications
+
+Let us ﬁrst consider the nonparametric problem of estimating the spot volatility
+
+σ2(t). From our asymptotic equivalence result in Theorem 6.2 we can deduce, at
+
+least for bounded loss functions, the usual nonparametric minimax rates, but with
+
+the number n of observations replaced by √n provided σ2 ∈ Cα for α > (1 +√5)/4
+as the mapping pσ(t) 7→ σ2(t) is a C∞-diﬀeomorphism for volatilities σ2 bounded
+
+away from zero. Since the results so far obtained only deal with rate results, it is even
+
+Asymptotic equivalence for volatility estimation
+
+19
+
+simpler to use our less informative model G1 or more concretely the observations
+
+(yk) in (3.3) which are independent in E2, centered and of variance h2π−2σ2(kh)+ε2.
+k − π2 therefore yields
+
+With h = ε a local (kernel or wavelet) averaging over ε−2π2y2
+
+rate-optimal estimators for classical pointwise or Lp-type loss functions.
+
+For later use we choose h = ε in E2 and propose the simple estimator
+
+ˆσ2
+b (t) :=
+
+ε
+
+2b Xk:|kε−t|6b
+
+(ε−2π2y2
+
+k − π2)
+
+for some bandwidth b > 0. Since ζ2
+
+k is χ2(1)-distributed, it is standard (Stone 1982)
+
+to show that with the choice b ∼ (ε log(ε−1))1/(2α+1) we have the sup-norm risk
+
+bound
+
+E[kˆσ2
+
+b − σ2k2
+
+∞] . (ε log(ε−1))2α/(2α+1),
+
+especially we shall need that ˆσ2
+
+b is consistent in sup-norm loss.
+
+In terms of the regression experiment E0 we work (in an asymptotically equiv-
+
+alent way) with the linear interpolation ˆY ′ of the observations (Yi), see the proof
+
+of Theorem 2.2. By partial integration we can thus take for any j, k
+
+jk := −Z 1
+
+0
+
+y0
+
+Φjk(t) ˆY ′′(t) dt =
+
+nXi=1(cid:16) −Z i/n
+
+(i−1)/n
+
+Φjk(t) dt(cid:17)(Yi − Yi−1),
+
+(8.1)
+
+setting Y0
+
+:= 0. Note that we have the uniform approximation y0
+
+jk =
+i=1 Φjk(i/n)(Yi − Yi−1) + O(h−1/2n−1) due to kϕjkk∞ 6 (2h)−1/2. We see
+the relationship with the pre-averaging approach. The idea of using disjoint av-
+
+n Pn
+
+−1
+
+erages is present in Podolskij and Vetter (2009), where in our terminology Haar
+
+functions are used as Φk. They were aware of the fact that discretized sine func-
+
+tions would slightly increase the Fisher information (personal communication, see
+
+also their discussion after Corollary 2), but they have not used higher frequencies.
+
+Since we use the concrete coupling by linear interpolation to deﬁne y0
+
+jk in E0 and
+
+since convergence in total variation is stronger than weak convergence, all asymp-
+
+totics for probabilities and weak convergence results for functionals F ((yjk)jk) in
+
+E2 remain true for F ((y0
+
+jk)jk) in E0, uniformly over the parameter class. The formal
+
+20
+
+Markus Reiß
+
+argument for the latter is that whenever kPn − QnkT V → 0 and PXn
+for some random variables Xn we have for all bounded and continuous g
+
+n → P weakly
+
+EQn [g(Xn)] = EPn [g(Xn)] + O(kgk∞kPn − QnkT V ) n→∞−−−−→ EP[g(X)].
+
+Thus, for α > 1/2, σ2 > 0 and b ∼ (n−1/2 log n)−1/(2α+1) the estimator
+
+˜σ2
+n(t) :=
+
+δ
+
+2b√n Xk:|kn−1/2−t|6b
+
+(nδ−2π2(y0
+
+k)2 − π2)
+
+(8.2)
+
+satisﬁes in the regression experiment E0
+
+lim
+n→∞
+
+inf
+
+σ2∈S (α,R,σ2)
+
+Pσ2,n(nα/(4α+2)(log n)−1k˜σ2
+
+n − σ2k∞ 6 R) = 1.
+
+(8.3)
+
+The asymptotic equivalence can be applied to construct estimators for the inte-
+
+the approach developed by Ibragimov and Khas’minskii (1991) for white noise mod-
+
+0 σ2(t)dt or more generally p-th order integrals R 1
+
+grated volatility R 1
+els like G0. In our notation their Theorem 7.1 yields an estimator ˆϑp,n ofR 1
+
+0 σp(t)dt using
+
+0 σp(t)dt
+
+in G0 such that
+
+Eσ2h(cid:16) ˆϑp,n −Z 1
+
+0
+
+σp(t) dt − δ1/2n−1/4√2pZ 1
+
+0
+
+σp−1/2(t) dWt(cid:17)2i = o(n−1/2)
+
+cializing to the case p = 2 for integrated volatility, the asymptotic variance is
+
+0 σ3(t) dt. It should be stressed here that the existing estimation procedures for
+
+holds uniformly over σ2 ∈ S (α, R, σ2) for any α, R, σ2 > 0 since the functional
+pσ(•) 7→ R 1
+0 σp(t)dt is smooth on L2. A LAN-result shows that asymptotic nor-
+mality with rate n−1/4 and variance δ2p2R 1
+0 σ2p−1(t) dt is minimax optimal. Spe-
+8δR 1
+that their asymptotic variances involve the integrated quarticity R 1
+R 1
+0 σ4(t) dt > (cid:0)R 1
+
+0 σ4(t) dt which
+can at most yield optimal variance for constant values of σ2, because otherwise
+
+integrated volatility are globally sub-optimal for our idealized model in the sense
+
+follows from Jensen’s inequality. The fundamental
+
+0 σ3(t) dt(cid:1)4/3
+
+reason is that all these estimators are based on quadratic forms of the increments
+
+depending on global tuning parameters, whereas optimizing weights locally permits
+
+to attain the above eﬃciency bound as we shall see.
+
+Asymptotic equivalence for volatility estimation
+
+21
+
+Instead of following these more abstract approaches, we use our analysis to
+
+construct a simple estimator of the integrated volatility with optimal asymptotic
+
+variance. First we use the statistics (yjk) in E2 and then transfer the results to E0
+
+using (y0
+
+jk) from (8.1).
+
+On each block k we dispose in E2 of independent N (0, h2j−2π−2σ2(kh) + ε2)-
+
+observations yjk for j > 1. A maximum-likelihood estimator ˆσ2(kh) in this expo-
+
+nential family satisﬁes the estimating equation
+
+ˆσ2(kh) =Xj>1
+
+wjk(ˆσ2)h−2j2π2(y2
+
+jk − ε2),
+
+where wjk(σ2) :=
+
+(σ2(kh) + h−2
+
+0 π2j2)−2
+
+Pl>1(σ2(kh) + h−2
+
+.
+
+0 π2l2)−2
+
+(8.4)
+
+(8.5)
+
+This can be solved numerically, yet it is a non-convex problem (personal communi-
+
+cation by J. Schmidt-Hieber). Classical MLE-theory, however, asserts for ﬁxed h, k
+
+and consistent initial estimator ˜σ2
+
+n(kh) that only one Newton step suﬃces to ensure
+
+asymptotic eﬃciency. Because of h → 0 this immediate argument does not apply
+here, but still gives rise to the estimator
+
+h−1−1Xk=0
+
+wjk(˜σ2
+
+cIV ε :=
+
+hXj>1
+of the integrated volatility IV :=R 1
+0 σ2(t) dt. Assuming the L∞-consistency k˜σ2
+n −
+σ2k∞ → 0 in probability for the initial estimator, we assert in E2 the eﬃciency
+result
+
+n)h−2j2π2(y2
+
+jk − ε2)
+
+ε−1/2(cIV ε − IV )
+
+L
+
+−→ N(cid:16)0, 8Z 1
+
+0
+
+σ3(t) dt(cid:17).
+
+To prove this, it suﬃces by Slutsky’s lemma to show
+
+ε−1/2
+
+h−1−1Xk=0
+
+hXj>1
+
+wjk(σ2)h−2j2π2(y2
+
+L
+
+jk − ε2)
+
+−→ N(cid:16)0, 8Z 1
+n) − wjk(σ2)| . wjk(σ2)k˜σ2
+
+σ3(t) dt(cid:17),
+n − σ2k∞.
+
+0
+
+(8.6)
+
+(8.7)
+
+jk |wjk(˜σ2
+sup
+
+The second assertion (8.7) follows from inserting the Lipschitz property that
+0 π2j2)−2 satisﬁes |W ′(x)| . W (x) and thus |W (x) − W (y)| .
+
+W (x) := (x + h−2
+W (x)|x − y| uniformly over x, y > σ2 > 0.
+
+22
+
+Markus Reiß
+
+For the ﬁrst assertion (8.6) note that in E2 the estimator cIV ε is unbiased and
+Var(cid:16)Xj>1
+
+jk − ε2)(cid:17) =
+
+wjk(σ2)h−2j2π2(y2
+
+0 π2j2)−2
+
+2
+
+Pj>1(σ2(kh) + h−2
+
+such that by formula (9.14) and Riemann sum approximation as h0 → ∞ (with
+arbitrary speed)
+
+ε−1 Var(cIV ε) =
+
+h−1−1Xk=0
+
+2hh0
+
+Pj>1(σ2(kh) + h−2
+
+0 π2j2)−2 → 8Z 1
+
+0
+
+σ3(t) dt.
+
+Due to the independence and Gaussianity of the (yjk) we deduce also
+
+Eh(cid:16)Xj>1
+
+wjk(σ2)h−2j2π2(y2
+
+jk − E[y2
+
+jk])(cid:17)4i . Var(cid:16)Xj>1
+
+wjk(σ2)h−2j2π2(y2
+
+jk − ε2)(cid:17)2
+
+such that the central limit theorem under a Lyapounov condition with power p = 4
+
+(e.g. Shiryaev (1995)) proves assertion (8.6), assuming h → 0 and h0 → ∞. A
+feasible estimator is obtained by neglecting frequencies larger than some J = J(ε):
+
+h
+
+JXj=1
+
+wJ
+
+jk(˜σ2
+
+n)h−2j2π2(y2
+
+jk − ε2)
+
+(σ2(kh) + h−2
+l=1(σ2(kh) + h−2
+
+0 π2j2)−2
+
+0 π2l2)−2
+
+.
+
+(8.8)
+
+(8.9)
+
+cIV ε,J :=
+
+where wJ
+
+jk(σ2) :=
+
+h−1−1Xk=0
+PJ
+
+A simple calculation yields E[|cIV ε,J−cIV ε|2] . ε(h0/J)3 such that for h0/J → 0
+
+convergence in probability implies again by Slutsky’s lemma
+
+ε−1/2(cIV ε,J − IV )
+
+L
+
+−→ N(cid:16)0, 8Z 1
+
+0
+
+σ3(t) dt(cid:17).
+
+By the above argument, weak convergence results transfer from E2 to E0 and we
+
+obtain the following result where we give a concrete choice of the initial estimator,
+
+the block size h and the spectral cut-oﬀ J (we just need some consistent estimator
+˜σ2
+n, h2αn1/2 → 0 as well as hn1/2 → ∞ and J−1 = o(h−1n−1/2)).
+8.1 Theorem. Let y0
+jk for j > 1, k = 0, h−1 − 1 be the statistics (8.1) from model
+E0. For h ∼ n−1/2 log(n) and J/ log(n) → ∞ consider the estimator of integrated
+volatility
+
+h−1−1Xk=0
+
+h
+
+JXj=1
+
+cIV n :=
+
+wJ
+
+jk(˜σ2
+
+n)h−2j2π2((y0
+
+jk)2 − δn−1)
+
+Asymptotic equivalence for volatility estimation
+
+23
+
+with weights wJ
+
+jk from (8.9) and the initial estimator ˜σ2
+
+asymptotically eﬃcient in the sense that
+
+n from (8.2). Then cIV n is
+
+n1/4(cIV n − IV )
+
+L
+
+−→ N(cid:16)0, 8δZ 1
+
+0
+
+σ3(t) dt(cid:17) as n → ∞,
+
+provided σ2 is strictly positive and α-H¨older continuous with α > 1/2.
+
+This might serve as a benchmark for more general models, whereas we, in the
+
+spirit of Mykland (2009), focus on elucidating the underlying fundamental struc-
+
+tures. In particular, we should dispense with the Gaussianity of the microstructure
+
+noise (εi) as well as with the deterministic nature of the volatility σ2. The analysis
+
+in both cases, however, cannot simply rely on model E2, since E0 is non-Gaussian.
+
+Diﬀerent tools are required.
+
+9 Appendix
+
+9.1 Gaussian measures, Hellinger distance and Hilbert-
+
+Schmidt norm
+
+We gather basic facts about cylindrical Gaussian measures, the Hellinger distance
+
+and their interplay.
+
+Formally, we realize the white noise experiments, as L2-indexed Gaussian vari-
+
+ables, e.g. in experiment E1 we observe for any f ∈ L2([0, 1])
+σ(s)dB(s)(cid:17) dt + εZ 1
+
+Yf := hf, dY i :=Z 1
+
+f (t)(cid:16)Z t
+
+0
+
+0
+
+0
+
+f (t) dWt.
+
+Canonically, we thus deﬁne Pσ,ε on the set Ω = RL2([0,1]) with product Borel σ-
+
+algebra F = B⊗L2([0,1]) (realizing a cylindrical centered Gaussian measure). Its
+
+covariance structure is given by
+
+E[Yf Yg] = hCf, gi,
+
+f, g ∈ L2([0, 1]),
+
+with the covariance operator C : L2([0, 1]) → L2([0, 1]) given by
+
+Cf (t) =Z 1
+
+0 (cid:16)Z t∧u
+
+0
+
+σ2(s) ds(cid:17)f (u) du + ε2f (t),
+
+f ∈ L2([0, 1]).
+
+24
+
+Markus Reiß
+
+Note that C is not trace class and thus does not deﬁne a Gaussian measure on
+
+L2([0, 1]) itself.
+
+In the construction, it suﬃces to prescribe (Yem )m>1 for an orthonormal basis
+
+(em)m>1 and to set
+
+Yf :=
+
+∞Xm=1
+
+hf, emiYem .
+
+This way, we can deﬁne Pσ,ε equivalently on the sequence space Ω = RN with
+
+product σ-algebra F = B⊗ N. This is useful when extending results from ﬁnite
+
+dimensions.
+
+The Hellinger distance between two probability measures P and Q on (Ω, F ) is
+
+deﬁned as
+
+H(P, Q) =(cid:16)ZΩ(cid:0)pp(ω) −pq(ω)(cid:1)2
+
+µ(dω)(cid:17)1/2
+
+,
+
+where µ denotes a dominating measure, e.g. µ = P + Q, and p and q denote the
+
+respective densities. The total variation distance is smaller than the Hellinger dis-
+
+tance:
+
+kP− QkT V 6 H(P, Q).
+
+(9.1)
+
+The identity H 2(P, Q) = 2 − 2R √p√qdµ implies the bound for ﬁnite or countably
+
+inﬁnite product measures
+
+H 2(cid:16)On
+
+Pn,On
+
+Qn(cid:17) 6Xn
+
+H 2(Pn, Qn).
+
+(9.2)
+
+Moreover, the Hellinger distance is invariant under bi-measurable bijections T :
+Ω → Ω′ since with the densities p ◦ T −1, q ◦ T −1 of the image measures PT and QT
+with respect to µT we have
+
+H 2(PT , QT ) =ZΩ′
+
+(pp ◦ T −1 −pq ◦ T −1)2dµT =ZΩ
+
+(√p − √q)2dµ = H 2(P, Q).
+
+(9.3)
+
+For the one-dimensional Gaussian laws N (0, 1) and N (0, σ2) we derive
+
+H 2(N (0, 1), N (0, σ2)) = 2 −p8σ/(σ2 + 1) 6 2(σ2 − 1)2.
+
+Asymptotic equivalence for volatility estimation
+
+25
+
+For the multi-dimensional Gaussian laws N (0, Σ1) and N (0, Σ2) with invertible
+covariance matrices Σ1, Σ2 ∈ Rd×d we obtain by linear transformation and inde-
+pendence, denoting by λ1, . . . , λd the eigenvalues of Σ−1/2
+
+Σ2Σ−1/2
+
+:
+
+1
+
+1
+
+H 2(N (0, Σ1), N (0, Σ2)) = H 2(N (0, Id), N (0, Σ−1/2
+
+1
+
+Σ2Σ−1/2
+
+1
+
+)) 6
+
+dXk=1
+
+2(λk − 1)2.
+
+The last sum is nothing, but the squared Hilbert-Schmidt (or Frobenius norm) of
+
+Σ−1/2
+
+1
+
+Σ2Σ−1/2
+
+1
+
+− Id such that
+H 2(N (0, Σ1), N (0, Σ2)) 6 2kΣ−1/2
+
+1
+
+(Σ2 − Σ1)Σ−1/2
+
+1
+
+k2
+HS.
+
+(9.4)
+
+Observing that (9.2) and (9.3) also apply to Gaussian measures on the sequence
+
+space RN, the bound (9.4) is also valid for (cylindrical) Gaussian measures N (0, Σi)
+with self-adjoint positive deﬁnite covariance operators Σi : L2([0, 1]) → L2([0, 1]).
+The Hilbert-Schmidt norm of a linear operator A : H → H on any separable
+real Hilbert space H can be expressed by its action on an orthonormal basis (em)
+
+via
+
+kAk2
+
+HS =Xm,n
+
+hAem, eni2,
+
+which for a matrix is just the usual Frobenius norm. For self-adjoint operators A, B
+
+with |hAv, vi| 6 |hBv, vi| for all v ∈ H we use the eigenbasis (em) of A and obtain
+
+kAk2
+
+HS =Xm
+
+hAem, emi2 6Xm,n
+
+hBem, eni2 = kBk2
+
+HS.
+
+Furthermore, it is straight-forward to see for any bounded operator T
+
+kT AkHS 6 kTkkAkHS,
+
+kATkHS 6 kTkkAkHS
+
+(9.5)
+
+(9.6)
+
+with the usual operator norm kTk of T . Finally, for integral operators Kf (x) =
+R 1
+0 k(x, y)f (y) dy on L2([0, 1]) it is well known that
+
+kKkHS = kkkL2([0,1]2).
+
+(9.7)
+
+For two Gaussian laws with diﬀerent mean vectors µ1, µ2 and with the same
+
+invertible covariance matrix Σ we can similarly use the transformation Σ−1/2 and
+
+26
+
+Markus Reiß
+
+the scalar case H 2(N (m1, 1), N (m2, 1)) = 2(1 − e−(m1−m2)2/8) 6 (m1 − m2)2/4 to
+conclude by independence
+
+H 2(N (µ1, Σ), N (µ2, Σ)) 6 1
+
+4kΣ−1/2(µ1 − µ2)k2.
+
+(9.8)
+
+Combining (9.4) and (9.8) we obtain by the triangle inequality the bound
+
+H 2(N (µ1, Σ1), N (µ2, Σ2)) . kΣ−1/2
+
+1
+
+(µ1−µ2)k2+kΣ−1/2
+
+1
+
+(Σ2−Σ1)Σ−1/2
+
+1
+
+k2
+HS. (9.9)
+
+9.2 Proof of Theorem 2.2
+
+We ﬁrst show that E1 is asymptotically at least as informative as E0 for ε = δ/√n
+and α > 0. From E1 with ε = δ/√n we can generate the observations (statistics)
+
+˜Yi := nZ (2i+1)/2n
+˜Yn := 2nZ 1
+
+(2i−1)/2n
+
+dYt = nZ (2i+1)/2n
+dYt = 2nZ 1
+
+(2i−1)/2n
+
+Xtdt + ˜εi,
+
+i = 1, . . . , n − 1,
+
+Xtdt + ˜εn,
+
+(2n−1)/2n
+
+(2n−1)/2n
+
+with ˜εi = nε(W(2i+1)/2n − W(2i−1)/2n) ∼ N (0, δ2) and similarly ˜εn ∼ N (0, δ2), all
+independent. In contrast to standard equivalence proofs, it turns out to be essential
+
+here to take ˜Yi as a mean symmetric around the point i/n. Since (Yi) and ( ˜Yi) are
+
+deﬁned on the same sample space, using inequality (9.1) it suﬃces to prove that
+
+the Hellinger distance between the law of (Yi) and the law of ( ˜Yi) tends to zero as
+
+n tends to inﬁnity.
+
+For the integrated volatility function we introduce the notation
+
+a(t) :=Z t
+
+0
+
+σ2(s) ds,
+
+0 6 t 6 1.
+
+For notational convenience we also set a(1 + s) := a(1 − s) for s > 0.
+
+The covariance matrix ΣY of the centered Gaussian vector (Yi) is given by
+
+ΣY
+
+kl := E[YkYl] = a(k/n) + δ21(k = l),
+
+1 6 k 6 l 6 n.
+
+Similarly, the covariance matrix Σ ˜Y of the centered Gaussian vector ( ˜Yi) is given
+
+by
+
+Σ
+
+˜Y
+
+kl := E[ ˜Yk ˜Yl] = nZ (2k+1)/2n
+
+(2k−1)/2n
+
+a(t) dt + δ21(k = l),
+
+1 6 k 6 l 6 n,
+
+Asymptotic equivalence for volatility estimation
+
+27
+
+where for k = l = n we used the convention for a(1 + s) above. We bound the
+
+Hellinger distance using consecutively (9.4), ΣY > δ2 Id in (9.5) and (9.2), a Taylor
+
+expansion for a and treating the case k = l = n by a Lipschitz bound separately:
+
+H 2(L (Yi, i = 1, . . . , n), L ( ˜Yi, i = 1, . . . , n))
+
+HS
+
+HS
+
+˜Y − ΣY k2
+
+˜Y )(ΣY )−1/2k2
+
+6 2k(ΣY )−1/2(ΣY − Σ
+6 2δ−4kΣ
+6 4δ−4 X16k6l6n(cid:16)nZ (2k+1)/2n
+nXk=1(cid:16)nZ (2k+1)/2n
+6 4δ−4(cid:16)O(R2n−2) + n
+= 4δ−4(cid:16)O(R2n−2) + O(R2n2−2−2α)(cid:17)
+
+(2k−1)/2n
+
+(2k−1)/2n
+
+(a(t) − a(k/n)) dt(cid:17)2
+
+(a′(k/n)(t − k/n) + O(Rn−1−α)) dt(cid:17)2(cid:17)
+
+= O(δ−4R2n−2α).
+
+Consequently, by (9.1) the total-variation and thus also the Le Cam distance be-
+
+tween the experiments of observing (Yi) and of observing ( ˜Yi) tends to zero for
+
+n → ∞, which proves that the white noise experiment E1 is asymptotically at least
+as informative as the regression experiment E0.
+
+To show the converse, we build from the regression experiment E0 a contin-
+
+uous time observation by linear interpolation. To this end we introduce the lin-
+
+ear B-splines (or hat functions) bi(t) = b(t − i/n) with b(t) = min(1 + nt, 1 −
+tn)1[−1/n,1/n](t) and set
+nXi=1
+
+t ∈ [0, 1].
+
+Xi/nbi(t) +
+
+nXi=1
+
+nXi=1
+
+Yibi(t) =
+
+ˆY ′t :=
+
+εibi(t),
+
+Note that ( ˆY ′t ) is a centered Gaussian process with covariance function
+
+ˆc(t, s) := E[ ˆY ′t
+
+ˆY ′s ] =
+
+nXi,j=1
+
+a((i ∧ j)/n)bi(t)bj(s) + δ2
+
+nXi=1
+
+bi(t)bi(s),
+
+0 6 t, s 6 1.
+
+28
+
+Markus Reiß
+
+For any f ∈ L2([0, 1]) we thus obtain
+
+E[hf, ˆY ′i2] =
+
+6
+
+nXi,j=1
+nXi,j=1
+
+a((i ∧ j)/n)hf, biihf, bji + δ2
+
+nXi=1
+
+hf, bii2
+
+a((i ∧ j)/n)hf, biihf, bji + δ2n−1kfk2,
+
+because R nbi = 1 yields by Jensen’s inequality hf, nbii2 6 hf 2, nbii and we have
+Pi bi 6 1. This means that the covariance operator ˆC induced by the kernel ˆc is
+
+smaller than
+
+Cf (t) :=
+
+nXi,j=1
+
+a((i ∧ j)/n)hf, bjibi(t) + δ2n−1f (t),
+
+f ∈ L2([0, 1])
+
+in the sense that ˆC − C is positive (semi-)deﬁnite. Now observe that C is the
+covariance operator of the white noise observations
+
+d ¯Yt =
+
+nXi=1
+
+Xi/nbi(t) +
+
+δ
+√n
+
+dWt,
+
+t ∈ [0, 1].
+
+(9.10)
+
+Hence, we can generate these observations from ( ˆY ′t ) by randomisation, i.e. by
+adding uninformative N (0, C − ˆC)-noise to ˆY ′. Now it is easy to see that observing
+¯Y in (9.10) and Y from E1 is asymptotically equivalent, since in terms of the respec-
+
+tive covariance operators, using again (9.4), (9.5) and (9.2), the squared Hellinger
+
+distance satisﬁes
+
+H 2(L ( ¯Y ), L (Y )) 6 2k(CY )−1/2(C − CY )(CY )−1/2k2
+nXi,j=1
+
+HS
+
+6 2δ−4n2Z 1
+= 2δ−4n2Z 1
+
+0 Z 1
+0 (cid:16)a(t ∧ s) −
+0 Z 1
+0 (cid:16) nXi,j=0
+where for the last line we have used Pn
+i=0 bi(t) = 1 and a(0) = 0. Since bi(t) 6= 0
+can only hold when i − ⌊nt⌋ ∈ {0, 1}, the α-H¨older regularity of σ2 implies for
+
+a((i ∧ j)/n)bi(t)bj (s)(cid:17)2
+(a(t ∧ s) − a((i ∧ j)/n))bi(t)bj(s)(cid:17)2
+
+dtds
+
+dtds,
+
+Asymptotic equivalence for volatility estimation
+
+29
+
+(a(t ∧ s) − a((i ∧ j)/n))bi(t)bj(s)(cid:17)2
+(a′(⌊nt⌋/n)(t − (k + ⌊nt⌋)/n) + O(Rn−1−α))bk+⌊nt⌋(t)bl+⌊ns⌋(s)(cid:17)2
+
+t 6 s − 1/n:
+(cid:16) nXi,j=0
+=(cid:16) 1Xk,l=0
+= O(R2n−2−2α) +(cid:16)a′(⌊nt⌋/n)
+
+(t − (k + ⌊nt⌋)/n)bk+⌊nt⌋(t)(cid:17)2
+1Xk=0
+
+= O(R2n−2−2α).
+
+A symmetric argument gives the same bound for s 6 t − 1/n. For |t − s| < 1/n we
+use only the Lipschitz continuity of a to obtain the bound O(R2n−2). Altogether
+
+we have found
+
+H 2(L ( ¯Y ), L (Y )) 6 2δ−4n2(cid:16)O(R2n−2−2α) + n−1O(R2n−2)(cid:17) = O(δ−4R2n−2α),
+
+which together with the transformation in the other direction shows that the Le
+
+Cam distance between E0 and E1 is of order O(δ−2Rn−α).
+
+9.3 Proof of Proposition 3.2
+
+The main tool is Proposition 9.1 below. Together with the H¨older bound
+
+|σ2(⌊s⌋h) − σ2(s)| 6 Rhα,
+
+s ∈ [0, 1],
+
+it implies that for ﬁxed σ the observation laws in E1 and E2 have a Hellinger distance
+
+of order Rhασ−3/2ε−1/2. By inequality (9.1) this translates to the total variation
+
+and thus to the Le Cam distance.
+
+9.1 Proposition. For ε > 0 and continuous σ : [0, 1] → (0,∞) consider the law
+Pσ,ε generated by
+
+dYt =(cid:16)Z t
+
+0
+
+σ(s)dB(s)(cid:17) dt + ε dWt,
+
+t ∈ [0, 1],
+
+30
+
+Markus Reiß
+
+with independent Brownian motions B and W . Then the Hellinger distance between
+
+two laws Pσ1,ε and Pσ2,ε satisﬁes
+
+H(Pσ1,ε, Pσ2,ε) . kσ2
+
+1 − σ2
+
+2k∞(cid:0) max
+
+t∈[0,1]
+
+σ−3
+
+1 (t)(cid:1)ε−1/2.
+
+Proof. The covariance operator Cσ of Pσ,ε is for f, g ∈ L2([0, 1]) given by
+hCσf, gi = E[hf, dY ihg, dY i] = E[hf, Xihg, Xi] + ε2hf, gi =Z F Gσ2 + ε2Z f g.
+For covariance operators corresponding to σ1, σ2 we have with F (t) = −R 1
+
+t f (s)ds
+
+by twofold partial integration
+
+|h(Cσ1 − Cσ2 )f, fi| =(cid:12)(cid:12)(cid:12)Z 1
+0 Z 1
+=(cid:12)(cid:12)(cid:12)Z 1
+
+0
+
+F (u)2(σ2
+
+1 − σ2
+2k∞Z 1
+
+0
+
+6 kσ2
+
+1 − σ2
+
+0 Z t∧s
+
+0
+
+(σ2
+
+1 − σ2
+
+2)(u) duf (t)f (s) ds dt(cid:12)(cid:12)(cid:12)
+2)(u) du(cid:12)(cid:12)(cid:12)
+
+F (u)2 du = kσ2
+
+1 − σ2
+
+2k∞hCBM f, fi
+
+with CBM g(t) := R 1
+
+motion. Using further the ordering Cσ1 > mint σ2
+
+0 (t ∧ s)g(s) ds, the covariance operator of standard Brownian
+1(t)CBM + ε2 Id and (9.5), (9.2)
+
+σ2
+1(t)CBM + ε2 Id)−1/2kHS
+
+we obtain
+
+σ1
+
+σ1
+
+σ1
+
+kHS
+
+σ1 CBM C−1/2
+
+(Cσ2 − Cσ1 )C−1/2
+1 − σ2
+1 − σ2
+1 − σ2
+
+kC−1/2
+6 kσ2
+6 kσ2
+= kσ2
+employing functional calculus with F (x) = (mint σ2
+
+2k∞kC−1/2
+σ2
+1(t)CBM + ε2 Id)−1/2CBM (min
+2k∞k(min
+t
+2k∞kF (CBM )kHS,
+
+kHS
+
+t
+
+1(t)x + ε2)−1x. The spectral
+properties of CBM imply that F (CBM ) has eigenfunctions ek(t) = √2 sin(π(k −
+1 (t)+(2k−1)2π2ε2 , whence its Hilbert-
+
+1/2)t), k > 1, with eigenvalues λk =
+
+4 mint σ2
+
+4
+
+Schmidt norm is of order maxt σ−3
+
+1 (t)ε−1/2. This yields the result.
+
+9.4 Proof of Proposition 5.2
+
+We only consider the case of odd indices k, both cases are treated analogously.
+
+The result of Theorem 6.1 in conjunction with Theorem 5.2 of Grama and Nuss-
+
+Asymptotic equivalence for volatility estimation
+
+31
+
+baum (2002) establishes that E odd
+
+3,m and the Gaussian regression experiment G3,m of
+
+observing
+
+Yk = vεs2(kh) + I(σ2
+
+0(kh))−1/2γk,
+
+k ∈ Am odd,
+
+γk ∼ N (0, 1) i.i.d.
+
+(9.11)
+
+are equivalent to experiments
+
+m
+
+s2 )s2∈Cα(R)) and
+s2 )s2∈Cα(R)), respectively, on the same space (Y , G ) such that
+
+˜E3,m = (Y , G , (˜P
+
+m
+
+(Y , G , ( ˜Q
+
+H 2(˜P
+
+m
+
+s2 , ˜Q
+
+m
+s2) . ℓ−2ρ
+
+sup
+
+s2∈Cα(R)
+
+˜G3,m =
+
+(9.12)
+
+holds for all ρ < 1.
+
+To be precise, it must be checked that the regularity conditions R1 − R3 of
+Grama and Nussbaum (2002) are satisﬁed for all values δ. One complication is
+
+that in our parametric model the probabilities Pϑ and the Fisher information I(ϑ)
+
+depend on h0 which tends to inﬁnity. Yet, inspecting the proofs it becomes clear
+
+that the results remain valid if (a) the conditions R1− R3 hold for varying models,
+but with uniform constants and (b) the Fisher information is renormalized by the
+
+localisation such that the parametric rate ℓ−1/2 (in our block length notation) is
+
+attained. From the fact that Pϑ is the product of one-dimensional exponential family
+
+models we easily check condition R1 for δ = 1 and condition R2 for any δ > 0. Both
+
+conditions hold uniformly over h0 once the score ˙l has been renormalized through
+
+multiplication by h−1/2
+
+0
+
+. In (5.2) we have already calculated the Fisher information
+
+and we infer directly condition R3 that h−1
+
+0 I(ϑ) is uniformly bounded away from
+
+zero and inﬁnity. We thus infer (9.12).
+
+In view of the independence among the experiments (E odd
+
+3,m )m and equally among
+
+the experiments (G3,m)m we infer from (9.12) and (9.2)
+
+sup
+
+s2∈Cα(R)
+
+H 2(⊗(ℓh)−1
+
+m=1
+
+˜P
+
+m
+
+s2 ,⊗(ℓh)−1
+
+m=1
+
+˜Q
+
+m
+s2 ) . (ℓh)−1ℓ−2ρ . ε−1v2
+
+ε h2ρ
+
+0 v4ρ
+ε .
+
+Since we assume h0 = o(ε(1−2α)/2α), the right-hand side tends to zero provided
+
+−1 + 2
+
+α
+
+2α + 1
+
++
+
+ρ(1 − 2α)
+
+α
+
++
+
+4ρα
+
+2α + 1
+
+=
+
+ρ − α
+
+α(2α + 1)
+
+> 0
+
+32
+
+Markus Reiß
+
+holds. Since ρ < 1 is arbitrary, this is always satisﬁed for α < 1. In the case α = 1
+
+we use h0 . ε−p for some p < 1/2. We have derived asymptotic equivalence between
+3,m and ⊗m ˜G3,m. A fortiori, applying the Brown and
+the product experiments ⊗m ˜E loc
+Low (1996) result, this leads to asymptotic equivalence between observing (yjk) in
+
+experiments E2,loc and the corresponding Gaussian shift models of observing
+
+dYt = I(σ2
+
+0(t))1/2vεs2(t) dt + (2h)1/2dWt,
+
+t ∈ [0, 1].
+
+(9.13)
+
+From the explicit form (5.2) of the Fisher information we infer for h0 → ∞
+
+2ϑ3/2
+
+h0
+
+I(ϑ) −
+
+1
+4
+
++
+
+(cid:12)(cid:12)(cid:12)
+
+1
+
+2ϑ1/2h0(cid:12)(cid:12)(cid:12) . e−σh0.
+
+Consequently, by the polynomial growth of h0 in ε−1, the Kullback-Leibler diver-
+
+gence between the observation laws from (9.13) and the model G3,loc converges to
+
+zero. This gives the result.
+
+9.5 Proof of Proposition 6.1
+
+Since the observations yjk for j > 1 are the same in Y and ˜Y , we can work
+
+conditionally on those. Moreover, it suﬃces to consider only the event Ωε :=
+ε − σ2k∞ 6 Rvε} because the squared Hellinger distance satisﬁes (with ob-
+{kˆσ2
+vious notation)
+
+H 2(L (Y ), L ( ˜Y )) = E[H 2(L ((y0k)k | (yjk)j>1,k), L ((˜y0k)k | (yjk)j>1,k))]
+6 E[H 2(L ((y0k)k | (yjk)j>1,k), L ((˜y0k)k | (yjk)j>1,k))1Ωε ] + 2 P(Ω∁
+ε)
+
+with P(Ω∁
+
+ε) → 0. Conditional on (yjk)j>1,k, both laws are Gaussian, (y0,k)k has
+
+mean µ with
+
+µ0 = 2Xj>1
+
+Var(βjk)
+Var(yjk)
+
+yjk, µk =Xj>1
+
+Var(βjk)
+
+Var(yjk)(cid:0)(−1)j+1yj,k−1 + yjk(cid:1),
+
+k > 1,
+
+Asymptotic equivalence for volatility estimation
+
+33
+
+and covariance matrix Σ with
+
+Σk,k′ =
+
+2ckPj>1
+ck∧k′Pj>1
+
+ε2 Var(βjk)
+Var(yjk) + ε2,
+ε2 Var(βjk)
+Var(yjk) − ε2
+2 ,
+
+0,
+
+if k′ = k,
+
+if |k′ − k| = 1,
+otherwise,
+
+
+
+
+where ck := 1 ∨ (2 − k) ∈ {1, 2}. Conditional mean ˜µ and covariance matrix ˜Σ of
+(˜y0k)k have the same representation, but replacing Var each time by Varε.
+
+From the tri-diagonal structure of Σ and from
+
+Xj>1
+
+Var(βjk)
+Var(yjk)
+
+∼Xj>1
+
+(h0/j)2
+
+(h0/j)2 + 1
+
+∼ h0,
+
+h0 → ∞,
+
+we infer Σ & (ε2h0 + ε2) Id > εh Id in matrix order. Combining this with the
+
+Hellinger bound (9.9) we arrive at the estimate
+
+E[H 2(L ((y0k)k | (yjk)j>1,k), L ((˜y0k)k | (yjk)j>1,k))]
+. Ehkµ − ˜µk2
+. Xj>1,k(cid:16) Var(βjk)
+Var(yjk) −
+
+i + kΣ − ˜Σk2
+
+Varε(βjk)
+
+ε2h2
+
+εh
+
+HS
+
+Varε(yjk)(cid:17)2 Var(yjk)
+kΦjkk2z+ε2 has derivative G′(z) =
+
++ Xj>1,k(cid:16) ε2 Var(βjk)
+Var(yjk) −
+
+εh
+
+The function G(z) := kΦjkk2z
+(kΦjkk2z+ε2)2 and thus
+satisﬁes uniformly over all z bounded away from zero |G(w)−G(z)| . kΦjkk2ε2|w−z|
+(kΦjkk2+ε2)2 .
+Inserting |σ2 − σ2
+0| . vε and kΦjkk ∼ h/j, we thus ﬁnd the uniform bound on Ωε
+(cid:16) Var(βjk)
+Var(yjk) −
+
+Varε(yjk)(cid:17)2
+
+ε min(h0/j, j/h0)4.
+
+(ε2 + h2/j2)4
+
+v2
+ε ε4h4/j4
+
+Varε(βjk)
+
+kΦjkk2ε2
+
+∼ v2
+
+.
+
+ε2 Varε(βjk)
+
+Varε(yjk) (cid:17)2
+
+ε−2h−2.
+
+Putting the estimates together, we arrive at
+
+H 2(L (Y ), L ( ˜Y )) . v2
+
+min(h0/j, j/h0)4(cid:16) 1 + h2
+
+h0
+
+0/j2
+
++
+
+0(cid:17) + P(Ω∁
+
+1
+h2
+
+ε)
+
+ε Xj>1,k
+ε h−1Xj>1
+
+6 2v2
+
+min(h0/j, j/h0)2h−1
+
+0 + P(Ω∁
+ε)
+
+∼ v2
+
+ε h−1
+
+0 ε−1 + P(Ω∁
+ε)
+
+such that the Hellinger distance tends to zero uniformly if h−1
+
+0 v2
+
+ε = o(ε), which
+
+is ensured by our choice of h0. This implies asymptotic equivalence of observing
+
+34
+
+Markus Reiß
+
+Y and ˜Y and thus of experiment E2 and of just observing (yjk)j>1,k in E2. By
+
+independence the latter is equivalent to E2,odd ⊗ E2,even.
+
+9.6 An explicit series representation
+
+We aim at deriving the formula
+
+Xj>1
+
+λ3
+
+(λ2 + π2j2)2 =
+
+1 + 4λe−2λ − e−4λ
+
+4(1 − e−2λ)2
+
+1
+2λ
+
+−
+
+(9.14)
+
+for any λ > 0. We employ Fourier techniques and consider the Fourier coeﬃcients
+
+of g(x) = e−λx/π:
+
+ˆg(j) := (2π)−1/2Z 2π
+
+0
+
+g(x)eijxdx =
+
+π(1 − e−2λ)
+√2π(λ − iπj)
+
+,
+
+j ∈ Z .
+
+For the 2π-periodic convolution g ∗ g(x) = xe−λx/π + (2π − x)e−λ(2+x/π) we obtain
+the Fourier coeﬃcient as a product:
+
+π2(1 − e−2λ)2
+√2π(λ − iπj)2
+
+.
+
+dg ∗ g(j) =
+π3(1 − e−2λ)4 Xj∈Z
+
+2
+
+|dg ∗ g(j)|2 =
+
+2
+
+π3(1 − e−2λ)4 kg ∗ gk2
+
+L2.
+
+The Parseval formula therefore yields
+
+1
+
+(λ2 + π2j2)2 =
+
+Xj∈Z
+
+We infer that ( λ
+
+L2 equals
+
+π )3kg ∗ gk2
+0 (cid:16)(1 − e−2λ)2x2 + 4π2e−4λ + 4π(e−2λ − e−4λ)x(cid:17)e−2λx/πdx
+
+π(cid:17)3Z 2π
+(cid:16) λ
+=(cid:16)λe−2λ + (1 − e−4λ)/4(cid:17)(1 − e−2λ)2
+
+and thus obtain
+
+Xj∈Z
+
+λ3
+
+(λ2 + π2j2)2 =
+
+2
+
+(1 − e−2λ)2(cid:16)λe−2λ + (1 − e−4λ)/4(cid:17).
+
+Using the symmetry in j, we establish (9.14).
+
+Acknowledgement
+
+I am grateful to Marc Hoﬀmann, Mark Podolskij and Johannes Schmidt-Hieber for
+
+very useful discussions.
+
+Asymptotic equivalence for volatility estimation
+
+35
+
+References
+
+Barndorff-Nielsen, O. E., P. R. Hansen, A. Lunde, and N. Shephard
+
+(2008): “Designing Realized Kernels to Measure the ex post Variation of Equity
+
+Prices in the Presence of Noise,” Econometrica, 76(6), 1481–1536.
+
+Brown, L. D., and M. G. Low (1996): “Asymptotic equivalence of nonparamet-
+
+ric regression and white noise.,” Ann. Stat., 24(6), 2384–2398.
+
+Carter, A. (2006): “A continuous Gaussian process approximation to a nonpara-
+
+metric regression in two dimensions.,” Bernoulli, 12(1), 143–156.
+
+Gloter, A., and J. Jacod (2001a): “Diﬀusions with measurement errors. I: Local
+
+asymptotic normality.,” ESAIM, Probab. Stat., 5, 225–242.
+
+(2001b): “Diﬀusions with measurement errors. II: Optimal estimators.,”
+
+ESAIM, Probab. Stat., 5, 243–260.
+
+Grama, I., and M. Nussbaum (2002): “Asymptotic equivalence for nonparamet-
+
+ric regression.,” Math. Methods Stat., 11(1), 1–36.
+
+Ibragimov, I., and R. Khas’minskii (1991): “Asymptotically normal families of
+
+distributions and eﬃcient estimation.,” Ann. Stat., 19(4), 1681–1724.
+
+Jacod, J., Y. Li, P. A. Mykland, M. Podolskij, and M. Vetter (2009): “Mi-
+
+crostructure noise in the continuous case: the pre-averaging approach.,” Stochas-
+
+tic Processes Appl., 119(7), 2249–2276.
+
+Le Cam, L., and G. L. Yang (2000): Asymptotics in statistics. Some basic con-
+
+cepts. 2nd ed. Springer Series in Statistics. New York, Springer.
+
+Munk, A., and J. Schmidt-Hieber (2009): “Nonparametric estimation of
+
+the volatility function in a high-frequency model corrupted by noise.,”
+
+arxiv:0908.3163v2, Math arXiv Preprint.
+
+Mykland, P. (2009): “A Gaussian Calculus for Inference from High Frequency
+
+Data,” Annals of Finance, to appear.
+
+36
+
+Markus Reiß
+
+Nussbaum, M. (1996): “Asymptotic equivalence of density estimation and Gaus-
+
+sian white noise.,” Ann. Stat., 24(6), 2399–2430.
+
+Podolskij, M., and M. Vetter (2009): “Estimation of volatility functionals in
+
+the simultaneous presence of microstructure noise and jumps.,” Bernoulli, 15(3),
+
+634–658.
+
+Reiß, M. (2008): “Asymptotic equivalence for nonparametric regression with mul-
+
+tivariate and random design.,” Ann. Stat., 36(4), 1957–1982.
+
+Shiryaev, A. (1995): Probability. 2nd ed. Graduate Texts in Mathematics. 95. New
+
+York, Springer.
+
+Stone, C. J. (1982): “Optimal global rates of convergence for nonparametric re-
+
+gression.,” Ann. Stat., 10, 1040–1053.
+
+Zhang, L. (2006): “Eﬃcient estimation of stochastic volatility using noisy obser-
+
+vations: a multi-scale approach.,” Bernoulli, 12(6), 1019–1043.
+
+Zhang, L., P. A. Mykland, and Y. A¨ıt-Sahalia (2005): “A tale of two time
+
+scales: Determining integrated volatility with noisy high-frequency data.,” J. Am.
+
+Stat. Assoc., 100(472), 1394–1411.
+
+

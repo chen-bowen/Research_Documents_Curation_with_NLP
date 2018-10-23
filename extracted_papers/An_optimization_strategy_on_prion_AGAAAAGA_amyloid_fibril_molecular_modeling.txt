@@ -1,0 +1,558 @@
+A strategy on prion AGAAAAGA amyloid ﬁbril molecular modeling
+
+Jiapu Zhang
+
+School of Sciences, Information Technology and Engineering, University of Ballarat,
+Mount Helen, VIC 3350, Australia, j.zhang@ballarat.edu.au, Ph: (61)423487360
+
+Abstract: X-ray crystallography and nuclear magnetic resonance (NMR) spectroscopy
+are two powerful tools to determine the protein 3D structure. However, not all proteins
+can be successfully crystallized, particularly for membrane proteins. Although NMR
+spectroscopy is indeed very powerful in determining the 3D structures of membrane
+proteins, same as X-ray crystallography, it is still very time-consuming and expensive.
+Under many circumstances, due to the noncrystalline and insoluble nature of some
+proteins, X-ray and NMR cannot be used at all. Computational approaches, however,
+allow us to obtain a description of the protein 3D structure at a submicroscopic level.
+To the best of the author’s knowledge, there is little structural data available to date
+on the AGAAAAGA palindrome in the hydrophobic region (113–120) of prion proteins,
+which falls just within the N-terminal unstructured region (1–123) of prion proteins.
+Many experimental studies have shown that the AGAAAAGA region has amyloid ﬁbril
+forming properties and plays an important role in prion diseases. However, due to the
+noncrystalline and insoluble nature of the amyloid ﬁbril, little structural data on the
+AGAAAAGA is available. This paper introduces a simple molecular modeling strategy
+to address the 3D atomic-resolution structure of prion AGAAAAGA amyloid ﬁbrils.
+Atomic-resolution structures of prion AGAAAAGA amyloid ﬁbrils got in this paper
+are useful for the drive to ﬁnd treatments for prion diseases in the ﬁeld of medicinal
+chemistry.
+
+Keywords Prion AGAAAAGA palindrome, amyloid ﬁbril, molecular modeling, prion
+dieseases.
+
+1
+1
+0
+2
+
+ 
+
+y
+a
+M
+3
+2
+
+ 
+
+ 
+ 
+]
+E
+C
+.
+s
+c
+[
+ 
+ 
+
+3
+v
+6
+0
+3
+5
+
+.
+
+2
+1
+0
+1
+:
+v
+i
+X
+r
+a
+
+1
+
+Introduction
+
+Prion diseases are invariably fatal and highly infectious neurodegenerative diseases af-
+fecting humans and animals. The neurodegenerative diseases such as Creutzfeldt-Jakob
+disease (CJD), variant Creutzfeldt-Jakob diseases (vCJD), Gerstmann-Straussler-Scheinker
+syndrome (GSS), Fatal Familial Insomnia (FFI), Kuru in humans, scrapie in sheep,
+
+1
+
+bovine spongiform encephalopathy (BSE or mad-cow disease) and chronic wasting dis-
+ease (CWD) in cattle belong to prion diseases. By now there have not been some
+eﬀective therapeutic approaches or medications to treat all these prion diseases.
+
+Prion diseases are amyloid ﬁbril diseases. The normal cellular prion protein (PrPC)
+is rich in α-helices but the infectious prions (PrPSc) are rich in β-sheets amyloid ﬁbrils.
+The conversion of PrPC to PrPSc is believed to involve a conformational change from a
+predominantly α-helical protein (42% α-helix, 3% β-sheet) to a protein rich in β-sheets
+(30% α-helix, 43% β-sheet) [9].
+
+Many experimental studies such as [2, 3, 4, 10, 11, 12, 13, 14, 18] have shown two
+points: (1) the hydrophobic region (113-120) AGAAAAGA of prion proteins is critical
+in the conversion from a soluble PrPC into an insoluble PrPSc ﬁbrillar form; and (2)
+normal AGAAAAGA is an inhibitor of prion diseases. Furthermore, we computation-
+ally clariﬁed that prion AGAAAAGA segment indeed has an amyloid ﬁbril forming
+property [20, 21, 22]. However, laboratory experiences have shown that using tra-
+ditional experimental methods is very diﬃcult to obtain atomic-resolution structures
+of AGAAAAGA due to the noncrystalline and insoluble nature of the amyloid ﬁbril
+[16, 23]. By introducing novel mathematical canonical dual formulations and com-
+putational approaches, in this paper we may construct atomic-resolution molecular
+structures for prion (113-120) AGAAAAGA amyloid ﬁbrils.
+
+Many studies have indicated that computational approaches or introducing novel
+mathematical formulations and physical concepts into molecular biology can signiﬁ-
+cantly stimulate the development of biological and medical science. Various computer
+computational approaches were used to address the problems related to “amyloid ﬁb-
+ril” [5, 6, 7, 8, 17, 19]. Here, we would like to use the simulated annealing evolutionary
+computations to build the optimal atomic-resolution amyloid ﬁbril models in hopes to
+be used for controlling prion diseases.
+
+The atomic structures of all amyloid ﬁbrils revealed steric zippers, with strong van
+der Waals (vdw) interactions between β-sheets and hydrogen bonds (HBs) to maintain
+the β-strands [15]. The vdw contacts of atoms are described by the Lennard-Jones
+(LJ) potential energy:
+
+VLJ (r) = 4εh(
+
+σ
+r
+
+)6i ,
+
+(1)
+
+)12 − (
+
+σ
+r
+
+2
+
+where ε is the depth of the potential well and σ is the atom diameter; these parame-
+ters can be ﬁtted to reproduce experimental data or deduced from results of accurate
+quantum chemistry calculations. The ( σ
+r )6 term
+describes attraction. If we introduce the coordinates of the atoms whose number is
+denoted by N and let ε = σ = 1 be the reduced units, the form (1) becomes
+
+r )12 term describes repulsion and the ( σ
+
+f (x) = 4
+
+N
+
+N
+
+Xi=1
+
+Xj=1,j<i
+
+(cid:18) 1
+
+τ 6
+ij
+
+−
+
+1
+τ 3
+
+ij(cid:19) ,
+
+(2)
+
+where τij = (x3i−2 − x3j−2)2 + (x3i−1 − x3j−1)2 + (x3i − x3j)2, (x3i−2, x3i−1, x3i) is the
+coordinates of atom i, N ≥ 2. The minimization of LJ potential f (x) on Rn (where
+n = 3N) is an optimization problem:
+
+min f (x)
+
+subject
+
+to x ∈ R3N .
+
+(3)
+
+Similarly as (1), i.e. the potential energy for the vdw interactions between β-sheets:
+
+VLJ (r) =
+
+A
+r12
+
+−
+
+B
+r6 ,
+
+the potential energy for the HBs between the β-strands has the formula
+
+VHB(r) =
+
+C
+r12
+
+−
+
+D
+r10 ,
+
+(4)
+
+(5)
+
+where A, B, C, D are given constants. Thus, the amyloid ﬁbril molecular modeling
+problem is deduced into well solve the optimization problem (3).
+
+This paper is organized as follows. In Section 2, we ﬁrst describe how to build the
+prion AGAAAAGA amyloid ﬁbril molecular models, and then explain how the models
+with 6 variables only are built and can be solved by any optimization algorithm. At
+the end of Section 2 the models are done a little reﬁnement by Amber 11 [1]. At last,
+we conclude that when using the time-consuming and costly X-ray crystallography
+or NMR spectroscopy we still cannot determine the protein 3D structure, we may
+introduce computational approaches or novel mathematical formulations and physical
+concepts into molecular biology to study molecular structures. This concluding remark
+will be made in the last section.
+
+3
+
+2 Prion AGAAAAGA amyloid ﬁbril models’ Molec-
+
+ular Modeling and Optimizing
+
+Constructions of the AGAAAAGA amyloid ﬁbril molecular structures of prion 113–
+120 region are based on the most recently released experimental molecular structures
+of human M129 prion peptide 127–132 (PDB entry 3NHC released into Protein Data
+Bank (http://www.rcsb.org) on 04-AUG-2010). The atomic-resolution structure of this
+peptide is a steric zipper, with strong vdw interactions between β-sheets and HBs to
+maintain the β-strands (Figure 1).
+
+In Figure 1 we see that G (H) chains (i.e. β-sheet 2) of 3NHC.pdb can be obtained
+
+from A (B) chains (i.e. β-sheet 1) by
+
+G(H) = 
+
+
+1
+0
+0 −1
+0
+
+0
+0
+0 −1
+
+
+
+
+A(B) +
+
+
+9.07500
+4.77650
+0.00000
+
+,
+
+
+
+
+and other chains can be got by
+
+I(J) = I3G(H) +
+
+C(D) = I3A(B) +
+
+
+0
+
+9.5530
+
+0
+
+0
+
+9.5530
+
+0
+
+
+
+
+
+
+, K(L) = I3G(H) +
+
+, E(F ) = I3A(B) +
+
+
+0
+
+−9.5530
+
+0
+
+0
+
+−9.5530
+
+0
+
+,
+
+,
+
+
+
+
+
+
+(6)
+
+(7)
+
+(8)
+
+where I3 is the 3-by-3 identity matrix. Basing on the template 3NHC.pdb from the
+Protein Data Bank, three prion AGAAAAGA palindrome amyloid ﬁbril models - an
+AAAAGA model (Model 1), a GAAAAG model (Model 2), and an AAAAGA model
+(Model 3) - will be successfully constructed in this paper. AB chains of Models 1-3
+were respectively got from AB chains of 3NHC.pdb using the mutate module of the
+free package Swiss-PdbViewer (SPDBV Version 4.01) (http://spdbv.vital-it.ch).
+It is
+pleasant to see that almost all the hydrogen bonds are still kept after the mutations;
+thus we just need to consider the vdw contacts only. Making mutations for GH chains
+of 3NHC.pdb, we can get the GH chains of Models 1-3. However, the vdw contacts
+between A chain and G chain, between B chain and H chain are too far at this moment
+
+4
+
+(Figure 2).
+
+Seeing Figure 2, we may know that for Models 1-3 at least two vdw interactions
+between A.ALA3.CB-G.ALA4.CB, B.ALA4.CB-H.ALA3.CB should be maintained.
+Fixing the coordinates of A.ALA3.CB and B.ALA4.CB, letting the coordinates of
+G.ALA4.CB and H.ALA3.CB be variables, we may get a simple LJ potential energy
+minimization problem (3) just with six variables. For solving this six variable opti-
+mization problem, any optimization computational algorithm can be used to solve this
+low-dimensional problem; for example, in this paper we may use the hybrid discrete
+gradient simulated annealing method [22]. Setting the coordinates of G.ALA4.CB
+and H.ALA3.CB as initial solutions, running the hybrid discrete gradient simulated
+annealing optimization algorithm, for Models 1-3 we get
+
+G(H) = 
+
+
+1
+0
+0 −1
+0
+
+0
+0
+0 −1
+
+
+
+
+A(B) +
+
+
+−0.703968
+
+7.43502
+−0.33248
+
+.
+
+
+
+
+(9)
+
+By (9) we can get close vdw contacts between A chain and G chain, between B chain
+and H chain (Figure 3).
+
+Furthermore, we may employ the Amber 11 package [1] to slightly optimize Models
+1-3 and at last get Models 1-3 with stable total potential energies (Figure 4). The
+other CDIJ and EFKL chains can be got by parallelizing ABGH chains in the use of
+mathematical formulas (7)-(8).
+
+3 Conclusion
+
+X-ray crystallography is a powerful tool to determine the protein 3D structure. How-
+ever,
+it is time-consuming and expensive, and not all proteins can be successfully
+crystallized, particularly for membrane proteins. Although NMR spectroscopy is in-
+deed a very powerful tool in determining the 3D structures of membrane proteins, it is
+also time-consuming and costly. Due to the noncrystalline and insoluble nature of the
+amyloid ﬁbril, little structural data on the prion AGAAAAGA segment is available.
+Under these circumstances, the novel simple strategy introduced in this paper can
+well do the molecular modeling of prion AGAAAAGA amyloid ﬁbrils. This indicated
+that computational approaches or introducing novel mathematical formulations and
+
+5
+
+physical concepts into molecular biology can signiﬁcantly stimulate the development
+of biological and medical science. The optimal atomic-resolution structures of prion
+AGAAAAGA amyloid ﬁbils presented in this paper are useful for the drive to ﬁnd
+treatments for prion diseases in the ﬁeld of medicinal chemistry.
+
+Acknowledgments: This research was supported by a Victorian Life Sciences Computation
+
+Initiative (VLSCI) grant number VR0063 on its Peak Computing Facility at the University
+
+of Melbourne, an initiative of the Victorian Government.
+
+References
+
+[1] Case, D.A., T.A. Darden, T.E. Cheatham, III, C.L. Simmerling, J. Wang, R.E.
+Duke, R. Luo, R.C. Walker, W. Zhang, K.M. Merz, B.P. Roberts, B. Wang, S.
+Hayik, A. Roitberg, G. Seabra, I. Kolossvry, K.F. Wong, F. Paesani, J. Vanicek,
+J. Liu, X. Wu, S.R. Brozell, T. Steinbrecher, H. Gohlke, Q. Cai, X. Ye, J. Wang,
+M.-J. Hsieh, G. Cui, D.R. Roe, D.H. Mathews, M.G. Seetin, C. Sagui, V. Babin,
+T. Luchko, S. Gusarov, A. Kovalenko and P.A. Kollman. 2010. AMBER 11, Uni-
+versity of California, San Francisco.
+
+[2] Brown D.R. (2000) Prion protein peptides: optimal toxicity and peptide blockade
+
+of toxicity. Mol. Cell. Neurosci. 15: 66-78.
+
+[3] Brown D.R. (2001) Microglia and prion disease. Microsc. Res. Tech. 54: 71-80.
+
+[4] Brown D.R., Herms J., Kretzschmar H.A. (1994) Mouse cortical cells lacking cel-
+lular PrP survive in culture with a neurotoxic PrP fragment. Neuroreport 5: 2057–
+2060.
+
+[5] Carter D.B., Chou K.C. (1998) A model for structure dependent binding of Congo
+
+Red to Alzeheimer beta-amyloid ﬁbrils. Neurobiol. Aging 19: 37–40.
+
+[6] Chou K.C. (2004) Insights from modelling the tertiary structure of BACE2. J.
+
+Proteome Res. 3: 1069–72.
+
+[7] Chou K.C. (2004) Review: structural bioinformatics and its impact to biomedical
+
+science. Curr. Med. Chem. 11: 2105–34.
+
+[8] Chou K.C., Howe W.J. (2002) Prediction of the tertiary structure of the beta-
+
+secretase zymogen. Biochem. Biophys. Res. Commun. 292: 702–8.
+
+6
+
+[9] Griﬃth J.S. (1967) Self-replication and scrapie. Nature 215: 1043-4.
+
+[10] Holscher C., Delius H., Burkle A. (1998) Overexpression of nonconvertible
+PrPC delta114-121 in scrapie-infected mouse neuroblastoma cells leads to trans-
+dominant inhibition of wild-type PrPSc accumulation, J. Virol. 72: 1153–9.
+
+[11] Jobling M.F., Huang X., Stewart L.R., Barnham K.J., Curtain C., Volitakis I.,
+Perugini M., White A.R., Cherny R.A., Masters C.L., Barrow C.J., Collins S.J.,
+Bush A.I., Cappai R. (2001) Copper and zinc binding modulates the aggregation
+and neurotoxic properties of the prion peptide PrP 106–126, Biochem. 40: 8073–
+84.
+
+[12] Jobling M.F., Stewart L.R., White A.R., McLean C., Friedhuber A., Maher F.,
+Beyreuther K., Masters C.L., Barrow C.J., Collins S.J., Cappai R. (1999) The hy-
+drophobic core sequence modulates the neurotoxic and secondary structure prop-
+erties of the prion peptide 106–126, J. Neurochem. 73: 1557–65.
+
+[13] Kuwata K., Matumoto T., Cheng H., Nagayama K., James T.L., Roder H. (2003)
+NMR-detected hydrogen exchange and molecular dynamics simulations provide
+structural insight into ﬁbril formation of prion protein fragment 106–126, Proc.
+Natl. Acad. Sci. USA 100, 14790–5.
+
+[14] Norstrom E.M., Mastrianni J.A. (2005) The AGAAAAGA palindrome in PrP
+is required to generate a productive PrPSc–PrPC complex that leads to prion
+propagation, J. Biol. Chem. 280: 27236–43.
+
+[15] Sawaya M.R., Sambashivan S., Nelson R., Ivanova M.I., Sievers S.A., Apostol
+M.I., Thompson M.J., Balbirnie M., Wiltzius J.J., McFarlane H.T., Madsen A.,
+Riekel C., Eisenberg D. (2007) Atomic structures of amyloid cross-beta spines
+reveal varied steric zippers, Nature 447: 453–7.
+
+[16] Tsai H.H.G. (2005) Understanding the biophysical mechanisms of protein folding,
+misfolding, and aggregation at molecular level (in Chinese), Chem. (The Chinese
+Chem. Soc. of Taipei) 63: 601-12.
+
+[17] Wang J.F., Wei D.Q., Li L., Chou K.C. (2008) Review: Drug candidates from
+
+traditional Chinese medicines, Curr. Top. Med. Chem. 8: 1656–65.
+
+7
+
+[18] Wegner C., Romer A., Schmalzbauer R., Lorenz H., Windl O., Kretzschmar H.A.
+(2002) Mutant prion protein acquires resistance to protease in mouse neuroblas-
+toma cells, J. Gen. Virol. 83: 1237–45.
+
+[19] Wei D.Q., Sirois S., Du Q.S., Arias H.R., Chou K.C. (2005) Theoretical studies
+of Alzheimer’s disease drug candidate [(2,4-dimethoxy) benzylidene]-anabaseine
+dihydrochloride (GTS-21) and its derivatives, Biochem. Biophys. Res. Commun.
+338: 1059–64.
+
+[20] Zhang J.P. (2009) Studies on the structural stability of rabbit prion probed by
+
+molecular dynamics simulations, J. Biomol. Struct. Dyn. 27: 159-62.
+
+[21] Zhang J.P. (2011) Optimal molecular structures of prion AGAAAAGA amyloid
+ﬁbrils formatted by simulated annealing, J. Mol. Model. 17: 173-9. Reported by
+Crystallography Time, Volume 3, No. 1, January 2011:
+http://www.rigakumsc.com/downloads/newsletter/LifeSciencesV03N01.html
+and VerticalNews 2011 FEB 1:
+http://technology.verticalnews.com/articles/4831360.html
+
+[22] Zhang J.P., Sun J., Wu C.Z. (2011) Optimal atomic-resolution structures of prion
+AGAAAAGA amyloid ﬁbrils, J. Theor. Biol. J. Theor. Biol. 279(1) (2011) 17-28.
+PMID: 21420420. arXiv:1012.2504v6. Selected by Nuclear Energy Research Today
+Volume 7 Issue 4, April 2011:
+http://nuclearenergy.researchtoday.net/archive/7/4/4311.htm
+
+[23] Zheng J., Ma B.Y., Tsai C.J., Nussinov R. (2006) Structural stability and dy-
+namics of an amyloid-forming peptide GNNQQNY from the yeast prion Sup-35,
+Biophy. J. 91: 824-33.
+
+8
+
+Figure 1: Protein ﬁbril structure of human M129 prion GYMLGS (127–132). The
+purple dashed lines denote the hydrogen bonds. A, B, ..., K, L denote the 12 chains of
+the ﬁbril.
+
+9
+
+10
+
+11
+
+Figure 2: Far vdw contacts of AG chains and BH chains of Models 1-3.
+
+12
+
+13
+
+14
+
+Figure 3: Close vdw contacts of AG chains and BH chains of Models 1-3.
+
+15
+
+16
+
+17
+
+Figure 4: Optimal structures of prion AAAAGA amyloid ﬁbril Models 1-3.
+
+18
+
+

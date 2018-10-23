@@ -1,0 +1,4000 @@
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+Quantitative Finance, Vol. 00, No. 00, July 2008, 1–23
+
+1
+1
+0
+2
+
+ 
+r
+a
+
+M
+8
+
+ 
+
+ 
+ 
+]
+
+.
+
+R
+T
+n
+i
+f
+-
+q
+[
+ 
+ 
+
+1
+v
+6
+2
+5
+1
+
+.
+
+3
+0
+1
+1
+:
+v
+i
+X
+r
+a
+
+Analysis of trade packages in Chinese stock
+
+market
+
+Fei Ren†‡§ and Wei-Xing Zhou∗†‡§
+
+†School of Business, East China University of Science and Technology, Shanghai 200237,
+
+China
+
+‡School of Science, East China University of Science and Technology, Shanghai 200237,
+
+§Research Center for Econophysics, East China University of Science and Technology,
+
+Shanghai 200237, China
+
+China
+
+(Received 00 Month 200x; in ﬁnal form 00 Month 200x)
+
+This paper conducts an empirically study on the trade package composed of a sequence of
+consecutive purchases or sales of 23 stocks in Chinese stock market. We investigate the prob-
+ability distributions of the execution time, the number of trades and the total trading volume
+of trade packages, and analyze the possible scaling relations between them. Quantitative dif-
+ferences are observed between the institutional and individual investors. The trading proﬁle
+of trade packages is investigated to reveal the preference of large trades on trading volumes
+and transaction time of the day, and the diﬀerent proﬁles of two types of investors imply that
+institutions may be more informed than individuals. We further analyze the price impacts
+of both the entire trade packages and the individual transactions inside trade packages. We
+ﬁnd the price impact of trade packages is nonnegligible over the period of the execution time
+and it may have a power-law relation with the total trading volume. The price impact of the
+transactions inside trade packages displays a U-shaped proﬁle with respect to the time t of the
+day, and also shows a power-law dependence on their trading volumes. The trading volumes of
+the transactions inside trade packages made by institutions have a stronger impact on current
+returns, but the following price reversals persist over a relatively shorter horizon in comparison
+with those by individuals.
+
+Keywords: Econophysics; Trade package; Stock trading behavior; Price impact; Scaling laws
+
+∗Corresponding author. Email: wxzhou@ecust.edu.cn
+
+ISSN 1469-7688 print/ISSN 1469-7696 online © 2008 Taylor & Francis
+
+Quantitative Finance
+
+http://www.tandf.co.uk/journals
+
+DOI: 10.1080/1469768YYxxxxxxxx
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+2
+
+Fei Ren and Wei-Xing Zhou
+
+1.
+
+Introduction
+
+The study of price impact of trading on stock exchanges is known as one of the central topics in
+ﬁnancial economics. It has been veriﬁed by many empirical studies that large trades generally
+have a strong impact on stock price (Ying 1966, Karpoﬀ 1987, Wood et al. 1985, Gallant et al.
+1992, Chan and Fong 2000, Lillo et al. 2003, Lim and Coggins 2005, Næs and Skjeltorp 2006,
+Zhou 2011). The single execution of a large order will lead to a large impact on stock price
+and increase the investor’s cost. Therefore, large orders are usually split into small pieces,
+and executed at an extended period of time to minimize their price impact. These sequences
+of trades are called trade packages (Chan and Lakonishok 1995, Gallagher and Looi 2006,
+Giambona and Golec 2010), hidden orders (Vaglica et al. 2008, Moro et al. 2009, Vaglica et al.
+2010), or metaorders (Farmer et al. 2011). Growing evidence shows that large trades play a ma-
+jor role in trading in stock markets, which represent a large fraction of market’s total trading
+volume (Keim and Madhavan 1996, Jain 2003, Prino et al. 2007, Gregoriou 2008, Vaglica et al.
+2010).
+
+A large amount of research has been conducted on the large trades of institutional investors,
+most of which consider the individual trade as the basis unit of analysis in the study of its price
+impact (Keim and Madhavan 1996, Prino et al. 2007, Gregoriou 2008, Kraus and Stoll 1972,
+Aitken and Frino 1996, Gemmill 1996, Saar 2001, Chiyachantana et al. 2004). However, an in-
+stitutional order is often broken up into a sequence of consecutive trades, and its total volume
+occupies a large fraction of the stock’s trading volume. Therefore, it may be better to treat the
+sequence of trades as the basis unit of analysis in the study of institutional trades. The earli-
+est study of trade packages may be traced back to the study by Chan and Lakonishok (1995).
+They analyze the price impact of the entire sequence of trades in Now York and American
+Stock Exchanges, and ﬁnd that the price impact is related to package size and trade complex-
+ity. Gallagher and Looi (2006) study the abnormal returns for trade packages of the Australian
+equity managers to estimate their trade performance. Giambona and Golec (2010) study the
+wrong trades inside trade packages by large intuitional insider. Recently, Vaglica et al. (2008),
+Moro et al. (2009), and Vaglica et al. (2010) try to study the market impact of trade packages
+identiﬁed by the continuous increase or decrease of a ﬁrm’s stock inventory. Farmer et al. (2011)
+propose a theoretical model to study the permanent impact of large trading orders. The appli-
+cation of such research lies in the study of optimal execution of large orders to minimize the
+trading costs of institutional investors (Almgren 2003, Obizhaeva and Wang 2010, Alfonsi et al.
+2010).
+
+Many articles have addressed the question of how to measure the price impact of trade pack-
+ages. Chan and Lakonishok (1995) study the price impact during trade packages using the av-
+erage, open and close price on the ﬁrst and last day of the trade package. Following their
+works, Gallagher and Looi (2006) measure the impact over an extended period of time before
+the start and after the end of the package. Instead, Vaglica et al. (2008), Moro et al. (2009),
+and Vaglica et al. (2010) study the price impact of trade packages using the transaction data,
+measured as the diﬀerence between the prices of the ﬁst and last transaction of the trade package.
+In this paper, we are not only interested in the market impact of the entire trade package, but
+also concerned about the impact of the individual transactions inside packages. For the study of
+price impact of isolated large trades, an early study measures the price impact using the close
+price a few days before and after the trades (Kraus and Stoll 1972). Keim and Madhavan (1996)
+use the close price on the trading day prior to and after block trades. In stead of using the close
+price, recent studies choose the transaction price to estimate the price impact of individual trades,
+e.g., the average price of several transactions prior to and after block trades (Prino et al. 2007,
+Gemmill 1996), or the transaction price immediately prior to and after block trades (Gregoriou
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+LATEX 2ε guide for authors
+
+3
+
+2008).
+
+To the best of our knowledge, the empirical study on trade packages in Chinese stock market
+has not been conducted. This may due to the diﬃculty of collection of proprietary data. We
+have the ultrahigh-frequency data of 23 liquid stocks on the Shenzhen Stock Exchange in year
+2003. The data contain the information about all the transactions of each investor, including the
+trading price, the trading volume, the transaction time, etc. We use the trading records of the
+23 stocks as our sample data, and analyze the price impact of trade packages and the individual
+transactions inside using the transaction price.
+
+Unlike
+
+the
+
+data
+
+provided
+
+by
+
+the Plexus Group
+
+(Keim and Madhavan
+
+1995,
+Chiyachantana et al. 2004), we are not directly informed of the large institutional trades
+from our database. Proxy methods are used to detect the trade packages, for instance, a
+technical detection algorithm based on the inventory time evolution of ﬁrms (Vaglica et al.
+2008, Moro et al. 2009, Vaglica et al. 2010). In the present work, we follow the ideal introduced
+in Chan and Lakonishok (1995), Gallagher and Looi (2006) and Giambona and Golec (2010),
+and deﬁne the trade package as a sequence of mostly buy or sell trades with less than a n-day
+break between chronologically adjacent trades. Consistent with the results revealed in previous
+studies, we observe similar results for various length of break n = 1, 5, 10 days, other than some
+quantitative diﬀerences.
+
+So far, previous studies of trade packages primarily focus on the large trades made by insti-
+tutional investors. Our database includes the trading records for both institutional and indi-
+vidual investors, identiﬁed by a particular code denoting the investor type. Large trades made
+by individuals, e.g., private equity investments, can also be detected using the same detection
+rules. Therefore, we can also study the price impact of large individual trading. In addition,
+our present study further conﬁrms the nonlinear power-law relation between the price returns
+and trading volumes, as revealed in many empirical studies (Hasbrouck 1991, Plerou et al. 2002,
+Chordia and Subrahmanyam 2004, Zhou 2011). Another purpose is to study the price impact
+of individual transactions inside trade packages. We ﬁnd that the individual transactions have
+a strong positive impact on the current price and a temporary negative impact on the following
+prices, though the cumulative impact of the entire trade package is nonnegligible over the whole
+period of execution time.
+
+The remainder paper is organized as follows. In Section 2, we introduce our database, the
+investigated variables of trade packages and their summary statistics. Sections 3 studies the
+statistic properties of trade packages, including the probability distributions of the investigated
+variables and their scaling relations. In Section 4, we attempt to study the trading proﬁle of
+trade packages by analyzing the mean trading volume, transaction probability and the total
+trading volume with respect to the time of a day. The price impacts of the entire trade packages
+and the individual transactions inside trade packages are carefully studied in Section 6. Section
+7 summarizes our ﬁndings.
+
+2. Data and investigated variables
+
+2.1. Data sample
+
+The data used in our study comprise 23 liquid stocks traded on the Shenzhen Stock Exchange
+(SZSE), one of the two stock exchanges in mainland China. The SZSE was established on De-
+cember 1, 1990 and started its operations on July 3, 1991. The SZSE has two separate markets
+including A-shares and B-shares. A-shares are common stocks issued by mainland Chinese com-
+panies, subscribed and traded in Chinese currency Renminbi (RMB), purchased and sold by
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+4
+
+Fei Ren and Wei-Xing Zhou
+
+Chinese nationals and approved foreign investors. The A-share market was launched in 1990
+and opened only to domestic investors before 2003. B-shares are also issued by mainland Chi-
+nese companies, but traded in foreign currencies. B-shares carry a face value denominated in
+RMB. The B-share Market was launched in 1992 and was restricted to foreign investors before
+February 19, 2001. It has been opened to Chinese investors since then.
+
+We mainly study the data of 23 stocks in A-share market of the SZSE in year 2003. Up
+to the end of 2003, there have been 491 A-share stocks listed on the SZSE. The total market
+capitalization of A-share market was 1.2 billion RMB and the ﬂoat market capitalization was 0.45
+billion RMB. Our sample stocks were part of the 40 constituent stocks composing the Shenzhen
+Stock Exchange Component Index in 2003. These 23 stocks are representative in a variety of
+industry sectors, as shown in Table 1. The total transaction amount Atot, the ﬂoat capitalization
+Cf lo and the total market capitalization Ctot, in unit of million RMB, of 23 stocks in year 2003
+are also listed in Table 1. For instance, the total transaction amount Atot of stock 000001 in 2003
+is 23847.6 million RMB, and the ﬂoat capitalization Cf lo and total market capitalization Ctot of
+the same stock are 12 and 16.6 million RMB respectively. The Atot is three orders of magnitude
+larger than Cf lo and Ctot. Similar phenomenon are observed in all the 23 stocks, which implies
+that the average transaction amount per day of a certain stock almost approximates to its total
+market capitalization. This indicates that the market was relatively active in 2003, though it
+was in the middle of a ﬁve-year bear market (Zhou and Sornette 2004).
+
+The SZSE generally opens from Monday to Friday, but closes for public holidays and other
+dates as announced by the China Securities Regulatory Commission. We mainly consider the
+continuous double auction operates from 9:30 to 11:30 and 13:00 to 15:00. Based upon the orders
+of submission and cancelation, the transaction is automatically executed according to price-time
+priority matching rule. The trading records of 23 stocks are consequently extracting from the
+original database of order ﬂows. It is worthwhile to point out that the account number for
+each investor is provided under the condition that the name of the investor involved is removed
+from the data. Therefore, we can obtain the sequence of transactions for each investor, which
+contains the information about the trade price, the trading volume, and the transaction time.
+We treat those transactions executed by a certain investor at the same time but traded with
+diﬀerent investors as one trade for this investor. Moreover, in our database each market member
+is endowed with a code identifying the investor type, i.e., institution and individual. That makes
+it possible to compare the trading dynamics between those two types of investors.
+
+Table 1 presents summary statistics of the trading records of 23 stocks, including the number
+of investors Ninv, the total number of trades Ntra, the mean, median and standard deviation of
+the number of trades per investor. The number of investors Ninv varies in the range from 34814
+(stock 000720) to 533752 (stock 000001), and the total number of trades Ntra varies in the range
+from 194644 (stock 000541) to 2925841 (stock 000001). We integrate the trading records of the
+23 stocks, and the sample size is 18597649 trades in total. For most of the stocks analyzed in
+our study, the mean number of trades for each investor is around 5, and the median is slightly
+smaller, about 2 or 3. The standard deviation of the number of trades per investor ﬂuctuates in
+a wide range between 9.3 and 35.4, and the large values of the standard deviation indicate big
+diﬀerences between the trades number of diﬀerent investors.
+
+2.2.
+
+Identiﬁcation of trade packages
+
+The trade package is deﬁned as a sequence of mostly buy (sell) trades of a stock, and it is
+generally ended by a speciﬁc break time between chronologically adjacent trades. The selection
+of the break time does not sensitively aﬀect the results, only brings a quantitative diﬀerence.
+Giambona and Golec (2010) use an eight-day break to analyze the trade package made by Gabelli
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+LATEX 2ε guide for authors
+
+5
+
+Table 1. Summary statistics of the trading records of 23 stocks traded on Shenzhen Stock
+Exchange. The basic information about the 23 stocks includes the stock code and industry
+
+they belonging to. We present the summary statistics for each stock, i.e., the total
+
+transaction amount Atot, the ﬂoat capitalization Cf lo, the total market capitalization Ctot,
+
+the number of investors Ninv, the total number of trades Ntra, the mean, median and
+
+standard deviation of the number of trades per investor.
+
+Code
+
+000001
+000002
+000009
+000012
+000016
+000021
+000024
+000027
+000063
+000066
+000088
+000089
+000406
+000429
+000488
+000539
+000541
+000550
+000581
+000625
+000709
+000720
+000778
+
+Atot
+
+Cf lo
+
+Ctot
+
+Ninv
+
+Ntra Mean Median
+
+Number of trades per investor
+Std. dev.
+
+Industry
+
+23847.6
+13024.6
+6287.8
+6009.0
+2981.1
+8200.8
+2714.6
+8486.3
+10436.5
+4255.2
+4196.7
+5821.2
+5197.4
+1787.8
+3876.8
+4840.5
+1629.9
+7908.4
+3031.0
+14063.8
+4155.7
+3684.2
+4536.7
+
+12.0
+6.1
+2.6
+0.8
+1.5
+2.2
+1.9
+4.4
+4.7
+1.5
+3.0
+2.7
+2.2
+1.4
+2.4
+4.2
+1.8
+1.2
+2.5
+2.5
+3.0
+4.9
+2.5
+
+16.6
+7.5
+4.3
+2.8
+2.7
+8.0
+4.2
+10.9
+12.5
+3.8
+13.9
+7.4
+3.0
+4.7
+5.3
+21.4
+3.3
+5.4
+4.0
+13.3
+10.2
+8.5
+7.0
+
+533752
+299507
+261927
+110038
+110641
+202049
+80894
+218796
+127302
+144863
+53420
+102153
+152491
+77888
+54315
+61142
+42290
+165980
+60790
+156825
+138621
+34814
+91802
+
+2925841
+1640238
+1459247
+859938
+563163
+1258294
+389260
+1038232
+799601
+845377
+270488
+577781
+832141
+352044
+347032
+317321
+194644
+1036314
+283199
+1150636
+650911
+332141
+473806
+
+5.5
+5.5
+5.6
+7.8
+5.1
+6.2
+4.8
+4.7
+6.3
+5.8
+5.1
+5.7
+5.5
+4.5
+6.4
+5.2
+4.6
+6.2
+4.7
+7.3
+4.7
+9.5
+5.2
+
+3
+3
+3
+3
+2
+3
+2
+2
+3
+3
+2
+3
+3
+2
+3
+2
+2
+3
+2
+3
+2
+5
+2
+
+20.9
+24.4
+15.2
+27.2
+19.6
+21.3
+15.6
+27.2
+35.2
+14.2
+22.2
+27.4
+14.9
+9.3
+35.4
+20.6
+21.2
+24.9
+22.6
+28.0
+23.0
+16.2
+21.8
+
+Financials
+Real estate
+Conglomerates
+Metals & Nonmetals
+Electronics
+Electronics
+Real estate
+Utilities
+IT
+Electronics
+Transportation
+Transportation
+Petrochemicals
+Transportation
+Paper & Printing
+Utilities
+Electronics
+Manufacturing
+Manufacturing
+Manufacturing
+Metals & Nonmetals
+Utilities
+Manufacturing
+
+asset management company, and they ﬁnd that the package groupings are not sensitive to the
+length of the break. In fact, there is no much diﬀerence observed for the break length longer
+than 5 days, as shown in the following context. In this paper, we present the results of trade
+packages ended by the break of 1,5,10 days separately.
+
+Pbuy vi
+
+P vi
+
+> θ or Psell vi
+P vi
+
+Denote vi as the trading volume of a certain transaction i inside a trade package, we consider
+> θ. The
+the trade package consisted mostly of purchases or sales, i.e.,
+parameter θ is set to be 0.75 in the present study. For other values θ > 0.75 we observe similar
+results, consistent with the results found by Vaglica et al. (2008). The investors, who occasionally
+trade in stock market, may have packages containing very few trades which also satisfy the above
+condition. To avoid considering those investors who are unlikely to split their trades, we choose
+relatively active investors and restrict the packages with Nm > 5, where Nm is the number of
+trades done through market orders. Market orders are submitted by investors who are urgent
+to trade, and are executed immediately after the submission. Those orders waited in the limit
+order book and executed later are limit orders. The threshold 5 is close to the mean number
+of trades per investor shown in Table 1. If a package of trades has Nm larger than the mean
+number of trades per investor, we regard it to be a trade package made by an active investor.
+
+Following the detecting rules: (i) packages are separated by a n-day break, (ii) at least 75%
+of the trading volumes in the package are buying or selling volumes, (iii) the number of trades
+executed as market orders in the package should be larger than 5, we ﬁnd out the trade packages
+of 23 stocks. We integrate the package samples over all the 23 stocks. As shown in Table 2, there
+are 1187, 1066, 923 trade packages made by institutions detected for the break of 1, 5, 10 days.
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+6
+
+Fei Ren and Wei-Xing Zhou
+
+For individuals, the number of trade packages detected is larger, 35187, 37924, 35319 for the
+break of 1, 5, 10 days. This may because that the number of individual investors is much larger
+than the number of institutional investors. There are 3215246 individuals and 67054 institutions
+traded in the 23 stocks in year 2003. This may also be explained by their diﬀerent ways of trading
+in stock market. Institutions trade strictly following their trading strategies, and they do not
+trade as frequently as individuals.
+
+The variables characterizing the trade packages are deﬁned as following: (i) The execution
+time T of the trade package, measured as the interval between the ﬁrst and last transaction of
+the trade package, in unit of one second. (ii) The number of trades N within the trade package.
+
+i=1 vi.
+
+(iii) The total trading volume of the trade package, denoted as V =PN
+
+Table 2 gives the means of the execution time, the number of trades and the total trading
+volumes for both institutions and individuals. The mean of the execution time hT i shows an
+increasing tendency as the increase of the break time separating packages. It is 5973, 57259,
+113779 seconds for institutions, and 5553, 58701, 117811 seconds for individuals for the break of
+1, 5, 10 days. The mean of the number of trades hN i for institutions is 41, 54, 56 for the break of
+1, 5, 10 days, larger than 32, 35, 36 those for individuals. Similarly, the mean of the total trading
+volumes hV i for institutions is 177311, 224872, 236013 for the break of 1, 5, 10 days, larger than
+121841, 124456, 124004 those for individuals. This implies the institutions have capitalization
+on average larger than individuals, and need more transactions to accomplish the purchase or
+sale of large amounts of shares. In general, a trade package consists of a sequence of 30 − 60
+consecutive transactions, and each transaction on average has 4000 shares. Therefore, the trade
+packages analyzed in our study are of extremely large size.
+
+3. Statistics properties of trade packages
+
+3.1. Probability distributions of variables characterizing trade packages
+
+Vaglica et al. (2008) study three most capitalized stocks traded on the Spanish Stock Exchange
+(BME), and reveal that the probability distribution functions (PDFs) of the variables T , N and
+V have power-law tails with exponents lying in an interval [1.2, 2.3]. An extended study of 23
+stocks on BME and 74 stocks on the London Stock Exchange (LSE) further conﬁrms this result
+(Moro et al. 2009). We pool together the data from 23 stocks on the SZSE, and investigate the
+PDFs of T , N and V for trade packages ended by the break of 1,5,10 days. Power-law tails
+are observed in the PDFs of these variables. For a variable x which obeys a power-law tail
+distribution, we suppose its PDF follows a formula
+
+P (x) = cx−δ, x ≥ xmin.
+
+(1)
+
+We ﬁrst calculate the PDF of the execution time T . Note the PDF is diﬀerent for diﬀerent types
+of investors, we present the results for institutions and individuals respectively. In Figures 1(a)
+and 1(b), P (T ) of trade packages ended by the break of 1,5,10 days for both institutions and
+individuals are plotted. The PDFs seem to have power-law tails, and we ﬁt them using a power-
+law function presented in Equation (1). A rough estimation shows the exponent δ might smaller
+than one. For a sequence of variable x = x1, · · · , xn restricted to a ﬁnite region [xmin, xmax], the
+parameter c is
+
+c =
+
+1 − δ
+
+x1−δ
+max − x1−δ
+min
+
+,
+
+(2)
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+LATEX 2ε guide for authors
+
+7
+
+10−4
+
+10−5
+
+)
+T
+(
+P
+
+10−6
+
+10−7
+
+ 
+
+101
+
+)
+
+N
+
+(
+P
+
+10−1
+
+10−2
+
+10−3
+
+10−4
+
+10−5
+
+10−6
+
+ 
+
+10−5
+
+10−6
+
+10−7
+
+10−8
+
+10−9
+
+)
+V
+(
+P
+
+10−10
+
+ 
+
+103
+
+ 1 day
+ 5 day
+10 day
+
+102
+
+104
+
+105
+
+103
+
+T
+
+(a)
+
+ 1 day
+ 5 day
+10 day
+101
+
+103
+
+102
+
+N
+
+(c)
+
+ 
+
+ 
+
+ 
+
+105
+
+106
+
+103
+
+104
+
+T
+
+(b)
+
+103
+
+102
+
+N
+
+(d)
+
+ 1 day
+ 5 day
+10 day
+102
+
+ 1 day
+ 5 day
+10 day
+101
+
+ 
+
+ 
+
+ 
+
+)
+T
+(
+P
+
+10−4
+
+10−5
+
+10−6
+
+10−7
+
+10−8
+
+10−9
+
+ 
+
+101
+
+)
+
+N
+
+(
+P
+
+10−1
+
+10−2
+
+10−3
+
+10−4
+
+10−5
+
+10−6
+
+10−7
+
+ 
+
+10−5
+
+10−6
+
+10−7
+
+10−8
+
+10−9
+
+)
+V
+(
+P
+
+ 1 day
+ 5 day
+10 day
+
+104
+
+106
+
+107
+
+105
+
+V
+
+(e)
+
+10−10
+
+ 
+
+103
+
+ 1 day
+ 5 day
+10 day
+
+104
+
+106
+
+107
+
+105
+
+V
+
+(f)
+
+Figure 1. (Color online) Probability distribution functions (PDFS) of the variables characterizing the
+trade packages with various break length n = 1, 5, 10 days using the aggregated data from the 23 stocks:
+(a) PDF of the execution time T for institutions, (b) PDF of the execution time T for individuals, (c)
+PDF of the number of trades N for institutions, (d) PDF of the number of trades N for individuals, (e)
+PDF of the trading volume V for institutions, and (d) PDF of the trading volume V for individuals. The
+solid curves are power-law ﬁts with exponents depicted in Table 2.
+
+under the normalization conditionR xmax
+
+of the exponent δ, one needs to solve the equation
+
+xmin
+
+p(x)dx = 1. To obtain the maximum likelihood estimate
+
+∂L
+∂δ
+
+=
+
+n
+
+δ − 1
+
+− n
+
+xmin ln xminxδ
+xmaxxδ
+
+max − xmax ln xmaxxδ
+min − xminxδ
+
+max
+
+min
+
+−
+
+n
+
+Xi=1
+
+xi = 0,
+
+(3)
+
+Following the work by Clauset et al. (2009), we use an eﬃcient method of ﬁtting power-law
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+8
+
+Fei Ren and Wei-Xing Zhou
+
+distributions based on the Kolmogorov-Smirnov (KS) statistic to estimate the parameters in
+Equation (1). The KS statistic is deﬁned as
+
+KS = max
+x≥ˆxmin
+
+(|F − FPL|) ,
+
+(4)
+
+where F is the cumulative distribution function (CDF) of the empirical data and FPL is the
+CDF of the power-law ﬁt. The CDF of the power-law function in Equation (1) with parameter
+c in Equation (2) is
+
+FPL(x) = 1 −
+
+1 − xδ−1
+1 − xδ−1
+
+min x1−δ
+min x1−δ
+max
+
+.
+
+(5)
+
+To make the empirical PDF and the best power-law ﬁt as similar as possible, we determine the
+estimate of ˆxmin by minimizing the KS statistic, then we estimate the exponent δ by solving
+Equation (3). The parameter c is obtained by substituting ˆxmin and δ into Equation (2). The
+standard error on δ, according to Clauset et al. (2009), is
+
+σ = −
+
+.
+
+(6)
+
+1
+
+nE(cid:2) ∂ 2L
+∂δ2(cid:3)
+
+As shown in Figure 1(a), P (T ) for institutions displays power-law tails covering a scaling
+range over two orders of magnitude, and the exponent δT varies with diﬀerent break length. For
+the break of one day, δT is estimated to be 0.3, while for the break longer than ﬁve days δT is
+relatively constant and is around 0.8. In the ﬁgure, the power-law ﬁts with parameters listed in
+Table 2 are also illustrated. For individuals, we observe similar results, and the estimated values
+of δT are slightly larger than those for the institution, as depicted in Table 2.
+
+We then calculate the PDF of the number of trades N . In Figures 1(c) and 1(d), we plot
+P (N ) of trade packages ended by the break of 1,5,10 days for both institutions and individuals.
+It also has power-law tails, but with exponent δN obviously greater than 1.0. For δ > 1.0, the
+parameter c in Equation (1) in the limit of xmax → ∞ approximates
+
+and the exponent is
+
+c =
+
+δ − 1
+x1−δ
+min
+
+,
+
+ˆδ = 1 + n  n
+Xi=1
+
+ln
+
+xi
+
+xmin!−1
+
+.
+
+(7)
+
+(8)
+
+This formula is the same as that proposed by Clauset et al. (2009). We use the same power-law
+ﬁtting method based on KS statistic to estimate the parameters ˆxmin and δ. Now the CDF of
+the power-law ﬁt with δ > 1.0 is
+
+FPL(x) = 1 −(cid:16) xmin
+
+x (cid:17)δ−1
+
+.
+
+(9)
+
+The standard error on δ is obtained according to Equation (6).
+
+The power-law exponent δN varies with diﬀerent break length. For institutions, δN is estimated
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+LATEX 2ε guide for authors
+
+9
+
+Table 2. Summary properties of trade packages of the aggregated data from the 23
+
+stocks. The results are presented for trade packages made by institutions and
+individuals with various break length n = 1, 5, 10 days. Np is the number of
+
+packages, hT i, hN i and hV i are means of the execution time, the number of trades
+
+and the total trading volumes. The power-law exponents δT , δN and δV are
+obtained by ﬁtting Equation (1), estimated by a maximum likelihood method
+
+based on KS statistic. The exponents g1, g2 and g3 describe the scaling relations in
+
+Equation (10).
+
+1 day
+
+1187
+5973
+
+41
+
+177311
+
+0.30 ± 0.03
+2.92 ± 0.13
+2.40 ± 0.08
+0.18 ± 0.05
+0.74 ± 0.08
+0.18 ± 0.08
+
+Np
+hT i
+hN i
+hV i
+δT
+δN
+δV
+g1
+g2
+g3
+
+Institution
+
+5 days
+
+1066
+57259
+
+54
+
+224872
+
+0.80 ± 0.01
+2.47 ± 0.12
+2.31 ± 0.10
+0.49 ± 0.08
+0.77 ± 0.05
+0.51 ± 0.17
+
+10 days
+
+923
+
+113779
+
+56
+
+236013
+
+0.77 ± 0.01
+2.31 ± 0.11
+2.47 ± 0.17
+0.49 ± 0.16
+0.77 ± 0.07
+0.53 ± 0.15
+
+1 day
+
+35187
+5553
+
+32
+
+121841
+
+Individual
+
+5 days
+
+37924
+58701
+
+35
+
+124456
+
+10 days
+
+35319
+117811
+
+36
+
+124004
+
+0.39 ± 0.005
+4.06 ± 0.19
+3.23 ± 0.08
+0.13 ± 0.03
+0.72 ± 0.07
+0.16 ± 0.03
+
+0.88 ± 0.002
+2.94 ± 0.09
+2.73 ± 0.09
+0.38 ± 0.05
+0.79 ± 0.08
+0.56 ± 0.07
+
+0.84 ± 0.002
+2.92 ± 0.09
+2.69 ± 0.09
+0.34 ± 0.06
+0.80 ± 0.08
+0.43 ± 0.04
+
+to be 2.9 for the break of one day, and about 2.4 for the break longer than ﬁve days. For
+individuals, δN is 4.0 for the break of one day, and about 2.9 for the break longer than ﬁve days.
+The power-law ﬁts are also illustrated in the ﬁgure, and the estimated values of δN are depicted
+in Table 2.
+
+We also calculate the PDF of the total trading volume V , and similar power-law tails are
+observed. In Figures 1(e) and 1(f), P (V ) of trade packages ended by the break of 1,5,10 days
+for both institutions and individuals are plotted. For institutions, δV for the break of one day is
+2.4, displaying a value very close to that for the break longer than ﬁve days, while for individuals
+δV for the break of one day is 3.2 larger than 2.7 that for the break longer than ﬁve days. The
+power-law ﬁts of P (V ) with parameters listed in Table 2 are also illustrated in the ﬁgure.
+
+3.2. Scaling relations between variables characterizing trade packages
+
+Empirical studies have revealed that there exist scaling relations between variables T , N and V
+
+T ∼ V g1, N ∼ V g2, T ∼ N g3.
+
+(10)
+
+It is found g1 ≃ 2, g2 ≃ 1, and g3 ≃ 1.7 for BME and LSE markets (Moro et al. 2009). We
+also ﬁnd that T , N and V of the trade packages for SZSE are related through scaling relations,
+but with diﬀerent values of g1, g2 and g3, primarily due to the small value of the exponent δT .
+Since the exponents δT , δN and δV diﬀer for the two types of investors, we calculate the scaling
+relations for institutions and individuals respectively.
+
+We study the scaling relation between T and V by calculating the mean conditional execution
+time hT |V i conditioned on the total trading volume V . We arrange the entire T sequences in
+ascending order, and partition it to 20 bins with equal size. We calculate hT |V i conditioned on a
+bin of V to get better statistics. In Figure 2(a), hT |V i for trade packages of institutions ended by
+the break of one day is plotted. For large scales of V , one observes a scaling relation between T
+and V , and g1 is estimated to be 0.18. This is consistent with the previous result that P (V ) obeys
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+10
+
+Fei Ren and Wei-Xing Zhou
+
+105
+
+104
+
+i
+V
+
+|
+
+T
+h
+
+103
+
+102
+
+103
+
+104
+
+106
+
+107
+
+105
+V
+
+(a)
+
+105
+
+104
+
+i
+V
+
+|
+
+T
+h
+
+103
+
+102
+
+102
+
+103
+
+104
+
+105
+
+106
+
+107
+
+V
+
+i
+V
+N
+
+|
+
+h
+
+i
+V
+N
+
+|
+
+h
+
+104
+
+103
+
+102
+
+101
+
+100
+
+10−1
+
+104
+
+103
+
+102
+
+101
+
+100
+
+10−1
+
+103
+
+103
+
+104
+
+i
+
+N
+
+|
+
+T
+h
+
+103
+
+102
+
+103
+
+104
+
+105
+V
+
+(b)
+
+106
+
+107
+
+101
+
+102
+
+N
+
+(c)
+
+104
+
+i
+
+N
+
+|
+
+T
+h
+
+103
+
+102
+
+102
+
+103
+
+104
+
+V
+
+105
+
+106
+
+107
+
+101
+
+102
+
+N
+
+(f)
+
+(d)
+
+(e)
+
+Figure 2. (Color online) Scaling relations between the variables characterizing the trade packages with
+break length n = 1 day: (a) mean conditional execution time hT |V i for institutions, (b) mean conditional
+number of trades hN |V i for institutions, (c) mean conditional execution time hT |N i for institutions, (d)
+mean conditional execution time hT |V i for individuals, (e) mean conditional number of trades hN |V i for
+individuals, and (f) mean conditional execution time hT |N i for individuals. The solid curves are power-law
+ﬁts with exponents depicted in Table 2.
+
+power law for large V . We also study the scaling relations between N and V , T and N using
+the same method, and obtain g2 = 0.74 and g3 = 0.18 as illustrated in Figures 2(b) and 2(c).
+For trade packages of individuals ended by the break of one day, we obtain g1 = 0.13, g2 = 0.72
+and g3 = 0.16, slightly smaller than those for institutions, as shown in Figures 2(d), 2(e) and
+2(f). Similar results are observed for trade packages of both institutions and individuals ended
+by the break longer than ﬁve days. According to the scaling relations in Equation (10), one can
+infer the relation that g1 = g2g3. The estimated values of g1, g2 and g3 depicted in Table 2 prove
+the inferred relation between them.
+
+4. Trading proﬁle
+
+We further consider the question of how the individual transactions inside trade packages are
+executed as a function of the time t of a day, which is called trading proﬁle. We are mainly
+concerned about the trade packages ﬁnished within one day, i.e., packages ended by the break of
+one day, and the time t is normalized by the time of a trading day D = 14400 seconds. Denote
+vi as the trading volume of transaction i inside trade packages, we calculate the mean volume of
+each transaction hv(t)i traded at normalized time t/D. To make the trading volumes of diﬀerent
+stocks comparable, vi of a particular stock is normalized by its mean value.
+
+In Figures 3(a) and 3(b), the mean trading volume hv(t)i of individual transactions inside
+trade packages is plotted as a function of the normalized time t/D for institutions and individ-
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+LATEX 2ε guide for authors
+
+11
+
+uals respectively. Since the mean trading volume may diﬀer for the transactions with diﬀerent
+aggressiveness, we calculate hv(t)i of the transactions executed as market orders (ﬁlled black
+circles) and limit orders (empty black circles). One observes that institutions prefer to place
+large market orders close to the opening time, while individuals are more likely to place large
+market orders close to the closing time of the day. Moreover, hv(t)i of market orders is much
+more signiﬁcant than that of limit orders, which indicates that the trade packages are accom-
+plished mostly by market orders. Therefore, hv(t)i of the total market orders and limit orders
+(black squares) shows a similar proﬁle to that of the market orders. The mean trading volume
+of the transactions concurrently traded with trade packages (red diamonds) also has a similar
+proﬁle, slightly larger than that for the total market orders and limit orders, diﬀerent from that
+observed in BME and LSE markets (Clauset et al. 2009). These results are quite robust for trade
+packages of both institutions and individuals.
+
+To complectly understand the trading proﬁle, we further consider the number of transactions
+executed at time t. We calculate the probability distribution P (t) of the transaction time t,
+deﬁned as the proportion between number of transactions traded at time t to the total number
+of transactions inside trade packages. As shown in Figure 3(c), P (t) for institutions is relatively
+small close to the opening time of the day. It may be explained by the phenomena that the
+mean volume of individual transactions is signiﬁcant large then, and only a few numbers of
+transactions could accomplish the purchase or sale of large amounts of shares. There is a midday
+break during the lunch time in Chinese stock market, and the surge of P (t) soon after midday
+break may be caused by the entrance of many institutions who start trade packages in the
+afternoon. An increase of P (t) is also observed close to the closing time of the day, this may
+because that all the trade packages within one day should be accomplished at that time. The
+probability distribution P (t) for individuals shows a similar proﬁle to that for institutions. We
+also measure the probability distribution of the initial and ﬁnal time of trade packages. As
+shown in Figures 3(e) and 3(f), for both institutions and individuals a signiﬁcant fraction of
+trade packages are started at the opening time and ﬁnished at the closing time. Moreover, there
+are quite a number of trade packages start after the midday break, and this may explain the
+surge of P (t) soon after the midday break.
+
+We ﬁnally investigate the total trading volume of individual transactions inside trade packages
+traded at time t, i.e., the product of the mean volume of individual transactions and the number
+
+trade packages is plotted with respect to time t for institutions and individuals respectively.
+
+day (approximately at 10:00), about half hour earlier than the location of the maximum for
+
+of transactions. In Figures 3(g) and 3(h), the total trading volumeP v(t) of transactions inside
+For the opening hours in the morning, P v(t) for institutions shows a maximum at around 0.1
+individuals. After the midday break, P v(t) for institutions shows a rapid increase and exhibits
+individuals. Large P v(t) is further observed close to the closing time for both institutions and
+
+individuals. The fact that institutions start their trade packages earlier than individuals implies
+institutions may be more informed than individuals.
+
+a maximum at round 0.65 day (approximately at 13:30), while no such peak is observed for
+
+5. Price impact
+
+5.1. Price impact of trade packages
+
+The price impact is a very important issue in ﬁnancial studies, and a large number of studies
+have focused attention on this topic. In this section, we ﬁrst consider the price impact of trade
+packages, generally measured as the diﬀerence between the price prior and after the trade pack-
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+12
+
+Fei Ren and Wei-Xing Zhou
+
+ 
+
+1
+
+ 
+
+1
+
+ 
+
+ 
+
+Market order
+Limit order
+Total
+Concurrent
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+t/D
+
+(a)
+
+i
+)
+t
+(
+v
+h
+
+2.6
+
+2.2
+
+1.8
+
+1.4
+
+1
+
+0.6
+
+0.2
+ 
+0
+
+Market order
+Limit order
+Total
+Concurrent
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+t/D
+
+(b)
+
+market order
+limit order
+
+ 
+
+0.18
+
+market order
+limit order
+
+0.14
+
+)
+t
+(
+P
+
+0.1
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+t/D
+
+(d)
+
+ini
+
+fin
+
+market order, t
+market order, t
+limit order, t
+limit order, t
+
+ini
+
+fin
+
+0.06
+
+0.02
+ 
+0
+
+0.4
+
+0.35
+
+0.3
+
+0.25
+
+0.2
+
+0.15
+
+0.1
+
+0.05
+
+0
+ 
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+t/D
+
+(c)
+
+ini
+
+fin
+
+market order, t
+market order, t
+limit order, t
+limit order, t
+
+ini
+
+fin
+
+1
+
+ 
+
+)
+t
+(
+P
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+t/D
+
+(e)
+
+i
+)
+t
+(
+v
+h
+
+)
+t
+(
+P
+
+)
+t
+(
+P
+
+4
+
+3.5
+
+3
+
+2.5
+
+2
+
+1.5
+
+1
+
+0.5
+
+0
+ 
+0
+
+0.18
+
+0.16
+
+0.14
+
+0.12
+
+0.1
+
+0.08
+
+0.06
+
+0.04
+
+0.02
+ 
+0
+
+0.4
+
+0.35
+
+0.3
+
+0.25
+
+0.2
+
+0.15
+
+0.1
+
+0.05
+
+0
+ 
+0
+
+5000
+
+)
+t
+(
+v
+
+X
+
+4000
+
+3000
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+t/D
+
+(f)
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+t/D
+
+(h)
+
+x 104
+
+12
+
+)
+t
+(
+v
+
+X
+
+10
+
+8
+
+6
+
+4
+0
+
+2000
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+t/D
+
+(g)
+
+Figure 3. (Color online) Trading proﬁle of trade packages ﬁnished within one day: mean trading volume
+hv(t)i for (a) institutions and (b) individuals, probability distributions of the transaction time t for (c)
+institutions and (d) individuals, probability distributions of the initial time tini and ﬁnal time tf in for (e)
+
+institutions and (f) individuals, and total trading volume P v(t) for (g) institutions and (h) individuals.
+
+The time t is measured with respect to the time of a day.
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+LATEX 2ε guide for authors
+
+13
+
+age (Chan and Lakonishok 1995, Gallagher and Looi 2006). For a trade package accomplished
+between time t and t + T , we follow the work by Moro et al. (2009), and deﬁne the price impact
+as the diﬀerence between the logarithmic price of the ﬁrst and last transaction of the trade
+package
+
+r = ln p(t + T ) − ln p(t).
+
+(11)
+
+The scaled price impact is obtained by taking into account the normalization condition and the
+sign of the trade package
+
+R = sr/h|r|i,
+
+(12)
+
+where s = +1 (−1) represents the package with mostly buy (sell) trades, and r is normalized by
+the mean absolute return h|r|i of the relevant stock.
+
+5.1.1. R vs T
+
+We investigate the dependence of the scaled price impact R on the execution time T . We only
+consider the trade packages ﬁnished within one day, since the price impact persists over more than
+one day not only capture the information contained in the trade package but also be aﬀected by
+the nonsuccessive trades overnight. In Figures 4(a) and 4(b), the mean conditional scaled price
+impact hR|T i is plotted as a function of the execution time T for institutions and individuals
+respectively. A trade package can be accomplished with diﬀerent component of market orders
+and limit orders. To identify it, we calculate the variable Fm deﬁned as the fraction of volumes
+done through market orders within trade packages. The mean conditional price impact hR|T i
+for trade packages with large and small fraction of market orders, i.e., Fm > 0.8 and Fm < 0.2,
+are represented separately in the ﬁgure.
+
+Despite of strong ﬂuctuation in the conditional price impact, the mean conditional price impact
+hR|T i with Fm > 0.8 is mostly positive over the whole range of T for both institutions and
+individuals. This indicates that the trade package has a nonnegligible price impact over the
+whole range of execution time up to one day. The cumulative eﬀect of a sequence of mostly
+buyer-initiated trades is more like to raise the price, while the cumulative eﬀect of a sequence of
+mostly seller-initiated trades is more likely to reduce the price. Moreover, hR|T i with Fm < 0.2 is
+mostly negative, and this implies that the price impact of a trade packages is not dominated by
+the sign of the most trades when there is a low fraction of market orders. We further perform the
+analysis of variance (ANOVA) to test if the means of the conditional price impact for diﬀerent
+T are equal. For institutions, we obtain a p-value 0.919 for trade packages with Fm > 0.8, and
+a p-value 0.787 for trade packages with Fm < 0.2. Similar large p-values are observed for trade
+packages of individuals, which indicates that hR|T i does not have much diﬀerence for various T .
+No clear tendency of hR|T i is observed in our study.
+
+5.1.2. R vs V
+
+We then investigate the dependence of the scaled price impact R on the total trading volume
+V . The mean conditional scaled price impact hR|V i with Fm > 0.8 and Fm < 0.2 for both
+institutions and individuals are plotted as a function of the total trading volume V in Figures 4(c)
+and 4(d). For both institutions and individuals, hR|V i is mostly positive for trade packages with
+Fm > 0.8, while mostly negative for trade packages with Fm < 0.2. This further conﬁrms our
+previous ﬁnding that the cumulative impact of a trade package is dominated by the sign of the
+most trades when there is a large fraction of market orders. We also use the ANOVA to compare
+the means of the conditional price impact for diﬀerent V , and ﬁnd very small p-values for trade
+packages of both institutions and individuals with Fm > 0.8 and Fm < 0.2, indicating the means
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+14
+
+Fei Ren and Wei-Xing Zhou
+
+> 0.8
+< 0.2
+
+F
+m
+F
+m
+
+> 0.8
+< 0.2
+
+F
+m
+F
+m
+
+|
+
+i
+T
+R
+h
+
+3
+
+2
+
+1
+
+0
+
+−1
+
+−2
+
+ 
+
+−3
+102
+
+6
+
+3
+
+0
+
+−3
+
+i
+V
+R
+h
+
+|
+
+104
+
+103
+
+T
+
+(a)
+
+ 
+
+ 
+
+104
+
+103
+
+T
+
+(b)
+
+> 0.8
+< 0.2
+
+F
+m
+F
+m
+
+> 0.8
+< 0.2
+
+F
+m
+F
+m
+
+ 
+
+ 
+
+|
+
+i
+T
+R
+h
+
+3
+
+2
+
+1
+
+0
+
+−1
+
+−2
+
+ 
+
+−3
+102
+
+6
+
+3
+
+0
+
+−3
+
+i
+V
+R
+h
+
+|
+
+−6
+
+ 
+
+103
+
+104
+
+V
+
+(c)
+
+105
+
+106
+
+−6
+
+ 
+
+102
+
+103
+
+105
+
+106
+
+107
+
+104
+
+V
+
+(d)
+
+Figure 4. (Color online) Mean conditional scaled price impact of trade packages ﬁnished within one day:
+hR|T i for (a) institutions and (b)individuals, and hR|V i for (c) institutions and (d) individuals. The solid
+curves are power-law ﬁts with exponents depicted in Table 3.
+
+diﬀer with the variation of V . Similar to the price-volume relation revealed in many empirical
+studies, we assume the absolute hR|V i for large V follows a power law
+
+|hR|V i| = AV γ.
+
+(13)
+
+The power-law ﬁts with estimated parameters A and γ listed in Table 3 are illustrated in Fig-
+ures 4(c) and 4(d). For trade packages with Fm > 0.8, γ is about 0.447 for institutions, and
+0.295 for individuals. The exponent γ for trade packages with Fm < 0.2 is slightly larger. The
+power-law increase of hR|V i at large scales of V may correspond to the purchase or sale of large
+amounts of shares with the motive to adjust share inventory. However, hR|V i for trade packages
+of institutions with Fm > 0.8 does not increase monotonously with the increase of V . The vari-
+able hR|V i shows a decreasing tendency with increasing V when V is small. This indicates that
+small trading volumes may also cause large price changes, and it may refer to the purchase or
+sale of small amounts of shares for the purpose of stock price adjustment.
+
+5.2.
+
+Instantaneous price impact of transactions inside trade packages
+
+We have shown the price impact of the entire trade packages, and then we investigate the
+price impact of individual transactions inside trade packages. Given a transaction i inside trade
+package traded at time t, p(t−) is the price before this transaction, and p(t) is the resultant price
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+LATEX 2ε guide for authors
+
+15
+
+Table 3. Estimated parameters for the power-law
+ﬁt of hR|V i for trade packages of both institutions
+
+and individuals.
+
+Institution
+γ
+
+A
+
+Individual
+γ
+
+A
+
+Fm > 0.8
+
+0.003
+
+0.447(0.223)
+
+0.016
+
+0.295(0.149)
+
+Fm < 0.2
+
+0.001
+
+0.590(0.130)
+
+0.002
+
+0.444(1.290)
+
+immediate after it. The price impact of the transaction i inside trade package is deﬁned as
+
+ri = ln p(t) − ln p(t−),
+
+(14)
+
+which is the instantaneous change of logarithmic price contributed from the transaction i. To
+make the price impact comparable over diﬀerent stocks, the price impact of a particular stock
+is normalized by its mean absolute value
+
+Ri = siri/h|ri|i,
+
+(15)
+
+where si = +1 for buy trades and si = −1 for sell trades.
+
+5.2.1. Ri vs t
+
+We measure the mean conditional scaled price impact hRi|ti of individual transactions con-
+ditioned on the time t. In Figures 5(a) and 5(b), hRi|ti is plotted as a function of the time t
+for institutions and individuals respectively. The mean conditional scaled price impact of the
+transactions executed as market orders and limit orders are represented by black circles and red
+squares in the ﬁgure. For market orders, hRi|ti displays a concave U-shaped proﬁle. Though the
+error bar is quite large, hRi|ti for market orders is mostly positive. For limit orders, hRi|ti is
+mostly negative, and displays an inverted U-shaped proﬁle. The sign of hRi|ti indicates that the
+direction of the price change is driven by the market order. In other words, the buyer-initiated
+trades raise the price, and the seller-initiated trades reduce the price. Moreover, the U-shaped
+and inverted U-shaped proﬁles imply that the price impact close to the opening and closing time
+is larger than the price impact during the remainder of the day. We also investigate the price
+impact of the transactions concurrently traded with those transactions inside trade packages
+
+Rcon = sircon/h|ri|i,
+
+(16)
+
+where si and h|ri|i are the sign and the mean absolute return of transactions inside trade pack-
+ages, and rcon represents the price return caused by the transactions concurrently traded with
+those transactions inside trade packages. The mean conditional scaled price impact hRcon|ti (blue
+diamonds) ﬂuctuates around zero, which indicates that the price impact of market trades is not
+merely driven by the consecutive trades by large investors.
+
+5.2.2. Ri vs v
+
+To investigate the dependence of the price impact of transactions inside trade packages on their
+trading volumes, we calculate the mean conditional scaled rice impact hRi|vi. In Figures 5(c) and
+5(d), hRi|vi is plotted for institutions and individuals respectively. One observes that hRi|vi for
+transactions executed as market orders is mostly positive while that for transactions executed as
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+16
+
+Fei Ren and Wei-Xing Zhou
+
+ 
+
+Market order
+Limit order
+Concurrent
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+t/D
+
+(b)
+
+Market order
+Limit order
+
+ 
+
+8
+
+6
+
+4
+
+2
+
+0
+
+−2
+
+−4
+ 
+0
+
+30
+
+20
+
+10
+
+0
+
+i
+t
+|
+i
+
+R
+h
+
+i
+v
+|
+i
+
+R
+h
+
+ 
+
+Market order
+Limit order
+Concurrent
+
+i
+t
+|
+i
+
+R
+h
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+t/D
+
+(a)
+
+Market order
+Limit order
+
+ 
+
+i
+v
+|
+i
+
+R
+h
+
+6
+
+4
+
+2
+
+0
+
+−2
+
+−4
+ 
+0
+
+30
+
+20
+
+10
+
+0
+
+−10
+
+ 
+
+100
+
+101
+
+102
+
+103
+v
+
+104
+
+105
+
+106
+
+−10
+
+ 
+
+100
+
+101
+
+102
+
+103
+v
+
+104
+
+105
+
+106
+
+(c)
+
+(d)
+
+Figure 5. (Color online) Mean conditional scaled price impact of individual transactions inside trade
+packages ﬁnished within one day: hRi|ti for (a) institutions and (b) individuals, and hRi|vi for (c) insti-
+tutions and (d) individuals. The time t is measured with respect to the time of a day.
+
+limit orders is mostly negative. This further conﬁrms the result that the market order determines
+the direction of the price change as observed in hRi|ti. Similar to hR|V i for trade packages, the
+absolute hRi|vi of transactions inside trade packages follows a power law
+
+|hRi|vi| = Bvk,
+
+(17)
+
+when v is large enough v > 103. The estimated parameters B and k for the power-law ﬁt of hRi|vi
+are listed in Table 4. The exponent k for transactions executed as market orders is larger than
+that for transactions executed as limit orders, which indicates that for the isolated transactions
+inside trade packages the price impact is remarkably aﬀected by the market order. However, the
+cumulative impact of trade packages with small fraction of market orders is comparable with the
+cumulative impact of trade packages with large fraction of market orders. In fact, the exponent
+γ of hR|V i for packages with Fm < 0.2 is slightly larger than that for packages with Fm > 0.8.
+This may because the investors use diﬀerent strategies for the accomplishment of trade packages.
+Like a sequence of mostly buyer-initiated trades, a sequence of sales mostly executed as limit
+orders can also raise the price, aﬀected by the buyer-initiated trades on the opposite sides.
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+LATEX 2ε guide for authors
+
+17
+
+Table 4. Estimated parameters for the power-law
+ﬁts of hRi|vi for transactions inside trade packages
+
+of both institutions and individuals.
+
+Institution
+k
+
+B
+
+Individual
+k
+
+B
+
+market order
+
+0.04
+
+0.45(0.11)
+
+0.05
+
+0.40(0.02)
+
+limit order
+
+0.09
+
+0.27(0.12)
+
+0.15
+
+0.21(0.05)
+
+5.3. Temporary price impact of transactions inside trade packages
+
+5.3.1.
+
+Impact of trading volumes on current and following price returns
+
+Numerous studies have focused on the inﬂuence of trading volumes or volume imbalances
+on price returns (Wood et al. 1985, Karpoﬀ 1987, Gallant et al. 1992, Saatcioglu and Starks
+1998, Lillo et al. 2003, Plerou et al. 2002, Chordia and Subrahmanyam 2004). We analyze the
+temporary impact of transactions inside trade packages in relation to their trading volumes.
+Suppose r(t) = ln p(t) − ln p(t − 1) is the price return at time t, v(t) is the trading volume of a
+transaction inside trade package traded at time t. The returns of a certain stock are normalized
+by its standard deviation. To explain the inﬂuence of the trading volume at time t on the price
+return at later time t + i, we estimate a regression of the following form
+
+R(t + i) = β∗
+
+0 + βis ln v(t) + ǫ(t),
+
+(18)
+
+where s is the sign of the transaction. We measure the impact of the trading volumes v(t) within
+trade package on the current price return i = 0 and the following price returns i = 5, 10, 15, 20, 25
+seconds. It has been empirically veriﬁed that the price return has a power-law dependence on the
+trading volume (Hasbrouck 1991, Plerou et al. 2002, Chordia and Subrahmanyam 2004, Zhou
+2011), also conﬁrmed in the measure of hRi|vi. The ﬁrst-order approximation of the logarithmic
+return is assumed, and a linear regression of the return against logarithmic trading volume is
+used to approximate their power-law relations.
+
+Table 5 reports the estimated coeﬃcients of regressions using the records of transactions
+inside trade packages executed as market orders from institutions. Positive coeﬃcient β0sec is
+observed in all the 23 stocks, which further conﬁrms the ﬁnding that the sign of price return is
+determined by the sign of the market order as revealed in the measure of hRi|ti. The relevant
+t-statistics are also depicted in Table 5. The impact of trading volume on the current price return
+is signiﬁcant for most of stocks except for stocks 000009, 000012, 000429, 000550. This indicates
+that the instantaneous impact of the trading volumes executed as market orders is positive and
+signiﬁcant. We ﬁnd the price tends to reverse soon after the transaction inside trade package,
+showing negative βi with i > 0. This reminds us of the signiﬁcant price reversal after large
+price changes (Zawadowski et al. 2004, Mu et al. 2010). The magnitudes of βi with i > 0 are
+signiﬁcantly smaller than β0sec, and decrease with the increase of time lag i. Coeﬃcient β5sec
+is negative and signiﬁcant for more than half of the stocks, and negative and signiﬁcant β10sec
+is also observed in almost half of the stocks. This implies that for almost half of the stocks
+the trading volumes of transactions inside trade packages have temporary negative eﬀects on
+price returns for at least 5 − 10 seconds. With rare exceptions, the stocks have nonsigniﬁcant
+coeﬃcients βi for large time lag i ≥ 15 seconds. For the trading volumes of transactions inside
+trade packages executed as limit orders, a temporary impact is also observed. Negative β0sec
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+18
+
+Fei Ren and Wei-Xing Zhou
+
+Table 5. Coeﬃcients and t-statistics for the linear ﬁt of Equation (18) using the records of transactions
+
+inside trade packages executed as market orders from institutions. Coeﬃcients marked with ∗ are
+
+statistically signiﬁcant at 5% level.
+
+Code
+
+β0
+
+t-stat
+
+β5
+
+t-stat
+
+β10
+
+t-stat
+
+β15
+
+t-stat
+
+β20
+
+t-stat
+
+β25
+
+t-stat
+
+000001
+000002
+000009
+000012
+000016
+000021
+000024
+000027
+000063
+000066
+000088
+000089
+000406
+000429
+000488
+000539
+00054
+000550
+000581
+000625
+000709
+000720
+000778
+
+0.062∗
+0.094∗
+0.242
+0.077
+0.134∗
+0.132∗
+0.131∗
+0.073∗
+0.119∗
+0.136∗
+0.125∗
+0.100∗
+0.105∗
+0.105
+0.128∗
+0.107∗
+0.139∗
+1.403
+0.115∗
+0.085∗
+0.098∗
+0.162∗
+0.130∗
+
+.
+
+6.91 −0.026∗
+
+−3.67 −0.008
+24.02 −0.034∗ −11.58 −0.014∗
+0.277
+
+−1.74
+0.80
+
+1.23 −0.545
+0.023
+1.43
+13.01 −0.013∗
+8.39 −0.005
+14.90 −0.020∗
+5.48 −0.022∗
+15.51 −0.009
+6.09 −0.018∗
+26.45 −0.003
+22.83 −0.030∗
+6.15 −0.015
+0.64 −0.282
+
+−2.59 −0.007
+−0.46 −0.009
+−3.62 −0.011∗
+−2.32
+0.012
+−1.88 −0.008∗
+−2.98
+0.003
+−1.50 −0.007∗
+−8.37 −0.009∗
+−1.87 −0.022
+−0.86 −0.105
+31.92 −0.026∗ −11.70 −0.015∗
+14.42 −0.031∗
+−6.30 −0.004
+3.63 −0.013
+−0.78 −0.014
+2.39
+
+.
+
+.
+
+21.53 −0.010∗
+18.60 −0.025∗
+11.60 −0.031∗
+13.47 −0.015∗
+5.06 −0.015
+
+−3.63 −0.008∗
+−6.91 −0.021∗
+−5.35 −0.013
+−2.04
+0.009∗
+−1.52 −0.010
+
+−1.17
+0.000
+−4.38 −0.009∗
+1.86 −0.334
+−0.020
+−1.48 −0.019∗
+−0.88 −0.012
+−2.20 −0.002
+1.29 −0.007
+−2.11 −0.003
+0.57 −0.011
+−4.16 −0.008∗
+−3.30 −0.002
+−1.73 −0.008
+−0.64
+−6.66 −0.003
+−0.91 −0.001
+−1.22 −0.016
+
+.
+
+.
+
+−3.19 −0.005
+−5.15 −0.004
+−1.89 −0.006
+1.99 −0.008
+−1.43 −0.004
+
+0.000
+0.05
+−3.09
+0.004
+−1.17 −0.053
+−1.28
+0.035
+−2.72 −0.007
+−1.06
+0.002
+−0.70 −0.009∗
+−0.77
+0.001
+−0.63 −0.002
+−0.96 −0.006
+−4.39 −0.004
+0.003
+−0.76
+−0.89
+0.020
+
+.
+
+−1.60 −0.005
+−0.17 −0.005
+0.011
+−0.54
+
+.
+
+−1.90 −0.005∗
+−1.13 −0.004
+−1.18 −0.014∗
+−1.02
+0.003
+−0.62 −0.013
+
+0.12
+1.34
+
+−2.09
+0.16
+
+0.002
+0.005
+−0.23 −0.157
+1.05 −0.017
+−0.19 −0.009
+0.19 −0.008
+0.003
+0.022∗
+−0.64 −0.001
+−0.71
+0.003
+0.002
+−1.58
+1.27
+0.002
+1.60 −0.006
+0.166
+−1.95 −0.003
+−1.19 −0.003
+0.023
+
+1.37
+
+.
+
+−2.28 −0.005∗
+0.000
+−1.04
+−2.46
+0.002
+0.003
+0.48
+−1.07 −0.005
+
+0.26
+1.77
+−0.83
+−0.75
+−1.43
+−0.74
+0.56
+2.10
+−0.21
+0.40
+1.45
+1.00
+−0.73
+0.65
+−1.60
+−0.64
+1.10
+
+−1.98
+−0.07
+0.28
+0.46
+−0.63
+
+is obtained for most of the stocks, indicating the price return has a sign opposite to that of
+the trading volume. Positive β5sec and β10sec further conﬁrm the price reversal soon after the
+transaction inside trade package.
+
+The temporary impact of transactions inside trade packages for individuals persists over a
+horizon longer than the impact time for institutions. In Table 6, the estimated coeﬃcients βi with
+i = 0, 5, 10, 15, 20, 25 seconds using the records of transactions inside trade packages executed as
+market orders from individuals are depicted. Coeﬃcient β0sec is positive and signiﬁcant for all
+the 23 stocks, which further veriﬁes the strong impact of the trading volume on the current price
+return. Moreover, β0sec is larger than the magnitudes of coeﬃcients βi with i > 0. Coeﬃcients
+βi with time lag 5 ≤ i ≤ 20 seconds are negative and signiﬁcant for most stocks, and β25sec is
+signiﬁcant for almost half of the stocks. This implies that the trading volumes of transactions
+inside trade packages for individuals have temporary negative eﬀects on price returns for about
+20 − 25 seconds. Similar to the trading volumes executed as limited orders from institutions, the
+trading volumes executed as limited orders from individuals have a negative impact on current
+price returns, and the following price returns tend to reverse soon.
+
+5.3.2. Modeling price returns
+
+It has been shown that the trading volumes of transactions inside trade packages have a
+signiﬁcant impact on price returns. We model the price return R(t) taking into account both
+the autoregressive components of previous returns R(t − j) and the previous trading volumes
+v(t − i) within trade packages. The regression from is
+
+R(t) = β∗
+
+0 +
+
+J
+
+Xj=5
+
+γjR(t − j) +
+
+I
+
+Xi=0
+
+βis ln v(t − i) + ǫ(t),
+
+(19)
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+LATEX 2ε guide for authors
+
+19
+
+Table 6. Coeﬃcients and t-statistics for the linear ﬁt of Equation (18) using the records of transactions
+
+inside trade packages executed as market orders from individuals. Coeﬃcients marked with ∗ are
+
+statistically signiﬁcant at 5% level.
+
+Code
+
+β0
+
+t-stat
+
+β5
+
+t-stat
+
+β10
+
+t-stat
+
+β15
+
+t-stat
+
+β20
+
+t-stat
+
+β25
+
+t-stat
+
+000001
+000002
+000009
+000012
+000016
+000021
+000024
+000027
+000063
+000066
+000088
+000089
+000406
+000429
+000488
+000539
+000541
+000550
+000581
+000625
+000709
+000720
+000778
+
+0.090∗
+0.084∗
+0.096∗
+0.085∗
+0.110∗
+0.110∗
+0.112∗
+0.099∗
+0.058∗
+0.111∗
+0.122∗
+0.107∗
+0.111∗
+0.094∗
+0.126∗
+0.102∗
+0.130∗
+1.107∗
+0.126∗
+0.092∗
+0.096∗
+0.150∗
+0.105∗
+
+104.65 −0.042∗ −53.52 −0.011∗ −14.14 −0.003∗
+91.13 −0.030∗ −40.15 −0.009∗ −11.54 −0.004∗
+67.99 −0.032∗ −29.81 −0.010∗
+−8.61 −0.007∗
+91.55 −0.026∗ −36.16 −0.013∗ −17.23 −0.007∗
+58.77 −0.020∗ −19.54 −0.014∗ −12.00 −0.005∗
+74.10 −0.029∗ −27.54 −0.011∗ −10.63 −0.006∗
+50.20 −0.015∗ −12.02 −0.011∗
+−8.12 −0.009∗
+90.69 −0.026∗ −31.90 −0.012∗ −15.75 −0.005∗
+−9.63 −0.003∗
+62.64 −0.014∗ −17.99 −0.004∗
+53.63 −0.028∗ −21.86 −0.013∗
+−5.54 −0.008∗
+51.29 −0.008∗
+−8.51 −0.005∗ −10.35 −0.004∗
+75.79 −0.016∗ −18.33 −0.009∗ −13.92 −0.005∗
+75.14 −0.030∗ −28.31 −0.015∗
+−7.39 −0.009∗
+47.67 −0.023∗ −18.50 −0.010∗ −20.51 −0.006∗
+
+−3.91 −0.001
+−4.77 −0.001
+−5.40 −0.003∗
+−9.83 −0.003∗
+−4.70 −0.004∗
+−5.82 −0.003∗
+−6.83 −0.003∗
+−6.32 −0.003∗
+−3.80 −0.001
+−6.22 −0.006∗
+−4.09 −0.004∗
+−5.75 −0.003∗
+−8.87 −0.003∗
+−4.59 −0.003∗
+107.67 −0.022∗ −36.86 −0.013∗ −12.49 −0.006∗ −10.51 −0.003∗
+−4.53 −0.004∗
+−4.70 −0.003∗
+−9.20
+0.001
+−7.76 −0.003∗
+−7.97 −0.001
+−8.90 −0.004∗
+−2.13
+0.001
+−5.47 −0.003∗
+
+−5.05 −0.004∗
+75.63 −0.022∗ −25.49 −0.011∗
+−9.72 −0.006∗ −12.55 −0.005∗
+50.71 −0.011∗
+−8.81 −0.008∗
+87.79 −0.026∗ −28.81 −0.011∗
+62.91 −0.012∗ −12.50 −0.009∗
+−3.19 −0.008∗
+92.89 −0.028∗ −36.80 −0.012∗ −16.37 −0.006∗
+64.89 −0.020∗ −20.59 −0.015∗ −13.10 −0.008∗
+−5.07 −0.002∗
+89.91 −0.012∗ −12.02 −0.005∗
+63.38 −0.020∗ −17.23 −0.006∗
+−6.30 −0.005∗
+
+−0.83 −0.003∗
+−1.81
+0.000
+−2.83 −0.001
+−4.72
+0.011∗
+−4.02
+0.000
+−3.05 −0.002
+−1.97 −0.004∗
+0.002∗
+−3.94
+0.71
+0.000
+−4.33 −0.004∗
+0.001
+−3.92
+0.002∗
+−3.26
+−3.03
+0.000
+−1.99 −0.003∗
+−5.20 −0.002∗
+−4.73 −0.003∗
+−2.61 −0.002
+1.57 −0.001
+−3.49 −0.003∗
+−1.94 −0.002∗
+−3.85
+0.001
+0.002
+0.95
+−3.75
+0.000
+
+−3.52
+0.43
+−0.87
+14.90
+−0.26
+−1.47
+−3.09
+2.83
+0.39
+−2.95
+0.71
+2.03
+−0.18
+−2.64
+−2.66
+−3.47
+−1.91
+−0.79
+−2.82
+−3.02
+0.87
+1.55
+0.31
+
+where ln v(t − i) = 0 when there is no transaction inside trade package executed at time t − i. We
+do not separately consider the eﬀects of trading volumes of the transactions concurrently traded
+with those transactions inside trade packages, but contribute their impact to the corresponding
+price returns. The coeﬃcient βi reﬂects the response of the return R(t) to the trading volume
+of transaction inside trade package executed i seconds before time t. We have veriﬁed that the
+trading volumes of transactions inside trade packages have a temporary impact on price returns
+for less than half a minute, and therefore we restrict I = 25 seconds. The parameter J is also
+set to J = 25 seconds to simplify the regression.
+
+We report the estimated coeﬃcients βi by ﬁtting Equation (19) with i = 0, 5, 10, 15, 20, 25
+seconds using the records of transactions inside trade packages executed as market orders from
+institutions in Table 7. According to the R2 in the last column, the ﬁtted model could explain
+considerable portion, generally has R2 ≥ 20%, of the variance in price returns. For i = 0, positive
+and signiﬁcant coeﬃcient β0sec is observed in all the 23 stocks, displaying values signiﬁcantly
+larger than the magnitudes of βi with i > 0. This further conﬁrms that the trading volumes of
+transactions inside trade packages executed as market orders have a strong impact on current
+price returns. However, the negative relation between the price return and the trading volume
+executed 5 seconds before is weakened, not as signiﬁcant as that observed in the simple regression
+of Equation (18). After taking into account the autoregressive components, only ﬁve stocks have
+signiﬁcant coeﬃcients β5sec, and four of them are negative. To further increase the time lag i,
+the number of stocks which have signiﬁcant coeﬃcients βi is even smaller. The shortening of
+the impact time may because the price return can be partially explained by the autoregressive
+components of previous returns.
+
+We also obtain the coeﬃcients βi by estimating Equation (19) using the records of transactions
+inside trade packages executed as market orders from individuals as depicted in Table 8. The
+R2 for individuals is generally smaller than that for institutions, but still has values ≥ 10% for
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+20
+
+Fei Ren and Wei-Xing Zhou
+
+Table 7. Coeﬃcients and t-statistics for the linear ﬁt of Equation (19) with I = 25 and J = 25 seconds
+
+using the records of transactions inside trade packages executed as market orders from institutions.
+
+Coeﬃcients marked with ∗ are statistically signiﬁcant at 5% level.
+
+Code
+
+β0
+
+t-stat
+
+β5
+
+t-stat
+
+β10
+
+t-stat
+
+β15
+
+t-stat
+
+β20
+
+t-stat
+
+β25
+
+t-stat
+
+000001
+000002
+000009
+000012
+000016
+000021
+000024
+000027
+000063
+000066
+000088
+000089
+000406
+000429
+000488
+000539
+000541
+000550
+000581
+000625
+000709
+000720
+000778
+
+0.075∗
+0.085∗
+0.027
+0.103∗
+0.135∗
+0.137∗
+0.129∗
+0.082∗
+0.106∗
+0.154∗
+0.064∗
+0.093∗
+0.107∗
+0.002
+0.128∗
+0.093∗
+0.161∗
+0.137
+0.084∗
+0.075∗
+0.084∗
+0.122∗
+0.134∗
+
+11.63
+0.007
+31.28 −0.007∗
+0.74 −0.041
+0.023
+3.76
+0.002
+20.11
+11.80
+0.023
+0.000
+24.81
+0.011
+9.28
+0.005
+25.72
+15.03
+0.002
+37.48 −0.007∗
+35.43
+0.005
+9.87 −0.001
+0.02 −0.103
+54.40 −0.004
+23.32 −0.013∗
+8.18 −0.015
+1.92 −0.085
+37.77 −0.007∗
+22.70 −0.004
+16.25 −0.011
+20.49
+0.021∗
+11.89 −0.003
+
+0.72
+
+0.96 −0.020∗
+−2.43 −0.008∗
+−1.18 −0.045
+0.016
+−0.25 −0.008
+1.64 −0.013
+0.06 −0.010
+1.10 −0.001
+0.92
+0.003
+0.16 −0.015
+−3.62 −0.001
+0.000
+−0.10 −0.014
+−1.28 −0.084
+−1.66 −0.004
+−2.83
+0.005
+−0.59 −0.016
+−0.76 −0.087
+−2.63
+0.000
+−1.24 −0.012∗
+−1.84 −0.005
+3.05
+0.027∗
+0.20 −0.012
+
+1.83
+
+−2.87 −0.013
+−2.54 −0.006∗
+−1.17 −0.048
+0.52 −0.010
+−1.01
+0.001
+−0.88 −0.011
+−1.57 −0.005
+0.001
+−0.07
+0.005
+0.56
+−1.18 −0.007
+0.000
+−1.05
+0.002
+−1.54
+1.16
+0.006
+−0.64 −0.035
+−0.82 −0.002
+−0.02 −0.005
+−3.28 −0.005
+−0.86 −0.087
+3.97 −0.013∗
+−0.90 −0.005
+−1.89 −0.013∗
+0.008
+−1.43 −0.014
+
+1.99
+
+0.12
+0.96
+
+−1.89 −0.012
+−2.05 −0.001
+−1.21 −0.016
+−0.32
+0.007
+0.15 −0.012
+−0.81 −0.003
+−0.80 −0.002
+0.007
+0.003
+−0.56 −0.005
+0.000
+0.002
+0.000
+−0.43 −0.040
+−0.81 −0.003
+−1.16 −0.001
+−0.20
+0.022
+−0.83 −0.088
+−4.96 −0.008∗
+−1.43 −0.005
+−2.12 −0.015∗
+0.017∗
+−1.04 −0.010
+
+0.09
+0.60
+0.49
+
+1.19
+
+−1.66
+0.007
+−0.48 −0.005
+−0.41 −0.027
+0.23 −0.002
+−1.40 −0.008
+−0.25 −0.010
+−0.33 −0.005
+0.68
+0.013
+0.60 −0.004
+−0.35 −0.021
+−0.17
+0.003
+0.80 −0.002
+−0.04
+0.000
+−0.50 −0.048
+−1.22 −0.004∗
+−0.30
+0.000
+0.88 −0.003
+−0.82 −0.085
+−2.87 −0.004
+−1.38 −0.007
+−2.37 −0.002
+0.011
+−0.74 −0.007
+
+0.50
+
+1.04
+−1.62
+−0.62
+−0.06
+−0.94
+−0.71
+−0.69
+1.27
+−0.75
+−1.59
+1.25
+−0.77
+0.02
+−0.60
+−3.15
+−0.02
+−0.10
+−1.15
+−1.32
+−1.80
+−0.23
+1.52
+−0.52
+
+R2
+
+0.23
+0.24
+0.17
+0.27
+0.29
+0.29
+0.30
+0.20
+0.27
+0.31
+0.13
+0.29
+0.17
+0.18
+0.23
+0.23
+0.34
+0.80
+0.19
+0.20
+0.26
+0.24
+0.32
+
+most stocks. Coeﬃcient β0sec for individuals is positive and signiﬁcant for all the stocks, but
+approximately one order of magnitude smaller than β0sec for institutions. This implies that the
+positive impact of trading volumes on current price returns for individuals is not as strong as
+that for institutions. More than half of the stocks have negative and signiﬁcant coeﬃcients βi
+for i ≤ 25 seconds. This indicates that for more than half of the stocks the trading volumes of
+transactions inside trade packages have a temporary negative impact for at least 25 seconds. In
+comparison with the trading volumes for institutions, the trading volumes for individuals have
+a negative price impact over a relatively longer horizon even after considering the autoregressive
+components of previous returns.
+
+6. Summary
+
+This paper studies the characteristic properties of trade packages made by both institutional
+and individual investors trading on Shenzhen Stock Exchange. The sequence of transactions are
+grouped into packages with mostly buy or sell trades separated by the break of 1, 5, 10 days. The
+probability distributions of the variables, i.e., the execution time T , the number of trades N and
+the total trading volume V , characterizing trade packages show power-law tails, and a power-law
+ﬁtting method based on KS statistic is adopted to estimate their exponents. The exponent of
+the execution time is smaller than 1.0, and the exponent of the trades number is around 3.0
+close to that of the total trading volume. The exponents vary with the break length, and tend
+to be constant for the break length longer than 5 days. Moreover, the exponents for individuals
+are slightly larger than those for institutions. The scaling relations between these variables are
+also detected. All the scaling exponents show values smaller than 1.0, diﬀerent from those found
+by Vaglica et al. (2008) and Moro et al. (2009).
+
+We have also studied the trading proﬁle of the trade packages accomplished within one day. By
+investigating the mean trading volume of the individual transactions inside trade packages, we
+ﬁnd that large amounts of shares are more likely to be executed close to the opening and closing
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+LATEX 2ε guide for authors
+
+21
+
+Table 8. Coeﬃcients and t-statistics for the linear ﬁt of Equation (19) with I = 25 and J = 25 seconds
+
+using the records of transactions inside trade packages executed as market orders from individuals.
+
+Coeﬃcients marked with ∗ are statistically signiﬁcant at 5% level.
+
+Code
+
+β0
+
+t-stat
+
+β5
+
+t-stat
+
+β10
+
+t-stat
+
+β15
+
+t-stat
+
+β20
+
+t-stat
+
+β25
+
+t-stat
+
+R2
+
+0.19
+0.15
+0.14
+0.20
+0.19
+0.11
+0.09
+0.11
+0.17
+0.14
+0.03
+0.09
+0.15
+0.18
+0.25
+0.14
+0.19
+0.09
+0.05
+0.14
+0.15
+0.08
+0.17
+
+000001
+000002
+000009
+000012
+000016
+000021
+000024
+000027
+000063
+000066
+000088
+000089
+000406
+000429
+000488
+000539
+000541
+000550
+000581
+000625
+000709
+000720
+000778
+
+0.008∗
+0.012∗
+0.015∗
+0.044∗
+0.079∗
+0.012∗
+0.021∗
+0.007∗
+0.009∗
+0.042∗
+0.003∗
+0.012∗
+0.027∗
+0.074∗
+0.127∗
+0.005∗
+0.105∗
+0.005∗
+0.005∗
+0.006∗
+0.008∗
+0.019∗
+0.055∗
+
+1.64
+2.64
+
+0.26
+2.69
+
+−8.69 −0.001∗
+65.42 −0.002∗ −11.77 −0.001∗
+2.04 −0.001∗
+0.001∗
+0.000
+58.75 −0.006∗ −25.44
+1.14 −0.002∗
+0.000
+55.03 −0.004∗ −10.95
+0.001∗
+−7.61 −0.002∗
+−6.01 −0.003∗
+108.68 −0.008∗ −19.14 −0.003∗
+−2.31 −0.005∗
+−4.69 −0.002∗
+−3.56 −0.005∗
+85.62 −0.004∗
+1.48 −0.002∗
+−1.03
+0.000
+0.000
+48.69 −0.003∗ −10.68
+0.002∗
+−4.00
+3.30
+0.002∗
+35.31 −0.008∗ −11.68 −0.003∗
+0.000∗
+13.20 −0.002∗ −14.16
+50.89 −0.004∗ −26.08
+0.002∗
+−2.08
+−7.09
+0.000∗
+0.000∗
+62.02 −0.003∗ −19.95 −0.001∗
+−3.28 −0.004∗
+−4.33 −0.003∗
+−9.32 −0.004∗
+55.68 −0.008∗
+0.22
+0.000
+0.000
+0.000
+26.57 −0.002∗ −11.87
+−0.05
+0.001∗
+54.11 −0.001∗
+0.000
+−2.27
+0.001∗
+−5.13
+61.79 −0.006∗ −11.87 −0.002∗ −3.429 −0.002∗
+0.000
+−4.33 −0.007∗
+−2.59 −0.005∗
+73.05 −0.007∗
+−0.35 −0.003∗
+208.16 −0.006∗
+−7.06
+0.000
+106.43 −0.002∗ −30.85
+0.000∗
+−8.14 −0.008∗
+0.000
+0.71
+0.000
+−3.68
+0.000
+0.50
+0.001∗
+−9.89
+−4.89
+0.001∗
+−1.92 −0.003∗
+
+−5.37
+−6.01 −0.002∗ −14.38 −0.001∗
+−0.67
+−3.09
+0.000
+−5.87
+−7.02 −0.002∗
+−6.01
+−4.30 −0.003∗
+−5.54 −0.006∗
+−6.03
+−6.97 −0.004∗ −14.15
+−3.09
+−2.64
+−6.86
+−1.60
+−6.70
+2.14
+−1.14
+−5.51
+−7.69
+−6.55
+−4.50
+−4.10
+−6.79
+−3.25
+−0.90
+−1.54
+0.84
+
+−5.42 −0.003∗
+−8.84 −0.005∗
+0.001∗
+81.61 −0.006∗
+−4.31 −0.009∗
+51.66 −0.002∗ −15.97 −0.001∗
+32.87 −0.003∗ −17.42
+0.001∗
+0.000
+−9.98
+60.96 −0.001∗
+0.000
+−8.36
+48.83 −0.002∗
+0.001
+−6.94
+76.99 −0.002∗
+77.13
+0.000
+−0.29
+0.001
+
+−5.60 −0.013∗
+0.000
+−4.99
+2.64 −0.001∗
+0.001
+1.50
+−1.49 −0.002∗
+1.98 −0.001∗
+0.86 −0.002
+
+−2.31
+
+2.42 −0.002∗
+0.000∗
+1.98 −0.001∗
+−5.09 −0.001
+−1.86 −0.001∗
+4.00
+0.001∗
+0.33 −0.001
+−5.83 −0.007∗
+−3.93 −0.005∗
+−5.03
+0.000∗
+−5.10 −0.007∗
+1.33 −0.001∗
+1.29 −0.001∗
+0.000∗
+0.000
+0.000
+0.001
+
+−0.27
+2.57
+5.08
+−4.54
+
+8.60 −0.001∗ −10.32
+
+time respectively for institutions and individuals. The probability distribution of the transaction
+time shows that both institutional and individual investors trade more frequently after the
+midday break, and it displays a maximum at the closing time of the day. This phenomena might
+be explained by their preferences on the initial and ﬁnal time of trade packages. The proﬁle of the
+total trading volume further implies that institutions may be more informed than individuals.
+The price impact of trade packages and its relations with the execution time T and the
+total trading volume V are analyzed respectively. We ﬁnd the price impact remains nonzero
+over the whole period of execution time. The price impact has an empirical power-law relation
+with the total trading volume. Furthermore, the instantaneous price impact of the transactions
+inside trade packages is investigated, and transactions close to the opening and closing time of
+the day have a stronger impact than those during the remainder of the day. Similar to trade
+packages, the transactions inside trade packages also show a power-law dependence on their
+corresponding volumes. To study the temporary impact of transactions inside trade packages, we
+regress the price return against its current and previous trading volumes within trade packages,
+and further model the price return taking into account both the autoregressive components
+of previous returns and the current and previous trading volumes within trade packages. The
+regression results show that the trading volumes of the transactions inside trade packages have
+a strong positive impact on current price returns, while the reversals of the following prices are
+less strong and persist over only a few seconds. This may help explain the permanent impact
+of isolated transactions revealed in the empirical study of block trades (Keim and Madhavan
+1996, Gregoriou 2008, Kraus and Stoll 1972, Gemmill 1996). In addition, the impact of trading
+volumes on current price returns for institutions is stronger than that for individuals, and the
+price reversal for individuals persists over a horizon relatively longer than that for institutions.
+Though the transactions inside trade packages have a temporary impact persisting over only
+a few seconds, the cumulative impact of trade packages is signiﬁcant over the whole period of
+execution time (Gemmill 1996).
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+22
+
+REFERENCES
+
+Acknowledgements
+
+We are grateful to Zhi-qiang Jiang (School of Business, East China University of Science and
+Technology) for preprocessing the data analyzed in this work. This work was partially supported
+by the National Natural Science Foundation (No. 10905023), the Zhejiang Provincial Natural
+Science Foundation of China (No. Z6090130), Humanities and Social Sciences Fund sponsored
+by Ministry of Education of the People’s Republic of China (No. 09YJCZH042), and the Fun-
+damental Research Funds for the Central Universities.
+
+References
+
+Aitken, M. and Frino, A., Execution costs associated with institutional trades on the Australian
+
+Stock Exchange. Paciﬁc-Basin Financ. J., 1996, 4, 45–58.
+
+Alfonsi, A., Fruth, A. and Schied, A., Optimal execution strategies in limit order books with
+
+general shape functions. Quant. Financ., 2010, 10, 143–157.
+
+Almgren, R.F., Optimal execution with nonlinear impact functions and trading-enhanced risk.
+
+Appl. Math. Financ., 2003, 10, 1–18.
+
+Chan, K. and Fong, W.M., Trade size, order imbalance, and the volatility-volume relation. J.
+
+Financ. Econ., 2000, 57, 247–273.
+
+Chan, K.C. and Lakonishok, J., The behavior of stock prices around institutional trades. J.
+
+Financ., 1995, 50, 1147–1174.
+
+Chiyachantana, C.N., Jain, P.K., Jiang, C. and Wood, R.A., International evidence on institu-
+
+tional trading behavior and price impact. J. Financ., 2004, 59, 869–898.
+
+Chordia, T. and Subrahmanyam, A., Order imbalance and individual stock returns: Theory and
+
+evidence. J. Financ. Econ., 2004, 72, 485–518.
+
+Clauset, A., Shalizi, C.R. and Newman, M.E.J., Power-law distributions in empirical data. SIAM
+
+Rev., 2009, 51, 661–703.
+
+Farmer, J.D., Gerig, A., Lillo, F. and Waelbroeck, H., How eﬃciency shapes market impact
+
+[online]. , 2011. (accessed http://arxiv.org/abs/1102.5457v1).
+
+Gallagher, D.R. and Looi, A., Trading behaviour and the performance of daily institutional
+
+trades. Ann. Financ., 2006, 46, 125–147.
+
+Gallant, A.R., Rossi, P.E. and Tauchen, G., Stock prices and volume. Rev. Financ. Stud., 1992,
+
+5, 199–242.
+
+Gemmill, G., Transparency and liquidity: A study of block trades in the London Stock Exchange
+
+under diﬀerent publication rules. J. Financ., 1996, 51, 1765–1790.
+
+Giambona, E. and Golec, J., Strategic trading in the wrong direction by a large institutional
+
+insider. J. Emp. Financ., 2010, 17, 1–22.
+
+Gregoriou, A., The asymmetry of the price impact of block trades and the bid-ask spread Evi-
+
+dence from the London Stock Exchange. J. Econ. Surveys, 2008, 35, 191–199.
+
+Hasbrouck, J., Measuring the information content of stock trades. J. Financ., 1991, 46, 179–207.
+Jain, P.K., Discussion of Equity trading by institutional investors: Evidence on order submission
+
+strategies by Naes and Skjeltorp. J. Behav. Financ., 2003, 27, 1819–1821.
+
+Karpoﬀ, J.M., The relation between price changes and trading volume: A survey. J. Financ.
+
+Quant. Anal., 1987, 22, 109–126.
+
+Keim, D.B. and Madhavan, A., Anatomy of the trading process: Empirical evidence on the
+
+behavior of institutional traders. J. Financ. Econ., 1995, 37, 371–398.
+
+Keim, D.B. and Madhavan, A., The upstairs market for large-block transactions: analysis and
+
+measurement of price eﬀects. Rev. Financ. Stud., 1996, 9, 1–36.
+
+August 6, 2018
+
+21:40
+
+Quantitative Finance
+
+Trading˙package˙v3
+
+REFERENCES
+
+23
+
+Kraus, A. and Stoll, H.R., Price impact of block trading on the new york stock exchange. J.
+
+Financ., 1972, 27, 569–588.
+
+Lillo, F., Farmer, J.D. and Mantegna, R., Master curve for price impact function. Nature, 2003,
+
+421, 129–130.
+
+Lim, M. and Coggins, R., The immediate price impact of trades on the Australian Stock Ex-
+
+change. Quant. Financ., 2005, 5, 365–377.
+
+Moro, E., Vicente, J., Moyano, L.G., Gerig, A., Farmer, J.D., Vaglica, G. and Lillo, F., Market
+impact and trading proﬁle of hidden orders in stock markets. Phys. Rev. E, 2009, 80, 066102.
+Mu, G.H., Zhou, W.X., Chen, W. and Kert´esz, J., Order ﬂow dynamics around extreme price
+
+changes on an emerging stock market. New J. Phys., 2010, 12, in press.
+
+Næs, R. and Skjeltorp, J.A., Order book characteristics and the volume-volatility relation: Em-
+
+pirical evidence from a limit order market. J. Financ. Markets, 2006, 9, 408–432.
+
+Obizhaeva, A. and Wang, J., Optimal trading strategy and supply/demand dynamics [online]. ,
+
+2010. (accessed http://ssrn.com/abstract=686168).
+
+Plerou, V., Gopikrishnan, P., Gabaix, X. and Stanley, H.E., Quantifying stock-price response to
+
+demand ﬂuctuations. Phys. Rev. E, 2002, 66, 027104.
+
+Prino, A., Jarnecic, E. and Lepone, A., The determinants of the price impact of block trades:
+
+Further evidence. ABACUS, 2007, 43, 94–106.
+
+Saar, G., Price impact asymmetry of block trades: An institutional trading explanation. Rev.
+
+Financ. Stud., 2001, 14, 1153–1181.
+
+Saatcioglu, K. and Starks, L.T., The stock price-volume relationship in emerging stock markets:
+
+The case of Latin America. Int. J. Forecast., 1998, 14, 215–225.
+
+Vaglica, G., Lillo, F. and Mantegna, R.N., Statistical identiﬁcation with hidden Markov models
+
+of large order splitting strategies in an equity market. New J. Phys., 2010, 12, 075031.
+
+Vaglica, G., Lillo, F., Moro, E. and Mantegna, R.N., Scaling laws of strategic behavior and size
+
+heterogeneity in agent dynamics. Phys. Rev. E, 2008, 77, 036110.
+
+Wood, R.A., McInish, T.H. and Ord, J.K., An investigation of transactions data for NYSE
+
+stocks. J. Financ., 1985, 40, 723–739.
+
+Ying, C.C., Stock market prices and volumes of sales. Econometrica, 1966, 34, 676–685.
+Zawadowski, A.G., Kert´esz, J. and Ador, G., Large price changes on small scales. Physica A,
+
+2004, 344, 221–226.
+
+Zhou, W.X., Universal price impact functions of individual trades in an order-driven market
+
+[online]. , 2011. (accessed http://arxiv.org/abs/0708.3198v2).
+
+Zhou, W.X. and Sornette, D., Antibubble and prediction of China’s stock market and real-estate.
+
+Physica A, 2004, 337, 243–268.
+
+

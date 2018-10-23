@@ -1,0 +1,574 @@
+AN OPTIMIZATION METHOD FOR SLICE INTERPOLATION OF MEDICAL IMAGES 
+
+1Department of Electrical Engineering and Computer Science, University of Wisconsin-Milwaukee, WI, USA 
+
+ 
+
+Ahmadreza Baghaie1, Zeyun Yu1 
+
+ABSTRACT 
+
+ 
+
+Slice  interpolation  is  a  fast  growing  field  in  medical 
+image  processing.  Intensity-based  interpolation  and  object-
+based interpolation are two major groups of methods in the 
+literature.  In  this  paper,  we  describe  an  object-oriented, 
+optimization  method  based  on  a  modified  version  of 
+curvature-based image registration, in which a displacement 
+field is computed for the  missing slice between two known 
+slices  and  used  to  interpolate  the  intensities  of  the  missing 
+slice. The proposed approach is evaluated quantitatively by 
+using the Mean Squared Difference (MSD) as a metric. The 
+produced 
+in 
+preserving sharp edges in images. 
+
+results  also  show  visual 
+
+improvement 
+
+Index  Terms—  Image  Registration,  Slice  Interpolation, 
+
+Optimization, Mean Squared Difference, Medical Images 
+
+ 
+
+1. INTRODUCTION 
+
+ 
+
+Image  interpolation  is  a  well-known  research  topic  in 
+image  processing  and  there  have  been  many  studies  in  this 
+area  especially  in  bio-medical  applications.  With  modern 
+image  modalities  (CT,  MRI,  light/electron  microscopy, 
+etc.), a sequence of 2D images can be provided and used in 
+building 3D models. However, the resolutions of the images 
+are  often  not  identical  in  all  three  directions.  Usually  the 
+resolution  in  the  Z  direction  is  significantly  lower  than  the 
+resolutions  in  the  X  and  Y  directions.  For  example,  in  a 
+generic  CT,  resolution  in  X  and  Y  direction,  or  in  more 
+accurate  term  the  spacing,  is  between  0.5-2mm  while  the 
+spacing  in  Z  direction  is  in  the  range  of  1-15mm.  This 
+asymmetry  in  the  resolution  causes  problems  such  as  step-
+shaped  iso-surfaces  and  discontinuity  in  structures  in  3D 
+reconstructed  models.  Therefore 
+slice 
+interpolation  algorithm  to  augment  the  3D  data  into  a 
+symmetric one is of high demand. 
+
+utilizing 
+
+a 
+
+ In  general,  slice  interpolation  methods  can  be  divided 
+into  two  groups:  intensity-based  interpolation,  and  object-
+based  interpolation.  In  the  first  category,  the  final  result  of 
+interpolation  is  directly  computed  from  the  intensity  values 
+of  input  images.  Linear  and  cubic  spline  interpolation 
+
+ 
+
+methods  are  two  examples  of  this  group.  The  major 
+advantages  of  these  methods  are  their  simplicity  and  low 
+computational complexity,  which lead to their  wide uses in 
+practice.  As  the  final  result  is  basically  a  weighted  average 
+of input image, however, these methods suffer from blurring 
+effects  on  object  boundaries,  yielding  unrealistic  and 
+visually unpleasing results.    
+
+In object-based methods, on the other hand, the extracted 
+information from objects contained in input images are used 
+in order to guide the interpolation into more accurate results. 
+There are many methods proposed in the literature trying to 
+take  into  account  additional  information  of  objects  in  order 
+to provide better results [1-11]. One of the first attempts for 
+object-based interpolation has been made by Goshtasby et al 
+[1].  Using  a  gradient  magnitude  based  approach, 
+corresponding  points  between  consecutive  slices  are  found 
+and  then  the  linear  interpolation  is  applied  in  order  to  find 
+the in-between slices. An important assumption of this work 
+is that the difference between consecutive slices is small, so 
+they  restrict  their  search  for  finding  correspondence  points 
+to small neighborhoods. It is obvious that this assumption is 
+not  true  in  many  cases.  To  reduce  the  blurriness  of  edges, 
+some  more  recent  approaches  have  been  studied,  including 
+the column fitting interpolation [2], shape-based method [3], 
+morphology-based  method  [6],  and  feature-guided  shape 
+interpolation  method  [7].  A  comprehensive  summary  of 
+common  methods  (both  intensity-based  and  object-based) 
+for slice interpolation was described in [4, 5].  
+
+An  increasingly  important  group  of  approaches  for 
+image  interpolation  (object-based)  are  based  on  image 
+registration.  Using  the  well-known  free  form  deformation 
+non-rigid  registration  method  by  Rueckert  [8],  Penny  et  al. 
+[9]  proposed  a  registration  based  method  for  slice 
+interpolation.  Another  registration  based  method  was  given 
+by Frakes et al. [10] by using a modified version of control 
+grid  interpolation  (CGI).  More  recently,  Xu  et  al.  [11] 
+described  a  multi-resolution  registration  based  method  for 
+slice 
+interpolation.  In  general,  registration-based  slice 
+interpolation  methods  are  guided  by 
+important 
+assumptions.  First,  the  consecutive  slices  contain  similar 
+anatomical  features.  Second,  the  registration  method  is 
+
+two 
+
+capable  of  finding  the  appropriate  transformation  map  to 
+match  these  similar  features.  Violation  of  any  of  these 
+assumptions  results  in  false  correspondence  maps,  which 
+leads to incorrect interpolation results. 
+
+In  the  present  paper,  we  develop  a  novel  method  for 
+slice  interpolation  by  taking  into  account  the  well-known 
+curvature-based  registration  [12,  13].  With  a  modified 
+version  of  the  registration  method  and  an  assumption  of 
+having  linear  movement  between  correspondence  points  in 
+given  slices,  a  displacement  field  is  computed  and  the  in-
+between slice is interpolated using a simple averaging of the 
+registration  results.  The  detail  of  the  proposed  method  is 
+given  in  Section  2,  followed  by  some  experimental  results 
+along  with  quantitative  and  qualitative  evaluations  of  the 
+method in Section 3. The conclusion is given in Section 4. 
+
+ 
+
+2. METHOD 
+
+ 
+
+Given  two  images  (reference  and  template),  image 
+registration  is  to  find  a  spatial  transformation  such  that  the 
+transformed  template  matches  the  reference,  subject  to  a 
+suitable  distance  measure  (forward  registration)  [12].  This 
+transformation  can  range  from  a  simple  translation  to  more 
+sophisticated  non-rigid  free  form  deformations,  dependent 
+on  the  subject  and  goal  of  registration.  Also  depending  on 
+the  method,  registration  can  be  based  on  matching  a  set  of 
+feature points (landmarks) or been applied directly on image 
+gray values. Here we are interested in the later case. Usually 
+most  of  the  registration  methods  can  be  formulated  in  term 
+of  a  variational  formulation,  using  a  joint  functional  as 
+follows [12]: 
+
+ 
+
+ܧሺ࢛ሻ = ܦሾܴ, ܶ; ࢛ሿ + ߙܵሾ࢛ሿ, 
+
+ 
+
+   
+
+      (1) 
+
+ 
+
+where ܦ represents  a  distance  measure  (external  force)  and 
+ܵ  represents  the  rate  of  smoothness  of ࢛  (internal  force). 
+The  parameter ߙ is  used  to  balance  the  two  terms.  In  this 
+functional, ࢛ should  be  found  such  that  the  joint  functional 
+is  minimized.  This  model  is  called  single  direction  model 
+because  the  reference  image  is  fixed  and  only  the  template 
+image  is  moving.  This  causes  asymmetry  in  the  results  in 
+such a  way that if  we fix the  template image and  move the 
+reference  image  to  match  the  template  image  (backward 
+registration),  the  result  may  not  be  exactly  opposite  to  that 
+of  the  forward  registration.  For  this  reason,  we  modify  this 
+model  in  the  context  of  image  slice  interpolation  by 
+changing the formulation to the following: 
+
+ܧሾ࢛ሿ = ܦሾܴଵሺ࢞ − ࢛ሻ, ܴଶሺ࢞ + ࢛ሻሿ + ߙܵሾ࢛ሿ, 
+
+ 
+
+ 
+
+      (2) 
+
+where  ܴଵ, ܴଶ ∶ 	Ω → ℝ    are  the  two  images  provided  as 
+input and Ω ≔ ሾ0,1ሿଶ is the domain of images, ࢞ is the grid 
+of  image  values  and ࢛ is  the  displacement  values  for  each 
+grid point. Please note that in Equation (2), we assume that 
+the slice to be interpolated, denoted by R, is in the middle of 
+the  given  images.  If  R  is  an  arbitrary  slice  between  R1  and 
+R2, then we first need to compute the distance from R to R1 
+and R2, denoted by d1 and d2 respectively. Then we calculate 
+the ration r = d1/(d1+d2), and the following equation should 
+be considered for interpolating R: 
+ܧሾ࢛ሿ = ܦሾܴଵሺ࢞ − ݎ࢛ሻ, ܴଶሺ࢞ + ሺ1 − ݎሻ࢛ሻሿ + ߙܵሾ࢛ሿ.        (3) 
+
+ 
+Without loss of generality, we shall consider Equation (2) in 
+the current paper for image slice interpolation. 
+
+ 
+
+Several  distance  measures  for  D  have  been  proposed  in 
+the  literature,  including  the  Sum  of  Squared  Differences 
+(SSD),  Mutual  Information  (MI),  Normalized  Mutual 
+Information (NMI), Cross Correlation (CC) and Normalized 
+Gradient  Fields  (NGF)  [14].  Here  we  use  SSD  as  distance 
+measure, and the above formulation can rewritten as: 
+
+ 
+
+ 
+
+Ω
+
+ܦሾܴଵሺ࢞ − ࢛ሻ, ܴଶሺ࢞ + ࢛ሻሿ = ଵ
+	࢛ሻ௅మ
+
+ଶܴଵሺ࢞ − ࢛ሻ − ܴଶሺ࢞ +
+ଶ ׬ ሺܴଵሺ࢞ − ࢛ሺ࢞ሻሻ − ܴଶሺ࢞ + ࢛ሺ࢞ሻሻሻଶ݀࢞.
+
+ଶ = ଵ
+  For  the  smoothness  term ܵ,  several  common  choices 
+are  available,  such  as  elastic,  fluid,  demon,  diffusion  and 
+curvature  registration  [12].  Here  we  use  the  curvature 
+approach, in which the smoothness term is as follows: 
+
+      (4) 
+
+ 
+
+ 
+
+ܵሾݑሿ = ଵ
+
+ଶࢣ ׬ ሺ∆ݑ௟ሻଶ݀࢞
+
+ଶ
+௟ୀଵ
+
+Ω
+
+ 
+
+ 
+
+      (5) 
+
+, 
+
+ 
+
+where  ∆  is  the  curvature  operator  and  the  summation  is 
+computed over two dimensions of image and the integral is 
+computed  inside  the  domain  of  images.  As  stated  in  [12], 
+using  curvature  for  smoothness,  the  need  for  an  additional 
+linear affine pre-registration step can be eliminated.  
+
+In  order  to  minimize  the  above  joint  functional,  we 
+compute  the  Gateaux  derivative  of ܧሾ࢛ሿ and  make  it  equal 
+to zero to find the minimum point, an Euler-Lagrange PDE 
+equation can be obtained as: 
+
+ 
+
+݂൫࢞, ࢛ሺ࢞ሻ൯ + ߙࣛ௖௨௥௩ሾ࢛ሿሺ࢞ሻ = 0, 
+
+ 
+
+ 
+
+      (6) 
+
+ 
+
+ 
+
+where  
+ࣛ௖௨௥௩ሾ࢛ሿ = ∆ଶ࢛  
+݂൫࢞, ࢛ሺ࢞ሻ൯ = ൫ܴଶሺ࢞ + ࢛ሻ − ܴଵሺ࢞ − ࢛ሻ൯. ሺ∇ܴଵሺ࢞ − ࢛ሻ +
+∇ܴଶሺ࢞ + ࢛ሻሻ 
+       
+
+and 
+
+  
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+To  solve  this  PDE,  a  time-stepping  iteration  method  is 
+
+ 
+
+considered as follows: 
+߲௧࢛࢑ା૚ሺ࢞, ݐሻ =
+݂ ቀ࢞, ࢛࢑ሺ࢞, ݐሻቁ + ߙࣛ௖௨௥௩ൣ࢛࢑ା૚൧ሺ࢞, ݐሻ,									݇ ≥ 0 
+with ࢛଴ = ૙. Using a finite difference approximation of the 
+derivative  with  time  step  ߬  and  also  collecting  the  grid 
+points  with  respect  to  a  lexicographical  ordering,  one  can 
+derive a discretized version of (7) as follows: 
+
+      (7) 
+
+ 
+
+ 
+
+ 
+
+      (8) 
+
+ሺ௞ሻ + ߬ࡲሬሬԦ௟
+
+ሺ௞ାଵሻ = ࢁሬሬԦ௟
+
+ሺ௞ሻ,				݈ = 1,2. 
+
+ሺܫ௡ + ߙ߬ࣛ௖௨௥௩ሻࢁሬሬԦ௟
+where ݈ is  the  parameter  representing  the  dimension  index. 
+For  more  information  about  how  to  compute ࣛ௖௨௥௩ ,  the 
+reader 
+the 
+optimization  process,  a  simple  averaging  of  the  two 
+transformed  input  images  provides  us  with  the  missing  in-
+between image. 
+
+to  [12,  13].  After  finishing 
+
+is  referred 
+
+ 
+
+3. RESULTS AND DISCUSSION 
+
+ 
+
+To  validate  the  proposed  method  for  slice  interpolation 
+in  medical  images,  several  tests  have  been  conducted.  The 
+results of the proposed method are compared with two other 
+methods,  in  both  subjective  and  objective  aspects.  As  a 
+metric,  Mean  Squared  Difference  (MSD)  is  used  for 
+comparison.  Assuming ܫ௢௥௚  and ܫ௜௡௧  as  original  image  and 
+interpolation image respectively, with the size of ݉ × ݊, we 
+define MSD as follows: 
+
+ 
+
+ܯܵܦ = ଵ
+
+௠×௡ ࢣ ࢣ ሺܫ௢௥௚ሺ݅, ݆ሻ − ܫ௜௡௧ሺ݅, ݆ሻሻଶ
+
+௡
+௝ୀଵ
+
+௠
+௜ୀଵ
+
+ 
+
+      (9) 
+
+the 
+
+in-between  slice  by  using  both 
+
+ 
+In  the  first  test,  three  consecutive  slices  as  in  Fig.  1(a) 
+are  used.  Taking  the  first  and  third  slices  as  inputs,  we 
+compute 
+linear 
+interpolation and the proposed method. Fig. 1 (b) shows the 
+interpolation results (top) using the two  methods as  well as 
+the computed difference images (bottom) with respect to the 
+second  image  in  Fig.  1(a).  The  MSDs  computed  are  84.20 
+and  54.96  for  linear  and  proposed  methods  respectively. 
+Fig.1  (c)  gives  the  displacement  fields  computed  after 
+registration,  for  both  horizontal  and  vertical  directions. 
+Bright  and  dark  shades  represent  positive  and  negative 
+displacement  vectors  respectively,  while  gray  shades  for 
+displacements near zero.  
+
+As  can  be  seen  from  the  slices,  the  difference  between 
+slices is due to the movement of the heart near the centers of 
+these  images.  Using  linear  interpolation,  the  movement  of 
+heart  is  not  captured,  resulting  in  blurred  edges  in  the 
+
+interpolated  slice.  By  comparison,  the  registration-based 
+method  captures  the  movement  well  and  the  final  result  is 
+highly  similar  to  the  original  one  (middle  image  in  Fig. 
+1(a)). As a result, the MSD error is significantly reduced and 
+the interpolation result is much sharper.  
+
+ 
+
+(a) 
+
+(b) 
+
+(c) 
+
+ 
+
+ 
+
+Fig. 1 (a) Three consecutive images. The first and third images 
+are used for interpolation. To produce the results the parameters 
+values are set as ߬ = 0.03,ߙ = 100. (b) Top row: interpolation 
+results for linear and proposed method. Bottom row: difference 
+images of the results and reference image (middle image in (a)). 
+(c) Displacement fields for horizontal and vertical directions 
+using the proposed method. 
+
+ 
+To  further  demonstrate  the  strength  of  the  proposed 
+method, we apply the same procedure to the second example 
+containing three brain images as shown in Fig. 2 (a). Using 
+the  first  and  third  slice,  the  interpolation  results  are 
+produced. Besides the linear interpolation, we also compare 
+the proposed method with the original curvature registration 
+based  technique  [12],  called  non-modified  method  below. 
+Fig.  2(b)  shows  the  results  of  interpolation  as  well  as  the 
+computed  difference  images.  The  MSDs  are  71.65,  45.36 
+
+the  result  of 
+
+and  42.72  for  linear,  non-modified  and  proposed  method 
+respectively.  As  can  be  seen, 
+linear 
+interpolation has uncertain and highly blurred edges. Result 
+of  non-modified  method  is  significantly  better  than  linear 
+interpolation,  in  terms  of  MSD  but  due  to  nonlinear  nature 
+of image registration and optimization process, we still have 
+blurred  edges.  In  comparison,  the  proposed  method  gives 
+much  sharper  edges.  This  becomes  more  obvious  in  the 
+difference  images  where  blurred  edges  yield  widened 
+regions of dissimilarity. Also, it should be mentioned that, in 
+the non-modified method, only one of the images is moving. 
+As  a  result,  more  iterations  of  optimization  are  needed  for 
+convergence, and thus more computational time is required. 
+
+ 
+
+(a) 
+
+(b) 
+
+ 
+
+ 
+
+Fig. 2 (a) Three consecutive images. The first and third images 
+are used for interpolation. To produce the results the parameters 
+values are set as ߬ = 0.05,ߙ = 100. (b) Top row: results of 
+interpolation by using the linear, non-modified and proposed 
+methods respectively. Bottom row: difference images of the 
+results and original image (middle in (a)). 
+
+ 
+
+4. CONCLUSION 
+
+ 
+
+In this paper, a new registration-based slice interpolation 
+method  is  proposed.  A  modified  version  of  curvature 
+registration  method  has  been  used  with  the  assumption  of 
+linear  displacements  between  corresponding  points  in  two 
+input  images.  The  obtained  displacement  fields  for  the  two 
+images are utilized to produce the missing in-between slice. 
+In  comparison  to  both  linear  interpolation  and  the  non-
+modified  registration-based  method  [12],  the  proposed 
+method 
+less 
+
+lower  MSD 
+
+produces 
+
+values 
+
+and 
+
+blurred/uncertain  edges.  The  current  implementation  was 
+performed in Matlab, which takes a total of ~30 seconds for 
+an  image  of  250*250  pixels.  An  ongoing  effort  is  to 
+implement  the  algorithm  in  C/C++,  which  is  expected  to 
+consume  much  less  computational  time.  Part  of  our  future 
+work  will  be  an  extension  of  the  linear  displacements 
+between  images  into  higher  order  polynomial  formulation 
+that involves more than two adjacent slices. 
+
+  
+
+5. REFERENCES 
+
+ 
+
+[1]  A.  Goshtasby,  D.  A  Turner,  and  L.  V  Ackerman, 
+“Matching  of  tomographic  slices  for  interpolation.,”  IEEE  Trans 
+on medical imaging, vol. 11, no. 4, pp. 507–16, Jan. 1992. 
+
+[2]  W.  E.  Higgins,  C.  J.  Orlick,  and  B.  E.  Ledell,  “Nonlinear 
+filtering  approach  to  3-D  gray-scale  image  interpolation.,”  IEEE 
+Trans on medical imaging, vol. 15, no. 4, pp. 580–7, Jan. 1996. 
+
+[3] G. J. Grevera and J. K. Udupa, “Shape-based interpolation 
+of  multidimensional  grey-level  images.,”  IEEE  Trans  on  medical 
+imaging, vol. 15, no. 6, pp. 881–92, Jan. 1996. 
+
+[4]  G.  J.  Grevera  and  J.  K.  Udupa,  “An  objective  comparison 
+of  3-D  image  interpolation  methods.,”  IEEE  transactions  on 
+medical imaging, vol. 17, no. 4, pp. 642–52, Aug. 1998. 
+
+[5]  G.  J.  Grevera,  J.  K.  Udupa,  and  Y.  Miki,  “A  task-specific 
+evaluation  of  three-dimensional  image  interpolation  techniques.,” 
+IEEE Trans on medical imaging, vol. 18, no. 2, pp. 137–43, 1999. 
+[6]  T.  Y.  Lee  and  W.  H.  Wang,  “Morphology-based  three-
+dimensional  interpolation.,”  IEEE  Trans on  medical  imaging,  vol. 
+19, no. 7, pp. 711–21, Jul. 2000. 
+
+[7]  T.-Y.  Lee  and  C.-H.  Lin,  “Feature-guided  shape-based 
+image interpolation.,” IEEE transactions on medical imaging, vol. 
+21, no. 12, pp. 1479–89, Dec. 2002. 
+
+[8]  D.  Rueckert,  L.  I.  Sonoda,  C.  Hayes,  D.  L.  Hill,  M.  O. 
+Leach,  and  D.  J.  Hawkes,  “Nonrigid  registration  using  free-form 
+deformations:  application  to  breast  MR  images.,”  IEEE  Trans  on 
+medical imaging, vol. 18, no. 8, pp. 712–21, Aug. 1999. 
+
+[9] G. P. Penney, J. a Schnabel, D. Rueckert, M. a Viergever, 
+and W. J. Niessen, “Registration-based interpolation.,” IEEE Trans 
+on medical imaging, vol. 23, no. 7, pp. 922–6, Jul. 2004. 
+
+[10]  D.  H.  Frakes,  L.  P.  Dasi,  K.  Pekkan,  H.  D.  Kitajima,  K. 
+Sundareswaran,  A.  P.  Yoganathan,  and  M.  J.  T.  Smith,  “A  new 
+method for registration-based medical image interpolation.,” IEEE 
+Trans on medical imaging, vol. 27, no. 3, pp. 370–7, Mar. 2008. 
+
+[11]  J.  Leng,  G.  Xu,  and  Y.  Zhang,  “Medical  image 
+interpolation based on multi-resolution registration,” Computers & 
+Mathematics with Applications, vol. 66, no. 1, pp. 1–18, 2013. 
+
+[12] B. Fischer and J. Modersitzki, “A unified approach to fast 
+image  registration  and  a  new  curvature  based  registration 
+technique,” Linear Algebra and its Applications, vol. 380, pp. 107–
+124, Mar. 2004. 
+
+[13] J. Modersitzki, Numerical Methods for Image Registration 
+(Numerical  Mathematics  and  Scientific  Computation).  Oxford 
+university press USA, 2004. 
+
+[14]  J.  Modersitzki,  FAIR:  flexible  algorithms  for  image 
+
+registration, vol. 6. SIAM, 2009. 
+
+

@@ -1,0 +1,544 @@
+4
+1
+0
+2
+
+ 
+
+b
+e
+F
+7
+2
+
+ 
+
+ 
+ 
+]
+E
+C
+.
+s
+c
+[
+ 
+ 
+
+1
+v
+5
+7
+7
+6
+
+.
+
+2
+0
+4
+1
+:
+v
+i
+X
+r
+a
+
+1
+
+Analysis of Barcode sequence features to ﬁnd anomalies due to
+ampliﬁcation Bias
+
+Chandrima Sarkar, Raamesh Deshpande, Chad Myers
+
+Department of Computer Science, University of Minnesota at Twin cities, Minneapolis,
+MN, USA
+
+Abstract
+
+In this paper we aim at investigating whether barcode sequence features can predict the read count
+ambiguities caused during PCR based next generation sequencing techniques. The methodologies we used
+are mutual information based motif discovery and Lasso regression technique using features generated
+from the barcode sequence. The results indicate that there is a certain degree of correlation between motifs
+discovered in the sequences and the read counts. Our main contribution in this paper is a thorough
+investigation of the barcode features that gave us useful information regarding the signiﬁcance of the
+sequence features and the sequence containing the discovered motifs in prediction of read counts.
+
+Introduction
+
+Next-generation DNA sequencing (NGS) technologies, such as the 454-FLX (Roche), SOLiD (Applied
+Biosystems) and Genome Analyzer (Illumina) have transformed the landscape of genetics with their
+ability to produce thousands of megabases of sequence information in a very short time [14]. These kinds
+of sequencing techniques permit the rapid production of large and small sequence data sets. Among the
+popular strategies, Multiplexing technique is the one which allows parallel sequencing of many diﬀerent
+samples [10, 15]. In this technology a unique sample speciﬁc ﬁxed length marker sequence known as the
+’barcode’ is added to the DNA that is to be sequenced. Reads obtained after sequencing are sorted into
+sample libraries via detection of the appropriate barcode. Constructing mixtures of bar-coded or tagged
+DNA templates for sequencing can prove to be extremely useful in many applications [5, 19]. However,
+though these technologies provide a great deal of beneﬁts such as detection of nucleotide one at a time
+, accurate sequencing of homopolymer regions and many more, there are disadvantages too, such as
+short-read length causing a limitation in situations where no reference sequence is available to align,
+assign and annotate the short sequences generated. Another major drawback which all the PCR based
+NGS systems share is the ampliﬁcation bias. It has been observed that barcode-dependent bias is highly
+prominent in DNA and RNA detection and expression proﬁling using multiplexing technology [3, 4]. For
+production of high quality multiplex amplicon libraries for high-throughput sequencing it is therefore
+extremely important to detect the actual cause of this anomaly. A lot of studies have addressed this
+problem [2–4, 6, 17] from various dimensions. However, according to the best of our knowledge, none
+of the previous studies have tried to analyse the barcode sequence features which may prove to be the
+potential cause behind this existing bias. In this paper we try to analyse the characteristic features of the
+barcode sequences and classify them if any observable diﬀerence exists causing the diﬀerential behaviour
+during the PCR ampliﬁcation. We consider the read counts as the expression proﬁle directly indicating
+the growth rate for a given condition.
+
+To Summarize, The main aim of this paper can be given as -
+• Predict read counts using methods such as classiﬁcation and prediction technique and mutual
+
+information based motif extraction.
+
+2
+
+Figure 1. Barcode insert in a typical yeast genome
+
+• Predict if Barcode sequence features are responsible for ampliﬁcation biases in PCR based multi-
+
+plexing techniques.
+
+Background
+
+Due to the availability of whole genome sequences over the past decade, there has been major develop-
+ments in the reverse genetics approaches. This technological surge has caused dramatic changes to the way
+gene functions are analysed. The ultimate reverse genetics tool, whole-genome deletion mutant libraries,
+were ﬁrst created for the budding yeast Saccharomyces cerevisiae [8, 22]. This tool helps in predicting
+the open reading frames in the budding yeast genome which can be used for analysing the phenotypes of
+their deletion mutants. New genes involved in various biological pathways can now be predicted with the
+help of buddying yeast deletion libraries [16]. Another signiﬁcant application of the deletion libraries is
+proﬁling drug sensitive yeast mutants for targeting the therapeutic compounds for analysing drug-gene
+interactions [9]. The construction of the budding yeast deletion libraries incorporated the ingenious idea
+of molecular barcodes, for deletion cassette [18]. With the help of these barcodes the mutants could
+be phenotyped by allowing thousands of mutant strains to be pooled and analyzed together in a highly
+parallel fashion. The barcodes can be easily ampliﬁed by PCR from genomic DNA extracted from the
+yeast cells in the mutant pool. The amounts of barcode PCR produces, serve as a quantitative measure
+of the cell number of each deletion strain in the mutant pool. Traditionally, oligonucleotide microarrays
+have been used to deconvolute the identity of the strains in the mutant pool and quantify the amount of
+each barcode PCR product. In one of the recent studies, deep sequencing was found to perform equally
+well in this regard [20]. Barcode-based analyses of pooled mutants has been observed to contribute more
+signiﬁcantly in improving the throughput of screens, reduce the amount of reagents used, and avoid the
+problems associated with strain cross-contamination than when compared to one-by-one screen of indi-
+vidual deletion mutants. The most frequently analyzed phenotype of pooled mutants is the growth rates,
+or ﬁtness, of the mutant strains.From ﬁtness proﬁling of mutants under hundreds of growth conditions it
+has been observed that 97% of the genes in the budding yeast genome are required for optimal growth
+under at least one condition [11]. In addition to phenotyping single-gene mutants, barcode-based analysis
+has also been used to study gene-gene interactions.
+
+Barcodes have been utilized before as short genetic markers for multiple purposes such as identifying
+species [12], studying past diversity of the Earth’s biota [13]. One of the unique purpose where barcodes
+have been extensively used is knockout deletion of genes from yeast strains.
+
+Process of barcode generation during Yeast gene knockout deletion
+
+In the process of knockout deletion of genes from yeast strains, each gene is systematically deleted in the
+yeast genome. When completed, the result will be a number of mutant strains, each with a diﬀerent gene
+deleted. However, rather than simply deleting the gene, a barcode is inserted which is a unique sequence
+of DNA for each strain. An analogy to barcodes can be made with the products packaging, used for
+checking out in retail shops, since a barcode is meant to be used as a unique identiﬁer for each item.
+For the yeast barcode deletions, the unique identiﬁer is composed of two unique DNA sequences called
+”up-tag” and ”down-tag”. Homologous recombination can be used to replace each gene with a unique
+barcode insert so that each strain had one gene deleted and replaced with its sequence-speciﬁc barcode
+
+3
+
+insert. 1 shows a Prototype of a barcode insert used to replace genes in the yeast genome. The two
+arrows represent PCR primers, the series of N’s represent the unique barcode sequences and the marker
+gene permits selection of cells that contain the insert. The up-tag consists of the 20 nucleotides on the
+left side and the down-tag consists of the 20 nucleotides on the right. The red PCR primer sequence
+would be the same in every barcode insert as would the green PCR primer sequence.
+
+After each strain has its gene deleted, the challenge is to determine the functional consequences of all
+the deletions. For doing that in a high throughput method rather than each strain individually mutants
+are screened eﬃciently. About 500 mutants are put into a common ﬂask and two PCR primers is used
+to amplify all 500 barcode inserts from a mixture of genomic DNA extracted from an aliquot of the 500
+strains [1]. These PCR products are tagged with a red dye. The cells were allowed to grow over an
+extended period of time. During this time, strains with deleted genes needed to maintain normal growth
+rate would constitute a reduced percentage in the growing population. At various times, aliquots of cells
+are removed and the genomic DNA is extracted and ampliﬁed using the same two PCR primers. The
+PCR products used in the later condition are tagged with a green dye. Genomic DNA from an aliquot
+of this initial population of cells is used as template for PCR using the two primer sequences shared by
+each of the deletion strains. These PCR products are labeled red. After a period of time, an aliquot of
+cells are again used for template of PCR using the same two PCR primers. These PCR products are
+colored green.
+
+Barcode yeast experiments require a unique DNA microarray. Instead of spotting the coding DNA
+for each gene, the uptag and downtag for each deletion was spotted onto the glass. The two PCR
+products (red from time zero and green from a later time) are mixed together and incubated with the
+DNA microarray. For each strain there could be three possible lableing patterns for its associated uptag
+and downtag given in ﬁgure 2.
+
+Figure 2. Three possible labelling patterns for its associated up-tag and down-tag
+
+From ﬁgure 2 one can make the following conclusions
+• A strain growing a yellow spot indicates that its proportion of the initial and ﬁnal total population
+
+was the same.
+
+• A strain growing a red spot indicates that the strain grew slower than most other cells. Hence, its
+uptag and downtag spots showed as red since this strain was present at a higher concentration in
+the initial population than in the later population.
+
+• A strain growing a green spot indicates that the strain grew faster than most other cells. Hence,
+its up-tag and down-tag spots appeared more green than yellow since its increased rate of growth
+resulted in an increased representation of the total population.
+
+Figure 2 shows DNA microarray showing yellow, red and green spots for cells that maintained the
+most common growth rate, decreased growth rate or increased growth rate, respectively. If a strain’s
+growth rate were truly aﬀected by the deletion, then both the uptag and downtag spots should exhibit
+similar results.
+
+4
+
+Bias incorporated during PCR ampliﬁcation
+
+A major drawback which all the PCR based NGS systems share is the ampliﬁcation bias. It has been
+observed that barcode-dependent bias is highly prominent in DNA and RNA detection and expression
+proﬁling using multiplexing technology [3, 4]. For applications where many cycles of PCR are required
+for sensitive detection, bias and noise reduction are crucial for accurate quantication.
+In one of the
+recent studies [21], an in-depth quantitative measurement of PCR ampliﬁcation bias, resulting from the
+use of barcodes has been conducted. This research attempted to adapt previous barcoding strategies
+to multiplexed sequencing of small RNA used index sequences placed at the distal end of the 5 adapter
+in the Illumina small RNA library protocol. The observations made in that study was that despite a
+number of iterations of the design there was a consistent failure in avoiding PCR ampliﬁcation bias when
+identical samples with diﬀerent barcodes were compared. Though in this study the authors showed that
+introducing the barcode during the PCR instead of before the PCR step using diﬀerentially, barcoded
+primers does not result in bias, it remained unclear as to It is unclear as to why pre-PCR protocol for
+small RNA produces biased results, while the TruSeq protocol for mRNA/dsDNA produces unbiased [21]
+results.
+
+Methods
+
+Dataset used
+
+Data Set used is SGA Barseq data for Yeast strains. The data contain 3880 unique yeast strains with
+3880 unique barecodes. Total number of features generated from the barcodes is 275 which are considered
+as the predictor variables. The features are given below are all possible Single nucleotide frequencies,
+double nucleotide frequencies, Triple nucleotide frequencies, melting point of each nucleotides, longest
+2-mers of repetition of A, C, T and G, longest 3-mers of repetition of A, C, T and G, repetition of AT,
+repetition of CG, frequency of last 3 base pairs of the barcode sequence and ﬁrst three base pair of the
+sequence (see ﬁgure 11). Response variable is the read count which has been considered for classiﬁcation
+and prediction purpose. All the predictor variables are used to detect the response pattern to see which
+feature / predictor variable causes reads of high count. Motif discovery has been performed over the
+original barcode sequence features. The input data for Motif discovery is the yeast strain Identiﬁer
+proﬁle and the expression proﬁle which is the read counts in this project.
+
+Proposed approach
+
+The purpose of this project is to detect the probable causes behind PCR ampliﬁcation bias which is
+observed in Barcode sequences used for DNA analysis of Yeast. This analysis is entirely based on the
+sequence features of the barcodes used and does not considers any kind of contribution in the bias from
+any steps of ligation or PCR. Our target in this project is two fold -
+
+• Building a prediction model using all possible features of the barcode sequences and analyze if this
+
+model can bring about a prediction in the read count.
+
+• Important motif discovery in the barcode sequences based on Mutual information [7] and analysing
+
+their probable contribution in the prediction model to detect the cause of the bias.
+
+The prediction technique used is regression analysis - Lasso regularization method which aims at
+reducing the number of redundant predictors and identifying important predictors from the set of all
+features generated from the bar code sequences. Another important technique has been used is the
+motif discovery. With the help of this technique important motifs and their pattern of occurrence can be
+discovered. The classiﬁcation and prediction technique used in this paper is the lasso regression technique
+
+5
+
+and mutual information based motif discovery from barcode sequences. Lasso is a regularization technique
+for performing linear regression. The main motive behind using Lasso is that
+
+• Lasso reduces the number of predictors in a regression model. In our data this will help eliminating
+those variables/features of barseq which produces minimum or no signiﬁcant contribution for the
+prediction of read counts.
+
+• Lasso identiﬁes important predictors and select among redundant predictors. This will allow us
+
+concentrate upon sequence feature which causes an increased read counts.
+
+• Produce shrinkage estimates with potentially lower predictive errors than ordinary least squares.
+
+Lasso includes a penalty term that constrains the size of the estimated coeﬃcients. Lasso can also be
+called a shrinkage estimator since it generates coeﬃcient estimates that are biased to be small. Never-
+theless, a lasso estimator can have smaller mean squared error than an ordinary least-squares estimator
+when you apply it to new data.For a given value of lambda, a nonnegative parameter, lasso solves the
+problem given in equation 1. where N is the number of observations, yi is the response at observation i,
+xi is data, a vector of p values at observation i, λ is a positive regularization parameter corresponding to
+one value of λ, The parameters β0 and β are scalar and vector respectively.
+
+ 1
+
+2N
+
+min
+β0,β
+
+N(cid:88)
+
+(cid:0)yi − β0 − xT
+i β(cid:1)2
+
+p(cid:88)
+
++ λ
+
+| βj |
+
+i=1
+
+j=1
+
+
+
+(1)
+
+A 10 fold cross validation is used while using lasso to eliminate overﬁtting of the model with the data
+used. Manual cross validation has also been used where data is divided into 7:3 ratio for prediction of
+read counts.
+
+Motif discovery has been performed over the original barcode sequences in the past researches. This
+approach infers motifs from gene expression data that aims at making as few a prior assumptions as
+possible by quantifying the dependency between the presence or absence of a given motif in a regulatory
+region and the expression of the corresponding gene [7]. The concept of mutual information is used for
+discovering motifs whose patterns of presence/absence across all considered regulatory regions are most
+informative about the expression of the corresponding genes. Thus, knowing whether such a motif is
+present or absent within the regulatory region of a given gene provides signiﬁcant information regarding
+the expression of that gene which is in our case the read counts. By discovering important motifs from
+the barcode sequences it can be possible to predict which motif characters are responsible for causing a
+bias during ampliﬁcation. The mathematical formulation of mutual information is given in equation 1
+where p(i, j) is the joint probability distribution function of the random variables i and j, and p(i) and
+p(j) are the marginal probability distribution functions of i and j respectively.
+
+I(motif ; expression) =
+
+P (i, j)log
+
+P (i, j)
+
+P (i)P (j)
+
+(2)
+
+A detailed description of the results obtained from the above two approach is given in the result
+
+section.
+
+Results
+
+First the barcode sequences were analyzed using FIRE tool [7]. In this approach each barcode sequence
+bases are used for ﬁnding seed motifs in order to generate motif proﬁle. Then an expression proﬁle is
+created using the read counts for all the 3880 barcode sequences. The FIRE algorithm uses the motif
+
+2(cid:88)
+
+Ne(cid:88)
+
+i=1
+
+j=1
+
+6
+
+Figure 3. Average read counts. Red dots shows the boundary for reads greater than 800. It can be
+seen that approximately 80 % of sequence having the average read counts greater than 800
+
+Figure 4. Actual sequence reads plotted along with the scatter plot of sequence indexes containing all
+3,4,5,6,,7 and 8 mer motifs
+
+Figure 5. Distribution of reads with sequence containing motifs compared with distribution of the
+reads of all sequence
+
+7
+
+Figure 6. 8 -mer summery of the motif discovery tool FIRE showing under and over representation of
+the motifs in the sequences based on the reads
+
+Figure 7. Lasso Regression Plot with 229 features
+
+Figure 8. MSE vs Lambda in Lasso Regression with 299 features
+
+8
+
+Figure 9. Lasso Regression Plot with 275 features
+
+Figure 10. k-mer Motifs obtained using mutual information based proﬁling
+
+proﬁle and the expression proﬁle to generate mutual information for each motif. Then the list of motifs
+discovered is sorted and sort listed for choosing those motifs which has highest mutual information. In
+other words, those motifs are selected whose proﬁles are highly informative about the behavior proﬁle
+which is the read counts.The result is a list of motifs that are generally over- or under-represented in
+the sequences associated with certain behavior categories/bins. The motifs that we discovered from the
+barcode sequences are shown in ﬁgure 10
+
+From all the k-mers that we obtained where k is 3,4,5,6,7 and 8 80% motifs discovered were 7-mers.
+The motifs discovered are diverse in their A,C,G,T features but a frequent occurrence of CCG , GCC ,
+
+9
+
+TAT, ATAT, has been observed. Most of the Motifs either starts with A or C. However, the signiﬁcance
+of such patterns can be analyzed only after a thorough examination of the motifs. In ﬁgure 6 a snap shot
+of 8-mer motif proﬁle as obtained from FIRE has been provided. This ﬁgure shows the yellow regions
+which represents over-representation of the motifs corresponding to a higher read count (read box on top
+right). Over representation of these motifs corresponds to active motifs i.e. represent putative functional
+instances and under representation denotes motifs that are more likely to be non-functional.
+
+After discovering the motifs with the highest mutual information we analyzed them with our actual
+barcode sequence. We parsed the sequences in order to record the possibility of occurrences of the motifs
+in the barcodes and the read counts associated with the original barcode sequences. Figure 3 represents
+a bar graph with the average read measure for all the sequences that contained the motifs. From ﬁgure
+3 we can see that approximately 80% of the sequences containing motifs have more than 800 average
+read counts which is much higher as compared with low read counts considering the range of 10 - 2500.
+Also in ﬁgure 4 we have plotted the actual reads of all the sequences vs the scatter plot (red dots) of the
+sequences which contained the motifs. We can observe a dense red dotted area near the region of high
+reads. This may indicate that sequence containing the motifs have a tendency for higher read counts.
+
+In ﬁgure 5 we plotted the distribution of the reads corresponding to all the sequences to compare
+it with the distribution of the sequences containing motifs. This ﬁgure depicts an interesting outcome
+where we see that the 46 sequences have the same distribution as that of the entire population i.e. the
+entire barcode sequences. This can indicate the fact that though most of the motifs shows a higher read
+count , some motifs are present with lowers the read counts as well. These outliers are some thing which
+can be worth investigating.
+
+After the motif discovery, we generated sequence features based on A,C,G,T base pairs of the barcode
+sequences. The features that we generated are given in ﬁgure 11. We generated 275 features and applied
+Lasso Regression technique for predicting the features which has the maximum contribution in classifying
+the read counts. At ﬁrst we applied this prediction algorithm over 229 raw features that had been derived
+from the barcode sequences. The results of the lasso plot of L1 norm vs the penalty term lambda (given in
+ﬁgure 7) and lasso plot of mean square error(MSE) vs lambda (given in ﬁgure 8) shows that it was able to
+predict the best value of lambda which gave approximately 15 features that contribute most in prediction
+with the minimum MSE. The over all correlation between the actual reads and the predicted reads we
+obtained, from diﬀerent values of lambda ranges from 0.16 to 0.28. Our next step was to incorporate the
+motifs as additional features along with the previously analyzed 229 features using lasso technique. We
+added 46 more predictors to our sequence feature data. This value was binary. If a feature contains the
+motif the data would be 1 and if not 0. The result of lasso over 275 features is shown in Figure 9. The
+correlation between the predicted reads and the actual reads was obtained - which range from 0.16 to
+0.3410. This correlation measure is slightly better than the previously obtained result where motifs were
+not used as the predictors. These results were obtained from analyzing the barcode features using the
+two methodologies mentioned in the previous section. Further analysis is done in the Discussion section.
+
+Figure 11. Sequence features generated from the barcode sequences
+
+10
+
+Discussion
+
+The Next-generation sequencing have revolutionized modern genomics as well as have increased our
+understanding about DNAs and RNAs in particular [3]. However, this still-growing ﬁeld inevitably
+creates some biases in the vast amount of data generated. Analyzing the reason behind these biases is
+a crucial task especially when using multiplexing techniques with barcodes for accuracy and sensitivity.
+The main aim of our project has been an attempt in solving this riddle. Though a lot of trial and error
+with PCR cycles and ligation procedure has been done previously to reduce this bias, but no studies have
+been conducted to the best of our knowledge which have analyzed barcode sequences. We have performed
+a classiﬁcation prediction based technique as well as mutual information based motif discovery technique
+in order to analyze the barcode features. This analysis shows that there is correlation existing between
+the barcode features and the read count. Most importantly we could ﬁnd the motifs or sub-sequences that
+contributed to that correlation. It clearly proves that these motifs play an important role in determining
+the read counts. Also we could analyze those sequence features which did not have any inﬂuence on
+predicting the read counts. This is also a clear indication that the motifs discovered are important since
+the correlation between the predicted reads and the actual reads increased when the motifs were used as
+additional predictors. However, the actual pattern in which these motifs behave could not be analyzed
+due to time constraint of this project. Given more time it is not impossible to generalize the motif
+patterns which might predict the way the read counts behave.
+
+References
+
+[1] http://www.bio.davidson.edu/courses/genomics/method/barcode.html.
+
+[2] D. Aird, M.G. Ross, W.S. Chen, M. Danielsson, T. Fennell, C. Russ, D.B. Jaﬀe, C. Nusbaum, and
+A. Gnirke, Analyzing and minimizing pcr ampliﬁcation bias in illumina sequencing libraries, Genome
+Biol 12 (2011), no. 2, R18.
+
+[3] S. Alon, F. Vigneault, S. Eminaga, D.C. Christodoulou, J.G. Seidman, G.M. Church, and E. Eisen-
+berg, Barcoding bias in high-throughput multiplex sequencing of mirna, Genome Research 21 (2011),
+no. 9, 1506–1511.
+
+[4] D. Berry, K.B. Mahfoudh, M. Wagner, and A. Loy, Barcoded primers used in multiplex amplicon
+pyrosequencing bias ampliﬁcation, Applied and environmental microbiology 77 (2011), no. 21, 7846–
+7849.
+
+[5] J. Binladen, M.T.P. Gilbert, J.P. Bollback, F. Panitz, C. Bendixen, R. Nielsen, and E. Willerslev,
+The use of coded pcr primers enables high-throughput sequencing of multiple homolog ampliﬁcation
+products by 454 parallel sequencing, PLoS One 2 (2007), no. 2, e197.
+
+[6] J.A. Casbon, R.J. Osborne, S. Brenner, and C.P. Lichtenstein, A method for counting pcr template
+molecules with application to next-generation sequencing, Nucleic acids research 39 (2011), no. 12,
+e81–e81.
+
+[7] Olivier Elemento, Noam Slonim, and Saeed Tavazoie, A universal framework for regulatory element
+
+discovery across all genomes and data types, Molecular cell 28 (2007), no. 2, 337–350.
+
+[8] G. Giaever, A.M. Chu, L. Ni, C. Connelly, L. Riles, S. V´eronneau, S. Dow, A. Lucau-Danila, K. An-
+derson, B. Andr´e, et al., Functional proﬁling of the saccharomyces cerevisiae genome, Nature 418
+(2002), no. 6896, 387–391.
+
+11
+
+[9] G. Giaever, P. Flaherty, J. Kumm, M. Proctor, C. Nislow, D.F. Jaramillo, A.M. Chu, M.I. Jordan,
+identifying the functional interactions of
+A.P. Arkin, and R.W. Davis, Chemogenomic proﬁling:
+small molecules in yeast, Proceedings of the National Academy of Sciences of the United States of
+America 101 (2004), no. 3, 793.
+
+[10] M. Hamady, J.J. Walker, J.K. Harris, N.J. Gold, and R. Knight, Error-correcting barcoded primers
+
+for pyrosequencing hundreds of samples in multiplex, Nature methods 5 (2008), no. 3, 235–237.
+
+[11] T.X. Han, X.Y. Xu, M.J. Zhang, X. Peng, and L.L. Du, Method global ﬁtness proﬁling of ﬁssion
+
+yeast deletion strains by barcode sequencing, (2010).
+
+[12] P.D.N. Hebert, E.H. Penton, J.M. Burns, D.H. Janzen, and W. Hallwachs, Ten species in one: Dna
+barcoding reveals cryptic species in the neotropical skipper butterﬂy astraptes fulgerator, Proceedings
+of the National Academy of Sciences of the United States of America 101 (2004), no. 41, 14812.
+
+[13] DM Lambert, A. Baker, L. Huynen, O. Haddrath, PDN Hebert, and CD Millar, Is a large-scale
+
+dna-based inventory of ancient life possible?, Journal of Heredity 96 (2005), no. 3, 279–284.
+
+[14] M. Margulies, M. Egholm, W.E. Altman, S. Attiya, J.S. Bader, L.A. Bemben, J. Berka, M.S. Braver-
+man, Y.J. Chen, Z. Chen, et al., Genome sequencing in microfabricated high-density picolitre reactors,
+Nature 437 (2005), no. 7057, 376–380.
+
+[15] P. Parameswaran, R. Jalili, L. Tao, S. Shokralla, B. Gharizadeh, M. Ronaghi, and A.Z. Fire, A
+pyrosequencing-tailored nucleotide barcode design unveils opportunities for large-scale sample multi-
+plexing, Nucleic Acids Research 35 (2007), no. 19, e130.
+
+[16] B. Scherens and A. Goﬀeau, The uses of genome-wide yeast mutant collections, Genome biology 5
+
+(2004), no. 7, 229.
+
+[17] K. Shiroguchi, T.Z. Jia, P.A. Sims, and X.S. Xie, Digital rna sequencing minimizes sequence-
+dependent bias and ampliﬁcation noise with optimized single-molecule barcodes, Proceedings of the
+National Academy of Sciences 109 (2012), no. 4, 1347–1352.
+
+[18] D.D. Shoemaker, D.A. Lashkari, D. Morris, M. Mittmann, and R.W. Davis, Quantitative pheno-
+typic analysis of yeast deletion mutants using a highly parallel molecular bar–coding strategy, Nature
+genetics 14 (1996), no. 4, 450–456.
+
+[19] S. SHOKRALLA, J.L. SPALL, J.F. GIBSON, and M. HAJIBABAEI, Next-generation sequencing
+
+technologies for environmental dna research, Molecular Ecology 21 (2012), no. 8, 1794–1805.
+
+[20] A.M. Smith, L.E. Heisler, J. Mellor, F. Kaper, M.J. Thompson, M. Chee, F.P. Roth, G. Giaever,
+and C. Nislow, Quantitative phenotyping via deep barcode sequencing, Genome research 19 (2009),
+no. 10, 1836–1842.
+
+[21] F. Van Nieuwerburgh, S. Soetaert, K. Podshivalova, E.A.L. Wang, L. Schaﬀer, D. Deforce, D.R.
+Salomon, S.R. Head, and P. Ordoukhanian, Quantitative bias in illumina truseq and a novel post
+ampliﬁcation barcoding strategy for multiplexed dna and small rna deep sequencing, PloS one 6 (2011),
+no. 10, e26969.
+
+[22] E.A. Winzeler, D.D. Shoemaker, A. Astromoﬀ, H. Liang, K. Anderson, B. Andre, R. Bangham,
+R. Benito, J.D. Boeke, H. Bussey, et al., Functional characterization of the s. cerevisiae genome by
+gene deletion and parallel analysis, Science 285 (1999), no. 5429, 901–906.
+
+
