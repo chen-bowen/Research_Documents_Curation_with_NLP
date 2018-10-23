@@ -28,3 +28,7 @@ The following packages are used to retrieve and transform the research documents
 
 The main algorithm is implemented in python 3, except for pdf2txt, which used python 2 
 
+**Roadmap**
+
+1. Download 1000 papers in pdf format (October 1, 2018)
+
