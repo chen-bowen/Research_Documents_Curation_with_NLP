@@ -33,7 +33,7 @@ The main algorithm is implemented in python 3, except for pdf2txt, which used py
 1. Download 1000+ papers in pdf format from arxiv (Completed)
 2. Transformed 1000 papers in pdf format to txt format (Completed)
 3. Train a word embedding using gensim (Completed)
-4. To be continued..
+4. Generate a large set of pseudo documents (Completed)
 
 **Specifications**
 
