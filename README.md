@@ -39,11 +39,11 @@ The main algorithm is implemented in python 3, except for pdf2txt, which used py
 
 *Downloading papers*
 
-We downloaded 1013 quantitative finance papers from arxiv using the API provided, taking around 2 hours to process.
+We downloaded 2028 quantitative finance papers from arxiv using the API provided, taking around 2 hours to process.
 
 *Transform papers*
 
-We transform the 1013 papers into txt format using pdf2txt. 1007 papers were valid. The txt files could then be read in as a list of strings under the same directory. This process could only be completed in python 2
+We transform the 2028 papers into txt format using pdf2txt. 1007 papers were valid. The txt files could then be read in as a list of strings under the same directory. This process could only be completed in python 2
 
 *Training Word Embedding*
 
